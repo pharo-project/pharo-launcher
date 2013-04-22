@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "Object",
+	"category" : "Image-Launcher",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"pharoVersions"
+	],
+	"instvars" : [ ],
+	"name" : "NameOfSubclass",
+	"type" : "normal"
+}

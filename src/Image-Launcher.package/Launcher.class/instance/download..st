@@ -1,4 +1,4 @@
-as yet unclassified
+downloading
 download: anURL
 
 	ZnClient new

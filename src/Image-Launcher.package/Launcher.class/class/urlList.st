@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 urlList
 	^ #( 'https://ci.inria.fr/pharo/api/xml'
 		'https://ci.inria.fr/pharo-contribution/api/xml'

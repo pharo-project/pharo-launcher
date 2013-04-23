@@ -8,11 +8,11 @@ fetchOnlineImage: anURL
 
 	xmlDoc allElementsNamed: #name do: [ :each | name add: (each nodes first name) ] .
 	xmlDoc allElementsNamed: #url do: [ :each | url add: (each nodes first name) ] .
-	name do: [ :each | 
+	name with: url do: [ :eachName :eachUrl | 
 		self pharoVersions do: [ :element |
-			Transcript cr;show: element asString, ' - ', each asString.
-			((each findString: element) = 1)
-			ifTrue: [ tdictionary at: each put: (url at:(name find: each))asString, 'lastSuccessfulBuild/artifact/', each asString, '.zip']].
+			Transcript cr;show: element asString, ' - ', eachName asString.
+			(eachName beginsWith: element)
+			ifTrue: [ tdictionary at: eachName put: eachUrl asString, 'lastSuccessfulBuild/artifact/', eachName asString, '.zip']].
 			
 			 ].
 	^tdictionary

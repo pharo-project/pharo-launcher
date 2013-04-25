@@ -1,5 +1,4 @@
 unzipping
-unzip: anURL
-
-	GZipReadStream 
-		saveContents: (FileSystem disk workingDirectory/ anURL, 'zip' ) fullName.
+unzip: aFileName
+	ZipArchive  
+		extractAllIn: (FileSystem disk workingDirectory/ aFileName) fullName.

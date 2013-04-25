@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "",
+	"super" : "ComposableModel",
+	"category" : "Image-Launcher",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"refreshButtonModel",
+		"loadingButtonModel",
+		"primaryUI"
+	],
+	"name" : "ImageLauncherButtonToolBar",
+	"type" : "normal"
+}

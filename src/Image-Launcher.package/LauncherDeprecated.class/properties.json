@@ -1,0 +1,17 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "Object",
+	"category" : "Image-Launcher",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"listModel",
+		"dictionary",
+		"button",
+		"pharoVersions",
+		"urlList"
+	],
+	"name" : "LauncherDeprecated",
+	"type" : "normal"
+}

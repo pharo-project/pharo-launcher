@@ -1,17 +1,15 @@
 {
-	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"commentStamp" : "",
+	"super" : "ComposableModel",
 	"category" : "Image-Launcher",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
 		"listModel",
-		"dictionary",
-		"button",
-		"pharoVersions",
-		"urlList"
+		"toolbarModel",
+		"model"
 	],
-	"name" : "Launcher",
+	"name" : "ImageLauncherUI",
 	"type" : "normal"
 }

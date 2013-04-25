@@ -4,10 +4,12 @@
 	"category" : "Image-Launcher",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [
-		"pharoVersions"
+	"classvars" : [ ],
+	"instvars" : [
+		"name",
+		"url",
+		"category"
 	],
-	"instvars" : [ ],
-	"name" : "NameOfSubclass",
+	"name" : "ImageLauncherElement",
 	"type" : "normal"
 }

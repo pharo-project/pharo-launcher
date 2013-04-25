@@ -1,14 +1,15 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
+	"super" : "ComposableModel",
 	"category" : "Image-Launcher",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"container",
-		"tab"
+		"listModel",
+		"toolbarModel",
+		"model"
 	],
-	"name" : "ImageLauncherUI",
+	"name" : "ImageLauncherTabUI",
 	"type" : "normal"
 }

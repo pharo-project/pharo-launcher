@@ -1,6 +1,10 @@
 downloading
-download: anURL
-
-	ZnClient new
-		url: anURL ;
-		downloadTo:  (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor).
+download: anElement
+	| fileToDownload |
+	fileToDownload :=  (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor / anElement name, 'zip').
+	(fileToDownload exists)
+		ifTrue: [ ^ self ]
+		ifFalse: [ ZnClient new
+			url: anElement url asString ;
+			downloadTo: fileToDownload .  ].
+	

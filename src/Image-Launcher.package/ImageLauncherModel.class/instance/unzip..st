@@ -1,5 +1,6 @@
 unzipping
-unzip: aFileName
+unzip: anElement
 	ZipArchive new
-		readFrom: (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor / aFileName);
-		extractAllTo: (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor).
+		readFrom: (self imageDirectory / anElement name asString, 'zip');
+		extractAllTo: (self imageDirectory / anElement name asString ).
+	self rename: (self tmpDirectory: anElement) to: anElement name asString

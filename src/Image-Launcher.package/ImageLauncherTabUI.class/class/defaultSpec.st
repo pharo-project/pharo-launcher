@@ -6,4 +6,4 @@ defaultSpec
 															bottomOffset: -30) }.
 			#add:. {{#model. #toolbarModel}. #layout:.  #(FrameLayout
 															topFraction: 1
-															topOffset: -30) }.}
+															topOffset: -22) }.}

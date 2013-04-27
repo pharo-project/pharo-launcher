@@ -1,5 +1,5 @@
 as yet unclassified
-open
+open: anURL
 	| defaultTab webTab otherTab existingTab associations tc  |
 	
 	defaultTab :=  ImageLauncherTabUI open: (ImageLauncherModel category: 'Default') selectCategory: 'Default'.

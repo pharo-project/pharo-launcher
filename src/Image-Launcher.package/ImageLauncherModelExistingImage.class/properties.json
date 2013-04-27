@@ -1,15 +1,14 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
+	"super" : "ImageLauncherModel",
 	"category" : "Image-Launcher",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
 		"listElement",
-		"url",
-		"category"
+		"url"
 	],
-	"name" : "ImageLauncherModel",
+	"name" : "ImageLauncherModelExistingImage",
 	"type" : "normal"
 }

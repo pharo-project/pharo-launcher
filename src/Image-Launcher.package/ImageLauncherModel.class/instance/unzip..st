@@ -1,4 +1,5 @@
 unzipping
 unzip: aFileName
-	ZipArchive  
-		extractAllIn: (FileSystem disk workingDirectory/ aFileName) fullName.
+	ZipArchive new
+		readFrom: (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor / aFileName);
+		extractAllTo: (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor).

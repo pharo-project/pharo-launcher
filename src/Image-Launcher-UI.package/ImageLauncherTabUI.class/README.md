@@ -1,0 +1,1 @@
+An ImageLauncherTabUI is GUI part of Pharo image Launcher it's a tab part

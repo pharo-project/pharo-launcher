@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ComposableModel",
+	"category" : "Image-Launcher-UI",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"listModel",
+		"toolbarModel",
+		"model"
+	],
+	"name" : "ImageLauncherTabUI",
+	"type" : "normal"
+}

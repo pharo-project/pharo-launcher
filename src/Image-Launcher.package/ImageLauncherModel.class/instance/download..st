@@ -3,4 +3,4 @@ download: anURL
 
 	ZnClient new
 		url: anURL ;
-		downloadTo:  FileSystem disk workingDirectory fullName.
+		downloadTo:  (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor).

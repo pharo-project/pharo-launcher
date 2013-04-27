@@ -9,4 +9,4 @@ open
 	self addAll: panel.
 	window openInWorld.
 	
-	window title: 'Tab Test'
+	window title: 'Pharo Image Launcher'

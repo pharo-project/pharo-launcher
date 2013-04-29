@@ -3,6 +3,7 @@ setLoadingModel: aString
 
 	loadingButtonModel
 		state: false;
-		label: 'Loading ', aString;
+		enable;
+		label: 'Load ', aString;
 		action: [ self loadingModel: aString ].
 	

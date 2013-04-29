@@ -1,4 +1,4 @@
-initialization
+actions
 refreshModel 
 	self primaryUI refreshList 
 	

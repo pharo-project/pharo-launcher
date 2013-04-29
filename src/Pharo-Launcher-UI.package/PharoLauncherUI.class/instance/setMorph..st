@@ -1,4 +1,4 @@
-as yet unclassified
+private
 setMorph: aMorph
 
 	container removeAllMorphs.

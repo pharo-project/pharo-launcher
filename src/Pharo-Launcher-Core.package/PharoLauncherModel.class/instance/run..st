@@ -1,6 +1,5 @@
 runnnig
 run: aString
-	
 	OSProcess command: 
 		(Smalltalk vm fullPath asString, 
 		' ', 

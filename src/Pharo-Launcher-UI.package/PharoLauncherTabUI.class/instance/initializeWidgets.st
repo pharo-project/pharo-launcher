@@ -3,7 +3,7 @@ initializeWidgets
 
 	self instantiateModels: #(
 		listModel ListComposableModel
-		toolbarModel ImageLauncherButtonToolBar ).
+		toolbarModel #PharoLauncherButtonToolBar ).
 	self toolbarModel primaryUI: self.
 	
 	self focusOrder

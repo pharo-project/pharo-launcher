@@ -1,14 +1,15 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"super" : "ComposableModel",
 	"category" : "Pharo-Launcher-UI",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"container",
-		"tab"
+		"listModel",
+		"toolbarModel",
+		"model"
 	],
-	"name" : "ImageLauncherUI",
+	"name" : "PharoLauncherTabUI",
 	"type" : "normal"
 }

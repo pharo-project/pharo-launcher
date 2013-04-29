@@ -10,6 +10,6 @@
 		"loadingButtonModel",
 		"primaryUI"
 	],
-	"name" : "ImageLauncherButtonToolBar",
+	"name" : "PharoLauncherButtonToolBar",
 	"type" : "normal"
 }

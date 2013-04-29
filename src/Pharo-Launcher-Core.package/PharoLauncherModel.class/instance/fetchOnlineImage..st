@@ -1,6 +1,7 @@
 items creation
 fetchOnlineImage: anURL
-	| xmlDoc list |
+
+	| xmlDoc list |	
 	xmlDoc := XMLDOMParser parseDocumentFrom: (anURL asUrl retrieveContents).
 	list := OrderedCollection new.
 	xmlDoc allElementsNamed: #template do: [:each | 

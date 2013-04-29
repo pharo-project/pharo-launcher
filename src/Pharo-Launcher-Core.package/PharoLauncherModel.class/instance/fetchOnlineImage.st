@@ -1,4 +1,4 @@
 items creation
 fetchOnlineImage
-	
-	self listElement addAll: (self fetchOnlineImage: self url)
+
+	self listElement: (self fetchOnlineImage: self url)

@@ -1,3 +1,3 @@
-unzipping
+path-directory
 imageDirectory
-	^ (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor)
+	^ self class imageDirectory

@@ -1,4 +1,4 @@
-runnnig
+items creation
 move: aStringFile from: aStringOrigninalDirectory to: aStringDirectory
 	
 	OSProcess command: 

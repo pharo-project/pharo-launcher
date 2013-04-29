@@ -1,4 +1,4 @@
-as yet unclassified
+runnnig
 loadAndRun: anElement 
 
 	self run: anElement.

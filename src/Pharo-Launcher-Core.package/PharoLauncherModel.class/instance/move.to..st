@@ -1,4 +1,4 @@
-runnnig
+items creation
 move: aStringFile to: aStringDirectory
 	
 	| aString |

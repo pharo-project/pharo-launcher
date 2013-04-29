@@ -8,3 +8,4 @@ run: aString
 		'/', 
 		aString, 
 		'.image').
+	self quit.

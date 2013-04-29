@@ -1,4 +1,4 @@
-runnnig
+path-directory
 rename: aStringDirectory to: aString
 	
 	OSProcess command: 

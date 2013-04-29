@@ -9,4 +9,5 @@ open
 	self addAll: panel.
 	window openInWorld.
 	
-	window title: 'Pharo Launcher'
+	window title: 'Pharo Launcher'.
+	window maximize.

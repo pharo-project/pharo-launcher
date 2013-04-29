@@ -1,4 +1,4 @@
-as yet unclassified
+items creation
 fetchOnlineImage: anURL 
 
 	| list |

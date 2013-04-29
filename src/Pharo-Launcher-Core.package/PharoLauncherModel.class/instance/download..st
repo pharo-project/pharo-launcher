@@ -1,7 +1,7 @@
 downloading
 download: anElement
 	| fileToDownload |
-	fileToDownload :=  (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor / anElement name, 'zip').
+	fileToDownload :=  (self imageDirectory / anElement name, 'zip').
 	(fileToDownload exists)
 		ifTrue: [ ^ self ]
 		ifFalse: [ ZnClient new

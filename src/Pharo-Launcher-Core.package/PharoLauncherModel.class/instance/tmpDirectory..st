@@ -1,3 +1,3 @@
 runnnig
 tmpDirectory: anElement
-	^ (StartupLoader preferencesGeneralFolder asFileReference / SystemVersion current dottedMajorMinor / anElement name asString ) pathString
+	^ (self imageDirectory / anElement name asString ) pathString

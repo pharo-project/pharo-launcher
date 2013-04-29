@@ -3,6 +3,7 @@ setLoadingModel
 	
 	loadingButtonModel
 		state: false;
-		label: 'Choice an item';
+		disable;
+		label: 'Choose an item';
 		action: [ ].
 	

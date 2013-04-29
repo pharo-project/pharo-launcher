@@ -1,19 +1,18 @@
 accessing
-baseline01: spec 
-        <version: '0.1-baseline'>
-        
-        spec for: #common do: [
-		spec blessing: #baseline.
-		spec repository: 'http://smalltalkhub.com/mc/ErwanDouaille/ImageLauncher/main/'.
-		
-		spec package: 'Image-Launcher-UI' with: 'Image-Launcher-UI-ErwanDouaille.1'. "add spec configurationOf ?"
-		spec package: 'Image-Launcher-Core'with: [ spec requires: 'XMLSupport' ].
-            spec project: 'XMLSupport' with: [
+baseline01: spec
+	<version: '0.1-baseline'>
+	spec
+		for: #common
+		do: [ 
+			spec blessing: #baseline.
+			spec repository: 'http://smalltalkhub.com/mc/Pharo/PharoLauncher/main/'.
+			spec package: 'Pharo-Launcher-Core' with: [ spec requires: 'XML parsing' ].
+			spec package: 'Pharo-Launcher-UI' with: [ spec requires: 'Pharo-Launcher-Core' ].
+			
 			spec
-				className: 'ConfigurationOfXMLSupport';
-				loads: #('default');
-				file: 'ConfigurationOfXMLSupport';
-				repository: 'http://www.squeaksource.com/XMLSupport' 
-			].
-	].
-
+				project: 'XML parsing'
+				with: [ 
+					spec
+						className: 'ConfigurationOfXMLParser';
+						loads: #('Core');
+						repository: 'http://www.smalltalkhub.com/mc/PharoExtras/XMLParser/main' ] ]

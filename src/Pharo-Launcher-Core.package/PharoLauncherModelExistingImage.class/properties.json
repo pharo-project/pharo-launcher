@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "ImageLauncherModel",
+	"super" : "PharoLauncherModel",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
@@ -9,6 +9,6 @@
 		"listElement",
 		"url"
 	],
-	"name" : "ImageLauncherModelExistingImage",
+	"name" : "PharoLauncherModelExistingImage",
 	"type" : "normal"
 }

@@ -1,4 +1,4 @@
-as yet unclassified
+instance creation
 open
 
 	| window panel |
@@ -9,4 +9,4 @@ open
 	self addAll: panel.
 	window openInWorld.
 	
-	window title: 'Pharo Image Launcher'
+	window title: 'Pharo Launcher'

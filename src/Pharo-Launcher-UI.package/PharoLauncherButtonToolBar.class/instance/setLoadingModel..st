@@ -1,4 +1,4 @@
-initialization
+actions
 setLoadingModel: aString
 
 	loadingButtonModel

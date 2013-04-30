@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "PharoLauncherModelExistingImage",
+	"name" : "PharoLauncherModelLocalTemplate",
 	"type" : "normal"
 }

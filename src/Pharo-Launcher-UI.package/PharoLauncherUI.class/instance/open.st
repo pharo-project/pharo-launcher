@@ -11,3 +11,4 @@ open
 	
 	window title: 'Pharo Launcher'.
 	window maximize.
+	window makeUnclosable.

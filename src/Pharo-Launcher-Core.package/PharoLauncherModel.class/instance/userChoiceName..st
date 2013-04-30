@@ -2,7 +2,7 @@ runnnig
 userChoiceName: anElement
 	| widget |
 	
-	widget := InputWidget new;
+	widget := InputWidget new 
 		title: 'Choice project name';
 		label: 'Project name?';
 		ghostText: ''.

@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLAbstractTemplate",
+	"category" : "Pharo-Launcher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"url"
+	],
+	"name" : "PhLRemoteTemplate",
+	"type" : "normal"
+}

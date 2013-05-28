@@ -1,0 +1,3 @@
+actions
+createNewImageIn: folder
+	self subclassResponsibility

@@ -1,1 +1,0 @@
-A PharoLauncherModelLocalTemplate is a specific model to fetch if templates exists in the (default directory)/templates/

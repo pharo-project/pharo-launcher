@@ -1,1 +1,0 @@
-An ImageLauncherModel is responsible to fetch image from the web, list them, dowmload it, unzip it, rename it and run it from the current VM

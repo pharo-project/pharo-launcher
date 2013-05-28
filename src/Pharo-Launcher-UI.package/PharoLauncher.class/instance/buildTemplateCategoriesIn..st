@@ -1,9 +1,10 @@
 interface building
 buildTemplateCategoriesIn: constructor
 	constructor accordionArrangement.
-	group categories sorted
+	templateGroup categories sorted
 		do: [ :category | 
 			constructor list
 				title: category;
-				display: [ group templatesAtCategory: category ];
+				display: [ templateGroup templatesAtCategory: category ];
+				selectionAct: [ :widget | self extractTemplate: widget selection ] entitled: 'Create new...';
 				format: #name ]

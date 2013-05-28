@@ -7,7 +7,12 @@ baseline01: spec
 			spec blessing: #baseline.
 			spec repository: 'http://smalltalkhub.com/mc/Pharo/PharoLauncher/main/'.
 			spec package: 'Pharo-Launcher-Core' with: [ spec requires: #('XML parsing' 'OSProcess') ].
-			spec package: 'Pharo-Launcher-UI' with: [ spec requires: 'Pharo-Launcher-Core' ].
+			spec package: 'Pharo-Launcher-UI' with: [ spec requires: 'Pharo-Launcher-Core Glamour' ].
+			spec
+				project: 'Glamour'
+				with: [ spec className: 'ConfigurationOfGlamour';
+					loads: #('Core' 'Morphic');
+					repository: 'http://www.smalltalkhub.com/mc/Moose/Glamour/main' ].
 			spec
 				project: 'XML parsing'
 				with: [ 

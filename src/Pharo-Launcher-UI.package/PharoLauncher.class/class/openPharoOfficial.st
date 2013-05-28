@@ -1,5 +1,5 @@
 opening
 openPharoOfficial
 	^ self new
-			setGroup: PhLRemoteTemplateGroup pharoOfficialGroup;
+			setTemplateGroup: PhLRemoteTemplateGroup pharoOfficialGroup imageGroup: PhLDirectoryBasedImageGroup inPharoPreferencesDirectory;
 			open

@@ -6,8 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"group",
-		"browser"
+		"browser",
+		"templateGroup",
+		"imageGroup"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

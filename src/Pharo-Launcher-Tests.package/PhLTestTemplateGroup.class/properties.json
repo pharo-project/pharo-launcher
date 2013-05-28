@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLAbstractTemplateGroup",
+	"category" : "Pharo-Launcher-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"templates"
+	],
+	"name" : "PhLTestTemplateGroup",
+	"type" : "normal"
+}

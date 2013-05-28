@@ -1,14 +1,14 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "Object",
 	"category" : "Pharo-Launcher-UI",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"container",
-		"tab"
+		"group",
+		"browser"
 	],
-	"name" : "PharoLauncherUI",
+	"name" : "PharoLauncher",
 	"type" : "normal"
 }

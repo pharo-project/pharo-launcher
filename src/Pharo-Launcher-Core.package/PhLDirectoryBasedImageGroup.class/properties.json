@@ -1,14 +1,14 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"super" : "PhLAbstractImageGroup",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"name",
-		"categories"
+		"baseDirectory",
+		"images"
 	],
-	"name" : "PhLAbstractTemplate",
+	"name" : "PhLDirectoryBasedImageGroup",
 	"type" : "normal"
 }

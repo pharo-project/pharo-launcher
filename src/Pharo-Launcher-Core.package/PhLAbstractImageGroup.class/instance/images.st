@@ -1,0 +1,3 @@
+accessing
+images
+	^ self subclassResponsibility

@@ -5,10 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"name",
-		"categories"
-	],
-	"name" : "PhLAbstractTemplate",
+	"instvars" : [ ],
+	"name" : "PhLAbstractImageGroup",
 	"type" : "normal"
 }

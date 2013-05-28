@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "Object",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
@@ -7,8 +7,8 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"name",
-		"categories"
+		"location"
 	],
-	"name" : "PhLAbstractTemplate",
+	"name" : "PhLImage",
 	"type" : "normal"
 }

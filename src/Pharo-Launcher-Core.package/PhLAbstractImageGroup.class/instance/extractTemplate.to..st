@@ -1,3 +1,3 @@
-as yet unclassified
+action
 extractTemplate: aTemplate to: anImageName
 	self subclassResponsibility

@@ -1,7 +1,7 @@
 remote action
 downloadTemplateList
 	| xmlDoc templates |
-	xmlDoc := XMLDOMParser parseDocumentFrom: url asUrl retrieveContents.
+	xmlDoc := self parseRemoteXml: url.
 	templates := OrderedCollection new.
-	xmlDoc allElementsNamed: #template do: [ :each | templates add: (self createTemplateFromXMLNode: each) ].
+	xmlDoc allElementsNamed: self rootNodeName do: [ :each | templates add: (self createTemplateFromXMLNode: each) ].
 	^ templates

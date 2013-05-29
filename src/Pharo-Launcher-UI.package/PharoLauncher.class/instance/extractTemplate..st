@@ -1,3 +1,5 @@
 action
 extractTemplate: aTemplate 
-	self shouldBeImplemented.
+	| name |
+	name := UIManager default request: 'Image name?'.
+	imageGroup extractTemplate: aTemplate to: name

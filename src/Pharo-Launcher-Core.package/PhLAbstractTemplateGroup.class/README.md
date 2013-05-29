@@ -1,0 +1,1 @@
+I represent a group of templates. I also know about the list of all the categories in which my templates are organized.

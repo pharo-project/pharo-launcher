@@ -9,6 +9,6 @@
 		"url",
 		"templates"
 	],
-	"name" : "PhLRemoteTemplateGroup",
+	"name" : "PhLRemoteXMLTemplateGroup",
 	"type" : "normal"
 }

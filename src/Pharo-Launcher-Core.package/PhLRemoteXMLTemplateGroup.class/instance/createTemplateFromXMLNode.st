@@ -1,0 +1,3 @@
+remote action
+createTemplateFromXMLNode
+	self subclassResponsibility

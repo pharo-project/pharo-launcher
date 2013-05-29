@@ -1,3 +1,3 @@
-accessing
+remote action
 templates
-	^ templates ifNil: [ self downloadTemplateList. templates ]
+	^ self downloadTemplateList

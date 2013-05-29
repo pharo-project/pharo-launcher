@@ -6,8 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"url"
+		"url",
+		"templates"
 	],
-	"name" : "PhLRemoteXMLTemplateGroup",
+	"name" : "PhLJenkinsTemplateGroup",
 	"type" : "normal"
 }

@@ -1,3 +1,6 @@
 action
 launch
-	self shouldBeImplemented
+		OSProcess command: 
+		('cd ', location parent pathString, ' && ', Smalltalk vm fullPath asString, 
+		' ', 
+		location basename).

@@ -1,0 +1,3 @@
+remote action
+rootNodeName
+	self subclassResponsibility

@@ -1,11 +1,13 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "PhLRemoteXMLTemplateGroup",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [ ],
-	"name" : "PhLRemoteXMLLauncherTemplateGroup",
+	"instvars" : [
+		"categories"
+	],
+	"name" : "PhLRemoteJenkinsTemplateGroup",
 	"type" : "normal"
 }

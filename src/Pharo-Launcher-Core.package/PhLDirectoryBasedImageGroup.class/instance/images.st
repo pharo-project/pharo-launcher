@@ -1,3 +1,3 @@
 accessing
 images
-	^ images ifNil: [ self initializeImages ]
+	^ self initializeImages

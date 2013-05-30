@@ -6,4 +6,5 @@ extractZipArchive: zipFile to: aDirectory
 	ZipArchive new
 		readFrom: zipFile;
 		extractAllTo: tempDirectory.
+	zipFile moveTo: ((FileLocator preferences / 'pharo' / 'templateCache') ensureDirectory) / name, 'zip' .
 	^ tempDirectory

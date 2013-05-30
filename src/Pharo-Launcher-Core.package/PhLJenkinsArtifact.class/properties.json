@@ -6,10 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"json",
-		"url",
-		"name"
+		"name",
+		"url"
 	],
-	"name" : "PhLJenkinsJob",
+	"name" : "PhLJenkinsArtifact",
 	"type" : "normal"
 }

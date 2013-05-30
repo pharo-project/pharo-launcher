@@ -4,8 +4,12 @@
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [ ],
+	"classvars" : [
+		"Default"
+	],
+	"instvars" : [
+		"dictionary"
+	],
 	"name" : "PhLLocalTemplateGroup",
 	"type" : "normal"
 }

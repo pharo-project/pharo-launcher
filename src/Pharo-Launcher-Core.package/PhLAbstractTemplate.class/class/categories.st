@@ -1,3 +1,0 @@
-accessing
-categories
-	self shouldBeImplemented.

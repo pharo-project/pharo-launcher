@@ -8,7 +8,7 @@ extractTemplatesFromJob: job
 			(artifact fileExtension = 'zip')
 				ifTrue: [
 					templates add: (PhLRemoteTemplate
-												name: artifact fullName
+												name: artifact name
 												url: artifact url
 												categories: self categories) ].
 			templates ]

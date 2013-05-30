@@ -7,7 +7,9 @@
 	"classvars" : [
 		"Default"
 	],
-	"instvars" : [ ],
+	"instvars" : [
+		"dictionary"
+	],
 	"name" : "PhLLocalTemplateGroup",
 	"type" : "normal"
 }

@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 all
 	| groups |
 	groups := OrderedCollection new.
@@ -7,7 +7,6 @@ all
 	groups add: PhLRemoteJenkinsTemplateGroup inriaPharoContribution.
 	groups add: PhLHTTPListingTemplateGroup pharo30.
 	groups add: PhLRemoteLauncherTemplateGroup pharoOfficialGroup.
-	groups add: PhLLocalTemplateGroup default.
 	^ self new
 		setGroups: groups;
 		yourself

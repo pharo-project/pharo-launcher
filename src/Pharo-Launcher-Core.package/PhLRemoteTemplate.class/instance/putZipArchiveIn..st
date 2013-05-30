@@ -1,5 +1,5 @@
 actions
-downloadZipArchiveTo: aDirectory
+putZipArchiveIn: aDirectory
 	| response |
 	response := ZnClient new
 		url: url;

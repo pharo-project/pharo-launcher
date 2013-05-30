@@ -1,0 +1,16 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLAbstractTemplateGroup",
+	"category" : "Pharo-Launcher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"delegate",
+		"templates",
+		"categories",
+		"templateCategoryMap"
+	],
+	"name" : "PhLCacheTemplateGroup",
+	"type" : "normal"
+}

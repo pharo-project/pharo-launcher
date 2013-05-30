@@ -8,6 +8,7 @@ externalDependencies: spec
 				version: #development;
 				loads: #('Core' 'Morphic');
 				repository: 'http://www.smalltalkhub.com/mc/Moose/Glamour/main' ].
+
 	spec
 		project: 'XML parsing'
 		with: [ 

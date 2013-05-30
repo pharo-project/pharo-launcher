@@ -1,3 +1,3 @@
 accessing
 fileExtension
-	^ url lastPathSegment asFileReference extension
+	^ url lastPathSegment copyAfterLast: $.

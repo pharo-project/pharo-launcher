@@ -1,4 +1,4 @@
-*pharo-launcher-ui
+opening
 openSample
 	^ self new
 			setGroup: PhLTestTemplateGroup new;

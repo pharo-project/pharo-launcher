@@ -1,15 +1,11 @@
 {
 	"commentStamp" : "",
-	"super" : "Object",
+	"super" : "PhLJenkinsJob",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"json",
-		"url",
-		"name"
-	],
-	"name" : "PhLJenkinsJob",
+	"instvars" : [ ],
+	"name" : "PhLJenkinsMatrixJob",
 	"type" : "normal"
 }

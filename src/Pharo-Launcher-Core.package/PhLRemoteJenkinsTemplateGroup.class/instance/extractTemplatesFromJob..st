@@ -1,18 +1,14 @@
 accessing
 extractTemplatesFromJob: job
-	| fileUrls |
-	fileUrls := job files.
-	^ fileUrls
+	^ job artifacts
 		inject: OrderedCollection new
-		into: [ :templates :fileUrl | 
-			| filename |
-			filename := fileUrl lastPathSegment.
+		into: [ :templates :artifact | 
 			"All files with a zip extension are considered image templates.
 			 Don't know what else I could do."
-			(filename endsWith: '.zip')
+			(artifact fileExtension = 'zip')
 				ifTrue: [
 					templates add: (PhLRemoteTemplate
-												name: (filename allButLast: '.zip' size)
-												url: fileUrl
+												name: artifact name
+												url: artifact url
 												categories: self categories) ].
 			templates ]

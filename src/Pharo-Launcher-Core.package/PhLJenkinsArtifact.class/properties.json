@@ -7,7 +7,8 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"name",
-		"url"
+		"url",
+		"options"
 	],
 	"name" : "PhLJenkinsArtifact",
 	"type" : "normal"

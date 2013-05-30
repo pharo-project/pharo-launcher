@@ -5,7 +5,9 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [ ],
+	"instvars" : [
+		"zipFile"
+	],
 	"name" : "PhLLocalTemplate",
 	"type" : "normal"
 }

@@ -1,4 +1,10 @@
 actions
 extractTo: aDirectory named: aString
-	"Extract myself to aDirectory and make sure the resulting image name is aString."
-	self subclassResponsibility
+	
+	
+	| zipFile extractionDirectory |
+	zipFile := self putZipArchiveIn: aDirectory.
+	extractionDirectory := self extractZipArchive: zipFile to: aDirectory.
+	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
+	self cleaningFilesFrom: aDirectory.
+	

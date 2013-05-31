@@ -1,3 +1,3 @@
 accessing
 templates
-		^ templateGroups gather: #templates
+		^ (templateGroups gather: #templates) asSet

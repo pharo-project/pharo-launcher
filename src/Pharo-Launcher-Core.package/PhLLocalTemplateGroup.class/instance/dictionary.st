@@ -1,4 +1,4 @@
-registry
+private
 dictionary
 	^ self cacheFile
 		readStreamDo: [ :aStream | 

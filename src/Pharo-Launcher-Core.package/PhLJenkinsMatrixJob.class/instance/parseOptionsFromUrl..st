@@ -1,6 +1,8 @@
 parsing
-parseOptionsFromUrl: aZnUrl 
+parseOptionsFromUrl: aZnUrl
+	"Return a dictionary of all the options for a particular run"
 	| options |
+	"Because Jenkins doesn't store this information properly, we have to parse it from the url"
 	options := Dictionary new.
 	(aZnUrl segments atWrap: -2) splitOn: $, do: [ :option | | pair |
 		pair := option splitOn: $=.

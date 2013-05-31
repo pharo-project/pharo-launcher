@@ -8,7 +8,4 @@ imageFromDirectory: aDirectory
 	changeFiles := aDirectory filesMatching: imageName , '.changes'.
 	^ (imageFiles size ~= 1 or: [ changeFiles size ~= 1 ])
 		ifTrue: [ nil ]
-		ifFalse: [ 
-			PhLImage new
-				setName: imageName location: imageFiles first;
-				yourself ]
+		ifFalse: [ PhLImage location: imageFiles first ]

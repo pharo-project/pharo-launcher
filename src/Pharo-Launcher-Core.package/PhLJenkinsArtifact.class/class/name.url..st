@@ -1,5 +1,3 @@
 instance creation
 name: aString url: anUrl
-	^ self new
-		setName: aString url: anUrl;
-		yourself
+	^ self name: aString url: anUrl options: Dictionary new

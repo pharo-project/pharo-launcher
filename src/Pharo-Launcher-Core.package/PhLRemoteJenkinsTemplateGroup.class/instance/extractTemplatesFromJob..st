@@ -1,4 +1,4 @@
-accessing
+private
 extractTemplatesFromJob: job
 	^ job artifacts
 		inject: OrderedCollection new

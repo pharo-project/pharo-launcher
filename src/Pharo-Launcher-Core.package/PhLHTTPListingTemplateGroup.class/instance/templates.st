@@ -11,6 +11,6 @@ templates
 	templates := OrderedCollection new.
 	 [ matcher searchStream: content ]
 			whileTrue: [ self
-									createTemplateFromUrl: (matcher subexpression: self subexpression)
+									createTemplateFromHref: (matcher subexpression: self subexpression)
 									addingTo: templates ].
 	^ templates

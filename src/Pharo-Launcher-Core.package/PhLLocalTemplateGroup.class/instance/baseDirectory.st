@@ -1,4 +1,3 @@
-registry
-baseDirectory 
-
-	^ (FileLocator preferences / 'pharo' / 'templateCache') ensureDirectory 
+accessing
+baseDirectory
+	^ (FileLocator preferences / 'pharo' / 'templateCache') ensureDirectory

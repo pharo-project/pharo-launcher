@@ -1,4 +1,4 @@
-as yet unclassified
+printing
 printOn: aStream
 	aStream
 		nextPutAll: 'Image template (';

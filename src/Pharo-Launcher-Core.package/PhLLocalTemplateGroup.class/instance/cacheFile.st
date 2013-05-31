@@ -1,3 +1,3 @@
 updating
 cacheFile	
-	^ self baseDirectory / 'cache', 'json'
+	^ (self baseDirectory / 'cache', 'json') ensureFile

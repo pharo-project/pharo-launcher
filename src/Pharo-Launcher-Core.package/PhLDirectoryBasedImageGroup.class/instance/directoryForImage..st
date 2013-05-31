@@ -1,3 +1,3 @@
-action
+accessing
 directoryForImage: anImage
-	^ baseDirectory / anImage name
+	^ self directoryForImageNamed: anImage name

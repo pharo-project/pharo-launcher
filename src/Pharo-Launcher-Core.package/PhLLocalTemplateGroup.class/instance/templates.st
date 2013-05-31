@@ -8,7 +8,7 @@ templates
 			ifTrue: [ templates add:
 			(PhLLocalTemplate 
 				name: (value at: #name) 
-				categories:  #('cache')
+				categories:  (Array with: self category)
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].

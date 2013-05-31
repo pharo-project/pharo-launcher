@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "<historical>",
 	"super" : "Object",
 	"category" : "Pharo-Launcher-UI",
 	"classinstvars" : [ ],
@@ -7,8 +7,8 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"browser",
-		"templateGroup",
-		"imageGroup"
+		"imageGroup",
+		"templateGroupCache"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

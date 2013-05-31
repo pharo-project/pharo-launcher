@@ -1,3 +1,3 @@
-action
+private
 prepareForNewImageNamed: aString
-	^ (self baseDirectory / aString) ensureDirectory.
+	^ (self directoryForImageNamed: aString) ensureDirectory

@@ -1,3 +1,7 @@
 registry
-dictionary 
-	^ self cacheFile readStreamDo: [ :aStream | Json readFrom: aStream ]
+dictionary
+	^ self cacheFile
+		readStreamDo: [ :aStream | 
+			aStream atEnd
+				ifTrue: [ Dictionary new ]
+				ifFalse: [ Json readFrom: aStream ] ]

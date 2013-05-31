@@ -1,4 +1,6 @@
 action
 deleteImage: anImage
-	imageGroup deleteImage: anImage.
-	browser update
+	(UIManager default confirm: 'Are you sure you want to delete ' , anImage name , '?')
+		ifTrue: [ 
+			imageGroup deleteImage: anImage.
+			browser update ]

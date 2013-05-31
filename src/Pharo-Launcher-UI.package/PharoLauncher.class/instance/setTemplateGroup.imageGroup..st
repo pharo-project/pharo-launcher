@@ -1,4 +1,4 @@
 initialize-release
 setTemplateGroup: aTemplateGroup imageGroup: anImageGroup
-	templateGroup := PhLCacheTemplateGroup group: aTemplateGroup.
+	templateGroupCache := PhLCacheTemplateGroup group: aTemplateGroup.
 	imageGroup := anImageGroup.

@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "<historical>",
 	"super" : "PhLAbstractTemplate",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],

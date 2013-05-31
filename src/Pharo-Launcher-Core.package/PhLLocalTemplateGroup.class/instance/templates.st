@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 templates
 	| aDictionary templates |
 	templates := OrderedCollection new.
@@ -8,7 +8,7 @@ templates
 			ifTrue: [ templates add:
 			(PhLLocalTemplate 
 				name: (value at: #name) 
-				categories:  (value at: #categories)
+				categories:  #('cache')
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].

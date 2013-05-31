@@ -1,12 +1,7 @@
 registry
-register: aPhLRemoteTemplate withZip: aZipFile
-	| aDictionary aFileName aSubDictionary |
-	aFileName := self baseDirectory / aPhLRemoteTemplate name , 'zip'.
-	self flag: 'TODO a better implementation'.
-	aZipFile = aFileName 
-		ifFalse: [
-	aZipFile moveTo: aFileName ensureDeleted] .
+register: aRemoteTemplate withZip: aZipFile
+	| aDictionary aSubDictionary |
 	aDictionary := self dictionary.
-	aSubDictionary := aDictionary at: aPhLRemoteTemplate name ifAbsentPut: [ Dictionary new ].
-	self update: aSubDictionary with: aPhLRemoteTemplate.
+	aSubDictionary := aDictionary at: aRemoteTemplate name ifAbsentPut: [ Dictionary new ].
+	self update: aSubDictionary with: aRemoteTemplate.
 	self saveToFile:aDictionary

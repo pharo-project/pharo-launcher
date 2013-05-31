@@ -1,3 +1,3 @@
-as yet unclassified
+actions
 createNewImageIn: folder
 	imageCreated := true

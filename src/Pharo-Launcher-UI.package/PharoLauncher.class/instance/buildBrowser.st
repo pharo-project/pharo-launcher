@@ -2,11 +2,11 @@ interface building
 buildBrowser
 	browser := GLMTabulator new.
 	browser
-		column: #existingImages;
-		column: #templateCategoriesColumn.
+		column: #imagesColumn;
+		column: #templateColumn.
 	browser transmit
-		to: #existingImages;
-		andShow: [ :a | self buildExistingImagesIn: a ].
+		to: #imagesColumn;
+		andShow: [ :a | self buildImagesColumnIn: a ].
 	browser transmit
-		to: #templateCategoriesColumn;
-		andShow: [ :a | self buildTemplateCategoriesColumnIn: a ]
+		to: #templateColumn;
+		andShow: [ :a | self buildTemplateColumnIn: a ]

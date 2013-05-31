@@ -1,7 +1,10 @@
 interface building
-buildTemplateCategoriesIn: constructor
-	constructor accordionArrangement.
-	templateGroupCache categories sorted
+buildTemplateColumnIn: constructor
+	constructor
+		title: 'Templates';
+		act: [ self updateTemplates ] icon: GLMUIThemeExtraIcons glamorousRefresh entitled: 'Refresh';
+		accordionArrangement.
+	self categories
 		do: [ :category | 
 			constructor list
 				title: category;

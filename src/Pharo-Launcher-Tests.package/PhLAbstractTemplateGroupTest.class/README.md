@@ -1,1 +1,0 @@
-A PhLAbstractTemplateGroupTest is a test class for testing the behavior of PhLAbstractTemplateGroup

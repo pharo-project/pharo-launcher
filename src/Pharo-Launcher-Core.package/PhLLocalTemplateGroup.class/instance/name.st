@@ -1,3 +1,3 @@
 accessing
-category
+name
 	^ 'Local'

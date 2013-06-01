@@ -7,8 +7,7 @@ templates
 		(self baseDirectory / (value at: #name), 'zip') exists 
 			ifTrue: [ templates add:
 			(PhLLocalTemplate 
-				name: (value at: #name) 
-				categories:  (Array with: self category)
+				name: (value at: #name)
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].

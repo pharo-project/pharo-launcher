@@ -6,8 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"categories",
-		"url"
+		"url",
+		"name"
 	],
 	"name" : "PhLRemoteJenkinsTemplateGroup",
 	"type" : "normal"

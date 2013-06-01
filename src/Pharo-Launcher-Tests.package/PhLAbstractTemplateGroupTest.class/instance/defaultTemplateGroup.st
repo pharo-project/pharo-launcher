@@ -1,3 +1,0 @@
-helpers
-defaultTemplateGroup
-	^ PhLTestTemplateGroup new

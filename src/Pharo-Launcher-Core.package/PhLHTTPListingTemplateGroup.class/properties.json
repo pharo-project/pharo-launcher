@@ -9,8 +9,7 @@
 	],
 	"instvars" : [
 		"url",
-		"name",
-		"categories"
+		"name"
 	],
 	"name" : "PhLHTTPListingTemplateGroup",
 	"type" : "normal"

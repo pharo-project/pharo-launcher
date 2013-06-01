@@ -6,8 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"name",
-		"categories"
+		"name"
 	],
 	"name" : "PhLAbstractTemplate",
 	"type" : "normal"

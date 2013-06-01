@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "PhLAbstractTemplateGroup",
+	"super" : "Object",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
@@ -8,6 +8,6 @@
 	"instvars" : [
 		"templateGroups"
 	],
-	"name" : "PhLTemplateRepository",
+	"name" : "PhLTemplateGroupRepository",
 	"type" : "normal"
 }

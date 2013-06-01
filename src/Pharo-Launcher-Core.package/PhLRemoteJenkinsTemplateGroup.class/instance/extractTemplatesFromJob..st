@@ -9,6 +9,5 @@ extractTemplatesFromJob: job
 				ifTrue: [
 					templates add: (PhLRemoteTemplate
 												name: artifact fullName
-												url: artifact url
-												categories: self categories) ].
+												url: artifact url) ].
 			templates ]

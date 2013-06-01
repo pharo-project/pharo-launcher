@@ -1,4 +1,4 @@
-action
+action-images
 launchImage: anImage
 	anImage launch.
-	self quitLauncher.
+	self quit.

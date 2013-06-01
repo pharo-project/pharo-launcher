@@ -1,6 +1,6 @@
 opening
 openAll
 	^ self new
-			setTemplateGroup: PhLTemplateRepository all
+			setTemplateGroup: PhLTemplateGroupRepository all
 			imageGroup: PhLDirectoryBasedImageGroup inPharoPreferencesDirectory;
 			open

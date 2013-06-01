@@ -8,7 +8,7 @@
 	"instvars" : [
 		"browser",
 		"imageGroup",
-		"templateGroupCache"
+		"templateRepository"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

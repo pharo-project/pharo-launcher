@@ -1,3 +1,3 @@
 action
-quitLauncher
+quit
 	Smalltalk snapshot: true andQuit: true.

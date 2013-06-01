@@ -1,4 +1,4 @@
 updating
 updateTemplates
-	templateGroupCache refresh.
+	templateRepository refresh.
 	browser update.

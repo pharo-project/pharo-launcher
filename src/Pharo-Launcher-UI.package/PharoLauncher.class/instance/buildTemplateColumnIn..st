@@ -4,10 +4,10 @@ buildTemplateColumnIn: constructor
 		title: 'Templates';
 		act: [ self updateTemplates ] icon: GLMUIThemeExtraIcons glamorousRefresh entitled: 'Refresh';
 		accordionArrangement.
-	self categories
-		do: [ :category | 
+	templateRepository groups
+		do: [ :group | 
 			constructor list
-				title: category;
-				display: [ templateGroupCache templatesAtCategory: category ];
+				title: group name;
+				display: [ group templates ];
 				selectionAct: [ :widget | self extractTemplate: widget selection ] entitled: 'Create new...';
 				format: #name ]

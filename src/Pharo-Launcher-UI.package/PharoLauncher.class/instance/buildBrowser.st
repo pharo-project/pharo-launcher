@@ -9,4 +9,5 @@ buildBrowser
 		andShow: [ :a | self buildImagesColumnIn: a ].
 	browser transmit
 		to: #templateColumn;
+		transformed: [ templateRepository groups ];
 		andShow: [ :a | self buildTemplateColumnIn: a ]

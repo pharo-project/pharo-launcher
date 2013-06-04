@@ -1,3 +1,3 @@
 updating
 updateImages
-	browser update
+	images roots: imageGroup images

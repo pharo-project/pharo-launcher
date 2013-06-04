@@ -1,0 +1,3 @@
+accessing
+selectedTemplate
+	^ templates selectedItem

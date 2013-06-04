@@ -6,11 +6,10 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"images",
-		"templates",
-		"templateRepository",
-		"imageGroup"
+		"label",
+		"refreshButton",
+		"refreshAction"
 	],
-	"name" : "PharoLauncher",
+	"name" : "PhLTitlebarModel",
 	"type" : "normal"
 }

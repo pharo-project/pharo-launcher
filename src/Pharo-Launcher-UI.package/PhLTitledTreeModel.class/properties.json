@@ -6,11 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"images",
-		"templates",
-		"templateRepository",
-		"imageGroup"
+		"titlebar",
+		"tree"
 	],
-	"name" : "PharoLauncher",
+	"name" : "PhLTitledTreeModel",
 	"type" : "normal"
 }

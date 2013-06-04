@@ -1,15 +1,6 @@
 accessing
 externalDependencies: spec
 	spec
-		project: 'Glamour'
-		with: [ 
-			spec
-				className: 'ConfigurationOfGlamour';
-				version: #development;
-				loads: #('Core' 'Morphic');
-				repository: 'http://www.smalltalkhub.com/mc/Moose/Glamour/main' ].
-
-	spec
 		project: 'XML parsing'
 		with: [ 
 			spec

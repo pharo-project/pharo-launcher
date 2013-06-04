@@ -1,4 +1,3 @@
-private
-extractAllJobs
-	"Return a list of PhLJenkinsJob created after querying my url"
+accessing
+jobs
 	^ (self extractJsonJobList at: #jobs) collect: [ :jsonJob | PhLJenkinsJob newFromJson: jsonJob ]

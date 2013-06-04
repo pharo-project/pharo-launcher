@@ -4,5 +4,5 @@ artifactsFromJson: jsonArtifacts
 		ifNil: [ #() ]
 		ifNotNil: [ jsonArtifacts collect: [ :jsonArtifact |
 				PhLJenkinsArtifact
-					name: name
-					url: url / (jsonArtifact at: #relativePath) ] ]
+					name: self name
+					url: self url / (jsonArtifact at: #relativePath) ] ]

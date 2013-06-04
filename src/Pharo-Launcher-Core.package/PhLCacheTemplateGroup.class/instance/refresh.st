@@ -1,3 +1,3 @@
 action
 refresh
-	templates := nil
+	templatesAndGroups := nil

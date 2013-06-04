@@ -7,7 +7,7 @@ buildTemplateColumnIn: constructor
 		children: [ :group | 
 					self flag: 'TODO: implement recursive groups and remove this #isKindOf:'.
 					(group isKindOf: PhLAbstractTemplateGroup)
-						ifTrue: [ group templates ]
+						ifTrue: [ group simplifiedTemplatesAndGroups ]
 						ifFalse: [ #() ] ];
 		selectionAct: [ :widget | self extractTemplate: widget selection ] entitled: 'Create new...';
 		format: #name

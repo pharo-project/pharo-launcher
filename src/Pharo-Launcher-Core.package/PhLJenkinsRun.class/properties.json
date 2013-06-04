@@ -1,11 +1,11 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "PhLJenkinsAbstractLeafJob",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "PhLJenkinsSimpleJob",
+	"name" : "PhLJenkinsRun",
 	"type" : "normal"
 }

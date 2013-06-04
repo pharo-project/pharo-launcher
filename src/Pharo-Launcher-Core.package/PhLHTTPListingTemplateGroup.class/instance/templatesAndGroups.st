@@ -1,5 +1,5 @@
 accessing
-templates
+templatesAndGroups
 	| content matcher templates |
 	content := ZnClient new
 						url: url;

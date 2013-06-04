@@ -1,5 +1,5 @@
 accessing
-templates
+templatesAndGroups
 	| aDictionary templates |
 	templates := OrderedCollection new.
 	aDictionary := self dictionary.

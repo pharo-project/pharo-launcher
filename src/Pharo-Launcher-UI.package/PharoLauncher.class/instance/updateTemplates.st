@@ -1,4 +1,3 @@
 updating
 updateTemplates
-	templateRepository refresh.
-	browser update.
+	templates roots: templateRepository groups

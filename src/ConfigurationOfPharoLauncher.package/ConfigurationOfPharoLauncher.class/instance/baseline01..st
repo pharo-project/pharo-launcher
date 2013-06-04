@@ -7,6 +7,6 @@ baseline01: spec
 			spec blessing: #baseline.
 			spec repository: 'http://smalltalkhub.com/mc/Pharo/PharoLauncher/main/'.
 			spec package: 'Pharo-Launcher-Core' with: [ spec requires: #('XML parsing' 'OSProcess' 'JSON') ].
-			spec package: 'Pharo-Launcher-UI' with: [ spec requires: #('Pharo-Launcher-Core' 'Glamour') ].
+			spec package: 'Pharo-Launcher-UI' with: [ spec requires: #('Pharo-Launcher-Core') ].
 			spec package: 'Pharo-Launcher-Tests' with: [ spec requires: 'Pharo-Launcher-Core' ].
 			self externalDependencies: spec ]

@@ -1,4 +1,5 @@
 updating
 updateTemplates
-	templateRepository refresh.
-	templates roots: templateRepository groups
+	PhLDownloadManager default reset.
+	templateRepository reset.
+	templatesModel roots: templateRepository groups

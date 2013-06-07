@@ -6,12 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"templateRepository",
-		"imageGroup",
-		"imagesModel",
-		"templatesModel",
-		"statusbarModel"
+		"labelModel"
 	],
-	"name" : "PharoLauncher",
+	"name" : "PhLStatusbar",
 	"type" : "normal"
 }

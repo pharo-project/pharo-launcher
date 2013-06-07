@@ -1,3 +1,4 @@
 menu
 templatesMenu: menu
-	menu add: 'Create image' target: self selector: #createImageFromTemplate.
+	self selectedTemplate
+		ifNotNil: [ :template | template populateMenu: menu on: self ]

@@ -1,3 +1,3 @@
-accessing
+selection
 selectedTemplate
-	^ templates selectedItem
+	^ templatesModel selectedItem

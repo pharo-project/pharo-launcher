@@ -1,4 +1,4 @@
-action
+image action
 renameImage
 	| image newName |
 	image := self selectedImage.

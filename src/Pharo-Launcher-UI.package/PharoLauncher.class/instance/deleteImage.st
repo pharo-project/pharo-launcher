@@ -1,4 +1,4 @@
-action
+image action
 deleteImage
 	| image |
 	image := self selectedImage.

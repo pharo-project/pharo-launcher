@@ -1,12 +1,7 @@
 accessing
 templatesAndGroups
 	| content matcher templates |
-	content := ZnClient new
-						url: url;
-						beOneShot;
-						accept: 'text/html;charset=utf-8' asZnMimeType;
-						get.
-	content := content readStream.
+	content := PhLDownloadManager default downloadToPositionableStream: url.
 	matcher := RxMatcher for: self regex.
 	templates := OrderedCollection new.
 	 [ matcher searchStream: content ]

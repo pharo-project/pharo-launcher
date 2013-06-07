@@ -1,3 +1,3 @@
 action
-refresh
+reset
 	templatesAndGroups := nil

@@ -1,4 +1,4 @@
-action
+image action
 copyImage
 	| image newName |
 	image := self selectedImage.

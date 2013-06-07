@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLError",
+	"category" : "Pharo-Launcher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"url"
+	],
+	"name" : "PhLDownloadError",
+	"type" : "normal"
+}

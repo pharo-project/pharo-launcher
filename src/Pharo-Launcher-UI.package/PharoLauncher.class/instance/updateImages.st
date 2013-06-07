@@ -1,3 +1,3 @@
 updating
 updateImages
-	images roots: imageGroup images
+	imagesModel roots: imageGroup images

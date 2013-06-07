@@ -1,3 +1,3 @@
-accessing
+selection
 selectedImage
-	^ images selectedItem
+	^ imagesModel selectedItem

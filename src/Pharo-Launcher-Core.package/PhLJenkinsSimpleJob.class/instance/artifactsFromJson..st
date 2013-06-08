@@ -5,4 +5,4 @@ artifactsFromJson: jsonArtifacts
 		ifNotNil: [ jsonArtifacts collect: [ :jsonArtifact |
 				PhLJenkinsArtifact
 					name: self name
-					url: self url / (jsonArtifact at: #relativePath) ] ]
+					url: self url / 'lastSuccessfulBuild' / 'artifact' / (jsonArtifact at: #relativePath) ] ]

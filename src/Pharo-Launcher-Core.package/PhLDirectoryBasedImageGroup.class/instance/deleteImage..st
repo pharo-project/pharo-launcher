@@ -1,3 +1,3 @@
 action
 deleteImage: anImage
-	(self directoryForImage: anImage) deleteAll
+	self deleteImageNamed: anImage name

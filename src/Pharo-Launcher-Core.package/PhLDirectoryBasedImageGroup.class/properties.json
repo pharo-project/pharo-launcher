@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "PhLAbstractImageGroup",
+	"super" : "Object",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],

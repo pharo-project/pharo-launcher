@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLAbstractTemplateTest",
+	"category" : "Pharo-Launcher-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLLocalTemplateTest",
+	"type" : "normal"
+}

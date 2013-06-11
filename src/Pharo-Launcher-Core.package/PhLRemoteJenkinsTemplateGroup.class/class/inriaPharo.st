@@ -1,6 +1,3 @@
 instance creation
 inriaPharo
-	^ self new
-			setName: 'https://ci.inria.fr/pharo' asZnUrl
-			url: 'Pharo Jenkins';
-			yourself
+	^ self name: 'Pharo Jenkins' url: 'https://ci.inria.fr/pharo' asZnUrl

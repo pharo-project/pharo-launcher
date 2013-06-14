@@ -1,5 +1,8 @@
 updating
 updateTemplates
+	Halt once.
 	PhLDownloadManager default reset.
 	templateRepository reset.
-	templatesModel roots: templateRepository groups
+	self showDownloadInProgress.
+	templatesModel roots: templateRepository groups.
+	self showNumberOfErrors.

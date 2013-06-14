@@ -2,4 +2,5 @@ updating
 updateAll
 	self
 		updateImages;
-		updateTemplates
+		updateTemplates.
+	self showNumberOfErrors.

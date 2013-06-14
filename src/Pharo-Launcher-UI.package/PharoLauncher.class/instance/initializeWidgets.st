@@ -7,6 +7,7 @@ initializeWidgets
 		title: 'Existing images';
 		refreshAction: [ self updateImages ];
 		displayBlock: [ :image | image name ];
+		doubleClick: [ self launchImage ];
 		menu: [ :menu | self imagesMenu: menu ].
 	templatesModel
 		title: 'Templates';

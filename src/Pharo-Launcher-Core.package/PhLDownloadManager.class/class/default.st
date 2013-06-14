@@ -1,3 +1,3 @@
 accessing
 default
-	^ Default ifNil: [ Default := self new ]
+	^ Default ifNil: [ self setDefault: self new ]

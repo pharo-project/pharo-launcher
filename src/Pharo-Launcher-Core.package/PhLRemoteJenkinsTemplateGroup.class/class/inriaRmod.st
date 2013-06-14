@@ -1,3 +1,6 @@
 instance creation
 inriaRmod
-	^ self name: 'RMoD Jenkins' url: 'https://ci.inria.fr/rmod' asZnUrl
+	^ self new
+			setName: 'https://ci.inria.fr/rmod' asZnUrl
+			url: 'RMoD Jenkins';
+			yourself

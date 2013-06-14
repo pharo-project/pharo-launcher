@@ -1,4 +1,4 @@
 initialize-release
-setName: aString url: anUrl
+setName: anUrl url: aString
 	url := anUrl.
 	name := aString

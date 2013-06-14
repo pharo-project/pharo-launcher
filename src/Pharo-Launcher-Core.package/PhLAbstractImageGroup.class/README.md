@@ -1,0 +1,1 @@
+I represent a group of Pharo images that can be launched. I can create a new image based on an template.

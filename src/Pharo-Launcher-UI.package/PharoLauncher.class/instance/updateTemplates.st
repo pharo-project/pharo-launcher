@@ -1,6 +1,5 @@
 updating
 updateTemplates
-	Halt once.
 	PhLDownloadManager default reset.
 	templateRepository reset.
 	self showDownloadInProgress.

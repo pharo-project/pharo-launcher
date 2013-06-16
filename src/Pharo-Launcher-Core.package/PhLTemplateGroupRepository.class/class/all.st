@@ -2,8 +2,8 @@ instance creation
 all
 	| groups |
 	groups := OrderedCollection new.
-	groups add: PhLRemoteJenkinsTemplateGroup inriaRmod.
-	groups add: PhLRemoteJenkinsTemplateGroup inriaPharoContribution.
+	groups add: PhLJenkinsServer inriaRmod.
+	groups add: PhLJenkinsServer inriaPharoContribution.
 	groups add: PhLHTTPListingTemplateGroup pharo20.
 	groups add: PhLHTTPListingTemplateGroup pharo30.
 	groups add: PhLLocalTemplateGroup default.

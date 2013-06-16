@@ -9,6 +9,6 @@
 		"url",
 		"name"
 	],
-	"name" : "PhLRemoteJenkinsTemplateGroup",
+	"name" : "PhLJenkinsServer",
 	"type" : "normal"
 }

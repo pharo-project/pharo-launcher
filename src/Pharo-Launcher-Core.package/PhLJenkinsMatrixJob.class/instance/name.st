@@ -1,3 +1,3 @@
-as yet unclassified
+accessing
 name
 	^ json at: #name

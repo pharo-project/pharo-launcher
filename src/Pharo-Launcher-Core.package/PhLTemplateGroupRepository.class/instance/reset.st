@@ -1,3 +1,3 @@
 action
 reset
-	templateGroups do: #reset
+	groupCaches do: #reset

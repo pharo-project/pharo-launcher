@@ -1,5 +1,6 @@
 accessing
 templatesAndGroups
+	"Read the cache file to answer a list of already downloaded templates"
 	| aDictionary templates |
 	templates := OrderedCollection new.
 	aDictionary := self dictionary.

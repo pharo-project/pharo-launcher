@@ -1,3 +1,3 @@
 accessing
 templatesAndGroups
-	^ self jobs
+	^ (self jobs at: #jobs) collect: [ :jsonJob | PhLJenkinsJob newFromJson: jsonJob ]

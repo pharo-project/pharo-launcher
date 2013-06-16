@@ -6,7 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"templateGroups"
+		"groupCaches"
 	],
 	"name" : "PhLTemplateGroupRepository",
 	"type" : "normal"

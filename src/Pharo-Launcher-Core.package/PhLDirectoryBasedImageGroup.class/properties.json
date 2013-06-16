@@ -6,8 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"baseDirectory",
-		"images"
+		"baseDirectory"
 	],
 	"name" : "PhLDirectoryBasedImageGroup",
 	"type" : "normal"

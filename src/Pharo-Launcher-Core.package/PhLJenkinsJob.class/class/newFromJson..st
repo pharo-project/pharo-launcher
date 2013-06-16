@@ -1,8 +1,12 @@
 instance creation
 newFromJson: aJsonObject
-	| lastSuccessfulBuild |
+	"Choose what kind of job to create by analysing aJsonObject content"
+
+	| lastSuccessfulBuild jobClass |
 	lastSuccessfulBuild := aJsonObject at: #lastSuccessfulBuild.
-	^ ((lastSuccessfulBuild isEmptyOrNil or: [(lastSuccessfulBuild includesKey: #runs) not])
-			ifTrue: [ PhLJenkinsSimpleJob ]
-			ifFalse: [ PhLJenkinsMatrixJob ])
-				new initializeFromJson: aJsonObject; yourself
+	jobClass := (lastSuccessfulBuild isEmptyOrNil or: [ (lastSuccessfulBuild includesKey: #runs) not ])
+		ifTrue: [ PhLJenkinsSimpleJob ]
+		ifFalse: [ PhLJenkinsMatrixJob ].
+	^ jobClass new
+		initializeFromJson: aJsonObject;
+		yourself

@@ -1,3 +1,3 @@
 private
 prepareForNewImageNamed: aString
-	^ (self directoryForImageNamed: aString) ensureDirectory
+	^ (self directoryForImageNamed: aString) ensureCreateDirectory

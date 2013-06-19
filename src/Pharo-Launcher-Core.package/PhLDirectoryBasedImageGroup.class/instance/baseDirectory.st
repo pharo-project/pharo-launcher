@@ -1,3 +1,3 @@
 accessing
 baseDirectory
-	^ baseDirectory ensureDirectory
+	^ baseDirectory ensureCreateDirectory

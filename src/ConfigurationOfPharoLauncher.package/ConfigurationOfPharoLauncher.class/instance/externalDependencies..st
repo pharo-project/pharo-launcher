@@ -14,7 +14,15 @@ externalDependencies: spec
 				className: 'ConfigurationOfOSProcess';
 				loads: #('Core');
 				repository: 'http://www.squeaksource.com/MetacelloRepository' ].
-			
+	
+		spec
+		project: 'Zinc'
+		with: [ 
+			spec
+				className: 'ConfigurationOfZincHTTPComponents';
+				loads: #('Zinc-HTTP');
+				repository: 'http://www.squeaksource.com/ZincHTTPComponents' ].
+	
 	"Please change the #package:with: to a call to #project:with: as soon as there is a ConfigurationOfJSON"
 	spec
 		package: 'JSON'

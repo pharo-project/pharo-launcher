@@ -2,4 +2,5 @@ accessing
 layout
 	<spec: #default>
 	^ SpecLayout composed 
-		add: #labelModel
+		add: #labelModel;
+		yourself

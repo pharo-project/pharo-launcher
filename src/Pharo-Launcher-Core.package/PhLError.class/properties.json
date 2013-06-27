@@ -5,9 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"cause"
-	],
+	"instvars" : [ ],
 	"name" : "PhLError",
 	"type" : "normal"
 }

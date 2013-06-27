@@ -1,3 +1,3 @@
 initialization
 initializeWidgets
-	self instantiateModels: #(#labelModel LabelModel)
+	self instantiateModels: #(labelModel LabelModel)

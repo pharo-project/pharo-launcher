@@ -7,8 +7,6 @@ renameImageNamed: oldName to: newName
 	sourceDirectory children
 		do: [ :file | 
 			| targetFilename |
-			targetFilename := (#('image' 'changes') includes: file extension)
-				ifTrue: [ newName , '.', file extension ]
-				ifFalse: [ file basename ].
+			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: newName.
 			file moveTo: targetDirectory / targetFilename ].
 	sourceDirectory delete

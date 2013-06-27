@@ -7,7 +7,5 @@ copyImageNamed: sourceName to: targetName
 	sourceDirectory children
 		do: [ :file | 
 			| targetFilename |
-			targetFilename := (#('image' 'changes') includes: file extension)
-				ifTrue: [ targetName , '.', file extension ]
-				ifFalse: [ file basename ].
+			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
 			file copyTo: targetDirectory / targetFilename ]

@@ -1,4 +1,4 @@
-as yet unclassified
+specs
 layout
 	<spec: #default>
 	^ SpecLayout composed

@@ -4,5 +4,5 @@ register: aRemoteTemplate withZip: aZipFile
 	| aDictionary templateDescription |
 	aDictionary := self dictionary.
 	templateDescription := aDictionary at: aRemoteTemplate name ifAbsentPut: [ Dictionary new ].
-	self update: templateDescription with: aRemoteTemplate.
+	self updateTemplateDescription: templateDescription with: aRemoteTemplate.
 	self saveToFile: aDictionary

@@ -3,7 +3,7 @@ newGroupWithAnImage
 	| group baseDirectory |
 	group := self emptyGroup.
 	baseDirectory := group baseDirectory.
-	(baseDirectory / 'test') ensureDirectory.
-	(baseDirectory / 'test' / 'test.image') ensureFile.
-	(baseDirectory / 'test' / 'test.changes') ensureFile.
+	(baseDirectory / 'test') ensureCreateDirectory.
+	(baseDirectory / 'test' / 'test.image') ensureCreateFile.
+	(baseDirectory / 'test' / 'test.changes') ensureCreateFile.
 	^ group

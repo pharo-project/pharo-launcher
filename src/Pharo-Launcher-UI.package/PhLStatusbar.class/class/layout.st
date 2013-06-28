@@ -1,4 +1,4 @@
-accessing
+specs
 layout
 	<spec: #default>
 	^ SpecLayout composed 

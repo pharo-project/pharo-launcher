@@ -12,4 +12,4 @@ templatesAndGroups
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].
-	^ templates
+	^ self sortByName: templates

@@ -1,3 +1,5 @@
 instance creation
 name: aString
-	^ self name: aString templates: #() groups: #()
+	^ self new
+		setName: aString;
+		yourself

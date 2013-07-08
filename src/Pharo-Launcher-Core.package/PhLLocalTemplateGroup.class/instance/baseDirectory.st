@@ -1,3 +1,3 @@
 accessing
 baseDirectory
-	^ (FileLocator cache / 'pharo' / 'templateCache') ensureCreateDirectory
+	^ (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory

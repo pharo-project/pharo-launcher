@@ -1,3 +1,3 @@
 accessing
 templatesAndGroups
-	^ templatesAndGroups
+	^ self templates, self groups

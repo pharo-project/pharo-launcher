@@ -4,6 +4,7 @@ all
 	groups := OrderedCollection new.
 	groups add: PhLJenkinsServer inriaRmod.
 	groups add: PhLJenkinsServer inriaPharoContribution.
+	groups add: PhLJenkinsServer inriaMoose.
 	groups add: PhLHTTPListingTemplateGroup pharo20.
 	groups add: PhLHTTPListingTemplateGroup pharo30.
 	groups add: PhLLocalTemplateGroup default.

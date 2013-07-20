@@ -1,4 +1,4 @@
 initialization
 initializeWidgets
-	self instantiateModels: #(titlebar PhLTitlebarModel tree AlainTreeModel).
+	self instantiateModels: #(titlebar PhLTitlebarModel tree TreeModel).
 	

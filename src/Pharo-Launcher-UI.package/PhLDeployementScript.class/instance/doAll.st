@@ -1,4 +1,4 @@
-as yet unclassified
+public
 doAll
 	self closeAllWindows.
 	self deactivateStartupActions.

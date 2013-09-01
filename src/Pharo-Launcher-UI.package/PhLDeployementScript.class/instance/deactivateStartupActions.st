@@ -1,3 +1,3 @@
-as yet unclassified
+actions
 deactivateStartupActions
 	StartupLoader allowStartupScript: false.

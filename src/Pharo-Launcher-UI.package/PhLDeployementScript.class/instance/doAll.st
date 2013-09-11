@@ -1,5 +1,8 @@
 public
 doAll
-	self closeAllWindows.
-	self deactivateStartupActions.
-	self openLauncher
+	self
+		closeAllWindows;
+		deactivateStartupActions;
+		dontRaiseWarningForMissingChangesOrSourcesFiles;
+		deactivateDeprecationWarnings;
+		openLauncher

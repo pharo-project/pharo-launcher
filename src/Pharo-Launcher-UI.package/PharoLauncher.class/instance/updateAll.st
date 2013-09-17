@@ -2,5 +2,5 @@ updating
 updateAll
 	self
 		updateImages;
-		updateTemplates.
+		updateTemplatesDownloadingGroups: true.
 	self showNumberOfErrors.

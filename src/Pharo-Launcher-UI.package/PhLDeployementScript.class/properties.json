@@ -4,7 +4,9 @@
 	"category" : "Pharo-Launcher-UI",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
+	"classvars" : [
+		"IsDeployed"
+	],
 	"instvars" : [ ],
 	"name" : "PhLDeployementScript",
 	"type" : "normal"

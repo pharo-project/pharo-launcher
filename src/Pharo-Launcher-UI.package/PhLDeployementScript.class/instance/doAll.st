@@ -5,4 +5,5 @@ doAll
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
-		openLauncher
+		makeDeployed;
+		addToStartupList

@@ -1,0 +1,3 @@
+action
+makeDeployed
+	IsDeployed := true

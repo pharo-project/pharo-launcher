@@ -1,3 +1,3 @@
 opening
 open
-	^ self openAll
+	^ self launcherForAllRepositories openWithSpec

@@ -4,6 +4,5 @@ newHTTPClientForUrl: url
 		signalProgress: true;
 		url: url;
 		enforceHttpSuccess: true;
-		
 		ifFail: [ :exception | self downloadFailureForUrl: url ];
 		yourself

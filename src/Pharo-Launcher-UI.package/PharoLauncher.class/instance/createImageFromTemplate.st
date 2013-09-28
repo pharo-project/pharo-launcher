@@ -15,4 +15,4 @@ createImageFromTemplate
 			^ self ]].
 	
 		
-	self updateAll.
+	self updateImages.

@@ -14,5 +14,5 @@ createImageFromTemplate
 			UIManager default alert: err longDescription.
 			^ self ]].
 	
-		
+	self showNumberOfErrors.	
 	self updateImages.

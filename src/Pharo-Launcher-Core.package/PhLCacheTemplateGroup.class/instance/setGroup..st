@@ -1,4 +1,4 @@
 initialize-release
 setGroup: templateGroup
 	delegate := templateGroup.
-	self reset
+	self initializeTemplatesAndGroups

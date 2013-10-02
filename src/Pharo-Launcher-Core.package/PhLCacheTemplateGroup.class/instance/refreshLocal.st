@@ -1,3 +1,6 @@
 action
 refreshLocal
-"For network template group cache, do nothing. Overriden by subclass for local template group cache"
+	"Request for fetching the content of my template group, but only if it's fast (e.g., no network access)."
+
+	delegate isLocal
+		ifTrue: [ self refresh ]

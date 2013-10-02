@@ -16,4 +16,4 @@ createImageFromTemplate
 	
 	self showNumberOfErrors.	
 	self updateImages.
-	self updateLocalTemplates.
+	self refreshLocalTemplateGroups.

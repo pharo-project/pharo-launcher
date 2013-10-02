@@ -1,3 +1,0 @@
-action
-refreshLocal
-	self refresh

@@ -1,7 +1,6 @@
 template action
 createImageFromTemplate
 	| name   |
-	self halt.
 	name := imageGroup makeUniqueImageName: self selectedTemplate name.
 	name := UIManager default request: 'Image name?' initialAnswer: name.
 	name ifNil: [  ^self ].

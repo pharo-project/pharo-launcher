@@ -1,7 +1,10 @@
 template action
 createImageFromTemplate
 	| name   |
-	name := UIManager default request: 'Image name?'.
+	self halt.
+	name := imageGroup makeUniqueImageName: self selectedTemplate name.
+	name := UIManager default request: 'Image name?' initialAnswer: name.
+	name ifNil: [  ^self ].
 	self showDownloadInProgress.
 	self displayProgress: 'Downoading Image' during: [[UIManager default informUserDuring: [ :bar |
 		[   imageGroup extractTemplate: self selectedTemplate to: name]

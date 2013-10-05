@@ -1,7 +1,7 @@
 action
 launch
 	"Use the VM that launched the current image to launch me"
-	| cdCommand vmCommand |
-	cdCommand := 'cd ' , file parent pathString.
-	vmCommand := Smalltalk vm fullPath asString , ' ' , file basename.
-	OSProcess command: cdCommand , ' && ' , vmCommand
+	| vmCommand imagePath  |
+	vmCommand := Smalltalk vm fullPath asString .
+	imagePath := (file parent / file basename) pathString .
+	OSProcess command: vmCommand , '   ' , imagePath.

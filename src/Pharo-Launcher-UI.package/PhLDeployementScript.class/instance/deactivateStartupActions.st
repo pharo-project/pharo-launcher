@@ -1,3 +1,3 @@
 actions
 deactivateStartupActions
-	StartupPreferencesLoader allowStartupScript: false.
+	StartupLoader allowStartupScript: false.

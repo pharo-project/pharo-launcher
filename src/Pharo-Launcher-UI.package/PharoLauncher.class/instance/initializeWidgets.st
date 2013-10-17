@@ -8,7 +8,8 @@ initializeWidgets
 		refreshAction: [ self updateImages ];
 		displayBlock: [ :image | image name ];
 		doubleClick: [ self launchImage ];
-		menu: [ :menu | self imagesMenu: menu ].
+		menu: [ :menu | self imagesMenu: menu ];
+		makeMultiSelect.
 	templatesModel
 		title: 'Templates' translated;
 		refreshAction: [ self refreshTemplateGroups ];

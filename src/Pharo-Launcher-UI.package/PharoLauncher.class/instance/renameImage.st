@@ -1,6 +1,7 @@
 image action
 renameImage
 	| image newName |
+	self ensureSingleImageSelectedOr: [ ^self ].
 	image := self selectedImage.
 	newName := UIManager default request: 'New name' initialAnswer: image name.
 	newName ifNil: [ ^self ].

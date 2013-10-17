@@ -4,4 +4,4 @@ launch
 	| vmCommand imagePath  |
 	vmCommand := Smalltalk vm fullPath asString .
 	imagePath := file pathString.
-	OSProcess command: vmCommand , '  "' , imagePath, '"'.
+	OSProcess command: vmCommand , '   ' , imagePath.

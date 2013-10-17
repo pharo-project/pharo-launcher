@@ -4,4 +4,4 @@ imagesMenu: menu
 	menu addLine.
 	menu add: 'Rename' target: self selector: #renameImage.
 	menu add: 'Copy' target: self selector: #copyImage.
-	menu add: 'Delete' target: self selector: #deleteImage
+	menu add: 'Delete' target: self selector: #deleteImages

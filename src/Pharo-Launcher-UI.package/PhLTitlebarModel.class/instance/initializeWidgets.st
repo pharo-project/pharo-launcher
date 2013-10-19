@@ -1,6 +1,6 @@
 initialization
 initializeWidgets
-	(label := LabelModel new) 
+	(label := LabelModel new)
 		text: ''.
 
 	(refreshButton := ButtonModel new)

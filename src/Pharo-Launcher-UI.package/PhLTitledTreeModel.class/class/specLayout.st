@@ -1,5 +1,5 @@
 specs
-layout
+specLayout
 	<spec: #default>
 	^ SpecLayout composed
 		newColumn: [ :col | 

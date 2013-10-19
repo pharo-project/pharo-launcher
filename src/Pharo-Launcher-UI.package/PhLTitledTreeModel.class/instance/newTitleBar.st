@@ -1,3 +1,3 @@
 widgets
 newTitleBar
-	self instantiate: PhLTitlebarModel.
+	^ self instantiate: PhLTitlebarModel.

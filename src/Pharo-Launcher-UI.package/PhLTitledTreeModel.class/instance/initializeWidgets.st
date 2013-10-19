@@ -1,5 +1,5 @@
 initialization
 initializeWidgets
-	titlebar := PhLTitlebarModel new.
-	tree := TreeModel new.
+	titlebar := self newTItleBar.
+	tree := self newTree. 
 	

@@ -10,7 +10,8 @@
 		"imageGroup",
 		"imagesModel",
 		"templatesModel",
-		"statusbarModel"
+		"statusbarModel",
+		"quitOnLaunchCheckBoxModel"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

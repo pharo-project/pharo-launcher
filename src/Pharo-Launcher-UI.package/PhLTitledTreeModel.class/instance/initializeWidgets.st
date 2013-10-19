@@ -1,5 +1,5 @@
 initialization
 initializeWidgets
-	titlebar := self newTItleBar.
+	titlebar := self newTitleBar.
 	tree := self newTree. 
 	

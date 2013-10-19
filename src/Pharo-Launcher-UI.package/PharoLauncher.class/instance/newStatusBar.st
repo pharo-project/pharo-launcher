@@ -1,4 +1,4 @@
 widgets
 newStatusBar
-	self instantiate: PhLStatusbar.
+	^ self instantiate: PhLStatusbar.
 	

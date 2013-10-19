@@ -1,3 +1,3 @@
 initialization
 initializeWidgets
-	labelModel := LabelModel new.
+	labelModel := self newLabel. 

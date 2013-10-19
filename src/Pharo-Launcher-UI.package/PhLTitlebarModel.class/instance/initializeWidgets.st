@@ -1,9 +1,9 @@
 initialization
 initializeWidgets
-	(label := LabelModel new)
+	(label := self newLabel)
 		text: ''.
 
-	(refreshButton := ButtonModel new)
+	(refreshButton := self newButton)
 		icon: Smalltalk ui icons refreshIcon;
 		action: refreshAction;
 		state: false.

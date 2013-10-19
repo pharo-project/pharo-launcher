@@ -1,6 +1,5 @@
 initialization
 initializeWidgets
-
 	(imagesModel := PhLTitledTreeModel new)
 		title: 'Existing images' translated;
 		refreshAction: [ self updateImages ];
@@ -9,7 +8,7 @@ initializeWidgets
 		menu: [ :menu | self imagesMenu: menu ];
 		makeMultiSelect.
 		
-	(templatesModel := PhLTitledTreeModel new)
+	(templatesModel := PhLTitledTreeModel  new)
 		title: 'Templates' translated;
 		refreshAction: [ self refreshTemplateGroups ];
 		displayBlock: [ :group | group name ];

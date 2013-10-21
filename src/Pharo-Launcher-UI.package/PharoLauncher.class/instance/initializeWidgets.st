@@ -18,7 +18,8 @@ initializeWidgets
 	statusbarModel := self newStatusBar. 
 	
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
-		label:'Quit on launch'.
+		label:'Quit on launch';
+		state: true.
 	
 	self updateImages.
 	templatesModel roots: templateRepository groups.

@@ -4,7 +4,9 @@
 	"category" : "Pharo-Launcher-UI",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
+	"classvars" : [
+		"QuitOnLaunch"
+	],
 	"instvars" : [
 		"templateRepository",
 		"imageGroup",

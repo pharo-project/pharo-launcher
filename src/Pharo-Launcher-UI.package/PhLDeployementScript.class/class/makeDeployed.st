@@ -1,3 +1,3 @@
-action
+settings
 makeDeployed
 	IsDeployed := true

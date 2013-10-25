@@ -8,7 +8,8 @@
 	"instvars" : [
 		"label",
 		"refreshButton",
-		"refreshAction"
+		"refreshAction",
+		"settingsButton"
 	],
 	"name" : "PhLTitlebarModel",
 	"type" : "normal"

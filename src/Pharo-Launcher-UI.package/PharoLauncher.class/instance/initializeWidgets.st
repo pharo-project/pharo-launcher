@@ -19,7 +19,8 @@ initializeWidgets
 	
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
 		label:'Quit on launch';
-		state: true.
+		state: self class quitOnLaunch;
+		whenChangedDo: [ self class quitOnLaunch: self quitOnLaunchCheckBoxModel state] .
 	
 	self updateImages.
 	templatesModel roots: templateRepository groups.

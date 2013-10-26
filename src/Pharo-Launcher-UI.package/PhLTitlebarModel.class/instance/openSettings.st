@@ -1,3 +1,3 @@
 accessing
 openSettings
-	SettingBrowser browse: #( #pharoLauncherSettings )
+	PharoLauncher openSettings

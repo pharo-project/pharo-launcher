@@ -2,7 +2,7 @@ settings
 settingsOn: aBuilder
 	<systemsettings>
 	<pharoLauncherSettings>
-	(aBuilder setting: #isDeployed) 
+	(aBuilder setting: #developmentEnvironmentEnabled) 
 		parent: #pharoLauncher;
 		target: self;
 		label: 'Enable development environment' translated;

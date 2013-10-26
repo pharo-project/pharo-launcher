@@ -1,0 +1,3 @@
+selection
+canShowNativeFolder
+	^ self selectedImage showNativeFolderCommandString notNil

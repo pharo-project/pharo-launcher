@@ -1,4 +1,4 @@
 updating
 refreshLocalTemplateGroups
-	templateRepository refreshLocal.
-	templatesModel roots: templateRepository groups.
+	TemplateRepository refreshLocal.
+	templatesModel roots: TemplateRepository groups.

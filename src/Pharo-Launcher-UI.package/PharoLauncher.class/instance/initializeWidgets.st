@@ -23,4 +23,4 @@ initializeWidgets
 		whenChangedDo: [ self class quitOnLaunch: self quitOnLaunchCheckBoxModel state] .
 	
 	self updateImages.
-	templatesModel roots: templateRepository groups.
+	templatesModel roots: TemplateRepository groups.

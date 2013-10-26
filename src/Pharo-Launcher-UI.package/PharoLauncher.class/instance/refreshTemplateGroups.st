@@ -5,7 +5,7 @@ refreshTemplateGroups
 	UIManager default informUserDuring: 
 	[	:outerBar |  
 		outerBar label: 'Refreshing Template Groups'.
-		templateRepository groups do: 
+		TemplateRepository groups do: 
 		[	:group | 
 			UIManager default informUserDuring: 
 			[	:groupBar |  
@@ -18,6 +18,6 @@ refreshTemplateGroups
 					].
 			].
 		].
-		templatesModel roots: templateRepository groups
+		templatesModel roots: TemplateRepository groups
 	].
 	self showNumberOfErrors.

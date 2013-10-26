@@ -10,4 +10,9 @@ settingsOn: aBuilder
 				label: 'Quit On Launch' translated;
 				target: PharoLauncher;
 				description: 'When enabled, the Launcher application quits after the next image is launched. ' , String cr , 'When disabled, the Launcher application remains alive after an image is Launced.' translated.
+				
+			(aBuilder setting: #templatesClearedOnStartup)
+				label: 'Templates cleared at startup' translated;
+				target: PharoLauncher;
+				description: 'When enabled, starting Launcher will clear the previous Templates list. ' , String cr , 'When disabled, starting Launcher will remember the Templates from the previosu time it was running.' translated.
 		]

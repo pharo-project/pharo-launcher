@@ -5,10 +5,11 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"QuitOnLaunch"
+		"QuitOnLaunch",
+		"TemplateRepository",
+		"TemplatesClearedOnStartup"
 	],
 	"instvars" : [
-		"templateRepository",
 		"imageGroup",
 		"imagesModel",
 		"templatesModel",

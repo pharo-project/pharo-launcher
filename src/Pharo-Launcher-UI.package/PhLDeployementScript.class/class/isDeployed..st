@@ -3,4 +3,4 @@ isDeployed: aBoolean
 	IsDeployed := aBoolean.
 	aBoolean 
 		ifTrue: [  self closeWindowsAndOpenDevelopmentEnvironment ]
-		ifFalse: [ self closeWindowsAndOpenLauncher ]
+		ifFalse: [ self new doAll. self closeWindowsAndOpenLauncher ]

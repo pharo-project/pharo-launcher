@@ -1,3 +1,3 @@
 printing
 showNativeFolder
-	OSProcess command: self showNativeFolderCommandString.
+	OSPlatform current openFileBrowserOn: file

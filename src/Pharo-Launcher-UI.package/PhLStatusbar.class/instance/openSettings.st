@@ -1,3 +1,3 @@
-accessing
+protocol
 openSettings
 	PharoLauncher openSettings

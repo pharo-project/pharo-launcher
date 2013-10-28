@@ -1,5 +1,5 @@
 initialization
 setTemplateGroup: aTemplateRepository imageGroup: anImageGroup
-	(self templatesMissingOnStartup or: self templatesClearedOnStartup)
+	(self class templatesClearedOnStartup or: [ TemplateRepository isNil ] )
 		ifTrue: [ TemplateRepository := aTemplateRepository ].
 	imageGroup := anImageGroup

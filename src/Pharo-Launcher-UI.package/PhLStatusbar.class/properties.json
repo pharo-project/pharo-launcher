@@ -6,7 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"labelModel"
+		"labelModel",
+		"settingsButton"
 	],
 	"name" : "PhLStatusbar",
 	"type" : "normal"

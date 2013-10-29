@@ -8,6 +8,6 @@
 		"IsDeployed"
 	],
 	"instvars" : [ ],
-	"name" : "PhLDeployementScript",
+	"name" : "PhLDeploymentScript",
 	"type" : "normal"
 }

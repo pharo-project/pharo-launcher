@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLTemplateCommand",
+	"category" : "Pharo-Launcher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"newImageName"
+	],
+	"name" : "PhLCreateImageFromTemplateCommand",
+	"type" : "normal"
+}

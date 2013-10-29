@@ -1,4 +1,4 @@
-user interface
+user interaction
 requestNewImageName: aString 
 	^ self newRequest
 		title: 'Image name?';

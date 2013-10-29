@@ -1,3 +1,3 @@
-user-interface
+user interaction
 newConfirmation
 	^ PhLUIConfirmation new

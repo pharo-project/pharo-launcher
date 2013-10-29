@@ -1,4 +1,4 @@
-accessing
+selection
 singleImage
 	self
 		ensure: self hasSingleImageSelected.

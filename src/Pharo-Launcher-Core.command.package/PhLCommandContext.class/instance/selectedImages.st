@@ -1,3 +1,3 @@
-accessing
+selection
 selectedImages
 	^ selection select: #isImage

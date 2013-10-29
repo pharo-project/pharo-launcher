@@ -1,4 +1,4 @@
-accessing
+selection
 singleTemplate
 	self
 		ensure: self hasSingleTemplateSelected.

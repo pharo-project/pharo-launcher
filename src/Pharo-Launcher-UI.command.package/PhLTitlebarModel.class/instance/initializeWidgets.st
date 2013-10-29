@@ -4,7 +4,7 @@ initializeWidgets
 		text: ''.
 
 	(refreshButton := self newButton)
-		icon: Smalltalk ui icons refreshIcon;
+		icon: Smalltalk ui icons smallUpdateIcon;
 		action: refreshAction;
 		state: false.
 		

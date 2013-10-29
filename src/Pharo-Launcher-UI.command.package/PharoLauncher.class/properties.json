@@ -9,11 +9,11 @@
 		"TemplatesClearedOnStartup"
 	],
 	"instvars" : [
-		"imageGroup",
 		"imagesModel",
 		"templatesModel",
 		"statusbarModel",
-		"quitOnLaunchCheckBoxModel"
+		"quitOnLaunchCheckBoxModel",
+		"imageRepository"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

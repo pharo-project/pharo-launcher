@@ -10,7 +10,7 @@ initializeWidgets
 		
 	(templatesModel := self newTitledTree)
 		title: 'Templates' translated;
-		refreshAction: [ self refreshTemplateGroups ];
+		refreshAction: [ (PhLRefreshTemplateGroupsCommand on: (PhLCommandContext selection: templatesModel selectedItems imageRepository: self imageRepository templateRepository: self templateRepository)) execute ];
 		displayBlock: [ :group | group name ];
 		childrenBlock: [ :group | group children: self ];
 		menu: [ :menu | self templatesMenu: menu ].
@@ -20,7 +20,7 @@ initializeWidgets
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
 		label:'Quit on launch';
 		state: PhLLaunchImageCommand quitOnLaunch;
-		whenChangedDo: [ self class quitOnLaunch: self quitOnLaunchCheckBoxModel state] .
+		whenChangedDo: [ PhLLaunchImageCommand quitOnLaunch: self quitOnLaunchCheckBoxModel state] .
 	
 	self updateImages.
 	templatesModel roots: TemplateRepository groups.

@@ -6,4 +6,4 @@ testTemplatesAndGroupsIsACollection
 	self assert: templateAndGroups isCollection.
 	self assert: templateAndGroups size > 0.
 	group templatesAndGroups
-		do: [ :templateOrGroup | templateOrGroup isGroup	"we just make sure the message can be sent without checking its result" ]
+		do: [ :templateOrGroup | templateOrGroup isTemplateGroup	"we just make sure the message can be sent without checking its result" ]

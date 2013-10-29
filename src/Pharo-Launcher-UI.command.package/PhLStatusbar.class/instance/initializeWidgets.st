@@ -1,8 +1,7 @@
 initialization
 initializeWidgets
-	labelModel := self newLabel. 
-	
+	labelModel := self newLabel.
 	(settingsButton := self newButton)
-		icon: Smalltalk ui icons alertIcon;
-		action: [ self openSettings ];
-		state: false.
+		icon: PhLOpenSettingsCommand icon;
+		action: [ (PhLOpenSettingsCommand on: nil) execute ];
+		state: false

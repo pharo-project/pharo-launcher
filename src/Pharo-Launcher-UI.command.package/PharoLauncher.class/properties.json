@@ -5,7 +5,6 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"QuitOnLaunch",
 		"TemplateRepository",
 		"TemplatesClearedOnStartup"
 	],

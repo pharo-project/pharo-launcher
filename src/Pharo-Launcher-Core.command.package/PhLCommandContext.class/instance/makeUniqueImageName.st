@@ -1,0 +1,3 @@
+action
+makeUniqueImageName
+	self shouldBeImplemented.

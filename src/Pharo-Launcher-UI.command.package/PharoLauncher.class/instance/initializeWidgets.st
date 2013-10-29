@@ -19,7 +19,7 @@ initializeWidgets
 	
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
 		label:'Quit on launch';
-		state: self class quitOnLaunch;
+		state: PhLLaunchImageCommand quitOnLaunch;
 		whenChangedDo: [ self class quitOnLaunch: self quitOnLaunchCheckBoxModel state] .
 	
 	self updateImages.

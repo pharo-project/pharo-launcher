@@ -1,3 +1,3 @@
 action
 quit
-	Smalltalk snapshot: true andQuit: true.
+	(PhLQuitCommand on: context) execute

@@ -2,7 +2,9 @@
 	"commentStamp" : "<historical>",
 	"super" : "ComposableModel",
 	"category" : "Pharo-Launcher-UI",
-	"classinstvars" : [ ],
+	"classinstvars" : [
+		"pharoIcon"
+	],
 	"pools" : [ ],
 	"classvars" : [
 		"TemplateRepository",

@@ -1,3 +1,4 @@
 action
-deleteImages: someImages 
-	someImages do: [ :image | self deleteImage: image ]
+deleteImages: someImages
+	self dontNotifyDuring: [ someImages do: [ :image | self deleteImage: image ] ].
+	self contentsChanged

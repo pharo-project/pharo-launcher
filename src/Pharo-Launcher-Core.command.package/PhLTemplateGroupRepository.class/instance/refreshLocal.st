@@ -1,3 +1,4 @@
 action
 refreshLocal
-	groupCaches do: #refreshLocal
+	groupCaches do: #refreshLocal.
+	self contentsChanged.

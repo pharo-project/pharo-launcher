@@ -9,4 +9,5 @@ renameImageNamed: oldName to: newName
 			| targetFilename |
 			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: newName.
 			file moveTo: targetDirectory / targetFilename ].
-	sourceDirectory delete
+	sourceDirectory delete.
+	self contentsChanged.

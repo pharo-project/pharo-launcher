@@ -1,3 +1,4 @@
 action
 refresh
-	groupCaches do: #refresh
+	groupCaches do: #refresh.
+	self contentsChanged.

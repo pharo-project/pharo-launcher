@@ -1,3 +1,3 @@
 protocol
 makeMultiSelect
-	self tree multiSelection: true
+	tree multiSelection: true

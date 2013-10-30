@@ -1,5 +1,8 @@
 initialization
 initializeWidgets
-	titlebar := self newTitleBar.
-	tree := self newTree. 
-	
+	title := self newLabel
+		text: '';
+		yourself.
+	tree := self newTree.
+	toolbar := self newCommandToolbar.
+	tree whenSelectedItemsChanged: [ self context ifNotNil: [ self updateContext ] ]

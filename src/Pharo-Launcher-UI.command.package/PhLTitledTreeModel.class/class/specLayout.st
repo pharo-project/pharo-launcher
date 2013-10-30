@@ -4,6 +4,10 @@ specLayout
 	^ SpecLayout composed
 		newColumn: [ :col | 
 					col
-						add: #titlebar height: 25;
+						newRow: [ :titlebar | 
+									titlebar
+										add: #title;
+										add: #toolbar ]
+							height: 25;
 						add: #tree ];
 		yourself

@@ -6,8 +6,10 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"titlebar",
-		"tree"
+		"title",
+		"toolbar",
+		"tree",
+		"contextHolder"
 	],
 	"name" : "PhLTitledTreeModel",
 	"type" : "normal"

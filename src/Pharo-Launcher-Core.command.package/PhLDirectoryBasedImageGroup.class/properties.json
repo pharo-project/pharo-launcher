@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"super" : "PhLRepository",
 	"category" : "Pharo-Launcher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],

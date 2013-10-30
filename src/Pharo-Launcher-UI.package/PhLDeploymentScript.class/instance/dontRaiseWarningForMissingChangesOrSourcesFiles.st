@@ -1,0 +1,3 @@
+actions
+dontRaiseWarningForMissingChangesOrSourcesFiles
+	PharoFilesOpener default unsetInformAboutReadOnlyChanges.

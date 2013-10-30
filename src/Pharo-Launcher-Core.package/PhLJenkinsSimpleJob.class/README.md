@@ -1,1 +1,0 @@
-I'm a simple Jenkins job whose artifacts are immediately available from the job.

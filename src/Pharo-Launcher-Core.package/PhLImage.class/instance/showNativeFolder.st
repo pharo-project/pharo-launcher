@@ -1,3 +1,0 @@
-printing
-showNativeFolder
-	OSPlatform current openFileBrowserOn: file

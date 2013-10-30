@@ -1,0 +1,1 @@
+I represent the computation that happens when matrix jobs are executed. My options are what distinguishes me from the other runs of the same Jenkins matrix job (e.g., version of the software built).

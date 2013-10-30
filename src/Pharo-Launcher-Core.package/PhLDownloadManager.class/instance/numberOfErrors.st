@@ -1,0 +1,3 @@
+accessing
+numberOfErrors
+	^ errors size

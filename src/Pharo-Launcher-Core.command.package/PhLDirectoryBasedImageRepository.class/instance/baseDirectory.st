@@ -1,0 +1,3 @@
+accessing
+baseDirectory
+	^ baseDirectory ensureCreateDirectory

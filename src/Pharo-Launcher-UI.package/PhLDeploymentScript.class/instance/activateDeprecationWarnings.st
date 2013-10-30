@@ -1,3 +1,0 @@
-public
-activateDeprecationWarnings
-	Deprecation raiseWarning: true

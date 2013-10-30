@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "DynamicComposableModel",
+	"category" : "Pharo-Launcher-UI",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"commandClasses",
+		"context",
+		"contextHolder"
+	],
+	"name" : "PhLCommandToolbar",
+	"type" : "normal"
+}

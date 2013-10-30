@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ComposableModel",
+	"category" : "Pharo-Launcher-UI",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"titlebar",
+		"tree"
+	],
+	"name" : "PhLTitledTreeModel",
+	"type" : "normal"
+}

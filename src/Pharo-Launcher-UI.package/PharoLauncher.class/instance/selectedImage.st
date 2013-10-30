@@ -1,0 +1,3 @@
+selection
+selectedImage
+	^ imagesModel selectedItem

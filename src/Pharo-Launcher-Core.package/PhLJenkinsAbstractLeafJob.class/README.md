@@ -1,0 +1,1 @@
+Abstract superclass for everything in a Jenkins server that produces artifacts: currently, only simple jobs (i.e., non-matrix jobs) and runs (i.e., what is executed by a matrix job).

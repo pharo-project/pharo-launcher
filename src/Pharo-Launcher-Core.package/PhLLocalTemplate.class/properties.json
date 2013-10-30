@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "PhLAbstractTemplate",
+	"category" : "Pharo-Launcher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"zipFile"
+	],
+	"name" : "PhLLocalTemplate",
+	"type" : "normal"
+}

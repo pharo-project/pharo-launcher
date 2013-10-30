@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "Object",
+	"category" : "Pharo-Launcher-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"groupCaches"
+	],
+	"name" : "PhLTemplateGroupRepository",
+	"type" : "normal"
+}

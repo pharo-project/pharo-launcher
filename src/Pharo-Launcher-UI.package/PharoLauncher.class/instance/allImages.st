@@ -1,4 +1,0 @@
-private
-allImages
-
-	^imageGroup images

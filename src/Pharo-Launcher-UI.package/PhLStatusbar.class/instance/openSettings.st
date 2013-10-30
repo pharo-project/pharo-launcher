@@ -1,3 +1,0 @@
-protocol
-openSettings
-	PharoLauncher openSettings

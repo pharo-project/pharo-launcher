@@ -8,4 +8,5 @@ copyImageNamed: sourceName to: targetName
 		do: [ :file | 
 			| targetFilename |
 			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
-			file copyTo: targetDirectory / targetFilename ]
+			file copyTo: targetDirectory / targetFilename ].
+	self contentsChanged.

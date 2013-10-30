@@ -1,3 +1,3 @@
 accessing
 icon
-	^ Smalltalk ui icons smallOpenIcon
+	^ Smalltalk ui icons openIcon

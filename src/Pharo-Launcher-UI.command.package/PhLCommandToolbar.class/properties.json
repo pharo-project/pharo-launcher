@@ -6,9 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"commandClasses",
-		"context",
-		"contextHolder"
+		"contextHolder",
+		"commandClassesHolder"
 	],
 	"name" : "PhLCommandToolbar",
 	"type" : "normal"

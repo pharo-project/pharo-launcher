@@ -1,4 +1,3 @@
 action
 download: url toFile: destinationFile
-	(self newHTTPClientForUrl: url)
-		downloadTo: destinationFile
+	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: destinationFile ]

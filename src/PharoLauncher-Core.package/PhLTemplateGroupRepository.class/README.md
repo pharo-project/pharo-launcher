@@ -1,0 +1,1 @@
+I maintain a collection of PhLTemplateGroup. I take care of adding a cache to each group.

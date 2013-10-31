@@ -1,0 +1,3 @@
+accessing
+artifacts
+	^ self subclassResponsibility

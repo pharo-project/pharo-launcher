@@ -1,0 +1,3 @@
+opening
+openFull
+	^ self launcherForAllRepositories openWorldWithSpec

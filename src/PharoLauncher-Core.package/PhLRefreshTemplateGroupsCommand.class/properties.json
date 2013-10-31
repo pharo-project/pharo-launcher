@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLTemplateCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLRefreshTemplateGroupsCommand",
+	"type" : "normal"
+}

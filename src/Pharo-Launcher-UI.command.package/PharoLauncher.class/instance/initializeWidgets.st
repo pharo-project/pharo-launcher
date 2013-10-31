@@ -12,3 +12,5 @@ initializeWidgets
 		label: 'Quit on launch';
 		state: PhLLaunchImageCommand quitOnLaunch;
 		whenChangedDo: [ PhLLaunchImageCommand quitOnLaunch: self quitOnLaunchCheckBoxModel state ].
+		self flag: 'I would like to do this commented initialization right here, but it is not possible. I have to override #openWithSpec and #openWorldWithSpec'.
+		"self initializeImageAndTemplates."

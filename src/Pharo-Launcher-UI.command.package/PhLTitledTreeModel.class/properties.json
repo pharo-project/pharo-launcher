@@ -11,7 +11,8 @@
 		"tree",
 		"contextHolder",
 		"commandClassesHolder",
-		"repositoryHolder"
+		"repositoryHolder",
+		"doubleClickCommandClass"
 	],
 	"name" : "PhLTitledTreeModel",
 	"type" : "normal"

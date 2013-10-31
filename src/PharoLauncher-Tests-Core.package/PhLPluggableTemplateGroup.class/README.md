@@ -1,0 +1,1 @@
+I'm a kind of template group that is completely defined by my instance variables. Useful for testing.

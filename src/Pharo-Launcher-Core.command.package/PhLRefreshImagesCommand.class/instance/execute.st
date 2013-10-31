@@ -1,3 +1,3 @@
 action
 execute
-	context imageRepository images
+	context imageRepository roots

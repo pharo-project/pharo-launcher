@@ -1,7 +1,7 @@
 instance creation
 launcherForAllRepositories
 	^ self basicNew
-			setTemplateGroup: PhLTemplateGroupRepository all
-			imageGroup: PhLDirectoryBasedImageRepository inPharoPreferencesDirectory;
+			setImageRepository: PhLTemplateGroupRepository all
+			templateRepository: PhLDirectoryBasedImageRepository inPharoPreferencesDirectory;
 			initialize;
 			yourself

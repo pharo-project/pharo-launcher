@@ -14,5 +14,3 @@ initializeWidgets
 		label: 'Quit on launch';
 		state: PhLLaunchImageCommand quitOnLaunch;
 		whenChangedDo: [ PhLLaunchImageCommand quitOnLaunch: self quitOnLaunchCheckBoxModel state ].
-	self updateImages.
-	templatesModel roots: TemplateRepository groups

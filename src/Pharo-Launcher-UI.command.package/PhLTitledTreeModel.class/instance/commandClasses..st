@@ -1,3 +1,3 @@
 accessing
 commandClasses: aCollection
-	self toolbar commandClasses: aCollection
+	commandClassesHolder contents: aCollection

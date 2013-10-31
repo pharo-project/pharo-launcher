@@ -9,7 +9,8 @@
 		"title",
 		"toolbar",
 		"tree",
-		"contextHolder"
+		"contextHolder",
+		"commandClassesHolder"
 	],
 	"name" : "PhLTitledTreeModel",
 	"type" : "normal"

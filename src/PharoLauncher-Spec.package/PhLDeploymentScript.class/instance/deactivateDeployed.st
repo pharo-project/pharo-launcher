@@ -1,0 +1,3 @@
+public
+deactivateDeployed
+	self class deactivateDeployed

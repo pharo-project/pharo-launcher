@@ -1,0 +1,1 @@
+I have the same interface as PhLDownloadManager but I don't do anything. Useful for testing without relying on network.

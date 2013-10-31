@@ -1,4 +1,4 @@
-initialization
+private
 buildMenu: menu shifted: shifted
 	menu addTitle: '  Pharo Launcher   ' icon: Smalltalk ui icons pharoIcon.
 	self commandClasses

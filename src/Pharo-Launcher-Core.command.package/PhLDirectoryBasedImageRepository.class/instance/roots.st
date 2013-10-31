@@ -1,7 +1,3 @@
 accessing
 roots
-	| images |
-	images := OrderedCollection new.
-	self baseDirectory directories
-		do: [ :directory | (self imageFromDirectory: directory) ifNotNil: [ :image | images add: image ] ].
-	^ images
+	^ self images sorted: [ :i1 :i2 | i1 name < i2 name ]

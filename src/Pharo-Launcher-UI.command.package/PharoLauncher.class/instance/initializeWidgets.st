@@ -6,8 +6,7 @@ initializeWidgets
 		makeMultiSelect.
 	(templatesModel := self newTitledTree)
 		title: 'Templates' translated;
-		doubleClickCommandClass: PhLCreateImageFromTemplateCommand;
-		childrenBlock: [ :group | group children: self ].
+		doubleClickCommandClass: PhLCreateImageFromTemplateCommand.
 	statusbarModel := self newStatusBar.
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
 		label: 'Quit on launch';

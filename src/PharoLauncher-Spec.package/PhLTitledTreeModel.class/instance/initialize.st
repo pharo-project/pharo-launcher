@@ -6,4 +6,3 @@ initialize
 	commandClassesHolder := #() asValueHolder.
 	commandClassesHolder whenChangedSend: #updateCommandClasses to: self.
 	repositoryHolder  := nil asValueHolder.
-	repositoryHolder whenChangedSend: #updateRepository to: self.

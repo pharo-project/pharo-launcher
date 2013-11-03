@@ -1,9 +1,15 @@
 private
 buildMenu: menu shifted: shifted
+	| currentGroup |
+	currentGroup := nil.
 	menu addTitle: '  Pharo Launcher   ' icon: Smalltalk ui icons pharoIcon.
 	self commandClasses
 		do: [ :commandClass | 
 			| command |
 			command := commandClass on: self context.
 			command isApplicable
-				ifTrue: [ menu addMenuItem: command asMenuItem ] ]
+				ifTrue: [ 
+					(currentGroup notNil and: [ currentGroup ~= command group ])
+						ifTrue: [ menu addLine ].
+					menu addMenuItem: command asMenuItem.
+					currentGroup := command group ] ]

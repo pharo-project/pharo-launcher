@@ -1,4 +1,4 @@
-as yet unclassified
+settings
 settingsOn: aBuilder
 	<systemsettings>
 	<pharoLauncherSettings>

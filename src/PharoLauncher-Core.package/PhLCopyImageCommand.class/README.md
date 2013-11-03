@@ -1,0 +1,1 @@
+Copy one image to another name.

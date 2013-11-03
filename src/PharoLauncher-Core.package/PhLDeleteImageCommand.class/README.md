@@ -1,0 +1,1 @@
+Remove an image from the hard disk. Can be applied to multiple images at the same time.

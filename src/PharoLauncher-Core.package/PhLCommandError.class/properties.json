@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "<historical>",
 	"super" : "PhLError",
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],

@@ -1,3 +1,3 @@
 action
 execute
-	SettingBrowser browse: #( #pharoLauncherSettings )
+	PhLSettingBrowser browse: #( #pharoLauncherSettings )

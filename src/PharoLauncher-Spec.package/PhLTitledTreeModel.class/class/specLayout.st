@@ -8,6 +8,6 @@ specLayout
 									titlebar
 										add: #title;
 										add: #toolbar ]
-							height: 25;
+							height: self toolbarHeight;
 						add: #tree ];
 		yourself

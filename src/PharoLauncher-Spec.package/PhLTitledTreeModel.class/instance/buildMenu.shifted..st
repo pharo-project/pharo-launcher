@@ -3,7 +3,7 @@ buildMenu: menu shifted: shifted
 	| currentGroup |
 	currentGroup := nil.
 	menu addTitle: '  Pharo Launcher   ' icon: Smalltalk ui icons pharoIcon.
-	self commandClasses
+	commandClasses
 		do: [ :commandClass | 
 			| command |
 			command := commandClass on: self context.

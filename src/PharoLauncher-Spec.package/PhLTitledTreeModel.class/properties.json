@@ -10,9 +10,9 @@
 		"toolbar",
 		"tree",
 		"contextHolder",
-		"commandClassesHolder",
 		"repositoryHolder",
-		"doubleClickCommandClass"
+		"doubleClickCommandClass",
+		"commandClasses"
 	],
 	"name" : "PhLTitledTreeModel",
 	"type" : "normal"

@@ -1,13 +1,15 @@
 initialization
 initializeImageAndTemplates
 	imagesModel
-		commandClasses: PhLImageCommand allConcreteCommands;
+		toolbarCommandClasses: self commandClassesForImagesToolbar;
+		menuCommandClasses: self commandClassesForImagesMenu;
 		context: self newInitialContext;
 		repository: self imageRepository.
 	templatesModel
-		commandClasses: PhLTemplateCommand allConcreteCommands;
+		toolbarCommandClasses: self commandClassesForTemplatesToolbar;
+		menuCommandClasses: self commandClassesForTemplatesMenu;
 		context: self newInitialContext;
 		repository: self templateRepository.
 	statusbarModel
 		commandClasses: PhLGeneralCommand allConcreteCommands;
-		context: self newInitialContext.
+		context: self newInitialContext

@@ -1,3 +1,3 @@
 opening
 openFull
-	^ self launcherForAllRepositories openWorldWithSpec
+	^ self createLauncher openWorldWithSpec

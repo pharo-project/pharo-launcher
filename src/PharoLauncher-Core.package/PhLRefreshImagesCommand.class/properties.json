@@ -1,11 +1,11 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "PhLGeneralCommand",
+	"super" : "PhLImageCommand",
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "PhLRefreshImageRepositoryCommand",
+	"name" : "PhLRefreshImagesCommand",
 	"type" : "normal"
 }

@@ -1,1 +1,0 @@
-Open the source of a template in an external web browser.

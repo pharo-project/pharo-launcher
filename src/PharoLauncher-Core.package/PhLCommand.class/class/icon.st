@@ -1,3 +1,3 @@
 accessing
 icon
-	^ nil
+	^ self subclassResponsibility

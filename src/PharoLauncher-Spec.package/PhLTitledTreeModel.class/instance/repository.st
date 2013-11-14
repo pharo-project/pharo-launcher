@@ -1,3 +1,3 @@
 accessing
 repository
-	^ repositoryHolder contents
+	^ repositoryHolder value

@@ -5,4 +5,4 @@ commandClasses: aCollection
 	self
 		assert: aCollection size = (aCollection collect: #specId) asSet size
 		description: 'You can''t add 2 commands with the same #specId on the same toolbar'.
-	commandClassesHolder contents: aCollection
+	commandClassesHolder value: aCollection

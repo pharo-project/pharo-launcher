@@ -1,3 +1,3 @@
 accessing
 commandClasses
-	^ commandClassesHolder contents
+	^ commandClassesHolder value

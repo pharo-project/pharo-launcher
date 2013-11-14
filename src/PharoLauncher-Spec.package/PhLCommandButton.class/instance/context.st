@@ -1,3 +1,3 @@
 accessing
 context
-	^ contextHolder contents
+	^ contextHolder value

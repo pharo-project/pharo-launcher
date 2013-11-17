@@ -1,3 +1,3 @@
 public
 addToStartupList
-	Smalltalk addToStartUpList: PhLDeploymentScript
+	Smalltalk addToStartUpList: self class

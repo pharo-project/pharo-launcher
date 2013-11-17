@@ -1,3 +1,3 @@
 public
 removeFromStartupList
-	Smalltalk removeFromStartUpList: PhLDeploymentScript
+	Smalltalk removeFromStartUpList: self class.

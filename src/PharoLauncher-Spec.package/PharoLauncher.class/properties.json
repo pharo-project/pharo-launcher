@@ -15,8 +15,7 @@
 		"templatesModel",
 		"statusbarModel",
 		"quitOnLaunchCheckBoxModel",
-		"imageRepository",
-		"imageContextHolder"
+		"imageRepository"
 	],
 	"name" : "PharoLauncher",
 	"type" : "normal"

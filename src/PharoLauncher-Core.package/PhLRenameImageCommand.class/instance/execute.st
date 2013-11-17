@@ -1,4 +1,4 @@
-accessing
+action
 execute
 	| name |
 	name := self newImageName.

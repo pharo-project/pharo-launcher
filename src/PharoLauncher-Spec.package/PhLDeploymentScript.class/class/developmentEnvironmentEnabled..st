@@ -2,10 +2,10 @@ settings
 developmentEnvironmentEnabled: aBoolean
 	aBoolean 
 		ifTrue: 
-		[	self new undoAll.  	
+		[	self undoAll.  	
 			self closeWindowsAndOpenDevelopmentEnvironment 
 		]
 		ifFalse: 
-		[ 	self new doAll. 
+		[ 	self doAll. 
 			self closeWindowsAndOpenLauncher 
 		].

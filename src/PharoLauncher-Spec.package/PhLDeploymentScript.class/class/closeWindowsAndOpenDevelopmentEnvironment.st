@@ -1,7 +1,7 @@
 action
 closeWindowsAndOpenDevelopmentEnvironment
 	PanelMorph allInstancesDo: [  :pm | pm delete ].
-	self new closeAllWindows.
+	self closeAllWindows.
 	TaskbarMorph reset.
 	Workspace open contents: 'PharoLauncher open.'.
 	

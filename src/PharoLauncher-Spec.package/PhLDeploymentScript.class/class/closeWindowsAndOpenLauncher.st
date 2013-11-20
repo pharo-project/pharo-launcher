@@ -1,5 +1,5 @@
 action
 closeWindowsAndOpenLauncher
-	self new
+	self 
 		closeAllWindows;
 		openLauncher

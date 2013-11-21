@@ -1,3 +1,3 @@
 testing
-isLocal
+isFast
 	^ true

@@ -11,5 +11,5 @@ initializeImageAndTemplates
 		context: self newInitialContext;
 		repository: self templateRepository.
 	statusbarModel
-		commandClasses: PhLGeneralCommand allConcreteCommands;
+		commandClasses: self commandClassesForStatusbar;
 		context: self newInitialContext

@@ -1,0 +1,3 @@
+private
+resetGroups
+	Groups := nil

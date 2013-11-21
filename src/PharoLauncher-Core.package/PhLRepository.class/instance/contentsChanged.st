@@ -1,6 +1,6 @@
-private
+announcements
 contentsChanged
-	"Called by my subclasses to announce that they changed"
+	"Called me to announce that I changed"
 
 	wantNotification
 		ifTrue: [ announcer announce: ValueChanged new ]

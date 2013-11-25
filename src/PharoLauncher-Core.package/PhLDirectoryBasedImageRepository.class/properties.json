@@ -4,10 +4,11 @@
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
-	"instvars" : [
-		"baseDirectory"
+	"classvars" : [
+		"Default",
+		"Location"
 	],
+	"instvars" : [ ],
 	"name" : "PhLDirectoryBasedImageRepository",
 	"type" : "normal"
 }

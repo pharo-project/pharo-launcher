@@ -1,13 +1,14 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "PhLUserInteraction",
+	"super" : "PhLGeneralCommand",
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"message"
+		"source",
+		"target"
 	],
-	"name" : "PhLUIConfirmation",
+	"name" : "PhLRelocateImageDirectoryCommand",
 	"type" : "normal"
 }

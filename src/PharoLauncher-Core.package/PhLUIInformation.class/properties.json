@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "PhLUserInteraction",
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],
@@ -8,6 +8,6 @@
 	"instvars" : [
 		"message"
 	],
-	"name" : "PhLUIConfirmation",
+	"name" : "PhLUIInformation",
 	"type" : "normal"
 }

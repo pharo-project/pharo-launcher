@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"super" : "PhLUserInteraction",
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],

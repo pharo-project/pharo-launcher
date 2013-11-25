@@ -1,3 +1,3 @@
 accessing
 baseDirectory
-	^ baseDirectory ensureCreateDirectory
+	^ self class location ensureCreateDirectory

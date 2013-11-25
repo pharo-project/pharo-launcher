@@ -4,4 +4,4 @@ startUp
 	preferenceFiles := StartupPreferencesHandler new
 		lookInFolder: PhLSettingBrowser preferencesFolder
 		forFilesMatching: '*.st'.
-	StartupLoader default load: preferenceFiles 
+	preferenceFiles ifNotNil: [ StartupLoader default load: preferenceFiles ]

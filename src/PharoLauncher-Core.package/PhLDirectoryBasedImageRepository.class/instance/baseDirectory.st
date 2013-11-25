@@ -1,3 +1,3 @@
 accessing
 baseDirectory
-	^ self class location ensureCreateDirectory
+	^ (baseDirectory ifNil: [ self class location ]) ensureCreateDirectory

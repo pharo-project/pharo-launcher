@@ -8,7 +8,9 @@
 		"Default",
 		"Location"
 	],
-	"instvars" : [ ],
+	"instvars" : [
+		"baseDirectory"
+	],
 	"name" : "PhLDirectoryBasedImageRepository",
 	"type" : "normal"
 }

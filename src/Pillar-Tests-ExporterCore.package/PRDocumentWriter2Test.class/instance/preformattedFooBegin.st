@@ -1,0 +1,3 @@
+requirements
+preformattedFooBegin
+	^ self subclassResponsibility

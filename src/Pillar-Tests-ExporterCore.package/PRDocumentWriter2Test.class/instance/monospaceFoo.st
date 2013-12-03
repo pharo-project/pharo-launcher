@@ -1,0 +1,3 @@
+requirements
+monospaceFoo
+	^ self subclassResponsibility

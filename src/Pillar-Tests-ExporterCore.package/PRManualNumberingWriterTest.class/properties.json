@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PRDocumentWriter2Test",
+	"category" : "Pillar-Tests-ExporterCore",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PRManualNumberingWriterTest",
+	"type" : "normal"
+}

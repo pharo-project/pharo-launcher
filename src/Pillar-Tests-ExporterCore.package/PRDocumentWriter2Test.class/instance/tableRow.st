@@ -1,0 +1,3 @@
+requirements
+tableRow
+	^ self subclassResponsibility 

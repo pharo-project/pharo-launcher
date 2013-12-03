@@ -1,0 +1,3 @@
+requirements
+preformattedTextFoo
+	^ self subclassResponsibility

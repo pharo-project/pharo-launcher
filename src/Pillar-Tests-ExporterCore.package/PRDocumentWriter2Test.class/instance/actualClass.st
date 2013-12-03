@@ -1,0 +1,3 @@
+private
+actualClass
+	^ self subclassResponsibility

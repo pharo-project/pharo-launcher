@@ -1,0 +1,3 @@
+requirements
+level1HeaderBegin
+	^ self subclassResponsibility

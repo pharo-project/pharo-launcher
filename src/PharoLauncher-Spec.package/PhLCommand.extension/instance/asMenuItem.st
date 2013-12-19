@@ -1,9 +1,7 @@
 *pharoLauncher-Spec
 asMenuItem
-	^ ToggleMenuItemMorph new
-		contents: self title;
-		target: self;
-		selector: #execute;
-		getStateSelector: nil;
+	^ MenuItemModel new
+		name: self title;
+		action: [ self execute ];
 		icon: self icon;
-		enablementSelector: #isApplicable.
+		enabled: self isApplicable.

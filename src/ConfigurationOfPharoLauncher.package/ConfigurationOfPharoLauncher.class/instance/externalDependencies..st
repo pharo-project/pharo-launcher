@@ -29,4 +29,12 @@ externalDependencies: spec
 		with: [ 
 			spec
 				repository: 'http://www.smalltalkhub.com/mc/NicolasPetton/JSON/main';
-				file: 'JSON-ul.35' ]
+				file: 'JSON-ul.35' ].
+			
+	spec
+		project: 'STON'
+		with: [ 
+			spec
+				className: 'ConfigurationOfSton';
+				versionString: #stable;
+				repository: 'http://ss3.gemstone.com/ss/STON' ].

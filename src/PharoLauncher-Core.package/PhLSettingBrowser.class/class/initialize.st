@@ -1,4 +1,4 @@
 class initialization
 initialize
 	super initialize.
-	Smalltalk addToStartUpList: self
+	PhLStartupManager addToLauncherStartUpList: self

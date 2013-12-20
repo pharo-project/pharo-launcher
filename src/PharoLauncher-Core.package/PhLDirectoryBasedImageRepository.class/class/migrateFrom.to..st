@@ -1,6 +1,6 @@
 private
 migrateFrom: oldLocation to: newLocation
-	(self forDirectory: oldLocation) hasImages
+	(oldLocation exists and: [ (self forDirectory: oldLocation) hasImages ])
 		ifTrue: [ 
 			| command |
 			command := PhLRelocateImageDirectoryCommand new

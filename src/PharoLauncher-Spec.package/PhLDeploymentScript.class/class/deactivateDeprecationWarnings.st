@@ -1,3 +1,3 @@
-public
+actions
 deactivateDeprecationWarnings
 	Deprecation raiseWarning: false

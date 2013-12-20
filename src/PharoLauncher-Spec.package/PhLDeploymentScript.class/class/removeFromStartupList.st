@@ -1,3 +1,3 @@
-public
+actions
 removeFromStartupList
 	Smalltalk removeFromStartUpList: self.

@@ -1,5 +1,5 @@
 system startup
-launcherStartUp
+startUp
 	| preferenceFiles |
 	preferenceFiles := StartupPreferencesHandler new
 		lookInFolder: PhLSettingBrowser preferencesFolder

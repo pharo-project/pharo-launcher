@@ -1,3 +1,3 @@
 defaults
 defaultLocation
-	^ FileLocator preferences / 'pharo' / 'images'
+	^ PlatformResolver forCurrentPlatform launcherLocationForImages 

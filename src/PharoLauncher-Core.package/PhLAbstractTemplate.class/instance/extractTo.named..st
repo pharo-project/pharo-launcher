@@ -5,4 +5,5 @@ extractTo: aDirectory named: aString
 	| extractionDirectory |
 	extractionDirectory := self extractZipArchive: self zipArchive to: aDirectory.
 	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
-	extractionDirectory deleteAll
+	extractionDirectory deleteAll.
+	self generateMetaInformationTo: aDirectory

@@ -1,5 +1,5 @@
 system startup
-startUp
+launcherStartUp
 	"Fix the Location because the platform or computer can have changed"
 
 	(Location notNil and: [ Location exists not ])

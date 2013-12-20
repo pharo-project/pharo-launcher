@@ -1,3 +1,3 @@
 actions
 addToStartupList
-	Smalltalk addToStartUpList: self
+	PhLStartupManager addToLauncherStartUpList: self

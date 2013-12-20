@@ -1,4 +1,4 @@
-action
+actions
 closeWindowsAndOpenDevelopmentEnvironment
 	PanelMorph allInstancesDo: [  :pm | pm delete ].
 	self closeAllWindows.

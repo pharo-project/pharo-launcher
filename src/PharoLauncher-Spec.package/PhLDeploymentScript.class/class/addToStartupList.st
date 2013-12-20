@@ -1,3 +1,3 @@
-public
+actions
 addToStartupList
 	Smalltalk addToStartUpList: self

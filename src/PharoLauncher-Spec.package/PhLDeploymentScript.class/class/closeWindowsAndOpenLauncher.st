@@ -1,4 +1,4 @@
-action
+actions
 closeWindowsAndOpenLauncher
 	self 
 		closeAllWindows;

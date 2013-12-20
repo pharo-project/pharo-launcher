@@ -6,4 +6,5 @@ doAll
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
 		makeDeployed;
-		addToStartupList
+		addToStartupList;
+		dontAskForConfirmationWhenQuitting

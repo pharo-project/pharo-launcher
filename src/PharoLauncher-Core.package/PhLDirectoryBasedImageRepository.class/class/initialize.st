@@ -1,4 +1,4 @@
 class initialization
 initialize
 	super initialize.
-	PhLStartupManager addToStartUpList: self
+	PhLStartupManager addToLauncherStartUpList: self

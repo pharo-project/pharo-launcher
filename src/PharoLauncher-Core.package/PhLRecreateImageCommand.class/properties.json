@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "PhLRefreshImageCommand",
+	"name" : "PhLRecreateImageCommand",
 	"type" : "normal"
 }

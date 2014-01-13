@@ -6,7 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"file"
+		"file",
+		"meta"
 	],
 	"name" : "PhLImage",
 	"type" : "normal"

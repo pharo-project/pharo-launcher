@@ -3,7 +3,7 @@ execute
 	self askConfirmation
 		ifTrue: [ context selectedImages 
 			do: [ :image | | template |
-				template := self templateFor: image.
+				template := image originTemplate. 
 				context imageRepository
 					deleteImages: { image }; 
 					extractTemplate: template to: image name ]

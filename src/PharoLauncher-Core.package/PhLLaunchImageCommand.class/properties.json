@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "PhLImageCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"QuitOnLaunch"
+	],
+	"instvars" : [ ],
+	"name" : "PhLLaunchImageCommand",
+	"type" : "normal"
+}

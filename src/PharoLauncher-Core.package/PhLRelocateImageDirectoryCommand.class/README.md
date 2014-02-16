@@ -1,0 +1,1 @@
+Relocate the directory where the images are saved to another directory

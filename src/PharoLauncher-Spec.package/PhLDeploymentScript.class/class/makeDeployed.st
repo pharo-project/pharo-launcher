@@ -1,0 +1,3 @@
+settings
+makeDeployed
+	IsDeployed := true

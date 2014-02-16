@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ButtonModel",
+	"category" : "PharoLauncher-Spec",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"commandClass",
+		"contextHolder",
+		"command"
+	],
+	"name" : "PhLCommandButton",
+	"type" : "normal"
+}

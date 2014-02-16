@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLUserInteraction",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"message"
+	],
+	"name" : "PhLUIInformation",
+	"type" : "normal"
+}

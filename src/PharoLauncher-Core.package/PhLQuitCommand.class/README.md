@@ -1,0 +1,1 @@
+Just quits the image.

@@ -1,0 +1,3 @@
+defaults
+defaultLocation
+	^ PlatformResolver forCurrentPlatform launcherLocationForImages 

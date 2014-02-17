@@ -1,6 +1,16 @@
 accessing
 fullName
-	^ String streamContents: [ :s|
-		s << self name.
-		self options keysAndValuesDo: [ :key :value | 
-			s space << key; << '='; << value ]]
+	^ String
+		streamContents: [ :s | 
+			s
+				<< $(;
+				<< self url lastPathSegment;
+				<< $);
+				space;
+				<< self name.
+			self options
+				keysAndValuesDo: [ :key :value | 
+					s space
+						<< key;
+						<< '=';
+						<< value ] ]

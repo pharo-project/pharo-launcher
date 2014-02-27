@@ -5,7 +5,7 @@ forCommonTools
 			Templates:
 				{(self pharo30).
 					(self pharo20).
-					(self pharo14).
-					(self moose49)};
+					(self moose49).
+					(self moose50)};
 		isHighlighted: true;
 		yourself

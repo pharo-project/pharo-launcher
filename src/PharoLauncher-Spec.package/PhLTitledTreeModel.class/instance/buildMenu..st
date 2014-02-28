@@ -1,5 +1,5 @@
 private
-buildMenu: menu shifted: shifted
+buildMenu: menu
 	| currentGroupNumber currentGroup |
 	currentGroupNumber := nil.
 	currentGroup := MenuGroupModel new.

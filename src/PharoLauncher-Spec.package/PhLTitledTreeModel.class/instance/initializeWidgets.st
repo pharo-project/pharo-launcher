@@ -4,7 +4,7 @@ initializeWidgets
 		text: '';
 		yourself.
 	tree := self newTree
-		menu: [ :menu :shifted | self buildMenu: menu shifted: shifted ];
+		menu: [ :menu | self buildMenu: menu ];
 		displayBlock: [ :item | item name ];
 		doubleClick: [ self doubleClick ];
 		childrenBlock: [ :item | item children ].

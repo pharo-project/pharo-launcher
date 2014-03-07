@@ -1,4 +1,4 @@
 running
 tearDown
 	super tearDown.
-	PhLDownloadManagerMock remove
+	PhLDownloadManagerMock remove.

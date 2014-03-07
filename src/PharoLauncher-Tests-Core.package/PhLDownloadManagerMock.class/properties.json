@@ -6,7 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"documents"
+		"documents",
+		"defaultResponse"
 	],
 	"name" : "PhLDownloadManagerMock",
 	"type" : "normal"

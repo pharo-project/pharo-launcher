@@ -1,0 +1,3 @@
+protected
+jsonFields
+	^ #('number' 'url')

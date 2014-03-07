@@ -1,6 +1,8 @@
 accessing
 fullName
-	^ String
+	^ self options isEmpty
+		ifTrue: [ self name ]
+		ifFalse: [ String
 		streamContents: [ :s | 
 			s
 				<< $(;
@@ -13,4 +15,4 @@ fullName
 					s space
 						<< key;
 						<< '=';
-						<< value ] ]
+						<< value ] ] ]

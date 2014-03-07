@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLJenkins2Entity",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLJenkins2Job",
+	"type" : "normal"
+}

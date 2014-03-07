@@ -1,14 +1,14 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "PhLAbstractTemplateGroup",
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"delegate",
-		"templatesAndGroups"
+		"properties",
+		"parent"
 	],
-	"name" : "PhLCacheTemplateGroup",
+	"name" : "PhLJenkins2Entity",
 	"type" : "normal"
 }

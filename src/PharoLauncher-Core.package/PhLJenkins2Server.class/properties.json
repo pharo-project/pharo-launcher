@@ -1,14 +1,14 @@
 {
-	"commentStamp" : "<historical>",
-	"super" : "Object",
+	"commentStamp" : "",
+	"super" : "PhLJenkins2Entity",
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"properties",
-		"parent"
+		"url",
+		"name"
 	],
-	"name" : "PhLJenkinsArtifact",
+	"name" : "PhLJenkins2Server",
 	"type" : "normal"
 }

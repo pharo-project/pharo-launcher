@@ -1,3 +1,3 @@
 accessing
 children
-	^ self templatesAndGroups
+	^ self simplifiedTemplatesAndGroups

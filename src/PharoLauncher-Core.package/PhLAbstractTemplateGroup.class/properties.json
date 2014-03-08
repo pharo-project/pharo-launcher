@@ -5,9 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"isHighlighted"
-	],
+	"instvars" : [ ],
 	"name" : "PhLAbstractTemplateGroup",
 	"type" : "normal"
 }

@@ -1,15 +1,11 @@
 {
 	"commentStamp" : "<historical>",
 	"super" : "Object",
-	"category" : "PharoLauncher-Core-Model",
+	"category" : "PharoLauncher-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"name",
-		"url",
-		"options"
-	],
-	"name" : "PhLJenkinsArtifact",
+	"instvars" : [ ],
+	"name" : "PhLDiagnostics",
 	"type" : "normal"
 }

@@ -1,1 +1,0 @@
-A convenience class for holding various snippets of code for analysing and improving PharoLauncher.  Many of these are meant to be executed directly from Workspace.

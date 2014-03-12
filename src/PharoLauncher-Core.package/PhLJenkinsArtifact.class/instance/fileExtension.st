@@ -1,3 +1,3 @@
 accessing
 fileExtension
-	^ url lastPathSegment copyAfterLast: $.
+	^ self url lastPathSegment copyAfterLast: $.

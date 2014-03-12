@@ -6,9 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"name",
-		"url",
-		"options"
+		"properties",
+		"parent"
 	],
 	"name" : "PhLJenkinsArtifact",
 	"type" : "normal"

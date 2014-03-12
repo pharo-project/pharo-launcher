@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "<historical>",
 	"super" : "SettingBrowser",
-	"category" : "PharoLauncher-Core-Commands",
+	"category" : "PharoLauncher-Core-Settings",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

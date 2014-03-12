@@ -7,7 +7,7 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"delegate",
-		"simplifiedTemplatesAndGroups"
+		"templatesAndGroups"
 	],
 	"name" : "PhLCacheTemplateGroup",
 	"type" : "normal"

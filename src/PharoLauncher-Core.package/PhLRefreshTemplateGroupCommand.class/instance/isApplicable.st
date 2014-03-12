@@ -1,3 +1,0 @@
-testing
-isApplicable
-	^ context hasAtLeastOneTemplateGroupSelected

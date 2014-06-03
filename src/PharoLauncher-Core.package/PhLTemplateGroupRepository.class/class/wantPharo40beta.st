@@ -1,3 +1,3 @@
 settings
-wantPharo40
+wantPharo40beta
 	^ self wantGroupNamed: PhLHTTPListingTemplateGroup pharo40 name

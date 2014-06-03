@@ -1,3 +1,3 @@
 settings
-wantPharo30: aBoolean
+wantPharo30stable: aBoolean
 	self activate: aBoolean GroupNamed: PhLHTTPListingTemplateGroup pharo30 name

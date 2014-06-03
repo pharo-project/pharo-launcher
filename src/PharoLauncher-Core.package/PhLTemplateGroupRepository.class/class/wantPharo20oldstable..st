@@ -1,3 +1,3 @@
 settings
-wantPharo20: aBoolean
+wantPharo20oldstable: aBoolean
 	self activate: aBoolean GroupNamed: PhLHTTPListingTemplateGroup pharo20 name

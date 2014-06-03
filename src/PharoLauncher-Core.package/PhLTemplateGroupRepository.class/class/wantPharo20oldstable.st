@@ -1,3 +1,3 @@
 settings
-wantPharo20
+wantPharo20oldstable
 	^ self wantGroupNamed: PhLHTTPListingTemplateGroup pharo20 name

@@ -1,5 +1,5 @@
 initialize - release
 setSelection: aSelection imageRepository: anImageRepository templateRepository: aTemplateRepository
-	selection := aSelection.
+	selection := aSelection. 
 	imageRepository := anImageRepository.
 	templateRepository := aTemplateRepository.

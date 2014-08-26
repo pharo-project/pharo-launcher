@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "TimMackinnon 8/9/2014 15:18",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"selections"
+	],
+	"name" : "PhLTreeSelection",
+	"type" : "normal"
+}

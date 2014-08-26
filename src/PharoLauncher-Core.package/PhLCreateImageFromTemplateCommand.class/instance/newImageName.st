@@ -1,3 +1,3 @@
 action
 newImageName
-	^ newImageName ifNil: [ newImageName := context requestNewImageName: context singleTemplate name ]
+	^ newImageName ifNil: [ newImageName := context requestNewImageName: context singleTemplateName ]

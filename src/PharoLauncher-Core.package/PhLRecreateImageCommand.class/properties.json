@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "TimMackinnon 8/9/2014 14:16",
 	"super" : "PhLImageCommand",
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],

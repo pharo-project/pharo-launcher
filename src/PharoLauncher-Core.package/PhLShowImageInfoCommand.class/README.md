@@ -1,0 +1,1 @@
+Open a dialog to show the user some basic information about the selected image.

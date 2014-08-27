@@ -1,3 +1,3 @@
 accessing
 icon
-	^ Smalltalk ui icons processBrowserIcon
+	^ Smalltalk ui icons smallDoItIcon  

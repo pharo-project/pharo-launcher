@@ -3,8 +3,8 @@ pathNames
 	^ self selections collect: [ :path | 
 			| result |
 			result := WriteStream on: String new.
-			path doWithIndex: [:node :i|
-				 i > 1 ifTrue: [ result nextPut: $- ].
-				 result nextPutAll: node content name].
+			
+			self pathNameFor: path on: result.
+			
 			result contents asFileName ]
 		

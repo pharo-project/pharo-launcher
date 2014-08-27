@@ -1,3 +1,4 @@
 action
 executeIfApplicable
-	self isApplicable ifTrue: [ self execute ]
+	self isApplicable ifTrue: [ 
+		self validateModelIntegrity ifTrue: [self execute ]]

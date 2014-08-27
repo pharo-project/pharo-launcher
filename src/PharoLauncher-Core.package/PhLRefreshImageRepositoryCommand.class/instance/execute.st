@@ -1,3 +1,3 @@
 action
 execute
-	context imageRepository roots
+	context imageRepository contentsChanged.

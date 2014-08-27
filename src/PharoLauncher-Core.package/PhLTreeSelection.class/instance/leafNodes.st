@@ -1,3 +1,3 @@
 accessing
 leafNodes
-	^ self selections collect: [ :each | each last content]
+	^ self selections collect: [ :each | each content]

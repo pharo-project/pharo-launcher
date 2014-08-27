@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "TimMackinnon 8/11/2014 13:10",
+	"super" : "PhLImageCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLShowImageInfoCommand",
+	"type" : "normal"
+}

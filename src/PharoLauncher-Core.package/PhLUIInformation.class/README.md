@@ -1,0 +1,1 @@
+Abstraction of an information dialog.

@@ -1,5 +1,5 @@
 updating
 performAction
-	command execute.
+	command executeIfApplicable.
 	super performAction.
 	self update.

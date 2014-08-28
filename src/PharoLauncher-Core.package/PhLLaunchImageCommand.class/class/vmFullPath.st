@@ -1,0 +1,3 @@
+accessing
+vmFullPath
+	^ VmFullPath ifNil: [  '' ]

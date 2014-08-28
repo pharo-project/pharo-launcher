@@ -3,4 +3,4 @@ singleTemplateName
 	self
 		ensure: self hasSingleTemplateSelected.
 		
-	^ selection pathNames anyOne
+	^ (selection pathNames anyOne splitOn: '-(') first

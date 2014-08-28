@@ -1,9 +1,9 @@
 action
-launch
+launch: aFullPathString
 	"Use the VM that launched the current image to launch me"
 	| vmCommand imagePath  |
 	
-	vmCommand := Smalltalk vm fullPath asString .
+	vmCommand := aFullPathString isEmpty ifTrue: [Smalltalk vm fullPath asString] ifFalse: [ aFullPathString ] .
 	imagePath := file pathString.
 	
 	^OSProcess command: vmCommand , '  "' , imagePath, '"'.

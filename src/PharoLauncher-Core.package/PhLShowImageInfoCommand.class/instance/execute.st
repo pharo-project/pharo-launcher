@@ -1,5 +1,5 @@
 action
 execute
 	context newInformation 
-		message: context singleImageSummaryInfo; 
+		message: context singleImage summaryInfo; 
 		denyWithTitle: 'Image Details'

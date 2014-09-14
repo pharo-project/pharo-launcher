@@ -5,4 +5,4 @@ load
 	"self load"
 
 	<apiDocumentation>
-	^ self loadBleedingEdge
+	^(self project version: #stable) load

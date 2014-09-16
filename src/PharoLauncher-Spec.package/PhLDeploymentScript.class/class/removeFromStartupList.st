@@ -1,3 +1,3 @@
 actions
 removeFromStartupList
-	Smalltalk removeFromStartUpList: self.
+	PhLStartupManager removeFromStartupList: self

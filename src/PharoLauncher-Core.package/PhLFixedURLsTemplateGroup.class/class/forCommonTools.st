@@ -7,6 +7,6 @@ forCommonTools
 				(self pharo30).
 					(self pharo20).
 					(self moose49).
-					(self moose50)};
+					(self moose50). (self moose51)};
 		isHighlighted: true;
 		yourself

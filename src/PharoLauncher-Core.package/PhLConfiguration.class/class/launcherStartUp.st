@@ -1,0 +1,3 @@
+system startup
+launcherStartUp
+	self resetDefault

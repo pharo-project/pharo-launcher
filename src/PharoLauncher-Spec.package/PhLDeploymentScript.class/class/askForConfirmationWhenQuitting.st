@@ -1,3 +1,3 @@
 actions
 askForConfirmationWhenQuitting
-	^ Smalltalk tools userManager currentUser canSaveImage: true
+	^ UserManager default currentUser canSaveImage: true

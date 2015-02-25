@@ -1,3 +1,3 @@
 actions
 dontAskForConfirmationWhenQuitting
-	^ Smalltalk tools userManager currentUser canSaveImage: false
+	^ UserManager default currentUser canSaveImage: false

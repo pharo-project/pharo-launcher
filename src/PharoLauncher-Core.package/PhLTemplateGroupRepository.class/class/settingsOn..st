@@ -1,6 +1,6 @@
 settings
 settingsOn: aBuilder
-	<systemsettings>
+	<systemsettings> 
 	<pharoLauncherSettings>
 	(aBuilder group: #templateGroupRepositories)
 		label: 'Choose Template Repositories' ;

@@ -1,3 +1,3 @@
-as yet unclassified
+settings
 wantPharo50beta
-	^ true
+	^ self wantGroupNamed: PhLHTTPListingTemplateGroup pharo50 name

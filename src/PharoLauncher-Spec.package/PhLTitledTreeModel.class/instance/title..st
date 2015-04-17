@@ -1,3 +1,3 @@
 accessing
 title: aString
-	title text: aString
+	title label: aString

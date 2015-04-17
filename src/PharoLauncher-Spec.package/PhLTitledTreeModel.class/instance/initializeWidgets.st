@@ -1,7 +1,7 @@
 initialization
 initializeWidgets
 	title := self newLabel
-		text: '';
+		label: '';
 		yourself.
 	tree := self newTree
 		menu: [ :menu | self buildMenu: menu ];

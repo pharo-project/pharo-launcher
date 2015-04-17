@@ -1,3 +1,3 @@
 as yet unclassified
-wantPharo50beta
+wantPharo40stable
 	^ true

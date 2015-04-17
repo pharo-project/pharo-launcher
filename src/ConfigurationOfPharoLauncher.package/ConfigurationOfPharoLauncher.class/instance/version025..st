@@ -13,6 +13,6 @@ version025: spec
 			project: 'JSON' with: '1.0';
 			project: 'Ston' with: '0.10'.
 		spec 
-			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-TorstenBergmann.72';
+			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-TorstenBergmann.71';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-TorstenBergmann.38';
 			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-TimMackinnon.9'. ].

@@ -1,3 +1,3 @@
-settings
+as yet unclassified
 wantPharo40stable
-	^ self wantGroupNamed: PhLHTTPListingTemplateGroup pharo40 name
+	^ true

@@ -6,4 +6,4 @@ launch: aFullPathString
 	vmCommand := aFullPathString isEmpty ifTrue: [Smalltalk vm fullPath asString] ifFalse: [ aFullPathString ] .
 	imagePath := file pathString.
 	
-	^OSProcess command: vmCommand , '  "' , imagePath, '"'.
+	^OSProcess command: $' asString , vmCommand , '''  ''' , imagePath, ''''.

@@ -2,7 +2,7 @@ action
 needsSpurVm
 	|version byteStream|
 
-	byteStream := FileStream fileNamed: context singleImageName.
+	byteStream := (context singleImage) file readStream.
 	byteStream binary.
 	version := byteStream nextLittleEndianNumber: 4.
 	byteStream close.

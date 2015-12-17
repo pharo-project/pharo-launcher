@@ -16,3 +16,10 @@ settingsOn: aBuilder
 				description: 'When set, this is the full path (including executable name) to the VM used to launch an image. ' , String cr , 
 					'When empty, Launcher uses it''s internal VM.', String cr,
 					'NOTE: This path might need to escape some whitespace characters e.g. "/Pharo\ 3.0/Pharo".' translated.
+					
+	(aBuilder setting: #spurFullPath)
+				label: 'Spur VM Full Path' translated;
+				parent: #pharoLauncher;
+				target: self;
+				description: 'When set, this is the full path (including executable name) to the Spur VM used to launch an image in Spur format. ' , String cr , 
+					'NOTE: This path might need to escape some whitespace characters e.g. "/Pharo\ 3.0/Pharo".' translated.

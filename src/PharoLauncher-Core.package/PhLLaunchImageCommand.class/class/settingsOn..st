@@ -11,6 +11,7 @@ settingsOn: aBuilder
 					
 	(aBuilder setting: #vmFullPath)
 				label: 'VM Full Path' translated;
+				type: #FilePathEncoder;
 				parent: #pharoLauncher;
 				target: self;
 				description: 'When set, this is the full path (including executable name) to the VM used to launch an image. ' , String cr , 
@@ -19,6 +20,7 @@ settingsOn: aBuilder
 					
 	(aBuilder setting: #spurFullPath)
 				label: 'Spur VM Full Path' translated;
+				type: #FilePathEncoder;
 				parent: #pharoLauncher;
 				target: self;
 				description: 'When set, this is the full path (including executable name) to the Spur VM used to launch an image in Spur format. ' , String cr , 

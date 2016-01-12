@@ -1,3 +1,3 @@
 protocol
 content: aContent
-	labelModel text: aContent
+	labelModel label: aContent

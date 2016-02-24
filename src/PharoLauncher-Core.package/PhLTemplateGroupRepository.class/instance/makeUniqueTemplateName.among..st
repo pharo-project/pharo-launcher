@@ -4,17 +4,4 @@ makeUniqueTemplateName: baseTemplateName among: existingTemplateNames
 
 	"See #testMakeUniqueImageName for samples"
 
-	| similarbaseImageNames existingUniquifiers nextUniquifier separator |
-	separator := '-'.
-	similarbaseImageNames := existingTemplateNames select: [ :imageName | imageName beginsWith: baseTemplateName ].
-	existingUniquifiers := similarbaseImageNames
-		collect: [ :imageName | 
-			| suffix |
-			suffix := imageName allButFirst: baseTemplateName size.
-			(suffix beginsWith: separator)
-				ifTrue: [ (suffix allButFirst: separator size) initialIntegerOrNil ]
-				ifFalse: 0 ]
-		thenSelect: #notNil.
-	existingUniquifiers ifEmpty: [ ^ baseTemplateName ].
-	nextUniquifier := existingUniquifiers max + 1.
-	^ baseTemplateName , separator , (nextUniquifier printPaddedWith: $0 to: 2)
+	^ self makeUniqueName: baseTemplateName among: existingTemplateNames

@@ -1,0 +1,3 @@
+accessing
+imageFile
+	^ self file

@@ -1,11 +1,10 @@
 action
 createLocalTemplateFrom: anImage named: aString
-	| localTemplateGroup |
-	localTemplateGroup := self roots detect: [ :each | each name = 'Local' ].
-	(localTemplateGroup templatesAndGroups anySatisfy: [ :each | each name = aString ])
+	| localTemplate |
+	(self hasLocalTemplateNamed: aString)
 		ifTrue: [ PhLError signal: 'A local template with the same name already exists' ].
-	ZipArchive new
-		addFile: anImage file as: aString , '.image';
-		addFile: anImage file parent / anImage file basenameWithoutExtension , 'changes' as: aString , '.changes';
-		writeToFileNamed: PhLLocalTemplate default baseDirectory / aString asFileReference , 'zip'.
-	self flag: #continueFromHere
+	self createZipArchiveFrom: anImage named: aString.
+	localTemplate := PhLLocalTemplate name: aString zipFile: PhLLocalTemplateGroup default baseDirectory / aString , 'zip'.
+	self halt.
+	PhLLocalTemplateGroup default register: localTemplate withZip: localTemplate zipArchive.
+	self contentsChanged

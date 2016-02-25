@@ -1,3 +1,0 @@
-accessing
-imageFile
-	^ self file

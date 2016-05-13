@@ -1,3 +1,3 @@
 settings
-wantPharo50beta: aBoolean
+wantPharo50stable: aBoolean
 	self activate: aBoolean GroupNamed: PhLHTTPListingTemplateGroup pharo50 name

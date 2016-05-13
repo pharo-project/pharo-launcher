@@ -1,4 +1,4 @@
 class initialization
 initialize
 	super initialize.
-	Smalltalk addToStartUpList: self
+	SessionManager default registerToolClassNamed: self name

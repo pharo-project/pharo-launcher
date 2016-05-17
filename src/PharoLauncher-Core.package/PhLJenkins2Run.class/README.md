@@ -1,0 +1,1 @@
+I represent a run of a job (one configuration) resulting from a matrix job.

@@ -1,1 +1,0 @@
-I'm a job as can be available on a Jenkins platform.

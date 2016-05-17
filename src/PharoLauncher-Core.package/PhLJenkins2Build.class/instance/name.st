@@ -1,4 +1,4 @@
-as yet unclassified 
+accessing
 name
 	^ String streamContents: [:str |
 		self isLastSuccessful 

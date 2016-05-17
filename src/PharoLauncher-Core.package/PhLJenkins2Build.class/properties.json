@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "ChristopheDemarey 5/17/2016 10:59",
 	"super" : "PhLJenkins2WithArtifactsEntity",
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],

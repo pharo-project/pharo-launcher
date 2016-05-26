@@ -12,4 +12,10 @@ templatesAndGroups
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].
+	PhLLaunchImageCommand new pharoStableImagePath ifNotNil: [:image | 
+		templates add: 
+			(PhLLocalTemplate 
+				name: 'Pharo image (stable)'
+				zipFile: image)
+		].
 	^ templates

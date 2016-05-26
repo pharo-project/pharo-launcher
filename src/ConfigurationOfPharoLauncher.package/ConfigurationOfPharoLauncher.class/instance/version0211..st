@@ -5,8 +5,9 @@ version0211: spec
 	spec for: #'common' do: [
 		spec blessing: #'stable'.
 		spec description: 'version 0.2.11
-PharoLauncher now runs on top of Pharo 5.0 and is now shipped with a spur VM.
+PharoLauncher now runs on top of Pharo 5.0 and is now shipped with both V3 anf Spur VM.
 Add support to easily run Pharo 6.0 images.
+PharoLauncher now embed th latest pharo stable image for off-line use.
 Better display of Jenkins jobs.'.
 		spec author: 'ChristopheDemarey'.
 		spec timestamp: '5/18/2016 09:25'.
@@ -16,6 +17,6 @@ Better display of Jenkins jobs.'.
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.19'.
 		spec 
-			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.97';
+			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.98';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-ChristopheDemarey.47';
 			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-TimMackinnon.9'. ].

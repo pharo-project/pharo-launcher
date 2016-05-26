@@ -1,8 +1,5 @@
 action
 execute
-	self needsSpurVm ifTrue: [ 
-		context singleImage launch: self class spurFullPath ]
-	ifFalse:[
-		context singleImage launch: self class vmFullPath].
+	context singleImage launch: self vmToUse.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]

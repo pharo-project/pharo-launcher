@@ -17,6 +17,6 @@ Better display of Jenkins jobs.'.
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.19'.
 		spec 
-			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.99';
+			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.100';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-ChristopheDemarey.47';
-			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-TimMackinnon.9'. ].
+			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.10'. ].

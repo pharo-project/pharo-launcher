@@ -1,4 +1,4 @@
-as yet unclassified
+utility
 newSelectionModelNamed: aNameString
 	| aSelection aNode |
 	
@@ -7,6 +7,7 @@ newSelectionModelNamed: aNameString
 		with:
 			{(TreeNodeModel new
 				content: aNode;
+				parentNode: (TreeNodeModel new content: #parent);
 				yourself)}.
 				
 	^ aSelection

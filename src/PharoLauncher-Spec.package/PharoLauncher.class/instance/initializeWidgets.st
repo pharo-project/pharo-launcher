@@ -1,6 +1,6 @@
 initialization
 initializeWidgets
-	(imagesModel := self newTitledTree)
+	(imagesModel := self newSearchableTitledTree)
 		title: 'Existing images' translated;
 		doubleClickCommandClass: PhLLaunchImageCommand;
 		makeMultiSelect.

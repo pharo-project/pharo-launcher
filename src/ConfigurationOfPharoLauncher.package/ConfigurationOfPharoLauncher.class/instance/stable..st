@@ -2,7 +2,7 @@ symbolic versions
 stable: spec
 	<symbolicVersion: #'stable'>
 
-	spec for: #'common' version: '0.2.11'.
+	spec for: #'common' version: '0.2.12'.
 
 	spec for: #'pharo3.x' version: '0.2.6'.
 

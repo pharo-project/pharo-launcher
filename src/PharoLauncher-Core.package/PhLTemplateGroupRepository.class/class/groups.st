@@ -12,6 +12,7 @@ groups
 			Groups at: PhLHTTPListingTemplateGroup pharo40 put: true.
 			Groups at: PhLHTTPListingTemplateGroup pharo50 put: true.
 			Groups at: PhLHTTPListingTemplateGroup pharo60 put: true.
+			Groups at: PhLHTTPListingTemplateGroup pharo70 put: true.
 			Groups at: PhLFixedURLsTemplateGroup forCommonTools put: true.
 			Groups at: PhLLocalTemplateGroup default put: true.
 			^ Groups ]

@@ -3,7 +3,9 @@ forCommonTools
 	^ self new
 		setName: 'Common tools'
 			Templates:
-				{	(self pharo60).
+			 
+				{  (self pharo70).	
+					(self pharo60).
 					(self pharo50).
 					(self pharo40).
 					(self pharo30).

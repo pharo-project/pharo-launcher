@@ -1,3 +1,3 @@
 defaults
 defaultLocation
-	^ PlatformResolver forCurrentPlatform launcherLocationForImages 
+	^ PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'images' 

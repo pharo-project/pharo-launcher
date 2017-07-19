@@ -1,0 +1,3 @@
+querying
+availableVirtualMachinesOnDiskByImageFormat
+	^ self availableVirtualMachinesIn: self privateVmStore

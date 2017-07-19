@@ -1,5 +1,5 @@
 action
 execute
-	context singleImage launch: self vmToUse.
+	context singleImage launch.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]

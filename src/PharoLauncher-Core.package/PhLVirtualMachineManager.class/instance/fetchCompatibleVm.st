@@ -2,9 +2,9 @@ private
 fetchCompatibleVm
 	[ | targetFile | 
 	targetFile := self privateVmStore / (self imageFormatNumber asString , '.zip').
-	ZnClient new
-		url: self compatibleVmUrl;
-		downloadTo: targetFile.
+	PhLDownloadManager default 
+		download: self compatibleVmUrl
+		toFile: targetFile.
 	ZipArchive new
 		readFrom: targetFile;
 		extractAllTo: (self privateVmStore / self imageFormatNumber asString) ensureCreateDirectory ]

@@ -2,9 +2,9 @@ private
 fetchVm
 	[ | targetFile | 
 	targetFile := self vmStore / (self imageVersion , '.zip').
-	ZnClient new
-		url: self vmUrl;
-		downloadTo: targetFile.
+	PhLDownloadManager default 
+		download: self vmUrl
+		toFile: targetFile.
 	ZipArchive new
 		readFrom: targetFile;
 		extractAllTo: (self vmStore / self imageVersion) ensureCreateDirectory ]

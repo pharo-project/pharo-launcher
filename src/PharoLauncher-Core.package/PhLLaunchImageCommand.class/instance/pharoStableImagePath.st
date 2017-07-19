@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 pharoStableImagePath
 	| img |
 	img := (self resourcesPath  / 'images' / 'pharo-stable.zip') asFileReference.

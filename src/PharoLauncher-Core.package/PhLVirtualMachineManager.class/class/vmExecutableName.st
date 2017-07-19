@@ -1,4 +1,4 @@
-as yet unclassified
+accessing
 vmExecutableName
 	^ Smalltalk os isUnix
 			ifTrue: [ 'pharo' ]

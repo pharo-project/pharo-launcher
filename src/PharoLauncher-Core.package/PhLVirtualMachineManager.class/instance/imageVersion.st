@@ -2,8 +2,14 @@ accessing
 imageVersion
 	"get the Pharo version of the image"
 	^ imageVersion ifNil: 
-		[ | command headlessOption |
-		headlessOption := Smalltalk os isUnix ifTrue: [ '" --nodisplay "' ] ifFalse: [ '" --headless "' ].
-		command := '"', self compatibleVm , headlessOption , imageFile fullName , '" --no-default-preferences ' ,
-			' eval ''SystemVersion current major asString, SystemVersion current minor asString'''.
-		imageVersion := (OSProcess thisOSProcess waitForCommandOutput: command) asInteger asString ]
+		[ self imageVersionFromFile ifNil:
+			[ | command |
+			command := String streamContents: [ :stream |
+				stream 
+					<< $" << self compatibleVm << $"
+					<< (Smalltalk os isUnix ifTrue: [ ' --nodisplay ' ] ifFalse: [ ' --headless ' ]) 
+					<< $" << imageFile fullName << '" --no-default-preferences eval '
+					<< $" << self imageVersionFileCreationInstructions << $" ].
+			OSProcess thisOSProcess waitForCommand: command.
+			"we have just generated the version file, get the value"
+			self imageVersionFromFile ] ]

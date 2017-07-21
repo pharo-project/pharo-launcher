@@ -15,6 +15,6 @@ Pharo Launcher files (images, VMs) are now considered as user Documents. Consequ
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.24'.
 		spec 
-			package: #'PharoLauncher-Core' with: 'PPharoLauncher-Core-ChristopheDemarey.111';
+			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.111';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-TorstenBergmann.48';
 			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.13'. ].

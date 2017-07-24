@@ -20,13 +20,13 @@ You can contribute to this project. All classes and most methods are commented. 
 
 ![Build Status](https://ci.inria.fr/pharo/buildStatus/icon?job=Launcher)
 
-## Before
-In the past I had several folders with images everywhere on my HD.
-Sometimes with the VM, sometimes without. Lots of image searching as you can imagine.
+## Motivations
+In the past I had several folders with images everywhere on my HD. Sometimes with the VM, sometimes without. Lots of image searching as you can imagine.
+Now, my HD is now much cleaner - all images are in a central place and I need only one icon/starter on the desktop to open. PharoLauncher is also a very handy tool to download specific image update versions if you want to reproduce or fix Pharo bugs. I also associated one of the unused laptop keys with PharoLauncher - so the world of Smalltalk is just one click away...
 
 ## How to install?
-- For Linux, download [https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Linux/](https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Linux/).
-- For Mac OS X, download [https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Mac/](https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Mac/).
+- For Linux, download [https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Linux/](https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Linux/)
+- For Mac OS X, download [https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Mac/](https://ci.inria.fr/pharo/view/Launcher/job/Publish-Launcher-stable-Mac/)
 - For Windows, download [https://ci.inria.fr/pharo/view/Launcher/job/Package-and-Publish-Launcher-stable-Win/](https://ci.inria.fr/pharo/view/Launcher/job/Package-and-Publish-Launcher-stable-Win/)
 - For other platforms: [https://ci.inria.fr/pharo/view/Launcher/job/Launcher](https://ci.inria.fr/pharo/view/Launcher/job/Launcher)
 
@@ -47,23 +47,32 @@ Each image gets an own folder. Use the "Show in folder" menu item if you want to
 
 After download you can "Launch" the image from the context menu in the right list. This will open the new image and close the launcher image. So you are ready to start working.
 
-## Now
-My HD is now much cleaner - all images are in a central place and I need only one icon/starter on the desktop to open. PharoLauncher is also a very handy tool to download specific image update
-versions if you want to reproduce or fix Pharo bugs.
+## Where are my images?
+Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
+- *$HOME/Documents/Pharo* on OS X,
+- *$HOME/My Documents/Pharo* on windows,
+- *$HOME/Pharo* on Linux (some linux distributions provide a document folder but some others not, so we put it in the HOME directory in all cases).
+In this folder, you will find your images and virtual machines needed to run images.
 
-I also associated one of the unused laptop keys with PharoLauncher - so the world of Smalltalk is just one click away...
+### What does the Pharo launcher to launch an image? 
+To run an image, Pharo launcher needs to determine the appropriate virtual machine to run it and fetch it from the web if it is not available.
+The process is as following:
+1. determine the image format version
+2. find (and optionnaly fetch) a compatible VM (a VM able to run this image format) and run the image to get its Pharo version number
+3. find (and optionnaly fetch) the appropriate VM for this specific Pharo image version. Sources files are also downloaded with the VM when applicable.
+4. run the image with the appropriate VM
 
-==Things to know:==
+## Things to know:
 At the bottom there is a button to open a settings browser with specific settings for PharoLauncher. There is an option that enables the IDE again - so you can inspect the code
 or fix a bug.
 
 If it does not launch on your box then set a breakpoint in PhLImage>>launch to debug.
 
-Important note: the launcher currently does not fit with the "Save as" image style - since each launcher image
+**Important note**: the launcher currently does not fit with the "Save as" image style - since each launcher image
 has to be in a new directory. So either use the "Copy" image, then "Launch" and then only "Save" in the target image or copy the "Saved as" image in a new folder and
 refresh the Launcher view on the right side.
 
-== Develop the Pharo Launcher ==
+## Develop the Pharo Launcher
 
 Either use the latest image from CI and enable the IDE as written before.
 

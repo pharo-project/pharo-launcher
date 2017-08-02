@@ -4,8 +4,9 @@ availableVirtualMachinesIn: aFileReference
 	vmsOnDisk := Dictionary new.
 	aFileReference directories
 		do: [ :entry |
-			(entry allChildrenMatching: self class vmExecutableName) 
-				detect: #isFile
+			self
+				detectExecutable: self class vmExecutableName
+				in: entry
 				ifFound: [ :vmExecutablePath | 
 					vmsOnDisk 
 						at: entry basename 

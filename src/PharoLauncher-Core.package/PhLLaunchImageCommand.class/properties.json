@@ -5,7 +5,9 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"QuitOnLaunch"
+		"QuitOnLaunch",
+		"SpurFullPath",
+		"VmFullPath"
 	],
 	"instvars" : [ ],
 	"name" : "PhLLaunchImageCommand",

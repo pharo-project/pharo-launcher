@@ -1,7 +1,7 @@
 private
 fetchSourcesFilesFor: anImageVersionString
 	[ | targetFile | 
-	targetFile := self vmStore / self imageVersion.
+	targetFile := (self availableVirtualMachines at: self imageVersion) asFileReference parent.
 	PhLDownloadManager default 
 		download: (self sourcesFileUrlFor: anImageVersionString)
 		toFile: targetFile ]

@@ -1,3 +1,0 @@
-accessing
-spurFullPath
-	^ SpurFullPath ifNil: [  '' ]

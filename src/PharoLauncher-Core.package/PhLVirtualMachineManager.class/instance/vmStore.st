@@ -1,3 +1,3 @@
 accessing
 vmStore
-	^ (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory
+	^ self class vmStore

@@ -6,4 +6,5 @@ settingsOn: aBuilder
 		label: 'Location of your images' translated;
 		parent: #pharoLauncher;
 		target: self;
+		order: 40;
 		description: 'A directory where all your Pharo images will be saved and launched'

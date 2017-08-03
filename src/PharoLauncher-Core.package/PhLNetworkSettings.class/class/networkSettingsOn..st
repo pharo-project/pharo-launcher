@@ -5,7 +5,7 @@ networkSettingsOn: aBuilder
 		label: 'Use HTTP proxy' translated;
 		parent: #pharoLauncher;
 		target: NetworkSystemSettings;
-		noOrdering;
+		order: 10;
 		description:
 				'If checked then the you will be able to set a port number and a server name. If unchecked, then no http proxy is used.'
 						translated;

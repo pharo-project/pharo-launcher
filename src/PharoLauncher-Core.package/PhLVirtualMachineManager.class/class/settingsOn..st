@@ -7,6 +7,7 @@ settingsOn: aBuilder
 		type: #Directory;
 		parent: #pharoLauncher;
 		target: self;
+		order: 50;
 		default: (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') pathString;
 		description:
 			'Path to the directory containing all the VMs to launcher your Pharo images.' , String cr

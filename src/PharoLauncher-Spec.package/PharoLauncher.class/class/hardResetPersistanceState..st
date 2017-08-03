@@ -4,7 +4,7 @@ hardResetPersistanceState: dontCare
 	SystemWindow allSubInstances do:[:w| w delete].
 	self inform: 'PharoLauncher state reset'.
 	World doOneCycle.
-	1000 milliSeconds wait. "To help user perception that *something* was reset"
+	500 milliSeconds wait. "To help user perception that *something* was reset"
 		
 	packages := RPackageOrganizer default packages select:[:p| 
 		(p name includesSubstring: 'PharoLauncher') ].

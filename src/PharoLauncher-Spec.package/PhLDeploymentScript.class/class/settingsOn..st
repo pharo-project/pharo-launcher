@@ -5,6 +5,7 @@ settingsOn: aBuilder
 	(aBuilder setting: #developmentEnvironmentEnabled) 
 		parent: #pharoLauncher;
 		target: self;
+		order: 60;
 		label: 'Enable development environment' translated;
 		description: 'Missing a feature?  Hey come join in!  Add your custom feature.
 When enabled, exits the Launcher application into the Pharo development environment.

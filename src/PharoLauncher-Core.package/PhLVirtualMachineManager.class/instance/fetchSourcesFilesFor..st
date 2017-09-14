@@ -1,13 +1,13 @@
 private
 fetchSourcesFilesFor: anImageVersionString
-	[ | targetFile | 
-	targetFile := (self availableVirtualMachines at: self imageVersion) asFileReference parent.
-	PhLDownloadManager default 
+	[ | vmFolder sourcesZip |
+	vmFolder := (self availableVirtualMachines at: self imageVersion) asFileReference parent.
+	sourcesZip := vmFolder / ('sourcesV' , anImageVersionString , '.zip').
+	PhLDownloadManager default
 		download: (self sourcesFileUrlFor: anImageVersionString)
-		toFile: targetFile.
-		ZipArchive new
-			readFrom: targetFile / 'sources.zip';
-			extractAllTo: targetFile
-		 ]
-	on: KeyNotFound
-	do: [ self error: 'No Sources file available for ' , anImageVersionString , ' image.' ]
+		toFile: sourcesZip.
+	ZipArchive new
+		readFrom: sourcesZip;
+		extractAllTo: vmFolder ]
+		on: KeyNotFound
+		do: [ self error: 'No Sources file available for ' , anImageVersionString , ' image.' ]

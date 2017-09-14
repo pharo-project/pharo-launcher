@@ -17,4 +17,4 @@ Pharo Launcher files (images, VMs) are now considered as user Documents. Consequ
 		spec 
 			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-PeterUhnak.120';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-BenComan.50';
-			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.13'. ].
+			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.14'. ].

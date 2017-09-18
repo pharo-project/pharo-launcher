@@ -1,7 +1,7 @@
 instance creation
 forCommonTools
 	^ self new
-		setName: 'Common tools'
+		setName: 'Common images'
 			Templates:
 			 
 				{  (self pharo70).	

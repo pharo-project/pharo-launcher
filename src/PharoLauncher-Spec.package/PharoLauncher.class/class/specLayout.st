@@ -4,16 +4,16 @@ specLayout
 	^ SpecLayout composed
 			newRow: 
 			[ 	:r | r 
-				newColumn: 
-				[ 	:c2 | c2
-					add: #imagesModel ;
-					add: #quitOnLaunchCheckBoxModel height: 25 "2013-10-13-BTC How do you left justfiy checkbox?"						
-				] right: 0.66; 
-				addSplitter;
 				newColumn:
 				[	:c3 | c3
 					add: #templatesModel;
-					add: #statusbarModel height: 25
-				] left: 0.34
+					add: #quitOnLaunchCheckBoxModel height: 25 "2013-10-13-BTC How do you left justfiy checkbox?"
+				] left: 0.4;
+				addSplitter;
+				newColumn: 
+				[ 	:c2 | c2
+					add: #imagesModel ;
+					add: #statusbarModel height: 25						
+				] right: 0.6
 			];
 			yourself.

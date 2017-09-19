@@ -12,3 +12,7 @@ relocateImageFilesFrom: extractionDirectory to: targetDirectory withName: target
 	changesFile moveTo: targetDirectory / targetName , 'changes'.
 	sourcesFile exists 
 		ifTrue: [ sourcesFile moveTo: targetDirectory / sourcesFile basename ]
+		ifFalse: [ "ugly hack to handle Pharo 7 - 64 bits images not following the naming scheme"
+			extractionDirectory allFiles 
+				detect: [ :aFile | '*.sources' match: aFile basename ]
+				ifFound: [ :aFile | aFile moveTo: targetDirectory / aFile basename ] ]

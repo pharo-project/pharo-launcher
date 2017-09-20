@@ -6,8 +6,8 @@ fetchSourcesFilesFor: anImageVersionString
 	PhLDownloadManager default
 		download: (self sourcesFileUrlFor: anImageVersionString)
 		toFile: sourcesZip.
-	ZipArchive new
-		readFrom: sourcesZip;
-		extractAllTo: vmFolder ]
+	self class
+		unzip: sourcesZip
+		to: vmFolder ]
 		on: KeyNotFound
 		do: [ self error: 'No Sources file available for ' , anImageVersionString , ' image.' ]

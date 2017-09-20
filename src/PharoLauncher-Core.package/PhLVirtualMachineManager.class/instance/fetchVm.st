@@ -5,8 +5,8 @@ fetchVm
 	PhLDownloadManager default 
 		download: self vmUrl
 		toFile: targetFile.
-	ZipArchive new
-		readFrom: targetFile;
-		extractAllTo: (self vmStore / self vmFileName) ensureCreateDirectory ]
+	self class
+		unzip: targetFile
+		to: (self vmStore / self vmFileName) ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]

@@ -1,7 +1,7 @@
 instance creation
 forCommonTools
 	^ self new
-		setName: 'Common images'
+		setName: 'Official distributions'
 			Templates:
 			 
 				{  (self pharo70).	

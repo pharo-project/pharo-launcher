@@ -1,7 +1,7 @@
 private
 fetchSourcesFilesFor: anImageVersionString
 	[ | vmFolder sourcesZip |
-	vmFolder := (self availableVirtualMachines at: self vmFileName) vmFolderPath.
+	vmFolder := (self availableVirtualMachines at: self vmFileName) vmFolder.
 	sourcesZip := vmFolder / ('sourcesV' , anImageVersionString , '.zip').
 	PhLDownloadManager default
 		download: (self sourcesFileUrlFor: anImageVersionString)

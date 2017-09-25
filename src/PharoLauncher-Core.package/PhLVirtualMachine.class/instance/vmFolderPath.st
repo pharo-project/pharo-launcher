@@ -1,3 +1,3 @@
 accessing
 vmFolderPath
-	^ vmBinaryRef parent fullName
+	^ self vmFolder fullName utf8Encoded asString

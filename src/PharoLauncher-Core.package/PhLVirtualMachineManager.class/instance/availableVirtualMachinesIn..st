@@ -3,12 +3,7 @@ availableVirtualMachinesIn: aFileReference
 	| vmsOnDisk |
 	vmsOnDisk := Dictionary new.
 	aFileReference directories
-		do: [ :entry |
-			self
-				detectExecutable: self class vmExecutableName
-				in: entry
-				ifFound: [ :vmExecutablePath | 
-					vmsOnDisk 
-						at: entry basename 
-						put: vmExecutablePath fullName ] ].
+		do: [ :entry | | vm |
+			vm := PhLVirtualMachine directory: entry.
+			vm ifValid: [ vmsOnDisk at: entry basename put: vm ] ].
 	^ vmsOnDisk

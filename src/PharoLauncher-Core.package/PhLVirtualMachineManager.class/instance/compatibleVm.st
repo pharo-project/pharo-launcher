@@ -4,8 +4,6 @@ compatibleVm
 
 	^ self availableVirtualMachinesByImageFormat
 		at: self imageFormatNumber asString
-		ifPresent: [ :vm | vm executablePath ]
 		ifAbsent: [ | vmPath |
 			self fetchCompatibleVm.
-			vmPath := (self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString)
-				executablePath ]
+			vmPath := self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString ]

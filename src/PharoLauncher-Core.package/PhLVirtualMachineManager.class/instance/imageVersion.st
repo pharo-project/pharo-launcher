@@ -5,8 +5,12 @@ imageVersion
 		[ self imageVersionFromFile ifNil:
 			[ | command |
 			command := String streamContents: [ :stream |
+				stream
+					<< 'cd "' << self compatibleVm executableFolderPath << '" && '.
+				Smalltalk os isUnix 
+					ifTrue: [ stream << 'export SQUEAK_PLUGINS="" && ' ].
 				stream 
-					<< $" << self compatibleVm << $"
+					<< $" << self compatibleVm executablePath << $"
 					<< (Smalltalk os isUnix ifTrue: [ ' --nodisplay ' ] ifFalse: [ ' --headless ' ]) 
 					<< $" << imageFile fullName utf8Encoded asString << '" --no-default-preferences eval '
 					<< $" << self imageVersionFileCreationInstructions << $" ].

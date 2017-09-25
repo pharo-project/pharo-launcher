@@ -2,7 +2,6 @@ tests
 testCanGetImageVersion
 	| version expectedVersion |
 	version := (PhLVirtualMachineManager forImage: Smalltalk image lastImagePath) imageVersion.
-	expectedVersion := SystemVersion current major asString, SystemVersion current minor asString.
 	
 	expectedVersion := (SystemVersion current major = 6 
 			and: [ SystemVersion current highestUpdate >= 60509 ])

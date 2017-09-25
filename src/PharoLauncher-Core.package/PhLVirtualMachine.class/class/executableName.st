@@ -1,3 +1,3 @@
-accessing
-vmExecutableName
+querying
+executableName
 	^ PlatformResolver forCurrentPlatform vmExecutableName

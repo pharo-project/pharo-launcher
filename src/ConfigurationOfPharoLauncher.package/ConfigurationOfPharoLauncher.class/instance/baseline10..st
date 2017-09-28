@@ -21,7 +21,7 @@ baseline10: spec
 			project: 'ProcessWrapper' with: [
 				spec
 					className: #ConfigurationOfProcessWrapper;
-					versionString: #'stable';
+					versionString: #'bleedingEdge';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/hernan/ProcessWrapper/main/' ];
 			project: 'JSON' with: [

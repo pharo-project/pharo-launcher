@@ -14,6 +14,6 @@ imageVersion
 					<< (Smalltalk os isUnix ifTrue: [ ' --nodisplay ' ] ifFalse: [ ' --headless ' ]) 
 					<< $" << imageFile fullName utf8Encoded asString << '" --no-default-preferences eval '
 					<< $" << self imageVersionFileCreationInstructions << $" ].
-			OSProcess thisOSProcess waitForCommand: command.
+			PhLProcessWrapper waitForCommand: command.
 			"we have just generated the version file, get the value"
 			self imageVersionFromFile ] ]

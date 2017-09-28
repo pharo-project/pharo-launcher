@@ -1,7 +1,7 @@
 private
 imageVersionFileCreationInstructions
 	"Pharo 6 images >= 60509 need 61 VM, even though the image states 60"
-	^ '(Smalltalk imageDirectory / ''{1}'') asFileReference 
+	^ '(Smalltalk imagePath asFileReference parent) / ''{1}'' 
 		writeStreamDo: [ :stream | |major minor|
 			major := SystemVersion current major.
 			minor := SystemVersion current minor.
@@ -10,4 +10,4 @@ imageVersionFileCreationInstructions
 			stream 
 				<< major asString;
 				<< minor asString ]'
-		format: { self imageVersionFile basename }
+		format: { self imageVersionFileName }

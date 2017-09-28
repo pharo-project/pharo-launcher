@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 9/28/2017 14:27",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"process"
+	],
+	"name" : "PhLProcessWrapper",
+	"type" : "normal"
+}

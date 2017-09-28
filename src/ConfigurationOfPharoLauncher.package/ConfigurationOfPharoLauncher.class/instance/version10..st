@@ -12,7 +12,6 @@ Pharo Launcher files (images, VMs) are now considered as user Documents. Consequ
 		spec 
 			project: 'XMLParser' with: '3.1.8';
 			project: 'OSProcess' with: '4.6.4';
-			project: 'ProcessWrapper' with: '1.2';
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.24'.
 		spec 

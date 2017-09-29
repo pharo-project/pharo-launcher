@@ -1,3 +1,6 @@
 instance creation
 waitForLinuxCommand: aCommand 
-	^ OSProcess waitForCommand: aCommand
+	^ OSSUnixSubprocess new 
+		shellCommand: aCommand;
+		runAndWait;
+		yourself

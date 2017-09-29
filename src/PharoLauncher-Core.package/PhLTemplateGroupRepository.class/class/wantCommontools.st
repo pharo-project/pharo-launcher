@@ -1,3 +1,3 @@
 settings
 wantCommontools
-	^ self wantGroupNamed: PhLFixedURLsTemplateGroup forCommonTools name
+	^ self wantGroupNamed: PhLFixedURLsTemplateGroup forOfficialDistributions name

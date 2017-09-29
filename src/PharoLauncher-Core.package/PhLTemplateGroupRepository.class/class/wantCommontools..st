@@ -1,3 +1,3 @@
 settings
 wantCommontools: aBoolean
-	self activate: aBoolean GroupNamed: PhLFixedURLsTemplateGroup forCommonTools name
+	self activate: aBoolean GroupNamed: PhLFixedURLsTemplateGroup forOfficialDistributions name

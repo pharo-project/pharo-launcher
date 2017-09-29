@@ -1,8 +1,9 @@
 tests
 testCanDetectExecutablePath
 	"WARNING: this test is Linux specific!"
-	| vm |
-	vm := PhLVirtualMachine directory: Smalltalk imageDirectory parent asFileReference.
+	| vm vmFolder |
+	vmFolder := Smalltalk imageDirectory asFileReference / 'pharo-vm'.
+	vm := PhLVirtualMachine directory: vmFolder.
 	self 
 		assert: vm executablePath
-		equals: (Smalltalk imageDirectory parent / PhLVirtualMachine executableName) fullName
+		equals: (vmFolder / PhLVirtualMachine executableName) fullName

@@ -1,3 +1,3 @@
-as yet unclassified
+settings
 hardResetPersistanceState
 	^false

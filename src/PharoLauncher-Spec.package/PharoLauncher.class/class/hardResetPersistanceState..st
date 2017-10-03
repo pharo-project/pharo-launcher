@@ -1,4 +1,4 @@
-as yet unclassified
+settings
 hardResetPersistanceState: dontCare 
 	|packages|
 	SystemWindow allSubInstances do:[:w| w delete].

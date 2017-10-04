@@ -1,4 +1,4 @@
 unzipping
 systemUnzip: aZipFileReference to: outputDirectory
 	PhLProcessWrapper 
-		waitForCommand: 'unzip  -d "' , outputDirectory fullName, '" "', aZipFileReference fullName, '"'.
+		waitForCommand: 'unzip -o -d "' , outputDirectory fullName, '" "', aZipFileReference fullName, '"'.

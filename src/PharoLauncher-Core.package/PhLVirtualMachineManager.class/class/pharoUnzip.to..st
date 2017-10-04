@@ -1,5 +1,8 @@
 unzipping
 pharoUnzip: aZipFileReference to: outputDirectory
-	ZipArchive new
-		readFrom: aZipFileReference;
-		extractAllTo: outputDirectory
+	UIManager default informUserDuring: 
+		[ :bar | 
+		ZipArchive new
+			readFrom: aZipFileReference;
+			extractAllTo: outputDirectory informing: bar overwrite: true ]
+	

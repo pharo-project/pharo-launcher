@@ -1,3 +1,3 @@
 unzipping
 canUseSytemZip
-	^ (PhLProcessWrapper waitForCommand: 'unzip --help') succeeded
+	^ PhLProcessWrapper isCommandAvailable: 'unzip'

@@ -2,6 +2,7 @@ private
 availableVirtualMachinesIn: aFileReference
 	| vmsOnDisk |
 	vmsOnDisk := Dictionary new.
+	aFileReference ensureCreateDirectory.
 	aFileReference directories
 		reject: [ :entry | entry basename = 'private' ]
 		thenDo: [ :entry | | vm |

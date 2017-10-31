@@ -2,13 +2,13 @@ settings
 settingsOn: aBuilder
 	<systemsettings>
 	<pharoLauncherSettings>
-	(aBuilder setting: #vmStore)
+	(aBuilder setting: #vmStoreString)
 		label: 'VMs Directory' translated;
 		type: #Directory;
 		parent: #pharoLauncher;
 		target: self;
 		order: 50;
-		default: (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') pathString;
+		default: (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms');
 		description:
 			'Path to the directory containing all the VMs to launcher your Pharo images.' , String cr
 				, 'You must have the read/write rights on this folder.' , String cr

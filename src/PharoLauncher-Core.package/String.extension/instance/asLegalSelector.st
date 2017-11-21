@@ -1,4 +1,4 @@
-*pharolauncher-core
+*PharoLauncher-Core
 asLegalSelector
 	"'234znak 43 ) 2' asLegalSelector"
 	

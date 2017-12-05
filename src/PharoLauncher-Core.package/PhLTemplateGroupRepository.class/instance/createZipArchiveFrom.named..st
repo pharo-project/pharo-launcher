@@ -3,4 +3,4 @@ createZipArchiveFrom: anImage named: aString
 	ZipArchive new
 		addFile: anImage imageFile as: aString , '.image';
 		addFile: anImage changesFile as: aString , '.changes';
-		writeToFileNamed: PhLLocalTemplateGroup default baseDirectory / aString , 'zip'
+		writeToFileNamed: PhLDownloadedTemplateGroup default baseDirectory / aString , 'zip'

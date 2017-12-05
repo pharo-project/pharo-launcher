@@ -1,3 +1,3 @@
 private
 wantLocal
-	^ self wantGroupNamed: PhLLocalTemplateGroup default name
+	^ self wantGroupNamed: PhLDownloadedTemplateGroup default name

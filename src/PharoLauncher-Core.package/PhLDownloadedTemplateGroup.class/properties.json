@@ -8,6 +8,6 @@
 		"Default"
 	],
 	"instvars" : [ ],
-	"name" : "PhLLocalTemplateGroup",
+	"name" : "PhLDownloadedTemplateGroup",
 	"type" : "normal"
 }

@@ -14,5 +14,5 @@ groups
 			Groups at: PhLFixedURLsTemplateGroup forDeprecatedDistributions put: true.
 			Groups at: PhLFixedURLsTemplateGroup forOfficialDistributions put: true.
 			Groups at: PhLFixedURLsTemplateGroup forPharoMooc put: true.
-			Groups at: PhLLocalTemplateGroup default put: true.
+			Groups at: PhLDownloadedTemplateGroup default put: true.
 			^ Groups ]

@@ -1,3 +1,3 @@
 private
 wantLocal: aBoolean
-	self activate: aBoolean GroupNamed: PhLLocalTemplateGroup default name
+	self activate: aBoolean GroupNamed: PhLDownloadedTemplateGroup default name

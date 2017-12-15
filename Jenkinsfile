@@ -2,6 +2,7 @@ node {
     stage('Build') {
     	cleanWs()
     	checkout scm
+    	git('https://github.com/pharo-project/pharo-build-scripts.git')
 
         sh 'build.sh prepare'
     }

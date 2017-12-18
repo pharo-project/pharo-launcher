@@ -17,22 +17,16 @@ node('linux') {
     }
 
     stage('Test') {
-    	copyImage()
-    	copyVm()
     	sh 'build.sh test'
         junit '*.xml'
     }
 
     stage('Packaging-developer') {
-    	copyImage()
-    	copyVm()
     	sh 'build.sh developer'
     	archiveArtifacts artifacts: 'PharoLauncher-developer.zip, version.txt', fingerprint: true
     }
 
     stage('Packaging-user') {
-    	copyImage()
-    	copyVm()
     	sh 'build.sh developer'
     	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, Pharo-mac.zip, Pharo-win.zip, Pharo-linux.zip, version.txt', fingerprint: true
     }
@@ -42,14 +36,4 @@ node('linux') {
             sh 'echo publish'
         }
     }
-}
-
-def copyVm() {
-	// Copy vm files from the 'Build' stage to the current stage
-	sh 'cp ../Build/pharo . && cp -R ../Build/pharo-vm .'
-}
-
-def copyImage() {
-	// Copy image files from the 'Build' stage to the current stage
-  	sh 'cp ../Build/PharoLauncher.image . && cp ../Build/PharoLauncher.changes .'
 }

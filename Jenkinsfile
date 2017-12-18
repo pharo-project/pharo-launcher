@@ -49,12 +49,12 @@ node('linux') {
 
 def copyVm() {
 	// Copy vm files from the 'Build' stage to the current stage
-	cp ../Build/pharo .
-    cp -R ../Build/pharo-vm .
+	sh 'cp ../Build/pharo .
+    cp -R ../Build/pharo-vm .'
 }
 
 def copyImage() {
 	// Copy image files from the 'Build' stage to the current stage
-  	cp ../Build/PharoLauncher.image .
-  	cp ../Build/PharoLauncher.changes .
+  	sh 'cp ../Build/PharoLauncher.image .
+  	cp ../Build/PharoLauncher.changes .'
 }

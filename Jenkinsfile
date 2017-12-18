@@ -29,7 +29,7 @@ node('linux') {
 	    }
 
 	    stage('Packaging-user') {
-	    	sh './build.sh developer'
+	    	sh './build.sh user'
 	    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, Pharo-mac.zip, Pharo-win.zip, Pharo-linux.zip, version.txt', fingerprint: true
 	    }
 

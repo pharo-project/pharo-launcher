@@ -1,3 +1,10 @@
+properties([parameters(
+	[string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?')],
+	[string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?')],
+	[string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')]
+)])
+
+
 node('linux') {
 
     stage('Build') {
@@ -6,7 +13,8 @@ node('linux') {
     	dir('pharo-build-scripts') {
     		git('https://github.com/pharo-project/pharo-build-scripts.git')
     	}
-        sh './build.sh prepare bleedingEdge'
+        sh './build.sh prepare'
+        archiveArtifacts artifacts: 'PharoLauncher.image, PharoLauncher.changes', fingerprint: true
     }
 
     stage('Test') {

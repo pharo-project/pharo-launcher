@@ -17,7 +17,6 @@ node('linux') {
     }
 
     stage('Test') {
-    	cleanWs()
     	copyImage()
     	copyVm()
     	sh 'build.sh test'
@@ -25,7 +24,6 @@ node('linux') {
     }
 
     stage('Packaging-developer') {
-    	cleanWs()
     	copyImage()
     	copyVm()
     	sh 'build.sh developer'
@@ -33,7 +31,6 @@ node('linux') {
     }
 
     stage('Packaging-user') {
-    	cleanWs()
     	copyImage()
     	copyVm()
     	sh 'build.sh developer'

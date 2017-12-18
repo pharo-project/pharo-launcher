@@ -13,7 +13,7 @@ node('linux') {
     	dir('pharo-build-scripts') {
     		git('https://github.com/pharo-project/pharo-build-scripts.git')
     	}
-        sh './build.sh prepare ${params.VERSION}'
+        sh "./build.sh prepare ${params.VERSION}"
         archiveArtifacts artifacts: 'PharoLauncher.image, PharoLauncher.changes', fingerprint: true
     }
 

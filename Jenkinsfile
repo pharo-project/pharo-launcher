@@ -18,7 +18,7 @@ node('linux') {
     }
 
     stage('Test') {
-    	copyArtifacts(projectName: 'Build');
+    	step ([$class: 'CopyArtifact', projectName: 'Build', filter: '*', target: '.']);
         sh 'build.sh test'
         junit '*.xml'
     }

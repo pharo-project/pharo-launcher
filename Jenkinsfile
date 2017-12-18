@@ -1,10 +1,12 @@
-node {
+node('linux') {
+
     stage('Build') {
     	cleanWs()
     	checkout scm
-    	git('https://github.com/pharo-project/pharo-build-scripts.git')
-
-        sh 'ls && ./build.sh prepare'
+    	dir('pharo-build-scripts') {
+    		git('https://github.com/pharo-project/pharo-build-scripts.git')
+    	}
+        sh './build.sh prepare'
     }
 
     stage('Test') {

@@ -17,17 +17,17 @@ node('linux') {
     }
 
     stage('Test') {
-    	sh 'build.sh test'
+    	sh './build.sh test'
         junit '*.xml'
     }
 
     stage('Packaging-developer') {
-    	sh 'build.sh developer'
+    	sh './build.sh developer'
     	archiveArtifacts artifacts: 'PharoLauncher-developer.zip, version.txt', fingerprint: true
     }
 
     stage('Packaging-user') {
-    	sh 'build.sh developer'
+    	sh './build.sh developer'
     	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, Pharo-mac.zip, Pharo-win.zip, Pharo-linux.zip, version.txt', fingerprint: true
     }
 

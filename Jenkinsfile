@@ -4,21 +4,6 @@ properties([parameters([
 	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')
 ])])
 
-def notifyBuild(status) {
-	if (currentBuild.result != 'SUCCESS') { // Possible values: SUCCESS, UNSTABLE, FAILURE
-        // Send an email only if the build status has changed from green to unstable or red
-        emailext subject: '$DEFAULT_SUBJECT',
-            body: '$DEFAULT_CONTENT',
-            recipientProviders: [
-                [$class: 'CulpritsRecipientProvider'],
-                [$class: 'DevelopersRecipientProvider'],
-                [$class: 'RequesterRecipientProvider']
-            ], 
-            replyTo: '$DEFAULT_REPLYTO',
-            to: 'christophe.demarey@inria.fr'
-    }
-}
-
 try {
 	node('linux') {
 
@@ -62,4 +47,19 @@ try {
 	throw exception
 } finally {
      notifyBuild()
+}
+
+def notifyBuild() {
+	if (currentBuild.result != 'SUCCESS') { // Possible values: SUCCESS, UNSTABLE, FAILURE
+        // Send an email only if the build status has changed from green to unstable or red
+        emailext subject: '$DEFAULT_SUBJECT',
+            body: '$DEFAULT_CONTENT',
+            recipientProviders: [
+                [$class: 'CulpritsRecipientProvider'],
+                [$class: 'DevelopersRecipientProvider'],
+                [$class: 'RequesterRecipientProvider']
+            ], 
+            replyTo: '$DEFAULT_REPLYTO',
+            to: 'christophe.demarey@inria.fr'
+    }
 }

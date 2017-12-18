@@ -12,6 +12,7 @@ try {
 	             "VM=${params.VM}"]) {
 
 		    stage('Build') {
+		    	sh 'fail'
 		    	cleanWs()
 		    	checkout scm
 		    	dir('pharo-build-scripts') {
@@ -37,20 +38,20 @@ try {
 
 		    stage('Deploy') {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') { 
-		            sh 'zecho publish'
+		            sh 'echo publish'
 		        }
 		    }
 		}
 	}
 } catch(exception) {
-	notifyBuild("FAILURE")
+	currentBuild.result = 'FAILURE'
 	throw exception
 } finally {
-     notifyBuild(currentBuild.result)
+     notifyBuild()
 }
 
 def notifyBuild(status) {
-	if (currentBuild.currentResult != 'SUCCESS') { // Possible values: SUCCESS, UNSTABLE, FAILURE
+	if (currentBuild.result != 'SUCCESS') { // Possible values: SUCCESS, UNSTABLE, FAILURE
         // Send an email only if the build status has changed from green to unstable or red
         emailext subject: '$DEFAULT_SUBJECT',
             body: '$DEFAULT_CONTENT',

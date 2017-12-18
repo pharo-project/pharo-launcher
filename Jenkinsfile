@@ -14,15 +14,17 @@ node('linux') {
     		git('https://github.com/pharo-project/pharo-build-scripts.git')
     	}
         sh "./build.sh prepare ${params.VERSION}"
-        archiveArtifacts artifacts: 'PharoLauncher.image, PharoLauncher.changes', fingerprint: true
+        archiveArtifacts artifacts: 'PharoLauncher.image, PharoLauncher.changes, pharo, pharo-vm', fingerprint: true
     }
 
     stage('Test') {
+    	copyArtifacts(projectName: 'Build');
         sh 'build.sh test'
         junit '*.xml'
     }
 
     stage('Packaging-developer') {
+    	copyArtifacts(projectName: 'Build');
     	sh 'build.sh developer'
     	archiveArtifacts artifacts: 'PharoLauncher-developer.zip, version.txt', fingerprint: true
     }

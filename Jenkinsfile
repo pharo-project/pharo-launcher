@@ -11,7 +11,6 @@ try {
 	             "VM=${params.VM}"]) {
 
 		    stage('Build') {
-		    	sh 'fail'
 		    	cleanWs()
 		    	checkout scm
 		    	dir('pharo-build-scripts') {

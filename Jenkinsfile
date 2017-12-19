@@ -31,7 +31,22 @@ try {
 
 		    stage('Packaging-user') {
 		    	sh './build.sh user'
-		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, Pharo-mac.zip, Pharo-win.zip, Pharo-linux.zip, version.txt', fingerprint: true
+		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+		    }
+
+		    stage('Packaging-Linux') {
+		    	sh './build.sh linux-package'
+		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
+		    }
+
+		    stage('Packaging-Mac') {
+		    	sh './build.sh mac-package'
+		    	archiveArtifacts artifacts: 'mac-package/Pharo*.dmg', fingerprint: true
+		    }
+
+		    stage('Packaging-Windows') {
+		    	sh './build.sh win-package'
+		    	archiveArtifacts artifacts: 'windows-package/pharo_installer*.exe', fingerprint: true
 		    }
 
 		    stage('Deploy') {

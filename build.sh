@@ -40,9 +40,9 @@ function run_tests() {
 function package_developer_version() {
 	./pharo PharoLauncher.image eval --save "PhLDirectoryBasedImageRepository location"
 	./pharo PharoLauncher.image eval '(MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher) version versionNumber' > launcher-version.txt
-	VERSION_NUMBER=$(cat launcher-version.txt)
-
-	zip -9r PharoLauncher-developer.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
+	set_version_number
+	DATE=$(date +%Y.%m.%d)
+	zip -9r PharoLauncher-developer-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
 
 function package_user_version() {
@@ -57,19 +57,46 @@ function package_user_version() {
 	mkdir One/win
 	cp ProcessWrapperPlugin.dll One/win/
 	cd One
-	get_pharo_sources_version $PHARO_SOURCES
+	get_pharo_sources_version $PHARO
 	copy_current_stable_image
 	cd ..
 
 	DATE=$(date +%Y.%m.%d)
-	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
-	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
-	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
-	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
+	set_version_number
 
 	zip -9r PharoLauncher-user-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
-
 	md5sum PharoLauncher-user-$ARCH-$VERSION-$DATE.zip > PharoLauncher-user-$VERSION-$DATE.zip.md5sum
+}
+
+function package_linux_version() {
+	set_version_number
+	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
+	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
+}
+
+function package_mac_version() {
+	set_version_number
+	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
+	mkdir mac-package && cd "$_"
+	unzip ../Pharo-mac.zip -d .
+	cp ../pharo-build-scripts/background/background.png .
+	
+	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-dmg.sh
+	local generated_dmg=$(echo *.dmg)
+	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
+}
+
+function package_windows_version() {
+	set_version_number
+	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
+	mkdir windows-package && cd "$_"
+	unzip ../Pharo-win.zip -d .
+	
+	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-windows-installer.sh
+}
+
+function set_version_number() {
+	VERSION_NUMBER=$(cat launcher-version.txt)
 }
 
 function copy_current_stable_image() {
@@ -110,8 +137,18 @@ developer)
 user)
   package_user_version
   ;;
+win-package)
+  package_windows_version
+  ;;
+mac-package)
+  package_mac_version
+  ;;
+linux-package)
+  package_linux_version
+  ;;
 all)
-  prepare_image && run_tests && package_developer_version && package_user_version
+  prepare_image && run_tests && package_developer_version && package_user_version \
+  	&& package_linux_version && package_mac_version && package_windows_version
   ;;
 *)
   echo "No valid target specified! Exiting"

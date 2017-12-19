@@ -16,9 +16,9 @@ set -ex
 
 function prepare_image() {
 	case "$ARCH" in
-	        32) $ARCH_PATH=
+	        32) ARCH_PATH=
 	        	;;
-	        64) $ARCH_PATH="64/"
+	        64) ARCH_PATH="64/"
 	        	;;
 	        *) 	echo "Error! Architecture $ARCH is not supported!"
 				exit 1

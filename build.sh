@@ -5,8 +5,9 @@ set -ex
 # Pharo Launcher build script
 #
 # We expect to have $PHARO and $VM parameter available in the environment
-# $PHARO : version of the Pharo image, e.g. 61
-# $VM : version of the VM, e.g. vm
+# $PHARO : 	version of the Pharo image, e.g. 61
+# $VM : 	version of the VM, e.g. vm
+# $ARCH : 	targeted architecture 32 or 64 bits. Default will be 32.
 # $VERSION: the Metacello version of PharoLauncher to load
 
 # Script parameters
@@ -14,7 +15,16 @@ set -ex
 # $2: a value for $VERSION (optional)
 
 function prepare_image() {
-	wget --quiet -O - get.pharo.org/$PHARO+$VM | bash
+	case "$ARCH" in
+	        32) $ARCH_PATH=
+	        	;;
+	        64) $ARCH_PATH="64/"
+	        	;;
+	        *) 	echo "Error! Architecture $ARCH is not supported!"
+				exit 1
+				;;
+	esac
+	wget --quiet -O - get.pharo.org/$ARCH$PHARO+$VM | bash
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
@@ -55,11 +65,11 @@ function package_user_version() {
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
-	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER.zip
+	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
 
-	zip -9r PharoLauncher-user-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
+	zip -9r PharoLauncher-user-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 
-	md5sum PharoLauncher-user-$VERSION-$DATE.zip > PharoLauncher-user-$VERSION-$DATE.zip.md5sum
+	md5sum PharoLauncher-user-$ARCH-$VERSION-$DATE.zip > PharoLauncher-user-$VERSION-$DATE.zip.md5sum
 }
 
 function copy_current_stable_image() {
@@ -80,11 +90,12 @@ function get_pharo_sources_version() {
 
 PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
 VM=${VM:=vm}			# If VM not set, set it to vm.
+ARCH=${ARCH:-'32'}		# If ARCH not set, set it to 32 bits
 VERSION=${VERSION:=$2}  # If VERSION not set, set it to the first parameter of this script. Will fail if not provided
 
 SCRIPT_TARGET=${1:-all}
 echo "Running target $SCRIPT_TARGET"
-echo "Using a Pharo$PHARO image and $VM virtual machines from get-giles. Will load version $VERSION of PharoLauncher"
+echo "Using a Pharo$PHARO image and ${ARCH}-bits $VM virtual machines from get-giles. Will load version $VERSION of PharoLauncher"
 
 case $SCRIPT_TARGET in
 prepare)

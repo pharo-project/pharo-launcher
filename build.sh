@@ -40,7 +40,7 @@ function run_tests() {
 function package_developer_version() {
 	./pharo PharoLauncher.image eval --save "PhLDirectoryBasedImageRepository location"
 	./pharo PharoLauncher.image eval '(MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher) version versionNumber' > launcher-version.txt
-	set_version_number
+	set_env
 	DATE=$(date +%Y.%m.%d)
 	zip -9r PharoLauncher-developer-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
@@ -61,21 +61,20 @@ function package_user_version() {
 	copy_current_stable_image
 	cd ..
 
-	DATE=$(date +%Y.%m.%d)
-	set_version_number
+	set_env
 
 	zip -9r PharoLauncher-user-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 	md5sum PharoLauncher-user-$ARCH-$VERSION-$DATE.zip > PharoLauncher-user-$VERSION-$DATE.zip.md5sum
 }
 
 function package_linux_version() {
-	set_version_number
+	set_env
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
 	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
 }
 
 function package_mac_version() {
-	set_version_number
+	set_env
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
 	mkdir mac-package && cd "$_"
 	unzip ../Pharo-mac.zip -d .
@@ -87,7 +86,7 @@ function package_mac_version() {
 }
 
 function package_windows_version() {
-	set_version_number
+	set_env
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	mkdir windows-package && cd "$_"
 	unzip ../Pharo-win.zip -d .
@@ -95,8 +94,10 @@ function package_windows_version() {
 	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-windows-installer.sh
 }
 
-function set_version_number() {
+function set_env() {
 	VERSION_NUMBER=$(cat launcher-version.txt)
+	set_pharo_sources_version
+	DATE=$(date +%Y.%m.%d)
 }
 
 function copy_current_stable_image() {
@@ -106,12 +107,16 @@ function copy_current_stable_image() {
     mv "$IMAGES_PATH/latest.zip" "$IMAGES_PATH/pharo-stable.zip"
 }
 
-function get_pharo_sources_version() {
+function set_pharo_sources_version() {
 	local HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://files.pharo.org/sources/PharoV$1.sources.zip)
 	if [ $HTTP_CODE -eq 404 ]
 	then
   		PHARO_SOURCES=60
 	fi
+}
+
+function get_pharo_sources_version() {
+	set_pharo_sources_version
 	wget --quiet https://files.pharo.org/sources/PharoV${PHARO_SOURCES}.sources.zip && unzip PharoV${PHARO_SOURCES}.sources.zip PharoV${PHARO_SOURCES}.sources && rm PharoV${PHARO_SOURCES}.sources.zip
 }
 

@@ -60,7 +60,6 @@ function package_user_version() {
 	get_pharo_sources_version $PHARO
 	copy_current_stable_image
 	cd ..
-	zip -9r PharoLauncher-one-click-packaging.zip One
 
 	set_env
 
@@ -76,7 +75,6 @@ function package_linux_version() {
 
 function package_mac_version() {
 	set_env
-	unzip PharoLauncher-one-click-packaging.zip -d .
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
 	unzip Pharo-mac.zip -d .
 	mv mac-installer-background.png background.png
@@ -88,7 +86,6 @@ function package_mac_version() {
 
 function package_windows_version() {
 	set_env
-	unzip PharoLauncher-one-click-packaging.zip -d .
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	

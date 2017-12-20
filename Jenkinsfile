@@ -33,7 +33,7 @@ try {
 
 		    stage('Packaging-user') {
 		    	sh './build.sh user'
-		    	stash includes: 'PharoLauncher-one-click-packaging.zip, build.sh, mac-installer-background.png, pharo-build-scripts, launcher-version.txt', name: 'pharo-launcher-one'
+		    	stash includes: 'PharoLauncher-one-click-packaging.zip, build.sh, mac-installer-background.png, pharo-build-scripts, launcher-version.txt, One', name: 'pharo-launcher-one'
 		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, PharoLauncher-one-click-packaging.zip', fingerprint: true
 		    }
 

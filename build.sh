@@ -69,7 +69,7 @@ function package_user_version() {
 
 function package_linux_version() {
 	set_env
-	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
+	./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
 	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
 }
 

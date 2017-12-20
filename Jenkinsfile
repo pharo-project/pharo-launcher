@@ -1,3 +1,5 @@
+#!/usr/bin/env groovy
+
 properties([parameters([
 	string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
 	string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
@@ -31,22 +33,18 @@ try {
 
 		    stage('Packaging-user') {
 		    	sh './build.sh user'
-		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+		    	stash includes: 'PharoLauncher-one-click-packaging.zip', name: 'pharo-launcher-one'
+		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, PharoLauncher-one-click-packaging.zip', fingerprint: true
 		    }
 
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
-		    }
-
-		    stage('Packaging-Mac') {
-		    	sh './build.sh mac-package'
-		    	archiveArtifacts artifacts: 'mac-package/Pharo*.dmg', fingerprint: true
-		    }
-
-		    stage('Packaging-Windows') {
-		    	sh './build.sh win-package'
-		    	archiveArtifacts artifacts: 'windows-package/pharo_installer*.exe', fingerprint: true
+		    	node('windows') {
+		    		unstash 'pharo-launcher-one'
+		    		sh './build.sh win-package'
+		    		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+		    	}
 		    }
 
 		    stage('Deploy') {
@@ -56,6 +54,25 @@ try {
 		    }
 		}
 	}
+	/*node('windows') {
+	    withEnv(["PHARO=${params.PHARO}",
+	             "VM=${params.VM}"]) {
+		    stage('Packaging-Windows') {
+		    	sh './build.sh win-package'
+		    	archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+		    }
+		}
+	}
+	node('mac') {
+	    withEnv(["PHARO=${params.PHARO}",
+	             "VM=${params.VM}"]) {
+		    stage('Packaging-Mac') {
+		    	sh './build.sh mac-package'
+		    	archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+		    }
+
+	    }
+	}*/
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception

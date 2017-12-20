@@ -60,6 +60,7 @@ function package_user_version() {
 	get_pharo_sources_version $PHARO
 	copy_current_stable_image
 	cd ..
+	zip -9r One PharoLauncher-one-click-packaging.zip One
 
 	set_env
 
@@ -75,10 +76,10 @@ function package_linux_version() {
 
 function package_mac_version() {
 	set_env
+	unzip PharoLauncher-one-click-packaging.zip -d .
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
-	mkdir mac-package && cd "$_"
-	unzip ../Pharo-mac.zip -d .
-	cp ../pharo-build-scripts/background/background.png .
+	unzip Pharo-mac.zip -d .
+	mv mac-installer-background.png background.png
 	
 	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
@@ -87,9 +88,9 @@ function package_mac_version() {
 
 function package_windows_version() {
 	set_env
+	unzip PharoLauncher-one-click-packaging.zip -d .
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
-	mkdir windows-package && cd "$_"
-	unzip ../Pharo-win.zip -d .
+	unzip Pharo-win.zip -d .
 	
 	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-windows-installer.sh
 }
@@ -153,7 +154,7 @@ linux-package)
   ;;
 all)
   prepare_image && run_tests && package_developer_version && package_user_version \
-  	&& package_linux_version && package_mac_version && package_windows_version
+  	&& package_linux_version
   ;;
 *)
   echo "No valid target specified! Exiting"

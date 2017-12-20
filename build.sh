@@ -60,7 +60,7 @@ function package_user_version() {
 	get_pharo_sources_version $PHARO
 	copy_current_stable_image
 	cd ..
-	zip -9r One PharoLauncher-one-click-packaging.zip One
+	zip -9r PharoLauncher-one-click-packaging.zip One
 
 	set_env
 

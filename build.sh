@@ -110,7 +110,7 @@ function copy_current_stable_image() {
 
 function set_pharo_sources_version() {
 	local sources_file=$(ls One/PharoV*.sources)
-	if [ -n sources_file ]
+	if [ -z "$sources_file" ]
 	then
 		# Need to determine Sources file version
 		local HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://files.pharo.org/sources/PharoV$1.sources.zip)

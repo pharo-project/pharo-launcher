@@ -41,6 +41,7 @@ try {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
 		    	node('windows') {
+		    		cleanWs()
 		    		unstash 'pharo-launcher-one'
 		    		sh './build.sh win-package'
 		    		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true

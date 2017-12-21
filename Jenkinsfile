@@ -27,7 +27,7 @@ try {
 
 		    stage('Packaging-developer') {
 		    	sh './build.sh developer'
-		    	archiveArtifacts artifacts: 'PharoLauncher-developer.zip, version.txt', fingerprint: true
+		    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
 		    }
 
 		    stage('Packaging-user') {
@@ -39,18 +39,6 @@ try {
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
-		    	node('windows') {
-		    		cleanWs()
-		    		unstash 'pharo-launcher-one'
-		    		bat 'bash -c "./build.sh win-package"'
-		    		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
-		    	}
-		    	/*node('mac') {
-		    		cleanWs()
-		    		unstash 'pharo-launcher-one'
-		    		sh './build.sh mac-package'
-		    		archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
-		    	}*/
 		    }
 
 		    stage('Deploy') {
@@ -60,25 +48,18 @@ try {
 		    }
 		}
 	}
-	/*node('windows') {
-	    withEnv(["PHARO=${params.PHARO}",
-	             "VM=${params.VM}"]) {
-		    stage('Packaging-Windows') {
-		    	sh './build.sh win-package'
-		    	archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
-		    }
-		}
-	}
+	node('windows') {
+		cleanWs()
+		unstash 'pharo-launcher-one'
+		bat 'bash -c "./build.sh win-package"'
+		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+   	}
 	node('mac') {
-	    withEnv(["PHARO=${params.PHARO}",
-	             "VM=${params.VM}"]) {
-		    stage('Packaging-Mac') {
-		    	sh './build.sh mac-package'
-		    	archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
-		    }
-
-	    }
-	}*/
+		cleanWs()
+		unstash 'pharo-launcher-one'
+		sh './build.sh mac-package'
+		archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+	}
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception

@@ -46,6 +46,12 @@ try {
 		    		bat 'bash -c "./build.sh win-package"'
 		    		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
 		    	}
+		    	/*node('mac') {
+		    		cleanWs()
+		    		unstash 'pharo-launcher-one'
+		    		sh './build.sh mac-package'
+		    		archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+		    	}*/
 		    }
 
 		    stage('Deploy') {

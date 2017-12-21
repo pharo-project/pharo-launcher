@@ -43,7 +43,7 @@ try {
 		    	node('windows') {
 		    		cleanWs()
 		    		unstash 'pharo-launcher-one'
-		    		sh './build.sh win-package'
+		    		bat 'bash -c ./build.sh win-package'
 		    		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
 		    	}
 		    }

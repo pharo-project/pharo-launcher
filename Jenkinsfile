@@ -7,11 +7,10 @@ properties([parameters([
 ])])
 
 try {
-	node('linux') {
-
-	    withEnv(["PHARO=${params.PHARO}",
+    withEnv(["PHARO=${params.PHARO}",
 	             "VM=${params.VM}"]) {
 
+		node('linux') {
 		    stage('Build') {
 		    	cleanWs()
 		    	checkout scm

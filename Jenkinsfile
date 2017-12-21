@@ -49,16 +49,20 @@ try {
 		}
 	}
 	node('windows') {
-		cleanWs()
-		unstash 'pharo-launcher-one'
-		bat 'bash -c "./build.sh win-package"'
-		archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+		stage('Packaging-Windows') {
+			cleanWs()
+			unstash 'pharo-launcher-one'
+			bat 'bash -c "./build.sh win-package"'
+			archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+		}
    	}
-	node('mac') {
-		cleanWs()
-		unstash 'pharo-launcher-one'
-		sh './build.sh mac-package'
-		archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+	node('osx') {
+		stage('Packaging-Mac') {
+			cleanWs()
+			unstash 'pharo-launcher-one'
+			sh './build.sh mac-package'
+			archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+		}
 	}
 } catch(exception) {
 	currentBuild.result = 'FAILURE'

@@ -79,7 +79,7 @@ function package_mac_version() {
 	unzip Pharo-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
-	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-dmg.sh
+	VERSION=$VERSION_NUMBER ../pharo-build-scripts/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
 }
@@ -89,7 +89,7 @@ function package_windows_version() {
 	./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
-	VERSION=$(VERSION_NUMBER) ../pharo-build-scripts/build-windows-installer.sh
+	VERSION=$VERSION_NUMBER ../pharo-build-scripts/build-windows-installer.sh
 }
 
 function set_env() {

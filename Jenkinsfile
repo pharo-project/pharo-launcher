@@ -40,7 +40,7 @@ try {
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
-		    	upload('Pharo-linux-*.zip', ${params.VERSION})
+		    	upload('Pharo-linux-*.zip', params.VERSION)
 		    }
 		}
 	}

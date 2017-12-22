@@ -92,9 +92,14 @@ function package_windows_version() {
 }
 
 function set_env() {
-	VERSION_NUMBER=$(cat launcher-version.txt)
-	set_pharo_sources_version
 	DATE=$(date +%Y.%m.%d)
+	if [ "$VERSION" == "bleedingEdge" ]
+	then
+		VERSION_NUMBER="$VERSION-$DATE"
+	else
+		VERSION_NUMBER=$VERSION
+	fi
+	set_pharo_sources_version
 }
 
 function copy_current_stable_image() {

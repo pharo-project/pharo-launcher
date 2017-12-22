@@ -43,7 +43,7 @@ try {
 
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
-		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
+		    	archiveArtifacts artifacts: 'PharoLauncher-linux-*.zip', fingerprint: true
 		    	upload('PharoLauncher-linux-*.zip', params.VERSION)
 		    }
 		}
@@ -53,7 +53,7 @@ try {
 			cleanWs()
 			unstash 'pharo-launcher-one'
 			bat 'bash -c "./build.sh win-package"'
-			archiveArtifacts artifacts: 'pharo_launcher_installer*.exe', fingerprint: true
+			archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
 		    stash includes: 'pharo_launcher_installer*.exe', name: 'pharo-launcher-win-packages'
 		}
    	}

@@ -41,7 +41,7 @@ function package_developer_version() {
 	./pharo PharoLauncher.image eval --save "PhLDirectoryBasedImageRepository location"
 	./pharo PharoLauncher.image eval '(MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher) version versionNumber' > launcher-version.txt
 	set_env
-	zip -9r PharoLauncher-developer-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
+	zip -9r PharoLauncher-developer-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
 
 function package_user_version() {
@@ -62,8 +62,8 @@ function package_user_version() {
 
 	set_env
 
-	zip -9r PharoLauncher-user-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
-	md5sum PharoLauncher-user-$ARCH-$VERSION-$DATE.zip > PharoLauncher-user-$VERSION-$DATE.zip.md5sum
+	zip -9r PharoLauncher-user-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
+	md5sum PharoLauncher-user-$VERSION_NUMBER.zip > PharoLauncher-user-$VERSION_NUMBER.zip.md5sum
 }
 
 function package_linux_version() {

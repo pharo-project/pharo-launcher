@@ -70,7 +70,7 @@ try {
 		stage('Deploy') {
 			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 			    unstash 'pharo-launcher-win-packages'
-			    upload('pharo_launcher_installer*.exe', params.VERSION)
+			    upload('pharo-launcher-installer*.exe', params.VERSION)
 			    unstash 'pharo-launcher-osx-packages'
 			    upload('PharoLauncher*.dmg', params.VERSION)
 		    }

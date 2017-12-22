@@ -80,7 +80,7 @@ function package_mac_version() {
 	
 	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
-	mv "$generated_dmg" ${generated_dmg/Pharo/PharoLauncher}
+	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
 }
@@ -91,7 +91,7 @@ function package_windows_version() {
 	unzip Pharo-win.zip -d .
 	
 	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-windows-installer.sh
-	mv pharo_installer-"$VERSION_NUMBER".exe pharo_launcher_installer-"$VERSION_NUMBER".exe
+	mv pharo_installer-"$VERSION_NUMBER".exe pharo-launcher-installer-"$VERSION_NUMBER".exe
 }
 
 function set_env() {

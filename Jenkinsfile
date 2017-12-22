@@ -69,8 +69,6 @@ try {
 	node('linux') {
 		stage('Deploy') {
 			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-				sh 'ls'
-				unarchive // ??
 			    sh 'ls && echo publish'
 		    }
 		}		

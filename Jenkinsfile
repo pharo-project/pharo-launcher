@@ -40,12 +40,6 @@ try {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
 		    }
-
-		    stage('Deploy') {
-				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') { 
-		            sh 'echo publish'
-		        }
-		    }
 		}
 	}
 	node('windows') {
@@ -64,6 +58,16 @@ try {
 			archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
 		}
 	}
+	node('linux') {
+		stage('Deploy') {
+			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+				dir('pharo-build-scripts') {
+					unarchive // ??
+			        sh 'ls && echo publish'
+		    	}
+		    }
+		}		
+	}
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception
@@ -76,11 +80,6 @@ def notifyBuild() {
         // Send an email only if the build status has changed from green to unstable or red
         emailext subject: '$DEFAULT_SUBJECT',
             body: '$DEFAULT_CONTENT',
-            recipientProviders: [
-                [$class: 'CulpritsRecipientProvider'],
-                [$class: 'DevelopersRecipientProvider'],
-                [$class: 'RequesterRecipientProvider']
-            ], 
             replyTo: '$DEFAULT_REPLYTO',
             to: 'christophe.demarey@inria.fr'
     }

@@ -44,7 +44,7 @@ try {
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
-		    	upload('Pharo-linux-*.zip', params.VERSION)
+		    	upload('PharoLauncher-linux-*.zip', params.VERSION)
 		    }
 		}
 	}
@@ -53,8 +53,8 @@ try {
 			cleanWs()
 			unstash 'pharo-launcher-one'
 			bat 'bash -c "./build.sh win-package"'
-			archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
-		    stash includes: 'pharo_installer*.exe', name: 'pharo-launcher-win-packages'
+			archiveArtifacts artifacts: 'pharo_launcher_installer*.exe', fingerprint: true
+		    stash includes: 'pharo_launcher_installer*.exe', name: 'pharo-launcher-win-packages'
 		}
    	}
 	node('osx') {
@@ -62,17 +62,17 @@ try {
 			cleanWs()
 			unstash 'pharo-launcher-one'
 			sh './build.sh mac-package'
-			archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
-		    stash includes: 'Pharo*.dmg', name: 'pharo-launcher-osx-packages'
+			archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
+		    stash includes: 'PharoLauncher*.dmg', name: 'pharo-launcher-osx-packages'
 		}
 	}
 	node('linux') {
 		stage('Deploy') {
 			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 			    unstash 'pharo-launcher-win-packages'
-			    upload('pharo_installer*.exe', params.VERSION)
+			    upload('pharo_launcher_installer*.exe', params.VERSION)
 			    unstash 'pharo-launcher-osx-packages'
-			    upload('Pharo*.dmg', params.VERSION)
+			    upload('PharoLauncher*.dmg', params.VERSION)
 		    }
 		}		
 	}

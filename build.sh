@@ -17,9 +17,9 @@ set -ex
 function prepare_image() {
 	case "$ARCH" in
 	        32) ARCH_PATH=
-	        	;;
+				;;
 	        64) ARCH_PATH="64/"
-	        	;;
+				;;
 	        *) 	echo "Error! Architecture $ARCH is not supported!"
 				exit 1
 				;;
@@ -69,7 +69,7 @@ function package_user_version() {
 function package_linux_version() {
 	set_env
 	./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p linux
-	mv Pharo-linux.zip Pharo-linux-$VERSION_NUMBER-$ARCH.zip
+	mv Pharo-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
 
 function package_mac_version() {
@@ -80,6 +80,8 @@ function package_mac_version() {
 	
 	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
+	mv "$generated_dmg" ${generated_dmg/Pharo/PharoLauncher}
+	generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
 }
 
@@ -89,15 +91,25 @@ function package_windows_version() {
 	unzip Pharo-win.zip -d .
 	
 	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-windows-installer.sh
+	mv pharo_installer-"$VERSION_NUMBER".exe pharo_launcher_installer-"$VERSION_NUMBER".exe
 }
 
 function set_env() {
 	DATE=$(date +%Y.%m.%d)
+	case "$ARCH" in
+	        32) ARCH_SUFFIX="x86"
+	        	;;
+	        64) ARCH_SUFFIX="x64"
+	        	;;
+	        *) 	echo "Error! Architecture $ARCH is not supported!"
+				exit 1
+				;;
+	esac
 	if [ "$VERSION" == "bleedingEdge" ]
 	then
-		VERSION_NUMBER="$VERSION-$DATE"
+		VERSION_NUMBER="$VERSION-$DATE-$ARCH_SUFFIX"
 	else
-		VERSION_NUMBER=$VERSION
+		VERSION_NUMBER="$VERSION-$ARCH_SUFFIX"
 	fi
 	set_pharo_sources_version
 }

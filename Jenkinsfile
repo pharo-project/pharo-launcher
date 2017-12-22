@@ -101,5 +101,5 @@ def upload(file, launcherVersion) {
 }
 
 def isBleedingEdgeVersion() {
-	return params.VERSION = 'bleedingEdge'
+	return params.VERSION == 'bleedingEdge'
 }

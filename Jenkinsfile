@@ -29,12 +29,16 @@ try {
 		    stage('Packaging-developer') {
 		    	sh './build.sh developer'
 		    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
+		    	if ( isBleedingEdgeVersion() )
+		    		upload('PharoLauncher-developer*.zip', params.VERSION)
 		    }
 
 		    stage('Packaging-user') {
 		    	sh './build.sh user'
 		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: 'pharo-launcher-one'
-		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip, PharoLauncher-one-click-packaging.zip', fingerprint: true
+		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+		    	if ( isBleedingEdgeVersion() )
+		    		upload('PharoLauncher-user-*.zip', params.VERSION)
 		    }
 
 		    stage('Packaging-Linux') {
@@ -50,6 +54,7 @@ try {
 			unstash 'pharo-launcher-one'
 			bat 'bash -c "./build.sh win-package"'
 			archiveArtifacts artifacts: 'pharo_installer*.exe', fingerprint: true
+		    upload('pharo_installer*.exe', params.VERSION)
 		}
    	}
 	node('osx') {
@@ -58,6 +63,7 @@ try {
 			unstash 'pharo-launcher-one'
 			sh './build.sh mac-package'
 			archiveArtifacts artifacts: 'Pharo*.dmg', fingerprint: true
+		    upload('Pharo*.dmg', params.VERSION)
 		}
 	}
 	node('linux') {
@@ -88,10 +94,14 @@ def notifyBuild() {
 
 def upload(file, launcherVersion) {
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
-		sh "ssh -o StrictHostKeyChecking=no -v \
+		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/${launcherVersion}"
-		sh "scp -o StrictHostKeyChecking=no -v \
+		sh "scp -o StrictHostKeyChecking=no \
 				${file} \
     		pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/${launcherVersion}"
     }
+}
+
+def isBleedingEdgeVersion() {
+	return $params.VERSION = 'bleedingEdge'
 }

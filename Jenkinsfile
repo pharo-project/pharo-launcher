@@ -8,7 +8,8 @@ properties([parameters([
 
 try {
     withEnv(["PHARO=${params.PHARO}",
-	             "VM=${params.VM}"]) {
+	         "VM=${params.VM}",
+	         "VERSION=${params.VERSION}"]) {
 
 		node('linux') {
 		    stage('Build') {
@@ -39,6 +40,7 @@ try {
 		    stage('Packaging-Linux') {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'Pharo-linux-*.zip', fingerprint: true
+		    	upload('Pharo-linux-*.zip', ${params.VERSION})
 		    }
 		}
 	}
@@ -61,10 +63,9 @@ try {
 	node('linux') {
 		stage('Deploy') {
 			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-				dir('pharo-build-scripts') {
-					unarchive // ??
-			        sh 'ls && echo publish'
-		    	}
+				sh 'ls'
+				unarchive // ??
+			    sh 'ls && echo publish'
 		    }
 		}		
 	}
@@ -82,5 +83,15 @@ def notifyBuild() {
             body: '$DEFAULT_CONTENT',
             replyTo: '$DEFAULT_REPLYTO',
             to: 'christophe.demarey@inria.fr'
+    }
+}
+
+def upload(file, launcherVersion) {
+	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
+		sh "ssh -o StrictHostKeyChecking=no -v \
+    		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/${launcherVersion}"
+		sh "scp -o StrictHostKeyChecking=no -v \
+				${file} \
+    		pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/${launcherVersion}"
     }
 }

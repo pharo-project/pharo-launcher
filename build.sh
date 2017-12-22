@@ -41,7 +41,6 @@ function package_developer_version() {
 	./pharo PharoLauncher.image eval --save "PhLDirectoryBasedImageRepository location"
 	./pharo PharoLauncher.image eval '(MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher) version versionNumber' > launcher-version.txt
 	set_env
-	DATE=$(date +%Y.%m.%d)
 	zip -9r PharoLauncher-developer-$ARCH-$VERSION-$DATE.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
 

@@ -3,13 +3,15 @@
 properties([parameters([
 	string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
 	string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
-	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')
+	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?'),
+	string(name: 'ARCHITECTURE', defaultValue: '32', description: 'Which Pharo vm architecture to use? 32 or 64')
 ])])
 
 try {
     withEnv(["PHARO=${params.PHARO}",
 	         "VM=${params.VM}",
-	         "VERSION=${params.VERSION}"]) {
+	         "VERSION=${params.VERSION}",
+	         "ARCH=${params.ARCHITECTURE}"]) {
 
 		node('linux') {
 		    stage('Build') {
@@ -49,12 +51,14 @@ try {
 		}
 	}
 	node('windows') {
-		stage('Packaging-Windows') {
-			cleanWs()
-			unstash 'pharo-launcher-one'
-			bat 'bash -c "./build.sh win-package"'
-			archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
-		    stash includes: 'pharo-launcher-installer*.exe', name: 'pharo-launcher-win-packages'
+		if (params.ARCHITECTURE == '32') {
+			stage('Packaging-Windows') {
+				cleanWs()
+				unstash 'pharo-launcher-one'
+				bat 'bash -c "./build.sh win-package"'
+				archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
+			    stash includes: 'pharo-launcher-installer*.exe', name: 'pharo-launcher-win-packages'
+			}
 		}
    	}
 	node('osx') {

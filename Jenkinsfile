@@ -4,51 +4,45 @@ properties([parameters([
 	string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
 	string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
 	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?'),
-	string(name: 'ARCHITECTURE', defaultValue: '32', description: 'Which Pharo vm architecture to use? 32 or 64')
+	string(name: 'ARCH', defaultValue: '32', description: 'Which Pharo vm architecture (x86, x64)to use? 32 or 64')
 ])])
 
 try {
-    withEnv(["PHARO=${params.PHARO}",
-	         "VM=${params.VM}",
-	         "VERSION=${params.VERSION}",
-	         "ARCH=${params.ARCHITECTURE}"]) {
+	node('linux') {
+	    stage('Build') {
+	    	cleanWs()
+	    	checkout scm
+	    	dir('pharo-build-scripts') {
+	    		git('https://github.com/pharo-project/pharo-build-scripts.git')
+	    	}
+	        sh "./build.sh prepare ${params.VERSION}"
+	    }
 
-		node('linux') {
-		    stage('Build') {
-		    	cleanWs()
-		    	checkout scm
-		    	dir('pharo-build-scripts') {
-		    		git('https://github.com/pharo-project/pharo-build-scripts.git')
-		    	}
-		        sh "./build.sh prepare ${params.VERSION}"
-		    }
+	    stage('Test') {
+	    	sh './build.sh test'
+	        junit '*.xml'
+	    }
 
-		    stage('Test') {
-		    	sh './build.sh test'
-		        junit '*.xml'
-		    }
+	    stage('Packaging-developer') {
+	    	sh './build.sh developer'
+	    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
+	    	if ( isBleedingEdgeVersion() )
+	    		upload('PharoLauncher-developer*.zip', params.VERSION)
+	    }
 
-		    stage('Packaging-developer') {
-		    	sh './build.sh developer'
-		    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
-		    	if ( isBleedingEdgeVersion() )
-		    		upload('PharoLauncher-developer*.zip', params.VERSION)
-		    }
+	    stage('Packaging-user') {
+	    	sh './build.sh user'
+	    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: 'pharo-launcher-one'
+	    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+	    	if ( isBleedingEdgeVersion() )
+	    		upload('PharoLauncher-user-*.zip', params.VERSION)
+	    }
 
-		    stage('Packaging-user') {
-		    	sh './build.sh user'
-		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: 'pharo-launcher-one'
-		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
-		    	if ( isBleedingEdgeVersion() )
-		    		upload('PharoLauncher-user-*.zip', params.VERSION)
-		    }
-
-		    stage('Packaging-Linux') {
-		    	sh './build.sh linux-package'
-		    	archiveArtifacts artifacts: 'PharoLauncher-linux-*.zip', fingerprint: true
-		    	upload('PharoLauncher-linux-*.zip', params.VERSION)
-		    }
-		}
+	    stage('Packaging-Linux') {
+	    	sh './build.sh linux-package'
+	    	archiveArtifacts artifacts: 'PharoLauncher-linux-*.zip', fingerprint: true
+	    	upload('PharoLauncher-linux-*.zip', params.VERSION)
+	    }
 	}
 	node('windows') {
 		if (params.ARCHITECTURE == '32') {
@@ -73,8 +67,10 @@ try {
 	node('linux') {
 		stage('Deploy') {
 			if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-			    unstash 'pharo-launcher-win-packages'
-			    upload('pharo-launcher-installer*.exe', params.VERSION)
+			    if (params.ARCHITECTURE == '32') {
+			    	unstash 'pharo-launcher-win-packages'
+				    upload('pharo-launcher-installer*.exe', params.VERSION)
+			    }
 			    unstash 'pharo-launcher-osx-packages'
 			    upload('PharoLauncher*.dmg', params.VERSION)
 		    }

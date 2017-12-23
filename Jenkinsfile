@@ -54,7 +54,7 @@ try {
 			unstash 'pharo-launcher-one'
 			bat 'bash -c "./build.sh win-package"'
 			archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
-		    stash includes: 'pharo_launcher_installer*.exe', name: 'pharo-launcher-win-packages'
+		    stash includes: 'pharo-launcher-installer*.exe', name: 'pharo-launcher-win-packages'
 		}
    	}
 	node('osx') {

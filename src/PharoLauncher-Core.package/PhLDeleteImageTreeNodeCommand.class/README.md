@@ -1,0 +1,1 @@
+Command to delete an existing imageTree node

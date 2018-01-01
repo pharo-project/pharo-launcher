@@ -1,0 +1,1 @@
+Command to create a new ImageTree node

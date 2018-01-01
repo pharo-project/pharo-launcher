@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "NicolasAnquetil 12/30/2017 12:17",
+	"super" : "PhLDirectoryBasedImageRepository",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLDirectoryBasedImageTreeRepository",
+	"type" : "normal"
+}

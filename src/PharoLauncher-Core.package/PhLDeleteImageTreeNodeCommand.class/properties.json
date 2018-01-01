@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "NicolasAnquetil 1/1/2018 11:38",
+	"super" : "PhLGeneralCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"newImageTreeNodeName"
+	],
+	"name" : "PhLDeleteImageTreeNodeCommand",
+	"type" : "normal"
+}

@@ -1,0 +1,3 @@
+accessing
+icon
+	^ #packageDelete asIcon

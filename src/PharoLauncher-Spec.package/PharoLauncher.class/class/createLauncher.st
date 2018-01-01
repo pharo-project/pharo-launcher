@@ -1,7 +1,7 @@
 instance creation
 createLauncher
 	^ self basicNew
-		setImageRepository: PhLDirectoryBasedImageRepository default
+		setImageRepository: PhLDirectoryBasedImageTreeRepository default
 			templateRepository: PhLTemplateGroupRepository forSelectedGroups;
 		initialize;
 		yourself

@@ -21,7 +21,7 @@ try {
 def buildArchitecture(architecture) {
     withEnv(["ARCH=${architecture}"]) {
 		node('linux') {
-		    stage('Build') {
+		    stage("Build ${architecture}-bits") {
 		    	cleanWs()
 		    	checkout scm
 		    	dir('pharo-build-scripts') {
@@ -30,19 +30,19 @@ def buildArchitecture(architecture) {
 		        sh "./build.sh prepare ${params.VERSION}"
 		    }
 
-		    stage('Test') {
+		    stage("Test ${architecture}-bits") {
 		    	sh './build.sh test'
 		        junit '*.xml'
 		    }
 
-		    stage('Packaging-developer') {
+		    stage("Packaging-developer ${architecture}-bits") {
 		    	sh './build.sh developer'
 		    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
 		    	if ( isBleedingEdgeVersion() )
 		    		upload('PharoLauncher-developer*.zip', params.VERSION)
 		    }
 
-		    stage('Packaging-user') {
+		    stage("Packaging-user ${architecture}-bits") {
 		    	sh './build.sh user'
 		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: 'pharo-launcher-one'
 		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
@@ -50,15 +50,15 @@ def buildArchitecture(architecture) {
 		    		upload('PharoLauncher-user-*.zip', params.VERSION)
 		    }
 
-		    stage('Packaging-Linux') {
+		    stage("Packaging-Linux ${architecture}-bits") {
 		    	sh './build.sh linux-package'
 		    	archiveArtifacts artifacts: 'PharoLauncher-linux-*.zip', fingerprint: true
 		    	upload('PharoLauncher-linux-*.zip', params.VERSION)
 		    }
 		}
 		node('windows') {
-			if (params.ARCHITECTURE == '32') {
-				stage('Packaging-Windows') {
+			if (architecture == '32') {
+				stage("Packaging-Windows ${architecture}-bits") {
 					cleanWs()
 					unstash 'pharo-launcher-one'
 					bat 'bash -c "./build.sh win-package"'
@@ -68,7 +68,7 @@ def buildArchitecture(architecture) {
 			}
 	   	}
 		node('osx') {
-			stage('Packaging-Mac') {
+			stage("Packaging-Mac ${architecture}-bits") {
 				cleanWs()
 				unstash 'pharo-launcher-one'
 				sh './build.sh mac-package'
@@ -77,9 +77,9 @@ def buildArchitecture(architecture) {
 			}
 		}
 		node('linux') {
-			stage('Deploy') {
+			stage("Deploy ${architecture}-bits") {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-				    if (params.ARCHITECTURE == '32') {
+				    if (architecture == '32') {
 				    	unstash 'pharo-launcher-win-packages'
 					    upload('pharo-launcher-installer*.exe', params.VERSION)
 				    }

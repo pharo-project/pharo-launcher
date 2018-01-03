@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #blankIcon asIcon
+	^ Smalltalk ui icons blankIcon 

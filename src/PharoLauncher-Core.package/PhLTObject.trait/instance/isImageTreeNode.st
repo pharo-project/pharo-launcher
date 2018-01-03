@@ -1,3 +1,0 @@
-testing
-isImageTreeNode
-	^ false

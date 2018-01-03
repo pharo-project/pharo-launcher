@@ -1,3 +1,0 @@
-action
-execute
-	self shouldBeImplemented 

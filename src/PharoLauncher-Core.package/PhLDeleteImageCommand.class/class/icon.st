@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallDeleteIcon asIcon
+	^ Smalltalk ui icons smallDeleteIcon 

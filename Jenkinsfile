@@ -11,6 +11,11 @@ try {
     builders['32'] = { buildArchitecture('32') }
     builders['64'] = { buildArchitecture('64') }
     parallel builders
+    node('linux') {
+    	stage('Upload finalization') {
+    		finalizeUpload(params.VERSION)
+    	}
+    }
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception
@@ -101,13 +106,22 @@ def notifyBuild() {
     }
 }
 
+def finalizeUpload(launcherVersion) {
+	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
+		sh "ssh -o StrictHostKeyChecking=no \
+    		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/${launcherVersion}"
+		sh "ssh -o StrictHostKeyChecking=no \
+    		pharoorgde@ssh.cluster023.hosting.ovh.net mv files/pharo-launcher/tmp-${launcherVersion} files/pharo-launcher/${launcherVersion}"
+    }
+}
+
 def upload(file, launcherVersion) {
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
-    		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/${launcherVersion}"
+    		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/tmp-${launcherVersion}"
 		sh "scp -o StrictHostKeyChecking=no \
 				${file} \
-    		pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/${launcherVersion}"
+    		pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/tmp-${launcherVersion}"
     }
 }
 

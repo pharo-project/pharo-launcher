@@ -1,5 +1,5 @@
 action
 execute
-	context singleImage launch.
-	self class quitOnLaunch
-		ifTrue: [ self quit ]
+	context hasSingleImageSelected
+		ifTrue: [ self launchSelectedImage ]
+		ifFalse: [ self launchImageFromDisk ]

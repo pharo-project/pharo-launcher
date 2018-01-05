@@ -1,5 +1,5 @@
 action
-execute
-	context singleImage launchWithoutSetting.
+launchImage: aPhLImage
+	aPhLImage launch.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]

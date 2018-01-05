@@ -1,15 +1,17 @@
 action
 launchCommandWith: vmCommand
-	| imagePath vmDirectoryPath |
+	| imagePath vmDirectoryPath command |
 	imagePath := file pathString.
 	vmDirectoryPath := vmCommand asFileReference parent fullName.
-	^ String streamContents: [:command | 
-		command << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
+	command := String streamContents: [:cmd |
+		cmd << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
 		Smalltalk os isUnix
-			ifTrue: [ command 
+			ifTrue: [ cmd 
 							<< (self exportLDLibraryPathCommandWith: vmDirectoryPath)
 							<< ' && export SQUEAK_PLUGINS="" && ' ].
-		command 
+		cmd 
 			<< vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
 		].
-
+	^	self class launchInAShell
+			ifTrue: [ 'bash -c ''' , command , ''''. ('bash -c ''' , command , '''') inspect ]
+			ifFalse: [ command ]

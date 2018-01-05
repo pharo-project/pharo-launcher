@@ -1,6 +1,9 @@
 settings
-hardResetPersistanceState: dontCare 
+hardResetPersistanceState: isClickedFromSettings 
 	|packages|
+	
+	isClickedFromSettings ifFalse: [ ^ self ]. "Important: this code should not be run when loading stored preferences, else PharoLauncher deployment mode is set to not deployed!"
+	
 	SystemWindow allSubInstances do:[:w| w delete].
 	self inform: 'PharoLauncher state reset'.
 	World doOneCycle.

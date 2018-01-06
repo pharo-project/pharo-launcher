@@ -10,6 +10,11 @@ try {
     def builders = [:]
     builders['32'] = { buildArchitecture('32') }
     builders['64'] = { buildArchitecture('64') }
+    node('linux') {
+    	stage('Prepare upload') {
+    		cleanUploadFolderIfNeeded(params.VERSION)
+    	}
+    }
     parallel builders
     node('linux') {
     	stage('Upload finalization') {
@@ -24,7 +29,7 @@ try {
 }
 
 def buildArchitecture(architecture) {
-    withEnv(["ARCH=${architecture}"]) {
+    withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
 		    stage("Build ${architecture}-bits") {
 		    	cleanWs()
@@ -103,6 +108,13 @@ def notifyBuild() {
             body: '$DEFAULT_CONTENT',
             replyTo: '$DEFAULT_REPLYTO',
             to: 'christophe.demarey@inria.fr'
+    }
+}
+
+def cleanUploadFolderIfNeeded(launcherVersion) {
+	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
+		sh "ssh -o StrictHostKeyChecking=no \
+    		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/tmp-${launcherVersion}"
     }
 }
 

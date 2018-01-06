@@ -5,22 +5,22 @@ set -ex
 # Pharo Launcher build script
 #
 # We expect to have $PHARO and $VM parameter available in the environment
-# $PHARO : 	version of the Pharo image, e.g. 61
-# $VM : 	version of the VM, e.g. vm
-# $ARCH : 	targeted architecture 32 or 64 bits. Default will be 32.
-# $VERSION: the Metacello version of PharoLauncher to load
+# $PHARO : 			version of the Pharo image, e.g. 61
+# $VM : 			version of the VM, e.g. vm
+# $ARCHITECTURE : 	targeted architecture 32 or 64 bits. Default will be 32.
+# $VERSION: 		the Metacello version of PharoLauncher to load
 
 # Script parameters
 # $1: the target to run between prepare | test | developer | user
 # $2: a value for $VERSION (optional)
 
 function prepare_image() {
-	case "$ARCH" in
+	case "$ARCHITECTURE" in
 	        32) ARCH_PATH=
 				;;
 	        64) ARCH_PATH="64/"
 				;;
-	        *) 	echo "Error! Architecture $ARCH is not supported!"
+	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 				exit 1
 				;;
 	esac
@@ -96,10 +96,11 @@ function package_windows_version() {
 
 function set_env() {
 	DATE=$(date +%Y.%m.%d)
-	case "$ARCH" in
+	case "$ARCHITECTURE" in
 	        32) ARCH_SUFFIX="x86"
 	        	;;
 	        64) ARCH_SUFFIX="x64"
+				ARCH=64
 	        	;;
 	        *) 	echo "Error! Architecture $ARCH is not supported!"
 				exit 1

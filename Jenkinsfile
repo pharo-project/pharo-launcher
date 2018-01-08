@@ -54,7 +54,7 @@ def buildArchitecture(architecture) {
 
 		    stage("Packaging-user ${architecture}-bits") {
 		    	sh './build.sh user'
-		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: 'pharo-launcher-one'
+		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
 		    	if ( isBleedingEdgeVersion() )
 		    		upload('PharoLauncher-user-*.zip', params.VERSION)
@@ -70,10 +70,10 @@ def buildArchitecture(architecture) {
 			if (architecture == '32') {
 				stage("Packaging-Windows ${architecture}-bits") {
 					cleanWs()
-					unstash 'pharo-launcher-one'
+					unstash "pharo-launcher-one-${architecture}"
 					bat 'bash -c "./build.sh win-package"'
 					archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
-				    stash includes: 'pharo-launcher-installer*.exe', name: 'pharo-launcher-win-packages'
+				    stash includes: 'pharo-launcher-installer*.exe', name: "pharo-launcher-win-${architecture}-packages"
 				}
 			}
 	   	}
@@ -83,17 +83,17 @@ def buildArchitecture(architecture) {
 				unstash 'pharo-launcher-one'
 				sh './build.sh mac-package'
 				archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
-			    stash includes: 'PharoLauncher*.dmg', name: 'pharo-launcher-osx-packages'
+			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-packages"
 			}
 		}
 		node('linux') {
 			stage("Deploy ${architecture}-bits") {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 				    if (architecture == '32') {
-				    	unstash 'pharo-launcher-win-packages'
+				    	unstash "pharo-launcher-win-${architecture}-packages"
 					    upload('pharo-launcher-installer*.exe', params.VERSION)
 				    }
-				    unstash 'pharo-launcher-osx-packages'
+				    unstash "pharo-launcher-osx-${architecture}-packages"
 				    upload('PharoLauncher*.dmg', params.VERSION)
 			    }
 			}		

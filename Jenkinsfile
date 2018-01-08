@@ -80,7 +80,7 @@ def buildArchitecture(architecture) {
 		node('osx') {
 			stage("Packaging-Mac ${architecture}-bits") {
 				cleanWs()
-				unstash 'pharo-launcher-one'
+				unstash "pharo-launcher-one-${architecture}"
 				sh './build.sh mac-package'
 				archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
 			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-packages"

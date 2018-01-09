@@ -100,7 +100,7 @@ function set_env() {
 	        32) ARCH_SUFFIX="x86"
 	        	;;
 	        64) ARCH_SUFFIX="x64"
-				ARCH=64
+				export ARCH=64
 	        	;;
 	        *) 	echo "Error! Architecture $ARCH is not supported!"
 				exit 1

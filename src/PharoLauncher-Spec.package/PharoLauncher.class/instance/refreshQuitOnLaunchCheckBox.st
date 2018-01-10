@@ -1,0 +1,3 @@
+refreshing
+refreshQuitOnLaunchCheckBox
+	quitOnLaunchCheckBoxModel state: PhLLaunchImageCommand quitOnLaunch

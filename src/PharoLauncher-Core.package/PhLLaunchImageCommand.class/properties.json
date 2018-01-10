@@ -5,6 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
+		"CommandAnnouncer",
 		"QuitOnLaunch"
 	],
 	"instvars" : [ ],

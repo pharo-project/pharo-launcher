@@ -12,4 +12,8 @@ initializeWidgets
 		label: 'Quit on launch';
 		state: PhLLaunchImageCommand quitOnLaunch;
 		whenChangedDo: [ PhLLaunchImageCommand quitOnLaunch: self quitOnLaunchCheckBoxModel state ].
+	PhLLaunchImageCommand announcer weak
+		when: PhLQuitOnLaunchValueChanged 
+		send: #refreshQuitOnLaunchCheckBox
+		to: self.
 	self whenBuiltDo: [ self initializeImageAndTemplates ]

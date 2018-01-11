@@ -16,4 +16,5 @@ initializeWidgets
 		when: PhLQuitOnLaunchValueChanged 
 		send: #refreshQuitOnLaunchCheckBox
 		to: self.
+	self whenWindowClosed: [ PhLLaunchImageCommand announcer unsubscribe: self ].
 	self whenBuiltDo: [ self initializeImageAndTemplates ]

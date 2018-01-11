@@ -1,3 +1,3 @@
 private
 commandClassesForStatusbar
-	^ { PhLQuitCommand . PhLOpenSettingsCommand }
+	^ { PhLAboutCommand . PhLOpenSettingsCommand . PhLQuitCommand }

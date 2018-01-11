@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/11/2018 13:25",
+	"super" : "PhLTemplateCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"newImageName"
+	],
+	"name" : "PhLRemoveTemplateCommand",
+	"type" : "normal"
+}

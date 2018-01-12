@@ -5,6 +5,6 @@ runPreferences
 	PhLDeploymentScript isDeployed ifTrue: [ ^ self ].
 	
 	Smalltalk at: #SystemSettingsPersistence ifPresent: [:persistence | 
-		persistence resumeSystemSettings].
+		persistence resumeSystemSettings ].
 	Smalltalk at: #StartupPreferencesLoader ifPresent: [:loader |
 		loader default loadFromDefaultLocations ].

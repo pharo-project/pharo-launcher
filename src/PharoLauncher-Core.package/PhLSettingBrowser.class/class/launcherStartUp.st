@@ -3,5 +3,9 @@ launcherStartUp
 	| preferenceFiles |
 	preferenceFiles := StartupPreferencesHandler new
 		lookInFolder: PhLSettingBrowser preferencesFolder
-		forFilesMatching: '*.st'.
-	preferenceFiles ifNotNil: [ StartupPreferencesLoader default load: preferenceFiles ]
+		forFilesMatching: '*.ston'.
+	preferenceFiles ifNotNil: [
+		(SystemSettingsPersistence new 
+			fileReference: preferenceFiles;
+			settingTree: SettingBrowser new treeHolder;
+			yourself) load: preferenceFiles ]

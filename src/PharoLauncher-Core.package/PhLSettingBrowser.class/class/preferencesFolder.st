@@ -1,3 +1,3 @@
 private
 preferencesFolder
-	^ FileLocator preferences / 'pharo' / 'launcher'
+	^ FileLocator preferences / 'pharo-launcher'

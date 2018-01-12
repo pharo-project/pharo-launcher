@@ -6,5 +6,4 @@ openFull
 	PhLTitledTreeModel unsubscribeAllRepositories.
 	launcher := self createLauncher openWorldWithSpec.
 	PluggableButtonMorph allInstances do: #changed. "Hack because buttons icons are not shown until you mouse over it ..."
-	UIManager default defer: [ World changed ]. "Hack to get the Launcher window maximized at the startup even if seetings are loaded, then trigerring PharoLauncher>>#doAll"
 	^ launcher

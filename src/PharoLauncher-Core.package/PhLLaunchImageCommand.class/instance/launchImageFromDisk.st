@@ -6,4 +6,5 @@ launchImageFromDisk
 		extensions: #('image') 
 		path: FileLocator home 
 		preview: false.
+	imagePath ifNil: [ ^ self ].
 	self launchImage: (PhLImage location: imagePath asFileReference)

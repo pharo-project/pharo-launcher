@@ -7,5 +7,5 @@ importImageNamed: sourceName to: targetName
 		do: [ :file | 
 			| targetFilename |
 			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
-			file copyTo: targetDirectory / targetFilename ].
+			file moveTo: targetDirectory / targetFilename ].
 	self contentsChanged.

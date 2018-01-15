@@ -5,7 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"LaunchInAShell"
+		"LaunchInALoginShell"
 	],
 	"instvars" : [
 		"file",

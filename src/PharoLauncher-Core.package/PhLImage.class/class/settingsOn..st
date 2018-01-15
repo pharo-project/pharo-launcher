@@ -2,8 +2,8 @@ settings
 settingsOn: aBuilder
 	<systemsettings>
 	<pharoLauncherSettings>
-	(aBuilder setting: #launchInAShell)
-		label: 'Launch image from a shell' translated;
+	(aBuilder setting: #launchInALoginShell)
+		label: 'Launch image from a login shell' translated;
 		parent: #pharoLauncher;
 		target: self;
 		order: 31;

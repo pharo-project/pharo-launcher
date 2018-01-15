@@ -12,6 +12,6 @@ launchCommandWith: vmCommand
 		cmd 
 			<< vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
 		].
-	^	self class launchInAShell
-			ifTrue: [ 'bash -c ''' , command , ''''. ('bash -c ''' , command , '''') inspect ]
+	^	self class launchInALoginShell
+			ifTrue: [ 'bash -l -c ''' , command , ''''. ]
 			ifFalse: [ command ]

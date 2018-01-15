@@ -1,0 +1,3 @@
+accessing
+positionInGroup
+	^ 10

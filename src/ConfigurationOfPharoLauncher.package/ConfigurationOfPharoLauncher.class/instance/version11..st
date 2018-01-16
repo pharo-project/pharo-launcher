@@ -30,6 +30,6 @@ Bux fixes:
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.24'.
 		spec 
-			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.166';
+			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.167';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-ChristopheDemarey.64';
 			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.23'. ].

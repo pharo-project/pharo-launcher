@@ -1,5 +1,5 @@
 querying
 launcherVersion
 	^ self areLoadedPackagesIdenticalToPackagesDescribedInMetacelloCurrentVersion
-		ifTrue: [ self launcherCurrentMetacalloVersion ]
+		ifTrue: [ self launcherCurrentMetacalloVersion versionString ]
 		ifFalse: [ 'N/A' ]

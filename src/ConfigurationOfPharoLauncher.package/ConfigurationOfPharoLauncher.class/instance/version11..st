@@ -11,6 +11,7 @@ New features:
  #64 new command: create a local template from an image and remove the image
  #57 new option: run an image from a login shell to inherit from shell startup scripts to set up environment variables.
  #54 It is now possible to run an image anywhere on your file system if you click "launch" and no image is selected
+ #23 Pharo Launcher now has an "about" box giving its description, version and a link to the bug tracker.
 Improvements:
  #62 Pharo Launcher should not load default Pharo settings 
  #51 Pharo Launcher now sets the current directory to the directory containing the image (was the VM directory). Avoid confusions in Pharo 7 images.

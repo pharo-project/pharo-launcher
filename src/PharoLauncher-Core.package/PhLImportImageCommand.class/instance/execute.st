@@ -7,4 +7,5 @@ execute
 		path: FileLocator home 
 		preview: false.
 	imagePath ifNil: [ ^ self ].
+	imagePath asFileReference isDirectory ifTrue: [ ^ self ].
 	self import: imagePath

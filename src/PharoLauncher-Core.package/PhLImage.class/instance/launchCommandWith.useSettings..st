@@ -1,5 +1,5 @@
 action
-launchCommandWith: vmCommand
+launchCommandWith: vmCommand useSettings: usePharoSettings
 	| imagePath vmDirectoryPath command |
 	imagePath := file pathString.
 	vmDirectoryPath := vmCommand asFileReference parent fullName.
@@ -8,9 +8,10 @@ launchCommandWith: vmCommand
 			cmd << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
 			Smalltalk os isUnix
 				ifTrue: [ cmd << (self exportLDLibraryPathCommandWith: vmDirectoryPath) << ' && export SQUEAK_PLUGINS="" && ' ].
-			cmd << vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes ].
+			cmd << vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
+			usePharoSettings ifFalse: [ cmd << ' --no-default-preferences' ] ].
 	^ self class launchInALoginShell
-		ifTrue: [ Smalltalk os isUnix
-				ifTrue: [ 'bash -l -c ''' , command , '''' ]
-				ifFalse: [ 'cmd /C ' , command ] ]
+		ifTrue: [ Smalltalk os isWindows
+				ifTrue: [ 'cmd /C ' , command ]
+				ifFalse: [ 'bash -l -c ''' , command , '''' ] ]
 		ifFalse: [ command ]

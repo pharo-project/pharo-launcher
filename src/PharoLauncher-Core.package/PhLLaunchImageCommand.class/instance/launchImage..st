@@ -1,5 +1,5 @@
 action
 launchImage: aPhLImage
-	aPhLImage launchWithSettings: true.
+	aPhLImage launch.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]

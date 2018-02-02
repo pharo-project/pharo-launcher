@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "Object",
+	"category" : "PharoLauncher-Tests-Download",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"documents",
+		"defaultResponse"
+	],
+	"name" : "PhLDownloadManagerMock",
+	"type" : "normal"
+}

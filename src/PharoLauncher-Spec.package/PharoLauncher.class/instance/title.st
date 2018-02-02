@@ -1,0 +1,3 @@
+protocol
+title
+	^ 'Pharo Launcher'

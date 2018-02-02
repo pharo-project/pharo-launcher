@@ -1,0 +1,12 @@
+SmalltalkCISpec {
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'PharoLauncher',
+      #platforms : [ #pharo ],
+      #directory : 'src'  
+    }
+  ],
+  #testing : {
+    #failOnZeroTests : true
+  }
+}

@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "v 2/16/2015 16:54",
+	"super" : "Object",
+	"category" : "ConfigurationOfPharoLauncher",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"LastVersionLoad"
+	],
+	"instvars" : [
+		"project"
+	],
+	"name" : "ConfigurationOfPharoLauncher",
+	"type" : "normal"
+}

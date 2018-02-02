@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLImageCommand",
+	"category" : "Pharo-Launcher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLDeleteImageCommand",
+	"type" : "normal"
+}

@@ -1,0 +1,3 @@
+requirements
+superscriptFoo
+	^ self subclassResponsibility

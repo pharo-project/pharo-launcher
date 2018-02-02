@@ -1,0 +1,3 @@
+actions
+addToStartupList
+	PhLStartupManager addToLauncherStartUpList: self

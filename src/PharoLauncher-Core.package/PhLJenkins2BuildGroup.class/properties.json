@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "ChristopheDemarey 5/17/2016 10:55",
+	"super" : "PhLAbstractTemplateGroup",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"builds",
+		"name"
+	],
+	"name" : "PhLJenkins2BuildGroup",
+	"type" : "normal"
+}

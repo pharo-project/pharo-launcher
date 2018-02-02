@@ -1,0 +1,3 @@
+protected
+jsonName
+	^ self subclassResponsibility 

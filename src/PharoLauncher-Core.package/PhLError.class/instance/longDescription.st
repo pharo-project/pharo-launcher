@@ -1,0 +1,3 @@
+accessing
+longDescription
+	^ self subclassResponsibility

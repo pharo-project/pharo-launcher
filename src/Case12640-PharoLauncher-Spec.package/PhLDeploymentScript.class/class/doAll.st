@@ -1,0 +1,10 @@
+public
+doAll
+	self
+		closeAllWindows;
+		deactivateStartupActions;
+		dontRaiseWarningForMissingChangesOrSourcesFiles;
+		deactivateDeprecationWarnings;
+		makeDeployed;
+		addToStartupList;
+		dontAskForConfirmationWhenQuitting

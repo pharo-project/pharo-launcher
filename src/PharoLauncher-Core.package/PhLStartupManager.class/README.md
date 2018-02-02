@@ -1,0 +1,1 @@
+PhLStartupManager is in charge of running startup actions related to the PharoLauncher.

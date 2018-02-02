@@ -1,0 +1,3 @@
+accessing
+commandClasses: aCollection
+	commandClassesHolder contents: aCollection

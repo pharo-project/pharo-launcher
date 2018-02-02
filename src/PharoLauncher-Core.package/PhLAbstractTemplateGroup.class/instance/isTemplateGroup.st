@@ -1,0 +1,3 @@
+testing
+isTemplateGroup
+	^ true

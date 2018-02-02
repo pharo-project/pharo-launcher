@@ -1,0 +1,3 @@
+private
+commandClassesForImagesMenu
+	^ PhLImageCommand allConcreteCommands

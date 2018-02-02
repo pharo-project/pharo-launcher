@@ -1,0 +1,1 @@
+Superclass of all commands that are applied to one template or multiple templates.

@@ -1,0 +1,1 @@
+Create a new local template based on the selected image. and remove the selected image

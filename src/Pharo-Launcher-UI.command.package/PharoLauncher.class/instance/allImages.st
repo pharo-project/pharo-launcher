@@ -1,0 +1,4 @@
+private
+allImages
+
+	^imageGroup images

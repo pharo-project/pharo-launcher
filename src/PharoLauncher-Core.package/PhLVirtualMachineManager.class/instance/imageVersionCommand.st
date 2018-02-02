@@ -1,0 +1,3 @@
+accessing
+imageVersionCommand
+	^ self imageVersionCommandWithPreferences: false

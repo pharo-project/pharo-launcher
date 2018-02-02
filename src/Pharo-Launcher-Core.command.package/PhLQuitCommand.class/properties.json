@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLGeneralCommand",
+	"category" : "Pharo-Launcher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLQuitCommand",
+	"type" : "normal"
+}

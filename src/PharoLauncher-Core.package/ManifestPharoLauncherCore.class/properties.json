@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/3/2018 11:17",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "ManifestPharoLauncherCore",
+	"type" : "normal"
+}

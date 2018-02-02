@@ -1,0 +1,3 @@
+requirements
+referenceToFigurePierLogo
+	^ self subclassResponsibility

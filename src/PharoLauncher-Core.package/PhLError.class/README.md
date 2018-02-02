@@ -1,1 +1,0 @@
-I represent an error as can be signaled by any code of Pharo Launcher.

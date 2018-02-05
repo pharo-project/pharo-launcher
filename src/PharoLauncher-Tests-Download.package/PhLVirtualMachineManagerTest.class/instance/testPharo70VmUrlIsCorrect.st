@@ -6,5 +6,5 @@ testPharo70VmUrlIsCorrect
 		imageVersion: '70';
 		vmUrl).
 	self 
-		assert: (url copyReplaceAll: 'linux' with: 'mac')
-		equals: 'http://files.pharo.org/get-files/70/pharo-mac-stable.zip' 
+		assert: (self replaceOSByMacIn: url)
+		equals: 'https://files.pharo.org/get-files/70/pharo-mac-stable.zip' 

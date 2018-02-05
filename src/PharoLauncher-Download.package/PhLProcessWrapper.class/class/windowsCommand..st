@@ -1,5 +1,5 @@
 instance creation
-windowsCommand: aCommand 
-	^ ProcessWrapper new 
+windowsCommand: aCommand
+	^ (Smalltalk at: #ProcessWrapper) new
 		startWithShellCommand: aCommand;
 		yourself

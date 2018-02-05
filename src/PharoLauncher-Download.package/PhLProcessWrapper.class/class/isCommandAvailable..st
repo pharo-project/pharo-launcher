@@ -1,9 +1,12 @@
 testing
 isCommandAvailable: aCommand
-	 ^ Smalltalk os isWindows
-			ifTrue: [ (ProcessWrapper new 
-							useStderr;
-							waitForExit;
-							startWithShellCommand: aCommand; 
-							yourself) stderrStream atEnd ]
-			ifFalse: [ (OSProcess waitForCommand: aCommand) succeeded ]
+	Smalltalk os isWindows
+		ifTrue: [ Smalltalk
+				at: #ProcessWrapper
+				ifPresent: [ :processWrapperClass | 
+					^ (processWrapperClass new
+						useStderr;
+						waitForExit;
+						startWithShellCommand: aCommand;
+						yourself) stderrStream atEnd ] ].
+	^ (OSProcess waitForCommand: aCommand) succeeded

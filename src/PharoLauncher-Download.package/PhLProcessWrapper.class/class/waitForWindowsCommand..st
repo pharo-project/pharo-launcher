@@ -1,6 +1,6 @@
 instance creation
-waitForWindowsCommand: aCommand 
-	^ ProcessWrapper new 
-		startWithShellCommand: aCommand; 
+waitForWindowsCommand: aCommand
+	^ (Smalltalk at: #ProcessWrapper) new
+		startWithShellCommand: aCommand;
 		waitForExit;
 		yourself

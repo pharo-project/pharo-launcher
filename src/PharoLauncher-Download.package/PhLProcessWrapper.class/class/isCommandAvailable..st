@@ -8,5 +8,6 @@ isCommandAvailable: aCommand
 						useStderr;
 						waitForExit;
 						startWithShellCommand: aCommand;
-						yourself) stderrStream atEnd ] ].
+						yourself) stderrStream atEnd ].
+			^ false ].
 	^ (OSProcess waitForCommand: aCommand) succeeded

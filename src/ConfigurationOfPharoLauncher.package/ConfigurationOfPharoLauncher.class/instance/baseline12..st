@@ -38,7 +38,7 @@ baseline12: spec
 			package: #'PharoLauncher-Core' with: [
 				spec requires: #(#'PharoLauncher-Download' 'XMLParser' 'Ston' 'JSON' ). ];
 			package: #'PharoLauncher-Download' with: [
-				spec requires: #('OSProcess' ). ];
+				spec requires: #('OSProcess' 'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Tests-Core' with: [

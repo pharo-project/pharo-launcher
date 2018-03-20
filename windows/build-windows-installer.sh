@@ -1,9 +1,9 @@
 #!/bin/sh
 
-VERSION=${VERSION:-"5.0.0"}
+VERSION=${VERSION:-"1.0.0"}
 
-cd pharo-build-scripts/windows-installer
-mkdir Pharo-win
-mv ../../Pharo Pharo-win/
-NSIS/Bin/makensis.exe pharo-launcher-installer-builder.nsi
-mv pharo-launcher-installer.exe ../../pharo-launcher-installer-"$VERSION".exe
+# NSIS is run in the directory where the NSI file stands
+mkdir windows/Pharo-win
+mv Pharo windows/Pharo-win/
+pharo-build-scripts/windows-installer/NSIS/Bin/makensis.exe /DVERSION=$VERSION windows/pharo-launcher-installer-builder.nsi
+mv windows/pharo-launcher-installer.exe pharo-launcher-installer-"$VERSION".exe

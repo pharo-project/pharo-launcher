@@ -90,7 +90,7 @@ function package_windows_version() {
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
-	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-windows-installer.sh
+	VERSION=$VERSION_NUMBER ./windows/build-windows-installer.sh
 	mv pharo_installer-"$VERSION_NUMBER".exe pharo-launcher-installer-"$VERSION_NUMBER".exe
 }
 

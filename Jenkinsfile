@@ -9,7 +9,7 @@ properties([parameters([
 try {
     def builders = [:]
     builders['32'] = { buildArchitecture('32') }
-    builders['64'] = { buildArchitecture('64') }
+    // builders['64'] = { buildArchitecture('64') }
     node('linux') {
     	stage('Prepare upload') {
     		cleanUploadFolderIfNeeded(params.VERSION)

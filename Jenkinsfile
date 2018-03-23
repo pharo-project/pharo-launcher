@@ -54,7 +54,7 @@ def buildArchitecture(architecture) {
 
 		    stage("Packaging-user ${architecture}-bits") {
 		    	sh './build.sh user'
-		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
+		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, windows/**, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
 		    	if ( isBleedingEdgeVersion() )
 		    		upload('PharoLauncher-user-*.zip', params.VERSION)

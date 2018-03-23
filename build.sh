@@ -91,7 +91,6 @@ function package_windows_version() {
 	unzip Pharo-win.zip -d .
 	
 	VERSION=$VERSION_NUMBER ./windows/build-windows-installer.sh
-	mv pharo_installer-"$VERSION_NUMBER".exe pharo-launcher-installer-"$VERSION_NUMBER".exe
 }
 
 function set_env() {

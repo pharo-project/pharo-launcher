@@ -62,6 +62,11 @@ The process is as following:
 3. find (and optionnaly fetch) the appropriate VM for this specific Pharo image version. Sources files are also downloaded with the VM when applicable.
 4. run the image with the appropriate VM
 
+## How would I make my own templates available via Pharo Launcher?
+There are different ways:
+- The easiest way would be to add a CI job on https://ci.inria.fr/pharo-contribution/. This job should archive a zip file with your image and the changes file. Then you will be able to browse your image as a template from *Pharo contribution Jenkins* / *<your job name>* / *Latest sucessful build*.
+- Another way is to create a fresh image from the *Templates* panel, launche the image, add what you want in the image, save it and then convert the image to a template : right-click on the image on the right panel (*Existing images*) and select *Create Template*. The newly created template will appear in the *Templates* panel under the *Downloaded templates* category.
+
 ## Things to know:
 At the bottom there is a button to open a settings browser with specific settings for PharoLauncher. There is an option that enables the IDE again - so you can inspect the code or fix a bug.
 

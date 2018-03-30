@@ -86,7 +86,7 @@ function prepare_mac_resources_for_build_platform_script() {
 function package_mac_version() {
 	set_env
 	prepare_mac_resources_for_build_platform_script
-	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p mac
+	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p mac
 	unzip Pharo-mac.zip -d .
 	mv mac-installer-background.png background.png
 	

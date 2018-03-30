@@ -90,7 +90,7 @@ function package_mac_version() {
 	unzip Pharo-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
-	VERSION=$VERSION_NUMBER ./pharo-build-scripts/build-dmg.sh
+	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher ./pharo-build-scripts/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)

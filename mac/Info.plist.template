@@ -29,7 +29,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string></string>
 	<key>NSMainNibFile</key>
-	<string>PharoLauncherMainMenu</string>
+	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>SqueakOSXApplication</string>
 	<key>SqueakBrowserMouseCmdButton1</key>

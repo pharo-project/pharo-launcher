@@ -1,0 +1,3 @@
+accessing
+imageFile: anImagePathOrFileReference
+	imageFile := anImagePathOrFileReference asFileReference

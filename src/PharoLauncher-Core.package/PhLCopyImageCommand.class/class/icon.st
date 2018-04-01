@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallCopyIcon asIcon
+	^ Smalltalk ui icons smallCopyIcon

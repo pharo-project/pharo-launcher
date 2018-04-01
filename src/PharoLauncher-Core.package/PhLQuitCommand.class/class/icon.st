@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallQuitIcon asIcon
+	^ Smalltalk ui icons smallQuitIcon

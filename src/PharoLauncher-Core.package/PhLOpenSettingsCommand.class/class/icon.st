@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #configurationIcon asIcon
+	^ self iconNamed: #configuration

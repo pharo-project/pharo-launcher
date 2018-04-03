@@ -79,6 +79,7 @@ function sign_mac_version() {
 
   echo "Signing app bundle..."
   # Set up keychain
+  security delete-keychain "${key_chain}" || true
   security create-keychain -p ci "${key_chain}"
   security default-keychain -s "${key_chain}"
   security unlock-keychain -p ci "${key_chain}"

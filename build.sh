@@ -72,7 +72,6 @@ function package_linux_version() {
 	mv Pharo-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
 
-
 function prepare_mac_resources_for_build_platform_script() {
 	rm -f pharo-build-scripts/platform/icons/*
 	cd icons

@@ -81,7 +81,9 @@ def buildArchitecture(architecture) {
 			stage("Packaging-Mac ${architecture}-bits") {
 				cleanWs()
 				unstash "pharo-launcher-one-${architecture}"
-				sh './build.sh mac-package'
+				withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+					sh './build.sh mac-package'
+				}
 				archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
 			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-packages"
 			}

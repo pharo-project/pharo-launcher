@@ -86,6 +86,8 @@ function sign_mac_version() {
   security set-keychain-settings -t 3600 -u "${key_chain}"
   security import "${path_cer}" -k ~/Library/Keychains/"${key_chain}" -T /usr/bin/codesign
   security import "${path_p12}" -k ~/Library/Keychains/"${key_chain}" -P "${cert_pass}" -T /usr/bin/codesign
+  # debug
+  echo ${sign_identity} >> "id.txt"
   # Invoke codesign
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
     codesign -s "${sign_identity}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*

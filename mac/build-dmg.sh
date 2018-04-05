@@ -90,9 +90,9 @@ function sign_mac_version() {
   echo ${sign_identity} >> "id.txt"
   # Invoke codesign
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
-    codesign -s "${sign_identity}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
+    codesign -s "${sign_identity}" --keychain "${key_chain}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
   fi
-  codesign -s "${sign_identity}" --force --deep "${app_dir}"
+  codesign -s "${sign_identity}"  --keychain "${key_chain}" --force --deep "${app_dir}"
   # Remove sensitive files again
   rm -rf "${path_cer}" "${path_p12}"
   security delete-keychain "${key_chain}"

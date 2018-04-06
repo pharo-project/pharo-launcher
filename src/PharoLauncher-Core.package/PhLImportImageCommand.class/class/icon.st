@@ -1,3 +1,3 @@
 accessing
 icon
-	^ self iconNamed: #smallAdd 
+	^ self iconNamed: #smallLoadProject 

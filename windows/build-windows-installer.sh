@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -ex
+
 VERSION=${VERSION:-"1.0.0"}
 
 ADVINST=${ADVINST:-"C:\Program Files (x86)\Caphyon\Advanced Installer 14.7\bin\x86\advinst.exe"}

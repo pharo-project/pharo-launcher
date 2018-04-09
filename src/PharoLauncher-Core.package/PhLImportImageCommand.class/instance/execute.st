@@ -1,11 +1,12 @@
 action
 execute
-	| imagePath |
-	imagePath := UIManager default 
-		chooseFullFileName: 'Import a Pharo image (will move it to Pharo Launcher images store)'
-		extensions: #('image') 
-		path: FileLocator home 
-		preview: false.
-	imagePath ifNil: [ ^ self ].
-	imagePath asFileReference isDirectory ifTrue: [ ^ self ].
-	self import: imagePath
+	| answer |
+	answer := UIManager default
+		chooseFrom:
+			{'Launch the image' . 'Import the image into Pharo Launcher images store (will move files to the new destination)'}
+		lines: #()
+		title: 'What would you like to do?'.
+	answer = 1
+		ifTrue: [ (PhLLaunchImageCommand on: context) launchImageFromDisk ].
+	answer = 2
+		ifTrue:	[ self importImage ]

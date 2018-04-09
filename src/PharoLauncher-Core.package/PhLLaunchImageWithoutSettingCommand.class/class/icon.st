@@ -1,3 +1,4 @@
 accessing
 icon
-	^ super icon asGrayScale 
+	^ super icon 
+		asGrayScale replaceColor: Color white with: Color transparent

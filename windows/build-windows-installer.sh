@@ -15,6 +15,6 @@ mkdir windows/Pharo-win
 mv Pharo windows/Pharo-win/
 
 # $ADVINST /newproject $ADVINST_PROJECT -lang en -overwrite
-$ADVINST /execute $ADVINST_PROJECT $ADVINST_COMMAND_FILE
+"$ADVINST" /execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
 
 # mv windows/pharo-launcher-installer.exe pharo-launcher-installer-"$VERSION".exe

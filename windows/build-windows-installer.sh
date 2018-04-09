@@ -16,6 +16,9 @@ cp icons/pharo-launcher.ico windows/
 mkdir windows/Pharo-win
 mv Pharo windows/Pharo-win/
 
+#debug
+ls windows
+
 # $ADVINST /newproject $ADVINST_PROJECT -lang en -overwrite
 "$ADVINST" /execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
 

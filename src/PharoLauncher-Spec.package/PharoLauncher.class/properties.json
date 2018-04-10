@@ -1,0 +1,22 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ComposableModel",
+	"category" : "PharoLauncher-Spec",
+	"classinstvars" : [
+		"pharoIcon"
+	],
+	"pools" : [ ],
+	"classvars" : [
+		"TemplateRepository",
+		"TemplatesClearedOnStartup"
+	],
+	"instvars" : [
+		"imagesModel",
+		"templatesModel",
+		"statusbarModel",
+		"quitOnLaunchCheckBoxModel",
+		"imageRepository"
+	],
+	"name" : "PharoLauncher",
+	"type" : "normal"
+}

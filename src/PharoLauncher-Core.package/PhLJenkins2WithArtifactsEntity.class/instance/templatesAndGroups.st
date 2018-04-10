@@ -1,0 +1,3 @@
+accessing
+templatesAndGroups
+	^ self artifactTemplates

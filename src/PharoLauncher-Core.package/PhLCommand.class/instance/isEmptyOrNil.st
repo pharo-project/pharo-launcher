@@ -1,0 +1,3 @@
+private
+isEmptyOrNil
+	self shouldBeImplemented.

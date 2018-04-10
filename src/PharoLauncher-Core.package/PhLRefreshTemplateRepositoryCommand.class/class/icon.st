@@ -1,0 +1,3 @@
+accessing
+icon
+	^ #smallUpdateIcon asIcon

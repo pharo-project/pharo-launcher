@@ -1,0 +1,1 @@
+Models a statusbar with Spec. A statusbar is a small horizontal bar with some text (the content) at the very bottom of a window.

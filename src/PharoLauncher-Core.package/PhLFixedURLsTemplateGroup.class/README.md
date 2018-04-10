@@ -1,0 +1,1 @@
+Represent a list of templates that is defined at construction time. The interesting property of this group is that is does not require the network to be shown. The network is only needed to actually download a template.

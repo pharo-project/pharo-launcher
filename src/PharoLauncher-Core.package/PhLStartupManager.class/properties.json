@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/12/2018 09:19",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"StartUpClasses"
+	],
+	"instvars" : [ ],
+	"name" : "PhLStartupManager",
+	"type" : "normal"
+}

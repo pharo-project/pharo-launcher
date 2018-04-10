@@ -1,0 +1,3 @@
+private
+commandClassesForTemplatesMenu
+	^ PhLTemplateCommand allConcreteCommands

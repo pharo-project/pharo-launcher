@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ClassTestCase",
+	"category" : "PharoLauncher-Tests-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"root"
+	],
+	"name" : "PhLAbstractTemplateTest",
+	"type" : "normal"
+}

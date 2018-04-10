@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "PhLUserInteraction",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"title",
+		"initialAnswer",
+		"validationBlock"
+	],
+	"name" : "PhLUIRequest",
+	"type" : "normal"
+}

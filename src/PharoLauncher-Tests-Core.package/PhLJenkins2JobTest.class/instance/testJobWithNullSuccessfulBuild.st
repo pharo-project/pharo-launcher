@@ -1,0 +1,4 @@
+tests
+testJobWithNullSuccessfulBuild
+	self setUpResponse: self noBuildsResponse.
+	self assert: self newJobWithNullSuccessfulBuild lastSuccessfulBuildNumber isNil

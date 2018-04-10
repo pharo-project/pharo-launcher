@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "TorstenBergmann 9/21/2016 23:15",
+	"super" : "PhLTitledTreeModel",
+	"category" : "PharoLauncher-Spec",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"filterPattern",
+		"regexMatcher"
+	],
+	"name" : "PhLSearchableTitledTreeModel",
+	"type" : "normal"
+}

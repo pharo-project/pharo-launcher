@@ -1,0 +1,1 @@
+Abstraction of a string request dialog.

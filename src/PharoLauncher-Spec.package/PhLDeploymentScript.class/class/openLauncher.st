@@ -1,0 +1,3 @@
+actions
+openLauncher
+	PharoLauncher openFull

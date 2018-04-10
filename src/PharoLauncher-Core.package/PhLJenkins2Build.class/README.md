@@ -1,0 +1,1 @@
+I represent a Jenkins job. If I'm a simple job, artifacts are available directly. If I'm a matrix job, artefacts are available from runs.

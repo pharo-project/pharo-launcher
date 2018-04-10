@@ -1,0 +1,3 @@
+helpers
+downloadManager
+	^ PhLDownloadManager default

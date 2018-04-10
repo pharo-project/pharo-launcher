@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "ChristopheDemarey 5/17/2016 10:57",
+	"super" : "PhLJenkins2WithArtifactsEntity",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLJenkins2Run",
+	"type" : "normal"
+}

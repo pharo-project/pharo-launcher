@@ -101,7 +101,7 @@ function package_windows_version() {
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
-	LAUNCHER_VERSION=$VERSION_NUMBER ./windows/build-windows-installer.sh
+	VERSION=$VERSION_NUMBER cmd /c windows\\build-launcher-installer.bat
 }
 
 function set_env() {

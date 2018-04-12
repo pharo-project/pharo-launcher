@@ -8,7 +8,11 @@ if [[ $LAUNCHER_VERSION == "bleedingEdge" ]]; then
   LAUNCHER_VERSION="0.0.0"
 fi 
 
-ADVINST=${ADVINST:-"C:\Program Files (x86)\Caphyon\Advanced Installer 14.7\bin\x86\advinst.exe"}
+# ADVINST=${ADVINST:-"C:\Program Files (x86)\Caphyon\Advanced Installer 14.7\bin\x86\advinst.exe"}
+# Advanced installer bin directory must be added to the path to run this script
+#   WARNING: The path MUST NOT be surrounded by double quotes else, the path with not be converted to
+#            unix form and then executable will not be found!
+ADVINST=advinst.exe
 ADVINST_PROJECT=pharo-launcher.aip
 ADVINST_COMMAND_FILE=pharo-launcher.aic
 
@@ -22,7 +26,7 @@ mv Pharo windows/Pharo-win/
 
 cd windows
 # $ADVINST /newproject $ADVINST_PROJECT -lang en -overwrite
-"$ADVINST" /execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
+$ADVINST /execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
 cd -
 
 mv pharo-launcher.msi pharo-launcher-"$VERSION".msi

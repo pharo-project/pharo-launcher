@@ -1,13 +1,14 @@
 {
-	"commentStamp" : "VincentBlondeau 4/12/2018 16:13",
+	"commentStamp" : "VincentBlondeau 4/12/2018 16:15",
 	"super" : "PhLError",
 	"category" : "PharoLauncher-Download-Exceptions",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"command"
+		"path",
+		"kindOfApplication"
 	],
-	"name" : "PhLImageVersionDeterminationError",
+	"name" : "PhLExecutableNotFoundError",
 	"type" : "normal"
 }

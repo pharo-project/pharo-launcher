@@ -73,7 +73,7 @@ def buildArchitecture(architecture) {
 					unstash "pharo-launcher-one-${architecture}"
 					bat 'bash -c "./build.sh win-package"'
 					archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
-				    stash includes: 'pharo-launcher-installer*.exe', name: "pharo-launcher-win-${architecture}-packages"
+				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-packages"
 				}
 			}
 	   	}
@@ -93,7 +93,7 @@ def buildArchitecture(architecture) {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 				    if (architecture == '32') {
 				    	unstash "pharo-launcher-win-${architecture}-packages"
-					    upload('pharo-launcher-installer*.exe', params.VERSION)
+					    upload('pharo-launcher-*.msi', params.VERSION)
 				    }
 				    unstash "pharo-launcher-osx-${architecture}-packages"
 				    upload('PharoLauncher*.dmg', params.VERSION)

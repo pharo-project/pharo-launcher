@@ -7,5 +7,5 @@ AddFolder APPDIR %PHARO_WIN_DIR% -install_in_parent_folder
 ; -icon "..\icons\pharo-launcher.ico"
 SetAppdir -buildname DefaultBuild -path [LocalAppDataFolder]\[ProductName]
 ; Save
-; SetOutputLocation -buildname DefaultBuild -path %OUT_DIR%
+SetOutputLocation -buildname DefaultBuild -path %OUT_DIR%
 Rebuild

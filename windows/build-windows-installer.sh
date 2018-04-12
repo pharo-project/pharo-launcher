@@ -26,7 +26,8 @@ mv Pharo windows/Pharo-win/
 
 cd windows
 # $ADVINST /newproject $ADVINST_PROJECT -lang en -overwrite
-$ADVINST /execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
+# we MUST add an extra-slash on ADVINST command else single slash is omited
+$ADVINST //execute "$ADVINST_PROJECT" "$ADVINST_COMMAND_FILE"
 cd -
 
 mv pharo-launcher.msi pharo-launcher-"$VERSION".msi

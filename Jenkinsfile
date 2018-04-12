@@ -72,7 +72,7 @@ def buildArchitecture(architecture) {
 					cleanWs()
 					unstash "pharo-launcher-one-${architecture}"
 					bat 'bash -c "./build.sh win-package"'
-					archiveArtifacts artifacts: 'pharo-launcher-installer*.exe', fingerprint: true
+					archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
 				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-packages"
 				}
 			}

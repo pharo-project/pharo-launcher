@@ -1,10 +1,13 @@
 ;aic
 SetVersion %LAUNCHER_VERSION%
+
 AddFile APPDIR "..\icons\pharo-launcher.ico"
 AddFolder APPDIR %PHARO_WIN_DIR% -install_in_parent_folder
-; NewShortcut -name [ProductName] -dir ProgramMenuFolder -target "APPDIR\Pharo.exe" -wkdir "APPDIR" -icon "..\icons\pharo-launcher.ico"
-; NewShortcut -name foo -dir Desktop -target APPDIR\Pharo.exe -wkdir APPDIR
-; -icon "..\icons\pharo-launcher.ico"
+
+; Target dir MUST refers to the path included in the installer and not to the final destination
+NewShortcut -name PharoLauncher -dir DesktopFolder -wkdir APPDIR -target APPDIR\Pharo\Pharo.exe -icon pharo-launcher.ico
+NewShortcut -name PharoLauncher -dir ProgramMenuFolder -wkdir APPDIR -target APPDIR\Pharo\Pharo.exe -icon pharo-launcher.ico
+
 SetAppdir -buildname DefaultBuild -path [LocalAppDataFolder]\[ProductName]
 ; Save
 SetOutputLocation -buildname DefaultBuild -path %OUT_DIR%

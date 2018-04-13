@@ -130,7 +130,7 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
-	def expandedFileName = sh returnStdout: true, script: 'echo ${file}'
+	def expandedFileName = sh returnStdout: true, script: "echo ${file}"
 	sh "shasum -a 256 -p ${expandedFileName} > ${expandedFileName}.sha256.txt"
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \

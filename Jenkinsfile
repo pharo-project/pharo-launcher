@@ -130,12 +130,13 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
-	sh "shasum -a 256 -p ${file} > $(echo ${file}).sha256.txt"
+	def expandedFileName = sh returnStdout: true, script: 'echo $file'
+	sh "shasum -a 256 -p ${expandedFileName} > ${expandedFileName}.sha256.txt"
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/tmp-${launcherVersion}"
 		sh "scp -o StrictHostKeyChecking=no \
-				${file} ${file}.sha256.txt \
+				${expandedFileName} ${expandedFileName}.sha256.txt \
     		pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/tmp-${launcherVersion}"
     }
 }

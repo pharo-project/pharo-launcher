@@ -1,3 +1,5 @@
 querying
 availableVirtualMachinesOnDiskByImageFormat
-	^[ self availableVirtualMachinesIn: self privateVmStore] on: PhLExecutableNotFoundError do: [ :ex |  self privateVmStore deleteAllChildren. ex retry ]
+	^ [ self availableVirtualMachinesIn: self privateVmStore] 
+		on: PhLExecutableNotFoundError 
+		do: [ :ex |  ex path asFileReference ensureDeleteAll. ex retry ]

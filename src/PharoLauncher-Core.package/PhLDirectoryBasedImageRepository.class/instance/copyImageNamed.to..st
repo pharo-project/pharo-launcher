@@ -4,6 +4,9 @@ copyImageNamed: sourceName to: targetName
 	self ensureNoImageWithName: targetName.
 	targetDirectory := self prepareForNewImageNamed: targetName.
 	sourceDirectory := self directoryForImageNamed: sourceName.
-	CopyVisitor copy: sourceDirectory to: targetDirectory.
-	self renameImageInFolder: targetDirectory to: targetName.
-	self contentsChanged
+	sourceDirectory children
+		do: [ :file | 
+			| targetFilename |
+			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
+			file copyTo: targetDirectory / targetFilename ].
+	self contentsChanged.

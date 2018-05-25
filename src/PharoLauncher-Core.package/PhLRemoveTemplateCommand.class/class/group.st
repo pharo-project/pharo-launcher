@@ -1,3 +1,3 @@
 accessing
 group
-	^ 3
+	^ 2

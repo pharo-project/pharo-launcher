@@ -1,0 +1,62 @@
+# Pharo Launcher executable signing
+It is now important to sign Pharo Launcher executables as many Operation Systems now have a mechanism detecting non-signed executables as risky software and try to convice users to do not install it.
+It is especially true on Mac OS X  and Windows.
+
+To sign Pharo Launcher, we use certificates provided by Inria Foundation.
+
+# How to store certificates safely on git?
+To automatize the signing of certificates, we need to get them along with sources files needed to build the executable, i.e. in the git repository.
+The certificate should not be usable by anyone outside the Pharo organization, so we will encrypt certificates to store them on git.
+```
+```
+To use these encrypted certificates in automated builds, we need to decrypt them :
+* OS X
+```bash
+  local deploy_dir="./deploy"
+  wget --quiet --directory-prefix="${deploy_dir}" https://github.com/OpenSmalltalk/opensmalltalk-vm/raw/Cog/deploy/pharo/pharo.cer.enc
+  wget --quiet --directory-prefix="${deploy_dir}" https://github.com/OpenSmalltalk/opensmalltalk-vm/raw/Cog/deploy/pharo/pharo.p12.enc
+  local path_cer="${deploy_dir}/pharo.cer"
+  local path_p12="${deploy_dir}/pharo.p12"
+  openssl aes-256-cbc -k "${pharo_sign_password}" -in "${path_cer}.enc" -out "${path_cer}" -d
+  openssl aes-256-cbc -k "${pharo_sign_password}" -in "${path_p12}.enc" -out "${path_p12}" -d
+```
+For security concerns, we create a temporary keychain, where we will import the certificate before signing:
+```bash
+security delete-keychain "${key_chain}" || true
+security create-keychain -p ci "${key_chain}"
+security default-keychain -s "${key_chain}"
+security unlock-keychain -p ci "${key_chain}"
+security set-keychain-settings -t 3600 -u "${key_chain}"
+security import "${path_cer}" -k ~/Library/Keychains/"${key_chain}" -T /usr/bin/codesign
+security import "${path_p12}" -k ~/Library/Keychains/"${key_chain}" -P "${cert_pass}" -T /usr/bin/codesign
+
+# insert code to sign here
+
+# Remove sensitive files again
+rm -rf "${path_cer}" "${path_p12}"
+security delete-keychain "${key_chain}
+```
+
+The password needed to decrypt them will be stored in an environment variable (secured) on the CI tool (travis or Jenkins).
+
+* Windows
+
+```
+```
+
+# How to sign on OS X?
+You need to use codesign (shipped with Xcode):
+```
+codesign -s "${sign_identity}" --keychain "${key_chain}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
+codesign -s "${sign_identity}"  --keychain "${key_chain}" --force --deep "${app_dir}"
+```
+# How to sign on Windows?
+You first need to install Microsoft Windows SDK
+```
+wget https://download.microsoft.com/download/A/6/A/A6AC035D-DA3F-4F0C-ADA4-37C8E5D34E3D/winsdk_web.exe
+```
+Run **winsdk_web.exe** and only select **.Net development tools**
+Then, use signtool:
+```
+signtool.exe sign /f signing_certificate.p12 /p password app.exe
+```

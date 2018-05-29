@@ -103,8 +103,8 @@ function package_windows_version() {
 	
 	openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
 	local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} windows/Pharo-win/Pharo/Pharo.exe
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} windows/Pharo-win/Pharo/PharoConsole.exe
+	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/Pharo.exe
+	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
 
 	cmd /c windows\\build-launcher-installer.bat
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi

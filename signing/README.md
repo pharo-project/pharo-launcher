@@ -8,6 +8,7 @@ To sign Pharo Launcher, we use certificates provided by Inria Foundation.
 To automatize the signing of certificates, we need to get them along with sources files needed to build the executable, i.e. in the git repository.
 The certificate should not be usable by anyone outside the Pharo organization, so we will encrypt certificates to store them on git.
 ```
+openssl aes-256-cbc -k password -in ${path_cer} -out ${path_cer}.enc -e
 ```
 To use these encrypted certificates in automated builds, we need to decrypt them :
 * OS X
@@ -37,12 +38,13 @@ rm -rf "${path_cer}" "${path_p12}"
 security delete-keychain "${key_chain}
 ```
 
-The password needed to decrypt them will be stored in an environment variable (secured) on the CI tool (travis or Jenkins).
-
 * Windows
 
 ```
+wget --quiet --directory-prefix="${deploy_dir}" https://github.com/pharo-project/pharo-launcher/raw/signing/pharo-windows-certificate.p12.enc
+openssl aes-256-cbc -k "${pharo_sign_password}" -in pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
 ```
+The password needed to decrypt them will be stored in an environment variable (secured) on the CI tool (travis or Jenkins).
 
 # How to sign on OS X?
 You need to use codesign (shipped with Xcode):
@@ -60,3 +62,4 @@ Then, use signtool:
 ```
 signtool.exe sign /f signing_certificate.p12 /p password app.exe
 ```
+We need to sgin both the executable and the generated installer.

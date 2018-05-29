@@ -101,8 +101,8 @@ function package_windows_version() {
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
+	openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
 	local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
-
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} windows/Pharo-win/Pharo/Pharo.exe
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} windows/Pharo-win/Pharo/PharoConsole.exe
 

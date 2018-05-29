@@ -71,7 +71,9 @@ def buildArchitecture(architecture) {
 				stage("Packaging-Windows ${architecture}-bits") {
 					cleanWs()
 					unstash "pharo-launcher-one-${architecture}"
-					bat 'bash -c "./build.sh win-package"'
+					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD')]) {
+						bat 'bash -c "./build.sh win-package"'
+					}
 					archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
 				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-packages"
 				}

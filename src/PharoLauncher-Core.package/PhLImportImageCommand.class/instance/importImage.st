@@ -6,7 +6,10 @@ importImage
 		extensions: #('image')
 		path: FileLocator home
 		preview: false.
-	imagePath ifNil: [ ^ self ].
-	imagePath asFileReference isDirectory
-		ifTrue: [ ^ self ].
+	imagePath ifNil: [ 
+		self inform: 'No path selected. Import failed.'.
+		^ self ].
+	imagePath asFileReference isDirectory ifTrue: [ 
+		self inform: 'The file selected is a directory and not a Pharo image. Import failed.'.
+		^ self ].
 	self import: imagePath

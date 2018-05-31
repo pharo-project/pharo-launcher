@@ -108,6 +108,7 @@ function package_windows_version() {
 
 	cmd /c windows\\build-launcher-installer.bat
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
+	rm pharo-windows-certificate.p12
 }
 
 function set_env() {

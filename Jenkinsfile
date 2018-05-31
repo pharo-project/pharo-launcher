@@ -62,8 +62,9 @@ def buildArchitecture(architecture) {
 
 		    stage("Packaging-Linux ${architecture}-bits") {
 		    	sh './build.sh linux-package'
-		    	archiveArtifacts artifacts: 'PharoLauncher-linux-*.zip', fingerprint: true
-		    	upload('PharoLauncher-linux-*.zip', params.VERSION)
+				packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
+		    	archiveArtifacts artifacts: packageFile, fingerprint: true
+		    	upload(packageFile, params.VERSION)
 		    }
 		}
 		node('windows') {
@@ -94,11 +95,12 @@ def buildArchitecture(architecture) {
 			stage("Deploy ${architecture}-bits") {
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 				    if (architecture == '32') {
-				    	unstash "pharo-launcher-win-${architecture}-packages"
+				    	unstash "pharo-launcher-win-${architecture}-package"
 					    upload('pharo-launcher-*.msi', params.VERSION)
 				    }
-				    unstash "pharo-launcher-osx-${architecture}-packages"
-				    upload('PharoLauncher*.dmg', params.VERSION)
+				    unstash "pharo-launcher-osx-${architecture}-package"
+				    fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
+				    upload(fileToUpload, params.VERSION)
 			    }
 			}		
 		}
@@ -145,4 +147,8 @@ def upload(file, launcherVersion) {
 
 def isBleedingEdgeVersion() {
 	return params.VERSION == 'bleedingEdge'
+}
+
+def fileNameArchSuffix(architecture) {
+	return (architecture == '32') ? 'x86' : 'x64'
 }

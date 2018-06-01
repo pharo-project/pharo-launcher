@@ -76,7 +76,7 @@ def buildArchitecture(architecture) {
 						bat 'bash -c "./build.sh win-package"'
 					}
 					archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
-				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-packages"
+				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
 				}
 			}
 	   	}
@@ -88,7 +88,7 @@ def buildArchitecture(architecture) {
 					sh './build.sh mac-package'
 				}
 				archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
-			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-packages"
+			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"
 			}
 		}
 		node('linux') {

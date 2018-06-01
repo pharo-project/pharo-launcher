@@ -93,6 +93,7 @@ def buildArchitecture(architecture) {
 		}
 		node('linux') {
 			stage("Deploy ${architecture}-bits") {
+		    	deleteDir()
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 				    if (architecture == '32') {
 				    	unstash "pharo-launcher-win-${architecture}-package"

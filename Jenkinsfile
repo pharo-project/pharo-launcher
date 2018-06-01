@@ -70,7 +70,7 @@ def buildArchitecture(architecture) {
 		node('windows') {
 			if (architecture == '32') {
 				stage("Packaging-Windows ${architecture}-bits") {
-					cleanWs()
+					deleteDir()
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 						bat 'bash -c "./build.sh win-package"'
@@ -82,7 +82,7 @@ def buildArchitecture(architecture) {
 	   	}
 		node('osx') {
 			stage("Packaging-Mac ${architecture}-bits") {
-				cleanWs()
+				deleteDir()
 				unstash "pharo-launcher-one-${architecture}"
 				withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 					sh './build.sh mac-package'

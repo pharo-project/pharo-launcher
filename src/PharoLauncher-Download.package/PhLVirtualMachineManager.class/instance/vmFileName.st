@@ -1,6 +1,7 @@
 accessing
 vmFileName
 	| architecture pharoVersion |
+	self checkImageArchitecture.
 	architecture := (self class is64bits: self imageFormatNumber)
 		ifTrue: [ 'x64' ]
 		ifFalse: [ 'x86' ].

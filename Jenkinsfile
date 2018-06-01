@@ -32,7 +32,7 @@ def buildArchitecture(architecture) {
     withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
 		    stage("Build ${architecture}-bits") {
-		    	wsCleanup()
+		    	deleteDir()
 		    	checkout scm
 		    	dir('pharo-build-scripts') {
 		    		git('https://github.com/pharo-project/pharo-build-scripts.git')

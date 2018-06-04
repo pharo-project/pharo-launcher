@@ -1,13 +1,13 @@
 {
 	"commentStamp" : "ChristopheDemarey 6/1/2018 10:44",
-	"super" : "PhLError",
+	"super" : "Warning",
 	"category" : "PharoLauncher-Download-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
 		"launcherArchitecture",
-		"imageArchitecure"
+		"imageArchitecture"
 	],
 	"name" : "PhLArchitectureMismatchWarning",
 	"type" : "normal"

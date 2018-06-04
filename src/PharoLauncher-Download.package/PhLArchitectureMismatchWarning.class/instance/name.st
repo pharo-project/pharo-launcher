@@ -1,3 +1,3 @@
 accessing
 name
-	^ 'Architecture Mismatch'
+	^ 'Architecture Mismatch! Continue?'

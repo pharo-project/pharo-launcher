@@ -15,8 +15,8 @@ gvfs-set-attribute \
 	"file://$ICONS/pharo-launcher.png" \
 		2> /dev/null
 
-image="$RESOURCES/PharoLauncher.image"		
-
+image="$RESOURCES/PharoLauncher.image"
+ 
 # execute
 exec "$LINUX/pharo" \
 	--plugins "$LINUX" \

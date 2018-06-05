@@ -71,7 +71,7 @@ function package_linux_version() {
 	rm -f pharo-build-scripts/platform/icons/*
 	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
 	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
-	cp linux/pharo-launcher.template pharo-build-scripts/platform/templates/linux/
+	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
 	./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p linux
 
 	mv Pharo-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip

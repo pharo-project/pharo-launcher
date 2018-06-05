@@ -32,7 +32,7 @@ def buildArchitecture(architecture) {
     withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
 		    stage("Build ${architecture}-bits") {
-		    	deleteDir()
+		    	step([$class: 'WsCleanup'])
 		    	checkout scm
 		    	dir('pharo-build-scripts') {
 		    		git('https://github.com/pharo-project/pharo-build-scripts.git')
@@ -70,7 +70,7 @@ def buildArchitecture(architecture) {
 		node('windows') {
 			if (architecture == '32') {
 				stage("Packaging-Windows ${architecture}-bits") {
-					deleteDir()
+					step([$class: 'WsCleanup'])
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 						bat 'bash -c "./build.sh win-package"'
@@ -82,7 +82,7 @@ def buildArchitecture(architecture) {
 	   	}
 		node('osx') {
 			stage("Packaging-Mac ${architecture}-bits") {
-				deleteDir()
+				step([$class: 'WsCleanup'])
 				unstash "pharo-launcher-one-${architecture}"
 				withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 					sh './build.sh mac-package'
@@ -93,7 +93,7 @@ def buildArchitecture(architecture) {
 		}
 		node('linux') {
 			stage("Deploy ${architecture}-bits") {
-		    	deleteDir()
+		    	step([$class: 'WsCleanup'])
 				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 				    if (architecture == '32') {
 				    	unstash "pharo-launcher-win-${architecture}-package"

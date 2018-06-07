@@ -110,7 +110,6 @@ function package_windows_version() {
 	local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/Pharo.exe
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/ProcessWrapperPlugin.dll
 
 	cmd /c windows\\build-launcher-installer.bat
 	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi

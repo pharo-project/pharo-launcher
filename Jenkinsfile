@@ -37,7 +37,7 @@ def buildArchitecture(architecture) {
 		    	dir('pharo-build-scripts') {
 		    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 		    	}
-		        sh "./build.sh prepare ${params.VERSION} && ls -al"
+		        sh "./build.sh prepare ${params.VERSION}"
 		    }
 
 		    stage("Test ${architecture}-bits") {
@@ -72,7 +72,6 @@ def buildArchitecture(architecture) {
 				stage("Packaging-Windows ${architecture}-bits") {
 					step([$class: 'WsCleanup'])
 					unstash "pharo-launcher-one-${architecture}"
-					bat "dir One/win"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 						bat 'bash -c "./build.sh win-package"'
 					}

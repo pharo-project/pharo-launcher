@@ -33,38 +33,48 @@ def buildArchitecture(architecture) {
 		node('linux') {
 		    stage("Build ${architecture}-bits") {
 		    	step([$class: 'WsCleanup'])
-		    	checkout scm
-		    	dir('pharo-build-scripts') {
-		    		git('https://github.com/pharo-project/pharo-build-scripts.git')
+		    	dir("${architecture}") {
+			    	checkout scm
+			    	dir('pharo-build-scripts') {
+			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
+			    	}
+			        sh "./build.sh prepare ${params.VERSION}"
 		    	}
-		        sh "./build.sh prepare ${params.VERSION}"
 		    }
 
 		    stage("Test ${architecture}-bits") {
-		    	sh './build.sh test'
-		        junit '*.xml'
+		    	dir("${architecture}") {
+			    	sh './build.sh test'
+			        junit '*.xml'
+			    }
 		    }
 
 		    stage("Packaging-developer ${architecture}-bits") {
-		    	sh './build.sh developer'
-		    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
-		    	if ( isBleedingEdgeVersion() )
-		    		upload('PharoLauncher-developer*.zip', params.VERSION)
+		    	dir("${architecture}") {
+			    	sh './build.sh developer'
+			    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
+			    	if ( isBleedingEdgeVersion() )
+			    		upload('PharoLauncher-developer*.zip', params.VERSION)
+			    }
 		    }
 
 		    stage("Packaging-user ${architecture}-bits") {
-		    	sh './build.sh user'
-		    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
-		    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
-		    	if ( isBleedingEdgeVersion() )
-		    		upload('PharoLauncher-user-*.zip', params.VERSION)
+		    	dir("${architecture}") {
+			    	sh './build.sh user'
+			    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
+			    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+			    	if ( isBleedingEdgeVersion() )
+			    		upload('PharoLauncher-user-*.zip', params.VERSION)
+			    }
 		    }
 
 		    stage("Packaging-Linux ${architecture}-bits") {
-		    	sh './build.sh linux-package'
-				packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
-		    	archiveArtifacts artifacts: packageFile, fingerprint: true
-		    	upload(packageFile, params.VERSION)
+		    	dir("${architecture}") {
+			    	sh './build.sh linux-package'
+					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
+			    	archiveArtifacts artifacts: packageFile, fingerprint: true
+			    	upload(packageFile, params.VERSION)
+			    }
 		    }
 		}
 		node('windows') {
@@ -83,26 +93,30 @@ def buildArchitecture(architecture) {
 		node('osx') {
 			stage("Packaging-Mac ${architecture}-bits") {
 				step([$class: 'WsCleanup'])
-				unstash "pharo-launcher-one-${architecture}"
-				withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-					sh './build.sh mac-package'
+		    	dir("${architecture}") {
+					unstash "pharo-launcher-one-${architecture}"
+					withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+						sh './build.sh mac-package'
+					}
+					archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
+				    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"
 				}
-				archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
-			    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"
 			}
 		}
 		node('linux') {
 			stage("Deploy ${architecture}-bits") {
 		    	step([$class: 'WsCleanup'])
-				if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-				    if (architecture == '32') {
-				    	unstash "pharo-launcher-win-${architecture}-package"
-					    upload('pharo-launcher-*.msi', params.VERSION)
+		    	dir("${architecture}") {
+					if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
+					    if (architecture == '32') {
+					    	unstash "pharo-launcher-win-${architecture}-package"
+						    upload('pharo-launcher-*.msi', params.VERSION)
+					    }
+					    unstash "pharo-launcher-osx-${architecture}-package"
+					    fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
+					    upload(fileToUpload, params.VERSION)
 				    }
-				    unstash "pharo-launcher-osx-${architecture}-package"
-				    fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
-				    upload(fileToUpload, params.VERSION)
-			    }
+				}
 			}		
 		}
     }

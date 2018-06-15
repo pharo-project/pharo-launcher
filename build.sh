@@ -74,7 +74,7 @@ function package_linux_version() {
 	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
 	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p linux
 
-	mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
+	mv One/PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
 
 function prepare_mac_resources_for_build_platform_script() {

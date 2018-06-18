@@ -63,7 +63,6 @@ function package_user_version() {
 	set_env
 
 	zip -9r PharoLauncher-user-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
-	md5sum PharoLauncher-user-$VERSION_NUMBER.zip > PharoLauncher-user-$VERSION_NUMBER.zip.md5sum
 }
 
 function package_linux_version() {
@@ -73,7 +72,7 @@ function package_linux_version() {
 	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
 	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
 	ls -R
-	EXECUTABLE_NAME=pharo-launcher IMAGES_PATH=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p linux
+	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p linux
 	ls -R
 	
 	mv One/PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip

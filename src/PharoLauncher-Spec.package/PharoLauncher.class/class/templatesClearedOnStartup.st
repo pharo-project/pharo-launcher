@@ -1,3 +1,3 @@
 settings
 templatesClearedOnStartup
-	^ TemplatesClearedOnStartup ifNil: [  TemplatesClearedOnStartup := false ].
+	^ TemplatesClearedOnStartup ifNil: [  TemplatesClearedOnStartup := true ].

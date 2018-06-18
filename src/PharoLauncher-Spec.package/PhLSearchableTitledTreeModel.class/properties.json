@@ -7,7 +7,8 @@
 	"classvars" : [ ],
 	"instvars" : [
 		"filterPattern",
-		"regexMatcher"
+		"regexMatcher",
+		"selectionChangedBlock"
 	],
 	"name" : "PhLSearchableTitledTreeModel",
 	"type" : "normal"

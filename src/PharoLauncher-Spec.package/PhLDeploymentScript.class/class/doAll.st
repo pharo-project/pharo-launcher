@@ -2,7 +2,6 @@ public
 doAll
 	self
 		closeAllWindows;
-		setTheme;
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;

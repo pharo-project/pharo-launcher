@@ -8,12 +8,12 @@ specLayout
 				[	:c3 | c3
 					add: #templatesModel;
 					add: #quitOnLaunchCheckBoxModel height: 25 "2013-10-13-BTC How do you left justfiy checkbox?"
-				] left: 0.4;
+				] left: 0.60;
 				addSplitter;
 				newColumn: 
 				[ 	:c2 | c2
 					add: #imagesModel ;
 					add: #statusbarModel height: 25						
-				] right: 0.6
+				] right: 0.40
 			];
 			yourself.

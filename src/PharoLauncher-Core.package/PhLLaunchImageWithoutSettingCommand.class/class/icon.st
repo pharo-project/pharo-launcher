@@ -1,3 +1,3 @@
 accessing
 icon
-	^ super icon asGrayScale 
+	^ super icon asGrayScaleWithAlpha 

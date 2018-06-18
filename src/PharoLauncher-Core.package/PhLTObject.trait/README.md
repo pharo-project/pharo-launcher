@@ -1,1 +1,0 @@
-Trait of everything the user can act on

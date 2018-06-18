@@ -5,7 +5,7 @@ groups
 	^ Groups
 		ifNil: [ 
 			Groups := OrderedDictionary new.
-			Groups at: PhLJenkins2Server inriaRmod put: true.
+			Groups at: PhLJenkins2Server inriaRmod put: false.
 			Groups at: PhLJenkins2Server inriaPharoContribution put: true.
 			Groups at: PhLJenkins2Server inriaPharo put: true.
 			Groups at: PhLJenkins2Server inriaMoose put: true.

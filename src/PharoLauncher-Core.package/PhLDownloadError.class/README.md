@@ -1,1 +1,0 @@
-I represent download errors.

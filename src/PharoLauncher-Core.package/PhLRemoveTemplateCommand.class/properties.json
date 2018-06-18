@@ -5,9 +5,7 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
-	"instvars" : [
-		"newImageName"
-	],
+	"instvars" : [ ],
 	"name" : "PhLRemoveTemplateCommand",
 	"type" : "normal"
 }

@@ -1,5 +1,13 @@
 action
 renameImageNamed: oldName to: newName
-	| sourceDirectory |
+	| sourceDirectory targetDirectory |
+	self ensureNoImageWithName: newName.
+	targetDirectory := self prepareForNewImageNamed: newName.
 	sourceDirectory := self directoryForImageNamed: oldName.
-	self moveImage: sourceDirectory to: newName 
+	sourceDirectory children
+		do: [ :file | 
+			| targetFilename |
+			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: newName.
+			file moveTo: targetDirectory / targetFilename ].
+	sourceDirectory delete.
+	self contentsChanged.

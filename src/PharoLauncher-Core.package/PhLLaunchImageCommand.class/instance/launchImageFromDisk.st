@@ -7,5 +7,4 @@ launchImageFromDisk
 		path: FileLocator home 
 		preview: false.
 	imagePath ifNil: [ ^ self ].
-	imagePath asFileReference isFile ifFalse: [ ^self ].
 	self launchImage: (PhLImage location: imagePath asFileReference)

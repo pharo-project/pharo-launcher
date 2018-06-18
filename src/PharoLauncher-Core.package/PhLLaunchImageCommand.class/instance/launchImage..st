@@ -1,7 +1,5 @@
 action
 launchImage: aPhLImage
-	[ aPhLImage launchWithSettings: true ]
-		on: PhLError
-		do: [ :error | error uiAlert ].
+	aPhLImage launch.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]

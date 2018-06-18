@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/4/2018 10:59",
+	"super" : "PhLError",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"command"
+	],
+	"name" : "PhLImageVersionDeterminationError",
+	"type" : "normal"
+}

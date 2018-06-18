@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallDeleteIcon asIcon
+	^ self iconNamed: #smallDelete

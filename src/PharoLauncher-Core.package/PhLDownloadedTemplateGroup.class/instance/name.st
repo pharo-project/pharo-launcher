@@ -1,3 +1,3 @@
 accessing
 name
-	^ 'Templates'
+	^ 'Downloaded templates'

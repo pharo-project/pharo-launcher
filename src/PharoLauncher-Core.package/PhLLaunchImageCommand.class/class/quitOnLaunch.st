@@ -1,3 +1,3 @@
 settings
 quitOnLaunch
-	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
+	^ QuitOnLaunch ifNil: [  QuitOnLaunch := true ].

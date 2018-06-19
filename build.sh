@@ -92,6 +92,10 @@ function package_mac_version() {
 	set_env
 	prepare_mac_resources_for_build_platform_script
 	WORKSPACE=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p mac
+	echo "PRINT in package_mac_version"
+	pwd
+	ls -r
+	echo "End PRINT in package_mac_version"
 	unzip PharoLauncher-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
@@ -105,6 +109,10 @@ function package_mac_version() {
 function package_windows_version() {
 	set_env
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
+	echo "PRINT in package_mac_version"
+	pwd
+	ls -r
+	echo "End PRINT in package_mac_version"
 	unzip Pharo-win.zip -d .
 	
 	openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d

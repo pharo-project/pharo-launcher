@@ -37,8 +37,8 @@ Bux fixes:
 		spec author: 'Christophe Demarey'.
 		spec timestamp: '06/19/2018 13:49'.
 		spec 
-			project: 'XMLParser' with: '3.1.8';
-			project: 'OSProcess' with: '4.6.9';
+			project: 'XMLParser' with: '3.5.0';
+			project: 'OSProcess' with: '4.6.13';
 			project: 'ProcessWrapper' with: '1.2';
 			project: 'JSON' with: '1.2';
 			project: 'Ston' with: '0.24'.

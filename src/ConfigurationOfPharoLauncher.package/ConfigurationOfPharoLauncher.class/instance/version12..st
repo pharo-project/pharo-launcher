@@ -46,5 +46,5 @@ Bux fixes:
 			package: #'PharoLauncher-Core' with: 'PharoLauncher-Core-ChristopheDemarey.197';
 			package: #'PharoLauncher-Download' with: 'PharoLauncher-Download-ChristopheDemarey.13';
 			package: #'PharoLauncher-Spec' with: 'PharoLauncher-Spec-CyrilFerlicot.71';
-			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-VincentBlondeau.24';
+			package: #'PharoLauncher-Tests-Core' with: 'PharoLauncher-Tests-Core-ChristopheDemarey.25';
 			package: #'PharoLauncher-Tests-Download' with: 'PharoLauncher-Tests-Download-ChristopheDemarey.4'. ].

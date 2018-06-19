@@ -153,6 +153,9 @@ def upload(file, launcherVersion) {
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net mkdir -p files/pharo-launcher/tmp-${launcherVersion}"
+		sh "scp -o StrictHostKeyChecking=no \
+			${expandedFileName} \
+			pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/tmp-${launcherVersion}"
     }
 }
 

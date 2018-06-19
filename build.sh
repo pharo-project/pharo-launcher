@@ -85,7 +85,7 @@ function prepare_mac_resources_for_build_platform_script() {
 	cd ..
 	cp icons/PharoLauncher.icns pharo-build-scripts/platform/icons/
 	rm -f pharo-build-scripts/platform/templates/mac/Contents/*
-	cp mac/Info.plist.template pharo-build-scripts/platform/templates/mac/Contents/
+	cp mac/Info.plist.template pharo-build-scripts/platform/templates/mac/Contents/ 
 }
 
 function package_mac_version() {

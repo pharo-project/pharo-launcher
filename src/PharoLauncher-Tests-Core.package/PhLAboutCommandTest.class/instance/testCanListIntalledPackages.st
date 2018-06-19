@@ -4,9 +4,11 @@ testCanListIntalledPackages
 	list := PhLAboutCommand new launcherPackageList.
 	self 
 		assert: list size 
-		equals: 3.
+		equals: 5.
 	self 
 		assertCollection: (PhLAboutCommand new launcherPackageList collect: [ :s | s copyUpToLast: $- ])
 		 hasSameElements: #( 'PharoLauncher-Core'
-									'PharoLauncher-Spec'
-									'PharoLauncher-Tests-Core' )
+								'PharoLauncher-Download' 
+								'PharoLauncher-Spec'
+								'PharoLauncher-Tests-Core'
+								'PharoLauncher-Tests-Download' )

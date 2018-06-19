@@ -1,3 +1,3 @@
 system startup
 startUp
-	self startUpClasses do: [ :c | c launcherStartUp ]
+	self startUpClasses do: [ :c | c ifNotNil: [ c launcherStartUp ] ]

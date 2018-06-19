@@ -96,7 +96,7 @@ function package_mac_version() {
 	pwd
 	ls -R
 	echo "End PRINT in package_mac_version"
-	unzip PharoLauncher-mac.zip -d .
+	unzip ./One/PharoLauncher-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher ./mac/build-dmg.sh

@@ -10,8 +10,8 @@ launchWithSettings: usePharoSettings
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |
-			architectureWarningEnabled 
+			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
 				ifTrue: [ 
 					architectureWarningEnabled := false. "only raise one warning"
-					continue := UIManager default confirm: warning longDescription label: warning name. ].
+					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
 			continue ifTrue: [ warning resume ]. ]

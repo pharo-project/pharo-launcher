@@ -6,7 +6,8 @@
 	"pools" : [ ],
 	"classvars" : [
 		"CommandAnnouncer",
-		"QuitOnLaunch"
+		"QuitOnLaunch",
+		"WarnOnArchMismatch"
 	],
 	"instvars" : [ ],
 	"name" : "PhLLaunchImageCommand",

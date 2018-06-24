@@ -10,7 +10,7 @@ launchWithSettings: usePharoSettings
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
+			(Smalltalk os isUnix64 and: [ PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled ] ])
 				ifTrue: [ 
 					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].

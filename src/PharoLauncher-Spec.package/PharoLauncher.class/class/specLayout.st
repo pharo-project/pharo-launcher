@@ -4,6 +4,7 @@ specLayout
 	^ SpecLayout composed
 			newRow: 
 			[ 	:r | r 
+				newColumn: [ :c4 | ] width: 1; "Add a thin column so left side not pushed up so tight"
 				newColumn:
 				[	:c3 | c3
 					add: #templatesModel;

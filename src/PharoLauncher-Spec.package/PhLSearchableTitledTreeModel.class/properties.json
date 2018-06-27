@@ -8,7 +8,8 @@
 	"instvars" : [
 		"filterPattern",
 		"regexMatcher",
-		"selectionChangedBlock"
+		"selectionChangedBlock",
+		"search"
 	],
 	"name" : "PhLSearchableTitledTreeModel",
 	"type" : "normal"

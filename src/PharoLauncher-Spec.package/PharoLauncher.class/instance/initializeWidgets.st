@@ -4,12 +4,12 @@ initializeWidgets
 	statusbarModel := self newStatusBar.
 	
 	(imagesModel := self newSearchableTitledTree)
-		title: 'Existing images' translated;
+		title: 'Current Images' translated;
 		doubleClickCommandClass: PhLLaunchImageCommand;
 		whenSelectionChanged: [:items | self updateStatusBarWith: items ];
 		makeMultiSelect.
 	(templatesModel := self newTitledTree)
-		title: 'Templates' translated;
+		title: 'New Image Templates' translated;
 		doubleClickCommandClass: PhLCreateImageFromTemplateCommand.
 	
 	(quitOnLaunchCheckBoxModel := self newCheckBox)
@@ -20,5 +20,9 @@ initializeWidgets
 		when: PhLQuitOnLaunchValueChanged 
 		send: #refreshQuitOnLaunchCheckBox
 		to: self.
+		
 	self whenWindowClosed: [ PhLLaunchImageCommand announcer unsubscribe: self ].
-	self whenBuiltDo: [ self initializeImageAndTemplates ]
+	self whenBuiltDo: [ 
+		self 
+			initializeImageAndTemplates; 
+			initializeKeyboardShortcuts ].

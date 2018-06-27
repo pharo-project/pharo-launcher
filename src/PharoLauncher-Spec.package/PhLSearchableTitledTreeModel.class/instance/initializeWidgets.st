@@ -1,32 +1,22 @@
 initialization
 initializeWidgets
-	| detailsColumn imageColumn archColumn timestampColumn |
-	
+	| detailsColumn imageColumn |
 	super initializeWidgets.
-	
-	(timestampColumn := TreeColumnModel new) 
+	(detailsColumn := TreeColumnModel new)
 		headerLabel: 'Last Modified';
 		headerAction: [ self sortContentByDateModfied ];
-		displayBlock: [ :item | 
-			| timestamp |
-			timestamp := item content file modificationTime.
-			timestamp asDate yyyymmdd, ' ', timestamp asTime print24 ];
-		initialWidth: 250.
-		
-	(archColumn := TreeColumnModel new) 
-		headerLabel: 'Arch';
-		headerAction: [ self sortContentByArch ];
-		displayBlock: [ :item | item content arch ].
-		
-	(detailsColumn := TreeColumnModel new) 
-		headerLabel: 'Template';
-		headerAction: [ self sortContentByTemplate ];
-		displayBlock: [ :item | item content originTemplateName ].
-		
+		displayBlock: [ :item | item content file modificationTime ].
 	imageColumn := tree columns first.
-	imageColumn 
+	imageColumn
 		headerLabel: 'Name';
 		headerAction: [ self sortContentByName ];
 		initialWidth: 350.
-
-	tree columns: (tree columns, { timestampColumn . detailsColumn . archColumn}).
+		
+	tree columns: (tree columns copyWith: detailsColumn).
+	
+	tree
+		bindKeyCombination: Character cr asKeyCombination
+		toAction: [ self doubleClick ].
+	self searchField
+		bindKeyCombination: Character tab asKeyCombination
+		toAction: [ self selectFirstItem ]

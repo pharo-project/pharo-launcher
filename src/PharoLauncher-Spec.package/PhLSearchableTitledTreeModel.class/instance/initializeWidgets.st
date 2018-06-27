@@ -1,6 +1,6 @@
 initialization
 initializeWidgets
-	| detailsColumn imageColumn timestampColumn |
+	| detailsColumn imageColumn archColumn timestampColumn |
 	
 	super initializeWidgets.
 	
@@ -13,6 +13,11 @@ initializeWidgets
 			timestamp asDate yyyymmdd, ' ', timestamp asTime print24 ];
 		initialWidth: 250.
 		
+	(archColumn := TreeColumnModel new) 
+		headerLabel: 'Arch';
+		headerAction: [ self sortContentByArch ];
+		displayBlock: [ :item | item content arch ].
+		
 	(detailsColumn := TreeColumnModel new) 
 		headerLabel: 'Template';
 		headerAction: [ self sortContentByTemplate ];
@@ -24,4 +29,4 @@ initializeWidgets
 		headerAction: [ self sortContentByName ];
 		initialWidth: 350.
 
-	tree columns: (tree columns, { timestampColumn. detailsColumn }).
+	tree columns: (tree columns, { timestampColumn . detailsColumn . archColumn}).

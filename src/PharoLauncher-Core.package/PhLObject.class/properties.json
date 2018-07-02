@@ -1,13 +1,11 @@
 {
-	"classtraitcomposition" : "PhLTObject classTrait",
+	"commentStamp" : "<historical>",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Model",
+	"classinstvars" : [ ],
+	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "PhLObject",
-	"commentStamp" : "<historical>",
-	"super" : "Object",
-	"traitcomposition" : "PhLTObject",
-	"type" : "normal",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"category" : "PharoLauncher-Core-Model"
+	"type" : "normal"
 }

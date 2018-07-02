@@ -39,7 +39,7 @@ def buildArchitecture(architecture) {
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
-			      sh "./build.sh prepare ${params.VERSION}"
+			      sh "./build.sh prepare $params.VERSION"
 		    	}
 		    }
 

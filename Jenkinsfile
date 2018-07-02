@@ -33,6 +33,7 @@ try {
 def buildArchitecture(architecture) {
     withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
+        step([$class: 'WsCleanup'])
 		    stage("Build ${architecture}-bits") {
 		    	dir("${architecture}") {
 			    	checkout scm

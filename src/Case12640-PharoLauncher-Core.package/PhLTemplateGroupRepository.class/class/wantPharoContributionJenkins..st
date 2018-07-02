@@ -1,3 +1,0 @@
-settings
-wantPharoContributionJenkins: aBoolean
-	self activate: aBoolean GroupNamed: PhLJenkinsServer inriaPharoContribution name

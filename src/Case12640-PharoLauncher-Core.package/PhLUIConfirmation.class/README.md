@@ -1,1 +1,0 @@
-Abstraction of a yes/no dialog.

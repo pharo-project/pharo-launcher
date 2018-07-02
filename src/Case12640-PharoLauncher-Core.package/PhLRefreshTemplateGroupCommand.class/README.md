@@ -1,1 +1,0 @@
-Refresh the currently selected template groups

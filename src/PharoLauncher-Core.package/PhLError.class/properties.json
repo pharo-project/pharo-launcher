@@ -1,13 +1,11 @@
 {
-	"classtraitcomposition" : "PhLTObject classTrait",
+	"commentStamp" : "<historical>",
+	"super" : "Error",
+	"category" : "PharoLauncher-Core-Exceptions",
+	"classinstvars" : [ ],
+	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "PhLError",
-	"commentStamp" : "<historical>",
-	"super" : "Error",
-	"traitcomposition" : "PhLTObject - {#isError}",
-	"type" : "normal",
-	"classinstvars" : [ ],
-	"pools" : [ ],
-	"category" : "PharoLauncher-Core-Exceptions"
+	"type" : "normal"
 }

@@ -9,5 +9,5 @@
 	"type" : "normal",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"category" : "PharoLauncher-Download-Exceptions"
+	"category" : "PharoLauncher-Core-Exceptions"
 }

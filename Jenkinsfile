@@ -16,10 +16,15 @@ try {
     	}
     }
     parallel builders
-    node('linux') {
-    	stage('Upload finalization') {
-    		finalizeUpload(params.VERSION)
-    	}
+    
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "In Branch/PR " + (env.CHANGE_ID?.trim())
+    if (!env.CHANGE_ID?.trim()) {
+      node('linux') {
+    	  stage('Upload finalization') {
+    	    finalizeUpload(params.VERSION)
+    	  }
+      }
     }
 } catch(exception) {
 	currentBuild.result = 'FAILURE'

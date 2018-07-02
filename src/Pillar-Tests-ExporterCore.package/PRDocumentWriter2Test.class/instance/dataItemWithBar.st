@@ -1,3 +1,0 @@
-requirements
-dataItemWithBar
-	^ self subclassResponsibility

@@ -1,3 +1,0 @@
-requirements
-definitionListBegin
-	self subclassResponsibility

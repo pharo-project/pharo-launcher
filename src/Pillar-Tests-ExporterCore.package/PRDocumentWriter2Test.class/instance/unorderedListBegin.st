@@ -1,3 +1,0 @@
-requirements
-unorderedListBegin
-	^ self subclassResponsibility

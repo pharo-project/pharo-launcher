@@ -1,3 +1,0 @@
-requirements
-underlineFoo
-	^ self subclassResponsibility

@@ -32,7 +32,8 @@ baseline: spec
 					versionString: #'stable';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ].
-		spec 
+		spec
+			package: #'ConfigurationOfPharoLauncher'; 
 			package: #'PharoLauncher-Core' with: [
 				spec requires: #('XMLParser' 'Ston' 'JSON' ). ];
 			package: #'PharoLauncher-Download' with: [

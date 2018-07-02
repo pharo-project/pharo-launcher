@@ -1,10 +1,14 @@
 #!/usr/bin/env groovy
 
+//Set configurable properties
 properties([parameters([
 	string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
 	string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
 	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')
 ])])
+
+//Avoid concurrent builds
+properties([disableConcurrentBuilds()])
 
 try {
     def builders = [:]

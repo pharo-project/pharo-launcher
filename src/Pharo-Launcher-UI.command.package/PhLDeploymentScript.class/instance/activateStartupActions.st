@@ -1,3 +1,0 @@
-actions
-activateStartupActions
-	StartupPreferencesLoader allowStartupScript: true.

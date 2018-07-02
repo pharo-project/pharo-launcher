@@ -1,3 +1,0 @@
-requirements
-termItemWithFoo
-	^ self subclassResponsibility

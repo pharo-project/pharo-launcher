@@ -1,3 +1,0 @@
-testing
-isApplicable
-	^ PhLDeploymentScript developmentEnvironmentEnabled

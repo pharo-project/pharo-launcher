@@ -1,3 +1,0 @@
-accessing
-doubleClickCommandClass: aCommandClass
-	doubleClickCommandClass := aCommandClass

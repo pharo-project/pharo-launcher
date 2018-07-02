@@ -1,3 +1,0 @@
-announcements
-templateRepositoryChanged
-	self templateRepository contentsChanged

@@ -1,3 +1,0 @@
-requirements
-italicFoo
-	^ self subclassResponsibility

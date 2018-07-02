@@ -1,3 +1,0 @@
-testing
-isImage
-	^ false

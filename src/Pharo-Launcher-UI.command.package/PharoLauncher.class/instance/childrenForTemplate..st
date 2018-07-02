@@ -1,3 +1,0 @@
-templates rendering
-childrenForTemplate: aTemplate
-	^ #()

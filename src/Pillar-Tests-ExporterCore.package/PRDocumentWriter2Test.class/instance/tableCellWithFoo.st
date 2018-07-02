@@ -1,3 +1,0 @@
-requirements
-tableCellWithFoo
-	^ self subclassResponsibility 

@@ -1,3 +1,0 @@
-selection
-selectedImage
-	^ imagesModel selectedItem

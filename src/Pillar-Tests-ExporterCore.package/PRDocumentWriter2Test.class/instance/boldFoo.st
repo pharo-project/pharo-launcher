@@ -1,3 +1,0 @@
-requirements
-boldFoo
-	^ self subclassResponsibility

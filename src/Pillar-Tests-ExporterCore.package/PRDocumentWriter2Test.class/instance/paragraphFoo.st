@@ -1,3 +1,0 @@
-requirements
-paragraphFoo
-	^ self subclassResponsibility

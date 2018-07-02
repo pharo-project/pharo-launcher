@@ -1,3 +1,0 @@
-accessing
-context
-	 ^ contextHolder contents

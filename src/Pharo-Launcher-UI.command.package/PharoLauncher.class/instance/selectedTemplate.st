@@ -1,3 +1,0 @@
-selection
-selectedTemplate
-	^ templatesModel selectedItem

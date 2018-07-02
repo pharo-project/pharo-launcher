@@ -1,3 +1,0 @@
-settings
-deactivateDeployed
-	IsDeployed := false

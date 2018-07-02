@@ -1,3 +1,0 @@
-requirements
-figureBegin
-	^ self subclassResponsibility

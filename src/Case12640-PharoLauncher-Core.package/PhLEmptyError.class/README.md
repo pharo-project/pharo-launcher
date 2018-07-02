@@ -1,1 +1,0 @@
-Represent a group that has not been downloaded yet.

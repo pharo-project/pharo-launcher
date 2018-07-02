@@ -188,5 +188,5 @@ def fileNameArchSuffix(architecture) {
 }
 
 def isPullRequest() {
-	return env.CHANGE_ID?.trim()
+	return env.CHANGE_ID != null
 }

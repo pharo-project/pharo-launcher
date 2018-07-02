@@ -138,9 +138,11 @@ def notifyBuild() {
 }
 
 def cleanUploadFolderIfNeeded(launcherVersion) {
-  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
-  if (isPullRequest()) return;
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
   
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
@@ -149,9 +151,11 @@ def cleanUploadFolderIfNeeded(launcherVersion) {
 }
 
 def finalizeUpload(launcherVersion) {
-  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
-  if (isPullRequest()) return;
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
   
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
@@ -162,10 +166,12 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
-  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
-  if (isPullRequest()) return;
-  
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
+    
 	def expandedFileName = sh(returnStdout: true, script: "echo ${file}").trim()
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \

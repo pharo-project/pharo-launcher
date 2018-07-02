@@ -1,3 +1,0 @@
-templates rendering
-childrenForTemplateGroup: aGroup
-	^ aGroup simplifiedTemplatesAndGroups

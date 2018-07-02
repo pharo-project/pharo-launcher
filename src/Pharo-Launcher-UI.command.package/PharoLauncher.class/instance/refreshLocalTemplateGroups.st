@@ -1,4 +1,0 @@
-updating
-refreshLocalTemplateGroups
-	TemplateRepository refreshLocal.
-	templatesModel roots: TemplateRepository groups.

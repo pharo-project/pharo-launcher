@@ -17,14 +17,10 @@ try {
     }
     parallel builders
     
-    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-    echo "In Branch/PR " + (env.CHANGE_ID?.trim())
-    if (!env.CHANGE_ID?.trim()) {
-      node('linux') {
-    	  stage('Upload finalization') {
-    	    finalizeUpload(params.VERSION)
-    	  }
-      }
+    node('linux') {
+      stage('Upload finalization') {
+    	  finalizeUpload(params.VERSION)
+    	}
     }
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
@@ -138,6 +134,10 @@ def notifyBuild() {
 }
 
 def cleanUploadFolderIfNeeded(launcherVersion) {
+  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
+  if (isPullRequest()) return;
+  
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/tmp-${launcherVersion}"
@@ -145,6 +145,10 @@ def cleanUploadFolderIfNeeded(launcherVersion) {
 }
 
 def finalizeUpload(launcherVersion) {
+  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
+  if (isPullRequest()) return;
+  
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/${launcherVersion}"
@@ -154,6 +158,10 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
+  //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+  echo "In Branch/PR " + (env.CHANGE_ID?.trim())
+  if (isPullRequest()) return;
+  
 	def expandedFileName = sh(returnStdout: true, script: "echo ${file}").trim()
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
@@ -170,4 +178,8 @@ def isBleedingEdgeVersion() {
 
 def fileNameArchSuffix(architecture) {
 	return (architecture == '32') ? 'x86' : 'x64'
+}
+
+def isPullRequest() {
+	return env.CHANGE_ID?.trim()
 }

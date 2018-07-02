@@ -2,12 +2,12 @@
 
 //Set configurable properties
 properties([
+  //Avoid concurrent builds
+  disableConcurrentBuilds(),
   parameters([
 	  string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
 	  string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
-	  string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')]),
-  //Avoid concurrent builds
-  disableConcurrentBuilds()
+	  string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')])
 ])
 
 try {
@@ -37,13 +37,12 @@ def buildArchitecture(architecture) {
     withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
 		    stage("Build ${architecture}-bits") {
-		    	step([$class: 'WsCleanup'])
 		    	dir("${architecture}") {
 			    	checkout scm
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
-			        sh "./build.sh prepare ${params.VERSION}"
+			      sh "./build.sh prepare ${params.VERSION}"
 		    	}
 		    }
 

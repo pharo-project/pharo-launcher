@@ -7,10 +7,5 @@ aboutText
 			<< 'If you find a bug, please open an issue at https://github.com/pharo-project/pharo-launcher/issues.';
 			cr; cr;
 			<< 'Pharo Launcher version: ';
-			<< self launcherVersion;
-			cr;
-			<< 'Packages :';
-			cr;
-			<< '- ';
-			<< ((String cr , '- ') join: self launcherPackageList) ]
+			<< self launcherVersion ]
 	

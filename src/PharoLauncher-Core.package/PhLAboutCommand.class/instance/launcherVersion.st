@@ -1,5 +1,5 @@
 querying
 launcherVersion
-	^ self areLoadedPackagesIdenticalToPackagesDescribedInMetacelloCurrentVersion
-		ifTrue: [ self launcherCurrentMetacalloVersion versionString ]
-		ifFalse: [ 'N/A' ]
+
+	^ [ self class package mcWorkingCopy ancestry ancestors first commit id asString ]
+		on: Error do: [ 'N/A' ]

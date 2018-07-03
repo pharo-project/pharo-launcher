@@ -1,6 +1,4 @@
 specs
 defaultSpec
 	<spec: #default>
-	
-	^ SpecLayout composed 
-			newColumn: [ :column | ]
+	^ SpecLayout composed newColumn: [ :column | column add: #images ]

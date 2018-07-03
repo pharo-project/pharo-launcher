@@ -28,9 +28,7 @@ function prepare_image() {
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
-
-	local REPO=http://smalltalkhub.com/mc/Pharo/PharoLauncher/main
-	./pharo PharoLauncher.image config $REPO ConfigurationOfPharoLauncher --install=$VERSION
+	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; load"
 }
 
 function run_tests() {

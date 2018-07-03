@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallQuitIcon asIcon
+	^ self iconNamed: #smallQuitIcon

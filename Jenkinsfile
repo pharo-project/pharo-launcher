@@ -1,18 +1,13 @@
 #!/usr/bin/env groovy
 
-//Set configurable properties
-properties([
-  disableConcurrentBuilds(),
-  parameters([
-	  string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
-	  string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
-	  string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')])
-])
+properties([disableConcurrentBuilds()])
 
 try {
     def builders = [:]
-    builders['32'] = { buildArchitecture('32') }
-    builders['64'] = { buildArchitecture('64') }
+    builders['pharo7-32'] = { buildArchitecture('32', '70') }
+    builders['pharo7-64'] = { buildArchitecture('64', '70') }
+    builders['pharo6-32'] = { buildArchitecture('32', '61') }
+    builders['pharo6-64'] = { buildArchitecture('64', '61') }
     node('linux') {
     	stage('Prepare upload') {
     		cleanUploadFolderIfNeeded(params.VERSION)
@@ -32,28 +27,33 @@ try {
      notifyBuild()
 }
 
-def buildArchitecture(architecture) {
-    withEnv(["ARCHITECTURE=${architecture}"]) {
+def buildArchitecture(architecture, pharoVersion) {
+    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
 		node('linux') {
         step([$class: 'WsCleanup'])
-		    stage("Build ${architecture}-bits") {
+		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("${architecture}") {
 			    	checkout scm
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
-			      sh "./build.sh prepare $params.VERSION"
+			      sh "./build.sh prepare"
 		    	}
 		    }
 
-		    stage("Test ${architecture}-bits") {
+		    stage("Test Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("${architecture}") {
-			    	sh './build.sh test'
+			    	sh "./build.sh test"
 			        junit '*.xml'
 			    }
 		    }
-
-		    stage("Packaging-developer ${architecture}-bits") {
+        
+        if (pharoVersion == '70'){
+          //Do only build and run tests on pharo 70 for now
+          return;
+        }
+        
+		    stage("Packaging-developer Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("${architecture}") {
 			    	sh './build.sh developer'
 			    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
@@ -62,7 +62,7 @@ def buildArchitecture(architecture) {
 			    }
 		    }
 
-		    stage("Packaging-user ${architecture}-bits") {
+		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("${architecture}") {
 			    	sh './build.sh user'
 			    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
@@ -72,7 +72,7 @@ def buildArchitecture(architecture) {
 			    }
 		    }
 
-		    stage("Packaging-Linux ${architecture}-bits") {
+		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("${architecture}") {
 			    	sh './build.sh linux-package'
 					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
@@ -83,7 +83,7 @@ def buildArchitecture(architecture) {
 		}
 		node('windows') {
 			if (architecture == '32') {
-				stage("Packaging-Windows ${architecture}-bits") {
+				stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
 					step([$class: 'WsCleanup'])
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
@@ -95,7 +95,7 @@ def buildArchitecture(architecture) {
 			}
 	   	}
 		node('osx') {
-			stage("Packaging-Mac ${architecture}-bits") {
+			stage("Packaging-Mac Pharo${pharoVersion}-${architecture}-bits") {
 				step([$class: 'WsCleanup'])
 		    	dir("${architecture}") {
 					unstash "pharo-launcher-one-${architecture}"
@@ -108,7 +108,7 @@ def buildArchitecture(architecture) {
 			}
 		}
 		node('linux') {
-			stage("Deploy ${architecture}-bits") {
+			stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
 		    	step([$class: 'WsCleanup'])
 		    	dir("${architecture}") {
 					if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {

@@ -30,7 +30,7 @@ try {
 def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
 		node('linux') {
-        step([$class: 'WsCleanup'])
+        cleanWs()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	checkout scm
@@ -84,7 +84,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		node('windows') {
 			if (architecture == '32') {
 				stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-					step([$class: 'WsCleanup'])
+          cleanWs()
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 						bat 'bash -c "./build.sh win-package"'
@@ -96,7 +96,7 @@ def buildArchitecture(architecture, pharoVersion) {
 	   	}
 		node('osx') {
 			stage("Packaging-Mac Pharo${pharoVersion}-${architecture}-bits") {
-				step([$class: 'WsCleanup'])
+          cleanWs()
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
@@ -109,7 +109,6 @@ def buildArchitecture(architecture, pharoVersion) {
 		}
 		node('linux') {
 			stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
-		    	step([$class: 'WsCleanup'])
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 					if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					    if (architecture == '32') {

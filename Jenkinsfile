@@ -28,6 +28,7 @@ try {
 }
 
 def buildArchitecture(architecture, pharoVersion) {
+    sh "printenv"
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$env.sha1"]) {
 		node('linux') {
         deleteDir()
@@ -69,7 +70,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh './build.sh linux-package'
-					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
+					  packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
 			    	archiveArtifacts artifacts: packageFile, fingerprint: true
 			    	upload(packageFile, params.VERSION)
 			    }

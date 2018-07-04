@@ -3,21 +3,12 @@
 properties([disableConcurrentBuilds()])
 
 try {
-  
-    // The commit hash will be recovered in the first stage
-    def commitHash = null
     def builders = [:]
-    builders['pharo7-32'] = { buildArchitecture('32', '70', commitHash) }
-    builders['pharo7-64'] = { buildArchitecture('64', '70', commitHash) }
-    builders['pharo6-32'] = { buildArchitecture('32', '61', commitHash) }
-    builders['pharo6-64'] = { buildArchitecture('64', '61', commitHash) }
-  
-    stage('Checkout from SCM') {
-      node('linux'){
-        checkout scm
-        commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
-      }
-    }
+    builders['pharo7-32'] = { buildArchitecture('32', '70') }
+    builders['pharo7-64'] = { buildArchitecture('64', '70') }
+    builders['pharo6-32'] = { buildArchitecture('32', '61') }
+    builders['pharo6-64'] = { buildArchitecture('64', '61') }
+
     stage('Prepare upload') {
       node('linux') {
         cleanUploadFolderIfNeeded(params.VERSION)
@@ -38,26 +29,32 @@ try {
 }
 
 def buildArchitecture(architecture, pharoVersion, commitHash) {
-    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$commitHash"]) {
+    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
         ws{
+        
+        stage('Checkout from SCM') {
+          checkout scm
+          commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
+        }
+        
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
-			      sh "./build.sh prepare"
+			      sh "VERSION=$commitHash ./build.sh prepare"
 		    	}
 		    }
     	  stage("Test Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
-			    	sh "./build.sh test"
+			    	sh "VERSION=$commitHash ./build.sh test"
 			        junit '*.xml'
 			    }
 		    }
 		    stage("Packaging-developer Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
-			    	sh './build.sh developer'
+			    	sh "VERSION=$commitHash ./build.sh developer"
 			    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
 			    	if ( isBleedingEdgeVersion() )
 			    		upload('PharoLauncher-developer*.zip', params.VERSION)
@@ -66,7 +63,7 @@ def buildArchitecture(architecture, pharoVersion, commitHash) {
 
 		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
-			    	sh './build.sh user'
+			    	sh "VERSION=$commitHash ./build.sh user"
 			    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 			    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
 			    	if ( isBleedingEdgeVersion() )
@@ -76,7 +73,7 @@ def buildArchitecture(architecture, pharoVersion, commitHash) {
 
 		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
-			    	sh './build.sh linux-package'
+			    	sh "VERSION=$commitHash ./build.sh linux-package"
 					  packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
 			    	archiveArtifacts artifacts: packageFile, fingerprint: true
 			    	upload(packageFile, params.VERSION)
@@ -90,7 +87,7 @@ def buildArchitecture(architecture, pharoVersion, commitHash) {
           deleteDir()
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-						bat 'bash -c "./build.sh win-package"'
+						bat "bash -c \"VERSION=$commitHash./build.sh win-package\""
 					}
 					archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
 				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
@@ -103,7 +100,7 @@ def buildArchitecture(architecture, pharoVersion, commitHash) {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-						sh './build.sh mac-package'
+						sh "VERSION=$commitHash ./build.sh mac-package"
 					}
 					archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
 				    stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"

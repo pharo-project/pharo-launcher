@@ -8,11 +8,9 @@ set -ex
 # $PHARO : 			version of the Pharo image, e.g. 61
 # $VM : 			version of the VM, e.g. vm
 # $ARCHITECTURE : 	targeted architecture 32 or 64 bits. Default will be 32.
-# $VERSION: 		the Metacello version of PharoLauncher to load
 
 # Script parameters
-# $1: the target to run between prepare | test | developer | user
-# $2: a value for $VERSION (optional)
+# $1: the target to run between prepare | test | user
 
 function prepare_image() {
 	case "$ARCHITECTURE" in
@@ -33,13 +31,6 @@ function prepare_image() {
 
 function run_tests() {
 	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
-}
-
-function package_developer_version() {
-	./pharo PharoLauncher.image eval --save "PhLDirectoryBasedImageRepository location"
-	./pharo PharoLauncher.image eval '(MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher) version versionNumber' > launcher-version.txt
-	set_env
-	zip -9r PharoLauncher-developer-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
 
 function package_user_version() {
@@ -121,7 +112,7 @@ function set_env() {
 	        64) ARCH_SUFFIX="x64"
 				export ARCH=64
 	        	;;
-	        *) 	echo "Error! Architecture $ARCH is not supported!"
+	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 				exit 1
 				;;
 	esac
@@ -164,12 +155,12 @@ function get_pharo_sources_version() {
 
 PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
 VM=${VM:=vm}			# If VM not set, set it to vm.
-ARCH=${ARCH:-'32'}		# If ARCH not set, set it to 32 bits
-VERSION=${VERSION:=$2}  # If VERSION not set, set it to the first parameter of this script. Will fail if not provided
+ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
+VERSION=`git describe --always` #Extract VERSION from the current git repository. If the commit points to a tag, use the tag. Otherwise use the short commitish.
 
 SCRIPT_TARGET=${1:-all}
 echo "Running target $SCRIPT_TARGET"
-echo "Using a Pharo$PHARO image and ${ARCH}-bits $VM virtual machines from get-giles. Will load version $VERSION of PharoLauncher"
+echo "Using a Pharo$PHARO image and ${ARCHITECTURE}-bits $VM virtual machines from get-files."
 
 case $SCRIPT_TARGET in
 prepare)
@@ -177,9 +168,6 @@ prepare)
   ;;
 test)
   run_tests
-  ;;
-developer)
-  package_developer_version
   ;;
 user)
   package_user_version
@@ -194,7 +182,7 @@ linux-package)
   package_linux_version
   ;;
 all)
-  prepare_image && run_tests && package_developer_version && package_user_version \
+  prepare_image && run_tests && package_user_version \
   	&& package_linux_version
   ;;
 *)

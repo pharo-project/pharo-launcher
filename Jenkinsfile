@@ -28,7 +28,7 @@ try {
      notifyBuild()
 }
 
-def buildArchitecture(architecture, pharoVersion, commitHash) {
+def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
         ws{

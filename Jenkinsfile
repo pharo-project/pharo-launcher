@@ -19,8 +19,10 @@ try {
 def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
+        //To ensure a clean build we delete the directory, checkout from scm and get the commit hash all from scratch
         deleteDir()
         checkout scm
+        commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
         
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir('pharo-build-scripts') {

@@ -62,15 +62,13 @@ def buildArchitecture(architecture, pharoVersion) {
 		node('windows') {
 			if (architecture == '32') {
 				stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-          dir("Pharo${pharoVersion}-${architecture}") {
-            deleteDir()
-            unstash "pharo-launcher-one-${architecture}"
-            withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-						  bat "bash -c \"VERSION=$commitHash ./build.sh win-package\""
-            }
-            archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
-				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
-				  }
+          deleteDir()
+          unstash "pharo-launcher-one-${architecture}"
+          withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+					  bat "bash -c \"VERSION=$commitHash ./build.sh win-package\""
+          }
+          archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
+				  stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
         }
 			}
 	  }

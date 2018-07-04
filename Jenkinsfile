@@ -30,11 +30,11 @@ try {
 def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$env.sha1"]) {
 		node('linux') {
-      sh "printenv"
         deleteDir()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	checkout scm
+            sh "printenv"
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}

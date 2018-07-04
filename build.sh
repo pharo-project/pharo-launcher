@@ -156,7 +156,6 @@ function get_pharo_sources_version() {
 PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
 VM=${VM:=vm}			# If VM not set, set it to vm.
 ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
-VERSION=`git describe --always` #Extract VERSION from the current git repository. If the commit points to a tag, use the tag. Otherwise use the short commitish.
 
 SCRIPT_TARGET=${1:-all}
 echo "Running target $SCRIPT_TARGET"

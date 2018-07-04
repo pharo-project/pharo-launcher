@@ -47,12 +47,6 @@ def buildArchitecture(architecture, pharoVersion) {
 			        junit '*.xml'
 			    }
 		    }
-        
-        if (pharoVersion == '70'){
-          //Do only build and run tests on pharo 70 for now
-          return;
-        }
-        
 		    stage("Packaging-developer Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh './build.sh developer'
@@ -182,7 +176,7 @@ def upload(file, launcherVersion) {
 }
 
 def isBleedingEdgeVersion() {
-	return params.VERSION == 'bleedingEdge'
+	return isPullRequest()
 }
 
 def fileNameArchSuffix(architecture) {

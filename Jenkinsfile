@@ -28,20 +28,19 @@ try {
 }
 
 def buildArchitecture(architecture, pharoVersion) {
-    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$env.sha1"]) {
-		node('linux') {
+    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) { node('linux') {
         deleteDir()
+        def logSHA = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
-			    	checkout scm
-            sh "printenv"
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
 			      sh "./build.sh prepare"
 		    	}
 		    }
-
+      } }
+      withEnv(["VERSION=$logSHA"]) { node('linux') {
 		    stage("Test Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh "./build.sh test"

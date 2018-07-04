@@ -32,7 +32,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		node('linux') {
         step([$class: 'WsCleanup'])
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	checkout scm
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
@@ -42,7 +42,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		    }
 
 		    stage("Test Pharo${pharoVersion}-${architecture}-bits") {
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh "./build.sh test"
 			        junit '*.xml'
 			    }
@@ -54,7 +54,7 @@ def buildArchitecture(architecture, pharoVersion) {
         }
         
 		    stage("Packaging-developer Pharo${pharoVersion}-${architecture}-bits") {
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh './build.sh developer'
 			    	archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
 			    	if ( isBleedingEdgeVersion() )
@@ -63,7 +63,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		    }
 
 		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh './build.sh user'
 			    	stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 			    	archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
@@ -73,7 +73,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		    }
 
 		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh './build.sh linux-package'
 					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
 			    	archiveArtifacts artifacts: packageFile, fingerprint: true
@@ -97,7 +97,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		node('osx') {
 			stage("Packaging-Mac Pharo${pharoVersion}-${architecture}-bits") {
 				step([$class: 'WsCleanup'])
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 					unstash "pharo-launcher-one-${architecture}"
 					withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
 						sh './build.sh mac-package'
@@ -110,7 +110,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		node('linux') {
 			stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
 		    	step([$class: 'WsCleanup'])
-		    	dir("${architecture}") {
+		    	dir("Pharo${pharoVersion}-${architecture}") {
 					if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					    if (architecture == '32') {
 					    	unstash "pharo-launcher-win-${architecture}-package"

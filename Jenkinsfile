@@ -37,9 +37,6 @@ def buildArchitecture(architecture, pharoVersion) {
 		    	sh "VERSION=$commitHash ./build.sh user"
 			    stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 			    archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
-			    if ( isBleedingEdgeVersion() ) {
-            upload('PharoLauncher-user-*.zip', params.VERSION)
-          }
         }
 		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
 			    sh "VERSION=$commitHash ./build.sh linux-package"
@@ -155,10 +152,6 @@ def upload(file, launcherVersion) {
 			${expandedFileName} \
 			pharoorgde@ssh.cluster023.hosting.ovh.net:files/pharo-launcher/tmp-${launcherVersion}"
     }
-}
-
-def isBleedingEdgeVersion() {
-	return isPullRequest()
 }
 
 def fileNameArchSuffix(architecture) {

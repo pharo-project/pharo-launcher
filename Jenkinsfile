@@ -4,6 +4,13 @@ properties([disableConcurrentBuilds()])
 
 try {
   cleanUploadFolderIfNeeded(params.VERSION)
+  node('linux') {
+    stage('Checkout from SCM') {
+      checkout scm
+      commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
+    }
+  }
+
   buildArchitecture('32', '61')
   buildArchitecture('64', '61')
   buildArchitecture('32', '70')
@@ -19,13 +26,7 @@ try {
 def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
-        dir("Pharo${pharoVersion}-${architecture}") {
         deleteDir()
-        stage('Checkout from SCM') {
-          checkout scm
-          commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
-        }
-        
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir('pharo-build-scripts') {
 			    	git('https://github.com/pharo-project/pharo-build-scripts.git')
@@ -48,23 +49,21 @@ def buildArchitecture(architecture, pharoVersion) {
 			    upload(packageFile, params.VERSION)
 			  }
 		  }
-		}
-		node('windows') {
-			if (architecture == '32') {
-				stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-          deleteDir()
-          unstash "pharo-launcher-one-${architecture}"
-          withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-					  bat "bash -c \"VERSION=$commitHash ./build.sh win-package\""
+		  node('windows') {
+			  if (architecture == '32') {
+	        stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
+            deleteDir()
+            unstash "pharo-launcher-one-${architecture}"
+            withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+					    bat "bash -c \"VERSION=$commitHash ./build.sh win-package\""
+            }
+            archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
+				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
           }
-          archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
-				  stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
-        }
-			}
-	  }
-		node('osx') {
-			stage("Packaging-Mac Pharo${pharoVersion}-${architecture}-bits") {    
-		    dir("Pharo${pharoVersion}-${architecture}") {
+			  }
+      }
+		  node('osx') {
+			  stage("Packaging-Mac Pharo${pharoVersion}-${architecture}-bits") {    
           deleteDir()
           unstash "pharo-launcher-one-${architecture}"
           withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
@@ -72,18 +71,15 @@ def buildArchitecture(architecture, pharoVersion) {
 					}
 					archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
 				  stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"
-				 }
+				}
       }
-    }
-    
+
     //Do not deploy if in PR
     if (isPullRequest()){
       return;
     }
 		node('linux') {
 			stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
-		    dir("Pharo${pharoVersion}-${architecture}") {
-          deleteDir()
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					  if (architecture == '32') {
 					    unstash "pharo-launcher-win-${architecture}-package"
@@ -92,7 +88,6 @@ def buildArchitecture(architecture, pharoVersion) {
 					  unstash "pharo-launcher-osx-${architecture}-package"
 					  fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
 					  upload(fileToUpload, params.VERSION)
-          }
 				}
 			}
 		}

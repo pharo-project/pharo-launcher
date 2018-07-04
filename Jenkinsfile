@@ -92,6 +92,12 @@ def buildArchitecture(architecture, pharoVersion) {
 }
 
 def notifyBuild() {
+  if (isPullRequest()) {
+    //Only notify if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO NOTIFY] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
+  
 	if (currentBuild.result != 'SUCCESS') { // Possible values: SUCCESS, UNSTABLE, FAILURE
         // Send an email only if the build status has changed from green to unstable or red
         emailext subject: '$DEFAULT_SUBJECT',

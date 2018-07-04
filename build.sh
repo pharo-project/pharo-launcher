@@ -116,12 +116,7 @@ function set_env() {
 				exit 1
 				;;
 	esac
-	if [ "$VERSION" == "bleedingEdge" ]
-	then
-		VERSION_NUMBER="$VERSION-$DATE-$ARCH_SUFFIX"
-	else
-		VERSION_NUMBER="$VERSION-$ARCH_SUFFIX"
-	fi
+	VERSION_NUMBER="$VERSION-$ARCH_SUFFIX-Pharo$PHARO"
 	set_pharo_sources_version
 }
 

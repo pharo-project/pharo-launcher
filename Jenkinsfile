@@ -27,7 +27,7 @@ def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
         dir("Pharo${pharoVersion}-${architecture}") {
-          
+        deleteDir()
         stage('Checkout from SCM') {
           checkout scm
           commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()

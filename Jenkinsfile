@@ -40,7 +40,7 @@ try {
 def buildArchitecture(architecture, pharoVersion, commitHash) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$commitHash"]) {
       node('linux') {
-        deleteDir()
+        ws{
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	dir('pharo-build-scripts') {
@@ -82,6 +82,7 @@ def buildArchitecture(architecture, pharoVersion, commitHash) {
 			    	upload(packageFile, params.VERSION)
 			    }
 		    }
+        }
 		}
 		node('windows') {
 			if (architecture == '32') {

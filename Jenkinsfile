@@ -3,19 +3,9 @@
 properties([disableConcurrentBuilds()])
 
 try {
-    stage('Prepare upload') {
-      node('linux') {
-        cleanUploadFolderIfNeeded(params.VERSION)
-    	}
-    }
-    
-    buildArchitecture('32', '61')
-    
-    node('linux') {
-      stage('Upload finalization') {
-    	  finalizeUpload(params.VERSION)
-    	}
-    }
+  cleanUploadFolderIfNeeded(params.VERSION)
+  buildArchitecture('32', '61')
+  finalizeUpload(params.VERSION)
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception
@@ -121,10 +111,14 @@ def cleanUploadFolderIfNeeded(launcherVersion) {
     return;
   }
   
-	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
-		sh "ssh -o StrictHostKeyChecking=no \
+  stage('Prepare upload') {
+    node('linux') {
+      sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
+		    sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/tmp-${launcherVersion}"
+      }
     }
+  }
 }
 
 def finalizeUpload(launcherVersion) {
@@ -134,12 +128,16 @@ def finalizeUpload(launcherVersion) {
     return;
   }
   
-	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
-		sh "ssh -o StrictHostKeyChecking=no \
-    		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/${launcherVersion}"
-		sh "ssh -o StrictHostKeyChecking=no \
-    		pharoorgde@ssh.cluster023.hosting.ovh.net mv files/pharo-launcher/tmp-${launcherVersion} files/pharo-launcher/${launcherVersion}"
-    }
+  node('linux') {
+    stage('Upload finalization') {
+      sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
+      sh "ssh -o StrictHostKeyChecking=no \
+    		  pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/${launcherVersion}"
+        sh "ssh -o StrictHostKeyChecking=no \
+    	    pharoorgde@ssh.cluster023.hosting.ovh.net mv files/pharo-launcher/tmp-${launcherVersion} files/pharo-launcher/${launcherVersion}"
+      }
+	  }
+  }
 }
 
 def upload(file, launcherVersion) {

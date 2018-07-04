@@ -3,11 +3,19 @@
 properties([disableConcurrentBuilds()])
 
 try {
+  
+    // The commit hash will be recovered in the first stage
+    def commitHash = null
     def builders = [:]
-    builders['pharo7-32'] = { buildArchitecture('32', '70') }
-    builders['pharo7-64'] = { buildArchitecture('64', '70') }
-    builders['pharo6-32'] = { buildArchitecture('32', '61') }
-    builders['pharo6-64'] = { buildArchitecture('64', '61') }
+    builders['pharo7-32'] = { buildArchitecture('32', '70', commitHash) }
+    builders['pharo7-64'] = { buildArchitecture('64', '70', commitHash) }
+    builders['pharo6-32'] = { buildArchitecture('32', '61', commitHash) }
+    builders['pharo6-64'] = { buildArchitecture('64', '61', commitHash) }
+  
+    stage('Checkout from SCM') {
+      checkout scm
+      commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
+    }
     node('linux') {
     	stage('Prepare upload') {
     		cleanUploadFolderIfNeeded(params.VERSION)
@@ -27,10 +35,10 @@ try {
      notifyBuild()
 }
 
-def buildArchitecture(architecture, pharoVersion) {
-    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) { node('linux') {
+def buildArchitecture(architecture, pharoVersion, commitHash) {
+    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$commitHash"]) {
+      node('linux') {
         deleteDir()
-        def logSHA = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	dir('pharo-build-scripts') {
@@ -39,9 +47,7 @@ def buildArchitecture(architecture, pharoVersion) {
 			      sh "./build.sh prepare"
 		    	}
 		    }
-      } }
-      withEnv(["VERSION=$logSHA"]) { node('linux') {
-		    stage("Test Pharo${pharoVersion}-${architecture}-bits") {
+    	  stage("Test Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {
 			    	sh "./build.sh test"
 			        junit '*.xml'

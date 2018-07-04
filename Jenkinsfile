@@ -28,7 +28,7 @@ try {
 }
 
 def buildArchitecture(architecture, pharoVersion) {
-    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=${sha1}"]) {
+    withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$env.sha1"]) {
 		node('linux') {
         deleteDir()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {

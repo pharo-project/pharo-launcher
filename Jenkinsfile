@@ -3,18 +3,13 @@
 properties([disableConcurrentBuilds()])
 
 try {
-    def builders = [:]
-    builders['pharo7-32'] = { buildArchitecture('32', '70') }
-    builders['pharo7-64'] = { buildArchitecture('64', '70') }
-    builders['pharo6-32'] = { buildArchitecture('32', '61') }
-    builders['pharo6-64'] = { buildArchitecture('64', '61') }
-
     stage('Prepare upload') {
       node('linux') {
         cleanUploadFolderIfNeeded(params.VERSION)
     	}
     }
-    parallel builders
+    
+    buildArchitecture('32', '61')
     
     node('linux') {
       stage('Upload finalization') {
@@ -31,8 +26,6 @@ try {
 def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
-        ws{
-        
         stage('Checkout from SCM') {
           checkout scm
           commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
@@ -79,7 +72,6 @@ def buildArchitecture(architecture, pharoVersion) {
 			    	upload(packageFile, params.VERSION)
 			    }
 		    }
-        }
 		}
 		node('windows') {
 			if (architecture == '32') {

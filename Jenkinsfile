@@ -13,12 +13,14 @@ try {
     builders['pharo6-64'] = { buildArchitecture('64', '61', commitHash) }
   
     stage('Checkout from SCM') {
-      checkout scm
-      commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
+      node('linux'){
+        checkout scm
+        commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
+      }
     }
-    node('linux') {
-    	stage('Prepare upload') {
-    		cleanUploadFolderIfNeeded(params.VERSION)
+    stage('Prepare upload') {
+      node('linux') {
+        cleanUploadFolderIfNeeded(params.VERSION)
     	}
     }
     parallel builders

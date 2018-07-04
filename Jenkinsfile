@@ -4,13 +4,6 @@ properties([disableConcurrentBuilds()])
 
 try {
   cleanUploadFolderIfNeeded(params.VERSION)
-  node('linux') {
-    stage('Checkout from SCM') {
-      checkout scm
-      commitHash = sh(returnStdout: true, script: 'git log -1 --format="%p"').trim()
-    }
-  }
-
   buildArchitecture('32', '61')
   buildArchitecture('64', '61')
   buildArchitecture('32', '70')
@@ -27,6 +20,8 @@ def buildArchitecture(architecture, pharoVersion) {
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}"]) {
       node('linux') {
         deleteDir()
+        checkout scm
+        
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir('pharo-build-scripts') {
 			    	git('https://github.com/pharo-project/pharo-build-scripts.git')

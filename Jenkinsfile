@@ -5,6 +5,9 @@ properties([disableConcurrentBuilds()])
 try {
   cleanUploadFolderIfNeeded(params.VERSION)
   buildArchitecture('32', '61')
+  buildArchitecture('64', '61')
+  buildArchitecture('32', '70')
+  buildArchitecture('64', '70')
   finalizeUpload(params.VERSION)
 } catch(exception) {
 	currentBuild.result = 'FAILURE'

@@ -43,13 +43,6 @@ def buildArchitecture(architecture, pharoVersion) {
 		    	sh "VERSION=$commitHash ./build.sh test"
 			    junit '*.xml'
 		    }
-		    stage("Packaging-developer Pharo${pharoVersion}-${architecture}-bits") {
-			    sh "VERSION=$commitHash ./build.sh developer"
-			    archiveArtifacts artifacts: 'PharoLauncher-developer*.zip, version.txt', fingerprint: true
-			    if ( isBleedingEdgeVersion() ) {
-            upload('PharoLauncher-developer*.zip', params.VERSION)
-          }
-		    }
 		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
 		    	sh "VERSION=$commitHash ./build.sh user"
 			    stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"

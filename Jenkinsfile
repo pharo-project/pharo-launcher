@@ -75,6 +75,11 @@ def buildArchitecture(architecture, pharoVersion) {
 				 }
       }
     }
+    
+    //Do not deploy if in PR
+    if (isPullRequest()){
+      return;
+    }
 		node('linux') {
 			stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
 		    dir("Pharo${pharoVersion}-${architecture}") {

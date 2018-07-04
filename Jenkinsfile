@@ -28,9 +28,9 @@ try {
 }
 
 def buildArchitecture(architecture, pharoVersion) {
-    sh "printenv"
     withEnv(["ARCHITECTURE=${architecture}", "PHARO=${pharoVersion}", "VERSION=$env.sha1"]) {
 		node('linux') {
+      sh "printenv"
         deleteDir()
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir("Pharo${pharoVersion}-${architecture}") {

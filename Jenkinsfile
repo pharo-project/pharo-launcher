@@ -3,17 +3,27 @@
 properties([disableConcurrentBuilds()])
 
 try {
-  cleanUploadFolderIfNeeded(params.VERSION)
+  def version = getCommitHash()
+  cleanUploadFolderIfNeeded(version)
   buildArchitecture('32', '61')
   buildArchitecture('64', '61')
   buildArchitecture('32', '70')
   buildArchitecture('64', '70')
-  finalizeUpload(params.VERSION)
+  finalizeUpload(version)
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception
 } finally {
      notifyBuild()
+}
+
+def getCommitHash(){
+  node('linux') {
+    //To ensure a clean build we delete the directory, checkout from scm and get the commit hash all from scratch
+    deleteDir()
+    checkout scm
+    return sh(returnStdout: true, script: 'git log -1 --format="%h"').trim()
+  }
 }
 
 def buildArchitecture(architecture, pharoVersion) {
@@ -43,7 +53,7 @@ def buildArchitecture(architecture, pharoVersion) {
 			    sh "VERSION=$commitHash ./build.sh linux-package"
 					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
 			    archiveArtifacts artifacts: packageFile, fingerprint: true
-			    upload(packageFile, params.VERSION)
+			    upload(packageFile, commitHash)
 			  }
 		  }
 		  node('windows') {
@@ -80,11 +90,11 @@ def buildArchitecture(architecture, pharoVersion) {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					  if (architecture == '32') {
 					    unstash "pharo-launcher-win-${architecture}-package"
-						  upload('pharo-launcher-*.msi', params.VERSION)
+						  upload('pharo-launcher-*.msi', commitHash)
 					  }
 					  unstash "pharo-launcher-osx-${architecture}-package"
 					  fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
-					  upload(fileToUpload, params.VERSION)
+					  upload(fileToUpload, commitHash)
 				}
 			}
 		}

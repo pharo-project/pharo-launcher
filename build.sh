@@ -116,7 +116,7 @@ function set_env() {
 				exit 1
 				;;
 	esac
-	VERSION_NUMBER="$VERSION-$ARCH_SUFFIX-Pharo$PHARO"
+	VERSION_NUMBER="$VERSION-Pharo$PHARO-$ARCH_SUFFIX"
 	set_pharo_sources_version
 }
 

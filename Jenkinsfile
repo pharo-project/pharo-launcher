@@ -42,7 +42,7 @@ def buildArchitecture(architecture, pharoVersion) {
 		    }
     	  stage("Test Pharo${pharoVersion}-${architecture}-bits") {
 		    	sh "VERSION=$commitHash ./build.sh test"
-			    junit allowEmptyResults: true, testResults: '*.xml'
+			    junit testResults: '*.xml'
 		    }
 		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
 		    	sh "VERSION=$commitHash ./build.sh user"

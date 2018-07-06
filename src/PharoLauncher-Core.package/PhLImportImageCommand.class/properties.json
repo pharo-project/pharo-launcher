@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/15/2018 11:08",
+	"super" : "PhLImageCommand",
+	"category" : "PharoLauncher-Core-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"importSiblings"
+	],
+	"name" : "PhLImportImageCommand",
+	"type" : "normal"
+}

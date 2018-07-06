@@ -1,0 +1,1 @@
+I represent a button that is bound to a particular command (instance of PhLCommand). When the context changes, I update my representation.

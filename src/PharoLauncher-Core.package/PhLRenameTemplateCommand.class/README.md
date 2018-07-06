@@ -1,0 +1,1 @@
+Rename the selected template

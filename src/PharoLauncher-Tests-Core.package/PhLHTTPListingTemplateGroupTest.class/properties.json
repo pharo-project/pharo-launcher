@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLAbstractTemplateGroupTest",
+	"category" : "PharoLauncher-Tests-Core",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLHTTPListingTemplateGroupTest",
+	"type" : "normal"
+}

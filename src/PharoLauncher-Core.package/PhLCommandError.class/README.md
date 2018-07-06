@@ -1,0 +1,1 @@
+This error is thrown each time a command can not do its job.

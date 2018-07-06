@@ -1,10 +1,13 @@
 #!/usr/bin/env groovy
 
-properties([parameters([
-	string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
-	string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
-	string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')
-])])
+//Set configurable properties
+properties([
+  disableConcurrentBuilds(),
+  parameters([
+	  string(name: 'VERSION', defaultValue: 'bleedingEdge', description: 'Which Pharo Launcher version to build?'),
+	  string(name: 'PHARO', defaultValue: '61', description: 'Which Pharo image version to use?'),
+	  string(name: 'VM', defaultValue: 'vm', description: 'Which Pharo vm to use?')])
+])
 
 try {
     def builders = [:]
@@ -16,9 +19,10 @@ try {
     	}
     }
     parallel builders
+    
     node('linux') {
-    	stage('Upload finalization') {
-    		finalizeUpload(params.VERSION)
+      stage('Upload finalization') {
+    	  finalizeUpload(params.VERSION)
     	}
     }
 } catch(exception) {
@@ -31,14 +35,14 @@ try {
 def buildArchitecture(architecture) {
     withEnv(["ARCHITECTURE=${architecture}"]) {
 		node('linux') {
+        step([$class: 'WsCleanup'])
 		    stage("Build ${architecture}-bits") {
-		    	step([$class: 'WsCleanup'])
 		    	dir("${architecture}") {
 			    	checkout scm
 			    	dir('pharo-build-scripts') {
 			    		git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    	}
-			        sh "./build.sh prepare ${params.VERSION}"
+			      sh "./build.sh prepare $params.VERSION"
 		    	}
 		    }
 
@@ -133,6 +137,12 @@ def notifyBuild() {
 }
 
 def cleanUploadFolderIfNeeded(launcherVersion) {
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
+  
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/tmp-${launcherVersion}"
@@ -140,6 +150,12 @@ def cleanUploadFolderIfNeeded(launcherVersion) {
 }
 
 def finalizeUpload(launcherVersion) {
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
+  
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
     		pharoorgde@ssh.cluster023.hosting.ovh.net rm -rf files/pharo-launcher/${launcherVersion}"
@@ -149,6 +165,12 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return;
+  }
+    
 	def expandedFileName = sh(returnStdout: true, script: "echo ${file}").trim()
 	sshagent (credentials: ['b5248b59-a193-4457-8459-e28e9eb29ed7']) {
 		sh "ssh -o StrictHostKeyChecking=no \
@@ -165,4 +187,8 @@ def isBleedingEdgeVersion() {
 
 def fileNameArchSuffix(architecture) {
 	return (architecture == '32') ? 'x86' : 'x64'
+}
+
+def isPullRequest() {
+	return env.CHANGE_ID != null
 }

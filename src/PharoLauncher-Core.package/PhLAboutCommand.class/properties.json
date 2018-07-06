@@ -4,7 +4,9 @@
 	"category" : "PharoLauncher-Core-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
+	"classvars" : [
+		"LauncherVersion"
+	],
 	"instvars" : [
 		"project"
 	],

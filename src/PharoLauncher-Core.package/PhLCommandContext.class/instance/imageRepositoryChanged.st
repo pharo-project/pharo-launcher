@@ -1,3 +1,0 @@
-announcements
-imageRepositoryChanged
-	self imageRepository contentsChanged

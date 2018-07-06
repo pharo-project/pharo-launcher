@@ -1,3 +1,0 @@
-initialization
-templatesMissingOnStartup
-	^ TemplateRepository isNil

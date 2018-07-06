@@ -1,3 +1,0 @@
-action
-execute
-	context singleImage showNativeFolder

@@ -1,3 +1,0 @@
-action
-reset
-	Default := nil

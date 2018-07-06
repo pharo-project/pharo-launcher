@@ -1,1 +1,0 @@
-Open your OS's file browser on the selected image directory.

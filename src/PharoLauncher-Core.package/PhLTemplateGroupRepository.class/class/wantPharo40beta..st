@@ -1,2 +1,0 @@
-settings
-wantPharo40beta: aBoolean

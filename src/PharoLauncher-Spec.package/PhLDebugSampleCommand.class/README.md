@@ -1,1 +1,0 @@
-A PhLDebugSampleCommand is provided simply as an example to assist users to learn how they might add their own commands to PharoLauncher.

@@ -1,3 +1,0 @@
-actions
-resetStartUpClasses
-	StartUpClasses := nil

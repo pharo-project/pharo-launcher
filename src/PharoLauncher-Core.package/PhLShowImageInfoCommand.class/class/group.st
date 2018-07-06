@@ -1,3 +1,0 @@
-action
-group
-	^ 3

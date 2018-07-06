@@ -1,3 +1,0 @@
-meta data
-ruleInconsistentMethodClassificationRuleV1FalsePositive
-^ #(#(#(#RGMethodDefinition #(#PhLImage #name #false)) #'2013-06-27T17:14:57.998691+02:00') #(#(#RGMethodDefinition #(#PhLAbstractTemplateGroup #name #false)) #'2013-06-27T17:14:57.998691+02:00') #(#(#RGMethodDefinition #(#PhLError #name #false)) #'2013-06-27T17:14:57.998691+02:00') #(#(#RGMethodDefinition #(#PhLAbstractTemplate #name #false)) #'2013-06-27T17:14:57.998691+02:00') #(#(#RGMethodDefinition #(#PhLJenkinsArtifact #name #false)) #'2013-06-27T17:14:57.998691+02:00') )

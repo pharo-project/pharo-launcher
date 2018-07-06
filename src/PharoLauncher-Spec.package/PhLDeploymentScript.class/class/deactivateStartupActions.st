@@ -1,3 +1,0 @@
-actions
-deactivateStartupActions
-	StartupPreferencesLoader allowStartupScript: false.

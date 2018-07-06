@@ -1,1 +1,0 @@
-Uses the current VirtualMachine to launch the selected image.

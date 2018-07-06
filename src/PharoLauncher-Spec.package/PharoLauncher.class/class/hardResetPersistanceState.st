@@ -1,3 +1,0 @@
-settings
-hardResetPersistanceState
-	^false

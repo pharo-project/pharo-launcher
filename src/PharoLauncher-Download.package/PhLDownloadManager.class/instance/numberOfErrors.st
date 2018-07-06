@@ -1,3 +1,0 @@
-accessing
-numberOfErrors
-	^ errors size

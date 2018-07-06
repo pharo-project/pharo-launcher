@@ -1,3 +1,0 @@
-helpers
-artifactRelativePath
-	^ 'foo.zip'

@@ -1,1 +1,0 @@
-Abstract superclass for everything that is in a Jenkins server (and is visible from the JSON Jenkins API)

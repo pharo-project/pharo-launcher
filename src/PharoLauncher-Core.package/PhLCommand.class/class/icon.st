@@ -1,3 +1,0 @@
-accessing
-icon
-	^ #blankIcon asIcon

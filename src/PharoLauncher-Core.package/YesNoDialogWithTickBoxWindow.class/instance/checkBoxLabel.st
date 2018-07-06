@@ -1,3 +1,0 @@
-accessing
-checkBoxLabel
-	^ PhLLaunchImageCommand archMismatchSettingLabel

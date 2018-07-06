@@ -1,3 +1,0 @@
-*PharoLauncher-Download
-vmExecutableName
-	^ 'Pharo'

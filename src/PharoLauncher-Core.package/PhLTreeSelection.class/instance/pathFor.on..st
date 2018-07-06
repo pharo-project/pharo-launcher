@@ -1,8 +1,10 @@
 private
 pathFor: treeNodeModel on: collection
-
-		treeNodeModel parentNode ifNotNil: 
-			[ :node |
-			self pathFor: node on: collection ].
-		
-		collection add: treeNodeModel content name
+	| content |
+	treeNodeModel parentNode ifNotNil: [ :node | self pathFor: node on: collection ].
+	content := treeNodeModel content.
+	collection
+		add:
+			(content isString
+				ifTrue: [ content printString ]
+				ifFalse: [ content name ])

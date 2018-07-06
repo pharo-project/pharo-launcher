@@ -6,4 +6,4 @@ testCanDetectVMDirectory
 	vm := PhLVirtualMachine directory: FileLocator imageDirectory asFileReference / 'pharo-vm'.
 	self
 		assert: vm vmFolderPath
-		equals: FileLocator vmDirectory
+		equals: FileLocator vmDirectory fullName

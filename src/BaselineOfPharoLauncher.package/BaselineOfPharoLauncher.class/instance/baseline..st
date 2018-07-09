@@ -49,3 +49,9 @@ baseline: spec
 		spec 
 			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' 'PharoLauncher-Tests-SpecUI' );
 			group: 'Download' with: #(#'PharoLauncher-Download' #'PharoLauncher-Tests-Download' ). ].
+
+	spec for: #'pharo6.x' do: [	
+		self spec70: spec.
+		spec
+			package: 'PharoLauncher-Spec' with: [ 
+				spec requires: #('Spec70Compatibility') ] ]

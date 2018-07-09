@@ -4,11 +4,6 @@ baseline: spec
 
 	spec for: #'common' do: [
 		spec 
-			project: 'JSON' with: [
-				spec
-					className: #ConfigurationOfJSON;
-					versionString: #'stable';
-					repository: 'http://smalltalkhub.com/mc/PharoExtras/JSON/main/' ];
 			project: 'OSProcess' with: [
 				spec
 					className: #ConfigurationOfOSProcess;
@@ -35,7 +30,7 @@ baseline: spec
 		spec
 			package: #'ConfigurationOfPharoLauncher'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #('XMLParser' 'Ston' 'JSON' ). ];
+				spec requires: #('XMLParser' 'Ston'). ];
 			package: #'PharoLauncher-Download' with: [
 				spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [

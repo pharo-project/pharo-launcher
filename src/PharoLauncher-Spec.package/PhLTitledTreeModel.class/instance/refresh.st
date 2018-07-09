@@ -4,7 +4,7 @@ refresh
 	roots := self repositoryRoots. 
 
 	tree roots: (roots collect: [:root | 
-		TreeNodeModel new 
+		TreeNodePresenter new 
 			content: root;
 			isExpanded: root isHighlighted ]).
 	tree selectedItems: (tree selectedItems intersection: roots)

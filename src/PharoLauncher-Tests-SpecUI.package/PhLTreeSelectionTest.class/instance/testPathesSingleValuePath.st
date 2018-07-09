@@ -4,7 +4,7 @@ testPathesSingleValuePath
 	
 	model := Array
 		with:
-			(TreeNodeModel new
+			(TreeNodePresenter new
 				content: #NodeA;
 				yourself).
 	

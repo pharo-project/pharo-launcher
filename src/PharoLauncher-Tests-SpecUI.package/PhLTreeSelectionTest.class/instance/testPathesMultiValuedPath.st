@@ -4,9 +4,9 @@ testPathesMultiValuedPath
 	
 	model := Array
 		with:
-			(TreeNodeModel new
+			(TreeNodePresenter new
 				content: #NodeB;
-				parentNode: (TreeNodeModel new content: #NodeA);
+				parentNode: (TreeNodePresenter new content: #NodeA);
 				yourself).
 				
 	selection := PhLTreeSelection with: model.

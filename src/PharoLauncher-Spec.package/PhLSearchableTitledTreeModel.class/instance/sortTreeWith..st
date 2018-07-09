@@ -5,7 +5,7 @@ sortTreeWith: sortBlock
 	roots := self repositoryRoots asSortedCollection: sortBlock.
 
 	tree roots: (roots collect: [:root | 
-		TreeNodeModel new 
+		TreeNodePresenter new 
 			content: root;
 			isExpanded: root isHighlighted ]).
 	tree selectedItems: (tree selectedItems intersection: roots)

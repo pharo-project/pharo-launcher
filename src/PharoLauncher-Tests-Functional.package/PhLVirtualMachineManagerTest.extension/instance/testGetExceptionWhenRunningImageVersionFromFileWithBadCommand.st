@@ -1,4 +1,4 @@
-tests
+*PharoLauncher-Tests-Functional
 testGetExceptionWhenRunningImageVersionFromFileWithBadCommand
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.

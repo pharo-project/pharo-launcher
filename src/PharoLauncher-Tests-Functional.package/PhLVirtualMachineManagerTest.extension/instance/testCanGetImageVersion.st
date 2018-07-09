@@ -1,4 +1,4 @@
-tests
+*PharoLauncher-Tests-Functional
 testCanGetImageVersion
 	| version |
 	version := (PhLVirtualMachineManager

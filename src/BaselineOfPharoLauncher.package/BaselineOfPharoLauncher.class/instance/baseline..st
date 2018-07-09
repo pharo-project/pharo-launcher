@@ -42,12 +42,14 @@ baseline: spec
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
+			package: #'PharoLauncher-Tests-Functional' with: [
+				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Tests-SpecUI' with: [
 				spec requires: #(#'PharoLauncher-Core' 'PharoLauncher-Spec'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Download' ). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' 'PharoLauncher-Tests-SpecUI' );
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' 'PharoLauncher-Tests-SpecUI' 'PharoLauncher-Tests-Functional');
 			group: 'Download' with: #(#'PharoLauncher-Download' #'PharoLauncher-Tests-Download' ). ].
 
 	spec for: #'pharo6.x' do: [	

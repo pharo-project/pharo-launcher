@@ -1,4 +1,4 @@
-tests
+*PharoLauncher-Tests-Functional
 testCanDetectPreSpurImage
 	| version |
 	self timeLimit: 60 seconds.

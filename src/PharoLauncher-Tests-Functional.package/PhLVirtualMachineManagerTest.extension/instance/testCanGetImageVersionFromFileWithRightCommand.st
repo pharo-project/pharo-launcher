@@ -1,4 +1,4 @@
-tests
+*PharoLauncher-Tests-Functional
 testCanGetImageVersionFromFileWithRightCommand
 	| vmManager command |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.

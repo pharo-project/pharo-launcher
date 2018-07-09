@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "TestCase",
-	"category" : "PharoLauncher-Tests-Download",
+	"category" : "PharoLauncher-Tests-Functional",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

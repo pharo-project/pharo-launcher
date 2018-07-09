@@ -1,4 +1,4 @@
-*PharoLauncher-Tests-Functional
+as yet unclassified
 testCanRunUnzipOnLinux
 	| process |
 	Smalltalk os isWindows ifTrue: [ ^ self ].

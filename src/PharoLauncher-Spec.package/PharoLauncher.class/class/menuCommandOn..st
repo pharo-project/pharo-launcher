@@ -1,4 +1,4 @@
-world menu
+as yet unclassified
 menuCommandOn: aBuilder 
 	<worldMenu> 
 

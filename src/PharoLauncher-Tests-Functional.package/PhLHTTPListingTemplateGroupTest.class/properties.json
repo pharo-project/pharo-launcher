@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "",
 	"super" : "PhLAbstractTemplateGroupTest",
-	"category" : "PharoLauncher-Tests-Core",
+	"category" : "PharoLauncher-Tests-Functional",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

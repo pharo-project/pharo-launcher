@@ -1,6 +1,6 @@
-*pharoLauncher-Spec
+*PharoLauncher-Spec
 asMenuItem
-	^ MenuItemModel new
+	^ MenuItemPresenter new
 		name: self title;
 		action: [ 
 			self validateModelIntegrity ifTrue: [self execute ]];

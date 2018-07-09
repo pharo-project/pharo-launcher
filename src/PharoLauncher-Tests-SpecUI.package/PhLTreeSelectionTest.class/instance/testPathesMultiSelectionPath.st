@@ -4,18 +4,17 @@ testPathesMultiSelectionPath
 	
 	model := Array
 		with:
-			(TreeNodeModel new
+			(TreeNodePresenter new
 				content: #NodeB1;
-				parentNode: (TreeNodeModel new content: #NodeA1);
+				parentNode: (TreeNodePresenter new content: #NodeA1);
 				yourself)
 		with:
-			(TreeNodeModel new
+			(TreeNodePresenter new
 				content: #NodeB2;
-				parentNode: (TreeNodeModel new content: #NodeA2);
+				parentNode: (TreeNodePresenter new content: #NodeA2);
 				yourself).
 					
 	selection := PhLTreeSelection with: model.
-	
 
 	self 
 		assert: selection pathes last first

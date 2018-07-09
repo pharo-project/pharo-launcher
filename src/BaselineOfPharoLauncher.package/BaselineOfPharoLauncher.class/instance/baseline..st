@@ -4,6 +4,11 @@ baseline: spec
 
 	spec for: #'common' do: [
 		spec 
+			project: 'JSON' with: [
+				spec
+					className: #ConfigurationOfJSON;
+					versionString: #'stable';
+					repository: 'http://smalltalkhub.com/mc/PharoExtras/JSON/main/' ];
 			project: 'OSProcess' with: [
 				spec
 					className: #ConfigurationOfOSProcess;
@@ -30,15 +35,23 @@ baseline: spec
 		spec
 			package: #'ConfigurationOfPharoLauncher'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #('XMLParser' 'Ston'). ];
+				spec requires: #('XMLParser' 'Ston' 'JSON' ). ];
 			package: #'PharoLauncher-Download' with: [
 				spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
+			package: #'PharoLauncher-Tests-SpecUI' with: [
+				spec requires: #(#'PharoLauncher-Core' 'PharoLauncher-Spec'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Download' ). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' );
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' 'PharoLauncher-Tests-SpecUI' );
 			group: 'Download' with: #(#'PharoLauncher-Download' #'PharoLauncher-Tests-Download' ). ].
+
+	spec for: #'pharo6.x' do: [	
+		self spec70: spec.
+		spec
+			package: 'PharoLauncher-Spec' with: [ 
+				spec requires: #('Spec70Compatibility') ] ]

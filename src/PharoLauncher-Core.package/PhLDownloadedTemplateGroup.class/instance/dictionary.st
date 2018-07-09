@@ -4,4 +4,4 @@ dictionary
 		readStreamDo: [ :aStream | 
 			aStream atEnd
 				ifTrue: [ Dictionary new ]
-				ifFalse: [ STONJSON readFrom: aStream ] ]
+				ifFalse: [ Json readFrom: aStream ] ]

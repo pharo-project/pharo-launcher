@@ -2,10 +2,10 @@ private
 buildMenu: menu
 	| currentGroupNumber currentGroup |
 	currentGroupNumber := nil.
-	currentGroup := MenuGroupModel new.
+	currentGroup := MenuGroupPresenter new.
 	menu
 		title: '  Pharo Launcher';
-		icon: Smalltalk ui icons pharoIcon;
+		icon: (self iconNamed: #pharoIcon);
 		addMenuGroup: currentGroup.
 	commandClasses
 		do: [ :commandClass | 
@@ -15,7 +15,7 @@ buildMenu: menu
 				ifTrue: [ 
 					(currentGroupNumber notNil and: [ currentGroupNumber ~= command group ])
 						ifTrue: [ 
-							currentGroup := MenuGroupModel new.
+							currentGroup := MenuGroupPresenter new.
 							menu addMenuGroup: currentGroup ].
 					currentGroup addMenuItem: command asMenuItem.
 					currentGroupNumber := command group ] ]

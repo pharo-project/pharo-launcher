@@ -1,4 +1,4 @@
-as yet unclassified
+tests
 testCanRunUnzipOnLinux
 	| process |
 	Smalltalk os isWindows ifTrue: [ ^ self ].

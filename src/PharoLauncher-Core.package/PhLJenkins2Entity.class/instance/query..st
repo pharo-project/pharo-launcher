@@ -2,7 +2,7 @@ protected
 query: jenkinsType
 	| query |
 	query := jenkinsType jsonName , '[' , jenkinsType jsonFieldsQuery , ']'.
-	^ ((self jsonQuery: query) at: jenkinsType jsonName)
+	^ ((self jsonQuery: query) at: jenkinsType jsonName ifAbsent: [nil])
 		ifNil: [ #() ]
 		ifNotNil: [ :jsonObjects | 
 			jsonObjects

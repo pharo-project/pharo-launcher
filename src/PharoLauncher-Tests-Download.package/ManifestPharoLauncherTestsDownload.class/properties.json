@@ -1,11 +1,11 @@
 {
 	"commentStamp" : "<historical>",
 	"super" : "PackageManifest",
-	"category" : "PharoLauncher-Core",
+	"category" : "PharoLauncher-Tests-Download",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "ManifestPharoLauncherCore",
+	"name" : "ManifestPharoLauncherTestsDownload",
 	"type" : "normal"
 }

@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "",
+	"super" : "ITBasicPresenter",
+	"category" : "PharoLauncher-IceTray",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"images"
+	],
+	"name" : "PhLPharoLauncher",
+	"type" : "normal"
+}

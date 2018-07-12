@@ -33,7 +33,7 @@ baseline: spec
 						loads: #('Core');
 						repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
 				baseline: #Icetray with: [ spec repository: 'github://guillep/icetray/src' ];
-				package: #FastTableExtention with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
+				package: #FastTableExtentions with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 			spec
 				package: #ConfigurationOfPharoLauncher;
 				package: #'PharoLauncher-Core' with: [ spec requires: #('XMLParser' 'Ston' 'JSON') ];

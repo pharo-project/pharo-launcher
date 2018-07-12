@@ -39,7 +39,7 @@ baseline: spec
 				package: #'PharoLauncher-Core' with: [ spec requires: #('XMLParser' 'Ston' 'JSON') ];
 				package: #'PharoLauncher-Download' with: [ spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper') ];
 				package: #'PharoLauncher-Spec' with: [ spec requires: #(#'PharoLauncher-Core') ];
-				package: #'PharoLauncher-IceTray' with: [ spec requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtention) ];
+				package: #'PharoLauncher-IceTray' with: [ spec requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
 				package: #'PharoLauncher-Tests-Core' with: [ spec requires: #(#'PharoLauncher-Core') ];
 				package: #'PharoLauncher-Tests-Download' with: [ spec requires: #(#'PharoLauncher-Download') ].
 			spec

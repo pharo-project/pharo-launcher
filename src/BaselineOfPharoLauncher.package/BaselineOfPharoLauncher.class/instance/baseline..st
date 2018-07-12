@@ -32,7 +32,7 @@ baseline: spec
 						versionString: #stable;
 						loads: #('Core');
 						repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
-				baseline: #Icetray with: [ spec repository: 'github://guillep/icetray' ].
+				baseline: #Icetray with: [ spec repository: 'github://guillep/icetray/src' ].
 			spec
 				package: #ConfigurationOfPharoLauncher;
 				package: #'PharoLauncher-Core' with: [ spec requires: #('XMLParser' 'Ston' 'JSON') ];

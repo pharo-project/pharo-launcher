@@ -32,13 +32,14 @@ baseline: spec
 						versionString: #stable;
 						loads: #('Core');
 						repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
-				baseline: #Icetray with: [ spec repository: 'github://guillep/icetray/src' ].
+				baseline: #Icetray with: [ spec repository: 'github://guillep/icetray/src' ];
+				package: #FastTableExtention with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 			spec
 				package: #ConfigurationOfPharoLauncher;
 				package: #'PharoLauncher-Core' with: [ spec requires: #('XMLParser' 'Ston' 'JSON') ];
 				package: #'PharoLauncher-Download' with: [ spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper') ];
 				package: #'PharoLauncher-Spec' with: [ spec requires: #(#'PharoLauncher-Core') ];
-				package: #'PharoLauncher-IceTray' with: [ spec requires: #(#'PharoLauncher-Core' #Icetray) ];
+				package: #'PharoLauncher-IceTray' with: [ spec requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtention) ];
 				package: #'PharoLauncher-Tests-Core' with: [ spec requires: #(#'PharoLauncher-Core') ];
 				package: #'PharoLauncher-Tests-Download' with: [ spec requires: #(#'PharoLauncher-Download') ].
 			spec

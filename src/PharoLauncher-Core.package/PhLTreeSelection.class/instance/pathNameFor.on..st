@@ -1,8 +1,13 @@
 private
 pathNameFor: treeNodeModel on: writeStream
-
-		treeNodeModel parentNode ifNotNil: [ :node |
+	| content |
+	treeNodeModel parentNode
+		ifNotNil: [ :node | 
 			self pathNameFor: node on: writeStream.
 			writeStream nextPut: $- ].
-		
-		writeStream nextPutAll: treeNodeModel content name
+	content := treeNodeModel content.
+	writeStream
+		nextPutAll:
+			(content isString
+				ifTrue: [ content printString ]
+				ifFalse: [ content name ])

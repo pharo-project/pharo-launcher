@@ -1,4 +1,5 @@
 system startup
 launcherStartUp
-	self preferencesFile 
-		ifNotNil: [ self new treeHolder updateSettingNodes ]
+	PhLDeploymentScript isDeployed
+		ifFalse: [ ^ self ].
+	self preferencesFile ifNotNil: [ self new treeHolder updateSettingNodes ]

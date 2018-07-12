@@ -5,9 +5,9 @@ newSelectionModelNamed: aNameString
 	aNode := PhLRemoteTemplate name: aNameString url: ''.
 	aSelection := PhLTreeSelection
 		with:
-			{(TreeNodeModel new
+			{(TreeNodePresenter new
 				content: aNode;
-				parentNode: (TreeNodeModel new content: #parent);
+				parentNode: (TreeNodePresenter new content: #parent);
 				yourself)}.
 				
 	^ aSelection

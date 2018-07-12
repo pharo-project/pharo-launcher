@@ -4,7 +4,7 @@ initializeWidgets
 	
 	super initializeWidgets.
 	
-	(timestampColumn := TreeColumnModel new) 
+	(timestampColumn := TreeColumnPresenter new) 
 		headerLabel: 'Last Modified';
 		headerAction: [ self sortContentByDateModfied ];
 		displayBlock: [ :item | 
@@ -13,12 +13,12 @@ initializeWidgets
 			timestamp asDate yyyymmdd, ' ', timestamp asTime print24 ];
 		initialWidth: 250.
 		
-	(archColumn := TreeColumnModel new) 
+	(archColumn := TreeColumnPresenter new) 
 		headerLabel: 'Arch';
 		headerAction: [ self sortContentByArch ];
 		displayBlock: [ :item | item content arch ].
 		
-	(detailsColumn := TreeColumnModel new) 
+	(detailsColumn := TreeColumnPresenter new) 
 		headerLabel: 'Template';
 		headerAction: [ self sortContentByTemplate ];
 		displayBlock: [ :item | item content originTemplateName ].

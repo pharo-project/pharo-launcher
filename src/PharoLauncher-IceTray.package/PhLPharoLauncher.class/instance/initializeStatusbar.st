@@ -5,7 +5,7 @@ initializeStatusbar.
 			(ITToggleButton new
 				label: 'Quit on launch';
 				help: 'Quit on launch ';
-				action: [ :activated | self inform: activated asString ];
+				action: [ :activated | PhLLaunchImageCommand quitOnLaunch: activated];
 				yourself)
 			position: ITItemPosition left;
 		addItem:

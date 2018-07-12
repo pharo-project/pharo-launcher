@@ -1,3 +1,4 @@
 initialization
 initializeBody
-	images := self newFastTable.
+	imagesTable := self newFTSmartTable.
+	self initializeImageTable: imagesTable morph

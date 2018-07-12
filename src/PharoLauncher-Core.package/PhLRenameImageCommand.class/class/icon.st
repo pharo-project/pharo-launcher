@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #workspaceIcon asIcon
+	^ self iconNamed: #workspaceIcon

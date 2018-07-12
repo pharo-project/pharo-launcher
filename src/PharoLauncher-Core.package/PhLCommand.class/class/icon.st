@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #blankIcon asIcon
+	^ self iconNamed: #blankIcon

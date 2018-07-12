@@ -6,7 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"images"
+		"imagesTable"
 	],
 	"name" : "PhLPharoLauncher",
 	"type" : "normal"

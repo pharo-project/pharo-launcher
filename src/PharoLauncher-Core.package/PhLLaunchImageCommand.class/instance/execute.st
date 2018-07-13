@@ -1,4 +1,4 @@
 action
 execute
-	context hasSingleImageSelected
+	self model hasSingleImageSelected
 		ifTrue: [ self launchSelectedImage ]

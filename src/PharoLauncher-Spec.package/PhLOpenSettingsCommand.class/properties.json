@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "PhLGeneralCommand",
+	"category" : "PharoLauncher-Spec-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLOpenSettingsCommand",
+	"type" : "normal"
+}

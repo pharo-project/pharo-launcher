@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "ChristopheDemarey 4/5/2018 09:59",
+	"super" : "Object",
+	"category" : "PharoLauncher-Spec-Settings",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLAppearanceSettings",
+	"type" : "normal"
+}

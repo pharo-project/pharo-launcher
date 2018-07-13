@@ -1,3 +1,3 @@
 action
 execute
-	context singleImage showNativeFolder
+	self model singleImage showNativeFolder

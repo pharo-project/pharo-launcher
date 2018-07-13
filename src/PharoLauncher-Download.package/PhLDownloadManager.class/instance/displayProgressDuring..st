@@ -2,7 +2,6 @@ private
 displayProgressDuring: workBlock
 	"Inform user about download progression"
 
-	self setProgressBarSizeAndPosition.
 	UIManager default
 		informUserDuring: [ :bar | 
 			workBlock

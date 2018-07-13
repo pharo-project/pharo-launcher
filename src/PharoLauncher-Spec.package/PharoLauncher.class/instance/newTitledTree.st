@@ -1,3 +1,3 @@
 widgets
 newTitledTree 
-	^ self instantiate: PhLTitledTreeModel.
+	^ self instantiate: PhLTitledTreePresenter.

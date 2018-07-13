@@ -1,3 +1,3 @@
 testing
 isApplicable
-	^ super isApplicable and: [ context hasSingleImageSelected ]
+	^ super isApplicable and: [ self model hasSingleImageSelected ]

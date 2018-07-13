@@ -1,0 +1,13 @@
+{
+	"commentStamp" : "ChristopheDemarey 1/10/2018 08:29",
+	"super" : "PhLGeneralCommand",
+	"category" : "PharoLauncher-Spec-Commands",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"project"
+	],
+	"name" : "PhLAboutCommand",
+	"type" : "normal"
+}

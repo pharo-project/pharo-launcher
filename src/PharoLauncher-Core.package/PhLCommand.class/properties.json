@@ -6,7 +6,7 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"context"
+		"model"
 	],
 	"name" : "PhLCommand",
 	"type" : "normal"

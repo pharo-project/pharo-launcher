@@ -1,3 +1,3 @@
 settings
 isDeployed
-	^ IsDeployed ifNil: [ IsDeployed := false ]
+	^ PharoLauncherModel isDeployed

@@ -11,6 +11,7 @@
 		"TemplatesClearedOnStartup"
 	],
 	"instvars" : [
+		"launcherModel",
 		"imagesModel",
 		"templatesModel",
 		"statusbarModel",

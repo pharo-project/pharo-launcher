@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "ChristopheDemarey 1/10/2018 08:29",
 	"super" : "PhLGeneralCommand",
-	"category" : "PharoLauncher-Core-Commands",
+	"category" : "PharoLauncher-Spec-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

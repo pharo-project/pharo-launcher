@@ -1,3 +1,3 @@
 settings
 deactivateDeployed
-	IsDeployed := false
+	PharoLauncherModel deactivateDeployed

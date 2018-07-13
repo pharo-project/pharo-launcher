@@ -2,5 +2,5 @@ action
 execute
 	Clipboard clipboardText: 
 		$" asString, 
-		context singleImage file fullName , 
+		self model singleImage file fullName , 
 		$" asString.

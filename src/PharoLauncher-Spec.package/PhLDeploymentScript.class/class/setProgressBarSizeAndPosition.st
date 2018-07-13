@@ -1,4 +1,4 @@
-action
+actions
 setProgressBarSizeAndPosition
 	"increase size and reposition progress bar to the middle of screen to make it more visible"
 	SystemProgressMorph uniqueInstance

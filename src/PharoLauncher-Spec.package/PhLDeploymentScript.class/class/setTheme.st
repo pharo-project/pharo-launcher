@@ -1,3 +1,3 @@
 actions
 setTheme
-	PharoLightTheme beCurrent.
+	Pharo3Theme beCurrent.

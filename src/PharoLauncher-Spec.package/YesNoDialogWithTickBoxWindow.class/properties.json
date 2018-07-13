@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "ChristopheDemarey 6/21/2018 11:50",
 	"super" : "QuestionWithoutCancelDialogWindow",
-	"category" : "PharoLauncher-Core-Settings",
+	"category" : "PharoLauncher-Spec",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "TorstenBergmann 9/21/2016 23:15",
-	"super" : "PhLTitledTreeModel",
+	"super" : "PhLTitledTreePresenter",
 	"category" : "PharoLauncher-Spec",
 	"classinstvars" : [ ],
 	"pools" : [ ],
@@ -11,6 +11,6 @@
 		"selectionChangedBlock",
 		"search"
 	],
-	"name" : "PhLSearchableTitledTreeModel",
+	"name" : "PhLSearchableTitledTreePresenter",
 	"type" : "normal"
 }

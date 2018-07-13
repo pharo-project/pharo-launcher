@@ -10,5 +10,4 @@ import: imagePath
 			importImageNamed: imagePath
 			to: destFolderName ].
 	infoMessage := 'Image ' , imagePath , ' imported!'.
-	MessageDialogWindow new
-		message: (infoMessage withNoLineLongerThan: 60)
+	self inform: (infoMessage withNoLineLongerThan: 60) 

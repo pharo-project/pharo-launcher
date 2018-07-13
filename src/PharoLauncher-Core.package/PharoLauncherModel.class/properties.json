@@ -1,13 +1,13 @@
 {
-	"commentStamp" : "<historical>",
+	"commentStamp" : "",
 	"super" : "Object",
-	"category" : "PharoLauncher-Spec",
+	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"Save"
+		"IsDeployed"
 	],
 	"instvars" : [ ],
-	"name" : "PhLDeploymentScript",
+	"name" : "PharoLauncherModel",
 	"type" : "normal"
 }

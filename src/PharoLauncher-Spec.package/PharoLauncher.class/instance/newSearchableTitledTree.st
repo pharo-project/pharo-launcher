@@ -1,3 +1,3 @@
 widgets
 newSearchableTitledTree 
-	^ self instantiate: PhLSearchableTitledTreeModel.
+	^ self instantiate: PhLSearchableTitledTreePresenter.

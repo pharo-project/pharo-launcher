@@ -3,10 +3,10 @@ import: imagePath
 	| infoMessage destFolderName |
 	destFolderName := imagePath asFileReference basenameWithoutExtension.
 	importSiblings 
-		ifTrue: [ context imageRepository
+		ifTrue: [ self model imageRepository
 			importImageNamed: imagePath
 			 andSiblingFilesto: destFolderName ]
-		ifFalse: [ context imageRepository
+		ifFalse: [ self model imageRepository
 			importImageNamed: imagePath
 			to: destFolderName ].
 	infoMessage := 'Image ' , imagePath , ' imported!'.

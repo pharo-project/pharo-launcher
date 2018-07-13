@@ -1,5 +1,5 @@
 action
 execute
-	context newInformation 
-		message: context singleImage summaryInfo; 
+	self model newInformation 
+		message: self model singleImage summaryInfo; 
 		denyWithTitle: 'Image Details'

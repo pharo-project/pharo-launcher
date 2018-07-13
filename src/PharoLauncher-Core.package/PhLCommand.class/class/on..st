@@ -1,5 +1,5 @@
 instance creation
-on: aContext
+on: aPharoLauncherModel
 	^ self new
-		setContext: aContext;
+		setModel: aPharoLauncherModel;
 		yourself

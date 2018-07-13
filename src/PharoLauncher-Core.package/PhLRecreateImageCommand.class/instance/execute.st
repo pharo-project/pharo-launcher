@@ -1,10 +1,10 @@
 action
 execute
 	self askConfirmation
-		ifTrue: [ context selectedImages 
+		ifTrue: [ self model selectedImages 
 			do: [ :image | | template |
 				template := image originTemplate. 
-				context imageRepository
+				self model imageRepository
 					deleteImages: { image }; 
 					extractTemplate: template to: image name ]
 			]

@@ -1,3 +1,3 @@
 action
 launchSelectedImage
-	self launchImage: context singleImage
+	self launchImage: self model singleImage

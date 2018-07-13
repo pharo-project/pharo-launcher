@@ -1,3 +1,3 @@
 testing
 isApplicable
-	^ super isApplicable and: [ context hasSingleLocalTemplateSelected ]
+	^ super isApplicable and: [ self model hasSingleLocalTemplateSelected ]

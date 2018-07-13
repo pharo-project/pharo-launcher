@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "<historical>",
 	"super" : "PhLGeneralCommand",
-	"category" : "PharoLauncher-Core-Commands",
+	"category" : "PharoLauncher-Spec-Commands",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

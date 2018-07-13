@@ -8,4 +8,5 @@ doAll
 		deactivateDeprecationWarnings;
 		makeDeployed;
 		addToStartupList;
-		dontAskForConfirmationWhenQuitting
+		dontAskForConfirmationWhenQuitting;
+		setProgressBarSizeAndPosition

@@ -1,3 +1,3 @@
 accessing
 imageDescriptionFile
-	^ context singleImage imageFile parent / 'description.txt'
+	^ self model singleImage imageFile parent / 'description.txt'

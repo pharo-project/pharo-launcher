@@ -1,4 +1,4 @@
 testing
 isApplicable
-	^ context hasAtLeastOneImageSelected and: 
-		[  context selectedImages allSatisfy: [ :image | image originTemplate notNil ] ].
+	^ self model hasAtLeastOneImageSelected and: 
+		[ self model selectedImages allSatisfy: [ :image | image originTemplate notNil ] ].

@@ -14,4 +14,4 @@ execute
 	(answer = 2 or: [ answer = 3 ])
 		ifTrue:	[ self importImage ].
 	answer = 1 
-		ifTrue: [ (PhLLaunchImageCommand on: context) launchImageFromDisk ].
+		ifTrue: [ (PhLLaunchImageCommand on: self model) launchImageFromDisk ].

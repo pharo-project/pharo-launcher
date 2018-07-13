@@ -4,6 +4,6 @@ execute
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self
-		ensure: (context isNewLocalTemplateNameValid: name).
-	context singleTemplate renameTo: name.
-	context templateRepositoryChanged
+		ensure: (self model isNewLocalTemplateNameValid: name).
+	self model singleTemplate renameTo: name.
+	self model templateRepositoryChanged

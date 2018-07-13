@@ -1,5 +1,5 @@
 {
-	"commentStamp" : "",
+	"commentStamp" : "PavelKrivanek 7/13/2018 13:25",
 	"super" : "Object",
 	"category" : "PharoLauncher-Core-Model",
 	"classinstvars" : [ ],
@@ -7,7 +7,11 @@
 	"classvars" : [
 		"IsDeployed"
 	],
-	"instvars" : [ ],
+	"instvars" : [
+		"selection",
+		"imageRepository",
+		"templateRepository"
+	],
 	"name" : "PharoLauncherModel",
 	"type" : "normal"
 }

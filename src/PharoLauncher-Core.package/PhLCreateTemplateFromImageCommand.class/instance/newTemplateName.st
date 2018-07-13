@@ -1,3 +1,3 @@
 accessing
 newTemplateName
-	^ newTemplateName ifNil: [ newTemplateName := context requestNewTemplateName: context singleImageName ]
+	^ newTemplateName ifNil: [ newTemplateName := self model requestNewTemplateName: self model singleImageName ]

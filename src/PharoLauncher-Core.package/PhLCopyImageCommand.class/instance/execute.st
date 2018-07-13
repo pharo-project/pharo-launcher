@@ -4,5 +4,5 @@ execute
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self
-		ensure: (context isNewImageNameValid: name).
-	context imageRepository copyImage: context singleImage to: name.
+		ensure: (self model isNewImageNameValid: name).
+	self model imageRepository copyImage: self model singleImage to: name.

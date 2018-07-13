@@ -1,4 +1,4 @@
 action
 deleteImage
 	"remove image without confirmation"
-	context imageRepository deleteImage: context singleImage	
+	self model imageRepository deleteImage: self model singleImage	

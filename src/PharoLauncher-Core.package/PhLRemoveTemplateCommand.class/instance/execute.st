@@ -1,11 +1,11 @@
 action
 execute
 	| templates templateNames confirmMessage answer |
-	templates := context selectedTemplates.
+	templates := self model selectedTemplates.
 	templateNames := templates collect: #name.
 	confirmMessage := 'Are you sure you want to delete ' , (templateNames joinUsing: ', ' last: ' and ').
-	answer := context newConfirmation
+	answer := self model newConfirmation
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer
-		ifTrue: [ context templateRepository deleteTemplates: templates ]
+		ifTrue: [ self model templateRepository deleteTemplates: templates ]

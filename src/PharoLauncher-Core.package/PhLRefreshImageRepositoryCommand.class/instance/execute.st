@@ -1,3 +1,3 @@
 action
 execute
-	context imageRepository contentsChanged.
+	self model imageRepository contentsChanged.

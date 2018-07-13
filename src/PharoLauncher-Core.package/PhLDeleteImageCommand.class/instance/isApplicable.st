@@ -1,3 +1,3 @@
 testing
 isApplicable
-	^ context hasAtLeastOneImageSelected
+	^ self model hasAtLeastOneImageSelected

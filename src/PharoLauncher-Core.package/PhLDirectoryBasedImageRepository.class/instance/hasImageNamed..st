@@ -1,3 +1,3 @@
 testing
 hasImageNamed: aString 
-	^ self imageNames includes: aString
+	^ self includesImageNamedCaseInsensitive: aString

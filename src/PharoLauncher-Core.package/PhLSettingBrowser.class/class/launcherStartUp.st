@@ -1,5 +1,5 @@
 system startup
 launcherStartUp
-	PhLDeploymentScript isDeployed
+	PharoLauncherModel isDeployed
 		ifFalse: [ ^ self ].
 	self preferencesFile ifNotNil: [ self new treeHolder updateSettingNodes ]

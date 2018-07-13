@@ -1,7 +1,7 @@
 {
 	"commentStamp" : "<historical>",
 	"super" : "ClassTestCase",
-	"category" : "PharoLauncher-Tests-Core",
+	"category" : "PharoLauncher-Tests-Functional",
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [ ],

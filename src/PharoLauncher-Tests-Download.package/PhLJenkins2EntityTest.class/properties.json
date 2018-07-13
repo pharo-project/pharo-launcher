@@ -6,6 +6,6 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [ ],
-	"name" : "PhLVirtualMachineTest",
+	"name" : "PhLJenkins2EntityTest",
 	"type" : "normal"
 }

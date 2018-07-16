@@ -6,7 +6,9 @@
 	"pools" : [ ],
 	"classvars" : [ ],
 	"instvars" : [
-		"imagesTable"
+		"imagesTable",
+		"propertyPanel",
+		"statusBar"
 	],
 	"name" : "PhLPharoLauncher",
 	"type" : "normal"

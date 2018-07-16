@@ -1,6 +1,6 @@
 actions
 deleteSelectedImage
 	PhLDeleteImageCommand new
-		setContext: self context;
+		setModel: self context;
 		execute.
 	self refresh

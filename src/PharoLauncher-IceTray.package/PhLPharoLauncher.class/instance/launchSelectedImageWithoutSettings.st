@@ -1,5 +1,5 @@
 actions
 launchSelectedImageWithoutSettings
 	PhLLaunchImageWithoutSettingCommand new
-		setContext: self context;
+		setModel: self context;
 		execute

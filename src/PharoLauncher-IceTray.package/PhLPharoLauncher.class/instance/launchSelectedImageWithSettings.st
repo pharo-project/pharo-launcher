@@ -1,5 +1,5 @@
 actions
 launchSelectedImageWithSettings
 	PhLLaunchImageCommand new
-		setContext: self context;
+		setModel: self context;
 		execute

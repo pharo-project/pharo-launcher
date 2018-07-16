@@ -11,5 +11,6 @@ initializeImageTable: aTableMorph
 		add: #vm width: 50;
 		add: #template width: 300;
 		add: #'last modification' accessing: #lastModification width: 100;
+		onAnnouncement: FTSelectionChanged do: [ :ann | self selectionChanged: ann];
 		onAnnouncement: FTStrongSelectionChanged do: [ :ann | self launchSelectedImageWithSettings ].
 	aTableMorph showRowIndex width: 50

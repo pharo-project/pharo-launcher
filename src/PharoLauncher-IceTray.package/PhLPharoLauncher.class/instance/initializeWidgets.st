@@ -1,8 +1,10 @@
 initialization
 initializeWidgets
 
-	propertyPanel := (self instantiate: PhLImagePresenter on: self).
-
 	self initializeToolbar.
 	self initializeStatusbar.
-	self initializeBody
+	self initializeBody.
+	
+	propertyPanel := (self instantiate: PhLImagePresenter on: self firstlySelectedImage).
+
+	

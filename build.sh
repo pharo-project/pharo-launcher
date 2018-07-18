@@ -44,7 +44,8 @@ function package_developer_version() {
 
 function package_user_version() {
 	./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
-
+	pwd
+	ls -la 
 	# Set the launcher version on Pharo 
 	LAUNCHER_VERSION=git describe --tags
 	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  

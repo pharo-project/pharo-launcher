@@ -1,0 +1,19 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "ComposablePresenter",
+	"category" : "PharoLauncher-Spec",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"title",
+		"toolbar",
+		"tree",
+		"contextHolder",
+		"repositoryHolder",
+		"doubleClickCommandClass",
+		"commandClasses"
+	],
+	"name" : "PhLTitledTreePresenter",
+	"type" : "normal"
+}

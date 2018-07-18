@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "PhLJenkins2EntityTest",
+	"category" : "PharoLauncher-Tests-Download",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLJenkins2JobTest",
+	"type" : "normal"
+}

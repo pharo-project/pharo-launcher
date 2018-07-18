@@ -1,6 +1,6 @@
 {
 	"commentStamp" : "<historical>",
-	"super" : "ComposableModel",
+	"super" : "ComposablePresenter",
 	"category" : "PharoLauncher-Spec",
 	"classinstvars" : [
 		"pharoIcon"
@@ -11,6 +11,7 @@
 		"TemplatesClearedOnStartup"
 	],
 	"instvars" : [
+		"launcherModel",
 		"imagesModel",
 		"templatesModel",
 		"statusbarModel",

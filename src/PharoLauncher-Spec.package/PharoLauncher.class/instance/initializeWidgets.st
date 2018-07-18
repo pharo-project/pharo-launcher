@@ -21,7 +21,7 @@ initializeWidgets
 		send: #refreshQuitOnLaunchCheckBox
 		to: self.
 		
-	self whenWindowClosed: [ PhLLaunchImageCommand announcer unsubscribe: self ].
+	self whenChangedDo: [  :w  | w whenClosedDo:  [ PhLLaunchImageCommand announcer unsubscribe: self ] ].
 	self whenBuiltDo: [ 
 		self 
 			initializeImageAndTemplates; 

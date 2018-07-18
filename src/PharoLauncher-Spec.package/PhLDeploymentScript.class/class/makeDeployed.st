@@ -1,3 +1,3 @@
 settings
 makeDeployed
-	IsDeployed := true
+	PharoLauncherModel makeDeployed

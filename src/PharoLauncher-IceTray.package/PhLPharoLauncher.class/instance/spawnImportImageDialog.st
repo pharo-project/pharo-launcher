@@ -1,0 +1,3 @@
+actions
+spawnImportImageDialog
+	PhLImportImageCommand new execute

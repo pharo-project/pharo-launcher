@@ -1,3 +1,3 @@
 action
 execute
-	context templateRepository refresh
+	self model templateRepository refresh

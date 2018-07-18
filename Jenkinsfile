@@ -5,10 +5,12 @@ properties([disableConcurrentBuilds()])
 try {
   def version = getCommitHash()
   cleanUploadFolderIfNeeded(version)
-  buildArchitecture('32', '61')
-  buildArchitecture('64', '61')
-  buildArchitecture('32', '70')
-  buildArchitecture('64', '70')
+  timeout(time: 30, unit: 'MINUTES') { 
+    buildArchitecture('32', '61')
+    buildArchitecture('64', '61')
+    buildArchitecture('32', '70')
+    buildArchitecture('64', '70')
+  }
   finalizeUpload(version)
 } catch(exception) {
 	currentBuild.result = 'FAILURE'

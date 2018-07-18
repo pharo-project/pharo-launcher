@@ -5,7 +5,6 @@
 	"classinstvars" : [ ],
 	"pools" : [ ],
 	"classvars" : [
-		"IsDeployed",
 		"Save"
 	],
 	"instvars" : [ ],

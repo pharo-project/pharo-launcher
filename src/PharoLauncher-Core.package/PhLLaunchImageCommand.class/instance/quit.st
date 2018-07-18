@@ -1,3 +1,3 @@
 action
 quit
-	(PhLQuitCommand on: context) execute
+	(PhLQuitCommand on: self model) execute

@@ -1,3 +1,3 @@
 accessing
 icon
-	^ #smallCopyIcon asIcon
+	^ self iconNamed: #smallCopyIcon

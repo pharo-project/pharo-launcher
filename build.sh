@@ -35,6 +35,11 @@ function run_tests() {
 
 function package_user_version() {
 	./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
+
+	# Set the launcher version on Pharo 
+	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
+	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
+
 	# Faster the startup of the launcher image
 	./pharo PharoLauncher.image eval --save ""
 

@@ -1,9 +1,9 @@
 initialization
-initializeToolbar.
-
+initializeToolbar
 	self toolbar
 		addItem:
 			(ITButton new
+				label: 'New';
 				icon: (self iconNamed: #smallNewIcon);
 				help: 'Create new image';
 				action: [ self spawnNewImageDialog ];
@@ -11,6 +11,7 @@ initializeToolbar.
 			position: ITItemPosition left;
 		addItem:
 			(ITButton new
+				label: 'Launch';
 				icon: (self iconNamed: #smallDoItIcon);
 				help: 'Launch image with settings';
 				action: [ self launchSelectedImageWithSettings ];
@@ -18,6 +19,7 @@ initializeToolbar.
 			position: ITItemPosition left;
 		addItem:
 			(ITButton new
+				label: 'Basic launch';
 				icon: (self iconNamed: #smallDoItIcon) asGrayScaleWithAlpha;
 				help: 'Launch image without settings';
 				action: [ self launchSelectedImageWithoutSettings ];
@@ -25,6 +27,7 @@ initializeToolbar.
 			position: ITItemPosition left;
 		addItem:
 			(ITButton new
+				label: 'Import';
 				icon: (self iconNamed: #smallLoadProject);
 				help: 'Import image';
 				action: [ self spawnImportImageDialog ];
@@ -32,6 +35,7 @@ initializeToolbar.
 			position: ITItemPosition left;
 		addItem:
 			(ITButton new
+				label: 'Delete';
 				icon: (self iconNamed: #smallDelete);
 				help: 'Delete selected image';
 				action: [ self deleteSelectedImage ];
@@ -39,8 +43,9 @@ initializeToolbar.
 			position: ITItemPosition left;
 		addItem:
 			(ITButton new
+				label: 'Refresh';
 				icon: (self iconNamed: #smallUpdateIcon);
 				help: 'Refresh image table';
 				action: [ self refresh ];
 				yourself)
-			position: ITItemPosition left.
+			position: ITItemPosition left

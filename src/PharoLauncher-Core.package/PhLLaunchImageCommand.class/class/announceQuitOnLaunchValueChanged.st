@@ -1,0 +1,3 @@
+accessing
+announceQuitOnLaunchValueChanged
+	self announcer announce: PhLQuitOnLaunchValueChanged

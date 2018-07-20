@@ -1,3 +1,0 @@
-actions
-remove
-	PhDDownloadManager reset

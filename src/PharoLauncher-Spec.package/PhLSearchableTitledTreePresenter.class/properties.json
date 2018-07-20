@@ -4,7 +4,10 @@
 	"category" : "PharoLauncher-Spec",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [ ],
+	"classvars" : [
+		"DateDisplayStrategy",
+		"DisplayColorsForDates"
+	],
 	"instvars" : [
 		"filterPattern",
 		"regexMatcher",

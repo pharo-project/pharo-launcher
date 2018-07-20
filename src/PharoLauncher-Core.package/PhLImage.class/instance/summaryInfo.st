@@ -1,16 +1,12 @@
 printing
 summaryInfo
-	| output |
-	
-	output := WriteStream on: String new.
-	
-	output nextPutAll: 'Last modified: '.
-	self file modificationTime printOn: output.
-	output 
-		cr;
-		nextPutAll: self file parent fullName;
-		cr; cr.
-	
-	output nextPutAll: self description.
-		
-	^output contents
+	^ String
+		streamContents: [ :s | 
+			s nextPutAll: 'Last modified: '.
+			self file modificationTime printOn: s.
+			s
+				cr;
+				nextPutAll: self file parent fullName;
+				cr;
+				cr;
+				nextPutAll: self description ]

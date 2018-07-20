@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "CyrilFerlicot 7/20/2018 13:51",
+	"super" : "PhLAbstractDateDisplayStrategy",
+	"category" : "PharoLauncher-Spec",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLDateAndTimeDisplayStrategy",
+	"type" : "normal"
+}

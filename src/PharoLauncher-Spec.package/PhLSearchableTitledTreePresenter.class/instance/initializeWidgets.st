@@ -7,10 +7,7 @@ initializeWidgets
 	(timestampColumn := TreeColumnPresenter new) 
 		headerLabel: 'Last Modified';
 		headerAction: [ self sortContentByDateModfied ];
-		displayBlock: [ :item | 
-			| timestamp |
-			timestamp := item content file modificationTime.
-			timestamp asDate yyyymmdd, ' ', timestamp asTime print24 ];
+		displayBlock: [ :item | self printDateOfLastModificationOf: item ];
 		initialWidth: 250.
 		
 	(archColumn := TreeColumnPresenter new) 

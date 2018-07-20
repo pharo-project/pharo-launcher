@@ -11,5 +11,5 @@ printDateOfLastModificationOf: anItem
 			delta days < 8
 				ifTrue: [ text makeAllColor: Color green muchDarker ].
 			delta days < 3
-				ifTrue: [ text makeAllColor: Color green ] ].
+				ifTrue: [ text makeAllColor: Color green darker] ].
 	^ text asMorph lock

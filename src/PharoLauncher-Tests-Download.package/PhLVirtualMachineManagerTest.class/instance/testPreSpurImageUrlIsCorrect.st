@@ -1,8 +1,8 @@
 tests
 testPreSpurImageUrlIsCorrect
 	| url |
-	url := (PhLVirtualMachineManager new 
-		imageFormatNumber: PhLVirtualMachineManager imageFormatPreSpur;
+	url := (PhDVirtualMachineManager new 
+		imageFormatNumber: PhDVirtualMachineManager imageFormatPreSpur;
 		imageVersion: '40';
 		vmUrl).
 	self 

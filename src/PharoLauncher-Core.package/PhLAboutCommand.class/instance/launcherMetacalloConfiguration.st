@@ -1,3 +1,0 @@
-querying
-launcherMetacalloConfiguration
-	^ MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher

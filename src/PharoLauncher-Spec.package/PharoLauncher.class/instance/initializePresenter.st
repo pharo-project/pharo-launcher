@@ -1,5 +1,5 @@
 initialization
 initializePresenter
 	super initializePresenter.
-	PhLDownloadManager default whenErrorAddedDo: [ self showNumberOfErrors ].
+	PhDDownloadManager default whenErrorAddedDo: [ self showNumberOfErrors ].
 	

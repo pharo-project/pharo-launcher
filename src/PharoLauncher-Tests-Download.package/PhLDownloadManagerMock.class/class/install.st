@@ -1,3 +1,3 @@
 actions
 install
-	PhLDownloadManager setDefault: self new
+	PhDDownloadManager setDefault: self new

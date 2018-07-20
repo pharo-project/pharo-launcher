@@ -1,3 +1,3 @@
 action
 vm
-	^ (PhLVirtualMachineManager forImage: file pathString) vmFileName
+	^ (PhDVirtualMachineManager forImage: file pathString) vmFileName

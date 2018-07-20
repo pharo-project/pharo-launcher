@@ -1,8 +1,8 @@
 tests
 testPharo70Vm64BitsUrlIsCorrect
 	| url |
-	url := (PhLVirtualMachineManager new 
-		imageFormatNumber: PhLVirtualMachineManager imageFormat64bits;
+	url := (PhDVirtualMachineManager new 
+		imageFormatNumber: PhDVirtualMachineManager imageFormat64bits;
 		imageVersion: '70';
 		vmUrl).
 	self 

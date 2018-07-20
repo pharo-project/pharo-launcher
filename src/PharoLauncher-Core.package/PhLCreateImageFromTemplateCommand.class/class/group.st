@@ -1,3 +1,0 @@
-accessing
-group
-	^ 1

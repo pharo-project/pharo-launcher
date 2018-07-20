@@ -1,3 +1,3 @@
 actions
 remove
-	PhLDownloadManager reset
+	PhDDownloadManager reset

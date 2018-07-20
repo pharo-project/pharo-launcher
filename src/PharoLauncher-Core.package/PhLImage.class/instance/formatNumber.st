@@ -1,0 +1,3 @@
+formatting
+formatNumber
+	^ PhDVirtualMachineManager imageFormatNumberFromFile: file

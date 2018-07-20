@@ -1,1 +1,0 @@
-As my super class I launch an image but I also disable the setting before the launch.

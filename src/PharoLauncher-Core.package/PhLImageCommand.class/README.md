@@ -1,1 +1,0 @@
-Superclass of all commands that are applied to one image or multiple images.

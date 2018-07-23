@@ -1,3 +1,3 @@
-actions
+accessing
 spawnImportImageDialog
 	PhLImportImageCommand new execute

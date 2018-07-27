@@ -1,3 +1,0 @@
-responses
-defaultJobName
-	^ 'theJobName'

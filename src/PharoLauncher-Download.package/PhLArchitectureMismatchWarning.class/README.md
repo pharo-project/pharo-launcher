@@ -1,2 +1,0 @@
-Warning raised when PharoLauncher architecture (image / VM) does not match the image (and by consequence the VM to run it) architecture.
-e.g. raised when PharoLauncher 64-bit tries to run a 32-bit image (possibly missing libraries)

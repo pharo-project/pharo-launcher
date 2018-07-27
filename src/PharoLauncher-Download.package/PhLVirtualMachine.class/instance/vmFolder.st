@@ -1,3 +1,0 @@
-accessing
-vmFolder
-	^ vmBinaryRef parent

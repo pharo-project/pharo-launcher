@@ -7,6 +7,6 @@ downloadAndStoreFile: anUrl forTemplate: aRemoteTemplate
 	"...but change the file name to be the one of aRemoteTemplate"
 	destinationFile := self baseDirectory / aRemoteTemplate name , fileExtension.
 	destinationFile ensureDelete.
-	PhLDownloadManager default download: anUrl toFile: destinationFile.
+	PhDDownloadManager default download: anUrl toFile: destinationFile.
 	self register: aRemoteTemplate withZip: destinationFile.
 	^ destinationFile

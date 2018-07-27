@@ -1,3 +1,3 @@
 private
 showNumberOfErrors
-	statusbarModel content: PhLDownloadManager default numberOfErrors asString, ' network error(s)'
+	statusbarModel content: PhDDownloadManager default numberOfErrors asString, ' network error(s)'

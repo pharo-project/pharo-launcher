@@ -30,7 +30,7 @@ function prepare_image() {
 }
 
 function run_tests() {
-	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
+	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*" "PharoDownloader.*"
 }
 
 function package_user_version() {

@@ -3,7 +3,7 @@ testCanDetectExecutablePath
 	"WARNING: this test is Linux specific!"
 	| vm vmFolder |
 	vmFolder := FileLocator imageDirectory asFileReference / 'pharo-vm'.
-	vm := PhLVirtualMachine directory: vmFolder.
+	vm := PhDVirtualMachine directory: vmFolder.
 	self 
 		assert: vm executablePath
-		equals: (vmFolder / PhLVirtualMachine executableName) fullName
+		equals: (vmFolder / PhDVirtualMachine executableName) fullName

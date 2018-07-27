@@ -4,11 +4,11 @@ launchWithSettings: usePharoSettings
 	architectureWarningEnabled := true.
 	continue := true.
 	[ [ | vmCommand |
-	vmCommand := (PhLVirtualMachineManager forImage: file pathString) vm.
-	^ PhLProcessWrapper command: (self launchCommandWith: vmCommand useSettings: usePharoSettings) ]
-		on: PhLImageVersionDeterminationError
+	vmCommand := (PhDVirtualMachineManager forImage: file pathString) vm.
+	^ PhDProcessWrapper command: (self launchCommandWith: vmCommand useSettings: usePharoSettings) ]
+		on: PhDImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
-		on: PhLArchitectureMismatchWarning
+		on: PhDArchitectureMismatchWarning
 		do: [ :warning | |  |
 			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
 				ifTrue: [ 

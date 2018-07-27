@@ -1,3 +1,3 @@
 helpers
 downloadManager
-	^ PhLDownloadManager default
+	^ PhDDownloadManager default

@@ -2,5 +2,5 @@ tests
 testCanRunUnzipOnLinux
 	| process |
 	Smalltalk os isWindows ifTrue: [ ^ self ].
-	process := PhLProcessWrapper waitForCommand: 'unzip --help'.
+	process := PhDProcessWrapper waitForCommand: 'unzip --help'.
 	self assert: process succeeded

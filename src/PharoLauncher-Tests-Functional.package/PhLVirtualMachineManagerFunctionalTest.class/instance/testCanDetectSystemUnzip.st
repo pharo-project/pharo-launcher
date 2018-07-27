@@ -1,3 +1,3 @@
 tests
 testCanDetectSystemUnzip
-	self assert: PhLVirtualMachineManager canUseSytemZip equals: true
+	self assert: PhDVirtualMachineManager canUseSytemZip equals: true

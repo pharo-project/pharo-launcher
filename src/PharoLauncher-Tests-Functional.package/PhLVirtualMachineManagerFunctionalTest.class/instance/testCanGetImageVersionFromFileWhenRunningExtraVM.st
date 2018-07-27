@@ -1,7 +1,7 @@
 tests
 testCanGetImageVersionFromFileWhenRunningExtraVM
 	| vmManager |
-	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	vmManager := PhDVirtualMachineManager forImage: Smalltalk image lastImagePath.
 	vmManager imageVersionFile ensureDelete.
 		
 	self

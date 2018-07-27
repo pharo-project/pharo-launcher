@@ -1,3 +1,0 @@
-helpers
-lastSuccessfulBuildNumber
-	^ 52

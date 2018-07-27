@@ -1,3 +1,0 @@
-private
-imageVersionFileName.
-	^ 'pharo.version'

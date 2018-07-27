@@ -1,0 +1,3 @@
+initializing
+firstlySelectedImage
+	^ nil

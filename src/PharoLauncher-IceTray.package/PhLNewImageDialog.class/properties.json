@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "",
+	"super" : "ITBasicPresenter",
+	"category" : "PharoLauncher-IceTray",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"catalogTable",
+		"propertyPanel"
+	],
+	"name" : "PhLNewImageDialog",
+	"type" : "normal"
+}

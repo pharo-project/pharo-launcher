@@ -1,4 +1,4 @@
-*pharoLauncher-Core-Commands
+*PharoLauncher-Core
 privShellExplore: folder
 	"
 	self privShellExplore: 'c:\'

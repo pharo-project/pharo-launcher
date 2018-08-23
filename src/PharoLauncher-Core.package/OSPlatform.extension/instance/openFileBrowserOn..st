@@ -1,4 +1,4 @@
-*pharoLauncher-Core-Commands
+*PharoLauncher-Core
 openFileBrowserOn: aFileReference
 	"Opens an OS-specific file and directory browser on ==aFileReference==. If aFileReference is a file, opens the browser on its containing directory instead."
 	| ref |

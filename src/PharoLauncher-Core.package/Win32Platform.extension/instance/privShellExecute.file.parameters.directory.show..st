@@ -1,4 +1,4 @@
-*pharoLauncher-Core-Commands
+*PharoLauncher-Core
 privShellExecute: lpOperation file: lpFile parameters: lpParameters directory: lpDirectory show: nShowCmd
 	
 	^self ffiCall: #( 

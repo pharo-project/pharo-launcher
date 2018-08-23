@@ -8,12 +8,13 @@ initializeWidgets
 		headerLabel: 'Last Modified';
 		headerAction: [ self sortContentByDateModfied ];
 		displayBlock: [ :item | self printDateOfLastModificationOf: item ];
-		initialWidth: 250.
+		initialWidth: 125.
 		
 	(archColumn := TreeColumnPresenter new) 
 		headerLabel: 'Arch';
 		headerAction: [ self sortContentByArch ];
-		displayBlock: [ :item | item content arch ].
+		displayBlock: [ :item | item content arch ];
+		initialWidth: 40.
 		
 	(detailsColumn := TreeColumnPresenter new) 
 		headerLabel: 'Template';
@@ -26,7 +27,7 @@ initializeWidgets
 		headerAction: [ self sortContentByName ];
 		initialWidth: 350.
 
-	tree columns: (tree columns, { timestampColumn . detailsColumn . archColumn}).
+	tree columns: (tree columns, { timestampColumn . archColumn . detailsColumn }).
 	
 	tree
 		bindKeyCombination: Character cr asKeyCombination

@@ -1,3 +1,3 @@
 private
-imageVersionFileName.
-	^ 'pharo.version'
+imageVersionFileName
+	^ self class imageVersionFileName

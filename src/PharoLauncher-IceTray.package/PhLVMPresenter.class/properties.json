@@ -1,0 +1,17 @@
+{
+	"commentStamp" : "ChristopheDemarey 8/23/2018 16:03",
+	"super" : "ITBasicPresenter",
+	"category" : "PharoLauncher-IceTray",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"vmTable",
+		"toolbar",
+		"refreshBlock",
+		"elementsBlock",
+		"dataSource"
+	],
+	"name" : "PhLVMPresenter",
+	"type" : "normal"
+}

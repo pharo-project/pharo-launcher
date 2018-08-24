@@ -9,7 +9,8 @@
 	],
 	"instvars" : [
 		"executableRef",
-		"vmBinaryRef"
+		"vmBinaryRef",
+		"name"
 	],
 	"name" : "PhLVirtualMachine",
 	"type" : "normal"

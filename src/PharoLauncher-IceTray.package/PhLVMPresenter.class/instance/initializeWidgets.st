@@ -17,6 +17,7 @@ initializeWidgets
 	lastUpdateColumn width: 120.
 	vmTable widget
 		add: #'Download URL' accessing: #downloadUrl;
+		intercellSpacing: 1;
 		beMultipleSelection.
 		
 	self refresh.

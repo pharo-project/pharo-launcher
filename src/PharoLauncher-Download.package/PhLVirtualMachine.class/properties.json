@@ -4,9 +4,7 @@
 	"category" : "PharoLauncher-Download-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [
-		"VMStore"
-	],
+	"classvars" : [ ],
 	"instvars" : [
 		"executableRef",
 		"vmBinaryRef",

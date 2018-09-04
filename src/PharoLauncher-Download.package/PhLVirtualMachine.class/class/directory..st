@@ -1,5 +1,5 @@
-accessing
+instance creation
 directory: aFileReference
-	^ self new 
-		initializeOn: aFileReference;
-		yourself 
+	^ self 
+		directory: aFileReference
+		private: false

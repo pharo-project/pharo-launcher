@@ -24,4 +24,13 @@ initializeToolbar
 				help: 'Remove virtual machine';
 				action: [ self removeVms ];
 				yourself)
-			position: ITItemPosition left
+			position: ITItemPosition left;
+		addItem:
+			(ITToggleButton new
+				label: 'private';
+				icon: (self iconNamed: #smallLock);
+				help: 'Show private VMs used to determine pharo version of an image!';
+				beUnselected;
+				action: [ :activated | self showPrivateVms: activated ];
+				yourself)
+			position: ITItemPosition right

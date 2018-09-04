@@ -1,3 +1,3 @@
 actions
 showInFolder
-	OSPlatform current openFileBrowserOn: PhLVirtualMachineManager vmStore / name
+	OSPlatform current openFileBrowserOn: self vmStore / name

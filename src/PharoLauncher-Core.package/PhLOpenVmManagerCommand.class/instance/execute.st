@@ -1,6 +1,8 @@
 action
 execute
-	| vmBlock |
+	| vmBlock privateVmBlock |
 	vmBlock := [ PhLVirtualMachineManager new availableVirtualMachines 
 		asSortedCollection: [ :vm1 :vm2 | vm1 name > vm2 name ] ].
-	(PhLVMPresenter on: vmBlock) openWithSpec
+	privateVmBlock := [ PhLVirtualMachineManager new availableVirtualMachinesByImageFormat 
+		asSortedCollection: [ :vm1 :vm2 | vm1 name > vm2 name ] ].
+	(PhLVMPresenter on: { vmBlock . privateVmBlock }) openWithSpec

@@ -1,7 +1,7 @@
 private
 fetchCompatibleVm
 	[ | targetFile | 
-	targetFile := self privateVmStore / (self imageFormatNumber asString , '.zip').
+	targetFile := self class privateVmStore / (self imageFormatNumber asString , '.zip').
 	PhLDownloadManager default 
 		download: self compatibleVmUrl
 		toFile: targetFile.

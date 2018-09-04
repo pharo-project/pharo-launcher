@@ -10,7 +10,9 @@
 		"toolbar",
 		"refreshBlock",
 		"elementsBlock",
-		"dataSource"
+		"dataSource",
+		"vmBlock",
+		"privateVmsBlock"
 	],
 	"name" : "PhLVMPresenter",
 	"type" : "normal"

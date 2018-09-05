@@ -6,7 +6,7 @@ initializeWidgets
 	
 	vmTable := self newSmartFastTable.
 	vmTable widget
-		add: #name width: 50.
+		add: #Name accessing: #name width: 50.
 	lastUpdateColumn := vmTable widget 
 		add: #'Last update' 
 		display: [ :vm |

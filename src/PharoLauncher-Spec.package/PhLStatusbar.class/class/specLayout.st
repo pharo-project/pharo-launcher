@@ -7,5 +7,5 @@ specLayout
 		newRow: [ :r | 
 			r
 				newColumn: [ :col | col add: #labelModel ];
-				newColumn: [ :col | col add: #toolbar ] width: 90];
+				newColumn: [ :col | col add: #toolbar ] width: 120];
 		yourself

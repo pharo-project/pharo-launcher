@@ -1,0 +1,3 @@
+accessing
+vmStore
+	^ PhLVirtualMachineManager privateVmStore

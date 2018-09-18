@@ -4,12 +4,11 @@
 	"category" : "PharoLauncher-Download-Core",
 	"classinstvars" : [ ],
 	"pools" : [ ],
-	"classvars" : [
-		"VMStore"
-	],
+	"classvars" : [ ],
 	"instvars" : [
 		"executableRef",
-		"vmBinaryRef"
+		"vmBinaryRef",
+		"name"
 	],
 	"name" : "PhLVirtualMachine",
 	"type" : "normal"

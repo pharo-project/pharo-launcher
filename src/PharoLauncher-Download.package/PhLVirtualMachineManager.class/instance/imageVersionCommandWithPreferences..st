@@ -12,7 +12,5 @@ imageVersionCommandWithPreferences: shouldUsePreferences
 						ifFalse: [ ' --headless ' ]) << $"
 				<< imageFile fullName utf8Encoded asString
 				<< '" '.
-			shouldUsePreferences ifFalse: [ stream << '--no-default-preferences ' ].
-			stream
-				<< 'eval '
-				<< $"	<< self imageVersionFileCreationInstructions << $" ]
+			shouldUsePreferences ifTrue: [ stream << '--no-default-preferences ' ].
+			stream << self imageVersionDeterminationScriptPath ]

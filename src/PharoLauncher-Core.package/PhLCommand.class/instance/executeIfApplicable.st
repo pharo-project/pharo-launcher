@@ -1,4 +1,4 @@
 action
 executeIfApplicable
 	self isApplicable ifTrue: [ 
-		self validateModelIntegrity ifTrue: [self execute ]]
+		self validateModelIntegrity ifTrue: [self executeCommand ]]

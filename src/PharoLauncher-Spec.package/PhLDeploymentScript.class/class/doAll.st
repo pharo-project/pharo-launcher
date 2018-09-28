@@ -2,6 +2,7 @@ public
 doAll
 	self
 		closeAllWindows;
+		removeAllMorphs;
 		setTheme;
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;

@@ -1,11 +1,13 @@
 {
-	"commentStamp" : "",
-	"super" : "TestCase",
-	"category" : "PharoLauncher-Tests-Download",
-	"classinstvars" : [ ],
-	"pools" : [ ],
+	"classtraitcomposition" : "TPhLVirtualMachineTestUtil classTrait",
 	"classvars" : [ ],
 	"instvars" : [ ],
 	"name" : "PhLVirtualMachineManagerTest",
-	"type" : "normal"
+	"commentStamp" : "",
+	"super" : "TestCase",
+	"traitcomposition" : "TPhLVirtualMachineTestUtil",
+	"type" : "normal",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"category" : "PharoLauncher-Tests-Download"
 }

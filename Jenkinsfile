@@ -3,29 +3,22 @@
 properties([disableConcurrentBuilds()])
 
 try {
-  def version = getCommitHash()
-  cleanUploadFolderIfNeeded(version)
+  isRealease = false
+  version = getVersion()
+  println "Building Pharo Launcher $version"
+  cleanUploadFolderIfNeeded(uploadDirectoryName())
   timeout(time: 60, unit: 'MINUTES') { 
     buildArchitecture('32', '61')
     buildArchitecture('64', '61')
     buildArchitecture('32', '70')
     buildArchitecture('64', '70')
   }
-  finalizeUpload(version)
+  finalizeUpload(uploadDirectoryName())
 } catch(exception) {
 	currentBuild.result = 'FAILURE'
 	throw exception
 } finally {
      notifyBuild()
-}
-
-def getCommitHash(){
-  node('linux') {
-    //To ensure a clean build we delete the directory, checkout from scm and get the commit hash all from scratch
-    deleteDir()
-    checkout scm
-    return sh(returnStdout: true, script: 'git log -1 --format="%h"').trim()
-  }
 }
 
 def buildArchitecture(architecture, pharoVersion) {
@@ -34,28 +27,27 @@ def buildArchitecture(architecture, pharoVersion) {
         //To ensure a clean build we delete the directory, checkout from scm and get the commit hash all from scratch
         deleteDir()
         checkout scm
-        commitHash = sh(returnStdout: true, script: 'git log -1 --format="%h"').trim()
         
 		    stage("Build Pharo${pharoVersion}-${architecture}-bits") {
 		    	dir('pharo-build-scripts') {
 			    	git('https://github.com/pharo-project/pharo-build-scripts.git')
 			    }
-			    sh "VERSION=$commitHash ./build.sh prepare"
+			    sh "VERSION=$version ./build.sh prepare"
 		    }
     	  stage("Test Pharo${pharoVersion}-${architecture}-bits") {
-		    	sh "VERSION=$commitHash ./build.sh test"
+		    	sh "VERSION=$version ./build.sh test"
 			    junit '*.xml'
 		    }
 		    stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
-		    	sh "VERSION=$commitHash ./build.sh user"
+		    	sh "VERSION=$version ./build.sh user"
 			    stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
 			    archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
         }
 		    stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
-			    sh "VERSION=$commitHash ./build.sh linux-package"
+			    sh "VERSION=$version ./build.sh linux-package"
 					packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
 			    archiveArtifacts artifacts: packageFile, fingerprint: true
-			    upload(packageFile, commitHash)
+			    upload(packageFile, uploadDirectoryName())
 			  }
 		  }
 		  node('windows') {
@@ -64,7 +56,7 @@ def buildArchitecture(architecture, pharoVersion) {
             deleteDir()
             unstash "pharo-launcher-one-${architecture}"
             withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-					    bat "bash -c \"VERSION=$commitHash ./build.sh win-package\""
+					    bat "bash -c \"VERSION=$version ./build.sh win-package\""
             }
             archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
 				    stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
@@ -76,7 +68,7 @@ def buildArchitecture(architecture, pharoVersion) {
           deleteDir()
           unstash "pharo-launcher-one-${architecture}"
           withCredentials([usernamePassword(credentialsId: 'inriasoft-osx-developer', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-					  sh "VERSION=$commitHash ./build.sh mac-package"
+					  sh "VERSION=$version ./build.sh mac-package"
 					}
 					archiveArtifacts artifacts: 'PharoLauncher*.dmg', fingerprint: true
 				  stash includes: 'PharoLauncher*.dmg', name: "pharo-launcher-osx-${architecture}-package"
@@ -92,11 +84,11 @@ def buildArchitecture(architecture, pharoVersion) {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
 					  if (architecture == '32') {
 					    unstash "pharo-launcher-win-${architecture}-package"
-						  upload('pharo-launcher-*.msi', commitHash)
+						  upload('pharo-launcher-*.msi', uploadDirectoryName())
 					  }
 					  unstash "pharo-launcher-osx-${architecture}-package"
 					  fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
-					  upload(fileToUpload, commitHash)
+					  upload(fileToUpload, uploadDirectoryName())
 				}
 			}
 		}
@@ -178,4 +170,40 @@ def fileNameArchSuffix(architecture) {
 
 def isPullRequest() {
 	return env.CHANGE_ID != null
+}
+
+def uploadDirectoryName() {
+  if (isRealease)
+    return version
+  else
+    return 'bleedingEdge'
+}
+
+String getVersion() {
+  node('linux') {
+    commit = getCommitHash()
+    if (commit) {
+        desc = sh(script: "git describe --tags ${commit}", returnStdout: true)?.trim()
+        if (isTag(desc)) {
+            isRealease = true
+            return desc
+        }
+    }
+    return commit
+  }
+}
+
+def getCommitHash(){
+  //To ensure a clean build we delete the directory, checkout from scm and get the commit hash all from scratch
+  deleteDir()
+  checkout scm
+  return sh(returnStdout: true, script: 'git log -1 --format="%h"').trim()
+}
+
+@NonCPS
+boolean isTag(String desc) {
+    match = desc =~ /.+-[0-9]+-g[0-9A-Fa-f]{6,}$/
+    result = !match
+    match = null // prevent serialisation
+    return result
 }

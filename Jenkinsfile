@@ -183,7 +183,7 @@ String getVersion() {
   node('linux') {
     commit = getCommitHash()
     if (commit) {
-        desc = sh(script: "git describe --tags ${commit}", returnStdout: true)?.trim()
+        desc = sh(script: "git describe --tags --always ${commit}", returnStdout: true)?.trim()
         if (isTag(desc)) {
             isRealease = true
             return desc

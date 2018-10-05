@@ -6,4 +6,4 @@ getEnvironmentVariable: aVariableNameString
 	This method does a best effort to use the right encoding to encode/decode the variable names and the return value.
 	Different strategies could be used in different platforms."
 	
-	self subclassResponsibility
+	^ self getEnvironmentVariable: aVariableNameString withEncoding: self platformEncoding

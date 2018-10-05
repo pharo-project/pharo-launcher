@@ -16,6 +16,9 @@ baseline: spec
 					versionString: #'bleedingEdge';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/hernan/ProcessWrapper/main/' ];
+			baseline: 'PharoWin32' with: [
+				spec
+					repository: 'github://tesonep/pharo-com' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;

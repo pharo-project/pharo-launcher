@@ -33,8 +33,9 @@ baseline: spec
 					with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
 			package: #'ConfigurationOfPharoLauncher'; 
+			package: #'PharoLauncher-Env';
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #('XMLParser' 'Ston'). ];
+				spec requires: #('PharoLauncher-Env' 'XMLParser' 'Ston'). ];
 			package: #'PharoLauncher-Download' with: [
 				spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [ 

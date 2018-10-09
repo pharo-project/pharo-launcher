@@ -1,4 +1,4 @@
-instance creation
+private
 waitForWindowsCommand: commandString
 	| process success |
 	process := (Smalltalk at: #ProcessWrapper) new.

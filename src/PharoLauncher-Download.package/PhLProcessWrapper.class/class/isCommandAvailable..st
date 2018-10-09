@@ -1,5 +1,8 @@
 testing
 isCommandAvailable: aCommand
+	| encodedCommand |
+	encodedCommand := self encode: aCommand.
+	
 	Smalltalk os isWindows
 		ifTrue: [ Smalltalk
 				at: #ProcessWrapper
@@ -7,7 +10,7 @@ isCommandAvailable: aCommand
 					^ (processWrapperClass new
 						useStderr;
 						waitForExit;
-						startWithShellCommand: aCommand;
+						startWithShellCommand: encodedCommand;
 						yourself) stderrStream atEnd ].
 			^ false ].
-	^ (OSProcess waitForCommand: aCommand) succeeded
+	^ (OSProcess waitForCommand: encodedCommand) succeeded

@@ -10,7 +10,7 @@ imageVersionCommandWithPreferences: shouldUsePreferences
 					(Smalltalk os isUnix
 						ifTrue: [ ' --nodisplay ' ]
 						ifFalse: [ ' --headless ' ]) << $"
-				<< imageFile fullName utf8Encoded asString
+				<< imageFile fullName
 				<< '" '.
 			shouldUsePreferences ifTrue: [ stream << '--no-default-preferences ' ].
 			stream << self imageVersionDeterminationScriptPath ]

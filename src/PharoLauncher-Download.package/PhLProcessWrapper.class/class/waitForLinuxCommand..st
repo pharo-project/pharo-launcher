@@ -1,3 +1,3 @@
-instance creation
+private
 waitForLinuxCommand: aCommand 
 	^ OSProcess waitForCommand: aCommand

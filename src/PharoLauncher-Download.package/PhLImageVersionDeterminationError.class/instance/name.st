@@ -1,3 +1,3 @@
 accessing
 name
-	^ 'Image version determination error'
+	^ 'Cannot determine image version'

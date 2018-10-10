@@ -1,4 +1,4 @@
-instance creation
+private
 windowsCommand: aCommand
 	" Run the command in the background so that the process returns immediately. 
 	It prevents the process to be finalized by ProcessWrapper before the image beiing launched!.

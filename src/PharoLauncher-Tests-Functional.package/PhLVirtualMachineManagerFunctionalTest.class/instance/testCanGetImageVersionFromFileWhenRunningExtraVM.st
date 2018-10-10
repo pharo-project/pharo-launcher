@@ -1,6 +1,8 @@
 tests
 testCanGetImageVersionFromFileWhenRunningExtraVM
 	| vmManager |
+	self timeLimit: 30 seconds.
+	
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
 	vmManager imageVersionFile ensureDelete.
 

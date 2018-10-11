@@ -1,7 +1,7 @@
 SETLOCAL
 
 REM VERSION cannot be a string in Advanced Installer. Let's use 0.0.0 for bleeding edge versions
-SET LAUNCHER_VERSION=%VERSION:bleedingEdge=0.0.0%
+SET LAUNCHER_VERSION=%INSTALLER_VERSION:bleedingEdge=0.0.0%
 
 SET ADVINST=C:\Program Files (x86)\Caphyon\Advanced Installer 14.7\bin\x86\
 SET PATH=%PATH%;%ADVINST%;
@@ -19,6 +19,6 @@ MKDIR windows\Pharo-win
 MOVE Pharo windows\Pharo-win\Pharo
 
 cd windows
-REM advinst.exe /newproject $ADVINST_PROJECT -lang en -overwrite
-advinst.exe /execute "%ADVINST_PROJECT%" "%ADVINST_COMMAND_FILE%"
+REM "%ADVINST%AdvancedInstaller.com" /newproject $ADVINST_PROJECT -lang en -overwrite
+"%ADVINST%AdvancedInstaller.com" /execute "%ADVINST_PROJECT%" "%ADVINST_COMMAND_FILE%"
 MOVE pharo-launcher.msi ..\pharo-launcher-%VERSION%.msi

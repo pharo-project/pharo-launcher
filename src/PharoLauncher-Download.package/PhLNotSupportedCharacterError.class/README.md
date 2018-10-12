@@ -1,0 +1,1 @@
+Error raised when Pharo Launcher needs to run an external command and that some characters of the command are not supported by the backend (e.g. non ASCII characters on Windows with ProcessWrapper).

@@ -7,7 +7,7 @@ imageVersionDeterminationScript
 					SystemVersion current minor: 1 ]. 
 
 	(SystemVersion current major = 1 and: [ SystemVersion current minor < 4 ])
-		ifTrue: [ imageFolder := FileDirectory on: Smalltalk imagePath.
+		ifTrue: [ imageFolder := (Smalltalk at: #FileDirectory) on: Smalltalk imagePath.
 			imageFolder forceNewFileNamed: 'pharo.version' do: [ :stream |
 				stream 
 					<< SystemVersion current major;

@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "GuillermoPolito 10/9/2018 16:32",
+	"super" : "PhLError",
+	"category" : "PharoLauncher-Download-Exceptions",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "PhLNotSupportedCharacterError",
+	"type" : "normal"
+}

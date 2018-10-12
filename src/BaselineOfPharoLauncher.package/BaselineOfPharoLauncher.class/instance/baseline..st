@@ -36,16 +36,21 @@ baseline: spec
 					with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
 			package: #'ConfigurationOfPharoLauncher'; 
-			package: #'PharoLauncher-Pharo6';
 			package: #'PharoLauncher-Env';
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #('PharoLauncher-Env' 'PharoLauncher-Pharo6' 'XMLParser' 'Ston'). ];
+				spec requires: #('PharoLauncher-Env' 'XMLParser' 'Ston'). ];
 			package: #'PharoLauncher-Download' with: [
 				spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
 				requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
+			for: #'pharo6.x' do: [
+				spec 
+					package: #'PharoLauncher-Pharo6';
+	            package: #'PharoLauncher-Core' with: [ 
+ 	               spec requires: #('PharoLauncher-Pharo6') ].
+			];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];

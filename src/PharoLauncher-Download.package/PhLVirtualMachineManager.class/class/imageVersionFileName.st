@@ -1,3 +1,0 @@
-accessing
-imageVersionFileName
-	^ 'pharo.version'

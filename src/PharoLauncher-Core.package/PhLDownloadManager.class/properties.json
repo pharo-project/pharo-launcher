@@ -1,0 +1,16 @@
+{
+	"commentStamp" : "<historical>",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Download",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [
+		"Default"
+	],
+	"instvars" : [
+		"errors",
+		"semaphore"
+	],
+	"name" : "PhLDownloadManager",
+	"type" : "normal"
+}

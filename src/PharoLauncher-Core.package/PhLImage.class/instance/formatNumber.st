@@ -1,0 +1,3 @@
+quering
+formatNumber
+	^ PhLVirtualMachineManager imageFormatNumberFromFile: file

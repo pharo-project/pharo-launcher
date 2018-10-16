@@ -38,9 +38,7 @@ baseline: spec
 			package: #'ConfigurationOfPharoLauncher'; 
 			package: #'PharoLauncher-Env';
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'PharoLauncher-Env' #'XMLParser' #'Ston' #'PharoLauncher-Download'). ];
-			package: #'PharoLauncher-Download' with: [
-				spec requires: #(#'PharoLauncher-Core' #'OSProcess' #'ProcessWrapper'). ];
+				spec requires: #(#'PharoLauncher-Env' #'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
@@ -57,12 +55,11 @@ baseline: spec
 			package: #'PharoLauncher-Tests-SpecUI' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
-				spec requires: #(#'PharoLauncher-Download' ). ];
+				spec requires: #(#'PharoLauncher-Tests-Core' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray');
-			group: 'Download' with: #(#'PharoLauncher-Download' #'PharoLauncher-Tests-Download' ). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray'). ].
 
 	spec for: #'pharo6.x' do: [	
 		self spec70: spec.

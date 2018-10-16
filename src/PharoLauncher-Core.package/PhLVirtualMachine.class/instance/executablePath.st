@@ -1,0 +1,3 @@
+accessing
+executablePath
+	^ executableRef fullName

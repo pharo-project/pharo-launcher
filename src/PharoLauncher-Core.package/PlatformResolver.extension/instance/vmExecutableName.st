@@ -1,0 +1,3 @@
+*PharoLauncher-Core
+vmExecutableName
+	self subclassResponsibility

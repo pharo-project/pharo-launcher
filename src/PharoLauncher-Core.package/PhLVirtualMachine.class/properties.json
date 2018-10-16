@@ -1,0 +1,15 @@
+{
+	"commentStamp" : "ChristopheDemarey 9/21/2017 16:08",
+	"super" : "Object",
+	"category" : "PharoLauncher-Core-Download",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"executableRef",
+		"vmBinaryRef",
+		"name"
+	],
+	"name" : "PhLVirtualMachine",
+	"type" : "normal"
+}

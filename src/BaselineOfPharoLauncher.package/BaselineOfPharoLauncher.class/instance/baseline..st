@@ -38,9 +38,9 @@ baseline: spec
 			package: #'ConfigurationOfPharoLauncher'; 
 			package: #'PharoLauncher-Env';
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #('PharoLauncher-Env' 'XMLParser' 'Ston'). ];
+				spec requires: #(#'PharoLauncher-Env' #'XMLParser' #'Ston' #'PharoLauncher-Download'). ];
 			package: #'PharoLauncher-Download' with: [
-				spec requires: #(#'PharoLauncher-Core' 'OSProcess' 'ProcessWrapper'). ];
+				spec requires: #(#'PharoLauncher-Core' #'OSProcess' #'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
@@ -49,23 +49,23 @@ baseline: spec
 				spec 
 					package: #'PharoLauncher-Pharo6';
 	            package: #'PharoLauncher-Core' with: [ 
- 	               spec requires: #('PharoLauncher-Pharo6') ].
+ 	               spec requires: #(#'PharoLauncher-Pharo6') ].
 			];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Tests-SpecUI' with: [
-				spec requires: #(#'PharoLauncher-Core' 'PharoLauncher-Spec'). ];
+				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Download' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
-				spec requires: #(#'PharoLauncher-Core' ). ].
+				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' 'PharoLauncher-Tests-SpecUI' 'PharoLauncher-Tests-Functional' 'PharoLauncher-IceTray');
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Download' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray');
 			group: 'Download' with: #(#'PharoLauncher-Download' #'PharoLauncher-Tests-Download' ). ].
 
 	spec for: #'pharo6.x' do: [	
 		self spec70: spec.
 		spec
-			package: 'PharoLauncher-Spec' with: [ 
-				spec requires: #('Spec70Compatibility') ] ]
+			package: #'PharoLauncher-Spec' with: [ 
+				spec requires: #(#'Spec70Compatibility') ] ]

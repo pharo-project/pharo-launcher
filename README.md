@@ -28,7 +28,7 @@ Now, my HD is now much cleaner - all images are in a central place and I need on
 Download latest stable Pharo Launcher from [http://files.pharo.org/pharo-launcher](http://files.pharo.org/pharo-launcher).
 - For Linux, download PharoLauncher-linux-xxx.zip
 - For Mac OS X, download PharoLauncher-xxx.dmg
-- For Windows, download pharo-launcher-installer-xxx-x86.exe.
+- For Windows, download pharo-launcher-xxx.msi
 For Linux and Mac, there are both 32-bits (x86) and 64-bits (x64) bundles.
 
 ## How to use it?

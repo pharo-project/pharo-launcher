@@ -21,4 +21,4 @@ initializeWidgets
 		beMultipleSelection.
 		
 	self refresh.
-	vmTable widget selectFirstVisibleRow.
+	vmTable widget selectFirstVMVisibleRow.

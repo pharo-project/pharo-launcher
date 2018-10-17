@@ -179,10 +179,10 @@ user)
   package_user_version
   ;;
 win-package)
-  package_windows_version SHOULD_SIGN
+  package_windows_version $SHOULD_SIGN
   ;;
 mac-package)
-  package_mac_version SHOULD_SIGN
+  package_mac_version $SHOULD_SIGN
   ;;
 linux-package)
   package_linux_version

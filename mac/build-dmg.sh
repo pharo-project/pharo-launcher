@@ -98,7 +98,9 @@ function sign_mac_version() {
   security delete-keychain "${key_chain}"
 }
 
-sign_mac_version "${STAGING_DIR}"/"${APP_NAME}.app"
+if [ "$SHOULD_SIGN" = true ] ; then
+  sign_mac_version "${STAGING_DIR}"/"${APP_NAME}.app"
+fi
 
 # create the temp DMG file
 hdiutil create -srcfolder "${STAGING_DIR}" -volname "${VOL_NAME}" -fs HFS+ \

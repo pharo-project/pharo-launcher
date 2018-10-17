@@ -82,12 +82,13 @@ function prepare_mac_resources_for_build_platform_script() {
 
 function package_mac_version() {
 	set_env
+	local should_sign=${1:-false} # If no argument given, do not sign
 	prepare_mac_resources_for_build_platform_script
 	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p mac
 	unzip PharoLauncher-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
-	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher ./mac/build-dmg.sh
+	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=$should_sign ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
@@ -95,18 +96,23 @@ function package_mac_version() {
 }
 
 function package_windows_version() {
+	local should_sign=${1:-false} # If no argument given, do not sign
 	set_env
 	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
-	openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
-	local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/Pharo.exe
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
+	if [ "$should_sign" = true ] ; then
+		openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
+		local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
+		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/Pharo.exe
+		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
+	fi
 
 	INSTALLER_VERSION=bleedingEdge cmd /c windows\\build-launcher-installer.bat
-	"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
-	rm pharo-windows-certificate.p12
+	if [ "$should_sign" = true ] ; then
+		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
+		rm pharo-windows-certificate.p12
+	fi
 }
 
 function set_env() {
@@ -158,6 +164,7 @@ VM=${VM:=vm}			# If VM not set, set it to vm.
 ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
 
 SCRIPT_TARGET=${1:-all}
+SHOULD_SIGN=${SHOULD_SIGN:-false}
 echo "Running target $SCRIPT_TARGET"
 echo "Using a Pharo$PHARO image and ${ARCHITECTURE}-bits $VM virtual machines from get-files."
 
@@ -172,10 +179,10 @@ user)
   package_user_version
   ;;
 win-package)
-  package_windows_version
+  package_windows_version SHOULD_SIGN
   ;;
 mac-package)
-  package_mac_version
+  package_mac_version SHOULD_SIGN
   ;;
 linux-package)
   package_linux_version

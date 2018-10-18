@@ -1,1 +1,0 @@
-Rename the currently selected image and move the files accordingly.

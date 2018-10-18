@@ -1,3 +1,0 @@
-actions
-remove
-	PhLDownloadManager reset

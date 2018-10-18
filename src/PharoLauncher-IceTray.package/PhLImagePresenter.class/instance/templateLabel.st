@@ -1,3 +1,0 @@
-accessing
-templateLabel
-	^ templateLabel

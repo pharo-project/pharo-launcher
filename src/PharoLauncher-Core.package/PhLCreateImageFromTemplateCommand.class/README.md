@@ -1,1 +1,0 @@
-Extract the selected template to a new image.

@@ -1,3 +1,0 @@
-*PharoLauncher-Core
-vmExecutableName
-	^ 'pharo'

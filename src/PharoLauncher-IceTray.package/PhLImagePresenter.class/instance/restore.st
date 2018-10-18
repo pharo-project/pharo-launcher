@@ -1,6 +1,0 @@
-actions
-restore
-
-	self modelChanged
-
-	

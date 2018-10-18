@@ -1,4 +1,0 @@
-class initialization
-initialize
-
-	PhLStartupManager addToLauncherStartUpList: self

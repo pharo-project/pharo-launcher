@@ -1,3 +1,0 @@
-settings
-wantCommontools
-	^ self wantGroupNamed: PhLFixedURLsTemplateGroup forOfficialDistributions name

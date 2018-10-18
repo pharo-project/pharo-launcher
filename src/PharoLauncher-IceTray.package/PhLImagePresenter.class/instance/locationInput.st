@@ -1,3 +1,0 @@
-accessing
-locationInput
-	^ locationInput

@@ -1,1 +1,0 @@
-A simple UI to show locally available Virtual Machines to launch Pharo images.

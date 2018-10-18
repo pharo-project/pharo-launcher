@@ -1,3 +1,0 @@
-private
-commandClassesForTemplatesToolbar
-	^ {PhLCreateImageFromTemplateCommand. PhLRefreshTemplateRepositoryCommand}

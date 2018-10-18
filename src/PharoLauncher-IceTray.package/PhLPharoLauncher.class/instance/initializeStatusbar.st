@@ -1,3 +1,0 @@
-initialization
-initializeStatusbar.
- " Nothing yet "

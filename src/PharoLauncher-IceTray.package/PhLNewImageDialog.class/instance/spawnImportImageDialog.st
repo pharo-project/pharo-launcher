@@ -1,3 +1,0 @@
-accessing
-spawnImportImageDialog
-	PhLImportImageCommand new execute

@@ -1,3 +1,0 @@
-initialization
-virtualMachines
-	^ elementsBlock value

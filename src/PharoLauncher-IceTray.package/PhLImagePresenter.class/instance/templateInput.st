@@ -1,3 +1,0 @@
-accessing
-templateInput
-	^ templateInput

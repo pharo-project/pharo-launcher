@@ -1,1 +1,0 @@
-Removes the selected template

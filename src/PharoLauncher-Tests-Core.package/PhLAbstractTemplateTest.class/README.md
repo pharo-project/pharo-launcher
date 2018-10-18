@@ -1,1 +1,0 @@
-Give me unit tests and I will make sure they are run for all subclasses of PhLAbstractTemplate

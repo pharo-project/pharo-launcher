@@ -1,3 +1,0 @@
-querying
-lastUpdateTime
-	^ executableRef modificationTime

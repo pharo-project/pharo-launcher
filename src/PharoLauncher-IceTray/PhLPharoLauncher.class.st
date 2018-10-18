@@ -108,7 +108,7 @@ PhLPharoLauncher >> initializeImageTable: aTableMorph [
 ]
 
 { #category : #initialization }
-PhLPharoLauncher >> initializeStatusbar. [
+PhLPharoLauncher >> initializeStatusbar [
  " Nothing yet "
 ]
 

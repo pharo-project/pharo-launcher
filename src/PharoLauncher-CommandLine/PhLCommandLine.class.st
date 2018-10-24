@@ -135,7 +135,7 @@ PhLCommandLine >> listImages: images on: aStream [
 { #category : #actions }
 PhLCommandLine >> unmatchedQuery [
 	self context stderr in: [ :stderr |
-		stderr << 'Could not find image matching query among:'; lf.
+		stderr << 'No known image matched query! Available images:'; lf.
 		self
 			listImages: self images
 			on: stderr ].

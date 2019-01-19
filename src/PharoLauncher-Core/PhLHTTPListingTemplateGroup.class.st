@@ -34,39 +34,6 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPa
 		yourself
 ]
 
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo20 [
-	^ self name: 'Pharo 2.0' url: 'http://files.pharo.org/image/20/' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo30 [
-	^ self name: 'Pharo 3.0' url: 'http://files.pharo.org/image/30/' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo40 [
-	^ self name: 'Pharo 4.0' url: 'http://files.pharo.org/image/40/' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo50 [
-	^ self name: 'Pharo 5.0' url: 'http://files.pharo.org/image/50/' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo60 [
-	^ self name: 'Pharo 6.0' url: 'http://files.pharo.org/image/60/' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLHTTPListingTemplateGroup class >> pharo70 [
-	^ self 
-		name: 'Pharo 7.0 (development version)' 
-		url: 'http://files.pharo.org/image/70/' asZnUrl
-		filterPattern: 'href="(Pharo-7.0.0-alpha.build.[^"]*.zip)"'
-]
-
 { #category : #accessing }
 PhLHTTPListingTemplateGroup class >> regexCache [
 	"Cache the regex per version so that we don't recompute it all the time"

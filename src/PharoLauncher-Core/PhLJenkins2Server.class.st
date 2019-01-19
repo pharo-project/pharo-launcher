@@ -13,26 +13,6 @@ Class {
 }
 
 { #category : #'instance creation' }
-PhLJenkins2Server class >> inriaMoose [
-	^ self name: 'Moose Jenkins' url: 'https://ci.inria.fr/moose' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLJenkins2Server class >> inriaPharo [
-	^ self name: 'Pharo Jenkins' url: 'https://ci.inria.fr/pharo' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLJenkins2Server class >> inriaPharoContribution [
-	^ self name: 'Pharo Contribution Jenkins' url: 'https://ci.inria.fr/pharo-contribution' asZnUrl
-]
-
-{ #category : #'instance creation' }
-PhLJenkins2Server class >> inriaRmod [
-	^ self name: 'RMoD Jenkins' url: 'https://ci.inria.fr/rmod' asZnUrl
-]
-
-{ #category : #'instance creation' }
 PhLJenkins2Server class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;

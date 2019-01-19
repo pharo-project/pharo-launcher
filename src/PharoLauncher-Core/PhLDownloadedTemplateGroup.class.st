@@ -8,15 +8,25 @@ I don't cache anything as variables in the image. For each action, I read the ca
 Class {
 	#name : #PhLDownloadedTemplateGroup,
 	#superclass : #PhLAbstractTemplateGroup,
+	#instVars : [
+		'name'
+	],
 	#classVars : [
 		'Default'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
 PhLDownloadedTemplateGroup class >> default [
 	^ Default ifNil: [ Default := self new ]
+]
+
+{ #category : #'instance creation' }
+PhLDownloadedTemplateGroup class >> named: aName [
+	^ Default := self new 	
+		setName: aName;
+		yourself
 ]
 
 { #category : #accessing }
@@ -52,14 +62,9 @@ PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTe
 	^ destinationFile
 ]
 
-{ #category : #testing }
-PhLDownloadedTemplateGroup >> isFast [
-	^ true
-]
-
 { #category : #accessing }
 PhLDownloadedTemplateGroup >> name [
-	^ 'Templates'
+	^ name
 ]
 
 { #category : #private }
@@ -75,6 +80,11 @@ PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile [
 { #category : #private }
 PhLDownloadedTemplateGroup >> saveToFile: aDictionary [
 	self cacheFile writeStreamDo: [ :aStream | 	STONJSON put: aDictionary onStream: aStream ] 
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> setName: aString [ 
+	name := aString
 ]
 
 { #category : #accessing }

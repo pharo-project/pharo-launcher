@@ -20,12 +20,6 @@ PhLAbstractTemplateGroup >> children [
 ]
 
 { #category : #testing }
-PhLAbstractTemplateGroup >> isFast [
-	"Answer true only if refreshing the content of the group is instantenous."
-	^ false
-]
-
-{ #category : #testing }
 PhLAbstractTemplateGroup >> isHighlighted [
 	^ isHighlighted ifNil: [ isHighlighted := false ]
 ]

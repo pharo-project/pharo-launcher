@@ -13,12 +13,12 @@ Class {
 	#name : #PhLTemplateSources,
 	#superclass : #Object,
 	#instVars : [
-		'file',
-		'sourcesUrl'
+		'file'
 	],
 	#classVars : [
 		'LauncherCoreDir',
-		'SourcesAnnouncer'
+		'SourcesAnnouncer',
+		'SourcesUrl'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -26,6 +26,12 @@ Class {
 { #category : #accessing }
 PhLTemplateSources class >> announcer [
 	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
+]
+
+{ #category : #updating }
+PhLTemplateSources class >> checkForUpdates [
+
+	self fromFile checkForUpdates
 ]
 
 { #category : #serializing }
@@ -40,6 +46,12 @@ PhLTemplateSources class >> defaultSources [
 		add: PhLTemplateSource pharo60;
 		add: PhLTemplateSource pharo70;
 		yourself
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> defaultSourcesUrl [
+
+	^ 'https://files.pharo.org/pharo-launcher/sources.list'
 ]
 
 { #category : #serializing }
@@ -105,13 +117,38 @@ PhLTemplateSources class >> settingsOn: aBuilder [
 		description:
 			'Path to the directory that will contain Pharo Launcher template sources file.' , String cr
 				, 'You must have the read/write rights on this folder.' , String cr
-				, 'NOTE: This path might need to escape some whitespace characters.' translated
+				, 'NOTE: This path might need to escape some whitespace characters.' translated.
+	(aBuilder setting: #sourcesUrl)
+		label: 'Template sources Url' translated;
+		parent: #pharoLauncher;
+		target: self;
+		order: 38;
+		default: self defaultSourcesUrl;
+		description: 'Url for downloading the template list'
 ]
 
 { #category : #accessing }
 PhLTemplateSources class >> sourcesFile [
 	"File with the list of default templates sources for Pharo Launcher"
 	^ self launcherCoreDir / 'sources.list'
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> sourcesUrl [
+	"Url of the file with the list of default templates sources for Pharo Launcher"
+
+	^ SourcesUrl 
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> sourcesUrl: aUrl [
+
+	| oldUrl |
+	oldUrl := SourcesUrl.
+	SourcesUrl := aUrl.
+	
+	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
+	PhLTemplateSources checkForUpdates
 ]
 
 { #category : #'instance creation' }
@@ -198,13 +235,14 @@ PhLTemplateSources >> sources [
 
 { #category : #accessing }
 PhLTemplateSources >> sourcesUrl [
-	"Url of the file with the list of default templates sources for Pharo Launcher"
-	^ sourcesUrl ifNil: [ sourcesUrl := 'https://files.pharo.org/pharo-launcher/sources.list']
+
+	^ self class sourcesUrl
 ]
 
 { #category : #accessing }
 PhLTemplateSources >> sourcesUrl: anUrlString [
-	sourcesUrl := anUrlString
+
+	self class sourcesUrl: anUrlString
 ]
 
 { #category : #actions }

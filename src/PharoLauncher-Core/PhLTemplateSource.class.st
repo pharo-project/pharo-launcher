@@ -252,6 +252,18 @@ PhLTemplateSource class >> urlType [
 	^ #URL
 ]
 
+{ #category : #comparing }
+PhLTemplateSource >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ name = anObject name
+		and: [ type = anObject type 
+		and: [ url = anObject url
+		and: [ filterPattern = anObject filterPattern
+		and: [ templates = anObject templates
+		and: [ self expanded = anObject expanded ] ] ] ] ]
+]
+
 { #category : #converting }
 PhLTemplateSource >> asBasicTemplateGroup [
 	type == self class httpListingType
@@ -302,13 +314,37 @@ PhLTemplateSource >> expanded: aBoolean [
 ]
 
 { #category : #accessing }
+PhLTemplateSource >> filterPattern [
+	^ filterPattern
+]
+
+{ #category : #accessing }
 PhLTemplateSource >> filterPattern: aString [ 
 	filterPattern := aString
 ]
 
 { #category : #accessing }
+PhLTemplateSource >> name [
+	^ name
+]
+
+{ #category : #accessing }
 PhLTemplateSource >> name: aString [ 
 	name := aString
+]
+
+{ #category : #printing }
+PhLTemplateSource >> printOn: aStream [
+	super printOn: aStream.
+	aStream 
+		nextPut: $(;
+		nextPutAll: name;
+		nextPut: $)
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> templates [
+	^ templates
 ]
 
 { #category : #accessing }
@@ -322,8 +358,18 @@ PhLTemplateSource >> templatesDo: aBlockClosure [
 ]
 
 { #category : #accessing }
+PhLTemplateSource >> type [
+	^ type
+]
+
+{ #category : #accessing }
 PhLTemplateSource >> type: aString [ 
 	type := aString
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> url [
+	^ url
 ]
 
 { #category : #accessing }

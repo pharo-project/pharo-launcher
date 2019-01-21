@@ -80,6 +80,13 @@ PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 	^ UniqueInstance ifNil: [ UniqueInstance := self new ]
 ]
 
+{ #category : #updating }
+PhLTemplateSourcesUpdateChecker >> basicUpdateTemplateSources [
+	PhLTemplateSources fromFile updateSourcesFile.
+	PharoLauncher allInstances do: [ :launcher | launcher window close ].
+	PharoLauncher openFull
+]
+
 { #category : #accessing }
 PhLTemplateSourcesUpdateChecker >> check [
 	[ PhLTemplateSources fromFile checkForUpdates ]
@@ -116,14 +123,27 @@ PhLTemplateSourcesUpdateChecker >> run [
 
 { #category : #actions }
 PhLTemplateSourcesUpdateChecker >> terminate [
+	self unregisterFromTemplateSourcesUpdate.
 	process ifNotNil: [ process terminate ]
 ]
 
 { #category : #updating }
+PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
+	PhLTemplateSources announcer
+		unsubscribe: self.
+]
+
+{ #category : #updating }
 PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
-	PhLTemplateSources fromFile updateSourcesFile.
-	PharoLauncher allInstances do: [ :launcher | launcher window close ].
-	PharoLauncher openFull
+	| applyUpdate |
+	applyUpdate := UIManager default
+		confirm: 'Update available for Pharo Launcher templates sources!'
+		trueChoice: 'Update'
+		falseChoice: 'Remind me later'.
+	applyUpdate ifNil: [ ^ self ].
+	applyUpdate ifFalse: [ ^ self ].
+	
+	self basicUpdateTemplateSources
 ]
 
 { #category : #actions }

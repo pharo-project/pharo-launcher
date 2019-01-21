@@ -12,7 +12,9 @@ Class {
 
 { #category : #actions }
 PhLStartupManager class >> addToLauncherStartUpList: aClass [
-	self startUpClasses add: aClass
+	(self startUpClasses includes: aClass)
+		ifFalse: [ self startUpClasses add: aClass ]
+
 ]
 
 { #category : #'class initialization' }

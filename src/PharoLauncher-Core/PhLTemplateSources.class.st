@@ -1,13 +1,11 @@
 "
-I represent default template sources fo Pharo Launcher.
+I represent the template sources used by Pharo Launcher.
 
 Preview in Launcher:
 	| groups |
-	groups := PhLTemplateListBuilder buildFrom: PhLTemplateSources default.
+	groups := PhLTemplateGroupsBuilder buildFrom: PhLTemplateSources fromFile.
 	(PharoLauncher createLauncherWithGroups: groups) openWithSpec.
 
-Serialization preview:
-	self flushIn: '/tmp/a' asFileReference
 Serialization:
 	self generateSourcesFile
 "
@@ -16,11 +14,18 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'file',
-		'announcer',
 		'sourcesUrl'
+	],
+	#classVars : [
+		'SourcesAnnouncer'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #accessing }
+PhLTemplateSources class >> announcer [
+	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
+]
 
 { #category : #serializing }
 PhLTemplateSources class >> defaultSources [
@@ -37,17 +42,23 @@ PhLTemplateSources class >> defaultSources [
 ]
 
 { #category : #serializing }
-PhLTemplateSources class >> flushIn: aFileReference [
+PhLTemplateSources class >> flush: aListOfPhLTemplateSource in: aFileReference [
 	aFileReference writeStreamDo: [ :stream |
 		STON 
-			put: self defaultSources
+			put: aListOfPhLTemplateSource
 			onStreamPretty: stream ].
 	^ aFileReference 
 ]
 
+{ #category : #serializing }
+PhLTemplateSources class >> flushIn: aFileReference [
+	self flush: self defaultSources in: aFileReference
+	
+]
+
 { #category : #accessing }
 PhLTemplateSources class >> fromFile [
-	^ self with: self sourcesFile
+	^ self withFile: self sourcesFile
 ]
 
 { #category : #serializing }
@@ -62,15 +73,18 @@ PhLTemplateSources class >> sourcesFile [
 ]
 
 { #category : #'instance creation' }
-PhLTemplateSources class >> with: aSourcesFile [
+PhLTemplateSources class >> withFile: aSourcesFile [
 	^ self new 
 		initializeWith: aSourcesFile;
 		yourself
 ]
 
-{ #category : #accessing }
-PhLTemplateSources >> announcer [
-	^ announcer
+{ #category : #'instance creation' }
+PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
+	| file |
+	file := FileSystem memory / 'sources.list'.
+	self flush: aListOfPhLTemplateSource in: file.
+	^ self withFile: file
 ]
 
 { #category : #actions }
@@ -81,7 +95,7 @@ PhLTemplateSources >> checkForUpdates [
 	
 	downloadedSources := self downloadedSources.
 	self sources = downloadedSources
-		ifFalse: [ announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
+		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
 ]
 
 { #category : #iterating }
@@ -124,11 +138,11 @@ PhLTemplateSources >> fetchSourcesFile [
 { #category : #initialization }
 PhLTemplateSources >> initializeWith: aSourcesFile [
 	file := aSourcesFile.
-	announcer := Announcer new
 ]
 
 { #category : #actions }
 PhLTemplateSources >> replaceSourcesFileWithDownloaded [
+	file ensureDelete.
 	self downloadedSourcesFile moveTo: file 
 ]
 

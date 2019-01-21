@@ -26,6 +26,20 @@ PhLTemplateGroupsBuilder class >> buildFrom: aPhLTemplateSources [
 		build
 ]
 
+{ #category : #'instance creation' }
+PhLTemplateGroupsBuilder class >> buildFromSourceList: aListOfPhLTemplateSource [
+	| file |
+	file := FileSystem memory / 'sources.list'.
+file writeStreamDo: [ :stream | | stonString |
+		stonString := STON 
+			put: aListOfPhLTemplateSource
+			onStreamPretty: stream.
+		stream nextPutAll: stonString ].
+	^ self new 
+		initializeWithSources: (PhLTemplateSources withFile: file);
+		build
+]
+
 { #category : #building }
 PhLTemplateGroupsBuilder >> build [
 	sources ensureSourcesFile.

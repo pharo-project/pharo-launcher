@@ -18,6 +18,11 @@ PhLSourcesFileUpdateAvailable class >> sources: aListOfTemplateSources [
 ]
 
 { #category : #accessing }
+PhLSourcesFileUpdateAvailable >> sources [
+	^ sources
+]
+
+{ #category : #accessing }
 PhLSourcesFileUpdateAvailable >> sources: aListOfTemplateSources [ 
 	sources := aListOfTemplateSources
 ]

@@ -13,6 +13,17 @@ PhLTemplateSourcesTest >> setUp [
 ]
 
 { #category : #tests }
+PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
+	| templatesSources1 templatesSources2 |
+	templatesSources1 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	templatesSources2 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	templatesSources2 second templates first name: 'changed'.
+	
+	self deny: templatesSources1 = templatesSources2
+	
+]
+
+{ #category : #tests }
 PhLTemplateSourcesTest >> testCanCreateInstanceFromAListOfTemplateSource [
 	| tplSources sources |
 	
@@ -32,6 +43,18 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 	(PhLTemplateSources withFile: sourcesFile) ensureSourcesFile. 
 	
 	self assert: sourcesFile exists
+]
+
+{ #category : #tests }
+PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
+	| templatesSources1 templatesSources2 |
+	templatesSources1 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	templatesSources2 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	
+	self 
+		assert: templatesSources1
+		equals: templatesSources2
+	
 ]
 
 { #category : #tests }

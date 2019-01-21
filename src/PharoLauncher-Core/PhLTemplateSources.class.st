@@ -137,7 +137,7 @@ PhLTemplateSources class >> sourcesFile [
 PhLTemplateSources class >> sourcesUrl [
 	"Url of the file with the list of default templates sources for Pharo Launcher"
 
-	^ SourcesUrl 
+	^ SourcesUrl ifNil: [ SourcesUrl := self defaultSourcesUrl ]
 ]
 
 { #category : #accessing }

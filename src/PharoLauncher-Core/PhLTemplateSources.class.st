@@ -17,6 +17,7 @@ Class {
 		'sourcesUrl'
 	],
 	#classVars : [
+		'LauncherCoreDir',
 		'SourcesAnnouncer'
 	],
 	#category : #'PharoLauncher-Core-Model'
@@ -67,9 +68,50 @@ PhLTemplateSources class >> generateSourcesFile [
 ]
 
 { #category : #accessing }
+PhLTemplateSources class >> launcherCoreDir [
+	^ (LauncherCoreDir ifNil: [ LauncherCoreDir := PlatformResolver forCurrentPlatform launcherUserFilesLocation ]) ensureCreateDirectory
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> launcherCoreDir: aFileUrl [
+	LauncherCoreDir := aFileUrl asFileReference.
+	LauncherCoreDir ensureCreateDirectory
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> launcherCoreDirString [
+	" Used to display a nice file url in settings browser"
+	^ self launcherCoreDir pathString 
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> launcherCoreDirString: aFileUrl [
+	" Used to display a nice file url in settings browser"
+	self launcherCoreDir: aFileUrl
+
+]
+
+{ #category : #settings }
+PhLTemplateSources class >> settingsOn: aBuilder [
+	<systemsettings>
+	<pharoLauncherSettings>
+	(aBuilder setting: #launcherCoreDirString)
+		label: 'Location of template sources file' translated;
+		type: #Directory;
+		parent: #pharoLauncher;
+		target: self;
+		order: 37;
+		default: PlatformResolver forCurrentPlatform launcherUserFilesLocation;
+		description:
+			'Path to the directory that will contain Pharo Launcher template sources file.' , String cr
+				, 'You must have the read/write rights on this folder.' , String cr
+				, 'NOTE: This path might need to escape some whitespace characters.' translated
+]
+
+{ #category : #accessing }
 PhLTemplateSources class >> sourcesFile [
 	"File with the list of default templates sources for Pharo Launcher"
-	^ PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'sources.list'
+	^ self launcherCoreDir / 'sources.list'
 ]
 
 { #category : #'instance creation' }

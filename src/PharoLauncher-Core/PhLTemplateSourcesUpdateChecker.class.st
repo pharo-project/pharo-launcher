@@ -124,7 +124,7 @@ PhLTemplateSourcesUpdateChecker >> run [
 { #category : #actions }
 PhLTemplateSourcesUpdateChecker >> terminate [
 	self unregisterFromTemplateSourcesUpdate.
-	process ifNotNil: [ process terminate ]
+	process ifNotNil: [ process isTerminating ifFalse: [ process terminate ] ]
 ]
 
 { #category : #updating }

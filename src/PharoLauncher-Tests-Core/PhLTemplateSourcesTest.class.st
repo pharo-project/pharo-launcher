@@ -13,10 +13,23 @@ PhLTemplateSourcesTest >> setUp [
 ]
 
 { #category : #tests }
+PhLTemplateSourcesTest >> testCanCreateInstanceFromAListOfTemplateSource [
+	| tplSources sources |
+	
+	tplSources := PhLTemplateSources withTemplateList: { PhLTemplateSource officialDistributionsGroup }.
+	sources := tplSources sources.
+	
+	self 
+		assert: sources size
+		equals: 1
+	
+]
+
+{ #category : #tests }
 PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 	self deny: sourcesFile exists.
 	
-	(PhLTemplateSources with: sourcesFile) ensureSourcesFile. 
+	(PhLTemplateSources withFile: sourcesFile) ensureSourcesFile. 
 	
 	self assert: sourcesFile exists
 ]
@@ -33,10 +46,10 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
 		
-	sources := PhLTemplateSources with: sourcesFile.
+	sources := PhLTemplateSources withFile: sourcesFile.
 	sources sourcesUrl: server localUrl.
 	
-	sources announcer weak
+	PhLTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #add:
 		to: announcements.
@@ -50,7 +63,7 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 PhLTemplateSourcesTest >> testSourcesFileNotFetchIfPresentWhenCallingEnsureSourcesFile [
 	sourcesFile ensureCreateFile.	
 	
-	(PhLTemplateSources with: sourcesFile) ensureSourcesFile. 
+	(PhLTemplateSources withFile: sourcesFile) ensureSourcesFile. 
 	
 	self 
 		assert: sourcesFile parent children size
@@ -69,10 +82,10 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: false)) ].
 		
-	sources := PhLTemplateSources with: sourcesFile.
+	sources := PhLTemplateSources withFile: sourcesFile.
 	sources sourcesUrl: server localUrl.
 	
-	sources announcer weak
+	PhLTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #add:
 		to: announcements.

@@ -27,6 +27,35 @@ PhLAbstractTemplateTest >> setUp [
 ]
 
 { #category : #tests }
+PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
+	| template archive |
+	template := self newTemplate.
+	"simulate a broken zip archive)"
+	archive := (ByteArray readHexFrom: ((1 to: 50) collect: [ :x| '0123456789ABCDEF' atRandom ])) readStream.
+
+	self 
+		should: [ template extractZipArchive: archive to: root ]
+		raise: PhLCorruptedTemplateError 
+]
+
+{ #category : #tests }
+PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
+	| template archive archiveFile |
+	template := self newTemplate.
+	self flag: 'TODO: use concrete filesystem instead of memory fs because memory fs implementation is missing functionalities (should be solved in pharo 7.0)'.
+	archiveFile := FileLocator temp / 'phl-abstract-template-test-no-eocd-error-arch.zip'.
+	archive := ZipArchive new.
+	archive addDeflateString: 'foo' as: 'bar'.
+
+	archiveFile writeStreamDo: [ :str |
+		archive writeTo: str ].
+	
+	self 
+		shouldnt: [ template extractZipArchive: archiveFile to: root ]
+		raise: PhLCorruptedTemplateError 
+]
+
+{ #category : #tests }
 PhLAbstractTemplateTest >> testRelocateImageFilesFromToWithName [
 	| template source destination imageName |
 	template := self newTemplate.

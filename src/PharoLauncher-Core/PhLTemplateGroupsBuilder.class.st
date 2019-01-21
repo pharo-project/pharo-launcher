@@ -1,7 +1,11 @@
 "
 I'm in charge of building the list of templates groups and its associated templates from a list of template sources.
-To build the list, use :
-	self buidlFrom: 
+
+I use as input an instance of PhLTemplateSources.
+The default input is the serialized ston file 'sources.list' defining templates sources (stored in Launcher directory).
+I'm used at Launcher creation, see PharoLauncher>>#createLauncher.
+
+To update the liste of sources, please update the sources files hosted at http://files.pharo.org/pharo-launcher/sources.list
 "
 Class {
 	#name : #PhLTemplateGroupsBuilder,

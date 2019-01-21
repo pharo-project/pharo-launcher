@@ -2,7 +2,7 @@
 I represent a source for templates used by Pharo Launcher to create an image.
 	type could be a value between: jenkins, URL, http listing, cache, etc.
 
-I'm just a state holder that can be easily serializable with Ston 
+I'm just a state holder easily serializable with Ston 
 "
 Class {
 	#name : #PhLTemplateSource,

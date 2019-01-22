@@ -52,7 +52,7 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 	
 	self 
 		shouldnt: [ template extractZipArchive: archiveFile to: root ]
-		raise: PhLCorruptedTemplateError 
+		raise: PhLCorruptedTemplateError
 ]
 
 { #category : #tests }

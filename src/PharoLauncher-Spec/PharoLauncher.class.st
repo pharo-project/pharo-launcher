@@ -24,9 +24,14 @@ Class {
 
 { #category : #'instance creation' }
 PharoLauncher class >> createLauncher [
+	^ self createLauncherWithGroups: PhLTemplateGroupsBuilder build
+]
+
+{ #category : #'instance creation' }
+PharoLauncher class >> createLauncherWithGroups: aListOfLauncherTemplatesGroup [
 	^ self basicNew
 		setImageRepository: PhLDirectoryBasedImageRepository default
-			templateRepository: PhLTemplateGroupRepository forSelectedGroups;
+			templateRepository: (PhLTemplateGroupRepository newFromGroups: aListOfLauncherTemplatesGroup);
 		initialize;
 		yourself
 ]
@@ -247,7 +252,12 @@ PharoLauncher >> initializeKeyboardShortcuts [
 PharoLauncher >> initializePresenter [
 	super initializePresenter.
 	PhLDownloadManager default whenErrorAddedDo: [ self showNumberOfErrors ].
-	
+	self whenWindowChanged: [ :launcherWindow |
+        launcherWindow whenClosedDo: [
+			"There is no clean way to unregister our action (self showNumberOfErrors) from
+			PhLDownloadManager errors (CollectionValueHolder). We miss a way to identify this action 
+			to unregister it. For now, just reset the download manager when we close Pharo Launcher."
+			PhLDownloadManager reset ] ].
 ]
 
 { #category : #initialization }

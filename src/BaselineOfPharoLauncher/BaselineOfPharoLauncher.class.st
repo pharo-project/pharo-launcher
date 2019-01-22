@@ -22,9 +22,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 					versionString: #'bleedingEdge';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/hernan/ProcessWrapper/main/' ];
-			baseline: 'PharoWin32' with: [
-				spec
-					repository: 'github://tesonep/pharo-com' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;
@@ -37,14 +34,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
 				baseline: #Icetray
-					with: [ spec repository: 'github://guillep/icetray/src' ];
+					with: [ spec repository: 'github://pharo-spec/icetray/src' ];
 				package: #FastTableExtentions
 					with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
 			package: #'ConfigurationOfPharoLauncher'; 
-			package: #'PharoLauncher-Env';
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'PharoLauncher-Env' #'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
@@ -70,6 +66,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 	spec for: #'pharo6.x' do: [	
 		self spec70: spec.
 		spec
+			baseline: 'PharoWin32' with: [
+				spec
+					repository: 'github://tesonep/pharo-com' ].
+		spec 
+			package: #'PharoLauncher-Env';
+			package: #'PharoLauncher-Core' with: [
+				spec requires: #(#'PharoLauncher-Env'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'Spec70Compatibility') ] ]
 ]

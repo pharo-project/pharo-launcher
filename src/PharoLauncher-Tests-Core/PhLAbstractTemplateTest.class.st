@@ -47,7 +47,7 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar'.
 
-	archiveFile binaryWriteStreamDo: [ :stream |
+	archiveFile asFileReference binaryWriteStreamDo: [ :stream |
 		archive writeTo: stream ].
 	
 	self 

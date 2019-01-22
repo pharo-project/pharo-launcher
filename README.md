@@ -6,7 +6,7 @@ The Pharo Launcher is a cross-platform application that
 - lets you create new images from any template,
 - automatically find and download the appropriate VM to launch your images.
 
-<img src="https://github.com/pharo-project/pharo-launcher/raw/master/pharo-launcher-main-window.png" height="450" alt="A Pharo Launcher screenshot">
+<img src="./pharo-launcher-main-window.png" height="450" alt="A Pharo Launcher screenshot">
 
 The idea behind the Pharo Launcher is that you should be able to access it very rapidly from your OS application launcher. As a result,
 launching any image is never more than 3 clicks away.

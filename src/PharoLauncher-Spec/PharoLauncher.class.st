@@ -36,6 +36,11 @@ PharoLauncher class >> createLauncherWithGroups: aListOfLauncherTemplatesGroup [
 		yourself
 ]
 
+{ #category : #updating }
+PharoLauncher class >> forceTemplateRepositoryUpdate [
+	TemplateRepository := nil
+]
+
 { #category : #settings }
 PharoLauncher class >> hardResetPersistanceState [
 	^false

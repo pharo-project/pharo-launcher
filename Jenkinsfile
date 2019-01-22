@@ -55,13 +55,14 @@ def buildArchitecture(architecture, pharoVersion) {
           stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
             deleteDir()
             unstash "pharo-launcher-one-${architecture}"
-            if ( isPullRequest() ) { // Do not give access to certificates and do not sign
+            // Disable signing for now because the signing process now requires manual action
+            /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign
               bat "bash -c \"VERSION=$version ./build.sh win-package\""
-            } else {
+            } else { */
               withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
                 bat "bash -c \"VERSION=$version SHOULD_SIGN=true ./build.sh win-package\""
               }              
-            }
+            // }
             archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
             stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
           }

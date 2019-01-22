@@ -22,7 +22,8 @@ function prepare_image() {
 				exit 1
 				;;
 	esac
-	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO+$VM | bash
+	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO | bash
+	wget --quiet -O - get.pharo.org/$ARCH_PATH$VM$PHARO | bash
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
@@ -40,8 +41,8 @@ function package_user_version() {
 	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
 	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
 
-	# Faster the startup of the launcher image
-	./pharo PharoLauncher.image eval --save ""
+        # Avoid to have PL core dir set to the slave location
+	./pharo PharoLauncher.image eval --save "PhLTemplateSources classVarNamed: 'LauncherCoreDir' put: nil"
 
 	# Create the platform-specific archives
 	mkdir One
@@ -160,7 +161,7 @@ function get_pharo_sources_version() {
 }
 
 PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
-VM=${VM:=vm}			# If VM not set, set it to vm.
+VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
 ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
 
 SCRIPT_TARGET=${1:-all}

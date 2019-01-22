@@ -130,6 +130,12 @@ PhLImage >> lastModification [
 	^ self file modificationTime
 ]
 
+{ #category : #launching }
+PhLImage >> launch [
+	"Launch without settings"
+	^ self launchWithSettings: false
+]
+
 { #category : #action }
 PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
 	| imagePath vmDirectoryPath command basicCommand |

@@ -111,7 +111,7 @@ function package_mac_version() {
 function package_windows_version() {
 	local should_sign=false # For now do not sign, we do not have anymore a valid certificate file  ${1:-false} # If no argument given, do not sign
 	set_env
-	WIN_VM_PATH=pharo-win-stable-signed.zip INPUT_SOURCES=$(ls $(pwd)/One/Pharo*.sources) bash ./pharo-build-scripts/build-platform.sh \
+	WIN_VM_PATH=pharo-win-stable-signed.zip INPUT_SOURCES=$(basename $(ls One/Pharo*.sources)) bash ./pharo-build-scripts/build-platform.sh \
 		-i Pharo \
 		-o Pharo \
 		-r $PHARO \

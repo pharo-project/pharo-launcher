@@ -22,8 +22,7 @@ function prepare_image() {
 				exit 1
 				;;
 	esac
-	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO | bash
-	wget --quiet -O - get.pharo.org/$ARCH_PATH$VM$PHARO | bash
+	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO+$VM | bash
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
@@ -41,17 +40,17 @@ function package_user_version() {
 	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
 	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
 
-        # Avoid to have PL core dir set to the slave location
-	./pharo PharoLauncher.image eval --save "PhLTemplateSources classVarNamed: 'LauncherCoreDir' put: nil"
+	# Faster the startup of the launcher image
+	./pharo PharoLauncher.image eval --save ""
 
 	# Create the platform-specific archives
 	mkdir One
 	cp PharoLauncher.image   One/Pharo.image
 	cp PharoLauncher.changes One/Pharo.changes
-	cp Pharo*.sources        One/
 	mkdir One/win
 	cp ProcessWrapperPlugin.dll One/win/
 	cd One
+	get_pharo_sources_version $PHARO
 	copy_current_stable_image
 	cd ..
 
@@ -66,13 +65,7 @@ function package_linux_version() {
 	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
 	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
 	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
-	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
-		 -i Pharo \
-		 -o PharoLauncher \
-		 -r $PHARO \
-		 -v $VERSION-$DATE \
-		 -t PharoLauncher \
-		 -p linux
+	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p linux
 	
 	mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
@@ -91,13 +84,7 @@ function package_mac_version() {
 	set_env
 	local should_sign=${1:-false} # If no argument given, do not sign
 	prepare_mac_resources_for_build_platform_script
-	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
-		-i Pharo \
-		-o PharoLauncher \
-		-r $PHARO \
-		-v $VERSION-$DATE \
-		-t PharoLauncher \
-		-p mac
+	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One ./pharo-build-scripts/build-platform.sh -i Pharo -o PharoLauncher -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t PharoLauncher -p mac
 	unzip PharoLauncher-mac.zip -d .
 	mv mac-installer-background.png background.png
 	
@@ -111,13 +98,7 @@ function package_mac_version() {
 function package_windows_version() {
 	local should_sign=false # For now do not sign, we do not have anymore a valid certificate file  ${1:-false} # If no argument given, do not sign
 	set_env
-	WIN_VM_PATH=pharo-win-stable-signed.zip INPUT_SOURCES=One/$(basename $(ls One/Pharo*.sources)) bash ./pharo-build-scripts/build-platform.sh \
-		-i Pharo \
-		-o Pharo \
-		-r $PHARO \
-		-v $VERSION-$DATE \
-		-t Pharo \
-		-p win
+	bash ./pharo-build-scripts/build-platform.sh -i Pharo -o Pharo -r $PHARO -s $PHARO_SOURCES -v $VERSION-$DATE -t Pharo -p win
 	unzip Pharo-win.zip -d .
 	
 	if [ "$should_sign" = true ] ; then
@@ -147,6 +128,7 @@ function set_env() {
 				;;
 	esac
 	VERSION_NUMBER="$VERSION-Pharo$PHARO-$ARCH_SUFFIX"
+	set_pharo_sources_version
 }
 
 function copy_current_stable_image() {
@@ -156,8 +138,29 @@ function copy_current_stable_image() {
     mv "$IMAGES_PATH/latest.zip" "$IMAGES_PATH/pharo-stable.zip"
 }
 
-PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.
-VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
+function set_pharo_sources_version() {
+	local sources_file=$(ls One/PharoV*.sources)
+	if [ -z "$sources_file" ]
+	then
+		# Need to determine Sources file version
+		local HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" https://files.pharo.org/sources/PharoV$1.sources.zip)
+		if [ $HTTP_CODE -eq 404 ]
+		then
+	  		PHARO_SOURCES=60
+		fi
+	else
+		# Sources file already retrieved
+		PHARO_SOURCES=${sources_file:10:2}
+	fi
+}
+
+function get_pharo_sources_version() {
+	set_pharo_sources_version ${PHARO_SOURCES}
+	wget --quiet https://files.pharo.org/sources/PharoV${PHARO_SOURCES}.sources.zip && unzip PharoV${PHARO_SOURCES}.sources.zip PharoV${PHARO_SOURCES}.sources && rm PharoV${PHARO_SOURCES}.sources.zip
+}
+
+PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
+VM=${VM:=vm}			# If VM not set, set it to vm.
 ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
 
 SCRIPT_TARGET=${1:-all}

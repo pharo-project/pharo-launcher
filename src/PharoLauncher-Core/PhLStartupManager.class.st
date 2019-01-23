@@ -20,7 +20,7 @@ PhLStartupManager class >> addToLauncherStartUpList: aClass [
 { #category : #'class initialization' }
 PhLStartupManager class >> initialize [
 
-	"SessionManager default registerToolClassNamed: self name"
+	SessionManager default registerToolClassNamed: self name
 ]
 
 { #category : #actions }

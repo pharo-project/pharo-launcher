@@ -108,7 +108,7 @@ PhLVMPresenter >> initializeWidgets [
 		beMultipleSelection.
 		
 	self refresh.
-	vmTable widget selectFirstVisibleRow.
+	vmTable widget selectFirstVMVisibleRow.
 ]
 
 { #category : #initialization }

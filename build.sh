@@ -160,7 +160,7 @@ function get_pharo_sources_version() {
 	wget --quiet https://files.pharo.org/sources/PharoV${PHARO_SOURCES}.sources.zip && unzip PharoV${PHARO_SOURCES}.sources.zip PharoV${PHARO_SOURCES}.sources && rm PharoV${PHARO_SOURCES}.sources.zip
 }
 
-PHARO=${PHARO:=61}  	# If PHARO not set, set it to 61.
+PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
 ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
 

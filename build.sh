@@ -95,7 +95,6 @@ function package_mac_version() {
 		-i Pharo \
 		-o PharoLauncher \
 		-r $PHARO \
-		-s $PHARO_SOURCES \
 		-v $VERSION-$DATE \
 		-t PharoLauncher \
 		-p mac
@@ -116,7 +115,6 @@ function package_windows_version() {
 		-i Pharo \
 		-o Pharo \
 		-r $PHARO \
-		-s $PHARO_SOURCES \
 		-v $VERSION-$DATE \
 		-t Pharo \
 		-p win

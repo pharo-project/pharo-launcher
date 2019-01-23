@@ -91,7 +91,7 @@ function package_mac_version() {
 	set_env
 	local should_sign=${1:-false} # If no argument given, do not sign
 	prepare_mac_resources_for_build_platform_script
-	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
+	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
 		-i Pharo \
 		-o PharoLauncher \
 		-r $PHARO \

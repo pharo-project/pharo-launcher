@@ -88,6 +88,12 @@ PhLImage >> description [
 		ifFalse: [ 'There is no description.txt' ]
 ]
 
+{ #category : #accessing }
+PhLImage >> directory [
+	
+	^ file parent
+]
+
 { #category : #private }
 PhLImage >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
@@ -132,38 +138,18 @@ PhLImage >> lastModification [
 
 { #category : #launching }
 PhLImage >> launch [
-	"Launch without settings"
-	^ self launchWithSettings: false
+
+	^ self launchWithConfiguration: PhlLaunchConfiguration default
 ]
 
-{ #category : #action }
-PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
-	| imagePath vmDirectoryPath command basicCommand |
-	imagePath := file pathString.
-	vmDirectoryPath := vmCommand asFileReference parent fullName.
-	command := String
-		streamContents: [ :cmd | 
-			cmd << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
-			Smalltalk os isUnix
-				ifTrue: [ cmd << (self exportLDLibraryPathCommandWith: vmDirectoryPath) << ' && export SQUEAK_PLUGINS="" && ' ].
-			cmd << vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
-			usePharoSettings ifFalse: [ cmd << ' --no-default-preferences' ] ].
-	basicCommand := self class launchInALoginShell
-		ifTrue: [ Smalltalk os isWindows
-				ifTrue: [ 'cmd /C ' , command ]
-				ifFalse: [ 'bash -l -c ''' , command , '''' ] ]
-		ifFalse: [ command ].
-	^ basicCommand
-]
-
-{ #category : #action }
-PhLImage >> launchWithSettings: usePharoSettings [
+{ #category : #launch }
+PhLImage >> launchWithConfiguration: aPhlLaunchConfiguration [ 
+	
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | vmCommand |
-	vmCommand := (PhLVirtualMachineManager forImage: file pathString) vm.
-	^ PhLProcessWrapper command: (self launchCommandWith: vmCommand useSettings: usePharoSettings) ]
+	[ [ ^ PhLProcessWrapper command: (aPhlLaunchConfiguration
+			launchCommandForImage: self) ]
 		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
@@ -173,6 +159,14 @@ PhLImage >> launchWithSettings: usePharoSettings [
 					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
 			continue ifTrue: [ warning resume ]. ]
+]
+
+{ #category : #action }
+PhLImage >> launchWithSettings: usePharoSettings [
+	
+	^ self launchWithConfiguration: (PhlLaunchConfiguration default
+		usePharoSettings: usePharoSettings;
+		yourself)
 ]
 
 { #category : #accessing }
@@ -211,6 +205,17 @@ PhLImage >> originTemplate [
 PhLImage >> originTemplateName [
 
 	^ self originTemplate ifNotNil: [ :t | t name ] ifNil: [ '' ]
+]
+
+{ #category : #accessing }
+PhLImage >> path [
+
+	^ file resolve path
+]
+
+{ #category : #accessing }
+PhLImage >> pathString [
+	^ file fullName
 ]
 
 { #category : #printing }

@@ -40,8 +40,36 @@ PhLLaunchImageTest >> testLaunchImageIsSuccess [
 	[image := PhLImage location: self pharo6ImageResource.
 	result := image launch.
 	
-	self assert: result isSuccess ] ensure: [ 
-		self halt.
+	self assert: result isRunning ] ensure: [ 
+		result ifNotNil: #terminate.
 	]
 	
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> testLaunchImageWithDefaultConfigurationIsSuccess [
+
+	| image result |
+	[image := PhLImage location: self pharo6ImageResource.
+	result := image launchWithConfiguration: PhlLaunchConfiguration default.
+	
+	self assert: result isRunning ] ensure: [ 
+		result ifNotNil: #terminate.
+	]
+	
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> testLaunchImageWithLaunchConfiguration [
+
+	| image result |
+	image := PhLImage location: self pharo6ImageResource.
+	result := image launchWithConfiguration: (PhlLaunchConfiguration
+		command: '{vm} --headless {image} eval "''testfile'' asFileReference writeStream" ').
+	
+	1 second wait.
+	result terminate.
+	
+	self assert: (self pharo6ImageResource parent / 'testfile') exists.
+	(self pharo6ImageResource parent / 'testfile') ensureDelete.
 ]

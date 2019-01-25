@@ -5,6 +5,42 @@ Class {
 }
 
 { #category : #tests }
+PhLLaunchConfigurationFormTest >> testChangeLaunchConfigurationFormModelShowsNewConfigurationCommand [
+
+	| newName form newModel |
+	form := PhlLaunchConfigurationForm on: PhlLaunchConfiguration new.
+
+	newName := 'new command'.
+	newModel := PhlLaunchConfiguration new
+		command: newName;
+		yourself.
+		
+	form
+		model: newModel;
+		refreshModel.
+	
+	self assert: form commandInput text equals: newName
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationFormTest >> testChangeLaunchConfigurationFormModelShowsNewConfigurationName [
+
+	| newName form newModel |
+	form := PhlLaunchConfigurationForm on: PhlLaunchConfiguration new.
+
+	newName := 'new name'.
+	newModel := PhlLaunchConfiguration new
+		name: newName;
+		yourself.
+		
+	form
+		model: newModel;
+		refreshModel.
+	
+	self assert: form nameInput text equals: newName
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationFormTest >> testLaunchConfigurationFormShowsConfigurationCommand [
 
 	| command form |
@@ -22,4 +58,20 @@ PhLLaunchConfigurationFormTest >> testLaunchConfigurationFormShowsConfigurationN
 	form := PhlLaunchConfigurationForm on: (PhlLaunchConfiguration named: name).
 	
 	self assert: form nameInput text equals: name
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationFormTest >> testNewLaunchConfigurationFormHasDefaultLaunchConfigurationCommand [
+
+	| form |
+	form := PhlLaunchConfigurationForm new.	
+	self assert: form commandInput text equals: PhlLaunchConfiguration defaultCommand
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationFormTest >> testNewLaunchConfigurationFormHasEmptyText [
+
+	| form |
+	form := PhlLaunchConfigurationForm new.	
+	self assert: form nameInput text isEmpty
 ]

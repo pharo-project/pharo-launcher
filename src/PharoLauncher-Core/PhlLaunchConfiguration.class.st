@@ -24,6 +24,12 @@ PhlLaunchConfiguration class >> default [
 ]
 
 { #category : #accessing }
+PhlLaunchConfiguration class >> defaultCommand [
+
+	^ '{vm} {image}'
+]
+
+{ #category : #'instance-creation' }
 PhlLaunchConfiguration class >> named: aString [ 
 	
 	^ self new
@@ -53,6 +59,12 @@ PhlLaunchConfiguration >> currentLDLibraryPathes [
 		substrings: ':'
 ]
 
+{ #category : #accessing }
+PhlLaunchConfiguration >> defaultCommand [
+
+	^ self class defaultCommand
+]
+
 { #category : #'path-helpers' }
 PhlLaunchConfiguration >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
@@ -63,7 +75,8 @@ PhlLaunchConfiguration >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 PhlLaunchConfiguration >> initialize [
 
 	super initialize.
-	command := '{vm} {image}'.
+	name := ''.
+	command := self defaultCommand.
 	usePharoSettings := false
 ]
 

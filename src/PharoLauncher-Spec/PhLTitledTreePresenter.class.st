@@ -41,10 +41,7 @@ PhLTitledTreePresenter >> buildMenu: menu [
 	| currentGroupNumber currentGroup |
 	currentGroupNumber := nil.
 	currentGroup := MenuGroupPresenter new.
-	menu
-		title: '  Pharo Launcher';
-		icon: (self iconNamed: #pharoIcon);
-		addMenuGroup: currentGroup.
+	menu addMenuGroup: currentGroup.
 	commandClasses
 		do: [ :commandClass | 
 			| command |

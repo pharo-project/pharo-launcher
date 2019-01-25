@@ -73,3 +73,15 @@ PhLLaunchImageTest >> testLaunchImageWithLaunchConfiguration [
 	self assert: (self pharo6ImageResource parent / 'testfile') exists.
 	(self pharo6ImageResource parent / 'testfile') ensureDelete.
 ]
+
+{ #category : #tests }
+PhLLaunchImageTest >> testLaunchUnicodeImageNameOnWin32ThrowsUnsupportedCharacterError [
+
+	| image newTarget |
+
+	[ newTarget := self pharo6ImageResource parent parent / 'Ω≈ç√∫˜µ≤≥÷'.
+	self pharo6ImageResource parent copyAllTo: newTarget.
+	image := PhLImage location: (newTarget children detect: [ :e | e extension = 'image' ]).
+	self should: [ image launch ] raise: PhLNotSupportedCharacterError ]
+		ensure: [ newTarget ensureDeleteAll ]
+]

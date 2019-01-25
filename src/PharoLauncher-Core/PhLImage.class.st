@@ -143,22 +143,10 @@ PhLImage >> launch [
 ]
 
 { #category : #launch }
-PhLImage >> launchWithConfiguration: aPhlLaunchConfiguration [ 
-	
-	| architectureWarningEnabled continue |
-	architectureWarningEnabled := true.
-	continue := true.
-	[ [ ^ PhLProcessWrapper command: (aPhlLaunchConfiguration
-			launchCommandForImage: self) ]
-		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
-		do: [ :error |  error uiAlert ] ]
-		on: PhLArchitectureMismatchWarning
-		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
-				ifTrue: [ 
-					architectureWarningEnabled := false. "only raise one warning"
-					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
-			continue ifTrue: [ warning resume ]. ]
+PhLImage >> launchWithConfiguration: aPhlLaunchConfiguration [
+
+	^ PhLProcessWrapper
+		command: (aPhlLaunchConfiguration launchCommandForImage: self)
 ]
 
 { #category : #action }

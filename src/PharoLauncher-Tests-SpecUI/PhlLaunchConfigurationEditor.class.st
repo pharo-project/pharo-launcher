@@ -23,6 +23,12 @@ PhlLaunchConfigurationEditor >> addNewConfiguration [
 	self selectedConfiguration: newConfiguration.
 ]
 
+{ #category : #accessing }
+PhlLaunchConfigurationEditor >> configurationList [
+	
+	^ list
+]
+
 { #category : #initialization }
 PhlLaunchConfigurationEditor >> initializeWidgets [
 	list := self newList.

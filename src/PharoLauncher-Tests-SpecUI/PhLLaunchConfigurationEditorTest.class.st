@@ -35,3 +35,18 @@ PhLLaunchConfigurationEditorTest >> testClickAddButtonSetsNewConfigurationAsSele
 
 	self assert: (old includes: editor selectedConfiguration)
 ]
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSelectsConfiguration [
+
+	| editor |
+	editor := PhlLaunchConfigurationEditor on: image.
+	
+	2 timesRepeat: [ editor addButton click ].
+
+	"First is the default configuration
+	After adding two new configurations, last is third"
+	editor configurationList clickItem: 3.
+
+	self assert: (image launchConfigurations last == editor selectedConfiguration)
+]

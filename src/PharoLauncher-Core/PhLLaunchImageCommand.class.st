@@ -109,10 +109,6 @@ PhLLaunchImageCommand >> asMenuItem [
 		icon: self icon;
 		enabled: self isApplicable;
 		subMenu: (MenuPresenter new addGroup: [ :group |
-			group 
-				addMenuItem: (PhLLaunchImageWithoutSettingCommand new
-					setModel: model;
-					asMenuItem).
 			self model singleImage launchConfigurations do: [ :each |
 				group addMenuItem: (PhLLaunchImageCommand new
 					setModel: model;
@@ -151,7 +147,7 @@ PhLLaunchImageCommand >> launchConfiguration: aPhlLaunchConfiguration [
 
 { #category : #action }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
-	[ aPhLImage launchWithSettings: true ]
+	[ aPhLImage launchWithConfiguration: launchConfiguration ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	self class quitOnLaunch

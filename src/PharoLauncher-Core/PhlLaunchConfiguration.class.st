@@ -21,12 +21,23 @@ PhlLaunchConfiguration class >> command: aCommand [
 PhlLaunchConfiguration class >> default [
 
 	^ self new
+		name: 'default';
+		yourself
 ]
 
 { #category : #accessing }
 PhlLaunchConfiguration class >> defaultCommand [
 
 	^ '{vm} {image}'
+]
+
+{ #category : #'instance-creation' }
+PhlLaunchConfiguration class >> defaultWithoutSettings [
+
+	^ self new
+		name: 'without settings';
+		usePharoSettings: false;
+		yourself
 ]
 
 { #category : #'instance-creation' }

@@ -134,12 +134,13 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
-{ #category : #accessing }
+{ #category : #'initialize-release' }
 PhLImage >> initialize [
 
 	super initialize.
 	launchConfigurations := OrderedCollection new.
 	launchConfigurations add: PhlLaunchConfiguration default.
+	launchConfigurations add: PhlLaunchConfiguration defaultWithoutSettings.
 ]
 
 { #category : #testing }
@@ -169,7 +170,7 @@ PhLImage >> launchConfigurations [
 	^ launchConfigurations
 ]
 
-{ #category : #launch }
+{ #category : #launching }
 PhLImage >> launchWithConfiguration: aPhlLaunchConfiguration [
 
 	^ PhLProcessWrapper

@@ -99,3 +99,10 @@ PhLLaunchConfigurationFormTest >> testNewLaunchConfigurationFormHasEmptyText [
 	form := PhlLaunchConfigurationForm new.	
 	self assert: form nameInput text isEmpty
 ]
+
+{ #category : #tests }
+PhLLaunchConfigurationFormTest >> testOpenLaunchConfigurationDoesNotFail [
+
+	"Smoke test"
+	PhlLaunchConfigurationForm new openWithSpec close
+]

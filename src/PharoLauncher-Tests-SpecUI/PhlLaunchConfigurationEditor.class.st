@@ -9,6 +9,17 @@ Class {
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
 
+{ #category : #specs }
+PhlLaunchConfigurationEditor class >> defaultSpec [
+	
+	^ SpecLayout composed
+		newColumn: [ :mainColumn |
+			mainColumn
+				newRow: #list height: 130;
+				newRow: #addButton height: 30;
+				newRow: #form ]
+]
+
 { #category : #accessing }
 PhlLaunchConfigurationEditor >> addButton [
 	
@@ -39,13 +50,15 @@ PhlLaunchConfigurationEditor >> form [
 { #category : #initialization }
 PhlLaunchConfigurationEditor >> initializeWidgets [
 	list := self newList.
-	list displayBlock: #name.
+	list displayBlock: [ :configuration |
+		configuration name ifEmpty: [ '<no name>' ] ].
 	list whenSelectionChanged: [ :selection |
 		self flag: #bug.
 		"Uncomment to show bug"
 		"selection ifNotNil: [" self refreshForm" ]" ].
 	
 	addButton := self newButton.
+	addButton label: 'Add configuration'.
 	addButton action: [ self addNewConfiguration ].
 	
 	form := self instantiate: PhlLaunchConfigurationForm.

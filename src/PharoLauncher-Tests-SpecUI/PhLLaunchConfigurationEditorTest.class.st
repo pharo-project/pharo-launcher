@@ -17,6 +17,12 @@ PhLLaunchConfigurationEditorTest >> setUp [
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationEditorTest >> testAddButtonHasLabel [
+
+	self assert: editor addButton label notEmpty
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationEditorTest >> testClickAddButtonCreatesNewLaunchConfiguration [
 
 	| old |
@@ -59,4 +65,19 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSetsFo
 	editor configurationList clickItem: 2.
 
 	self assert: editor form nameInput text equals: name
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> testListItemWithEmptyNameHasFiller [
+	
+	editor addButton click.
+	self assert: (editor configurationList displayValueAt: 1) equals: '<no name>'.
+	self assert: (image launchConfigurations last == editor selectedConfiguration)
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> testOpenLaunchConfigurationEditorDoesNotFail [
+
+	"Smoke test"
+	(PhlLaunchConfigurationEditor on: image) openWithSpec close
 ]

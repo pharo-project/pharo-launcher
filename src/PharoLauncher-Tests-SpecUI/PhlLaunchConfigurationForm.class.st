@@ -8,6 +8,16 @@ Class {
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
 
+{ #category : #specs }
+PhlLaunchConfigurationForm class >> defaultSpec [
+	
+	^ SpecLayout composed
+		newColumn: [ :mainColumn |
+			mainColumn
+				newRow: #nameLabeledInput height: 50;
+				newRow: #commandLabeledInput height: 50 ]
+]
+
 { #category : #accessing }
 PhlLaunchConfigurationForm >> commandInput [
 	
@@ -28,12 +38,14 @@ PhlLaunchConfigurationForm >> initializeWidgets [
 		label: 'Name';
 		subwidget: self newTextInput;
 		whenTextChanged: [ :newText | self model name: newText ];
+		autoAccept: true;
 		yourself.
 
 	commandLabeledInput := (self instantiate: LabelledContainer)
 		label: 'Command';
 		subwidget: self newTextInput;
 		whenTextChanged: [ :newText | self model command: newText ];
+		autoAccept: true;
 		yourself.
 
 	self refreshModel.

@@ -91,11 +91,10 @@ function package_mac_version() {
 	set_env
 	local should_sign=${1:-false} # If no argument given, do not sign
 	prepare_mac_resources_for_build_platform_script
-	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
+	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
 		-i Pharo \
 		-o PharoLauncher \
 		-r $PHARO \
-		-s $PHARO_SOURCES \
 		-v $VERSION-$DATE \
 		-t PharoLauncher \
 		-p mac
@@ -112,11 +111,10 @@ function package_mac_version() {
 function package_windows_version() {
 	local should_sign=false # For now do not sign, we do not have anymore a valid certificate file  ${1:-false} # If no argument given, do not sign
 	set_env
-	WIN_VM_PATH=pharo-win-stable-signed.zip bash ./pharo-build-scripts/build-platform.sh \
+	WIN_VM_PATH=pharo-win-stable-signed.zip INPUT_SOURCES=One/$(basename $(ls One/Pharo*.sources)) bash ./pharo-build-scripts/build-platform.sh \
 		-i Pharo \
 		-o Pharo \
 		-r $PHARO \
-		-s $PHARO_SOURCES \
 		-v $VERSION-$DATE \
 		-t Pharo \
 		-p win

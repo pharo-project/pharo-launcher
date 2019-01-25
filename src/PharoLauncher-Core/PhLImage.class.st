@@ -10,12 +10,13 @@ Class {
 	#superclass : #PhLObject,
 	#instVars : [
 		'file',
-		'meta'
+		'meta',
+		'launchConfigurations'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #settings }
@@ -45,6 +46,12 @@ PhLImage class >> settingsOn: aBuilder [
 		target: self;
 		order: 31;
 		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
+]
+
+{ #category : #'launch-configurations' }
+PhLImage >> addNewLaunchConfiguration [
+	
+	^ launchConfigurations add: PhlLaunchConfiguration new
 ]
 
 { #category : #quering }
@@ -121,6 +128,14 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
+{ #category : #accessing }
+PhLImage >> initialize [
+
+	super initialize.
+	launchConfigurations := OrderedCollection new.
+	launchConfigurations add: PhlLaunchConfiguration default.
+]
+
 { #category : #testing }
 PhLImage >> isHighlighted [
 	^ false
@@ -140,6 +155,12 @@ PhLImage >> lastModification [
 PhLImage >> launch [
 
 	^ self launchWithConfiguration: PhlLaunchConfiguration default
+]
+
+{ #category : #accessing }
+PhLImage >> launchConfigurations [
+	
+	^ launchConfigurations
 ]
 
 { #category : #launch }

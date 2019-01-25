@@ -50,8 +50,7 @@ PhlLaunchConfigurationEditor >> form [
 { #category : #initialization }
 PhlLaunchConfigurationEditor >> initializeWidgets [
 	list := self newList.
-	list displayBlock: [ :configuration |
-		configuration name ifEmpty: [ '<no name>' ] ].
+	list displayBlock: [ :configuration | configuration displayName ].
 	list whenSelectionChanged: [ :selection |
 		self flag: #bug.
 		"Uncomment to show bug"
@@ -62,6 +61,7 @@ PhlLaunchConfigurationEditor >> initializeWidgets [
 	addButton action: [ self addNewConfiguration ].
 	
 	form := self instantiate: PhlLaunchConfigurationForm.
+	form whenChangedDo: [ self refreshList ].
 	
 	self refreshList.
 ]

@@ -63,3 +63,10 @@ PhlLaunchConfigurationForm >> refreshModel [
 	self nameInput text: self model name.
 	self commandInput text: self model command.
 ]
+
+{ #category : #initialization }
+PhlLaunchConfigurationForm >> whenChangedDo: aBlock [
+
+	self nameInput whenTextChanged: aBlock.
+	self commandInput whenTextChanged: aBlock.
+]

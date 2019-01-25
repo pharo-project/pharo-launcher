@@ -4,12 +4,15 @@ Uses the current VirtualMachine to launch the selected image.
 Class {
 	#name : #PhLLaunchImageCommand,
 	#superclass : #PhLImageCommand,
+	#instVars : [
+		'launchConfiguration'
+	],
 	#classVars : [
 		'CommandAnnouncer',
 		'QuitOnLaunch',
 		'WarnOnArchMismatch'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #accessing }
@@ -109,7 +112,14 @@ PhLLaunchImageCommand >> asMenuItem [
 			group 
 				addMenuItem: (PhLLaunchImageWithoutSettingCommand new
 					setModel: model;
-					asMenuItem);
+					asMenuItem).
+			self model singleImage launchConfigurations do: [ :each |
+				group addMenuItem: (PhLLaunchImageCommand new
+					setModel: model;
+					launchConfiguration: each;
+					asBasicMenuItem).
+				].
+			group
 				addMenuItem: (PhLAddLaunchImageConfigurationCommand new
 					setModel: model;
 					asMenuItem) ])
@@ -122,8 +132,21 @@ PhLLaunchImageCommand >> execute [
 ]
 
 { #category : #testing }
+PhLLaunchImageCommand >> initialize [
+
+	super initialize.
+	launchConfiguration := PhlLaunchConfiguration default
+]
+
+{ #category : #testing }
 PhLLaunchImageCommand >> isApplicable [
 	^ self model hasSingleImageSelected or: [self model hasNoSelection ]
+]
+
+{ #category : #accessing }
+PhLLaunchImageCommand >> launchConfiguration: aPhlLaunchConfiguration [
+
+	launchConfiguration := aPhlLaunchConfiguration
 ]
 
 { #category : #action }
@@ -176,4 +199,10 @@ PhLLaunchImageCommand >> resourcesPath [
 	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
 	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
 	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
+]
+
+{ #category : #accessing }
+PhLLaunchImageCommand >> title [
+
+	^ 'Launch ', launchConfiguration displayName
 ]

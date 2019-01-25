@@ -10,84 +10,14 @@ Class {
 }
 
 { #category : #accessing }
-PhLAddLaunchImageConfigurationCommand class >> announceQuitOnLaunchValueChanged [
-	self announcer announce: PhLQuitOnLaunchValueChanged
-]
-
-{ #category : #accessing }
-PhLAddLaunchImageConfigurationCommand class >> announcer [
-	^ CommandAnnouncer ifNil: [ CommandAnnouncer := Announcer new ]
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> archMismatchSettingDescription [
-	^ 'Get a warning when trying to launch an image with a different architecture than the Launcher (i.e. trying to launch a 32-bit image from Pharo Launcher 64-bit). '
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> archMismatchSettingLabel [
-	^ 'Warn on image architecture mismatch? ' translated
-]
-
-{ #category : #accessing }
-PhLAddLaunchImageConfigurationCommand class >> group [
-	^ 1
-]
-
-{ #category : #accessing }
 PhLAddLaunchImageConfigurationCommand class >> icon [
 
 	^ self iconNamed: #configuration
 ]
 
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> quitOnLaunch [
-	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> quitOnLaunch: aBoolean [
-	| oldValue |
-	oldValue := QuitOnLaunch.
-	QuitOnLaunch := aBoolean.
-	oldValue = QuitOnLaunch 
-		ifFalse: [ CommandAnnouncer announce: PhLQuitOnLaunchValueChanged ]
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> settingsOn: aBuilder [
-	<systemsettings>
-	<pharoLauncherSettings>
-	(aBuilder setting: #quitOnLaunch)
-		label: 'Quit On Launch' translated;
-		parent: #pharoLauncher;
-		target: self;
-		order: 30;
-		description:
-			'When enabled, Launcher quits when an image is launched. ' , String cr
-				, 'When disabled, Launcher stays alive when an image is launched.'.
-	(aBuilder setting: #warnOnArchMismatch)
-		label: self archMismatchSettingLabel;
-		parent: #pharoLauncher;
-		target: self;
-		order: 35;
-		description: self archMismatchSettingDescription
-]
-
 { #category : #accessing }
 PhLAddLaunchImageConfigurationCommand class >> title [
 	^ 'Launch Configurations...'
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> warnOnArchMismatch [
-	^ WarnOnArchMismatch ifNil: [  WarnOnArchMismatch := true ].
-]
-
-{ #category : #settings }
-PhLAddLaunchImageConfigurationCommand class >> warnOnArchMismatch: aBoolean [
-	WarnOnArchMismatch := aBoolean.
-
 ]
 
 { #category : #action }
@@ -125,7 +55,8 @@ PhLAddLaunchImageConfigurationCommand >> launchImageFromDisk [
 
 { #category : #action }
 PhLAddLaunchImageConfigurationCommand >> launchSelectedImage [
-	self launchImage: (PhLImageModel on: self model singleImage)
+
+	(PhlLaunchConfigurationEditor on: self model singleImage) openWithSpec
 ]
 
 { #category : #accessing }

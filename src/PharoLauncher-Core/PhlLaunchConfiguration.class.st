@@ -65,6 +65,12 @@ PhlLaunchConfiguration >> defaultCommand [
 	^ self class defaultCommand
 ]
 
+{ #category : #displaying }
+PhlLaunchConfiguration >> displayName [
+
+	^ self name ifEmpty: [ '<no name>' ]
+]
+
 { #category : #'path-helpers' }
 PhlLaunchConfiguration >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,

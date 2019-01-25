@@ -68,6 +68,18 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSetsFo
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationEditorTest >> testEditConfigurationNameUpdatesListItem [
+	
+	| newName |
+	newName := 'some name'.
+	editor addButton click.
+	editor configurationList clickItem: 2.
+	editor form nameInput text: newName.
+	
+	self assert: (editor configurationList displayValueAt: 2) equals: newName
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationEditorTest >> testListItemWithEmptyNameHasFiller [
 	
 	editor addButton click.

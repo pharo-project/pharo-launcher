@@ -41,6 +41,30 @@ PhLLaunchConfigurationFormTest >> testChangeLaunchConfigurationFormModelShowsNew
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationFormTest >> testEditLaunchConfigurationFormCommandUpdatesModel [
+
+	| form newCommand |
+	form := PhlLaunchConfigurationForm new.
+	
+	newCommand := 'new command'.
+	form commandInput type: newCommand.
+
+	self assert: form model command equals: newCommand
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationFormTest >> testEditLaunchConfigurationFormNameUpdatesModel [
+
+	| form newName |
+	form := PhlLaunchConfigurationForm new.
+	
+	newName := 'new name'.
+	form nameInput type: newName.
+
+	self assert: form model name equals: newName
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationFormTest >> testLaunchConfigurationFormShowsConfigurationCommand [
 
 	| command form |

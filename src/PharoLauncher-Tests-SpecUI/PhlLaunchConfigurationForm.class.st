@@ -26,10 +26,15 @@ PhlLaunchConfigurationForm >> initializeWidgets [
 	
 	nameLabeledInput := (self instantiate: LabelledContainer)
 		label: 'Name';
-		subwidget: self newTextInput.
+		subwidget: self newTextInput;
+		whenTextChanged: [ :newText | self model name: newText ];
+		yourself.
+
 	commandLabeledInput := (self instantiate: LabelledContainer)
 		label: 'Command';
-		subwidget: self newTextInput.
+		subwidget: self newTextInput;
+		whenTextChanged: [ :newText | self model command: newText ];
+		yourself.
 
 	self refreshModel.
 ]

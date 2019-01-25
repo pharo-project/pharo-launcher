@@ -2,24 +2,38 @@ Class {
 	#name : #PhLLaunchConfigurationEditorTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'image'
+		'image',
+		'editor'
 	],
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> bugSpec [
+	
+	| name |
+	name := 'test'.
+	image addLaunchConfiguration: (PhlLaunchConfiguration named: name).
+	editor refreshList.
+	
+	editor configurationList clickItem: 2.
+
+	self assert: editor form nameInput text equals: name
+]
 
 { #category : #tests }
 PhLLaunchConfigurationEditorTest >> setUp [
 
 	super setUp.
 	image := PhLImage location: 'fruta' asFileReference.
+	editor := PhlLaunchConfigurationEditor on: image.
 ]
 
 { #category : #tests }
 PhLLaunchConfigurationEditorTest >> testClickAddButtonCreatesNewLaunchConfiguration [
 
-	| old editor |
+	| old |
 	old := image launchConfigurations size.
-	editor := PhlLaunchConfigurationEditor on: image.
 	editor addButton click.
 
 	self assert: image launchConfigurations size equals: old + 1
@@ -28,9 +42,8 @@ PhLLaunchConfigurationEditorTest >> testClickAddButtonCreatesNewLaunchConfigurat
 { #category : #tests }
 PhLLaunchConfigurationEditorTest >> testClickAddButtonSetsNewConfigurationAsSelectedConfiguration [
 
-	| old editor |
+	| old |
 	old := image launchConfigurations.
-	editor := PhlLaunchConfigurationEditor on: image.
 	editor addButton click.
 
 	self assert: (old includes: editor selectedConfiguration)
@@ -38,9 +51,6 @@ PhLLaunchConfigurationEditorTest >> testClickAddButtonSetsNewConfigurationAsSele
 
 { #category : #tests }
 PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSelectsConfiguration [
-
-	| editor |
-	editor := PhlLaunchConfigurationEditor on: image.
 	
 	2 timesRepeat: [ editor addButton click ].
 
@@ -49,4 +59,17 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSelect
 	editor configurationList clickItem: 3.
 
 	self assert: (image launchConfigurations last == editor selectedConfiguration)
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSetsFormName [
+	
+	| name |
+	name := 'test'.
+	image addLaunchConfiguration: (PhlLaunchConfiguration named: name).
+	editor refreshList.
+	
+	editor configurationList clickItem: 2.
+
+	self assert: editor form nameInput text equals: name
 ]

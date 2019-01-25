@@ -49,9 +49,15 @@ PhLImage class >> settingsOn: aBuilder [
 ]
 
 { #category : #'launch-configurations' }
+PhLImage >> addLaunchConfiguration: aPhlLaunchConfiguration [ 
+
+	^ launchConfigurations add: aPhlLaunchConfiguration
+]
+
+{ #category : #'launch-configurations' }
 PhLImage >> addNewLaunchConfiguration [
 	
-	^ launchConfigurations add: PhlLaunchConfiguration new
+	^ self addLaunchConfiguration: PhlLaunchConfiguration new
 ]
 
 { #category : #quering }

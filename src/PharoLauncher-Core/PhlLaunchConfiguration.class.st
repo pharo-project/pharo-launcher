@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'command',
-		'usePharoSettings'
+		'usePharoSettings',
+		'name'
 	],
 	#category : #'PharoLauncher-Core'
 }
@@ -20,7 +21,13 @@ PhlLaunchConfiguration class >> command: aCommand [
 PhlLaunchConfiguration class >> default [
 
 	^ self new
-		command: '{vm} {image}';
+]
+
+{ #category : #accessing }
+PhlLaunchConfiguration class >> named: aString [ 
+	
+	^ self new
+		name: aString;
 		yourself
 ]
 
@@ -56,6 +63,7 @@ PhlLaunchConfiguration >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 PhlLaunchConfiguration >> initialize [
 
 	super initialize.
+	command := '{vm} {image}'.
 	usePharoSettings := false
 ]
 
@@ -85,6 +93,17 @@ PhlLaunchConfiguration >> launchCommandForImage: anImage [
 				ifTrue: [ 'cmd /C ' , basicCommand ]
 				ifFalse: [ 'bash -l -c ''' , basicCommand , '''' ] ].
 	^ basicCommand
+]
+
+{ #category : #accessing }
+PhlLaunchConfiguration >> name [
+	^ name
+]
+
+{ #category : #accessing }
+PhlLaunchConfiguration >> name: aString [ 
+	
+	name := aString
 ]
 
 { #category : #accessing }

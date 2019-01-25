@@ -9,19 +9,6 @@ Class {
 }
 
 { #category : #tests }
-PhLLaunchConfigurationEditorTest >> bugSpec [
-	
-	| name |
-	name := 'test'.
-	image addLaunchConfiguration: (PhlLaunchConfiguration named: name).
-	editor refreshList.
-	
-	editor configurationList clickItem: 2.
-
-	self assert: editor form nameInput text equals: name
-]
-
-{ #category : #tests }
 PhLLaunchConfigurationEditorTest >> setUp [
 
 	super setUp.

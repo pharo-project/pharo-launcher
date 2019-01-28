@@ -148,14 +148,14 @@ PhLSearchableTitledTreePresenter >> printDateOfLastModificationOf: anItem [
 	date := anItem content file modificationTime.
 	text := self dateDisplayStrategy displayStringOf: date.
 	self displayColorsForDate
-		ifTrue: [ text makeAllColor: Color darkGray.
+		ifTrue: [ text makeAllColor: (Color fromHexString: '90A4AE').
 			delta := DateAndTime now - date.
 			delta days < 31
-				ifTrue: [ text makeAllColor: Color orange ].
+				ifTrue: [ text makeAllColor: (Color fromHexString: 'FF9800') ].
 			delta days < 8
-				ifTrue: [ text makeAllColor: Color green muchDarker ].
+				ifTrue: [ text makeAllColor: (Color fromHexString: '4CAF50') ].
 			delta days < 3
-				ifTrue: [ text makeAllColor: Color green darker] ].
+				ifTrue: [ text makeAllColor: (Color fromHexString: '009688') ] ].
 	^ text asMorph lock
 ]
 

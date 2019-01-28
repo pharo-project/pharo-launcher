@@ -100,7 +100,7 @@ PhLLaunchImageCommand >> execute [
 
 { #category : #testing }
 PhLLaunchImageCommand >> isApplicable [
-	^ self model hasSingleImageSelected or: [self model hasNoSelection ]
+	^ self model hasSingleImageSelected
 ]
 
 { #category : #action }

@@ -84,7 +84,7 @@ PhLLaunchConfigurationEditorTest >> testEditConfigurationNameUpdatesListItem [
 PhLLaunchConfigurationEditorTest >> testListItemWithEmptyNameHasFiller [
 	
 	editor addButton click.
-	self assert: (editor configurationList displayValueAt: 1) equals: '<no name>'.
+	self assert: (editor configurationList displayValueAt: 3) equals: PhlLaunchConfiguration emptyDisplayName.
 	self assert: (image launchConfigurations last == editor selectedConfiguration)
 ]
 

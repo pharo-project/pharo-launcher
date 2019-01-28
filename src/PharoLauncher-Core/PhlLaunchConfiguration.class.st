@@ -40,6 +40,12 @@ PhlLaunchConfiguration class >> defaultWithoutSettings [
 		yourself
 ]
 
+{ #category : #accessing }
+PhlLaunchConfiguration class >> emptyDisplayName [
+
+	^ '<no name>'
+]
+
 { #category : #'instance-creation' }
 PhlLaunchConfiguration class >> named: aString [ 
 	
@@ -79,7 +85,13 @@ PhlLaunchConfiguration >> defaultCommand [
 { #category : #displaying }
 PhlLaunchConfiguration >> displayName [
 
-	^ self name ifEmpty: [ '<no name>' ]
+	^ self name ifEmpty: [ self emptyDisplayName ]
+]
+
+{ #category : #displaying }
+PhlLaunchConfiguration >> emptyDisplayName [
+
+	^ self class emptyDisplayName
 ]
 
 { #category : #'path-helpers' }

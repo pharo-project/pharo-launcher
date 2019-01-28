@@ -93,3 +93,12 @@ PhLLaunchConfigurationEditorTest >> testOpenLaunchConfigurationEditorDoesNotFail
 	"Smoke test"
 	(PhlLaunchConfigurationEditor on: image) openWithSpec close
 ]
+
+{ #category : #tests }
+PhLLaunchConfigurationEditorTest >> testRightClickOnLaunchConfigurationHasMenuItemRemove [
+	
+	| menu |
+	menu := editor configurationList rightClickItem: 1.
+
+	self assert: (menu menuGroups first menuItems anySatisfy: [ :each | each title = 'Delete' ])
+]

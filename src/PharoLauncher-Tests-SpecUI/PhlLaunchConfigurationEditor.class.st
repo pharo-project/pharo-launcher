@@ -35,6 +35,19 @@ PhlLaunchConfigurationEditor >> addNewConfiguration [
 	self selectedConfiguration: newConfiguration.
 ]
 
+{ #category : #menu }
+PhlLaunchConfigurationEditor >> buildMenu [
+	
+	| menu |
+	menu := MenuPresenter new.
+	menu addGroup: [ :group |
+		group addItem: [ :item |
+			item
+				title: 'Delete';
+				iconName: #remove ] ].
+	^ menu
+]
+
 { #category : #accessing }
 PhlLaunchConfigurationEditor >> configurationList [
 	
@@ -55,6 +68,7 @@ PhlLaunchConfigurationEditor >> initializeWidgets [
 		self flag: #bug.
 		"Uncomment to show bug"
 		"selection ifNotNil: [" self refreshForm" ]" ].
+	list menu: [ self buildMenu ].
 	
 	addButton := self newButton.
 	addButton label: 'Add configuration'.

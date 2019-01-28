@@ -32,5 +32,7 @@ PhLCopyImageCommand >> execute [
 
 { #category : #accessing }
 PhLCopyImageCommand >> newImageName [
-	^ newImageName ifNil: [ newImageName := self model requestNewImageName: self model singleImageName ]
+	| potentialNewImageName |
+	potentialNewImageName := self model makeUniqueImageName: self model singleImageName.
+	^ newImageName ifNil: [ newImageName := self model requestNewImageName: potentialNewImageName ]
 ]

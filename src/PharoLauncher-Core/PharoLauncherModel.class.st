@@ -143,7 +143,7 @@ PharoLauncherModel >> newRequest [
 PharoLauncherModel >> requestNewImageName: aString [ 
 	^ self newRequest
 		title: 'Image name?';
-		initialAnswer: (self makeUniqueImageName: aString);
+		initialAnswer: aString;
 		validateAnswer: [ :answer | (self hasImageNamed: answer) not ];
 		request
 ]

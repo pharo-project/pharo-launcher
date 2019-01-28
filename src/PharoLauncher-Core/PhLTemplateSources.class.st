@@ -170,7 +170,8 @@ PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 PhLTemplateSources >> checkForUpdates [
 	| downloadedSources |
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self downloadedSourcesFile exists ifFalse: [ self fetchSourcesFile ].
+	self downloadedSourcesFile ensureDelete.
+	self fetchSourcesFile.
 	
 	downloadedSources := self downloadedSources.
 	self sources = downloadedSources

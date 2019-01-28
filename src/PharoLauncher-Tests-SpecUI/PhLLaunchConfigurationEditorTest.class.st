@@ -47,9 +47,10 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSelect
 	
 	2 timesRepeat: [ editor addButton click ].
 
-	"First is the default configuration
-	After adding two new configurations, last is third"
-	editor configurationList clickItem: 3.
+	"First is the default configuration.
+	Second is the default without settings configuration.
+	After adding two new configurations, last is fourth"
+	editor configurationList clickItem: 4.
 
 	self assert: (image launchConfigurations last == editor selectedConfiguration)
 ]
@@ -62,7 +63,7 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSetsFo
 	image addLaunchConfiguration: (PhlLaunchConfiguration named: name).
 	editor refreshList.
 	
-	editor configurationList clickItem: 2.
+	editor configurationList clickItem: 3.
 
 	self assert: editor form nameInput text equals: name
 ]
@@ -99,6 +100,5 @@ PhLLaunchConfigurationEditorTest >> testRightClickOnLaunchConfigurationHasMenuIt
 	
 	| menu |
 	menu := editor configurationList rightClickItem: 1.
-
-	self assert: (menu menuGroups first menuItems anySatisfy: [ :each | each title = 'Delete' ])
+	self assert: (menu items anySatisfy: [ :each | each title = 'Delete' ])
 ]

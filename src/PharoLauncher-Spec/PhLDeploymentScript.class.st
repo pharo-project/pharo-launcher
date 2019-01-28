@@ -193,7 +193,7 @@ PhLDeploymentScript class >> setProgressBarSizeAndPosition [
 
 { #category : #actions }
 PhLDeploymentScript class >> setTheme [
-	Pharo3Theme beCurrent.
+	PharoLightTheme beCurrent.
 
 ]
 

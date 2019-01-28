@@ -100,5 +100,5 @@ PhLLaunchConfigurationEditorTest >> testRightClickOnLaunchConfigurationHasMenuIt
 	
 	| menu |
 	menu := editor configurationList rightClickItem: 1.
-	self assert: (menu items anySatisfy: [ :each | each title = 'Delete' ])
+	self assert: (menu items anySatisfy: [ :each | each name = 'Delete' ])
 ]

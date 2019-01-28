@@ -43,7 +43,7 @@ PhlLaunchConfigurationEditor >> buildMenu [
 	menu addGroup: [ :group |
 		group addItem: [ :item |
 			item
-				title: 'Delete';
+				name: 'Delete';
 				iconName: #remove ] ].
 	^ menu
 ]

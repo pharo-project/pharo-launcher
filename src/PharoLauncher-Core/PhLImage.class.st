@@ -242,6 +242,12 @@ PhLImage >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
+{ #category : #'launch-configurations' }
+PhLImage >> removeConfiguration: aPhlLaunchConfiguration [ 
+
+	^ launchConfigurations remove: aPhlLaunchConfiguration
+]
+
 { #category : #'initialize-release' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.

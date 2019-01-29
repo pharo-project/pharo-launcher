@@ -69,6 +69,20 @@ PhLLaunchConfigurationEditorTest >> testClickOnLaunchConfigurationListItemSetsFo
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationEditorTest >> testClickOnRemoveMenuItemRemovesConfiguration [
+	
+	| menu configuration index menuItem |
+	configuration := image launchConfigurations last.
+	index := editor configurationList indexOfItem: configuration.
+	
+	menu := editor configurationList rightClickItem: index.
+	menuItem := menu items detect: [ :each | each name = 'Delete' ].
+	
+	menuItem click.
+	self deny: (image launchConfigurations includes: configuration)
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationEditorTest >> testEditConfigurationNameUpdatesListItem [
 	
 	| newName |

@@ -44,7 +44,8 @@ PhlLaunchConfigurationEditor >> buildMenu [
 		group addItem: [ :item |
 			item
 				name: 'Delete';
-				iconName: #remove ] ].
+				iconName: #remove;
+				action: [ self removeSelectedItem ] ] ].
 	^ menu
 ]
 
@@ -93,6 +94,12 @@ PhlLaunchConfigurationEditor >> refreshForm [
 PhlLaunchConfigurationEditor >> refreshList [
 	
 	list items: self model launchConfigurations.
+]
+
+{ #category : #menu }
+PhlLaunchConfigurationEditor >> removeSelectedItem [
+	
+	^ self model removeConfiguration: self selectedConfiguration
 ]
 
 { #category : #accessing }

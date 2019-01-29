@@ -14,14 +14,15 @@ PhlLaunchConfigurationForm class >> defaultSpec [
 	^ SpecLayout composed
 		newColumn: [ :mainColumn |
 			mainColumn
-				newRow: #nameLabeledInput height: 50;
-				newRow: #commandLabeledInput height: 50 ]
+				newRow: #nameLabeledInput height: self labelledPresenterHeight;
+				newRow: #commandLabeledInput height: self labelledPresenterHeight;
+				addSpacer ]
 ]
 
 { #category : #accessing }
 PhlLaunchConfigurationForm >> commandInput [
 	
-	^ commandLabeledInput subwidget
+	^ commandLabeledInput input
 ]
 
 { #category : #initialization }
@@ -34,19 +35,21 @@ PhlLaunchConfigurationForm >> initialize [
 { #category : #initialization }
 PhlLaunchConfigurationForm >> initializeWidgets [
 	
-	nameLabeledInput := (self instantiate: LabelledContainer)
+	nameLabeledInput := (self instantiate: LabelledPresenter)
 		label: 'Name';
-		subwidget: self newTextInput;
+		input: self newTextInput;
+		yourself.
+	nameLabeledInput input
 		whenTextChanged: [ :newText | self model name: newText ];
-		autoAccept: true;
-		yourself.
+		autoAccept: true.
 
-	commandLabeledInput := (self instantiate: LabelledContainer)
+	commandLabeledInput := (self instantiate: LabelledPresenter)
 		label: 'Command';
-		subwidget: self newTextInput;
-		whenTextChanged: [ :newText | self model command: newText ];
-		autoAccept: true;
+		input: self newTextInput;
 		yourself.
+	commandLabeledInput input
+		whenTextChanged: [ :newText | self model command: newText ];
+		autoAccept: true.
 
 	self refreshModel.
 ]
@@ -54,7 +57,7 @@ PhlLaunchConfigurationForm >> initializeWidgets [
 { #category : #accessing }
 PhlLaunchConfigurationForm >> nameInput [
 
-	^ nameLabeledInput subwidget
+	^ nameLabeledInput input
 ]
 
 { #category : #initialization }

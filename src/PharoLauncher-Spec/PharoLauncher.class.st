@@ -218,7 +218,7 @@ PharoLauncher >> imagesModel [
 
 { #category : #protocol }
 PharoLauncher >> initialExtent [
-	^ 900@560
+	^ 900@600
 ]
 
 { #category : #initialization }

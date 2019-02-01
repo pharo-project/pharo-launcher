@@ -146,7 +146,7 @@ function set_env() {
 				exit 1
 				;;
 	esac
-	VERSION_NUMBER="$VERSION-Pharo$PHARO-$ARCH_SUFFIX"
+	VERSION_NUMBER="$VERSION-$ARCH_SUFFIX"
 }
 
 function copy_current_stable_image() {

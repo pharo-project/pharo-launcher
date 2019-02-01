@@ -1,4 +1,4 @@
-# Pharo Launcher 
+# Pharo Launcher [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/)
 The Pharo Launcher is a cross-platform application that
 - lets you manage your Pharo images (launch, rename, copy and delete);
 - lets you download image templates (i.e., zip archives) from many
@@ -15,11 +15,8 @@ Please report bugs on the 'Launcher' project at [https://github.com/pharo-projec
 
 You can contribute to this project. All classes and most methods are commented. There are unit tests. Please contribute!
 
-- **Source code:** [http://www.smalltalkhub.com/#!/~Pharo/PharoLauncher](http://www.smalltalkhub.com/#!/~Pharo/PharoLauncher) (WARNING: will move very soon in this repository)
-- **CI:** [https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher/](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher/)
-
-![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher/buildStatus/icon?job=PharoLauncher)
-
+- **Source code:** [https://github.com/pharo-project/pharo-launcher](https://github.com/pharo-project/pharo-launcher)
+- **CI:** [https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/](https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/) [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/)
 ## Motivations
 In the past, I had several folders with images everywhere on my HD. Sometimes with the VM, sometimes without. Lots of image searching as you can imagine.
 Now, my HD is now much cleaner - all images are in a central place and I need only one icon/starter on the desktop to open. PharoLauncher is also a convenient tool to download specific image update versions if you want to reproduce or fix Pharo bugs. I also associated one of the unused laptop keys with PharoLauncher - so the world of Smalltalk is just one click away...
@@ -77,9 +74,7 @@ has to be in a new directory. So either use the "Copy" image, then "Launch" and 
 
 ## Develop the Pharo Launcher
 
-Either use the latest image from CI and enable the IDE as written before.
-
-You can also download the latest stable image. Just use the ConfigurationOfPharoLauncher
-from [http://smalltalkhub.com/#!/~Pharo/PharoLauncher](http://smalltalkhub.com/#!/~Pharo/PharoLauncher).
+Download the latest stable Pharo image and use Iceberg (Pharo git client) to clone this repository.
+Once done, you can load the project through Metacello integration (uses BaselineOfPharoLauncher).
 
 Then evaluate  "PharoLauncher open". You can also launch it from the World menu.

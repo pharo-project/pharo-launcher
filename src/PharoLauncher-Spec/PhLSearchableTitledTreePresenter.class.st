@@ -139,6 +139,7 @@ PhLSearchableTitledTreePresenter >> newSearchField [
 		updateSelector: #searchAccept:;
 		acceptSelector: #searchAccept:;
 		searchList: OrderedCollection new;
+		ghostText: 'Filter...';
 		asSpecAdapter
 ]
 

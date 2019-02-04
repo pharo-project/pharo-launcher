@@ -226,6 +226,12 @@ PhLImage >> showNativeFolder [
 	OSPlatform current openFileBrowserOn: file
 ]
 
+{ #category : #accessing }
+PhLImage >> sourcesFile [
+	^ self file parent files 
+		detect: [ :fileRef | fileRef extension = 'sources' ]
+]
+
 { #category : #printing }
 PhLImage >> summaryInfo [
 	^ String
@@ -243,6 +249,11 @@ PhLImage >> summaryInfo [
 { #category : #accessing }
 PhLImage >> template [
 	^ self meta at: #template ifPresent: [ :t | t name ] ifAbsent: [ #unknown ]
+]
+
+{ #category : #accessing }
+PhLImage >> versionFile [
+	^ self file parent / PhLVirtualMachineManager imageVersionFileName
 ]
 
 { #category : #action }

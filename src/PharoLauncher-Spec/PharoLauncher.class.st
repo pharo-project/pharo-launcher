@@ -36,11 +36,6 @@ PharoLauncher class >> createLauncherWithGroups: aListOfLauncherTemplatesGroup [
 		yourself
 ]
 
-{ #category : #updating }
-PharoLauncher class >> forceTemplateRepositoryUpdate [
-	TemplateRepository := nil
-]
-
 { #category : #settings }
 PharoLauncher class >> hardResetPersistanceState [
 	^false
@@ -102,6 +97,11 @@ PharoLauncher class >> pharoIcon16x16 [
 	^ pharoIcon 
 		ifNil: [ pharoIcon := (self iconNamed: #pharo) scaledToSize: 16@16 ].
 
+]
+
+{ #category : #updating }
+PharoLauncher class >> resetTemplateRepository [
+	TemplateRepository := nil
 ]
 
 { #category : #settings }

@@ -103,6 +103,11 @@ PhLTemplateSources class >> launcherCoreDirString: aFileUrl [
 
 ]
 
+{ #category : #updating }
+PhLTemplateSources class >> resetLauncherCoreDir [
+	LauncherCoreDir := nil
+]
+
 { #category : #settings }
 PhLTemplateSources class >> settingsOn: aBuilder [
 	<systemsettings>

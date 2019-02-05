@@ -30,7 +30,6 @@ PhLCreateTemplateFromImageTest >> testCanCreateATemplateFromImage [
 	self assert: (templateRepository hasLocalTemplateNamed: templateName).
 	template := templateRepository localTemplateNamed:templateName.
 	zipMemberNames := (ZipArchive new readFrom: template zipArchive) memberNames.
-	self assert: zipMemberNames size equals: 4.
 	self 
 		assertCollection: zipMemberNames 
 	 	hasSameElements: { templateName,'.image' . templateName,'.changes' . 'pharo.version' . Smalltalk image sourcesFile basename }.

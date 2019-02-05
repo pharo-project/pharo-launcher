@@ -24,6 +24,7 @@ function prepare_image() {
 	esac
 	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO | bash
 	wget --quiet -O - get.pharo.org/$ARCH_PATH$VM$PHARO | bash
+	cat $PHARO > 'pharo.version'
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
@@ -41,8 +42,10 @@ function package_user_version() {
 	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
 	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
 
-        # Avoid to have PL core dir set to the slave location
-	./pharo PharoLauncher.image eval --save "PhLTemplateSources classVarNamed: 'LauncherCoreDir' put: nil"
+        # Avoid to have PL core dir set to the slave location and having an outdated list of templates
+	./pharo PharoLauncher.image eval --save \
+		"PhLTemplateSources resetLauncherCoreDir.
+		PharoLauncher resetTemplateRepository"
 
 	# Create the platform-specific archives
 	mkdir One

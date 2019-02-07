@@ -5,7 +5,7 @@ PhLCommand >> asMenuItem [
 	^ MenuItemPresenter new
 		name: self title;
 		action: [ 
-			self validateModelIntegrity ifTrue: [self execute ]];
+			self validateModelIntegrity ifTrue: [ self executeCommand ]];
 		icon: self icon;
 		enabled: self isApplicable.
 ]

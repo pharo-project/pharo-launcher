@@ -45,13 +45,13 @@ PhLTemplateGroupRepository >> createZipArchiveFrom: anImage named: aString [
 	| archive |
 	archive := ZipArchive new.
 	archive
-		addFile: anImage imageFile fullName as: aString , '.image';
-		addFile: anImage changesFile fullName as: aString , '.changes'.
-	[ archive addFile: anImage sourcesFile fullName as: anImage sourcesFile basename ]
+		addFile: anImage imageFile as: aString , '.image';
+		addFile: anImage changesFile as: aString , '.changes'.
+	[ archive addFile: anImage sourcesFile as: anImage sourcesFile basename ]
 		on: NotFound 
 		do: [ :e | "ignore the file" ].
 	anImage versionFile exists
-		ifTrue: [ archive addFile: anImage versionFile fullName as: anImage versionFile basename ].
+		ifTrue: [ archive addFile: anImage versionFile as: anImage versionFile basename ].
 	archive writeToFileNamed: (PhLDownloadedTemplateGroup default baseDirectory / aString , 'zip') fullName
 ]
 

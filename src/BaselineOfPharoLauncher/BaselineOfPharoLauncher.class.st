@@ -38,19 +38,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #FastTableExtentions
 				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
-			package: #'ConfigurationOfPharoLauncher'; 
+			package: #'PharoLauncher-ZipArchive'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper' #'PharoLauncher-ZipArchive'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
 				requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
-			for: #'pharo6.x' do: [
-				spec 
-					package: #'PharoLauncher-Pharo6';
-	            package: #'PharoLauncher-Core' with: [ 
- 	               spec requires: #(#'PharoLauncher-Pharo6') ].
-			];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
@@ -62,25 +56,4 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
 			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray'). ].
-
-	spec for: #'pharo6.x' do: [	
-		self spec70: spec.
-		spec
-			baseline: 'PharoWin32' with: [
-				spec
-					repository: 'github://tesonep/pharo-com' ].
-		spec 
-			package: #'PharoLauncher-Env';
-			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'PharoLauncher-Env'). ];
-			package: #'PharoLauncher-Spec' with: [ 
-				spec requires: #(#'Spec70Compatibility') ] ]
-]
-
-{ #category : #baselines }
-BaselineOfPharoLauncher >> spec70: spec [
-	"for pharo6 compatibility"
-	spec
-		baseline: 'Spec70Compatibility' 
-		with: [ spec repository: 'github://pharo-contributions/Spec70Compatibility:v1.0.0/src' ]
 ]

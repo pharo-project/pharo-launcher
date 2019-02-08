@@ -19,10 +19,13 @@ PhLCreateTemplateFromImageTest >> tearDown [
 
 { #category : #tests }
 PhLCreateTemplateFromImageTest >> testCanCreateATemplateFromImage [
-	| image templateName templateRepository zipMemberNames |
+	| image templateName templateRepository zipMemberNames fs fileNames |
 	
 	templateName := 'newTemplate'.
-	image := PhLImage location: Smalltalk imageFile.
+	fs := FileSystem memory root.
+	fileNames := #('a.image' 'a.changes' 'pharo.version' 'a-23456ef.sources').
+	fileNames do: [ :fileName | (fs / fileName) ensureCreateFile ].
+	image := PhLImage location: fs / fileNames first.
 	templateRepository := PhLTemplateGroupRepository newFromGroups: { PhLDownloadedTemplateGroup named: 'cache group' }.
 	
 	templateRepository createLocalTemplateFrom: image named: templateName.
@@ -32,6 +35,6 @@ PhLCreateTemplateFromImageTest >> testCanCreateATemplateFromImage [
 	zipMemberNames := (ZipArchive new readFrom: template zipArchive) memberNames.
 	self 
 		assertCollection: zipMemberNames 
-	 	hasSameElements: { templateName,'.image' . templateName,'.changes' . 'pharo.version' . Smalltalk image sourcesFile basename }.
+	 	hasSameElements: {templateName , '.image' . templateName , '.changes'} , (fileNames allButFirst: 2).
 	
 ]

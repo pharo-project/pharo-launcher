@@ -86,3 +86,33 @@ PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersio
 		should: [ vmManager imageVersionFromFileWith: 'foo' ]
 		raise: PhLImageVersionDeterminationError 
 ]
+
+{ #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
+	| image command |
+	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
+	
+	command := image launchCommandWith: 'pharo' useSettings: true.
+	
+	self deny: (command includesSubstring: '--no-default-preferences')
+]
+
+{ #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
+	| image command |
+	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
+	
+	command := image launchCommandWith: 'pharo' useSettings: false.
+	
+	self assert: (command includesSubstring: '--no-default-preferences')
+]
+
+{ #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> testImageVersionDeterminationIsRunWithoutSettings [
+	| manager command |
+	manager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	
+	command := manager imageVersionCommandWithPreferences: false.
+	
+	self assert: (command includesSubstring: '--no-default-preferences')
+]

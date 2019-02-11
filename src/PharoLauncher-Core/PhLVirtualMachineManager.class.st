@@ -345,20 +345,15 @@ PhLVirtualMachineManager >> imageVersion [
 		[ [ self imageVersionFromFile ]
 			on: PhLImageVersionDeterminationError
 			do: [ "no version file, generate it"
-					[ self imageVersionFromFileWith: self imageVersionCommand ]
+					[ self imageVersionFromFileWith: ( self imageVersionCommandWithPreferences: false) ]
 						on: PhLImageVersionDeterminationError
 						do: [ "Command probably failed, try to run without --no-default-preferences option (not available in Pharo 2)"
-								self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: false) ] ] ]
+								self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: true) ] ] ]
 ]
 
 { #category : #accessing }
 PhLVirtualMachineManager >> imageVersion: aString [ 
 	imageVersion := aString
-]
-
-{ #category : #accessing }
-PhLVirtualMachineManager >> imageVersionCommand [
-	^ self imageVersionCommandWithPreferences: false
 ]
 
 { #category : #accessing }
@@ -375,7 +370,7 @@ PhLVirtualMachineManager >> imageVersionCommandWithPreferences: shouldUsePrefere
 						ifFalse: [ ' --headless ' ]) << $"
 				<< imageFile fullName
 				<< '" '.
-			shouldUsePreferences ifTrue: [ stream << '--no-default-preferences ' ].
+			shouldUsePreferences ifFalse: [ stream << '--no-default-preferences ' ].
 			stream << self imageVersionDeterminationScriptPath ]
 ]
 

@@ -130,11 +130,14 @@ function package_windows_version() {
 		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
 	fi
 
+	local installerVerion=bleedingEdge
 	if [ "$IS_RELEASE" = true ] ; then
-		INSTALLER_VERSION=$VERSION_NUMBER cmd /c windows\\build-launcher-installer.bat
-	else
-		INSTALLER_VERSION=bleedingEdge cmd /c windows\\build-launcher-installer.bat
+		# only get version number, not arch
+		# uses bash parameter expansion using a pattern. 
+		#   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+		installerVerion=${VERSION_NUMBER%-*}
 	fi
+	INSTALLER_VERSION=$installerVerion cmd /c windows\\build-launcher-installer.bat
 	if [ "$should_sign" = true ] ; then
 		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
 		rm pharo-windows-certificate.p12

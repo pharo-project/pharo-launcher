@@ -3,7 +3,7 @@
 properties([disableConcurrentBuilds()])
 
 try {
-  isRelease = false
+  isRealease = false
   version = getVersion()
   println "Building Pharo Launcher $version"
   cleanUploadFolderIfNeeded(uploadDirectoryName())
@@ -55,10 +55,10 @@ def buildArchitecture(architecture, pharoVersion) {
             unstash "pharo-launcher-one-${architecture}"
             // Disable signing for now because the signing process now requires manual action
             /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
-              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
+              bat "bash -c \"VERSION=$version ./build.sh win-package\""
             /* } else { 
               withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-                bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
+                bat "bash -c \"VERSION=$version SHOULD_SIGN=true ./build.sh win-package\""
               }              
             } */
             archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
@@ -180,7 +180,7 @@ def isPullRequest() {
 }
 
 def uploadDirectoryName() {
-  if (isRelease)
+  if (isRealease)
     return version
   else
     return 'bleedingEdge'
@@ -192,7 +192,7 @@ String getVersion() {
     if (commit) {
         desc = sh(script: "git describe --tags --always ${commit}", returnStdout: true)?.trim()
         if (isTag(desc)) {
-            isRelease = true
+            isRealease = true
             return desc
         }
     }
@@ -209,19 +209,8 @@ def getCommitHash(){
 
 @NonCPS
 boolean isTag(String desc) {
-    // We search for a commitish pattern
-    // [0-9A-Fa-f] => an hexadecimal
-    // {6,} => 6 or more time
-    // match instance of Matcher, !match => pattern not found
-    match = desc =~ /[0-9A-Fa-f]{6,}$/
+    match = desc =~ /.+-[0-9]+-g[0-9A-Fa-f]{6,}$/
     result = !match
     match = null // prevent serialisation
     return result
-
-    /* Test cases for the pattern (only last 2 should be true):
-    println isTag('12c26ce')
-    println isTag('8a5e1bcbe8e335a031a0458ad60382aeb0cadefc')
-    println isTag('1.6-17-g12c26ce')
-    println isTag('1.6')
-    println isTag('1.4.1') */
 }

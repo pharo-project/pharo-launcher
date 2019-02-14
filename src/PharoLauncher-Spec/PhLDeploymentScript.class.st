@@ -182,6 +182,15 @@ PhLDeploymentScript class >> removeFromStartupList [
 ]
 
 { #category : #actions }
+PhLDeploymentScript class >> resetPharoLauncherIcebergRepositoryLocation [
+	| phLCorePackage |
+	phLCorePackage := RPackageOrganizer default packageNamed: 'PharoLauncher-Core'.
+	(IceRepository registeredRepositoryIncludingPackage: phLCorePackage)
+		name: 'pharo-launcher';
+		location: nil
+]
+
+{ #category : #actions }
 PhLDeploymentScript class >> setProgressBarSizeAndPosition [
 	"increase size and reposition progress bar to the middle of screen to make it more visible"
 	SystemProgressMorph uniqueInstance

@@ -335,7 +335,7 @@ PharoLauncher >> refreshQuitOnLaunchCheckBox [
 
 { #category : #initialization }
 PharoLauncher >> setImageRepository: anImageRepository templateRepository: aTemplateRepository [
-	(self templatesMissingOnStartup or: self templatesClearedOnStartup)
+	((self templatesMissingOnStartup or: self templatesClearedOnStartup) or:[PhLTemplateSourcesUpdateChecker shouldRun] )
 		ifTrue: [ TemplateRepository := aTemplateRepository ].
 	imageRepository := anImageRepository
 ]

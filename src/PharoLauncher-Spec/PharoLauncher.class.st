@@ -121,12 +121,12 @@ PharoLauncher class >> settingsOn: aBuilder [
 										, 'When disabled, Launcher startup retains the Templates List from last run.' translated.
 		
 					(aBuilder setting: #hardResetPersistanceState)
-						label: 'Hard reset persistant state' translated;
+						label: 'Hard reset persistent state' translated;
 						target: PharoLauncher;
 						order: 70;
 						description:
 								'When PharoLauncher is updated through Monticello ' , 
-								'sometimes you need to clear persistant state to pick up new changes.' , String cr, 
+								'sometimes you need to clear persistent state to pick up new changes.' , String cr, 
 								'Clicking this box is a one-shot action, i.e. this state is also reset.', String cr, 
 								'Note, all open windows are clsoed and the application restarted.'
 								translated 

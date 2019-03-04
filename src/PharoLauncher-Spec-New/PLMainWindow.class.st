@@ -86,6 +86,14 @@ PLMainWindow >> initializeWidgets [
 { #category : #initialization }
 PLMainWindow >> initializeWindow: aWindow [
 	aWindow title: 'Pharo Launcher'.
+	aWindow toolBar: ( ToolBarPresenter new 
+		addItem: (ToolBarButton new
+			label: 'New';
+			icon: (self iconNamed: #smallNew);
+			help: 'Create or import an image';
+			action: [ "NENEN" ];
+			yourself);
+		yourself).
 	aWindow
 		menu:
 			(MenuBarPresenter new

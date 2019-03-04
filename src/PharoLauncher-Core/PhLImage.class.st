@@ -134,7 +134,7 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLImage >> initialize [
 
 	super initialize.

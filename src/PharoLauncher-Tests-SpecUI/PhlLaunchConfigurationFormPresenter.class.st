@@ -1,5 +1,5 @@
 Class {
-	#name : #PhlLaunchConfigurationForm,
+	#name : #PhlLaunchConfigurationFormPresenter,
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'nameLabeledInput',
@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #specs }
-PhlLaunchConfigurationForm class >> defaultSpec [
+PhlLaunchConfigurationFormPresenter class >> defaultSpec [
 	
 	^ SpecLayout composed
 		newColumn: [ :mainColumn |
@@ -20,56 +20,59 @@ PhlLaunchConfigurationForm class >> defaultSpec [
 ]
 
 { #category : #accessing }
-PhlLaunchConfigurationForm >> commandInput [
+PhlLaunchConfigurationFormPresenter >> commandInput [
 	
 	^ commandLabeledInput input
 ]
 
 { #category : #initialization }
-PhlLaunchConfigurationForm >> initialize [
+PhlLaunchConfigurationFormPresenter >> initialize [
 
 	self model ifNil: [ self model: PhlLaunchConfiguration new ].
 	super initialize.
 ]
 
 { #category : #initialization }
-PhlLaunchConfigurationForm >> initializeWidgets [
-	
+PhlLaunchConfigurationFormPresenter >> initializeWidgets [
 	nameLabeledInput := (self instantiate: LabelledPresenter)
 		label: 'Name';
 		input: self newTextInput;
 		yourself.
 	nameLabeledInput input
-		whenTextChanged: [ :newText | self model name: newText ];
+		whenTextChangedDo: [ :newText | self model name: newText ];
 		autoAccept: true.
-
 	commandLabeledInput := (self instantiate: LabelledPresenter)
 		label: 'Command';
 		input: self newTextInput;
 		yourself.
 	commandLabeledInput input
-		whenTextChanged: [ :newText | self model command: newText ];
+		whenTextChangedDo: [ :newText | self model command: newText ];
 		autoAccept: true.
-
-	self refreshModel.
+	self refreshPresenterFromModel
 ]
 
 { #category : #accessing }
-PhlLaunchConfigurationForm >> nameInput [
+PhlLaunchConfigurationFormPresenter >> nameInput [
 
 	^ nameLabeledInput input
 ]
 
 { #category : #initialization }
-PhlLaunchConfigurationForm >> refreshModel [
+PhlLaunchConfigurationFormPresenter >> refreshPresenterFromModel [
 
 	self nameInput text: self model name.
 	self commandInput text: self model command.
 ]
 
-{ #category : #initialization }
-PhlLaunchConfigurationForm >> whenChangedDo: aBlock [
+{ #category : #accessing }
+PhlLaunchConfigurationFormPresenter >> setModel: aModel [
 
-	self nameInput whenTextChanged: aBlock.
-	self commandInput whenTextChanged: aBlock.
+	self model: aModel.
+	self refreshPresenterFromModel.
+]
+
+{ #category : #initialization }
+PhlLaunchConfigurationFormPresenter >> whenChangedDo: aBlock [
+	self nameInput whenTextChangedDo: aBlock.
+	self commandInput whenTextChangedDo: aBlock
 ]

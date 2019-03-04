@@ -75,7 +75,7 @@ PhLLaunchConfigurationEditorTest >> testClickOnRemoveMenuItemRemovesConfiguratio
 	configuration := image launchConfigurations last.
 	index := editor configurationList indexOfItem: configuration.
 	
-	menu := editor configurationList rightClickItem: index.
+	menu := editor configurationList rightClickAtIndex: index.
 	menuItem := menu items detect: [ :each | each name = 'Delete' ].
 	
 	menuItem click.
@@ -113,12 +113,12 @@ PhLLaunchConfigurationEditorTest >> testOpenLaunchConfigurationEditorDoesNotFail
 PhLLaunchConfigurationEditorTest >> testRightClickOnLaunchConfigurationHasMenuItemRemove [
 	
 	| menu |
-	menu := editor configurationList rightClickItem: 1.
+	menu := editor configurationList rightClickAtIndex: 1.
 	self assert: (menu items anySatisfy: [ :each | each name = 'Delete' ])
 ]
 
 { #category : #tests }
 PhLLaunchConfigurationEditorTest >> testRightClickOutsideItemsHasNoMenuItem [
 
-	self assert: (editor configurationList rightClickItem: 5) isNil
+	self assert: (editor configurationList rightClickAtIndex: 5) isNil
 ]

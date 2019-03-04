@@ -127,7 +127,7 @@ PhLLaunchImageCommand >> execute [
 		ifTrue: [ self launchSelectedImage ]
 ]
 
-{ #category : #testing }
+{ #category : #initialization }
 PhLLaunchImageCommand >> initialize [
 
 	super initialize.

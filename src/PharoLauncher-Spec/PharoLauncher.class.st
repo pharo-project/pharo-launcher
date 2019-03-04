@@ -248,7 +248,7 @@ PharoLauncher >> initializeImageAndTemplates [
 
 { #category : #initialization }
 PharoLauncher >> initializeKeyboardShortcuts [
-	self widget
+	self adapter
 		bindKeyCombination: $f meta asKeyCombination
 		toAction: [ self actionSearch ]
 ]

@@ -65,20 +65,19 @@ PhlLaunchConfigurationEditor >> form [
 PhlLaunchConfigurationEditor >> initializeWidgets [
 	list := self newList.
 	list displayBlock: [ :configuration | configuration displayName ].
-	list whenSelectionChanged: [ :selection |
-		self flag: #bug.
-		"Uncomment to show bug"
-		"selection ifNotNil: [" self refreshForm" ]" ].
+	list
+		whenSelectionChangedDo: [ :selection | 
+			self flag: #bug.
+			"Uncomment to show bug"
+			"selection ifNotNil: ["
+			self refreshForm	" ]" ].
 	list menu: [ self buildMenu ].
-	
 	addButton := self newButton.
 	addButton label: 'Add configuration'.
 	addButton action: [ self addNewConfiguration ].
-	
-	form := self instantiate: PhlLaunchConfigurationForm.
+	form := self instantiate: PhlLaunchConfigurationFormPresenter.
 	form whenChangedDo: [ self refreshList ].
-	
-	self refreshList.
+	self refreshList
 ]
 
 { #category : #initialization }
@@ -87,7 +86,7 @@ PhlLaunchConfigurationEditor >> refreshForm [
 	self selectedConfiguration ifNil: [ ^ self ].
 	form
 		model: self selectedConfiguration;
-		refreshModel
+		refreshPresenterFromModel
 ]
 
 { #category : #initialization }
@@ -104,12 +103,10 @@ PhlLaunchConfigurationEditor >> removeSelectedItem [
 
 { #category : #accessing }
 PhlLaunchConfigurationEditor >> selectedConfiguration [
-	
-	^ list selectedItem
+	^ list selection selectedItem
 ]
 
 { #category : #accessing }
 PhlLaunchConfigurationEditor >> selectedConfiguration: aConfiguration [
-	
-	list setSelectedItem: aConfiguration
+	list selectItem: aConfiguration
 ]

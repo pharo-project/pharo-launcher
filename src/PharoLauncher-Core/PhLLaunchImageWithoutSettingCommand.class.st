@@ -19,12 +19,10 @@ PhLLaunchImageWithoutSettingCommand class >> positionInGroup [
 
 { #category : #accessing }
 PhLLaunchImageWithoutSettingCommand class >> title [
-	^ 'Launch without setting'
+	^ 'Launch without settings'
 ]
 
 { #category : #action }
-PhLLaunchImageWithoutSettingCommand >> launchImage: aPhLImage [
-	aPhLImage launchWithSettings: false.
-	self class quitOnLaunch
-		ifTrue: [ self quit ]
+PhLLaunchImageWithoutSettingCommand >> asMenuItem [
+	^ self asBasicMenuItem
 ]

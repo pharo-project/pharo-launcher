@@ -4,12 +4,15 @@ Uses the current VirtualMachine to launch the selected image.
 Class {
 	#name : #PhLLaunchImageCommand,
 	#superclass : #PhLImageCommand,
+	#instVars : [
+		'launchConfiguration'
+	],
 	#classVars : [
 		'CommandAnnouncer',
 		'QuitOnLaunch',
 		'WarnOnArchMismatch'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #accessing }
@@ -93,9 +96,42 @@ PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 ]
 
 { #category : #action }
+PhLLaunchImageCommand >> asBasicMenuItem [
+	^ super asMenuItem
+]
+
+{ #category : #action }
+PhLLaunchImageCommand >> asMenuItem [
+	^ MenuItemPresenter new
+		name: self title;
+		action: [ self validateModelIntegrity
+				ifTrue: [ self execute ] ];
+		icon: self icon;
+		enabled: self isApplicable;
+		subMenu: (MenuPresenter new addGroup: [ :group |
+			self model singleImage launchConfigurations do: [ :each |
+				group addMenuItem: (PhLLaunchImageCommand new
+					setModel: model;
+					launchConfiguration: each;
+					asBasicMenuItem).
+				].
+			group
+				addMenuItem: (PhLAddLaunchImageConfigurationCommand new
+					setModel: model;
+					asMenuItem) ])
+]
+
+{ #category : #action }
 PhLLaunchImageCommand >> execute [
 	self model hasSingleImageSelected
 		ifTrue: [ self launchSelectedImage ]
+]
+
+{ #category : #initialization }
+PhLLaunchImageCommand >> initialize [
+
+	super initialize.
+	launchConfiguration := PhlLaunchConfiguration default
 ]
 
 { #category : #testing }
@@ -103,9 +139,15 @@ PhLLaunchImageCommand >> isApplicable [
 	^ self model hasSingleImageSelected
 ]
 
+{ #category : #accessing }
+PhLLaunchImageCommand >> launchConfiguration: aPhlLaunchConfiguration [
+
+	launchConfiguration := aPhlLaunchConfiguration
+]
+
 { #category : #action }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
-	[ aPhLImage launchWithSettings: true ]
+	[ aPhLImage launchWithConfiguration: launchConfiguration ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	self class quitOnLaunch
@@ -122,12 +164,12 @@ PhLLaunchImageCommand >> launchImageFromDisk [
 		preview: false.
 	imagePath ifNil: [ ^ self ].
 	imagePath asFileReference isFile ifFalse: [ ^self ].
-	self launchImage: (PhLImage location: imagePath asFileReference)
+	self launchImage: (PhLImageModel on: (PhLImage location: imagePath asFileReference))
 ]
 
 { #category : #action }
 PhLLaunchImageCommand >> launchSelectedImage [
-	self launchImage: self model singleImage
+	self launchImage: (PhLImageModel on: self model singleImage)
 ]
 
 { #category : #accessing }
@@ -153,4 +195,10 @@ PhLLaunchImageCommand >> resourcesPath [
 	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
 	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
 	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
+]
+
+{ #category : #accessing }
+PhLLaunchImageCommand >> title [
+
+	^ 'Launch ', launchConfiguration displayName
 ]

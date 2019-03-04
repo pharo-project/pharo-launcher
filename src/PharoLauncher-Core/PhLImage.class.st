@@ -10,12 +10,13 @@ Class {
 	#superclass : #PhLObject,
 	#instVars : [
 		'file',
-		'meta'
+		'meta',
+		'launchConfigurations'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #settings }
@@ -45,6 +46,18 @@ PhLImage class >> settingsOn: aBuilder [
 		target: self;
 		order: 31;
 		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
+]
+
+{ #category : #'launch-configurations' }
+PhLImage >> addLaunchConfiguration: aPhlLaunchConfiguration [ 
+
+	^ launchConfigurations add: aPhlLaunchConfiguration
+]
+
+{ #category : #'launch-configurations' }
+PhLImage >> addNewLaunchConfiguration [
+	
+	^ self addLaunchConfiguration: PhlLaunchConfiguration new
 ]
 
 { #category : #quering }
@@ -88,6 +101,12 @@ PhLImage >> description [
 		ifFalse: [ 'There is no description.txt' ]
 ]
 
+{ #category : #accessing }
+PhLImage >> directory [
+	
+	^ file parent
+]
+
 { #category : #private }
 PhLImage >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
@@ -115,6 +134,15 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
+{ #category : #initialization }
+PhLImage >> initialize [
+
+	super initialize.
+	launchConfigurations := OrderedCollection new.
+	launchConfigurations add: PhlLaunchConfiguration default.
+	launchConfigurations add: PhlLaunchConfiguration defaultWithoutSettings.
+]
+
 { #category : #testing }
 PhLImage >> isHighlighted [
 	^ false
@@ -130,43 +158,31 @@ PhLImage >> lastModification [
 	^ self file modificationTime
 ]
 
-{ #category : #action }
-PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
-	| imagePath vmDirectoryPath command basicCommand |
-	imagePath := file pathString.
-	vmDirectoryPath := vmCommand asFileReference parent fullName.
-	command := String
-		streamContents: [ :cmd | 
-			cmd << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
-			Smalltalk os isUnix
-				ifTrue: [ cmd << (self exportLDLibraryPathCommandWith: vmDirectoryPath) << ' && export SQUEAK_PLUGINS="" && ' ].
-			cmd << vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
-			usePharoSettings ifFalse: [ cmd << ' --no-default-preferences' ] ].
-	basicCommand := self class launchInALoginShell
-		ifTrue: [ Smalltalk os isWindows
-				ifTrue: [ 'cmd /C ' , command ]
-				ifFalse: [ 'bash -l -c ''' , command , '''' ] ]
-		ifFalse: [ command ].
-	^ basicCommand utf8Encoded asString
+{ #category : #launching }
+PhLImage >> launch [
+
+	^ self launchWithConfiguration: PhlLaunchConfiguration default
+]
+
+{ #category : #accessing }
+PhLImage >> launchConfigurations [
+	
+	^ launchConfigurations
+]
+
+{ #category : #launching }
+PhLImage >> launchWithConfiguration: aPhlLaunchConfiguration [
+
+	^ PhLProcessWrapper
+		command: (aPhlLaunchConfiguration launchCommandForImage: self)
 ]
 
 { #category : #action }
 PhLImage >> launchWithSettings: usePharoSettings [
-	| architectureWarningEnabled continue |
-	architectureWarningEnabled := true.
-	continue := true.
-	[ [ | vmCommand |
-	vmCommand := (PhLVirtualMachineManager forImage: file pathString) vm.
-	^ PhLProcessWrapper command: (self launchCommandWith: vmCommand useSettings: usePharoSettings) ]
-		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
-		do: [ :error |  error uiAlert ] ]
-		on: PhLArchitectureMismatchWarning
-		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
-				ifTrue: [ 
-					architectureWarningEnabled := false. "only raise one warning"
-					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
-			continue ifTrue: [ warning resume ]. ]
+	
+	^ self launchWithConfiguration: (PhlLaunchConfiguration default
+		usePharoSettings: usePharoSettings;
+		yourself)
 ]
 
 { #category : #accessing }
@@ -207,12 +223,29 @@ PhLImage >> originTemplateName [
 	^ self originTemplate ifNotNil: [ :t | t name ] ifNil: [ '' ]
 ]
 
+{ #category : #accessing }
+PhLImage >> path [
+
+	^ file resolve path
+]
+
+{ #category : #accessing }
+PhLImage >> pathString [
+	^ file fullName
+]
+
 { #category : #printing }
 PhLImage >> printOn: aStream [
 	aStream
 		nextPutAll: 'Image (';
 		nextPutAll: self name;
 		nextPutAll: ')'
+]
+
+{ #category : #'launch-configurations' }
+PhLImage >> removeConfiguration: aPhlLaunchConfiguration [ 
+
+	^ launchConfigurations remove: aPhlLaunchConfiguration
 ]
 
 { #category : #'initialize-release' }

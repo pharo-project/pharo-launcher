@@ -30,7 +30,9 @@ PLMainWindow >> imageTable [
 PLMainWindow >> initializePresenter [
 
 	super initializePresenter.
-	imageTable whenSelectionChangedDo: [ :sel | runButton enabled: sel isEmpty not ]
+	
+	imageTable whenSelectionChangedDo: [ :sel | runButton enabled: sel isEmpty not ].
+	runButton whenActivatedDo: [ self runSelectedImage ]
 ]
 
 { #category : #initialization }
@@ -65,4 +67,10 @@ PLMainWindow >> readableDateFor: aDateAndTime [
 { #category : #accessing }
 PLMainWindow >> runButton [
 	^ runButton
+]
+
+{ #category : #events }
+PLMainWindow >> runSelectedImage [
+	
+	imageTable selection selectedItem launch
 ]

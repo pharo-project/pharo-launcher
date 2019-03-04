@@ -5,7 +5,8 @@ Class {
 		'instance',
 		'window',
 		'imageRepository',
-		'modifiedTime'
+		'modifiedTime',
+		'testImage'
 	],
 	#category : #'PharoLauncher-Spec-Tests'
 }
@@ -24,7 +25,8 @@ PLMainWindowTest >> setUp [
 	super setUp.
 	imageRepository := PLMemoryImageRepository new.
 	modifiedTime := DateAndTime now.
-	imageRepository addImage: (PhLMockImage named: 'TestImage' arch: '32' modified: modifiedTime).
+	testImage := PhLMockImage named: 'TestImage' arch: '32' modified: modifiedTime.
+	imageRepository addImage: testImage.
 	
 	instance := PLMainWindow on: imageRepository.
 	window := instance openWithSpec
@@ -104,6 +106,23 @@ PLMainWindowTest >> testNoSelectionDisablesRunButton [
 
 	instance imageTable unselectAll. 
 	self deny: instance runButton isEnabled
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testNonSelectionAndClickRunButtonLaunchesImage [
+
+	instance runButton click.
+	
+	self deny: testImage isLaunched
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testSelectingImageAndClickRunButtonLaunchesImage [
+
+	instance imageTable selectIndex: 1.
+	instance runButton click.
+	
+	self assert: testImage isLaunched
 ]
 
 { #category : #tests }

@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'name',
 		'architecture',
-		'modified'
+		'modified',
+		'launched'
 	],
 	#category : #'PharoLauncher-Spec-Tests'
 }
@@ -32,9 +33,28 @@ PhLMockImage >> architecture: aString [
 ]
 
 { #category : #accessing }
+PhLMockImage >> initialize [
+
+	super initialize.
+	launched := false
+]
+
+{ #category : #accessing }
+PhLMockImage >> isLaunched [ 
+
+	^ launched
+]
+
+{ #category : #accessing }
 PhLMockImage >> lastModification [
 	
 	^ modified
+]
+
+{ #category : #accessing }
+PhLMockImage >> launch [
+
+	launched := true
 ]
 
 { #category : #accessing }

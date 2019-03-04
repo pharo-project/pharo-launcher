@@ -33,6 +33,12 @@ PhLMockImage >> architecture: aString [
 ]
 
 { #category : #accessing }
+PhLMockImage >> description [
+	
+	^ String loremIpsum: 100
+]
+
+{ #category : #accessing }
 PhLMockImage >> initialize [
 
 	super initialize.
@@ -58,6 +64,17 @@ PhLMockImage >> launch [
 ]
 
 { #category : #accessing }
+PhLMockImage >> location [
+	
+	^ FileSystem workingDirectory
+]
+
+{ #category : #accessing }
+PhLMockImage >> modified [
+	^ modified
+]
+
+{ #category : #accessing }
 PhLMockImage >> modified: aDateAndTime [ 
 	
 	modified:= aDateAndTime 
@@ -73,4 +90,10 @@ PhLMockImage >> name [
 PhLMockImage >> name: aString [ 
 	
 	name := aString
+]
+
+{ #category : #'as yet unclassified' }
+PhLMockImage >> originTemplateName [
+	
+	^ 'I am a template!'
 ]

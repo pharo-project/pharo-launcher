@@ -1,12 +1,8 @@
 Class {
 	#name : #PLMainWindowTest,
-	#superclass : #TestCase,
+	#superclass : #PLAbstractSpecTestCase,
 	#instVars : [
-		'instance',
-		'window',
-		'imageRepository',
-		'modifiedTime',
-		'testImage'
+		'imageRepository'
 	],
 	#category : #'PharoLauncher-Spec-Tests'
 }
@@ -23,21 +19,12 @@ PLMainWindowTest >> assertImageColumn: aColumnName equals: aValue [
 PLMainWindowTest >> setUp [ 
 
 	super setUp.
+
 	imageRepository := PLMemoryImageRepository new.
-	modifiedTime := DateAndTime now.
-	testImage := PhLMockImage named: 'TestImage' arch: '32' modified: modifiedTime.
 	imageRepository addImage: testImage.
 	
 	instance := PLMainWindow on: imageRepository.
 	window := instance openWithSpec
-
-]
-
-{ #category : #tests }
-PLMainWindowTest >> tearDown [
-
-	instance ifNotNil: [ :x | x window close ].
-	super tearDown
 
 ]
 
@@ -130,6 +117,13 @@ PLMainWindowTest >> testSelectionEnablesRunButton [
 
 	instance imageTable selectIndex: 1. 
 	self assert: instance runButton isEnabled
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testSelectionUpdatesDescriptionPanel [
+
+	instance imageTable selectIndex: 1. 
+	self assert: instance descriptionPanel model equals: testImage
 ]
 
 { #category : #tests }

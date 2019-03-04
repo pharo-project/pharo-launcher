@@ -3,7 +3,8 @@ Class {
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'runButton',
-		'imageTable'
+		'imageTable',
+		'descriptionPanel'
 	],
 	#category : #'PharoLauncher-Spec-New'
 }
@@ -13,11 +14,23 @@ PLMainWindow class >> defaultSpec [
 
 	^ SpecBoxLayout newVertical
 			add: (SpecPanedLayout newHorizontal
-				add: #imageTable);
+				add: #imageTable;
+				add: #descriptionPanel;
+				yourself);
 			add: #runButton expand: false fill: false padding: 0;
 			yourself
 			
 	
+]
+
+{ #category : #accessing }
+PLMainWindow >> descriptionPanel [
+	^ descriptionPanel
+]
+
+{ #category : #accessing }
+PLMainWindow >> descriptionPanel: anObject [
+	descriptionPanel := anObject
 ]
 
 { #category : #accessing }
@@ -26,12 +39,22 @@ PLMainWindow >> imageTable [
 	^ imageTable
 ]
 
+{ #category : #accessing }
+PLMainWindow >> imageTable: anObject [
+	imageTable := anObject
+]
+
 { #category : #initialization }
 PLMainWindow >> initializePresenter [
 
 	super initializePresenter.
 	
-	imageTable whenSelectionChangedDo: [ :sel | runButton enabled: sel isEmpty not ].
+	imageTable whenSelectionChangedDo: [ :sel | | selectedImage |
+		selectedImage := sel isEmpty
+			ifTrue: [ PhLNullImage new ]
+			ifFalse: [ sel selectedItem ].
+		descriptionPanel model: selectedImage.
+		runButton enabled: sel isEmpty not ].
 	runButton whenActivatedDo: [ self runSelectedImage ]
 ]
 
@@ -49,7 +72,9 @@ PLMainWindow >> initializeWidgets [
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
 		addColumn: (StringTableColumn title: 'Architecture' evaluated: #arch);
 		addColumn: (StringTableColumn title: 'Modified' evaluated: [:e | self readableDateFor: e lastModification]);
-		yourself
+		yourself.
+		
+	descriptionPanel := self instantiate: PLImageDescriptionPanel on: PhLNullImage new
 ]
 
 { #category : #initialization }
@@ -67,6 +92,11 @@ PLMainWindow >> readableDateFor: aDateAndTime [
 { #category : #accessing }
 PLMainWindow >> runButton [
 	^ runButton
+]
+
+{ #category : #accessing }
+PLMainWindow >> runButton: anObject [
+	runButton := anObject
 ]
 
 { #category : #events }

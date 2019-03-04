@@ -186,6 +186,11 @@ PhLImage >> launchWithSettings: usePharoSettings [
 ]
 
 { #category : #accessing }
+PhLImage >> location [
+	^file
+]
+
+{ #category : #accessing }
 PhLImage >> meta [
 	^ meta ifNil: [  meta := self metaFromDirectory: file parent ]
 ]

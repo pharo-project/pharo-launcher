@@ -3,7 +3,7 @@ Class {
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'runButton',
-		'imageList'
+		'imageTable'
 	],
 	#category : #'PharoLauncher-Spec-New'
 }
@@ -13,7 +13,7 @@ PLMainWindow class >> defaultSpec [
 
 	^ SpecBoxLayout newVertical
 			add: (SpecPanedLayout newHorizontal
-				add: #imageList);
+				add: #imageTable);
 			add: #runButton expand: false fill: false padding: 0;
 			yourself
 			
@@ -21,16 +21,16 @@ PLMainWindow class >> defaultSpec [
 ]
 
 { #category : #accessing }
-PLMainWindow >> imageList [
+PLMainWindow >> imageTable [
 	
-	^ imageList
+	^ imageTable
 ]
 
 { #category : #initialization }
 PLMainWindow >> initializePresenter [
 
 	super initializePresenter.
-	imageList whenSelectionChangedDo: [ :sel | runButton enabled: sel isEmpty not ]
+	imageTable whenSelectionChangedDo: [ :sel | runButton enabled: sel isEmpty not ]
 ]
 
 { #category : #initialization }
@@ -42,8 +42,11 @@ PLMainWindow >> initializeWidgets [
 		enabled: false;
 		yourself.
 		
-	imageList := self newList
+	imageTable := self newTable
 		items: self model images;
+		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
+		addColumn: (StringTableColumn title: 'Architecture' evaluated: #arch);
+		addColumn: (StringTableColumn title: 'Modified' evaluated: [:e | self readableDateFor: e lastModification]);
 		yourself
 ]
 
@@ -51,6 +54,12 @@ PLMainWindow >> initializeWidgets [
 PLMainWindow >> initializeWindow: aWindow [
 
 	aWindow title: 'Pharo Launcher'
+]
+
+{ #category : #formating }
+PLMainWindow >> readableDateFor: aDateAndTime [ 
+	
+	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime 
 ]
 
 { #category : #accessing }

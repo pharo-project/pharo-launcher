@@ -3,16 +3,30 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'instance',
-		'window'
+		'window',
+		'imageRepository',
+		'modifiedTime'
 	],
 	#category : #'PharoLauncher-Spec-Tests'
 }
+
+{ #category : #asserting }
+PLMainWindowTest >> assertImageColumn: aColumnName equals: aValue [ 
+
+	| column |
+	column := instance imageTable columns detect: [ :e | e title = aColumnName ].
+	self assert: (column readObject: imageRepository images first) equals: aValue
+]
 
 { #category : #tests }
 PLMainWindowTest >> setUp [ 
 
 	super setUp.
-	instance := PLMainWindow on: PhLDirectoryBasedImageRepository default.
+	imageRepository := PLMemoryImageRepository new.
+	modifiedTime := DateAndTime now.
+	imageRepository addImage: (PhLMockImage named: 'TestImage' arch: '32' modified: modifiedTime).
+	
+	instance := PLMainWindow on: imageRepository.
 	window := instance openWithSpec
 
 ]
@@ -26,15 +40,51 @@ PLMainWindowTest >> tearDown [
 ]
 
 { #category : #tests }
+PLMainWindowTest >> testImageArchColumnDisplaysCorrectValue [
+
+	self assertImageColumn: 'Architecture' equals: '32'
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testImageModifiedColumnDisplaysCorrectValue [
+
+	self assertImageColumn: 'Modified' equals: 'just now' asText
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testImageNameColumnDisplaysCorrectValue [
+
+	self assertImageColumn: 'Name' equals: 'TestImage'
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testImagesHasArchColumn [
+
+	self assert: (instance imageTable columns anySatisfy: [ :e | e title = 'Architecture' ])
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testImagesHasModifiedColumn [
+
+	self assert: (instance imageTable columns anySatisfy: [ :e | e title = 'Modified' ])
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testImagesHasNameColumn [
+
+	self assert: (instance imageTable columns anySatisfy: [ :e | e title = 'Name' ])
+]
+
+{ #category : #tests }
 PLMainWindowTest >> testLauncherHasButton [
 
 	self assert: (window hasPresenter: instance runButton)
 ]
 
 { #category : #tests }
-PLMainWindowTest >> testLauncherHasImageList [
+PLMainWindowTest >> testLauncherHasImages [
 
-	self assert: (window hasPresenter: instance imageList)
+	self assert: (window hasPresenter: instance imageTable)
 ]
 
 { #category : #tests }
@@ -46,20 +96,20 @@ PLMainWindowTest >> testNewLauncherHasDisabledRunButton [
 { #category : #tests }
 PLMainWindowTest >> testNewLauncherHasEmptySelection [
 
-	self assert: instance imageList selection isEmpty
+	self assert: instance imageTable selection isEmpty
 ]
 
 { #category : #tests }
 PLMainWindowTest >> testNoSelectionDisablesRunButton [
 
-	instance imageList unselectAll. 
+	instance imageTable unselectAll. 
 	self deny: instance runButton isEnabled
 ]
 
 { #category : #tests }
 PLMainWindowTest >> testSelectionEnablesRunButton [
 
-	instance imageList selectIndex: 1. 
+	instance imageTable selectIndex: 1. 
 	self assert: instance runButton isEnabled
 ]
 

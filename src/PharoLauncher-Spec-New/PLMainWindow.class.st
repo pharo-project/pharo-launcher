@@ -45,6 +45,12 @@ PLMainWindow >> imageTable: anObject [
 ]
 
 { #category : #initialization }
+PLMainWindow >> initialExtent [
+ 
+	^ 1200@800
+]
+
+{ #category : #initialization }
 PLMainWindow >> initializePresenter [
 
 	super initializePresenter.
@@ -79,8 +85,41 @@ PLMainWindow >> initializeWidgets [
 
 { #category : #initialization }
 PLMainWindow >> initializeWindow: aWindow [
-
-	aWindow title: 'Pharo Launcher'
+	aWindow title: 'Pharo Launcher'.
+	aWindow
+		menu:
+			(MenuBarPresenter new
+				addGroup: [ :group | 
+					group
+						addItem: [ :item | 
+							item
+								name: 'Pharo Launcher';
+								subMenu:
+									(MenuPresenter new
+										addGroup: [ :fileGroup | 
+											fileGroup
+												addItem: [ :subitem | 
+													subitem
+														name: 'Settings...';
+														action: [  ] ];
+												addItem: [ :subitem | 
+													subitem
+														name: 'Manage VMs...';
+														action: [  ] ];
+												addItem: [ :subitem | 
+													subitem
+														name: 'Quit';
+														action: [  ] ] ]) ];
+						addItem: [ :item | 
+							item
+								name: 'Help';
+								subMenu: 	(MenuPresenter new
+										addGroup: [ :fileGroup | 
+											fileGroup
+												addItem: [ :subitem | 
+													subitem
+														name: 'About...';
+														action: [  ] ]])]])
 ]
 
 { #category : #formating }

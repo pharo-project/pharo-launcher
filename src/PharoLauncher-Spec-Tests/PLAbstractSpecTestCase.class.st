@@ -28,7 +28,7 @@ PLAbstractSpecTestCase >> setUp [
 { #category : #tests }
 PLAbstractSpecTestCase >> tearDown [
 
-	instance ifNotNil: [ :x | x window close ].
+	instance ifNotNil: [ :x | x application close ].
 	super tearDown
 
 ]

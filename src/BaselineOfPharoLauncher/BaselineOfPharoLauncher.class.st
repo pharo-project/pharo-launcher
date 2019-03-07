@@ -22,11 +22,11 @@ BaselineOfPharoLauncher >> baseline: spec [
 					versionString: #'bleedingEdge';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/hernan/ProcessWrapper/main/' ];
-			project: 'Ston' with: [
+			"project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;
 					versionString: #'stable';
-					repository: 'http://ss3.gemstone.com/ss/STON' ];
+					repository: 'http://ss3.gemstone.com/ss/STON' ];"
 			project: 'XMLParser' with: [
 				spec
 					className: #ConfigurationOfXMLParser;
@@ -40,7 +40,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		spec
 			package: #'PharoLauncher-ZipArchive'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper' #'PharoLauncher-ZipArchive'). ];
+				spec requires: #(#'XMLParser' #'OSProcess' #'ProcessWrapper' #'PharoLauncher-ZipArchive'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec

@@ -8,6 +8,7 @@ Class {
 PLImageDescriptionPanelTest >> createWithModel: anImage [
 
 	instance := PLImageDescriptionPanel on: anImage.
+	instance application: SpecApplication new.
 	window := instance openWithSpec
 ]
 

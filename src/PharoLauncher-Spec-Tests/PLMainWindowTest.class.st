@@ -8,6 +8,13 @@ Class {
 }
 
 { #category : #asserting }
+PLMainWindowTest >> assert: anInstance hasToolbarButtonLabelled: aLabel [
+
+	self assert: (anInstance window toolBar items values flattened anySatisfy: [ :any |
+		any label = aLabel ])
+]
+
+{ #category : #asserting }
 PLMainWindowTest >> assertImageColumn: aColumnName equals: aValue [ 
 
 	| column |
@@ -24,8 +31,26 @@ PLMainWindowTest >> setUp [
 	imageRepository addImage: testImage.
 	
 	instance := PLMainWindow on: imageRepository.
+	instance application: SpecApplication new.
 	window := instance openWithSpec
 
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testClickNewButtonOpensCreateImageDialog [
+
+	| newButton newImageDialog |
+	newButton := instance window toolBar itemNamed: 'New'.
+	newButton click.
+	
+	newImageDialog := instance application windows detect: [ :any | any model isKindOf: PLCreateImageDialogPresenter ].
+	self assert: newImageDialog isDialog
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testHasANewButtonInToolbar [
+
+	self assert: instance hasToolbarButtonLabelled: 'New'
 ]
 
 { #category : #tests }
@@ -101,6 +126,18 @@ PLMainWindowTest >> testNonSelectionAndClickRunButtonLaunchesImage [
 	instance runButton click.
 	
 	self deny: testImage isLaunched
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testPharoLauncherApplicationHasSingleWindowAtStart [
+
+	self assert: instance application windows size equals: 1
+]
+
+{ #category : #tests }
+PLMainWindowTest >> testPharoLauncherApplicationSingleWindowIsMainWindow [
+
+	self assert: instance application windows anyOne model equals: instance
 ]
 
 { #category : #tests }

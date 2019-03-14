@@ -13,7 +13,7 @@ Class {
 PLMainWindow class >> defaultSpec [
 
 	^ SpecBoxLayout newVertical
-			add: (SpecPanedLayout newHorizontal
+			add: (SpecPanedLayout newVertical
 				add: #imageTable;
 				add: #descriptionPanel;
 				yourself);
@@ -21,6 +21,17 @@ PLMainWindow class >> defaultSpec [
 			yourself
 			
 	
+]
+
+{ #category : #initialization }
+PLMainWindow >> buildToolbar [
+
+	^ self newToolbarPresenter
+		addButtonLabel: 'New'
+		iconNamed: #smallNew
+		help: 'Create or import an image'
+		action: [ self openNewCreateImageDialog ];
+		yourself
 ]
 
 { #category : #accessing }
@@ -85,16 +96,14 @@ PLMainWindow >> initializeWidgets [
 
 { #category : #initialization }
 PLMainWindow >> initializeWindow: aWindow [
+
+	super initializeWindow: aWindow.
+
 	aWindow title: 'Pharo Launcher'.
-	aWindow toolBar: ( ToolBarPresenter new 
-		addItem: (ToolBarButton new
-			label: 'New';
-			icon: (self iconNamed: #smallNew);
-			help: 'Create or import an image';
-			action: [ "NENEN" ];
-			yourself);
-		yourself).
-	aWindow
+
+	aWindow toolBar: self buildToolbar.
+
+"	aWindow
 		menu:
 			(MenuBarPresenter new
 				addGroup: [ :group | 
@@ -127,7 +136,16 @@ PLMainWindow >> initializeWindow: aWindow [
 												addItem: [ :subitem | 
 													subitem
 														name: 'About...';
-														action: [  ] ]])]])
+														action: [  ] ]])]])"
+]
+
+{ #category : #navigation }
+PLMainWindow >> openNewCreateImageDialog [
+	
+	| repository |
+	repository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build.
+	
+	(self instantiate: PLCreateImageDialogPresenter on: repository) openDialogWithSpec
 ]
 
 { #category : #formating }

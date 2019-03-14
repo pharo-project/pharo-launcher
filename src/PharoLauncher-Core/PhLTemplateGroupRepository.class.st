@@ -24,6 +24,12 @@ PhLTemplateGroupRepository >> addGroup: aGroup [
 	groupCaches addLast: cache.
 ]
 
+{ #category : #accessing }
+PhLTemplateGroupRepository >> categories [
+	
+	^ self roots
+]
+
 { #category : #action }
 PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
 	(self hasLocalTemplateNamed: aString)

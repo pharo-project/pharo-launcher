@@ -43,7 +43,7 @@ PLTemplateList >> initializeWidgets [
 	templateTree := self newTreeTable.
 	
 	templateTree 
-		addColumn: (StringTableColumn evaluated: #printString);
+		addColumn: (StringTableColumn evaluated: #name);
 		hideColumnHeaders.
 		
 	self transmit

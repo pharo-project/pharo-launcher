@@ -51,7 +51,7 @@ PLCreateImageDialog >> initializeWidgets [
 	self transmit 
 		from: templateList;
 		to: nameInputField;
-		transform: [ :aTemplate | (aTemplate ifNil: [ '' ]) asString ]
+		transform: [ :aTemplate | self nameSuggestionFor: aTemplate ]
 ]
 
 { #category : #initialization }
@@ -61,4 +61,11 @@ PLCreateImageDialog >> initializeWindow: aWindowPresenter [
 		title: 'Create new image';
 		initialExtent: 800@500;
 		centered
+]
+
+{ #category : #private }
+PLCreateImageDialog >> nameSuggestionFor: aTemplate [
+	
+	aTemplate ifNil: [ ^ '' ].
+	^ aTemplate name
 ]

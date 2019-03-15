@@ -29,6 +29,20 @@ PLCreateImageDialog >> imageTypeList [
 ]
 
 { #category : #initialization }
+PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
+	"used to initialize the model in the case of the use into a dialog window.
+	 Override this to set buttons other than the default (Ok, Cancel)."
+	
+	aDialogWindowPresenter
+		addButton: 'Cancel' do: [ :presenter | 
+			presenter triggerCancelAction.
+			presenter close ];
+		addButton: 'Create' do: [ :presenter | 
+			presenter triggerOkAction.
+			presenter close ]
+]
+
+{ #category : #initialization }
 PLCreateImageDialog >> initializeWidgets [
 
 	nameInputLabel := self newLabel.
@@ -36,6 +50,15 @@ PLCreateImageDialog >> initializeWidgets [
 	nameInputField := self newTextInput.
 	
 	imageTypeList := self instantiate: PLTemplateList on: self model.
+]
+
+{ #category : #initialization }
+PLCreateImageDialog >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter 
+		title: 'Create new image';
+		initialExtent: 600@500;
+		centered
 ]
 
 { #category : #accessing }

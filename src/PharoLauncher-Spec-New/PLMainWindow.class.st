@@ -176,7 +176,6 @@ PLMainWindow >> openNewCreateImageDialog [
 		newApplication: self application 
 		model: repository) 
 		openDialogWithSpec
-		centered
 ]
 
 { #category : #private }

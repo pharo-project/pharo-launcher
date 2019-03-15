@@ -13,14 +13,12 @@ Class {
 PLMainWindow class >> defaultSpec [
 
 	^ SpecBoxLayout newVertical
-			add: (SpecPanedLayout newVertical
-				add: #imageTable;
-				add: #descriptionPanel;
-				yourself);
-			add: #runButton expand: false fill: false padding: 0;
-			yourself
-			
-	
+		add: (SpecPanedLayout newVertical
+			add: #imageTable;
+			add: #descriptionPanel;
+			yourself);
+		add: #buttonBar expand: false fill: false padding: 0;
+		yourself
 ]
 
 { #category : #initialization }

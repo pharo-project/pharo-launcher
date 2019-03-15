@@ -4,7 +4,8 @@ Class {
 	#instVars : [
 		'runButton',
 		'imageTable',
-		'descriptionPanel'
+		'descriptionPanel',
+		'buttonBar'
 	],
 	#category : #'PharoLauncher-Spec-New'
 }
@@ -22,13 +23,44 @@ PLMainWindow class >> defaultSpec [
 ]
 
 { #category : #initialization }
+PLMainWindow >> buildFileMenu [
+
+	^ MenuPresenter new
+		addGroup: [ :group | group
+			addItem: [ :item | item name: 'Settings...'; action: [  ] ] ];
+		addGroup: [ :group | group
+			addItem: [ :item | item name: 'Manage VMs...'; action: [  ] ] ];
+		addGroup: [ :group | group
+			addItem: [ :item | item name: 'Quit'; action: [  ] ] ];
+		yourself
+]
+
+{ #category : #initialization }
+PLMainWindow >> buildHelpMenu [
+	
+	^ MenuPresenter new 
+		addGroup: [ :fileGroup | fileGroup
+			addItem: [ :subitem | subitem name: 'About...'; action: [  ] ] ];
+		yourself
+]
+
+{ #category : #initialization }
+PLMainWindow >> buildMenuBar [
+
+	^ MenuBarPresenter new 
+		addGroup: [ :group | group
+			addItem: [ :item | item name: 'File'; subMenu: self buildFileMenu ];
+			addItem: [ :item | item name: 'Help'; subMenu: self buildHelpMenu ] ]
+]
+
+{ #category : #initialization }
 PLMainWindow >> buildToolbar [
 
 	^ self newToolbarPresenter
 		addButtonLabel: 'New'
-		iconNamed: #smallNew
-		help: 'Create or import an image'
-		action: [ self openNewCreateImageDialog ];
+			iconNamed: #smallNew
+			help: 'Create or import an image'
+			action: [ self openNewCreateImageDialog ];
 		yourself
 ]
 
@@ -56,7 +88,7 @@ PLMainWindow >> imageTable: anObject [
 { #category : #initialization }
 PLMainWindow >> initialExtent [
  
-	^ 1200@800
+	^ 700@500
 ]
 
 { #category : #initialization }
@@ -76,65 +108,37 @@ PLMainWindow >> initializePresenter [
 { #category : #initialization }
 PLMainWindow >> initializeWidgets [
 
-	runButton := self newButton
-		label: 'Run';
-		help: 'Runs the selected image.';
-		enabled: false;
-		yourself.
-		
 	imageTable := self newTable
 		items: self model images;
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
 		addColumn: (StringTableColumn title: 'Architecture' evaluated: #arch);
-		addColumn: (StringTableColumn title: 'Modified' evaluated: [:e | self readableDateFor: e lastModification]);
+		addColumn: (StringTableColumn 
+			title: 'Modified' 
+			evaluated: [ :e | self readableDateFor: e lastModification ]);
+		yourself.
+
+	descriptionPanel := self instantiate: PLImageDescriptionPanel on: PhLNullImage new.
+	
+	buttonBar := self newButtonBar 
+		placeAtEnd;
+		add: (runButton := self newButton
+			label: 'Run';
+			help: 'Runs the selected image.';
+			enabled: false;
+			yourself);
 		yourself.
 		
-	descriptionPanel := self instantiate: PLImageDescriptionPanel on: PhLNullImage new
+
 ]
 
 { #category : #initialization }
 PLMainWindow >> initializeWindow: aWindow [
 
 	super initializeWindow: aWindow.
-
-	aWindow title: 'Pharo Launcher'.
-
-	aWindow toolBar: self buildToolbar.
-
-"	aWindow
-		menu:
-			(MenuBarPresenter new
-				addGroup: [ :group | 
-					group
-						addItem: [ :item | 
-							item
-								name: 'Pharo Launcher';
-								subMenu:
-									(MenuPresenter new
-										addGroup: [ :fileGroup | 
-											fileGroup
-												addItem: [ :subitem | 
-													subitem
-														name: 'Settings...';
-														action: [  ] ];
-												addItem: [ :subitem | 
-													subitem
-														name: 'Manage VMs...';
-														action: [  ] ];
-												addItem: [ :subitem | 
-													subitem
-														name: 'Quit';
-														action: [  ] ] ]) ];
-						addItem: [ :item | 
-							item
-								name: 'Help';
-								subMenu: 	(MenuPresenter new
-										addGroup: [ :fileGroup | 
-											fileGroup
-												addItem: [ :subitem | 
-													subitem
-														name: 'About...';
-														action: [  ] ]])]])"
+	aWindow 
+		title: 'Pharo Launcher';
+		toolBar: self buildToolbar;
+		menu: self buildMenuBar
 ]
 
 { #category : #navigation }

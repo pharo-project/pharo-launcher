@@ -10,7 +10,9 @@ Class {
 
 { #category : #specs }
 PLCreateImageDialog class >> defaultSpec [
+
 	^ SpecBoxLayout newVertical
+		borderWidth: 10;
 		spacing: 10;
 		add: 'Select image template' expand: false fill: false padding: 0;
 		add: #templateList expand: true fill: true padding: 0;
@@ -57,6 +59,6 @@ PLCreateImageDialog >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter 
 		title: 'Create new image';
-		initialExtent: 600@500;
+		initialExtent: 800@500;
 		centered
 ]

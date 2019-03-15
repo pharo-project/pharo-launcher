@@ -11,12 +11,8 @@ Class {
 { #category : #specs }
 PLTemplateList class >> defaultSpec [
 
-"	^ SpecBoxLayout newHorizontal 
-		add: #categoryList;
-		add: #templateTree;
-		yourself
-"	
-	^ SpecBoxLayout newHorizontal 
+	^ SpecBoxLayout newHorizontal
+		spacing: 10;
 		add: (SpecScrollableLayout with: #categoryList);
 		add: (SpecScrollableLayout with: #templateTree);
 		yourself
@@ -29,13 +25,15 @@ PLTemplateList >> categoryList [
 ]
 
 { #category : #initialization }
+PLTemplateList >> initializePorts [
+
+	self addOutputPort: ListSelectionPresenterPort new
+]
+
+{ #category : #initialization }
 PLTemplateList >> initializePresenter [
 
-	categoryList items: self model categories.
-
-	categoryList
-		whenSelectionChangedDo: [ :selection | 
-			templateTree roots: selection selectedItem children ]
+	categoryList items: self model categories
 ]
 
 { #category : #initialization }
@@ -46,7 +44,13 @@ PLTemplateList >> initializeWidgets [
 	
 	templateTree 
 		addColumn: (StringTableColumn evaluated: #printString);
-		hideColumnHeaders 
+		hideColumnHeaders.
+		
+	self transmit
+		from: categoryList;
+		to: templateTree;
+		transform: [ :aGroup | aGroup children ]
+		
 
 ]
 
@@ -66,4 +70,10 @@ PLTemplateList >> selectedImage [
 PLTemplateList >> templateTree [
 	
 	^ templateTree
+]
+
+{ #category : #events }
+PLTemplateList >> whenSelectionChangedDo: aBlock [
+
+	templateTree whenSelectionChangedDo: aBlock
 ]

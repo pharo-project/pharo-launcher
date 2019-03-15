@@ -3,8 +3,7 @@ Class {
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'nameInputField',
-		'nameInputLabel',
-		'imageTypeList'
+		'templateList'
 	],
 	#category : #'PharoLauncher-Spec-New'
 }
@@ -12,20 +11,19 @@ Class {
 { #category : #specs }
 PLCreateImageDialog class >> defaultSpec [
 	^ SpecBoxLayout newVertical
-		add:
-			(SpecGridLayout new
-				add: #nameInputLabel at: 1 @ 1;
+		spacing: 10;
+		add: 'Select image template' expand: false fill: false padding: 0;
+		add: #templateList expand: true fill: true padding: 0;
+		add: (SpecGridLayout new
+				borderWidth: 0;
+				rowSpacing: 0;
+				add: 'Image name' at: 1 @ 1;
 				add: #nameInputField at: 2 @ 1;
 				yourself)
-		expand: false fill: false padding: 0	;
-		add: #imageTypeList expand: true fill: true padding: 5	;
+			expand: false 
+			fill: false 
+			padding: 0;
 		yourself
-]
-
-{ #category : #accessing }
-PLCreateImageDialog >> imageTypeList [
-	
-	^ imageTypeList
 ]
 
 { #category : #initialization }
@@ -45,11 +43,13 @@ PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
 { #category : #initialization }
 PLCreateImageDialog >> initializeWidgets [
 
-	nameInputLabel := self newLabel.
-	nameInputLabel label: 'Name:'.
+	templateList := self instantiate: PLTemplateList on: self model.
 	nameInputField := self newTextInput.
 	
-	imageTypeList := self instantiate: PLTemplateList on: self model.
+	self transmit 
+		from: templateList;
+		to: nameInputField;
+		transform: [ :aTemplate | (aTemplate ifNil: [ '' ]) asString ]
 ]
 
 { #category : #initialization }
@@ -59,16 +59,4 @@ PLCreateImageDialog >> initializeWindow: aWindowPresenter [
 		title: 'Create new image';
 		initialExtent: 600@500;
 		centered
-]
-
-{ #category : #accessing }
-PLCreateImageDialog >> nameInputField [
-	
-	^ nameInputField
-]
-
-{ #category : #accessing }
-PLCreateImageDialog >> nameInputLabel [
-	
-	^ nameInputLabel
 ]

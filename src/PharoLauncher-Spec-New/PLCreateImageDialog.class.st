@@ -1,5 +1,5 @@
 Class {
-	#name : #PLCreateImageDialogPresenter,
+	#name : #PLCreateImageDialog,
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'nameInputField',
@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #specs }
-PLCreateImageDialogPresenter class >> defaultSpec [
+PLCreateImageDialog class >> defaultSpec [
 	^ SpecBoxLayout newVertical
 		add:
 			(SpecGridLayout new
@@ -23,13 +23,13 @@ PLCreateImageDialogPresenter class >> defaultSpec [
 ]
 
 { #category : #accessing }
-PLCreateImageDialogPresenter >> imageTypeList [
+PLCreateImageDialog >> imageTypeList [
 	
 	^ imageTypeList
 ]
 
 { #category : #initialization }
-PLCreateImageDialogPresenter >> initializeWidgets [
+PLCreateImageDialog >> initializeWidgets [
 
 	nameInputLabel := self newLabel.
 	nameInputLabel label: 'Name:'.
@@ -39,13 +39,13 @@ PLCreateImageDialogPresenter >> initializeWidgets [
 ]
 
 { #category : #accessing }
-PLCreateImageDialogPresenter >> nameInputField [
+PLCreateImageDialog >> nameInputField [
 	
 	^ nameInputField
 ]
 
 { #category : #accessing }
-PLCreateImageDialogPresenter >> nameInputLabel [
+PLCreateImageDialog >> nameInputLabel [
 	
 	^ nameInputLabel
 ]

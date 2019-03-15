@@ -11,6 +11,5 @@ PLApplication >> start [
 	(PLMainWindow 
 		newApplication: self 
 		model: PhLDirectoryBasedImageRepository default)
-		centered;
 		openWithSpec
 ]

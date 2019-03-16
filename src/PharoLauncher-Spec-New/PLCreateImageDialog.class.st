@@ -28,6 +28,13 @@ PLCreateImageDialog class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #actions }
+PLCreateImageDialog >> doCreateNewImage [
+
+	self validate ifFalse: [ ^ self ].
+	
+]
+
 { #category : #initialization }
 PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
 	"used to initialize the model in the case of the use into a dialog window.
@@ -68,4 +75,10 @@ PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 	
 	aTemplate ifNil: [ ^ '' ].
 	^ aTemplate name
+]
+
+{ #category : #actions }
+PLCreateImageDialog >> validate [
+
+	^ true	
 ]

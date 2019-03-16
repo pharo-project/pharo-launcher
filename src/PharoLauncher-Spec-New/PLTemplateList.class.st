@@ -11,8 +11,7 @@ Class {
 { #category : #specs }
 PLTemplateList class >> defaultSpec [
 
-	^ SpecBoxLayout newHorizontal
-		spacing: 10;
+	^ SpecPanedLayout newHorizontal
 		add: (SpecScrollableLayout with: #categoryList);
 		add: (SpecScrollableLayout with: #templateTree);
 		yourself
@@ -39,7 +38,9 @@ PLTemplateList >> initializePresenter [
 { #category : #initialization }
 PLTemplateList >> initializeWidgets [
 
-	categoryList := self newList.
+	categoryList := self newList
+		displayBlock: #name;
+		yourself.
 	templateTree := self newTreeTable.
 	
 	templateTree 

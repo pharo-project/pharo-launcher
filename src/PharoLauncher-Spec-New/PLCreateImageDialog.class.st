@@ -29,9 +29,13 @@ PLCreateImageDialog class >> defaultSpec [
 ]
 
 { #category : #actions }
-PLCreateImageDialog >> doCreateNewImage [
+PLCreateImageDialog >> doCreateNewImageThen: aBlock [
 
-	self validate ifFalse: [ ^ self ].
+	self validate ifNotEmpty: [ :errors |
+		errors do: [ :each | self window inform: each ].
+		^ self ].
+	
+	aBlock value	
 	
 ]
 
@@ -41,19 +45,17 @@ PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
 	 Override this to set buttons other than the default (Ok, Cancel)."
 	
 	aDialogWindowPresenter
-		addButton: 'Cancel' do: [ :presenter | 
-			presenter triggerCancelAction.
-			presenter close ];
+		addButton: 'Cancel' do: #close;
 		addButton: 'Create' do: [ :presenter | 
-			presenter triggerOkAction.
-			presenter close ]
+			self doCreateNewImageThen: [ 
+				presenter close ] ]
 ]
 
 { #category : #initialization }
 PLCreateImageDialog >> initializeWidgets [
 
 	templateList := self instantiate: PLTemplateList on: self model.
-	nameInputField := self newTextInput.
+	nameInputField := self newTextInput autoAccept: true.
 	
 	self transmit 
 		from: templateList;
@@ -79,6 +81,12 @@ PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 
 { #category : #actions }
 PLCreateImageDialog >> validate [
+	"this should answer a list of problems but for now I stay with you one at a time"
 
-	^ true	
+	templateList selectedImage ifNil: [
+		^ #('You need to select an image first') ].
+	nameInputField text ifEmpty: [ 
+		^ #('You need to add a name to your image') ].
+	
+	^ #()
 ]

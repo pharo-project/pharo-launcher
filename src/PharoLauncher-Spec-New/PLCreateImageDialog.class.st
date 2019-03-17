@@ -16,11 +16,11 @@ PLCreateImageDialog class >> defaultSpec [
 		spacing: 10;
 		add: 'Select image template' expand: false fill: false padding: 0;
 		add: #templateList expand: true fill: true padding: 0;
-		add: (SpecGridLayout new
+		add: (SpecBoxLayout newHorizontal
 				borderWidth: 0;
-				rowSpacing: 0;
-				add: 'Image name' at: 1 @ 1;
-				add: #nameInputField at: 2 @ 1;
+				"rowSpacing: 0;"
+				add: 'Image name' expand: false fill: false padding: 10;
+				add: #nameInputField" at: 2 @ 1";
 				yourself)
 			expand: false 
 			fill: false 

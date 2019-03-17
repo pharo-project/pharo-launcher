@@ -28,15 +28,34 @@ PLCreateImageDialog class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #private }
+PLCreateImageDialog >> allImageNames [
+	
+	^ self application imageRepository imageNames
+]
+
 { #category : #actions }
 PLCreateImageDialog >> doCreateNewImageThen: aBlock [
+	| context |
 
 	self validate ifNotEmpty: [ :errors |
 		errors do: [ :each | self window inform: each ].
 		^ self ].
 	
-	aBlock value	
+	self flag: #TODO. "We need a better error managing"
+	context := PharoLauncherModel
+		selection: { templateList selectedImage }
+		imageRepository: PhLDirectoryBasedImageRepository default
+		templateRepository: nil.
+	[ (PhLCreateImageFromTemplateCommand on: context)
+		newImageName: nameInputField text trimmed;
+		execute ]
+	on: Error 
+	do: [ :e | 
+		self window informError: e messageText.
+		^ self ].
 	
+	aBlock value	
 ]
 
 { #category : #initialization }
@@ -73,6 +92,12 @@ PLCreateImageDialog >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #private }
+PLCreateImageDialog >> nameExists: aString [
+
+	^ self allImageNames includes: aString trimmed
+]
+
+{ #category : #private }
 PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 	| templatePossibleName allImageNames count |
 	
@@ -80,7 +105,7 @@ PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 	"remove what is in parenthesis"
 	templatePossibleName := (aTemplate name copyUpTo: $() trimmed.
 	count := 0.
-	allImageNames := self application imageRepository imageNames.
+	allImageNames := self allImageNames.
 		
 	[ allImageNames includes: templatePossibleName ] 
 	whileTrue: [ 
@@ -101,6 +126,8 @@ PLCreateImageDialog >> validate [
 		^ #('You need to select an image first') ].
 	nameInputField text ifEmpty: [ 
 		^ #('You need to add a name to your image') ].
+	(self nameExists: nameInputField text) ifTrue: [
+		^ #('This image name already exists, please choose another') ].
 	
 	^ #()
 ]

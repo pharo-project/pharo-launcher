@@ -28,15 +28,19 @@ PhLCreateImageFromTemplateCommand class >> title [
 { #category : #action }
 PhLCreateImageFromTemplateCommand >> execute [
 	| name |
+
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self ensure: (model isNewImageNameValid: name).
-	[ model imageRepository extractTemplate: model singleTemplate to: name ]
-		on: PhLCorruptedTemplateError
-		do: [ :error | UIManager default alert: 'This template appears to be corrupted! Please try again.' ].
+	model imageRepository extractTemplate: model singleTemplate to: name
 ]
 
 { #category : #accessing }
 PhLCreateImageFromTemplateCommand >> newImageName [
 	^ newImageName ifNil: [ newImageName := self model requestNewImageName: self model singleTemplateName ]
+]
+
+{ #category : #accessing }
+PhLCreateImageFromTemplateCommand >> newImageName: anObject [
+	newImageName := anObject
 ]

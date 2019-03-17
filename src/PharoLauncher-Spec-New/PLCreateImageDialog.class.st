@@ -74,9 +74,23 @@ PLCreateImageDialog >> initializeWindow: aWindowPresenter [
 
 { #category : #private }
 PLCreateImageDialog >> nameSuggestionFor: aTemplate [
+	| templatePossibleName allImageNames count |
 	
 	aTemplate ifNil: [ ^ '' ].
-	^ aTemplate name
+	"remove what is in parenthesis"
+	templatePossibleName := (aTemplate name copyUpTo: $() trimmed.
+	count := 0.
+	allImageNames := self application imageRepository imageNames.
+		
+	[ allImageNames includes: templatePossibleName ] 
+	whileTrue: [ 
+		count := count + 1.
+		templatePossibleName := String streamContents: [ :stream |
+			stream 
+				<< templatePossibleName 
+				<< ' (' << count asString << ')' ] ].
+	
+	^ templatePossibleName
 ]
 
 { #category : #actions }

@@ -4,12 +4,18 @@ Class {
 	#category : #'PharoLauncher-Spec-New'
 }
 
+{ #category : #accessing }
+PLApplication >> imageRepository [
+
+	^ PhLDirectoryBasedImageRepository default
+]
+
 { #category : #running }
 PLApplication >> start [ 
 	<script: 'self new start'>
 	
 	(PLMainWindow 
 		newApplication: self 
-		model: PhLDirectoryBasedImageRepository default)
+		model: self imageRepository)
 		openWithSpec
 ]

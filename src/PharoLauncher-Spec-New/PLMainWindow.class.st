@@ -27,6 +27,9 @@ PLMainWindow >> buildFileMenu [
 
 	^ MenuPresenter new
 		addGroup: [ :group | group
+			addItem: [ :item | item name: 'New image'; action: [ self doNewImage ] ];
+			addItem: [ :item | item name: 'Import'; action: [ self doImport ] ] ];
+		addGroup: [ :group | group
 			addItem: [ :item | item name: 'Settings...'; action: [  ] ] ];
 		addGroup: [ :group | group
 			addItem: [ :item | item name: 'Manage VMs...'; action: [  ] ] ];

@@ -49,7 +49,7 @@ PLMainWindow >> buildListContextMenu [
 
 	^ MenuPresenter new 
 		addGroup: [ :group | group 
-			addItem: [ :item | item name: 'Launch'; action: [  ] ];
+			addItem: [ :item | item name: 'Launch'; action: [ self doLaunch ] ];
 			addItem: [ :item | item name: 'Launch without settings'; action: [  ] ] ];
 		addGroup: [ :group | group
 			addItem: [ :item | item name: 'Edit'; action: [  ] ];
@@ -60,8 +60,7 @@ PLMainWindow >> buildListContextMenu [
 			addItem: [ :item | item name: 'Show in folder'; action: [  ] ];
 			addItem: [ :item | item name: 'Copy path'; action: [  ] ] ];
 		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Create template'; action: [  ] ];
-			addItem: [ :item | item name: 'Import'; action: [  ] ] ];
+			addItem: [ :item | item name: 'Create template'; action: [ ] ] ];
 		yourself
 ]
 
@@ -81,7 +80,11 @@ PLMainWindow >> buildToolbar [
 		addButtonLabel: 'New'
 			iconNamed: #smallNew
 			help: 'Create or import an image'
-			action: [ self openNewCreateImageDialog ];
+			action: [ self doNewImage ];
+		addButtonLabel: 'Import' 
+			iconNamed: #smallLoadProject 
+			help: 'Imports an external image into Pharo Launcher' 
+			action: [ self doImport ];
 		yourself
 ]
 
@@ -95,6 +98,31 @@ PLMainWindow >> descriptionPanel: anObject [
 	descriptionPanel := anObject
 ]
 
+{ #category : #actions }
+PLMainWindow >> doImport [
+
+	self window inform: 'TODO'
+]
+
+{ #category : #actions }
+PLMainWindow >> doLaunch [
+	
+	imageTable selection selectedItem launch
+]
+
+{ #category : #actions }
+PLMainWindow >> doNewImage [
+	| repository dialog |
+	
+	repository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build.
+	dialog := (PLCreateImageDialog 
+		newApplication: self application 
+		model: repository) 
+		openDialogWithSpec.
+	dialog isOk ifFalse: [ ^ self ]. 
+	imageTable items: self model images
+]
+
 { #category : #accessing }
 PLMainWindow >> imageTable [
 	
@@ -104,12 +132,6 @@ PLMainWindow >> imageTable [
 { #category : #accessing }
 PLMainWindow >> imageTable: anObject [
 	imageTable := anObject
-]
-
-{ #category : #'api-window' }
-PLMainWindow >> initialExtent [
- 
-	^ 700@500
 ]
 
 { #category : #initialization }
@@ -123,7 +145,7 @@ PLMainWindow >> initializePresenter [
 			ifFalse: [ sel selectedItem ].
 		descriptionPanel model: selectedImage.
 		runButton enabled: sel isEmpty not ].
-	runButton whenActivatedDo: [ self launchSelectedImage ]
+	runButton whenActivatedDo: [ self doLaunch ]
 ]
 
 { #category : #initialization }
@@ -131,6 +153,7 @@ PLMainWindow >> initializeWidgets [
 
 	imageTable := self newTable
 		items: self model images;
+		sortingBlock: #lastModification descending;
 		contextMenu: self buildListContextMenu;
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
 		addColumn: (StringTableColumn title: 'Architecture' evaluated: #arch);
@@ -159,23 +182,6 @@ PLMainWindow >> initializeWindow: aWindow [
 		initialExtent: 700@500;
 		toolBar: self buildToolbar;
 		menu: self buildMenuBar
-]
-
-{ #category : #actions }
-PLMainWindow >> launchSelectedImage [
-	
-	imageTable selection selectedItem launch
-]
-
-{ #category : #actions }
-PLMainWindow >> openNewCreateImageDialog [
-	| repository |
-	
-	repository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build.
-	(PLCreateImageDialog 
-		newApplication: self application 
-		model: repository) 
-		openDialogWithSpec
 ]
 
 { #category : #private }

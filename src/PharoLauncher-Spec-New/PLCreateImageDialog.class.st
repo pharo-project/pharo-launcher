@@ -42,7 +42,9 @@ PLCreateImageDialog >> doCreateNewImageThen: aBlock [
 		errors do: [ :each | self window inform: each ].
 		^ self ].
 	
-	self flag: #TODO. "We need a better error managing"
+	self flag: #TODO. "We need a better error managing. 
+	And we need a better command patter too. 
+	Bah, we need a better everything."
 	context := PharoLauncherModel
 		selection: { templateList selectedImage }
 		imageRepository: PhLDirectoryBasedImageRepository default
@@ -67,7 +69,7 @@ PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
 		addButton: 'Cancel' do: #close;
 		addButton: 'Create' do: [ :presenter | 
 			self doCreateNewImageThen: [ 
-				presenter close ] ]
+				presenter beOk; close ] ]
 ]
 
 { #category : #initialization }

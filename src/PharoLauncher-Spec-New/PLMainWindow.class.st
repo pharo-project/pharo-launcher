@@ -181,7 +181,7 @@ PLMainWindow >> openNewCreateImageDialog [
 { #category : #private }
 PLMainWindow >> readableDateFor: aDateAndTime [ 
 	
-	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime 
+	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime
 ]
 
 { #category : #accessing }

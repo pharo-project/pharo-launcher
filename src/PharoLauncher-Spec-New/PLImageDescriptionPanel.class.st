@@ -49,6 +49,7 @@ PLImageDescriptionPanel >> descriptionLabel: anObject [
 
 { #category : #initialization }
 PLImageDescriptionPanel >> initializePresenter [
+
 	self modelChanged
 ]
 
@@ -79,7 +80,9 @@ PLImageDescriptionPanel >> modelChanged [
 	nameLabel label: self model name.
 	templateLabel label: self model originTemplateName.
 	locationLabel label: (self model location ifNotNil: #fullName).
-	modifiedLabel label: self model lastModification asString.
+	modifiedLabel label: (self model lastModification 
+		ifNotNil: #asLocalStringYMDHM
+		ifNil: [ '' ]).
 	architectureLabel label: self model arch.
 	descriptionLabel label: self model description
 ]

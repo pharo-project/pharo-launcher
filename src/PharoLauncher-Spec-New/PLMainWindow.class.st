@@ -30,7 +30,7 @@ PLMainWindow >> buildFileMenu [
 			addItem: [ :item | item name: 'New image'; action: [ self doNewImage ] ];
 			addItem: [ :item | item name: 'Import'; action: [ self doImport ] ] ];
 		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Settings...'; action: [  ] ] ];
+			addItem: [ :item | item name: 'Settings...'; action: [ self doSettings ] ] ];
 		addGroup: [ :group | group
 			addItem: [ :item | item name: 'Manage VMs...'; action: [  ] ] ];
 		addGroup: [ :group | group
@@ -124,6 +124,12 @@ PLMainWindow >> doNewImage [
 		openDialogWithSpec.
 	dialog isOk ifFalse: [ ^ self ]. 
 	imageTable items: self model images
+]
+
+{ #category : #actions }
+PLMainWindow >> doSettings [
+
+	(PLSettingsDialog newApplication: self application) openWithSpec
 ]
 
 { #category : #accessing }

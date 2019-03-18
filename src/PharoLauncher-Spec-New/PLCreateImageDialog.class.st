@@ -3,7 +3,8 @@ Class {
 	#superclass : #ComposablePresenterWithModel,
 	#instVars : [
 		'nameInputField',
-		'templateList'
+		'templateList',
+		'lastSuggestedName'
 	],
 	#category : #'PharoLauncher-Spec-New'
 }
@@ -61,9 +62,14 @@ PLCreateImageDialog >> doCreateNewImageThen: aBlock [
 ]
 
 { #category : #initialization }
+PLCreateImageDialog >> initialize [
+
+	super initialize.
+	lastSuggestedName := ''
+]
+
+{ #category : #initialization }
 PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
-	"used to initialize the model in the case of the use into a dialog window.
-	 Override this to set buttons other than the default (Ok, Cancel)."
 	
 	aDialogWindowPresenter
 		addButton: 'Cancel' do: #close;
@@ -76,7 +82,8 @@ PLCreateImageDialog >> initializeDialogWindow: aDialogWindowPresenter [
 PLCreateImageDialog >> initializeWidgets [
 
 	templateList := self instantiate: PLTemplateList on: self model.
-	nameInputField := self newTextInput autoAccept: true.
+	(nameInputField := self newTextInput)
+		autoAccept: true.
 	
 	self transmit 
 		from: templateList;
@@ -103,7 +110,9 @@ PLCreateImageDialog >> nameExists: aString [
 PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 	| templatePossibleName allImageNames count |
 	
+	lastSuggestedName = nameInputField text ifFalse: [ ^ nameInputField text ].
 	aTemplate ifNil: [ ^ '' ].
+	
 	"remove what is in parenthesis"
 	templatePossibleName := (aTemplate name copyUpTo: $() trimmed.
 	count := 0.
@@ -116,6 +125,8 @@ PLCreateImageDialog >> nameSuggestionFor: aTemplate [
 			stream 
 				<< templatePossibleName 
 				<< ' (' << count asString << ')' ] ].
+	
+	lastSuggestedName := templatePossibleName.
 	
 	^ templatePossibleName
 ]

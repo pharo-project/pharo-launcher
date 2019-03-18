@@ -39,7 +39,7 @@ PLCreateImageDialog >> doCreateNewImageThen: aBlock [
 	| context |
 
 	self validate ifNotEmpty: [ :errors |
-		errors do: [ :each | self window inform: each ].
+		errors do: [ :each | SpecNotification dispatchInfoTo: self window message: each ].
 		^ self ].
 	
 	self flag: #TODO. "We need a better error managing. 
@@ -52,9 +52,9 @@ PLCreateImageDialog >> doCreateNewImageThen: aBlock [
 	[ (PhLCreateImageFromTemplateCommand on: context)
 		newImageName: nameInputField text trimmed;
 		execute ]
-	on: Error 
+	on: PhLError 
 	do: [ :e | 
-		self window informError: e messageText.
+		SpecNotification dispatchErrorTo: self application message: e messageText.
 		^ self ].
 	
 	aBlock value	

@@ -1,11 +1,11 @@
 Class {
-	#name : #PhLPhLProcessWrapperTest,
+	#name : #PhLProcessWrapperTest,
 	#superclass : #TestCase,
-	#category : 'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Functional'
 }
 
 { #category : #tests }
-PhLPhLProcessWrapperTest >> testCanRunUnzipOnLinux [
+PhLProcessWrapperTest >> testCanRunUnzipOnLinux [
 	| process |
 	Smalltalk os isWindows ifTrue: [ ^ self ].
 	process := PhLProcessWrapper waitForCommand: 'unzip --help'.
@@ -13,7 +13,7 @@ PhLPhLProcessWrapperTest >> testCanRunUnzipOnLinux [
 ]
 
 { #category : #tests }
-PhLPhLProcessWrapperTest >> testCanRunUnzipOnWindows [
+PhLProcessWrapperTest >> testCanRunUnzipOnWindows [
 	| process |
 	Smalltalk os isWindows ifFalse: [ ^ self ].
 	process := PhLProcessWrapper waitForCommand: 'unzip --help'.

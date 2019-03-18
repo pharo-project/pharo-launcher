@@ -32,7 +32,9 @@ PhLCreateImageFromTemplateCommand >> execute [
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self ensure: (model isNewImageNameValid: name).
-	model imageRepository extractTemplate: model singleTemplate to: name
+	model imageRepository 
+		extractTemplate: model singleTemplate 
+		to: name
 ]
 
 { #category : #accessing }

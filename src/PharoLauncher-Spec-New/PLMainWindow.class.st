@@ -82,11 +82,11 @@ PLMainWindow >> buildToolbar [
 	^ self newToolbarPresenter
 		addButtonLabel: 'New'
 			iconNamed: #smallNew
-			help: 'Create or import an image'
+			help: 'Create an new image'
 			action: [ self doNewImage ];
 		addButtonLabel: 'Import' 
 			iconNamed: #smallLoadProject 
-			help: 'Imports an external image into Pharo Launcher' 
+			help: 'Import an external image into Pharo Launcher' 
 			action: [ self doImport ];
 		yourself
 ]
@@ -158,6 +158,7 @@ PLMainWindow >> initializeWidgets [
 		items: self model images;
 		sortingBlock: #lastModification descending;
 		contextMenu: self buildListContextMenu;
+		doubleClickAction: [ :selected | self doLaunch ];
 		addColumn: (StringTableColumn title: 'Name' evaluated: #name);
 		addColumn: (StringTableColumn title: 'Architecture' evaluated: #arch);
 		addColumn: (StringTableColumn title: 'Modified' evaluated: [ :v | self readableDateFor: v lastModification ]);

@@ -129,7 +129,7 @@ PLMainWindow >> doNewImage [
 { #category : #actions }
 PLMainWindow >> doSettings [
 
-	(PLSettingsDialog newApplication: self application) openWithSpec
+	(PLSettingsDialog newApplication: self application) openDialogWithSpec
 ]
 
 { #category : #accessing }

@@ -21,6 +21,7 @@ Class {
 PLSettingsDialog class >> defaultSpec [
 
 	^ SpecGridLayout new
+		beColumnNotHomogeneous;
 		add: 'Use HTTP proxy' 							at: 1@1; add: #useHTTPProxyCheckBox 			at: 2@1;
 		add: 'Templates cleared at startup' 			at: 1@2; add: #clearTemplatedCheckBox 		at: 2@2;
 		add: 'Quit on launch' 							at: 1@3; add: #quitOnLaunchCheckBox 			at: 2@3;
@@ -32,6 +33,23 @@ PLSettingsDialog class >> defaultSpec [
 		add: 'Check for template sources update' 	at: 1@9; add: #checkForUpdatesCheckBox 		at: 2@9;
 		add: 'Hard reset persistance instance' 		at: 1@10; add: #hardResetCheckBox 			at: 2@10;
 		yourself
+]
+
+{ #category : #actions }
+PLSettingsDialog >> doAcceptThen: aBlock [
+
+	self flag: #TODO. "Save the changes"
+	aBlock value
+]
+
+{ #category : #initialization }
+PLSettingsDialog >> initializeDialogWindow: aDialogWindowPresenter [
+
+	aDialogWindowPresenter
+		addButton: 'Cancel' do: #close;
+		addButton: 'Accept' do: [ :presenter | 
+			self doAcceptThen: [ 
+				presenter beOk; close ] ]
 ]
 
 { #category : #initialization }
@@ -47,4 +65,13 @@ PLSettingsDialog >> initializeWidgets [
 	locationOfVMs := self newTextInput.
 	checkForUpdatesCheckBox := self newCheckBox.
 	hardResetCheckBox  := self newCheckBox
+]
+
+{ #category : #initialization }
+PLSettingsDialog >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter 
+		title: 'Settings';
+		initialExtent: 800@300;
+		centered
 ]

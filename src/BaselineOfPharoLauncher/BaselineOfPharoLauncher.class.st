@@ -33,6 +33,11 @@ BaselineOfPharoLauncher >> baseline: spec [
 					versionString: #'stable';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
+			baseline: #TaskIt
+				with: [ 
+					spec 
+						repository: 'github://sbragagnolo/taskit:v1.0.1';
+						loads: 'minimal' ];
 			baseline: #Icetray
 				with: [ spec repository: 'github://pharo-spec/icetray/src' ];
 			package: #FastTableExtentions

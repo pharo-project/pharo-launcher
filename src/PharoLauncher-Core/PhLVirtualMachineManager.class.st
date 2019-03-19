@@ -346,7 +346,7 @@ PhLVirtualMachineManager >> imageVersion [
 			on: PhLImageVersionDeterminationError
 			do: [ "no version file, generate it"
 					[ self imageVersionFromFileWith: ( self imageVersionCommandWithPreferences: false) ]
-						on: PhLImageVersionDeterminationError
+						on: PhLImageVersionDeterminationError, PhLProcessTimeOut
 						do: [ "Command probably failed, try to run without --no-default-preferences option (not available in Pharo 2)"
 								self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: true) ] ] ]
 ]
@@ -437,7 +437,9 @@ PhLVirtualMachineManager >> imageVersionFromFile [
 
 { #category : #accessing }
 PhLVirtualMachineManager >> imageVersionFromFileWith: commandString [
-	PhLProcessWrapper waitForCommand: commandString.
+	PhLProcessWrapper 
+		waitForCommand: commandString
+		timeout: 10 seconds.
 	self imageVersionFile 
 			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
 			ifAbsent: [ PhLImageVersionDeterminationError signalCommand: commandString ].

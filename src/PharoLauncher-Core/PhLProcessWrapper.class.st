@@ -65,6 +65,21 @@ PhLProcessWrapper class >> waitForCommand: aCommand [
 		yourself
 ]
 
+{ #category : #'execution - public' }
+PhLProcessWrapper class >> waitForCommand: aCommand timeout: aDuration [
+	| future externalProcess |
+	
+	future := [externalProcess := self command: aCommand.
+				 [externalProcess isComplete] 
+					whileFalse: [(Delay forMilliseconds: 50) wait]. ] future.
+	[ future waitForCompletion: aDuration ]
+		on: TKTTimeoutException 
+		do: [ :error | 
+				externalProcess isComplete ifFalse:
+					[ externalProcess sigkill.
+					PhLProcessTimeOut signal ] ]
+]
+
 { #category : #private }
 PhLProcessWrapper class >> waitForLinuxCommand: aCommand [ 
 	^ OSProcess waitForCommand: aCommand

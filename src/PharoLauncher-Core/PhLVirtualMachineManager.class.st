@@ -347,7 +347,7 @@ PhLVirtualMachineManager >> imageVersion [
 			do: [ "no version file, generate it"
 					[ self imageVersionFromFileWith: ( self imageVersionCommandWithPreferences: false) ]
 						on: PhLImageVersionDeterminationError, PhLProcessTimeOut
-						do: [ "Command probably failed, try to run without --no-default-preferences option (not available in Pharo 2)"
+						do: [ "Command probably failed, try to run without --no-default-preferences option (only available since Pharo 3.0)"
 								self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: true) ] ] ]
 ]
 

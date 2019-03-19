@@ -60,9 +60,9 @@ PLSettingsDialog >> initializeWidgets [
 	quitOnLaunchCheckBox := self newCheckBox.
 	launchOnLoginShellCheckBox := self newCheckBox.
 	warnOnArchMistmachCheckBox := self newCheckBox.
-	locationOfTemplates := self newTextInput.
-	locationOfImages := self newTextInput.
-	locationOfVMs := self newTextInput.
+	locationOfTemplates := self instantiate: PLSelectLocationPanel.
+	locationOfImages := self instantiate: PLSelectLocationPanel.
+	locationOfVMs := self instantiate: PLSelectLocationPanel.
 	checkForUpdatesCheckBox := self newCheckBox.
 	hardResetCheckBox  := self newCheckBox
 ]

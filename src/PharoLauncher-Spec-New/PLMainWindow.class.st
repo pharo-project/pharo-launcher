@@ -88,6 +88,10 @@ PLMainWindow >> buildToolbar [
 			iconNamed: #smallLoadProject 
 			help: 'Import an external image into Pharo Launcher' 
 			action: [ self doImport ];
+		addButtonLabel: 'Settings' 
+			iconNamed: #smallConfiguration 
+			help: 'Allows you to change settings' 
+			action: [ self doSettings ];
 		yourself
 ]
 
@@ -191,7 +195,8 @@ PLMainWindow >> initializeWindow: aWindow [
 		title: 'Pharo Launcher';
 		initialExtent: 700@500;
 		toolBar: self buildToolbar;
-		menu: self buildMenuBar
+		menu: self buildMenuBar;
+		centered
 ]
 
 { #category : #private }

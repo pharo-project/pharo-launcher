@@ -196,7 +196,7 @@ PLMainWindow >> initializeWindow: aWindow [
 		initialExtent: 700@500;
 		toolBar: self buildToolbar;
 		menu: self buildMenuBar;
-		centered
+		whenBuiltDo: [ :ann | ann model centered ]
 ]
 
 { #category : #private }

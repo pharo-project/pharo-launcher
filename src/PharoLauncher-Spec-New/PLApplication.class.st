@@ -4,6 +4,12 @@ Class {
 	#category : #'PharoLauncher-Spec-New'
 }
 
+{ #category : #activation }
+PLApplication class >> applicationName [
+
+	^ 'launcher'
+]
+
 { #category : #accessing }
 PLApplication >> imageRepository [
 

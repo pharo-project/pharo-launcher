@@ -151,13 +151,23 @@ PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
 ]
 
 { #category : #action }
+PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
+	| shouldUsePharoSettings |
+	shouldUsePharoSettings := usePharoSettings.
+	vmManager imageVersion < '30' " Cannot skip Pharo settings before 3.0"
+		ifTrue: [ shouldUsePharoSettings := true ].
+	
+	^ self launchCommandWith: vmManager vm useSettings: shouldUsePharoSettings
+]
+
+{ #category : #action }
 PhLImage >> launchWithSettings: usePharoSettings [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | vmCommand |
-	vmCommand := (PhLVirtualMachineManager forImage: file pathString) vm.
-	^ PhLProcessWrapper command: (self launchCommandWith: vmCommand useSettings: usePharoSettings) ]
+	[ [ | vmManager |
+	vmManager := PhLVirtualMachineManager forImage: file pathString.
+	^ PhLProcessWrapper command: (self launchCommandWithVm: vmManager useSettings: usePharoSettings) ]
 		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning

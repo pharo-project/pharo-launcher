@@ -98,6 +98,20 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveN
 ]
 
 { #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
+	| image command vmManager |
+	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
+	vmManager := PhLVirtualMachineManager forImage: image file pathString.
+	vmManager 
+		imageFormatNumber: PhLVirtualMachineManager imageFormat32bits;
+		imageVersion: '20'.
+	
+	command := image launchCommandWithVm: vmManager useSettings: false.
+	
+	self deny: (command includesSubstring: '--no-default-preferences')
+]
+
+{ #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
 	| image command |
 	image := PhLImage location: Smalltalk image lastImagePath asFileReference.

@@ -405,15 +405,30 @@ PhLVirtualMachineManager >> imageVersionDeterminationScript [
 ]
 
 { #category : #private }
+PhLVirtualMachineManager >> imageVersionDeterminationScriptFile [
+	^ self vmStore parent / 'pharo-version.st'
+]
+
+{ #category : #private }
+PhLVirtualMachineManager >> imageVersionDeterminationScriptFileNeedsUpdate [
+	| file |
+	file := self imageVersionDeterminationScriptFile.
+	^ (file exists and: [ file contents = self imageVersionDeterminationScriptSourceCode ]) not
+]
+
+{ #category : #private }
 PhLVirtualMachineManager >> imageVersionDeterminationScriptPath [
 	| file |
-	file := self vmStore parent / 'pharo-version.st'.
-	file exists 
-		ifFalse: [ | source|
-			source := (self class >> #imageVersionDeterminationScript) sourceCode
-				allButFirst: #imageVersionDeterminationScript size. "remove method name"
-			file writeStreamDo: [ :stream | stream << source ] ].
-	^ file fullName 
+	file := self imageVersionDeterminationScriptFile.
+	self imageVersionDeterminationScriptFileNeedsUpdate
+		ifTrue: [ file writeStreamDo: [ :stream | stream << self imageVersionDeterminationScriptSourceCode ] ].
+	^ file fullName
+]
+
+{ #category : #private }
+PhLVirtualMachineManager >> imageVersionDeterminationScriptSourceCode [
+	^ (self class >> #imageVersionDeterminationScript) sourceCode
+		allButFirst: #imageVersionDeterminationScript size	"remove method name"
 ]
 
 { #category : #private }

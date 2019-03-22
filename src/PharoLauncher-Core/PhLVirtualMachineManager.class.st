@@ -226,6 +226,7 @@ PhLVirtualMachineManager >> compatibleVm [
 		at: self imageFormatNumber asString
 		ifAbsent: [ | vmPath |
 			self fetchCompatibleVm.
+			self fetchSourcesFileForCompatibleVm.
 			vmPath := self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString ]
 ]
 
@@ -270,6 +271,16 @@ PhLVirtualMachineManager >> fetchCompatibleVm [
 ]
 
 { #category : #private }
+PhLVirtualMachineManager >> fetchSourcesFileForCompatibleVm [
+	" We need to fetch the sources file to be able to determine the Pharo version of an image for Pharo versions < 2.0.
+	Indeed, a blocking warning (about missing sources file) prevents the execution of any command line evaluation ..."
+	(self imageFormatNumber = self class imageFormatPreSpur or: [ self imageFormatNumber = self class imageFormat6504 ])
+		ifTrue: [ self 
+			fetchSourcesFilesFor: '14' 
+			in: self class privateVmStore / self imageFormatNumber asString ]
+]
+
+{ #category : #private }
 PhLVirtualMachineManager >> fetchSourcesFiles [
 	| previousVersion |
 	"Do not download sources for Pharo versions > 70 as they come along with the image."
@@ -295,7 +306,9 @@ PhLVirtualMachineManager >> fetchSourcesFiles [
 PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString [
 	| vmFolder |
 	
-	vmFolder := (self availableVirtualMachines at: self vmFileName) vmFolder.
+	vmFolder := anImageVersionString asInteger < 30
+		ifTrue: [ self vmStore / self vmFileName ]
+		ifFalse: [ (self availableVirtualMachines at: self vmFileName) vmFolder ].
 	self fetchSourcesFilesFor: anImageVersionString in: vmFolder
 
 ]

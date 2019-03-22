@@ -72,6 +72,30 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWithRigh
 ]
 
 { #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image [
+	| vmManager destDir image |
+	self timeLimit: 30 seconds.
+
+	destDir := FileLocator temp	/ ('pharo-launcher-testCanGetImageVersionFromPharo14Image-', UUIDGenerator next asString).
+	ZipArchive new 
+		readFrom: (ZnEasy get: 'http://files.pharo.org/image/14/latest.zip') contents readStream;
+		extractAllTo: destDir.
+	destDir allFiles 
+		detect: [ :each | each basename endsWith: '.sources' ]
+		ifFound: #ensureDelete.
+	image := destDir allFiles detect: [ :each | each basename endsWith: '.image' ].
+	vmManager := PhLVirtualMachineManager forImage: image.
+	vmManager imageVersionFile ensureDelete.
+
+	"self flag: 'Remove the following instruction once we based Pharo Launcher on Pharo 7: sources file comes with the image. It is actually needed so that the launched image can get environment variables from the system at startup.'.	
+	{ vmManager compatibleVm vmFolder . Smalltalk vmBinary parent asFileReference }
+		do: [ :each | vmManager fetchSourcesFilesFor: '61' in: each ]."
+	self
+		assert: vmManager imageVersion
+		equals: '14'
+]
+
+{ #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersionFromFileWithBadCommand [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.

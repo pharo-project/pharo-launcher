@@ -104,7 +104,6 @@ function package_mac_version() {
 		-p mac
 	unzip PharoLauncher-mac.zip -d .
 	mv mac-installer-background.png background.png
-	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=$should_sign ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)

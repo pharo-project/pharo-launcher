@@ -47,6 +47,7 @@ PhLEditDescriptionCommand >> imageDescription [
 { #category : #accessing }
 PhLEditDescriptionCommand >> imageDescription: description [
 	self imageDescriptionFile
+		ensureDelete;
 		writeStreamDo: [ :stream | stream nextPutAll: description ]
 ]
 

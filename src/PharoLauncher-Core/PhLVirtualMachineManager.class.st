@@ -434,7 +434,9 @@ PhLVirtualMachineManager >> imageVersionDeterminationScriptPath [
 	| file |
 	file := self imageVersionDeterminationScriptFile.
 	self imageVersionDeterminationScriptFileNeedsUpdate
-		ifTrue: [ file writeStreamDo: [ :stream | stream << self imageVersionDeterminationScriptSourceCode ] ].
+		ifTrue: [ file 
+						ensureDelete;
+						writeStreamDo: [ :stream | stream << self imageVersionDeterminationScriptSourceCode ] ].
 	^ file fullName
 ]
 

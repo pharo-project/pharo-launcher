@@ -67,13 +67,13 @@ PhLImage >> changesFile [
 { #category : #private }
 PhLImage >> cleanLDLibraryPath [
 	^ (self currentLDLibraryPathes
-		reject: [ :path | path asByteArray utf8Decoded = FileLocator vmDirectory pathString ])
+		reject: [ :path | path = FileLocator vmDirectory pathString ])
 
 ]
 
 { #category : #private }
 PhLImage >> currentLDLibraryPathes [
-	^ ((OSEnvironment current getEnv: 'LD_LIBRARY_PATH') ifNil: [ '' ])
+	^ (OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ])
 		substrings: ':'
 ]
 

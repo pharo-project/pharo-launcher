@@ -82,7 +82,7 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWithRigh
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image [
 	| vmManager destDir image |
-	self timeLimit: 30 seconds.
+	self timeLimit: 60 seconds.
 
 	destDir := FileLocator temp	/ ('pharo-launcher-testCanGetImageVersionFromPharo14Image-', UUIDGenerator next asString).
 	ZipArchive new 

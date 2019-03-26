@@ -12,6 +12,14 @@ PhLVirtualMachineManagerFunctionalTest class >> availaibleVirtualMachines [
 	Smalltalk vm imageVersionNumber
 ]
 
+{ #category : #private }
+PhLVirtualMachineManagerFunctionalTest >> performTest [
+	"Avoid that TestRunner kills workers of TaskIt => create one new process or each task"
+	TKTConfiguration
+		runner: TKTNewProcessTaskRunner new
+		during: [ super performTest ]
+]
+
 { #category : #support }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'

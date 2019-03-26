@@ -4,6 +4,14 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
+{ #category : #private }
+PhLProcessWrapperTest >> performTest [
+	"Avoid that TestRunner kills workers of TaskIt => create one new process or each task"
+	TKTConfiguration
+		runner: TKTNewProcessTaskRunner new
+		during: [ super performTest ]
+]
+
 { #category : #tests }
 PhLProcessWrapperTest >> testCanRunUnzipOnLinux [
 	| process |
@@ -38,7 +46,7 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 	| cmd |
 	 cmd := Smalltalk os isWindows 
 		ifTrue: [ 'timeout 1' ]
-		ifFalse: [ 'bash -c "sleep 1"' ].
+		ifFalse: [ 'sleep 1' ].
 	self 
 		shouldnt: [ PhLProcessWrapper 
 			waitForCommand: cmd

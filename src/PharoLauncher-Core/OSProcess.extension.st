@@ -6,5 +6,5 @@ OSProcess class >> isNonUnixMac [
 
 	"OSProcess isNonUnixMac"
 
-	^ Smalltalk platform isMacOSX not
+	^ Smalltalk platform isMacOS and: [ Smalltalk platform isMacOSX not ]
 ]

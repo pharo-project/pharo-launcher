@@ -40,18 +40,11 @@ PhLProcessWrapper class >> encode: aCommand [
 PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	| encodedCommand |
 	encodedCommand := self encode: aCommand.
-	
-	Smalltalk os isWindows
-		ifTrue: [ Smalltalk
-				at: #ProcessWrapper
-				ifPresent: [ :processWrapperClass | 
-					^ (processWrapperClass new
-						useStderr;
-						waitForExit;
-						startWithShellCommand: encodedCommand;
-						yourself) stderrStream atEnd ].
-			^ false ].
-	^ (OSProcess waitForCommand: encodedCommand) succeeded
+
+	"This is only used to check for unzip at the moment"
+	^ Smalltalk os isWindows
+		ifTrue: [ ^ false ]
+		ifFalse: [ (OSProcess waitForCommand: encodedCommand) succeeded ]
 ]
 
 { #category : #'execution - public' }
@@ -59,8 +52,8 @@ PhLProcessWrapper class >> waitForCommand: aCommand [
 	| encodedCommand |
 	encodedCommand := self encode: aCommand.
 	^ self new
-		process: ((Smalltalk os isWindows and: [ Smalltalk includesKey: #ProcessWrapper ])
-			ifTrue: [ self waitForWindowsCommand: encodedCommand ]
+		process: (Smalltalk os isWindows
+			ifTrue: [ self windowsCommand: encodedCommand ]
 			ifFalse: [ self waitForLinuxCommand: encodedCommand ]);
 		yourself
 ]
@@ -86,31 +79,13 @@ PhLProcessWrapper class >> waitForLinuxCommand: aCommand [
 ]
 
 { #category : #private }
-PhLProcessWrapper class >> waitForWindowsCommand: commandString [
-	| process success |
-	process := (Smalltalk at: #ProcessWrapper) new.
-	success := process startWithShellCommand: commandString.
-	success ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
-
-	success := process waitForExit.
-	success ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
-	
-	process exitCode = 0 ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
-
-	^ process
+PhLProcessWrapper class >> waitForWindowsCommand: aCommand [ 
+	^ PhLProcess runCommand: aCommand
 ]
 
-{ #category : #private }
+{ #category : #'execution - public' }
 PhLProcessWrapper class >> windowsCommand: aCommand [
-	" Run the command in the background so that the process returns immediately. 
-	It prevents the process to be finalized by ProcessWrapper before the image beiing launched!.
-	More information on START: https://ss64.com/nt/start.html"
-	^ (Smalltalk at: #ProcessWrapper) new
-		startWithShellCommand: 'START /B ', aCommand;
-		yourself
+	^ PhLProcess runAsyncCommand: aCommand
 ]
 
 { #category : #accessing }

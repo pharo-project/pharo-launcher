@@ -18,7 +18,9 @@ Class {
 
 { #category : #unzipping }
 PhLVirtualMachineManager class >> canUseSytemZip [
-	^ PhLProcessWrapper isCommandAvailable: 'unzip'
+	^ Smalltalk os isWindows
+		ifTrue: [ false ]
+		ifFalse: [ PhLProcessWrapper isCommandAvailable: 'unzip' ]
 ]
 
 { #category : #private }

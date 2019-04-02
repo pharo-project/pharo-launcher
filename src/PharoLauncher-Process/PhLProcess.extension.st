@@ -79,14 +79,14 @@ PhLProcess >> memSet: ptr value: value size: size [
 PhLProcess class >> runAsyncCommand: command [
 	^ Smalltalk os isWindows
 		ifTrue: [ self createProcess: 'C:\Windows\System32\cmd.exe' command: '/C ', command waits: false]
-		ifFalse: [ self system: command]
+		ifFalse: [ LibC system: command]
 ]
 
 { #category : #'*PharoLauncher-Process' }
 PhLProcess class >> runCommand: command [
 	^ Smalltalk os isWindows
 		ifTrue: [ self createProcess: 'C:\Windows\System32\cmd.exe' command: '/C ', command]
-		ifFalse: [ self system: command]
+		ifFalse: [ LibC system: command]
 ]
 
 { #category : #'*PharoLauncher-Process' }

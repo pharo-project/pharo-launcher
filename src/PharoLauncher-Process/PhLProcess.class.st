@@ -63,14 +63,14 @@ PhLProcess class >> memSet: externalStructure value: value [
 PhLProcess class >> runAsyncCommand: command [
 	^ Smalltalk os isWindows
 		ifTrue: [ self createProcess: 'C:\Windows\System32\cmd.exe' command: '/C ', command waits: false]
-		ifFalse: [ self system: command]
+		ifFalse: [ LibC system: command]
 ]
 
 { #category : #'*PharoLauncher-Process' }
 PhLProcess class >> runCommand: command [
 	^ Smalltalk os isWindows
 		ifTrue: [ self createProcess: 'C:\Windows\System32\cmd.exe' command: '/C ', command]
-		ifFalse: [ self system: command]
+		ifFalse: [ LibC system: command]
 ]
 
 { #category : #'*PharoLauncher-Process' }
@@ -91,34 +91,6 @@ PhLProcess >> getLastError [
 { #category : #'*PharoLauncher-Process' }
 PhLProcess >> memSet: ptr value: value size: size [
 	^ self ffiCall: #(ExternalAddress * memset(ExternalAddress * ptr, int value, size_t size))
-]
-
-{ #category : #'as yet unclassified' }
-PhLProcess >> methodsIEdited [
-	"
-	PhLProcessWrapper class >> waitForCommand:
-	PhLProcessWrapper class >> waitForWindowsCommand: 	** deleted (no senders)
-	PhLProcessWrapper class >> windowsCommand: 				** deleted (no senders)
-	PhLProcessWrapper >> command:
-	PhLProcessWrapper class >> isCommandAvailable: 		** commented out (only used to check unzip)
-	PhLVirtualMachineManager class >> canUseSytemZip 		** edited
-	"
-
-	"
-	Removed
-	
-	Smalltalk os isWindows
-		ifTrue: [ Smalltalk
-				at: #ProcessWrapper
-				ifPresent: [ :processWrapperClass | 
-					^ (processWrapperClass new
-						useStderr;
-						waitForExit;
-						startWithShellCommand: encodedCommand;
-						yourself) stderrStream atEnd ].
-			^ false ]."
-
-	
 ]
 
 { #category : #'*PharoLauncher-Process' }

@@ -85,9 +85,8 @@ PLCreateImageDialog >> initializeWidgets [
 	(nameInputField := self newTextInput)
 		autoAccept: true.
 	
-	self transmit 
-		from: templateList;
-		to: nameInputField;
+	templateList
+		transmitTo: nameInputField
 		transform: [ :aTemplate | self nameSuggestionFor: aTemplate ]
 ]
 

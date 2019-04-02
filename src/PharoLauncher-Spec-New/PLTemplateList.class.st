@@ -47,9 +47,8 @@ PLTemplateList >> initializeWidgets [
 		addColumn: (StringTableColumn evaluated: #name);
 		hideColumnHeaders.
 		
-	self transmit
-		from: categoryList;
-		to: templateTree;
+	categoryList
+		transmitTo: templateTree
 		transform: [ :aGroup | aGroup children ]
 		
 

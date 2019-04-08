@@ -51,23 +51,6 @@ PhLAboutCommand >> execute [
 ]
 
 { #category : #querying }
-PhLAboutCommand >> launcherCurrentMetacalloVersion [
-	^ self launcherMetacalloConfiguration currentVersion
-]
-
-{ #category : #querying }
-PhLAboutCommand >> launcherMTProject [
-	^ project ifNil: [ project := MCModel2MTModelVisitor new 
-		visitConfiguration: self launcherMetacalloConfiguration 
-		withVersion: self launcherCurrentMetacalloVersion ]
-]
-
-{ #category : #querying }
-PhLAboutCommand >> launcherMetacalloConfiguration [
-	^ MBConfigurationRoot current configurationInfoFor: ConfigurationOfPharoLauncher
-]
-
-{ #category : #querying }
 PhLAboutCommand >> launcherVersion [
 
 	^ LauncherVersion ifNil: [ 'N/A' ] 

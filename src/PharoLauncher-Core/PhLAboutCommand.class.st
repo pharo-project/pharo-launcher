@@ -47,7 +47,9 @@ PhLAboutCommand >> aboutText [
 PhLAboutCommand >> execute [
 	AboutDialogWindow new
 		text: self aboutText;
-		open
+		open;
+		extent: (600 @ 300) scaledByDisplayScaleFactor "needs to be done after opening because RealEstateAgent computes the window size"
+
 ]
 
 { #category : #querying }

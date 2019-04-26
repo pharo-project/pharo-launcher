@@ -44,6 +44,9 @@ Each image gets its own folder. Use the "Show in folder" menu item if you want t
 
 After download, you can "Launch" the image from the context menu in the right list. This will open the new image and close the launcher image. So you are ready to start working.
 
+### Warning: Antinvirus can prevent Pharo Launcher to behave correctly
+It has been reported on Windows that the Antivirus prevents Pharo Launcher to download the VMs needed to run images. A workaround is to whitelist PharoLauncher or to temporary disable the antivirus when you need to download new VMs.
+
 ## Where are my images?
 Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
 - *$HOME/Documents/Pharo* on OS X,

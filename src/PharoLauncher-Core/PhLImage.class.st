@@ -147,7 +147,7 @@ PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
 				ifTrue: [ 'cmd /C ' , command ]
 				ifFalse: [ 'bash -l -c ''' , command , '''' ] ]
 		ifFalse: [ command ].
-	^ basicCommand utf8Encoded asString
+	^ basicCommand "utf8Encoded asString"
 ]
 
 { #category : #action }

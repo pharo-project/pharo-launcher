@@ -133,6 +133,13 @@ PhLWinProcess >> ffiLibrary [
 	^ PhLWinProcessLibrary uniqueInstance
 ]
 
+{ #category : #testing }
+PhLWinProcess >> hasTimedOut [
+	^ self isRunning not 
+		and: [ lastErrorCode isNil 
+		and: [ exitCode isNil ] ]
+]
+
 { #category : #initialization }
 PhLWinProcess >> initialize [
 	isRunning := false.
@@ -239,12 +246,17 @@ PhLWinProcess >> terminate [
 	^ success
 ]
 
-{ #category : #private }
+{ #category : #running }
 PhLWinProcess >> waitForCompletionThenClean [
+	self waitForCompletionThenCleanTimeout: self class TIMEOUT_INFINITE.
+]
+
+{ #category : #running }
+PhLWinProcess >> waitForCompletionThenCleanTimeout: nbMilliSeconds [
 	| returnValue |
 	[ returnValue := self ffiLibrary
 		waitForSingleObject: processInfo hProcess
-		milliSeconds: self class TIMEOUT_INFINITE.
+		milliSeconds: nbMilliSeconds.
 	isRunning := false.
 	returnValue = self class WAIT_OBJECT_0
 		ifTrue: [ self setExitCode ].	"successful process termination"

@@ -80,3 +80,18 @@ PhlWinProcessTest >> testGivenBasicCommandWhenCommandDoesNotExistThenExitCodeIsN
 	self deny: newprocess exitCode equals: 0.
 	self deny: newprocess isSuccess
 ]
+
+{ #category : #tests }
+PhlWinProcessTest >> testProcessTimeOut [
+	| newprocess start delta |
+	start := Time now asMilliSeconds.
+	newprocess := PhLWinProcess new 
+		shellCommand: 'timeout 50';
+		run;
+		waitForCompletionThenCleanTimeout: 3 seconds asMilliSeconds.
+	"wait is blocking"
+	delta := Time now asMilliSeconds - start.
+	self deny: newprocess isRunning.
+	self deny: newprocess isSuccess.
+	self assert: (delta between: 3 seconds asMilliSeconds and: 4 seconds asMilliSeconds)
+]

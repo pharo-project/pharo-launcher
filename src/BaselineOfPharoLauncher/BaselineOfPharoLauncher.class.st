@@ -16,12 +16,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 					versionString: #'stable';
 					loads: #('Core with Output' );
 					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
-			project: 'ProcessWrapper' with: [
-				spec
-					className: #ConfigurationOfProcessWrapper;
-					versionString: #'bleedingEdge';
-					loads: #('Core' );
-					repository: 'http://smalltalkhub.com/mc/hernan/ProcessWrapper/main/' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;
@@ -41,8 +35,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
 			package: #'PharoLauncher-ZipArchive'; 
+			package: #'PharoLauncher-WinProcess'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'ProcessWrapper' #'PharoLauncher-ZipArchive'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec

@@ -38,20 +38,12 @@ PhLProcessWrapper class >> encode: aCommand [
 
 { #category : #testing }
 PhLProcessWrapper class >> isCommandAvailable: aCommand [
-	| encodedCommand |
-	encodedCommand := self encode: aCommand.
+	| process |
 	
-	Smalltalk os isWindows
-		ifTrue: [ Smalltalk
-				at: #ProcessWrapper
-				ifPresent: [ :processWrapperClass | 
-					^ (processWrapperClass new
-						useStderr;
-						waitForExit;
-						startWithShellCommand: encodedCommand;
-						yourself) stderrStream atEnd ].
-			^ false ].
-	^ (OSProcess waitForCommand: encodedCommand) succeeded
+	[ process := self waitForCommand: aCommand.
+	^ process succeeded ]
+	on: Error 
+	do: [ ^ false ]
 ]
 
 { #category : #'execution - public' }
@@ -59,7 +51,7 @@ PhLProcessWrapper class >> waitForCommand: aCommand [
 	| encodedCommand |
 	encodedCommand := self encode: aCommand.
 	^ self new
-		process: ((Smalltalk os isWindows and: [ Smalltalk includesKey: #ProcessWrapper ])
+		process: (Smalltalk os isWindows
 			ifTrue: [ self waitForWindowsCommand: encodedCommand ]
 			ifFalse: [ self waitForLinuxCommand: encodedCommand ]);
 		yourself
@@ -67,6 +59,18 @@ PhLProcessWrapper class >> waitForCommand: aCommand [
 
 { #category : #'execution - public' }
 PhLProcessWrapper class >> waitForCommand: aCommand timeout: aDuration [
+	Smalltalk os isWindows
+			ifTrue: [ self waitForWindowsCommand: aCommand timeout: aDuration ]
+			ifFalse: [ self waitForLinuxCommand: aCommand timeout: aDuration ]
+]
+
+{ #category : #private }
+PhLProcessWrapper class >> waitForLinuxCommand: aCommand [ 
+	^ OSProcess waitForCommand: aCommand
+]
+
+{ #category : #'execution - public' }
+PhLProcessWrapper class >> waitForLinuxCommand: aCommand timeout: aDuration [
 	| future externalProcess |
 	
 	future := [externalProcess := self command: aCommand.
@@ -81,36 +85,42 @@ PhLProcessWrapper class >> waitForCommand: aCommand timeout: aDuration [
 ]
 
 { #category : #private }
-PhLProcessWrapper class >> waitForLinuxCommand: aCommand [ 
-	^ OSProcess waitForCommand: aCommand
+PhLProcessWrapper class >> waitForWindowsCommand: commandString [
+	| process |
+	process := PhLWinProcess new
+		doNotSurroundArgumentsWithDoubleQuotes;
+		shellCommand: commandString;
+		runAndWait.
+	
+	process isSuccess ifFalse: [
+		self error: 'command ', commandString ,' failed' ].
+
+	^ process
 ]
 
-{ #category : #private }
-PhLProcessWrapper class >> waitForWindowsCommand: commandString [
-	| process success |
-	process := (Smalltalk at: #ProcessWrapper) new.
-	success := process startWithShellCommand: commandString.
-	success ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
-
-	success := process waitForExit.
-	success ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
+{ #category : #'execution - public' }
+PhLProcessWrapper class >> waitForWindowsCommand: commandString timeout: aDuration [
+	| process |
+	process := PhLWinProcess new
+		doNotSurroundArgumentsWithDoubleQuotes;
+		shellCommand: commandString;
+		run;
+		waitForCompletionThenCleanTimeout: aDuration asMilliSeconds.
 	
-	process exitCode = 0 ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
+	process hasTimedOut
+		ifTrue: [ PhLProcessTimeOut signal ].
+	process isSuccess
+		ifFalse: [ self error: 'command ', commandString ,' failed' ].
 
 	^ process
 ]
 
 { #category : #private }
 PhLProcessWrapper class >> windowsCommand: aCommand [
-	" Run the command in the background so that the process returns immediately. 
-	It prevents the process to be finalized by ProcessWrapper before the image beiing launched!.
-	More information on START: https://ss64.com/nt/start.html"
-	^ (Smalltalk at: #ProcessWrapper) new
-		startWithShellCommand: 'START /B ', aCommand;
-		yourself
+	^ PhLWinProcess new
+		doNotSurroundArgumentsWithDoubleQuotes;
+		shellCommand: aCommand;
+		run
 ]
 
 { #category : #accessing }

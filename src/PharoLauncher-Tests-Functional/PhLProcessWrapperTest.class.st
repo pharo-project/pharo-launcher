@@ -13,19 +13,34 @@ PhLProcessWrapperTest >> performTest [
 ]
 
 { #category : #tests }
-PhLProcessWrapperTest >> testCanRunUnzipOnLinux [
-	| process |
-	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
-	process := PhLProcessWrapper waitForCommand: 'unzip --help'.
+PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
+	| process fileRef command |
+
+	fileRef := (FileLocator temp / 'Yann-Gaël Bérès.bat') asFileReference.
+	fileRef ensureCreateFile.
+	command := Smalltalk os isWindows 
+		ifTrue: [ 'dir ' ]
+		ifFalse: [ 'ls ' ].
+	command := command, (fileRef fullName surroundedByDoubleQuotes).
+
+	process := PhLProcessWrapper waitForCommand: command.
 	self assert: process succeeded
 ]
 
 { #category : #tests }
+PhLProcessWrapperTest >> testCanRunUnzipOnLinux [
+	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
+
+	self assert: (PhLProcessWrapper isCommandAvailable: 'ls').
+	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
+]
+
+{ #category : #tests }
 PhLProcessWrapperTest >> testCanRunUnzipOnWindows [
-	| process |
-	Smalltalk os isWindows ifFalse: [ ^ self ].
-	process := PhLProcessWrapper waitForCommand: 'unzip --help'.
-	self assert: process succeeded
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+
+	self assert: (PhLProcessWrapper isCommandAvailable: 'dir').
+	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
 ]
 
 { #category : #tests }

@@ -7,6 +7,8 @@ Class {
 { #category : #tests }
 PhlWinProcessTest >> testBasicCommand [
 	| newprocess |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	newprocess := PhLWinProcess new 
 		shellCommand: 'echo ok';
 		runAndWait.
@@ -19,6 +21,8 @@ PhlWinProcessTest >> testBasicCommand [
 { #category : #tests }
 PhlWinProcessTest >> testBasicCommandWithArguments [
 	| newprocess |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	newprocess := PhLWinProcess new 
 		shellCommand: 'echo'
 		arguments: #('ok');
@@ -32,6 +36,8 @@ PhlWinProcessTest >> testBasicCommandWithArguments [
 { #category : #tests }
 PhlWinProcessTest >> testCanDetectIfProcessIsRunning [
 	| newprocess |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	newprocess := PhLWinProcess new
 		shellCommand: 'timeout 1';
 		run.
@@ -44,6 +50,8 @@ PhlWinProcessTest >> testCanDetectIfProcessIsRunning [
 { #category : #tests }
 PhlWinProcessTest >> testCanTerminateProcess [
 	| newprocess succeeded |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	newprocess := PhLWinProcess new 
 		shellCommand: 'timeout 50';
 		run.
@@ -58,6 +66,8 @@ PhlWinProcessTest >> testCanTerminateProcess [
 { #category : #tests }
 PhlWinProcessTest >> testGivenACommandWhenContainsNonAsciiCharsThenCommandSucceed [
 	| newprocess tempDir |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	tempDir := (FileLocator temp / 'Yann-Gaël Bérès') asFileReference.
 	self deny: tempDir exists.
 	
@@ -75,6 +85,8 @@ PhlWinProcessTest >> testGivenACommandWhenContainsNonAsciiCharsThenCommandSuccee
 { #category : #tests }
 PhlWinProcessTest >> testGivenBasicCommandWhenCommandDoesNotExistThenExitCodeIsNot0 [
 	| newprocess |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	newprocess := PhLWinProcess new 
 		shellCommand: 'nonexistingcommand foo bar'.
 	self deny: newprocess exitCode equals: 0.
@@ -84,11 +96,13 @@ PhlWinProcessTest >> testGivenBasicCommandWhenCommandDoesNotExistThenExitCodeIsN
 { #category : #tests }
 PhlWinProcessTest >> testProcessTimeOut [
 	| newprocess start delta |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+	
 	start := Time now asMilliSeconds.
 	newprocess := PhLWinProcess new 
 		shellCommand: 'timeout 50';
 		run;
-		waitForCompletionThenCleanTimeout: 3 seconds asMilliSeconds.
+		waitForCompletionTimeout: 3 seconds asMilliSeconds.
 	"wait is blocking"
 	delta := Time now asMilliSeconds - start.
 	self deny: newprocess isRunning.

@@ -43,13 +43,15 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
 	| version manager |
 	self timeLimit: 30 seconds.
 	
-	manager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	self withCopyOfCurrentImageDo: 
+	[ :imagePath |
+	manager := PhLVirtualMachineManager forImage: imagePath.
 	manager fetchSourcesFilesFor: '61' in: manager compatibleVm vmFolder.
 
 	
 	version := (PhLVirtualMachineManager
-		forImage: Smalltalk image lastImagePath) imageVersion.
-	self assert: version equals: self currentImageVersion
+		forImage: imagePath) imageVersion.
+	self assert: version equals: self currentImageVersion ]
 ]
 
 { #category : #tests }
@@ -57,12 +59,14 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWhenRunn
 	| vmManager |
 	self timeLimit: 30 seconds.
 	
-	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	self withCopyOfCurrentImageDo: 
+	[ :imagePath |
+	vmManager := PhLVirtualMachineManager forImage:imagePath.
 	vmManager imageVersionFile ensureDelete.
 
 	self
 		assert: vmManager imageVersion
-		equals: self currentImageVersion
+		equals: self currentImageVersion ]
 ]
 
 { #category : #tests }
@@ -106,12 +110,15 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersionFromFileWithBadCommand [
 	| vmManager |
-	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	
+	self withCopyOfCurrentImageDo: 
+	[ :imagePath |
+	vmManager := PhLVirtualMachineManager forImage: imagePath.
 	vmManager imageVersionFile ensureDelete.
 	
 	self
 		should: [ vmManager imageVersionFromFileWith: 'foo' ]
-		raise: PhLImageVersionDeterminationError 
+		raise: PhLImageVersionDeterminationError. ]
 ]
 
 { #category : #tests }
@@ -156,4 +163,16 @@ PhLVirtualMachineManagerFunctionalTest >> testImageVersionDeterminationIsRunWith
 	command := manager imageVersionCommandWithPreferences: false.
 	
 	self assert: (command includesSubstring: '--no-default-preferences')
+]
+
+{ #category : #tests }
+PhLVirtualMachineManagerFunctionalTest >> withCopyOfCurrentImageDo: aBlock [
+	| imagePath imageRef |
+	imageRef := Smalltalk image lastImagePath asFileReference.
+	imagePath := FileLocator temp / imageRef basename.
+	imageRef copyTo: imagePath.
+	
+	[ aBlock value: imagePath ]
+	ensure: [ imagePath asFileReference ensureDelete ]
+
 ]

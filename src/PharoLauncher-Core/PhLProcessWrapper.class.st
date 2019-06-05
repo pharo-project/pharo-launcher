@@ -104,13 +104,10 @@ PhLProcessWrapper class >> waitForWindowsCommand: commandString timeout: aDurati
 	process := PhLWinProcess new
 		doNotSurroundArgumentsWithDoubleQuotes;
 		shellCommand: commandString;
-		run;
-		waitForCompletionThenCleanTimeout: aDuration asMilliSeconds.
+		runAndWaitTimeOut: aDuration asMilliSeconds.
 	
 	process hasTimedOut
 		ifTrue: [ PhLProcessTimeOut signal ].
-	process isSuccess
-		ifFalse: [ self error: 'command ', commandString ,' failed' ].
 
 	^ process
 ]

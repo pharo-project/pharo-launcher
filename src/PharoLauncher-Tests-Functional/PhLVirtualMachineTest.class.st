@@ -32,6 +32,8 @@ PhLVirtualMachineTest >> testCanDetect64BitArchPath [
 PhLVirtualMachineTest >> testCanDetectExecutablePath [
 	"WARNING: this test is Linux specific!"
 	| vm vmFolder |
+	Smalltalk os isWindows ifTrue: [ self skip. ^ self  ].
+	
 	vmFolder := FileLocator imageDirectory asFileReference / 'pharo-vm'.
 	vm := PhLVirtualMachine directory: vmFolder.
 	self 
@@ -42,8 +44,9 @@ PhLVirtualMachineTest >> testCanDetectExecutablePath [
 { #category : #tests }
 PhLVirtualMachineTest >> testCanDetectVMDirectory [
 	"WARNING: this test is Linux specific!"
-
 	| vm |
+	Smalltalk os isWindows ifTrue: [ self skip. ^ self  ].
+	
 	vm := PhLVirtualMachine directory: FileLocator imageDirectory asFileReference / 'pharo-vm'.
 	self
 		assert: vm vmFolderPath

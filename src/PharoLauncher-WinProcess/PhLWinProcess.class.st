@@ -26,7 +26,8 @@ Class {
 		'lastErrorCode',
 		'command',
 		'arguments',
-		'surroundArgumentsWithDoubleQuotes'
+		'surroundArgumentsWithDoubleQuotes',
+		'workingDirectory'
 	],
 	#pools : [
 		'PhLWinTypes'
@@ -55,6 +56,11 @@ PhLWinProcess class >> WAIT_TIMEOUT [
 	^ 16r00000102
 ]
 
+{ #category : #configuring }
+PhLWinProcess >> arguments: aListOfArguments [
+	arguments := aListOfArguments asArray.
+]
+
 { #category : #accessing }
 PhLWinProcess >> argumentsString [
 	^ Character space join: 
@@ -79,7 +85,7 @@ PhLWinProcess >> basicRun [
 		inheritHandles: false
 		creationFlags: kNoWindow
 		environment: ExternalAddress null
-		directory: ExternalAddress null
+		directory: self workingDirectoryHandle
 		startup: startupInfo
 		processInformation: processInfo.
 		
@@ -182,8 +188,7 @@ PhLWinProcess >> lastError [
 { #category : #running }
 PhLWinProcess >> run [
 	self basicRun.
-	(PhLWinProcessWatcher on: self) watch.
-	^ self
+	self watch.
 ]
 
 { #category : #running }
@@ -191,8 +196,22 @@ PhLWinProcess >> runAndWait [
 	" This methods runs the subprocess AND waits until the child has exited. "
 	
 	self basicRun.
-	self waitForCompletionThenClean.
-	^ self
+	self waitForCompletion.
+]
+
+{ #category : #running }
+PhLWinProcess >> runAndWaitTimeOut: nbMilliSeconds [
+	" This methods runs the subprocess AND waits until the child has exited. "
+	
+	self basicRun.
+	self waitForCompletionTimeout: nbMilliSeconds.
+]
+
+{ #category : #running }
+PhLWinProcess >> runUnwatch [ 
+	"Used to run a process and forget about it"
+	self basicRun.
+	self clean
 ]
 
 { #category : #private }
@@ -237,22 +256,22 @@ PhLWinProcess >> shellCommand: aShellCommandName arguments: aListOfArguments [
 { #category : #public }
 PhLWinProcess >> terminate [
 	| success |
+	self isRunning ifFalse: [ ^ true ].
+	
 	success := self ffiLibrary 
 		terminate: processInfo hProcess 
 		exitCode: 3	"Kill the process, set a non-success exit code".
-	success ifTrue: [ 
-		exitCode := 3.
-		self clean ].
+	success ifTrue: [ self clean ].
 	^ success
 ]
 
-{ #category : #running }
-PhLWinProcess >> waitForCompletionThenClean [
-	self waitForCompletionThenCleanTimeout: self class TIMEOUT_INFINITE.
+{ #category : #private }
+PhLWinProcess >> waitForCompletion [
+	self waitForCompletionTimeout: self class TIMEOUT_INFINITE.
 ]
 
-{ #category : #running }
-PhLWinProcess >> waitForCompletionThenCleanTimeout: nbMilliSeconds [
+{ #category : #private }
+PhLWinProcess >> waitForCompletionTimeout: nbMilliSeconds [
 	| returnValue |
 	[ returnValue := self ffiLibrary
 		waitForSingleObject: processInfo hProcess
@@ -262,5 +281,22 @@ PhLWinProcess >> waitForCompletionThenCleanTimeout: nbMilliSeconds [
 		ifTrue: [ self setExitCode ].	"successful process termination"
 	returnValue = self class WAIT_FAILED
 		ifTrue: [ self setLastErrorCode ] ]
-	ensure: [ self clean ]
+	ensure: [ self terminate ]
+]
+
+{ #category : #private }
+PhLWinProcess >> watch [
+	(PhLWinProcessWatcher on: self) watch
+]
+
+{ #category : #configuring }
+PhLWinProcess >> workingDirectory: aPathString [
+	workingDirectory := aPathString
+]
+
+{ #category : #private }
+PhLWinProcess >> workingDirectoryHandle [
+	^ workingDirectory 
+		ifNil: [ ExternalAddress null ]
+		ifNotNil: [ (Win32WideString fromString: workingDirectory) getHandle ]
 ]

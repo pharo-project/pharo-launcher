@@ -53,8 +53,6 @@ function package_user_version() {
 	cp PharoLauncher.image   One/Pharo.image
 	cp PharoLauncher.changes One/Pharo.changes
 	cp Pharo*.sources        One/
-	mkdir One/win
-	cp ProcessWrapperPlugin.dll One/win/
 	cd One
 	copy_current_stable_image
 	cd ..

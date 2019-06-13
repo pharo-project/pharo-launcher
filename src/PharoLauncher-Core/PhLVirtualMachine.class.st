@@ -68,7 +68,11 @@ PhLVirtualMachine >> ensureIsExecutable: aPath [
 	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
 	We have to set it explicitely on Unix and OS X."
 	Smalltalk os isWindows 
-		ifFalse: 	[ PhLProcessWrapper waitForCommand: 'chmod u+x ' , aPath ]
+		ifFalse: 	[ PhLProcessWrapper new 
+			shellCommand;
+			addArguments: 'chmod u+x';
+			addArgument: aPath surroundedByDoubleQuotes;
+			runAndWaitTimeOut: 5 seconds ]
 ]
 
 { #category : #setting }

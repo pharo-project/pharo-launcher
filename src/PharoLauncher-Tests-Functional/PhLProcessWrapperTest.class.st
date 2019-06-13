@@ -14,17 +14,19 @@ PhLProcessWrapperTest >> performTest [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
-	| process fileRef command |
+	| process fileRef |
 
 	fileRef := (FileLocator temp / 'Yann-Gaël Bérès.bat') asFileReference.
 	fileRef ensureCreateFile.
-	command := Smalltalk os isWindows 
-		ifTrue: [ 'dir ' ]
-		ifFalse: [ 'ls ' ].
-	command := command, (fileRef fullName surroundedByDoubleQuotes).
 
-	process := PhLProcessWrapper waitForCommand: command.
-	self assert: process succeeded
+	process := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: (Smalltalk os isWindows 
+			ifTrue: [ 'dir' ]
+			ifFalse: [ 'ls' ]);
+		addArgument: fileRef fullName surroundedByDoubleQuotes;
+		runAndWait.
+	self assert: process isSuccess
 ]
 
 { #category : #tests }
@@ -45,14 +47,16 @@ PhLProcessWrapperTest >> testCanRunUnzipOnWindows [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testRunningInfiniteProcessThrowsTimeout [
-	| cmd |
-	 cmd := Smalltalk os isWindows 
-		ifTrue: [ 'FOR /L %N IN () DO @echo Oops' ]
-		ifFalse: [ 'bash -c " while true; do echo ''Hit CTRL+C''; sleep 1; done"' ].
+	| process |
+	process := PhLProcessWrapper new 
+		shellCommand;
+		yourself.
+	Smalltalk os isWindows 
+		ifTrue: [ process addArgument: 'FOR /L %N IN () DO @echo Oops' ]
+		ifFalse: [ process addArgument: '" while true; do echo ''Hit CTRL+C''; sleep 1; done"' ].
+
 	self 
-		should: [ PhLProcessWrapper 
-			waitForCommand: cmd
-			timeout: 300 milliSeconds. ]
+		should: [ process runAndWaitTimeOut: 300 milliSeconds. ]
 		raise: PhLProcessTimeOut.
 ]
 
@@ -63,8 +67,9 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 		ifTrue: [ 'timeout 1' ]
 		ifFalse: [ 'sleep 1' ].
 	self 
-		shouldnt: [ PhLProcessWrapper 
-			waitForCommand: cmd
-			timeout: 2 seconds. ]
+		shouldnt: [ PhLProcessWrapper new 
+			shellCommand;
+			addArguments: cmd;
+			runAndWaitTimeOut: 2 seconds ]
 		raise: PhLProcessTimeOut.
 ]

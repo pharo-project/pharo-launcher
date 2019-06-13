@@ -7,9 +7,13 @@ Class {
 	#name : #PhLProcessWrapper,
 	#superclass : #Object,
 	#instVars : [
-		'process'
+		'process',
+		'arguments',
+		'command',
+		'workingDirectory',
+		'isShellCommand'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #'execution - public' }
@@ -40,33 +44,13 @@ PhLProcessWrapper class >> encode: aCommand [
 PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	| process |
 	
-	[ process := self waitForCommand: aCommand.
-	^ process succeeded ]
+	[ process := self new 
+		shellCommand;
+		addArgument: aCommand;
+		runAndWaitTimeOut: 2 seconds.
+		^ process isSuccess ]
 	on: Error 
 	do: [ ^ false ]
-]
-
-{ #category : #'execution - public' }
-PhLProcessWrapper class >> waitForCommand: aCommand [
-	| encodedCommand |
-	encodedCommand := self encode: aCommand.
-	^ self new
-		process: (Smalltalk os isWindows
-			ifTrue: [ self waitForWindowsCommand: encodedCommand ]
-			ifFalse: [ self waitForLinuxCommand: encodedCommand ]);
-		yourself
-]
-
-{ #category : #'execution - public' }
-PhLProcessWrapper class >> waitForCommand: aCommand timeout: aDuration [
-	Smalltalk os isWindows
-			ifTrue: [ self waitForWindowsCommand: aCommand timeout: aDuration ]
-			ifFalse: [ self waitForLinuxCommand: aCommand timeout: aDuration ]
-]
-
-{ #category : #private }
-PhLProcessWrapper class >> waitForLinuxCommand: aCommand [ 
-	^ OSProcess waitForCommand: aCommand
 ]
 
 { #category : #'execution - public' }
@@ -85,39 +69,36 @@ PhLProcessWrapper class >> waitForLinuxCommand: aCommand timeout: aDuration [
 ]
 
 { #category : #private }
-PhLProcessWrapper class >> waitForWindowsCommand: commandString [
-	| process |
-	process := PhLWinProcess new
-		doNotSurroundArgumentsWithDoubleQuotes;
-		shellCommand: commandString;
-		runAndWait.
-	
-	process isSuccess ifFalse: [
-		self error: 'command ', commandString ,' failed' ].
-
-	^ process
-]
-
-{ #category : #'execution - public' }
-PhLProcessWrapper class >> waitForWindowsCommand: commandString timeout: aDuration [
-	| process |
-	process := PhLWinProcess new
-		doNotSurroundArgumentsWithDoubleQuotes;
-		shellCommand: commandString;
-		runAndWaitTimeOut: aDuration asMilliSeconds.
-	
-	process hasTimedOut
-		ifTrue: [ PhLProcessTimeOut signal ].
-
-	^ process
-]
-
-{ #category : #private }
 PhLProcessWrapper class >> windowsCommand: aCommand [
 	^ PhLWinProcess new
-		doNotSurroundArgumentsWithDoubleQuotes;
 		shellCommand: aCommand;
 		run
+]
+
+{ #category : #building }
+PhLProcessWrapper >> addArgument: aString [
+	arguments add: aString
+]
+
+{ #category : #building }
+PhLProcessWrapper >> addArguments: aString [
+	self addArguments: aString separator: Character space
+]
+
+{ #category : #building }
+PhLProcessWrapper >> addArguments: aString separator: aCharacter [
+	(aCharacter split: aString)
+		do: [ :arg | self addArgument: arg ]
+]
+
+{ #category : #accessing }
+PhLProcessWrapper >> arguments [
+	^ arguments asArray
+]
+
+{ #category : #building }
+PhLProcessWrapper >> command: apathString [
+	command := apathString
 ]
 
 { #category : #accessing }
@@ -127,14 +108,92 @@ PhLProcessWrapper >> exitCode [
 		ifFalse: [ process exitStatus ]
 ]
 
+{ #category : #initialization }
+PhLProcessWrapper >> initialize [ 
+	arguments := OrderedCollection new.
+	isShellCommand := false.
+]
+
+{ #category : #testing }
+PhLProcessWrapper >> isSuccess [
+	^ Smalltalk os isWindows
+		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
+		ifFalse: [ process succeeded ]
+]
+
+{ #category : #building }
+PhLProcessWrapper >> loginShellCommand [ 
+	self shellCommand.
+	Smalltalk os isWindows 
+		ifFalse: [ arguments addFirst: '-l' ].
+]
+
+{ #category : #private }
+PhLProcessWrapper >> prepareWindowsProcess [
+	process := PhLWinProcess new
+		workingDirectory: workingDirectory;
+		yourself.
+	isShellCommand 
+		ifTrue: [ process shellCommand ] 
+		ifFalse: [ process command: command ].
+	process arguments: self arguments.
+]
+
 { #category : #private }
 PhLProcessWrapper >> process: aProcessWrapper [ 
 	process := aProcessWrapper
 ]
 
-{ #category : #testing }
-PhLProcessWrapper >> succeeded [
-	^ Smalltalk os isWindows
-		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
-		ifFalse: [ process succeeded ]
+{ #category : #running }
+PhLProcessWrapper >> runAndWait [
+	Smalltalk os isWindows
+		ifTrue: [ self runOnWindowsAndWait ]
+		ifFalse: [ self runAndWaitLinux ]
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
+	Smalltalk os isWindows
+		ifTrue: [ self runOnWindowsAndWaitTimeOut: aDuration ]
+		ifFalse: [ self runAndWaitLinuxTimeOut: aDuration ]
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runOnWindowsAndWait [
+	self prepareWindowsProcess.
+	process runAndWait.
+	
+	process isSuccess ifFalse: [
+		self error: 'command ', command ,' failed' ].
+
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
+	self prepareWindowsProcess.
+	process runAndWaitTimeOut: aDuration asMilliSeconds.
+	
+	process hasTimedOut
+		ifTrue: [ PhLProcessTimeOut signal ].
+
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runUnwatch [
+Smalltalk os isWindows
+		ifTrue: [ self prepareWindowsProcess. 
+					process runUnwatch. ]
+		ifFalse: [ self halt ]
+]
+
+{ #category : #building }
+PhLProcessWrapper >> shellCommand [ 
+	isShellCommand := true.
+	Smalltalk os isWindows 
+		ifFalse: [ arguments addFirst: '-c' ].
+]
+
+{ #category : #building }
+PhLProcessWrapper >> workingDirectory: apathString [
+	workingDirectory := apathString
 ]

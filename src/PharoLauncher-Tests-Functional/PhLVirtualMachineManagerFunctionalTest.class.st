@@ -76,7 +76,10 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWithRigh
 	
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
 	vmManager imageVersionFile ensureDelete.
-	command := 'echo 60 > ' , vmManager imageVersionFile fullName surroundedByDoubleQuotes.
+	command := PhLProcessWrapper new 
+		shellCommand;
+		addArguments: 'echo 60 >';
+		addArgument: vmManager imageVersionFile fullName surroundedByDoubleQuotes.
 		
 	self
 		assert: (vmManager imageVersionFromFileWith: command)
@@ -109,15 +112,19 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersionFromFileWithBadCommand [
-	| vmManager |
+	| vmManager command |
 	
+	command := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: 'foo'.
+		
 	self withCopyOfCurrentImageDo: 
 	[ :imagePath |
 	vmManager := PhLVirtualMachineManager forImage: imagePath.
 	vmManager imageVersionFile ensureDelete.
 	
 	self
-		should: [ vmManager imageVersionFromFileWith: 'foo' ]
+		should: [ vmManager imageVersionFromFileWith: command ]
 		raise: PhLImageVersionDeterminationError. ]
 ]
 
@@ -128,7 +135,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveN
 	
 	command := image launchCommandWith: 'pharo' useSettings: true.
 	
-	self deny: (command includesSubstring: '--no-default-preferences')
+	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }
@@ -142,7 +149,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotH
 	
 	command := image launchCommandWithVm: vmManager useSettings: false.
 	
-	self deny: (command includesSubstring: '--no-default-preferences')
+	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }
@@ -152,7 +159,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPre
 	
 	command := image launchCommandWith: 'pharo' useSettings: false.
 	
-	self assert: (command includesSubstring: '--no-default-preferences')
+	self assert: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }
@@ -162,7 +169,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageVersionDeterminationIsRunWith
 	
 	command := manager imageVersionCommandWithPreferences: false.
 	
-	self assert: (command includesSubstring: '--no-default-preferences')
+	self assert: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }

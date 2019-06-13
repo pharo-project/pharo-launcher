@@ -147,8 +147,11 @@ PhLVirtualMachineManager class >> settingsOn: aBuilder [
 
 { #category : #unzipping }
 PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirectory [
-	PhLProcessWrapper 
-		waitForCommand: 'unzip -o -d "' , outputDirectory fullName, '" "', aZipFileReference fullName, '"'.
+	PhLProcessWrapper new 
+		shellCommand;
+		addArguments: 'unzip -o -d';
+		addArgument: outputDirectory fullName surroundedByDoubleQuotes;
+		addArgument: aZipFileReference fullName surroundedByDoubleQuotes.
 ]
 
 { #category : #unzipping }
@@ -371,20 +374,22 @@ PhLVirtualMachineManager >> imageVersion: aString [
 
 { #category : #accessing }
 PhLVirtualMachineManager >> imageVersionCommandWithPreferences: shouldUsePreferences [
-	^ String
-		streamContents: [ :stream | 
-			stream << 'cd "' << self compatibleVm executableFolderPath << '" && '.
-			Smalltalk os isUnix
-				ifTrue: [ stream << 'export SQUEAK_PLUGINS="" && ' ].
-			stream << $" << self compatibleVm executablePath << $"
-				<<
-					(Smalltalk os isUnix
-						ifTrue: [ ' --nodisplay ' ]
-						ifFalse: [ ' --headless ' ]) << $"
-				<< imageFile fullName
-				<< '" '.
-			shouldUsePreferences ifFalse: [ stream << '--no-default-preferences ' ].
-			stream << self imageVersionDeterminationScriptPath ]
+	| process |
+	process := PhLProcessWrapper new.
+	process workingDirectory: self compatibleVm executableFolderPath.
+	Smalltalk os isUnix
+			ifTrue: [ process 
+							shellCommand;
+							addArguments: 'export SQUEAK_PLUGINS="" && '. ]
+			ifFalse: [ process command: self compatibleVm executablePath ].
+	process 
+		addArgument: (Smalltalk os isUnix
+			ifTrue: [ ' --nodisplay ' ]
+			ifFalse: [ ' --headless ' ]);
+		addArgument: imageFile fullName surroundedByDoubleQuotes.
+	shouldUsePreferences ifFalse: [ process addArgument: '--no-default-preferences' ].
+	process addArgument: self imageVersionDeterminationScriptPath surroundedByDoubleQuotes.
+	^ process
 ]
 
 { #category : #private }
@@ -466,13 +471,11 @@ PhLVirtualMachineManager >> imageVersionFromFile [
 ]
 
 { #category : #accessing }
-PhLVirtualMachineManager >> imageVersionFromFileWith: commandString [
-	PhLProcessWrapper 
-		waitForCommand: commandString
-		timeout: 10 seconds.
+PhLVirtualMachineManager >> imageVersionFromFileWith: aPhLProcessWrapperCommand [
+	aPhLProcessWrapperCommand runAndWaitTimeOut: 10 seconds.
 	self imageVersionFile 
 			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
-			ifAbsent: [ PhLImageVersionDeterminationError signalCommand: commandString ].
+			ifAbsent: [ PhLImageVersionDeterminationError signalCommand: aPhLProcessWrapperCommand printString ].
 	^ imageVersion
 ]
 

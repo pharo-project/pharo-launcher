@@ -48,3 +48,10 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
 	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
 	"for now, no simple way to test that the image is actually launched"
 ]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
+	
+	PhLImage launchInALoginShell: true.
+	self testCanLaunchImageWithNonAsciiCharacters.
+]

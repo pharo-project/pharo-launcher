@@ -73,7 +73,7 @@ PhlWinProcessTest >> testGivenACommandWhenContainsNonAsciiCharsThenCommandSuccee
 	
 	[ newprocess := PhLWinProcess new 
 		shellCommand: 'mkdir'
-		arguments: {tempDir fullName};
+		arguments: {tempDir fullName surroundedByDoubleQuotes};
 		runAndWait.
 	self assert: newprocess isSuccess.
 	self assert: tempDir exists. ]
@@ -107,5 +107,6 @@ PhlWinProcessTest >> testProcessTimeOut [
 	delta := Time now asMilliSeconds - start.
 	self deny: newprocess isRunning.
 	self deny: newprocess isSuccess.
-	self assert: (delta between: 3 seconds asMilliSeconds and: 4 seconds asMilliSeconds)
+	self assert: (delta between: 3 seconds asMilliSeconds and: 4 seconds asMilliSeconds).
+	self assert: newprocess hasTimedOut
 ]

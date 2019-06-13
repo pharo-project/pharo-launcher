@@ -131,23 +131,28 @@ PhLImage >> lastModification [
 ]
 
 { #category : #action }
-PhLImage >> launchCommandWith: vmCommand useSettings: usePharoSettings [
-	| imagePath vmDirectoryPath command basicCommand |
+PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
+	| imagePath vmDirectoryPath process |
 	imagePath := file pathString.
-	vmDirectoryPath := vmCommand asFileReference parent fullName.
-	command := String
-		streamContents: [ :cmd | 
-			cmd << 'cd ' << file parent pathString surroundedByDoubleQuotes << ' && '.
-			Smalltalk os isUnix
-				ifTrue: [ cmd << (self exportLDLibraryPathCommandWith: vmDirectoryPath) << ' && export SQUEAK_PLUGINS="" && ' ].
-			cmd << vmCommand surroundedByDoubleQuotes << ' ' << imagePath surroundedByDoubleQuotes.
-			usePharoSettings ifFalse: [ cmd << ' --no-default-preferences' ] ].
-	basicCommand := self class launchInALoginShell
-		ifTrue: [ Smalltalk os isWindows
-				ifTrue: [ 'cmd /C ' , command ]
-				ifFalse: [ 'bash -l -c ''' , command , '''' ] ]
-		ifFalse: [ command ].
-	^ basicCommand "utf8Encoded asString"
+	vmDirectoryPath := vmPath asFileReference parent fullName.
+	process := PhLProcessWrapper new.
+	process workingDirectory: file parent pathString.
+	self class launchInALoginShell
+		ifTrue: [ process loginShellCommand.
+					Smalltalk os isUnix
+						ifFalse: [ process addArgument: vmPath surroundedByDoubleQuotes ] ]
+		ifFalse: [ Smalltalk os isUnix
+			ifTrue: [ process shellCommand ]
+			ifFalse: [ process command: vmPath "surroundedByDoubleQuotes" ] ].
+	Smalltalk os isUnix
+		ifTrue: [ process 
+						addArguments: (self exportLDLibraryPathCommandWith: vmDirectoryPath);
+						addArguments: '&& export SQUEAK_PLUGINS="" &&';
+						addArgument: vmPath. ].
+	process addArgument: imagePath surroundedByDoubleQuotes.
+	usePharoSettings ifFalse: [ process addArgument: '--no-default-preferences' ].
+
+	^ process
 ]
 
 { #category : #action }
@@ -165,9 +170,10 @@ PhLImage >> launchWithSettings: usePharoSettings [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | vmManager |
+	[ [ | vmManager command |
 	vmManager := PhLVirtualMachineManager forImage: file pathString.
-	^ PhLProcessWrapper command: (self launchCommandWithVm: vmManager useSettings: usePharoSettings) ]
+	command := self launchCommandWithVm: vmManager useSettings: usePharoSettings.
+	^ command runUnwatch ]
 		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning

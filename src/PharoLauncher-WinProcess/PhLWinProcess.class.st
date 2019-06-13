@@ -63,10 +63,16 @@ PhLWinProcess >> arguments: aListOfArguments [
 
 { #category : #accessing }
 PhLWinProcess >> argumentsString [
-	^ Character space join: 
+	| args |
+	args := Character space join: 
 		(surroundArgumentsWithDoubleQuotes
 			ifTrue: [ arguments collect: #surroundedByDoubleQuotes ]
-			ifFalse: [ arguments ])
+			ifFalse: [ arguments ]).
+
+	"cmd.exe /C waits a unique argument. Wrap the whole command but /C to run with double quotes"
+	^ (command = self shellCommandPath)
+		ifTrue: [ '/C ', args surroundedByDoubleQuotes ]
+		ifFalse: [ args ]
 ]
 
 { #category : #running }
@@ -123,12 +129,6 @@ PhLWinProcess >> completionCallback [
 	self clean
 ]
 
-{ #category : #configuring }
-PhLWinProcess >> doNotSurroundArgumentsWithDoubleQuotes [
-	"useful when you want to pass a command line string instead of a list of arguments"
-	surroundArgumentsWithDoubleQuotes := false.
-]
-
 { #category : #accessing }
 PhLWinProcess >> exitCode [
 	^ exitCode 
@@ -149,7 +149,7 @@ PhLWinProcess >> hasTimedOut [
 { #category : #initialization }
 PhLWinProcess >> initialize [
 	isRunning := false.
-	surroundArgumentsWithDoubleQuotes := true.
+	surroundArgumentsWithDoubleQuotes := false.
 ]
 
 { #category : #testing }
@@ -210,8 +210,8 @@ PhLWinProcess >> runAndWaitTimeOut: nbMilliSeconds [
 { #category : #running }
 PhLWinProcess >> runUnwatch [ 
 	"Used to run a process and forget about it"
-	self basicRun.
-	self clean
+	[ self basicRun ]
+	ensure: [ self clean ]
 ]
 
 { #category : #private }
@@ -219,6 +219,7 @@ PhLWinProcess >> setExitCode [
 	| exitCodeValueHolder succeeded |
 	
 	exitCode ifNotNil: [ ^ self ]. "already set"
+	processInfo getHandle ifNil: [ ^ self ]. "process already cleaned. No way to get the exit code"
 	
 	exitCodeValueHolder := LPDWORD new.
 	succeeded := self ffiLibrary
@@ -234,12 +235,17 @@ PhLWinProcess >> setLastErrorCode [
 ]
 
 { #category : #configuring }
+PhLWinProcess >> shellCommand [
+	command := self shellCommandPath
+]
+
+{ #category : #configuring }
 PhLWinProcess >> shellCommand: aShellCommandString [
 	"This is a simple facility method for the cases when the user wants to use shell as the program.
 	This way, the user can directly send shellCommand: 'ECHO y| DEL *.txt' with the whole string 
 	rather than having to do set the command cmd.exe, send the '/C' argument, etc etc etc."
-	command := 'C:\Windows\System32\cmd.exe'.
-	arguments := Array with: '/C' withAll: (Character space split: aShellCommandString).
+	self shellCommand.
+	arguments := Array withAll: (Character space split: aShellCommandString).
 ]
 
 { #category : #configuring }
@@ -247,10 +253,20 @@ PhLWinProcess >> shellCommand: aShellCommandName arguments: aListOfArguments [
 	"This is a simple facility method for the cases when the user wants to use shell as the program.
 	This way, the user can directly send shellCommand: 'ECHO' arguments: #('1 + 1' '>' 'a filename with spaces.txt')' 
 	rather than having to do set the command cmd.exe, send the '/C' argument, etc etc etc."
-	command := 'C:\Windows\System32\cmd.exe'.
-	arguments := OrderedCollection with: '/C' with: aShellCommandName.
+	self shellCommand.
+	arguments := OrderedCollection with: aShellCommandName.
 	arguments addAll: aListOfArguments.
 	arguments := arguments asArray.
+]
+
+{ #category : #configuring }
+PhLWinProcess >> shellCommandPath [
+	^ 'C:\Windows\System32\cmd.exe'.
+]
+
+{ #category : #configuring }
+PhLWinProcess >> surroundArgumentsWithDoubleQuotes [
+	surroundArgumentsWithDoubleQuotes := true.
 ]
 
 { #category : #public }

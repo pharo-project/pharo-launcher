@@ -18,26 +18,11 @@ Class {
 
 { #category : #'execution - public' }
 PhLProcessWrapper class >> command: aCommand [
-
-	| encodedCommand |
-	encodedCommand := self encode: aCommand.
 	^ Smalltalk os isWindows
-			ifTrue: [ self windowsCommand: encodedCommand ]
-			ifFalse: [ OSProcess command: encodedCommand ]
-]
-
-{ #category : #encoding }
-PhLProcessWrapper class >> encode: aCommand [
-
-	| encoded |
-	
-	(aCommand isWideString and: [ Smalltalk os isWindows ])
-		ifTrue: [ PhLNotSupportedCharacterError signal ].
-
-	encoded := Smalltalk os isWindows
-		ifTrue: [ aCommand ]
-	 	ifFalse: [ aCommand utf8Encoded asString ].
-	^ encoded
+			ifTrue: [ PhLWinProcess new
+							shellCommand: aCommand;
+							run ]
+			ifFalse: [ OSProcess command: aCommand utf8Encoded asString ]
 ]
 
 { #category : #testing }
@@ -66,13 +51,6 @@ PhLProcessWrapper class >> waitForLinuxCommand: aCommand timeout: aDuration [
 				externalProcess isComplete ifFalse:
 					[ externalProcess sigkill.
 					PhLProcessTimeOut signal ] ]
-]
-
-{ #category : #private }
-PhLProcessWrapper class >> windowsCommand: aCommand [
-	^ PhLWinProcess new
-		shellCommand: aCommand;
-		run
 ]
 
 { #category : #building }
@@ -121,6 +99,22 @@ PhLProcessWrapper >> isSuccess [
 		ifFalse: [ process succeeded ]
 ]
 
+{ #category : #private }
+PhLProcessWrapper >> linuxCommandLine [
+	| commandLine |
+	
+	commandLine := workingDirectory 
+		ifNil: [ '' ]
+		ifNotNil: ['cd ' , workingDirectory , ' && ' ].
+	isShellCommand 
+		ifFalse: [ commandLine := commandLine , command surroundedByDoubleQuotes, ' ' ].
+	commandLine := commandLine , (Character space join: self arguments).
+	^ isShellCommand 
+		ifTrue: [ 'bash -c ''{1}''' format: { commandLine }]
+		ifFalse: [ commandLine ]
+
+]
+
 { #category : #building }
 PhLProcessWrapper >> loginShellCommand [ 
 	self shellCommand.
@@ -148,14 +142,34 @@ PhLProcessWrapper >> process: aProcessWrapper [
 PhLProcessWrapper >> runAndWait [
 	Smalltalk os isWindows
 		ifTrue: [ self runOnWindowsAndWait ]
-		ifFalse: [ self runAndWaitLinux ]
+		ifFalse: [ self runOnLinuxAndWait ]
 ]
 
 { #category : #running }
 PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
 	Smalltalk os isWindows
 		ifTrue: [ self runOnWindowsAndWaitTimeOut: aDuration ]
-		ifFalse: [ self runAndWaitLinuxTimeOut: aDuration ]
+		ifFalse: [ self runOnLinuxAndWaitTimeOut: aDuration ]
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runOnLinuxAndWait [
+	process := OSProcess waitForCommand: self linuxCommandLine utf8Encoded asString.
+]
+
+{ #category : #running }
+PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
+	| future |
+	
+	future := [ process := OSProcess command: self linuxCommandLine utf8Encoded asString.
+				 [ process isComplete] 
+					whileFalse: [(Delay forMilliseconds: 50) wait]. ] future.
+	[ future waitForCompletion: aDuration ]
+		on: TKTTimeoutException 
+		do: [ :error | 
+				process isComplete ifFalse:
+					[ process sigkill.
+					PhLProcessTimeOut signal ] ]
 ]
 
 { #category : #running }
@@ -180,7 +194,7 @@ PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
 
 { #category : #running }
 PhLProcessWrapper >> runUnwatch [
-Smalltalk os isWindows
+	Smalltalk os isWindows
 		ifTrue: [ self prepareWindowsProcess. 
 					process runUnwatch. ]
 		ifFalse: [ self halt ]
@@ -189,8 +203,6 @@ Smalltalk os isWindows
 { #category : #building }
 PhLProcessWrapper >> shellCommand [ 
 	isShellCommand := true.
-	Smalltalk os isWindows 
-		ifFalse: [ arguments addFirst: '-c' ].
 ]
 
 { #category : #building }

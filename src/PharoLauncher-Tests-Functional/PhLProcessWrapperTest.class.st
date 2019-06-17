@@ -53,7 +53,7 @@ PhLProcessWrapperTest >> testRunningInfiniteProcessThrowsTimeout [
 		yourself.
 	Smalltalk os isWindows 
 		ifTrue: [ process addArgument: 'FOR /L %N IN () DO @echo Oops' ]
-		ifFalse: [ process addArgument: '" while true; do echo ''Hit CTRL+C''; sleep 1; done"' ].
+		ifFalse: [ process addArgument: 'bash -c " while true; do echo ''Hit CTRL+C''; sleep 1; done"' ].
 
 	self 
 		should: [ process runAndWaitTimeOut: 300 milliSeconds. ]

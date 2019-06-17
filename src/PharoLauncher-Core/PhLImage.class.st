@@ -174,7 +174,7 @@ PhLImage >> launchWithSettings: usePharoSettings [
 	vmManager := PhLVirtualMachineManager forImage: file pathString.
 	command := self launchCommandWithVm: vmManager useSettings: usePharoSettings.
 	^ command runUnwatch ]
-		on: PhLImageVersionDeterminationError, PhLNotSupportedCharacterError
+		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |

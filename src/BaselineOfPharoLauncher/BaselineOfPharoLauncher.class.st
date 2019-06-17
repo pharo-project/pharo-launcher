@@ -10,12 +10,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 		spec 
-			project: 'OSProcess' with: [
-				spec
-					className: #ConfigurationOfOSProcess;
-					versionString: #'stable';
-					loads: #('Core with Output' );
-					repository: 'http://www.squeaksource.com/MetacelloRepository' ];
+			baseline: #OSSubprocess
+				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.0.1' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;
@@ -37,7 +33,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-ZipArchive'; 
 			package: #'PharoLauncher-WinProcess'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSProcess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec

@@ -23,17 +23,16 @@ BaselineOfPharoLauncher >> baseline: spec [
 					versionString: #'stable';
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
-			baseline: #TaskIt
-				with: [ spec repository: 'github://sbragagnolo/taskit:v1.0.1' ];
 			baseline: #Icetray
 				with: [ spec repository: 'github://pharo-spec/icetray/src' ];
 			package: #FastTableExtentions
 				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
 			package: #'PharoLauncher-ZipArchive'; 
-			package: #'PharoLauncher-WinProcess'; 
+			package: #'PharoLauncher-WinProcess';
+			package: #'PharoLauncher-70Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec

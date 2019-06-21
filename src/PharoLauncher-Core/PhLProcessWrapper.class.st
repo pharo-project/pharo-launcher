@@ -11,7 +11,8 @@ Class {
 		'arguments',
 		'command',
 		'workingDirectory',
-		'isShellCommand'
+		'isShellCommand',
+		'useLoginShell'
 	],
 	#category : #'PharoLauncher-Core-Download'
 }
@@ -71,7 +72,17 @@ PhLProcessWrapper >> addArguments: aString separator: aCharacter [
 
 { #category : #accessing }
 PhLProcessWrapper >> arguments [
-	^ arguments asArray
+	"On Linux and OS X, we give an array of arguments to the process. 
+	If the command is a shell, then pathes HAVE TO be protected with double quotes.
+	It the command is pharo-vm, then pathes SHOULD NOT be surrounded by double quotes, else they are interpreted as part of the argument.
+	We assume that arguments are already protected (user knows what to protect, we cannot guess)."
+	isShellCommand ifTrue: [ ^ arguments asArray ].
+	^ arguments
+		collect:	[ :arg | 
+			(arg first = $" and: [ arg last = $" ])
+				ifTrue: [ arg allButFirst allButLast ]
+				ifFalse: [ arg ] ]
+		as: Array
 ]
 
 { #category : #building }
@@ -90,13 +101,14 @@ PhLProcessWrapper >> exitCode [
 PhLProcessWrapper >> initialize [ 
 	arguments := OrderedCollection new.
 	isShellCommand := false.
+	useLoginShell := false.
 ]
 
 { #category : #testing }
 PhLProcessWrapper >> isSuccess [
 	^ Smalltalk os isWindows
 		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
-		ifFalse: [ process succeeded ]
+		ifFalse: [ process isSuccess ]
 ]
 
 { #category : #private }
@@ -118,8 +130,22 @@ PhLProcessWrapper >> linuxCommandLine [
 { #category : #building }
 PhLProcessWrapper >> loginShellCommand [ 
 	self shellCommand.
-	Smalltalk os isWindows 
-		ifFalse: [ arguments addFirst: '-l' ].
+	useLoginShell := true.
+]
+
+{ #category : #private }
+PhLProcessWrapper >> prepareLinuxProcess [
+	process := OSSUnixSubprocess new
+		workingDirectory: workingDirectory;
+		yourself.
+	isShellCommand 
+		ifTrue: [ | commandLine |
+			commandLine := (Character space join: self arguments) utf8Encoded asString.
+			useLoginShell 
+				ifTrue: [ process loginShellCommand: commandLine ]
+				ifFalse: [ process shellCommand: commandLine ] ] 
+		ifFalse: [ process command: command.
+					process arguments: self arguments. ].
 ]
 
 { #category : #private }
@@ -154,22 +180,22 @@ PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
 
 { #category : #running }
 PhLProcessWrapper >> runOnLinuxAndWait [
-	process := OSProcess waitForCommand: self linuxCommandLine utf8Encoded asString.
+
+	self prepareLinuxProcess.
+	process runAndWait.
+	
+	process isSuccess ifFalse: [
+		self error: 'command ', command ,' failed' ].
 ]
 
 { #category : #running }
 PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
-	| future |
-	
-	future := [ process := OSProcess command: self linuxCommandLine utf8Encoded asString.
-				 [ process isComplete] 
-					whileFalse: [(Delay forMilliseconds: 50) wait]. ] future.
-	[ future waitForCompletion: aDuration ]
-		on: TKTTimeoutException 
-		do: [ :error | 
-				process isComplete ifFalse:
-					[ process sigkill.
-					PhLProcessTimeOut signal ] ]
+	self prepareLinuxProcess.
+	[ process 
+		run;
+		waitForExitWithTimeout: aDuration ]
+	on: OSSTimeout
+	do: [ PhLProcessTimeOut signal ].
 ]
 
 { #category : #running }
@@ -197,7 +223,8 @@ PhLProcessWrapper >> runUnwatch [
 	Smalltalk os isWindows
 		ifTrue: [ self prepareWindowsProcess. 
 					process runUnwatch. ]
-		ifFalse: [ self halt ]
+		ifFalse: [ self prepareLinuxProcess.
+					process run.  ]
 ]
 
 { #category : #building }

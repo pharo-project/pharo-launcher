@@ -64,19 +64,6 @@ PhLImage >> changesFile [
 	^ self file parent / self file basenameWithoutExtension , 'changes'
 ]
 
-{ #category : #private }
-PhLImage >> cleanLDLibraryPath [
-	^ (self currentLDLibraryPathes
-		reject: [ :path | path = FileLocator vmDirectory pathString ])
-
-]
-
-{ #category : #private }
-PhLImage >> currentLDLibraryPathes [
-	^ (OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ])
-		substrings: ':'
-]
-
 { #category : #printing }
 PhLImage >> description [
 	| dirName f |
@@ -86,13 +73,6 @@ PhLImage >> description [
 	^ f exists
 		ifTrue: [ f contents withNoLineLongerThan: 80 ]
 		ifFalse: [ 'There is no description.txt' ]
-]
-
-{ #category : #private }
-PhLImage >> exportLDLibraryPathCommandWith: vmDirectoryPath [
-	^ 'export LD_LIBRARY_PATH=' ,
-		($: join: ((self cleanLDLibraryPath copyWithFirst: vmDirectoryPath) collect: #surroundedBySingleQuotes))
-
 ]
 
 { #category : #accessing }
@@ -132,27 +112,12 @@ PhLImage >> lastModification [
 
 { #category : #action }
 PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
-	| imagePath vmDirectoryPath process |
-	imagePath := file pathString.
-	vmDirectoryPath := vmPath asFileReference parent fullName.
-	process := PhLProcessWrapper new.
-	process workingDirectory: file parent pathString.
-	self class launchInALoginShell
-		ifTrue: [ process loginShellCommand.
-					Smalltalk os isUnix
-						ifFalse: [ process addArgument: vmPath surroundedByDoubleQuotes ] ]
-		ifFalse: [ Smalltalk os isUnix
-			ifTrue: [ process shellCommand ]
-			ifFalse: [ process command: vmPath "surroundedByDoubleQuotes" ] ].
-	Smalltalk os isUnix
-		ifTrue: [ process 
-						addArguments: (self exportLDLibraryPathCommandWith: vmDirectoryPath);
-						addArguments: '&& export SQUEAK_PLUGINS="" &&';
-						addArgument: vmPath. ].
-	process addArgument: imagePath surroundedByDoubleQuotes.
-	usePharoSettings ifFalse: [ process addArgument: '--no-default-preferences' ].
-
-	^ process
+	^ PhLImageProcessConfigurator new 
+		vmPath: vmPath;
+		launchInALoginShell: self class launchInALoginShell;
+		usePharoSettings: usePharoSettings;
+		imageFile: file;
+		visit.
 ]
 
 { #category : #action }

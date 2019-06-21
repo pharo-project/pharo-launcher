@@ -8,14 +8,6 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #private }
-PhLLaunchImageCommandTest >> performTest [
-	"Avoid that TestRunner kills workers of TaskIt => create one new process or each task"
-	TKTConfiguration
-		runner: TKTNewProcessTaskRunner new
-		during: [ super performTest ]
-]
-
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
 	launchInALoginShellBackup := PhLImage launchInALoginShell.

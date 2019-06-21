@@ -4,14 +4,6 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #private }
-PhLProcessWrapperTest >> performTest [
-	"Avoid that TestRunner kills workers of TaskIt => create one new process or each task"
-	TKTConfiguration
-		runner: TKTNewProcessTaskRunner new
-		during: [ super performTest ]
-]
-
 { #category : #tests }
 PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 	| process fileRef |

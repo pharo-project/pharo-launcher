@@ -380,12 +380,13 @@ PhLVirtualMachineManager >> imageVersionCommandWithPreferences: shouldUsePrefere
 	Smalltalk os isUnix
 			ifTrue: [ process 
 							shellCommand;
-							addArguments: 'export SQUEAK_PLUGINS="" && '. ]
+							addArguments: 'export SQUEAK_PLUGINS="" && ';
+							addArgument: self compatibleVm executablePath surroundedByDoubleQuotes. ]
 			ifFalse: [ process command: self compatibleVm executablePath ].
 	process 
 		addArgument: (Smalltalk os isUnix
-			ifTrue: [ ' --nodisplay ' ]
-			ifFalse: [ ' --headless ' ]);
+			ifTrue: [ '--nodisplay' ]
+			ifFalse: [ '--headless' ]);
 		addArgument: imageFile fullName surroundedByDoubleQuotes.
 	shouldUsePreferences ifFalse: [ process addArgument: '--no-default-preferences' ].
 	process addArgument: self imageVersionDeterminationScriptPath surroundedByDoubleQuotes.

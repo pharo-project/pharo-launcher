@@ -74,9 +74,10 @@ PhLProcessWrapper >> addArguments: aString separator: aCharacter [
 PhLProcessWrapper >> arguments [
 	"On Linux and OS X, we give an array of arguments to the process. 
 	If the command is a shell, then pathes HAVE TO be protected with double quotes.
-	It the command is pharo-vm, then pathes SHOULD NOT be surrounded by double quotes, else they are interpreted as part of the argument.
+	It the command is pharo-vm, then pathes SHOULD NOT be surrounded by double quotes, else they are interpreted as part of the argument. This is not true on Windows because arguments is a String with all arguments. It means we MUST keep double quotes for windows pathes.
 	We assume that arguments are already protected (user knows what to protect, we cannot guess)."
-	isShellCommand ifTrue: [ ^ arguments asArray ].
+	(isShellCommand or: [ Smalltalk os isWindows ])
+		ifTrue: [ ^ arguments asArray ].
 	^ arguments
 		collect:	[ :arg | 
 			(arg first = $" and: [ arg last = $" ])

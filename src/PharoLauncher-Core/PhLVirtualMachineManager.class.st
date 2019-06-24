@@ -151,7 +151,8 @@ PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirec
 		shellCommand;
 		addArguments: 'unzip -o -d';
 		addArgument: outputDirectory fullName surroundedByDoubleQuotes;
-		addArgument: aZipFileReference fullName surroundedByDoubleQuotes.
+		addArgument: aZipFileReference fullName surroundedByDoubleQuotes;
+		runAndWait.
 ]
 
 { #category : #unzipping }

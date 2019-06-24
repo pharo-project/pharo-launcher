@@ -76,7 +76,7 @@ PhLImageProcessConfigurator >> visitGeneric: aPlatform [
 { #category : #visiting }
 PhLImageProcessConfigurator >> visitUnix: aPlatform [
 	
-	self class launchInALoginShell
+	launchInALoginShell
 		ifTrue: [ process loginShellCommand ]
 		ifFalse: [ process shellCommand ].
 	process 

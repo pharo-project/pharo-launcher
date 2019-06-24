@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #tests }
+PhLProcessWrapperTest >> testCanDetectAvailableCommandOnLinux [
+	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
+
+	self assert: (PhLProcessWrapper isCommandAvailable: 'ls').
+	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
+]
+
+{ #category : #tests }
+PhLProcessWrapperTest >> testCanDetectAvailableCommandOnWindows [
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+
+	self assert: (PhLProcessWrapper isCommandAvailable: 'dir').
+	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
+]
+
+{ #category : #tests }
 PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 	| process fileRef |
 
@@ -22,19 +38,37 @@ PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 ]
 
 { #category : #tests }
-PhLProcessWrapperTest >> testCanRunUnzipOnLinux [
+PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
+	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
+	| process argument |
 	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
 
-	self assert: (PhLProcessWrapper isCommandAvailable: 'ls').
-	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
+	process := PhLProcessWrapper new 
+		command: 'sleep';
+		addArgument: '1'.
+	
+	argument := process arguments first.
+	self deny: (argument includes: $").
+	process runAndWait.
+	self assert: process isSuccess
 ]
 
 { #category : #tests }
-PhLProcessWrapperTest >> testCanRunUnzipOnWindows [
-	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
+PhLProcessWrapperTest >> testLinuxShellCommandDoesNotRemoveDoubleQuotesFromArguments [
+	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
+	| process pathArgument |
+	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
 
-	self assert: (PhLProcessWrapper isCommandAvailable: 'dir').
-	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
+	process := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: 'ls';
+		addArgument: FileLocator home fullName surroundedByDoubleQuotes.
+	
+	pathArgument := process arguments second.
+	self assert: pathArgument first equals: $".
+	self assert: pathArgument last equals: $".
+	process runAndWait.
+	self assert: process isSuccess
 ]
 
 { #category : #tests }
@@ -64,4 +98,22 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 			addArguments: cmd;
 			runAndWaitTimeOut: 2 seconds ]
 		raise: PhLProcessTimeOut.
+]
+
+{ #category : #tests }
+PhLProcessWrapperTest >> testWindowsShellCommandOnWindowsDoesNotRemoveDoubleQuotesFromArguments [
+	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
+	| process argument |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self ].
+
+	process := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: 'timeout';
+		addArgument: '"/?"'.
+	
+	argument := process arguments last.
+	self assert: argument first equals: $".
+	self assert: argument last equals: $".
+	process runAndWait.
+	self assert: process isSuccess
 ]

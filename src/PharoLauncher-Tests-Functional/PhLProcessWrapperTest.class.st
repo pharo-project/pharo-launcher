@@ -101,6 +101,24 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 ]
 
 { #category : #tests }
+PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArguments [
+	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
+	| process argument |
+	Smalltalk os isWindows ifFalse: [ self skip. ^ self ].
+
+	process := PhLProcessWrapper new 
+		command: Smalltalk vmBinary fullName;
+		addArgument: Smalltalk imagePath surroundedByDoubleQuotes;
+		addArgument: '--headless'.
+	
+	argument := process arguments first.
+	self assert: argument first equals: $".
+	self assert: argument last equals: $".
+	process runAndWait.
+	self assert: process isSuccess
+]
+
+{ #category : #tests }
 PhLProcessWrapperTest >> testWindowsShellCommandOnWindowsDoesNotRemoveDoubleQuotesFromArguments [
 	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
 	| process argument |

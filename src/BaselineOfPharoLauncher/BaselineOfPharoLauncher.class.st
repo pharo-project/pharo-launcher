@@ -11,7 +11,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 	spec for: #'common' do: [
 		spec 
 			baseline: #OSSubprocess
-				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.0.1' ];
+				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;

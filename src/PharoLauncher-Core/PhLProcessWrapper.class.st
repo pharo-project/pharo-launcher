@@ -20,7 +20,7 @@ Class {
 { #category : #'execution - public' }
 PhLProcessWrapper class >> command: aCommand [
 	^ Smalltalk os isWindows
-			ifTrue: [ PhLWinProcess new
+			ifTrue: [ OSWSWinProcess new
 							shellCommand: aCommand;
 							run ]
 			ifFalse: [ OSProcess command: aCommand utf8Encoded asString ]
@@ -151,7 +151,7 @@ PhLProcessWrapper >> prepareLinuxProcess [
 
 { #category : #private }
 PhLProcessWrapper >> prepareWindowsProcess [
-	process := PhLWinProcess new
+	process := OSWSWinProcess new
 		workingDirectory: workingDirectory;
 		yourself.
 	isShellCommand 

@@ -12,6 +12,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 		spec 
 			baseline: #OSSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
+			baseline: #OSWinSubprocess
+				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:master' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;
@@ -28,11 +30,10 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #FastTableExtentions
 				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
 		spec
-			package: #'PharoLauncher-ZipArchive'; 
-			package: #'PharoLauncher-WinProcess';
+			package: #'PharoLauncher-ZipArchive';
 			package: #'PharoLauncher-70Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'PharoLauncher-WinProcess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
+				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'OSWinSubprocess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-IceTray' with: [ spec

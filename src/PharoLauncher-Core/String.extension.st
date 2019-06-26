@@ -10,10 +10,3 @@ String >> asLegalSelector [
 		ifTrue: [ toUse := 'v', toUse ].
 	^ toUse uncapitalized asSymbol.
 ]
-
-{ #category : #'*PharoLauncher-Core' }
-String >> surroundedByDoubleQuotes [
-	"Answer the receiver with leading and trailing double quotes.  "
-
-	^ self surroundedBy: ($" asString)
-]

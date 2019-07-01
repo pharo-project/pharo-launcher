@@ -4,7 +4,11 @@ A PhLVirtualMachineManagerTest is a test class for testing the behavior of PhLVi
 Class {
 	#name : #PhLVirtualMachineManagerFunctionalTest,
 	#superclass : #PhLVirtualMachineManagerTest,
-	#category : 'PharoLauncher-Tests-Functional'
+	#instVars : [
+		'vmStoreBackup',
+		'tempVmStoreFolder'
+	],
+	#category : #'PharoLauncher-Tests-Functional'
 }
 
 { #category : #'as yet unclassified' }
@@ -15,6 +19,19 @@ PhLVirtualMachineManagerFunctionalTest class >> availaibleVirtualMachines [
 { #category : #support }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'
+]
+
+{ #category : #running }
+PhLVirtualMachineManagerFunctionalTest >> setUp [
+	vmStoreBackup := PhLVirtualMachineManager vmStore.
+	tempVmStoreFolder := FileLocator temp / self class name, UUIDGenerator next asString.
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
+]
+
+{ #category : #running }
+PhLVirtualMachineManagerFunctionalTest >> tearDown [ 
+	tempVmStoreFolder ensureDeleteAll.
+	PhLVirtualMachineManager vmStore: vmStoreBackup.
 ]
 
 { #category : #tests }

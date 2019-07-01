@@ -3,7 +3,9 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'launchInALoginShellBackup',
-		'imageDir'
+		'imageDir',
+		'vmStoreBackup',
+		'tempVmStoreFolder'
 	],
 	#category : #'PharoLauncher-Tests-Functional'
 }
@@ -15,12 +17,18 @@ PhLLaunchImageCommandTest >> setUp [
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès',  UUIDGenerator next asString.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
+
+	vmStoreBackup := PhLVirtualMachineManager vmStore.
+	tempVmStoreFolder := FileLocator temp / self class name, UUIDGenerator next asString.
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder.	
 ]
 
 { #category : #running }
 PhLLaunchImageCommandTest >> tearDown [ 
 	"imageDir ensureDeleteAll "
 	PhLImage launchInALoginShell: launchInALoginShellBackup.
+	tempVmStoreFolder ensureDeleteAll.
+	PhLVirtualMachineManager vmStore: vmStoreBackup.	
 ]
 
 { #category : #tests }

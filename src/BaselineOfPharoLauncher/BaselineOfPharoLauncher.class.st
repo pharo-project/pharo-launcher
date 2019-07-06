@@ -13,7 +13,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			baseline: #OSSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
 			baseline: #OSWinSubprocess
-				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:master' ];
+				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ];
 			project: 'Ston' with: [
 				spec
 					className: #ConfigurationOfSton;

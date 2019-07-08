@@ -1,12 +1,6 @@
 Extension { #name : #Win32Platform }
 
 { #category : #'*PharoLauncher-Core' }
-Win32Platform >> privOpenFileBrowserOn: pathString [
-	self privShellExplore: pathString 
- 
-]
-
-{ #category : #'*PharoLauncher-Core' }
 Win32Platform >> privShellExecute: lpOperation file: lpFile parameters: lpParameters directory: lpDirectory show: nShowCmd [
 	
 	^self ffiCall: #( 

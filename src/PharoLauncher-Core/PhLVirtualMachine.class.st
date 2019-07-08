@@ -158,7 +158,7 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : #actions }
 PhLVirtualMachine >> showInFolder [
-	OSPlatform current openFileBrowserOn: self vmStore / name
+	PhLFileBrowser openOn: self vmStore / name
 ]
 
 { #category : #updating }

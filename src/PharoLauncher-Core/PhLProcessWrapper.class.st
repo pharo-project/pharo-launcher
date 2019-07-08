@@ -17,15 +17,6 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
-{ #category : #'execution - public' }
-PhLProcessWrapper class >> command: aCommand [
-	^ Smalltalk os isWindows
-			ifTrue: [ OSWSWinProcess new
-							shellCommand: aCommand;
-							run ]
-			ifFalse: [ OSProcess command: aCommand utf8Encoded asString ]
-]
-
 { #category : #testing }
 PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	| process |
@@ -37,21 +28,6 @@ PhLProcessWrapper class >> isCommandAvailable: aCommand [
 		^ process isSuccess ]
 	on: Error 
 	do: [ ^ false ]
-]
-
-{ #category : #'execution - public' }
-PhLProcessWrapper class >> waitForLinuxCommand: aCommand timeout: aDuration [
-	| future externalProcess |
-	
-	future := [externalProcess := self command: aCommand.
-				 [externalProcess isComplete] 
-					whileFalse: [(Delay forMilliseconds: 50) wait]. ] future.
-	[ future waitForCompletion: aDuration ]
-		on: TKTTimeoutException 
-		do: [ :error | 
-				externalProcess isComplete ifFalse:
-					[ externalProcess sigkill.
-					PhLProcessTimeOut signal ] ]
 ]
 
 { #category : #building }

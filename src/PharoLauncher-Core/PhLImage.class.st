@@ -204,7 +204,7 @@ PhLImage >> setLocation: aFile [
 
 { #category : #printing }
 PhLImage >> showNativeFolder [
-	OSPlatform current openFileBrowserOn: file
+	PhLFileBrowser openOn: file
 ]
 
 { #category : #accessing }

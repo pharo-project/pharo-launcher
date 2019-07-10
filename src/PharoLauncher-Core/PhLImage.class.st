@@ -92,7 +92,7 @@ PhLImage class >> stonAllInstVarNames [
 
 { #category : #accessing }
 PhLImage >> architecture [
-	^ architecture
+	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
 
 { #category : #accessing }
@@ -284,7 +284,6 @@ PhLImage >> serializeMetadata [
 { #category : #'initialize-release' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
-	self computeArchitecture. "Always be able to display image architecture"
 ]
 
 { #category : #printing }

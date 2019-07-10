@@ -106,7 +106,7 @@ PhLSearchableTitledTreePresenter >> initializeWidgets [
 	(archColumn := TreeColumnPresenter new) 
 		headerLabel: 'Arch';
 		headerAction: [ self sortContentByArch ];
-		displayBlock: [ :item | item content arch ];
+		displayBlock: [ :item | item content architecture ];
 		initialWidth: 40.
 		
 	(detailsColumn := TreeColumnPresenter new) 
@@ -198,7 +198,7 @@ PhLSearchableTitledTreePresenter >> selectFirstItem [
 { #category : #'private - filtering' }
 PhLSearchableTitledTreePresenter >> sortContentByArch [ 
 
-	self sortTreeWith: [:image1 :image2 | image1 arch > image2 arch ]
+	self sortTreeWith: [:image1 :image2 | image1 architecture > image2 architecture ]
 	
 ]
 

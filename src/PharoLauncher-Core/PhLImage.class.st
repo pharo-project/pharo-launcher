@@ -3,20 +3,53 @@ I represent a Pharo image. I live in a particular location and have a name. User
 
 Instance Variables
 	file:		a reference to the .image file
-
+	description: user description of the image
+	formatNumber: image format number encoded in the image header
+	architecture: is the image 32-bit or 64-bit
+	pharoVersion: the Pharo version number of the image 
+	originTemplate: template that was used to create this image
+	
+My metadata are serialized when setting description, template or before launching the image (implies to compute formatNumber, architecture and pharo version)
 "
 Class {
 	#name : #PhLImage,
 	#superclass : #PhLObject,
 	#instVars : [
 		'file',
-		'meta'
+		'description',
+		'formatNumber',
+		'architecture',
+		'pharoVersion',
+		'originTemplate'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #accessing }
+PhLImage class >> descriptionFileName [
+	^ 'description.txt'
+]
+
+{ #category : #'instance creation' }
+PhLImage class >> imageFromMetadata: imageFileReference [
+	"Will recreate the image object from its STON serialized version if possible"
+	(imageFileReference parent / self metadataFileName) 
+		readStreamDo: [ :stream | | object |
+			object := STON fromStream: stream.
+			(object isKindOf: PhLImage)
+				ifTrue: [ ^ object ]. 
+			(object isKindOf: Dictionary)
+				ifTrue: [ "old metadata file"
+					^ self new 
+						privOriginTemplate: (object at: #template);
+						yourself ]. 
+			PhLError signal: 'Unrecognized metadata format'  ]
+		ifAbsent: [ ^ self new ].
+	
+]
 
 { #category : #settings }
 PhLImage class >> launchInALoginShell [
@@ -29,10 +62,15 @@ PhLImage class >> launchInALoginShell: aBoolean [
 ]
 
 { #category : #'instance creation' }
-PhLImage class >> location: aFile [
-	^ self new
-		setLocation: aFile 
+PhLImage class >> location: imageFileReference [
+	^ (self imageFromMetadata: imageFileReference)
+		setLocation: imageFileReference;
 		yourself
+]
+
+{ #category : #accessing }
+PhLImage class >> metadataFileName [
+	^ 'meta-inf.ston'
 ]
 
 { #category : #settings }
@@ -47,16 +85,14 @@ PhLImage class >> settingsOn: aBuilder [
 		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
 ]
 
-{ #category : #quering }
-PhLImage >> arch [
-	| formatNumber |
-	formatNumber := self formatNumber.
-	((PhLVirtualMachineManager is32bits: formatNumber)
-		or: [ PhLVirtualMachineManager isPreSpur: formatNumber ])
-		ifTrue: [ ^ '32' ].
-	(PhLVirtualMachineManager is64bits: formatNumber)
-		ifTrue: [ ^ '64' ].
-	^ 'N/A'
+{ #category : #serialization }
+PhLImage class >> stonAllInstVarNames [
+	^ super stonAllInstVarNames reject: [ :varName | varName = #file ]
+]
+
+{ #category : #accessing }
+PhLImage >> architecture [
+	^ architecture
 ]
 
 { #category : #accessing }
@@ -64,15 +100,48 @@ PhLImage >> changesFile [
 	^ self file parent / self file basenameWithoutExtension , 'changes'
 ]
 
-{ #category : #printing }
+{ #category : #computing }
+PhLImage >> computeArchitecture [
+	self computeFormatNumber.
+	((PhLVirtualMachineManager is32bits: formatNumber)
+		or: [ PhLVirtualMachineManager isPreSpur: formatNumber ])
+		ifTrue: [ ^ architecture := '32' ].
+	(PhLVirtualMachineManager is64bits: formatNumber)
+		ifTrue: [ ^ architecture :='64' ].
+	^ architecture := 	'N/A'
+]
+
+{ #category : #computing }
+PhLImage >> computeFormatNumber [
+	formatNumber := PhLVirtualMachineManager imageFormatNumberFromFile: file
+]
+
+{ #category : #computing }
+PhLImage >> computePharoVersionWith: vmManager [
+	pharoVersion := vmManager imageVersion.
+	self computeArchitecture.
+	self serializeMetadata.
+]
+
+{ #category : #accessing }
 PhLImage >> description [
-	| dirName f |
-	dirName := self file parent fullName.
-	f := (dirName , '/description.txt') asFileReference.
+	^ description ifNil: [ self descriptionFromFile ]
+]
+
+{ #category : #accessing }
+PhLImage >> description: aString [
+	description := aString.
+	self serializeMetadata.
+]
+
+{ #category : #accessing }
+PhLImage >> descriptionFromFile [
+	| descriptionFile |
+	descriptionFile := file parent / self class descriptionFileName.
 	
-	^ f exists
-		ifTrue: [ f contents withNoLineLongerThan: 80 ]
-		ifFalse: [ 'There is no description.txt' ]
+	^ descriptionFile exists
+		ifTrue: [ descriptionFile contents withNoLineLongerThan: 80 ]
+		ifFalse: [ 'There is no description' ]
 ]
 
 { #category : #accessing }
@@ -80,9 +149,9 @@ PhLImage >> file [
 	^file
 ]
 
-{ #category : #quering }
+{ #category : #accessing }
 PhLImage >> formatNumber [
-	^ PhLVirtualMachineManager imageFormatNumberFromFile: file
+	^ formatNumber
 ]
 
 { #category : #testing }
@@ -124,10 +193,12 @@ PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
 PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
 	| shouldUsePharoSettings |
 	shouldUsePharoSettings := usePharoSettings.
-	vmManager imageVersion < '30' " Cannot skip Pharo settings before 3.0"
-		ifTrue: [ shouldUsePharoSettings := true ].
-	
-	^ self launchCommandWith: vmManager vm useSettings: shouldUsePharoSettings
+	self computePharoVersionWith: vmManager.
+	pharoVersion < '30'
+		ifTrue: [ shouldUsePharoSettings := true ].	" Cannot skip Pharo settings before 3.0"
+	^ self
+		launchCommandWith: vmManager vm
+		useSettings: shouldUsePharoSettings
 ]
 
 { #category : #action }
@@ -151,27 +222,6 @@ PhLImage >> launchWithSettings: usePharoSettings [
 ]
 
 { #category : #accessing }
-PhLImage >> meta [
-	^ meta ifNil: [  meta := self metaFromDirectory: file parent ]
-]
-
-{ #category : #private }
-PhLImage >> metaFromDirectory: aDirectory [
-	| myMeta |
-	
-	myMeta := Dictionary new.
-	(aDirectory filesMatching: PhLAbstractTemplate metaInfoFileName)
-		do: [ :metaFile | 
-			metaFile readStreamDo: [ :stream | 
-				[ myMeta addAll: (STON fromStream: stream)]
-					on: Error
-					do: [ PhLUIInformation new 
-							message: ('PharoLauncher error: meta info {1}' format: {  metaFile asString }) ;
-							inform ] ] ].
-	^ myMeta
-]
-
-{ #category : #accessing }
 PhLImage >> name [
 	^ file basenameWithoutExtension
 ]
@@ -179,13 +229,35 @@ PhLImage >> name [
 { #category : #accessing }
 PhLImage >> originTemplate [
 
-	^ self meta at: #template ifAbsent: [ nil ]
+	^ originTemplate
+]
+
+{ #category : #accessing }
+PhLImage >> originTemplate: aPhLTemplate [
+	
+	self privOriginTemplate: aPhLTemplate.
+	self serializeMetadata.
 ]
 
 { #category : #accessing }
 PhLImage >> originTemplateName [
 
-	^ self originTemplate ifNotNil: [ :t | t name ] ifNil: [ '' ]
+	^ self originTemplate 
+		ifNotNil: [ :template | template name ] 
+		ifNil: [ #unknown ]
+]
+
+{ #category : #accessing }
+PhLImage >> pharoVersion [
+	^ pharoVersion ifNil: [ self pharoVersionFromFile ]
+]
+
+{ #category : #accessing }
+PhLImage >> pharoVersionFromFile [
+	file ifNil: [ ^ '' ].
+	^ self versionFile exists
+		ifTrue: [ pharoVersion := self versionFile contents ]
+		ifFalse: [ '' ]
 ]
 
 { #category : #printing }
@@ -196,10 +268,23 @@ PhLImage >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
+{ #category : #accessing }
+PhLImage >> privOriginTemplate: aPhLTemplate [
+	
+	originTemplate := aPhLTemplate.
+]
+
+{ #category : #serialization }
+PhLImage >> serializeMetadata [
+
+	(file parent / self class metadataFileName)
+		writeStreamDo: [ :stream | stream nextPutAll: self stonString ]
+]
+
 { #category : #'initialize-release' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
-	
+	self computeArchitecture. "Always be able to display image architecture"
 ]
 
 { #category : #printing }
@@ -211,6 +296,11 @@ PhLImage >> showNativeFolder [
 PhLImage >> sourcesFile [
 	^ self file parent files 
 		detect: [ :fileRef | fileRef extension = 'sources' ]
+]
+
+{ #category : #serialization }
+PhLImage >> stonString [
+	^ STON toStringPretty: self
 ]
 
 { #category : #printing }
@@ -225,11 +315,6 @@ PhLImage >> summaryInfo [
 				cr;
 				cr;
 				nextPutAll: self description ]
-]
-
-{ #category : #accessing }
-PhLImage >> template [
-	^ self meta at: #template ifPresent: [ :t | t name ] ifAbsent: [ #unknown ]
 ]
 
 { #category : #accessing }

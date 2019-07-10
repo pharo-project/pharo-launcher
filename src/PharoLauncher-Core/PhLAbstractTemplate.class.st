@@ -13,11 +13,6 @@ Class {
 	#category : 'PharoLauncher-Core-Model'
 }
 
-{ #category : #accessing }
-PhLAbstractTemplate class >> metaInfoFileName [
-	^ 'meta-inf.ston'
-]
-
 { #category : #actions }
 PhLAbstractTemplate >> extractTo: aDirectory [
 	"Extract myself to aDirectory, making sure to name the resulting image after me"
@@ -35,7 +30,9 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	extractionDirectory := self extractZipArchive: self zipArchive to: aDirectory.
 	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
 	extractionDirectory deleteAll.
-	self generateMetaInformationTo: aDirectory
+	"Will serialize image metadata with the template information"
+	(PhLImage location: aDirectory / aString , 'image') 
+		originTemplate: self.
 ]
 
 { #category : #private }
@@ -54,17 +51,6 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 			ifTrue: [ PhLCorruptedTemplateError signal ]
 			ifFalse: [ error pass ] ].
 	^ tempDirectory
-]
-
-{ #category : #actions }
-PhLAbstractTemplate >> generateMetaInformationTo: aDirectory [
-	| metainf |
-	
-	metainf := Dictionary new.
-	metainf at: 'template' put: self.
-	
-	aDirectory / (PhLAbstractTemplate metaInfoFileName) 
-		writeStreamDo: [ : stream | stream nextPutAll: (STON toString: metainf) ]
 ]
 
 { #category : #testing }

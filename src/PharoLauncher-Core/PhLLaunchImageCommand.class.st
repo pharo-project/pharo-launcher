@@ -130,27 +130,7 @@ PhLLaunchImageCommand >> launchSelectedImage [
 	self launchImage: self model singleImage
 ]
 
-{ #category : #accessing }
-PhLLaunchImageCommand >> pharoStableImagePath [
-	| img |
-	img := (self resourcesPath  / 'images' / 'pharo-stable.zip') asFileReference.
-	^ img exists 
-		ifTrue: [ img ]
-		ifFalse: [ nil ]
-]
-
 { #category : #action }
 PhLLaunchImageCommand >> quit [
 	(PhLQuitCommand on: self model) execute
-]
-
-{ #category : #accessing }
-PhLLaunchImageCommand >> resourcesPath [
-	| vmDirectory |
-	
-	vmDirectory := Smalltalk vm binary parent.
-
-	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
-	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
-	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
 ]

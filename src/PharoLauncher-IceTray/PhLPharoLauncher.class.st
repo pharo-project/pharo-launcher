@@ -100,7 +100,7 @@ PhLPharoLauncher >> initializeImageTable: aTableMorph [
 				add: #'Copy selected image' target: self selector: #copySelectedImage ]
 			width: 300;
 		add: #vm width: 50;
-		add: #template width: 300;
+		add: #originTemplate width: 300;
 		add: #'last modification' accessing: #lastModification width: 100;
 		onAnnouncement: FTSelectionChanged do: [ :ann | self selectionChanged: ann];
 		onAnnouncement: FTStrongSelectionChanged do: [ :ann | self launchSelectedImageWithSettings ].
@@ -219,7 +219,7 @@ PhLPharoLauncher >> selectionChanged: anAnnouncement [
 		propertyPanel model: imagesTable morph selectedItems anyOne ].
 ]
 
-{ #category : #action }
+{ #category : #actions }
 PhLPharoLauncher >> spawnNewImageDialog [
 	^ PhLNewImageDialog new openWithSpec. 
 ]

@@ -12,6 +12,14 @@ Class {
 	#category : 'PharoLauncher-Core-Commands'
 }
 
+{ #category : #action }
+PhLUIRequest >> chooseFrom: aListOfChoices [
+	^ UIManager default 
+		chooseFrom: aListOfChoices
+		lines: #()
+		title: title
+]
+
 { #category : #accessing }
 PhLUIRequest >> initialAnswer: aString [ 
 	initialAnswer := aString

@@ -89,11 +89,6 @@ PhLLaunchImageCommand2 >> asSpecLaunchWithoutSettingsCommand [
 		yourself
 ]
 
-{ #category : #accessing }
-PhLLaunchImageCommand2 >> canBeRun [ 
-	^ self imagesPresenter hasSingleImageSelected
-]
-
 { #category : #configuring }
 PhLLaunchImageCommand2 >> doNotUseSettings [
 	useSettings := false.
@@ -109,9 +104,7 @@ PhLLaunchImageCommand2 >> execute [
 PhLLaunchImageCommand2 >> initialize [
 	super initialize.
 	useSettings := true.
-	self
-		basicName: 'Launch';
-		basicDescription: 'Launch the selected Pharo image'
+	self basicName: 'Launch'.
 ]
 
 { #category : #executing }

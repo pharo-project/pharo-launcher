@@ -8,11 +8,17 @@ Class {
 }
 
 { #category : #accessing }
-PhLImageCommand2 >> canBeRun [ 
+PhLImageCommand2 >> canBeExecuted [
 	^ self imagesPresenter hasSingleImageSelected
 ]
 
 { #category : #accessing }
 PhLImageCommand2 >> imagesPresenter [
 	^ self context
+]
+
+{ #category : #initialization }
+PhLImageCommand2 >> initialize [ 
+	super initialize.
+	self basicDescription: self class comment
 ]

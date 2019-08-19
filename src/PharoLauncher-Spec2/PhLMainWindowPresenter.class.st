@@ -1,5 +1,5 @@
 "
-PhLMainWindowPharo Launcher main window presenting the list of managed images as well as a tollbar and a status bar.
+Pharo Launcher main window presenting the list of managed images as well as a tollbar and a status bar.
 
 To open me:
 	(PhLMainWindowPresenter on: PhLDirectoryBasedImageRepository default) openWithSpec
@@ -7,6 +7,8 @@ To open me:
 Class {
 	#name : #PhLMainWindowPresenter,
 	#superclass : #SpPresenterWithModel,
+	#traits : 'TPhLInteractionTrait',
+	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageTable',
 		'launchButton',
@@ -18,28 +20,34 @@ Class {
 { #category : #commands }
 PhLMainWindowPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 	rootCommandGroup
-		register: (self buildToolbarGroupWith: anImagesPresenter);
-		register: (self buildContextualMenuGroupWith: anImagesPresenter)
+		register: (self buildToolbarGroup);
+		register: (self buildContextualMenuGroup)
 ]
 
 { #category : #commands }
-PhLMainWindowPresenter class >> buildContextualMenuGroupWith: anImagesPresenter [
+PhLMainWindowPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		basicDescription: 'Images table contextual menu';
-		register: (PhLLaunchImageCommand2 forSpec context: anImagesPresenter);
-		register: (PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand 
-			context: anImagesPresenter);
+		register: PhLLaunchImageCommand2 forSpec;
+		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
+		register: PhLRenameImageCommand2 forSpec;
+		register: PhLDeleteImageCommand2 forSpec;
+		register: PhLShowImageInFolderCommand2 forSpec;
+		register: PhLCopyPathname2 forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]
 
 { #category : #commands }
-PhLMainWindowPresenter class >> buildToolbarGroupWith: anImagesPresenter [
+PhLMainWindowPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		basicDescription: 'Pharo Launcher toolbar';
-		register: (PhLLaunchImageCommand2 forSpec context: anImagesPresenter);
-		register: (PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand 
-			context: anImagesPresenter);
+		register: PhLLaunchImageCommand2 forSpec;
+		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
+		register: PhLLaunchImageFromDiskCommand forSpec;
+		register: PhLImportImageCommand2 forSpec;
+		register: PhLShowImageInFolderCommand2 forSpec;
+		register: PhLDeleteImageCommand2 forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]
@@ -206,6 +214,11 @@ PhLMainWindowPresenter >> hasSingleImageSelected [
 	^ imageTable selectedItems size = 1
 ]
 
+{ #category : #'api - accessing' }
+PhLMainWindowPresenter >> imageRepository [
+	^ self model
+]
+
 { #category : #initialization }
 PhLMainWindowPresenter >> initializePresenter [
 
@@ -231,7 +244,7 @@ PhLMainWindowPresenter >> initializeWidgets [
 		addColumn: (SpStringTableColumn title: 'Architecture' evaluated: #architecture);
 		addColumn: (SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion);
 		addColumn: (SpStringTableColumn title: 'Last modified' evaluated: [ :v | self readableDateFor: v lastModification ]);
-		contextMenu: [ (self rootCommandsGroup / 'Context Menu') beRoot asMenuPresenter ];
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		yourself.
 
 	"descriptionPanel := self instantiate: PLImageDescriptionPanel on: PhLNullImage new."
@@ -239,15 +252,18 @@ PhLMainWindowPresenter >> initializeWidgets [
 
 { #category : #initialization }
 PhLMainWindowPresenter >> initializeWindow: aWindowPresenter [
-
-	aWindowPresenter 
+	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 700@500;
-		toolBar: (self rootCommandsGroup / 'Toolbar')  asToolBarPresenter"self buildToolbar";
+		initialExtent: 700 @ 500;
+		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
 		menu: self buildMenuBar;
-		whenBuiltDo: [ :ann | ann model centered ].
-		
-	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+		whenBuiltDo: [ :ann | ann model centered ].	
+	self rootCommandsGroup installShortcutsIn: aWindowPresenter
+]
+
+{ #category : #'api-testing' }
+PhLMainWindowPresenter >> isNewImageNameValid: aString [ 
+	^ aString isEmptyOrNil not and: [ (self hasImageNamed: aString) not ]
 ]
 
 { #category : #private }
@@ -257,7 +273,19 @@ PhLMainWindowPresenter >> readableDateFor: aDateAndTime [
 ]
 
 { #category : #'api - selection' }
+PhLMainWindowPresenter >> selectedImages [
+	^ imageTable selectedItems
+]
+
+{ #category : #'api - selection' }
 PhLMainWindowPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
 	^ imageTable selectedItems anyOne
+]
+
+{ #category : #'api - selection' }
+PhLMainWindowPresenter >> singleImageName [
+	self ensure: self hasSingleImageSelected.
+self flag: 'TODO: pathNames defined in PhLTreeSelection'.
+	^ #selection pathNames anyOne
 ]

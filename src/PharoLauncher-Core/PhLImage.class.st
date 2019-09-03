@@ -180,7 +180,15 @@ PhLImage >> lastModification [
 ]
 
 { #category : #action }
-PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
+PhLImage >> launchProcessWithSettings: usePharoSettings [
+	| vmManager |
+	vmManager := PhLVirtualMachineManager forImage: file.
+	^ self launchProcessWithVmManager: vmManager useSettings: usePharoSettings.
+
+]
+
+{ #category : #action }
+PhLImage >> launchProcessWithVm: vmPath useSettings: usePharoSettings [
 	^ PhLImageProcessConfigurator new 
 		vmPath: vmPath;
 		launchInALoginShell: self class launchInALoginShell;
@@ -190,14 +198,14 @@ PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
 ]
 
 { #category : #action }
-PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
+PhLImage >> launchProcessWithVmManager: vmManager useSettings: usePharoSettings [
 	| shouldUsePharoSettings |
 	shouldUsePharoSettings := usePharoSettings.
 	self computePharoVersionWith: vmManager.
 	pharoVersion < '30'
 		ifTrue: [ shouldUsePharoSettings := true ].	" Cannot skip Pharo settings before 3.0"
 	^ self
-		launchCommandWith: vmManager vm
+		launchProcessWithVm: vmManager vm
 		useSettings: shouldUsePharoSettings
 ]
 
@@ -206,10 +214,7 @@ PhLImage >> launchWithSettings: usePharoSettings [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | vmManager command |
-	vmManager := PhLVirtualMachineManager forImage: file pathString.
-	command := self launchCommandWithVm: vmManager useSettings: usePharoSettings.
-	^ command runUnwatch ]
+	[ [ ^ (self launchProcessWithSettings: usePharoSettings) runUnwatch ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning

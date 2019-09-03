@@ -143,7 +143,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveN
 	| image command |
 	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
 	
-	command := image launchCommandWith: 'pharo' useSettings: true.
+	command := image launchProcessWithVm: 'pharo' useSettings: true.
 	
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
@@ -157,7 +157,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotH
 		imageFormatNumber: PhLVirtualMachineManager imageFormat32bits;
 		imageVersion: '20'.
 	
-	command := image launchCommandWithVm: vmManager useSettings: false.
+	command := image launchProcessWithVmManager: vmManager useSettings: false.
 	
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
@@ -167,7 +167,7 @@ PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPre
 	| image command |
 	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
 	
-	command := image launchCommandWith: 'pharo' useSettings: false.
+	command := image launchProcessWithVm: 'pharo' useSettings: false.
 	
 	self assert: (command arguments includes: '--no-default-preferences')
 ]

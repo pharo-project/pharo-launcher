@@ -10,7 +10,7 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo Mooc',
-				#url : 'http://mooc.pharo.org/image/PharoWeb.zip'
+				#url : 'https://mooc.pharo.org/image/PharoWeb.zip'
 			}
 		]
 	},
@@ -21,32 +21,32 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 8.0 - 32bit (development version, latest)',
-				#url : 'http://files.pharo.org/image/80/latest.zip'
+				#url : 'https://files.pharo.org/image/80/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 8.0 - 64bit (development version, latest)',
-				#url : 'http://files.pharo.org/image/80/latest-64.zip'
+				#url : 'https://files.pharo.org/image/80/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 7.0 - 32bit (stable)',
-				#url : 'http://files.pharo.org/image/70/latest.zip'
+				#url : 'https://files.pharo.org/image/70/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 7.0 - 64bit (stable)',
-				#url : 'http://files.pharo.org/image/70/latest-64.zip'
+				#url : 'https://files.pharo.org/image/70/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 6.1 - 32bit (old stable)',
-				#url : 'http://files.pharo.org/image/60/latest.zip'
+				#url : 'https://files.pharo.org/image/60/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 6.1 - 64bit (old tech preview)',
-				#url : 'http://files.pharo.org/image/60/latest-64.zip'
+				#url : 'https://files.pharo.org/image/60/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
@@ -68,22 +68,22 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 5.0',
-				#url : 'http://files.pharo.org/image/50/latest.zip'
+				#url : 'https://files.pharo.org/image/50/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 4.0',
-				#url : 'http://files.pharo.org/image/40/latest.zip'
+				#url : 'https://files.pharo.org/image/40/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 3.0',
-				#url : 'http://files.pharo.org/image/30/latest.zip'
+				#url : 'https://files.pharo.org/image/30/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 2.0',
-				#url : 'http://files.pharo.org/image/20/latest.zip'
+				#url : 'https://files.pharo.org/image/20/latest.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
@@ -103,7 +103,7 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 5.0',
-				#url : 'http://moosetechnology.org/res/download/moose_image_5_0.zip'
+				#url : 'https://moosetechnology.org/res/download/moose_image_5_0.zip'
 			}
 		]
 	},
@@ -120,18 +120,18 @@ OrderedCollection [
 	PhLTemplateSource {
 		#type : #HttpListing,
 		#name : 'Pharo 6.0 (stable)',
-		#url : 'http://files.pharo.org/image/60/'
+		#url : 'https://files.pharo.org/image/60/'
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
 		#name : 'Pharo 7.0 (development version)',
-		#url : 'http://files.pharo.org/image/70/',
+		#url : 'https://files.pharo.org/image/70/',
 		#filterPattern : 'href="(Pharo-?7.0.0-(alpha|rc\\d+).build.[^"]*.zip)"'
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
 		#name : 'Pharo 8.0 (development version)',
-		#url : 'http://files.pharo.org/image/80/',
+		#url : 'https://files.pharo.org/image/80/',
 		#filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'
 	}
 ]

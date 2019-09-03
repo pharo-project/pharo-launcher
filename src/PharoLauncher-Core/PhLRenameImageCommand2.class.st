@@ -21,8 +21,9 @@ PhLRenameImageCommand2 >> execute [
 	| name |
 	name := self newImageName.
 	name ifNil: [ ^ self ].
-	self ensure: (self model isNewImageNameValid: name).
-	self model imageRepository renameImage: self model singleImage to: name
+	self imagesPresenter imageRepository 
+		renameImage: self imagesPresenter singleImage 
+		to: name
 ]
 
 { #category : #initialization }
@@ -35,7 +36,7 @@ PhLRenameImageCommand2 >> initialize [
 
 { #category : #private }
 PhLRenameImageCommand2 >> newImageName [
-	^ self imagesPresenter requestNewImageName: self imagesPresenter singleImageName
+	^ self newImageName: self imagesPresenter singleImageName
 ]
 
 { #category : #private }

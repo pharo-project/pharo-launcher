@@ -15,6 +15,25 @@ PhLLocalTemplateTest >> newTemplate [
 ]
 
 { #category : #tests }
+PhLLocalTemplateTest >> testDeserializationGivesAFileReferenceToTheTemplate [
+	| template |
+	template := STON fromString: 'PhLLocalTemplate{#name:''Test'',#zipFile:''/phl-abstract-template-test-template-extraction.zip''}'.
+	
+	self assert: (template zipArchive isKindOf: FileReference).
+]
+
+{ #category : #tests }
+PhLLocalTemplateTest >> testSerializationDoesNotIncludeZipFileButAFileReferenceToIt [
+	| template zipFile stonString |
+	zipFile := root / 'phl-abstract-template-test-template-extraction.zip'.
+	template := PhLLocalTemplate name: 'Test' zipFile: zipFile.
+	
+	stonString := STON toString: template.
+	
+	self assert: stonString equals: 'PhLLocalTemplate{#name:''Test'',#zipFile:''/phl-abstract-template-test-template-extraction.zip''}'.
+]
+
+{ #category : #tests }
 PhLLocalTemplateTest >> testTemplateExtractionGenerateImageMetadata [
 	| template destination archive zipFile metadataFile |
 	zipFile := root / 'phl-abstract-template-test-template-extraction.zip'.

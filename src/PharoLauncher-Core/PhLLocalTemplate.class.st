@@ -10,6 +10,15 @@ Class {
 	#category : 'PharoLauncher-Core-Model'
 }
 
+{ #category : #serialization }
+PhLLocalTemplate class >> fromSton: stonReader [
+	| template |
+	template := super fromSton: stonReader.
+	template setName: template name zipFile: template zipArchive asFileReference.
+	^ template
+
+]
+
 { #category : #'instance creation' }
 PhLLocalTemplate class >> name: aString zipFile: aFileReference [
 	^ self new 

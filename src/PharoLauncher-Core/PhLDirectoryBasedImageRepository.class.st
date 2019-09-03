@@ -238,6 +238,11 @@ PhLDirectoryBasedImageRepository >> includesImageNamedCaseInsensitive: anImageNa
 	^ self images anySatisfy: [ :image | image name asLowercase = lowercaseImageName ]
 ]
 
+{ #category : #testing }
+PhLDirectoryBasedImageRepository >> isNewImageNameValid: aString [ 
+	^ aString isEmptyOrNil not and: [ (self hasImageNamed: aString) not ]
+]
+
 { #category : #action }
 PhLDirectoryBasedImageRepository >> makeUniqueImageName: baseImageName [
 	^ self makeUniqueImageName: baseImageName among: self imageNames.
@@ -276,6 +281,17 @@ PhLDirectoryBasedImageRepository >> prepareForNewImageNamed: aString [
 ]
 
 { #category : #action }
+PhLDirectoryBasedImageRepository >> recreateImage: anImage [
+	anImage originTemplate 
+		ifNil: [ PhLCommandError signal ].
+		
+	self 
+		deleteImage: anImage; 
+		extractTemplate: anImage originTemplate to: anImage name.
+
+]
+
+{ #category : #action }
 PhLDirectoryBasedImageRepository >> renameImage: anImage to: newName [
 	self renameImageNamed: anImage name to: newName
 ]
@@ -295,6 +311,8 @@ PhLDirectoryBasedImageRepository >> renameImageInFolder: targetDirectory to: new
 { #category : #action }
 PhLDirectoryBasedImageRepository >> renameImageNamed: oldName to: newName [
 	| sourceDirectory |
+	(self isNewImageNameValid: newName)
+		ifFalse: [ PhLCommandError signal ].
 	sourceDirectory := self directoryForImageNamed: oldName.
 	self moveImage: sourceDirectory to: newName 
 ]

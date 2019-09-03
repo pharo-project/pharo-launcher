@@ -17,6 +17,24 @@ PhLRecreateImageCommand2 >> asSpecCommand [
 		yourself
 ]
 
+{ #category : #'user interaction' }
+PhLRecreateImageCommand2 >> askConfirmation [
+	| confirmMessage |
+	
+	confirmMessage := 'Are you sure you want to recreate this image?' , Character cr asString, 
+							'This will overwrite the existing image and you will lose changes.'.
+	^ self imagesPresenter newConfirmation
+		message: (confirmMessage withNoLineLongerThan: 60) , '?';
+		confirm.
+]
+
+{ #category : #executing }
+PhLRecreateImageCommand2 >> execute [
+	self askConfirmation
+		ifTrue: [ self imagesPresenter selectedImages 
+						do: [ :image |	self imagesPresenter imageRepository recreateImage: image ] ]
+]
+
 { #category : #initialization }
 PhLRecreateImageCommand2 >> initialize [
 	super initialize.

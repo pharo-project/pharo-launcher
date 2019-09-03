@@ -1,1 +1,137 @@
-OrderedCollection [	PhLTemplateSource {		#type : #Cache,		#name : 'Templates'	},	PhLTemplateSource {		#type : #URLGroup,		#name : 'Pharo Mooc',		#templates : [			PhLTemplateSource {				#type : #URL,				#name : 'Pharo Mooc',				#url : 'http://mooc.pharo.org/image/PharoWeb.zip'			}		]	},	PhLTemplateSource {		#type : #URLGroup,		#name : 'Official distributions',		#templates : [			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 8.0 - 32bit (development version, latest)',				#url : 'http://files.pharo.org/image/80/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 8.0 - 64bit (development version, latest)',				#url : 'http://files.pharo.org/image/80/latest-64.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 7.0 - 32bit (stable)',				#url : 'http://files.pharo.org/image/70/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 7.0 - 64bit (stable)',				#url : 'http://files.pharo.org/image/70/latest-64.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 6.1 - 32bit (old stable)',				#url : 'http://files.pharo.org/image/60/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 6.1 - 64bit (old tech preview)',				#url : 'http://files.pharo.org/image/60/latest-64.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 8.0 (development version)',				#url : 'https://ci.inria.fr/moose/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 7.0 (stable)',				#url : 'https://ci.inria.fr/moose/job/moose-7.0-64bit/lastSuccessfulBuild/artifact/moose-7.0-64bit.zip'			}		],		#expanded : true	},	PhLTemplateSource {		#type : #URLGroup,		#name : 'Deprecated distributions',		#templates : [			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 5.0',				#url : 'http://files.pharo.org/image/50/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 4.0',				#url : 'http://files.pharo.org/image/40/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 3.0',				#url : 'http://files.pharo.org/image/30/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Pharo 2.0',				#url : 'http://files.pharo.org/image/20/latest.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 6.1 (stable)',				#url : 'https://ci.inria.fr/moose/job/moose-6.1/lastSuccessfulBuild/artifact/moose-6.1.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 6.0 (old stable)',				#url : 'https://ci.inria.fr/moose/job/moose-6.0/lastSuccessfulBuild/artifact/moose-6.0.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 5.1',				#url : 'https://ci.inria.fr/moose/job/moose-5.1/lastSuccessfulBuild/artifact/moose-5.1.zip'			},			PhLTemplateSource {				#type : #URL,				#name : 'Moose Suite 5.0',				#url : 'http://moosetechnology.org/res/download/moose_image_5_0.zip'			}		]	},	PhLTemplateSource {		#type : #JenkinsServer,		#name : 'Pharo Contribution Jenkins',		#url : 'https://ci.inria.fr/pharo-contribution'	},	PhLTemplateSource {		#type : #JenkinsServer,		#name : 'Moose Jenkins',		#url : 'https://ci.inria.fr/moose'	},	PhLTemplateSource {		#type : #HttpListing,		#name : 'Pharo 6.0 (stable)',		#url : 'http://files.pharo.org/image/60/'	},	PhLTemplateSource {		#type : #HttpListing,		#name : 'Pharo 7.0 (development version)',		#url : 'http://files.pharo.org/image/70/',		#filterPattern : 'href="(Pharo-?7.0.0-(alpha|rc\\d+).build.[^"]*.zip)"'	},	PhLTemplateSource {		#type : #HttpListing,		#name : 'Pharo 8.0 (development version)',		#url : 'http://files.pharo.org/image/80/',		#filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'	}]
+OrderedCollection [
+	PhLTemplateSource {
+		#type : #Cache,
+		#name : 'Templates'
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
+		#name : 'Pharo Mooc',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo Mooc',
+				#url : 'http://mooc.pharo.org/image/PharoWeb.zip'
+			}
+		]
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
+		#name : 'Official distributions',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 8.0 - 32bit (development version, latest)',
+				#url : 'http://files.pharo.org/image/80/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 8.0 - 64bit (development version, latest)',
+				#url : 'http://files.pharo.org/image/80/latest-64.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 32bit (stable)',
+				#url : 'http://files.pharo.org/image/70/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 64bit (stable)',
+				#url : 'http://files.pharo.org/image/70/latest-64.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 6.1 - 32bit (old stable)',
+				#url : 'http://files.pharo.org/image/60/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 6.1 - 64bit (old tech preview)',
+				#url : 'http://files.pharo.org/image/60/latest-64.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 8.0 (development version)',
+				#url : 'https://ci.inria.fr/moose/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 7.0 (stable)',
+				#url : 'https://ci.inria.fr/moose/job/moose-7.0-64bit/lastSuccessfulBuild/artifact/moose-7.0-64bit.zip'
+			}
+		],
+		#expanded : true
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
+		#name : 'Deprecated distributions',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 5.0',
+				#url : 'http://files.pharo.org/image/50/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 4.0',
+				#url : 'http://files.pharo.org/image/40/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 3.0',
+				#url : 'http://files.pharo.org/image/30/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 2.0',
+				#url : 'http://files.pharo.org/image/20/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 6.1 (stable)',
+				#url : 'https://ci.inria.fr/moose/job/moose-6.1/lastSuccessfulBuild/artifact/moose-6.1.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 6.0 (old stable)',
+				#url : 'https://ci.inria.fr/moose/job/moose-6.0/lastSuccessfulBuild/artifact/moose-6.0.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 5.1',
+				#url : 'https://ci.inria.fr/moose/job/moose-5.1/lastSuccessfulBuild/artifact/moose-5.1.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 5.0',
+				#url : 'http://moosetechnology.org/res/download/moose_image_5_0.zip'
+			}
+		]
+	},
+	PhLTemplateSource {
+		#type : #JenkinsServer,
+		#name : 'Pharo Contribution Jenkins',
+		#url : 'https://ci.inria.fr/pharo-contribution'
+	},
+	PhLTemplateSource {
+		#type : #JenkinsServer,
+		#name : 'Moose Jenkins',
+		#url : 'https://ci.inria.fr/moose'
+	},
+	PhLTemplateSource {
+		#type : #HttpListing,
+		#name : 'Pharo 6.0 (stable)',
+		#url : 'http://files.pharo.org/image/60/'
+	},
+	PhLTemplateSource {
+		#type : #HttpListing,
+		#name : 'Pharo 7.0 (development version)',
+		#url : 'http://files.pharo.org/image/70/',
+		#filterPattern : 'href="(Pharo-?7.0.0-(alpha|rc\\d+).build.[^"]*.zip)"'
+	},
+	PhLTemplateSource {
+		#type : #HttpListing,
+		#name : 'Pharo 8.0 (development version)',
+		#url : 'http://files.pharo.org/image/80/',
+		#filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'
+	}
+]

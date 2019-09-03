@@ -11,7 +11,7 @@ Class {
 PhLDeleteImageCommand2 >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDeleteIcon;
-		shortcutKey: $r meta;
+		shortcutKey: $x meta;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

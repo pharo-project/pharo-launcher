@@ -180,6 +180,12 @@ PhLImage >> lastModification [
 ]
 
 { #category : #action }
+PhLImage >> launchCommandStringWithSettings: usePharoSettings [
+	^ (self launchProcessWithSettings: usePharoSettings) commandLineString
+
+]
+
+{ #category : #action }
 PhLImage >> launchProcessWithSettings: usePharoSettings [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: file.

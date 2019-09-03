@@ -38,6 +38,41 @@ PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 ]
 
 { #category : #tests }
+PhLProcessWrapperTest >> testLinuxCommandLineString [
+	| process commandString |
+	process := PhLProcessWrapper new 
+		command: '/home/me/Pharo/pharo';
+		addArgument: '/tmp/ba r.image' surroundedByDoubleQuotes;
+		prepareProcess;
+		yourself.
+	
+	commandString := PhLProcessWrapperCommandStringGenerator new 
+		processWrapper: process;
+		visit.
+	
+	self assert: commandString equals: '"/home/me/Pharo/pharo" /tmp/ba r.image'
+	
+]
+
+{ #category : #tests }
+PhLProcessWrapperTest >> testLinuxCommandLineStringWhenUsingShell [
+	| process commandString |
+	process := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: 'ls';
+		addArgument: '/foo/ba r' surroundedByDoubleQuotes;
+		prepareProcess;
+		yourself.
+	
+	commandString := PhLProcessWrapperCommandStringGenerator new 
+		processWrapper: process;
+		visit.
+	
+	self assert: commandString equals: 'bash -c ''ls "/foo/ba r"'''
+	
+]
+
+{ #category : #tests }
 PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
 	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
 	| process argument |
@@ -116,6 +151,47 @@ PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArgument
 	self assert: argument last equals: $".
 	process runAndWait.
 	self assert: process isSuccess
+]
+
+{ #category : #tests }
+PhLProcessWrapperTest >> testWindowsCommandLineString [
+	| process commandString osPlatform |
+	osPlatform := OSPlatform current.
+	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
+	process := PhLProcessWrapper new 
+		command: 'C:\Users\me\pharo\Pharo.exe';
+		addArgument: '"D:\foo\ba r\ba r.image"';
+		prepareProcess;
+		yourself.
+	
+	commandString := PhLProcessWrapperCommandStringGenerator new 
+		processWrapper: process;
+		visit. ]
+	ensure: [ OSPlatform classVarNamed: 'Current' put: osPlatform ].
+	
+	self assert: commandString equals: '"C:\Users\me\pharo\Pharo.exe" "D:\foo\ba r\ba r.image"'
+	
+]
+
+{ #category : #tests }
+PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
+	| process commandString osPlatform |
+	osPlatform := OSPlatform current.
+	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
+	process := PhLProcessWrapper new 
+		shellCommand;
+		addArgument: 'dir';
+		addArgument: '/foo/ba r';
+		prepareProcess;
+		yourself.
+	
+	commandString := PhLProcessWrapperCommandStringGenerator new 
+		processWrapper: process;
+		visit. ]
+	ensure: [ OSPlatform classVarNamed: 'Current' put: osPlatform ].
+	
+	self assert: commandString equals: 'C:\Windows\System32\cmd.exe /C "dir /foo/ba r"'
+	
 ]
 
 { #category : #tests }

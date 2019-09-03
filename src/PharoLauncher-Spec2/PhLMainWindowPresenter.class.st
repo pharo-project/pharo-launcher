@@ -261,11 +261,6 @@ PhLMainWindowPresenter >> initializeWindow: aWindowPresenter [
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter
 ]
 
-{ #category : #'api-testing' }
-PhLMainWindowPresenter >> isNewImageNameValid: aString [ 
-	^ aString isEmptyOrNil not and: [ (self hasImageNamed: aString) not ]
-]
-
 { #category : #private }
 PhLMainWindowPresenter >> readableDateFor: aDateAndTime [ 
 	
@@ -285,7 +280,7 @@ PhLMainWindowPresenter >> singleImage [
 
 { #category : #'api - selection' }
 PhLMainWindowPresenter >> singleImageName [
-	self ensure: self hasSingleImageSelected.
-self flag: 'TODO: pathNames defined in PhLTreeSelection'.
-	^ #selection pathNames anyOne
+	self
+		ensure: self hasSingleImageSelected.
+	^ imageTable selection selectedItem name
 ]

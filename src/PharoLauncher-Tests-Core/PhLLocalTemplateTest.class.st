@@ -17,7 +17,7 @@ PhLLocalTemplateTest >> newTemplate [
 { #category : #tests }
 PhLLocalTemplateTest >> testTemplateExtractionGenerateImageMetadata [
 	| template destination archive zipFile metadataFile |
-	zipFile := FileLocator temp / 'phl-abstract-template-test-template-extraction.zip'.
+	zipFile := root / 'phl-abstract-template-test-template-extraction.zip'.
 	template := PhLLocalTemplate name: 'Test' zipFile: zipFile.
 	archive := ZipArchive new.
 	archive

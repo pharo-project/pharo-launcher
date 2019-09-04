@@ -81,11 +81,6 @@ PhLVirtualMachineManager class >> imageFormatPreSpur [
 	^ 6505
 ]
 
-{ #category : #accessing }
-PhLVirtualMachineManager class >> imageVersionFileName [
-	^ 'pharo.version'
-]
-
 { #category : #testing }
 PhLVirtualMachineManager class >> is32bits: anImageFormatVersion [
 	"32 bits Spur image format"
@@ -455,12 +450,7 @@ PhLVirtualMachineManager >> imageVersionDeterminationScriptSourceCode [
 
 { #category : #private }
 PhLVirtualMachineManager >> imageVersionFile [
-	^ imageFile parent / self imageVersionFileName
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionFileName [
-	^ self class imageVersionFileName
+	^ imageFile parent / PhLImage versionFileName
 ]
 
 { #category : #accessing }

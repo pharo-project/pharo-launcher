@@ -89,7 +89,7 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 	imageFile := extractionDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	"A changes file must have the same name and be in the same directory as the image file:"
 	changesFile := imageFile parent / imageFile basenameWithoutExtension , 'changes'.
 	sourcesFile := imageFile parent / imageFile basenameWithoutExtension , 'sources'.
-	versionFile := imageFile parent / PhLVirtualMachineManager imageVersionFileName.
+	versionFile := imageFile parent / PhLImage versionFileName.
 	imageFile = (targetDirectory / targetName , 'image')
 		ifTrue: [ ^ self "no need to relocate" ].
 	imageFile moveTo: targetDirectory / targetName , 'image'.

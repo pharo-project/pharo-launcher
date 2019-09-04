@@ -91,6 +91,11 @@ PhLImage class >> stonAllInstVarNames [
 ]
 
 { #category : #accessing }
+PhLImage class >> versionFileName [
+	^ 'pharo.version'
+]
+
+{ #category : #accessing }
 PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
@@ -329,7 +334,7 @@ PhLImage >> summaryInfo [
 
 { #category : #accessing }
 PhLImage >> versionFile [
-	^ self file parent / PhLVirtualMachineManager imageVersionFileName
+	^ self file parent / self class versionFileName
 ]
 
 { #category : #action }

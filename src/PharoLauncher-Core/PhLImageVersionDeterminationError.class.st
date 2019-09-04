@@ -21,7 +21,8 @@ PhLImageVersionDeterminationError class >> signalCommand: aCommandString [
 
 { #category : #accessing }
 PhLImageVersionDeterminationError >> longDescription [
-	^ 'pharo.version file was not found for your image, and probably your VMs are not up to date.
+	^ PhLImage versionFileName , 
+	' file was not found for your image, and probably your VMs are not up to date.
 Please, contact us at http://pharo.org/community'
 ]
 

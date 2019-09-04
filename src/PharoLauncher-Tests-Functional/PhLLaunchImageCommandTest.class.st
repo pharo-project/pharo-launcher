@@ -42,7 +42,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
 	
 	"ensure image determination succeeded"
 	self
-		assert: (imageDir / PhLVirtualMachineManager imageVersionFileName) contents
+		assert: (imageDir / PhLImage versionFileName) contents
 		equals: SystemVersion current major asString , SystemVersion current minor asString.
 		
 	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"

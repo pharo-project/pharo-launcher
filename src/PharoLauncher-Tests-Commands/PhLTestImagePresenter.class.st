@@ -38,6 +38,7 @@ PhLTestImagePresenter >> hasSingleImageSelected [
 PhLTestImagePresenter >> initialize [
 	fs := FileSystem memory.
 	self model: (PhLDirectoryBasedImageRepository forDirectory: fs root).
+	self application: PharoLauncherApplication new.
 	self createImageNamed: self singleImageName.	
 	request := PhLTestRequest new.
 ]

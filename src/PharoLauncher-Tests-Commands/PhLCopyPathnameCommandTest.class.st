@@ -20,5 +20,5 @@ PhLCopyPathnameCommandTest >> testCanCopyImagePathname [
 	
 	self
 		assertCollection: Clipboard clipboardText asString
-		equals: '"/TestImage"'.
+		equals: '"/TestImage/TestImage.image"'.
 ]

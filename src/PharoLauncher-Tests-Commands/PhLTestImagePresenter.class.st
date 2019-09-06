@@ -7,7 +7,9 @@ Class {
 	#instVars : [
 		'fs',
 		'request',
-		'selection'
+		'selection',
+		'fileSystem',
+		'templateRepository'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -38,6 +40,7 @@ PhLTestImagePresenter >> hasSingleImageSelected [
 PhLTestImagePresenter >> initialize [
 	fs := FileSystem memory.
 	self model: (PhLDirectoryBasedImageRepository forDirectory: fs root).
+	templateRepository := PhLTemplateGroupTestRepository new.
 	self application: PharoLauncherApplication new.
 	self createImageNamed: self singleImageName.	
 	request := PhLTestRequest new.
@@ -85,4 +88,9 @@ PhLTestImagePresenter >> singleImage [
 { #category : #selection }
 PhLTestImagePresenter >> singleImageName [
 	^ 'TestImage'
+]
+
+{ #category : #'api - accessing' }
+PhLTestImagePresenter >> templateRepository [ 
+	^ templateRepository
 ]

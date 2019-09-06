@@ -203,6 +203,11 @@ PhLMainWindowPresenter >> buildToolbar [
 		yourself
 ]
 
+{ #category : #'api - actions' }
+PhLMainWindowPresenter >> createLocalTemplateFromSelectionNamed: aString [
+	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
+]
+
 { #category : #private }
 PhLMainWindowPresenter >> ensure: aBoolean [
 	aBoolean
@@ -283,4 +288,9 @@ PhLMainWindowPresenter >> singleImageName [
 	self
 		ensure: self hasSingleImageSelected.
 	^ imageTable selection selectedItem name
+]
+
+{ #category : #'api - accessing' }
+PhLMainWindowPresenter >> templateRepository [
+	^ self application templateRepository
 ]

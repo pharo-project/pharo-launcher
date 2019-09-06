@@ -9,7 +9,8 @@ Class {
 	#name : #PhLDownloadedTemplateGroup,
 	#superclass : #PhLAbstractTemplateGroup,
 	#instVars : [
-		'name'
+		'name',
+		'baseDirectory'
 	],
 	#classVars : [
 		'Default'
@@ -31,7 +32,12 @@ PhLDownloadedTemplateGroup class >> named: aName [
 
 { #category : #accessing }
 PhLDownloadedTemplateGroup >> baseDirectory [
-	^ (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory
+	^ baseDirectory
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> baseDirectory: aDirectory [
+	baseDirectory := aDirectory ensureCreateDirectory
 ]
 
 { #category : #accessing }
@@ -60,6 +66,12 @@ PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTe
 	PhLDownloadManager default download: anUrl toFile: destinationFile.
 	self register: aRemoteTemplate withZip: destinationFile.
 	^ destinationFile
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> initialize [ 
+	super initialize.
+	baseDirectory := (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory
 ]
 
 { #category : #accessing }

@@ -26,6 +26,7 @@ PhLTemplateGroupRepository >> addGroup: aGroup [
 
 { #category : #action }
 PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
+	aString ifEmpty: [ PhLCommandError signal: 'Cannot give an empty name to a template' ].
 	(self hasLocalTemplateNamed: aString)
 		ifTrue: [ PhLError signal: 'A local template with the same name already exists' ].
 	self createZipArchiveFrom: anImage named: aString.
@@ -36,8 +37,8 @@ PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
 { #category : #action }
 PhLTemplateGroupRepository >> createLocalTemplateNamed: aString [
 	| localTemplate |
-	localTemplate := PhLLocalTemplate name: aString zipFile: PhLDownloadedTemplateGroup default baseDirectory / aString , 'zip'.
-	PhLDownloadedTemplateGroup default register: localTemplate withZip: localTemplate zipArchive
+	localTemplate := PhLLocalTemplate name: aString zipFile: self localTemplatesDirectory / aString , 'zip'.
+	self localTemplatesGroup register: localTemplate withZip: localTemplate zipArchive
 ]
 
 { #category : #action }
@@ -52,7 +53,7 @@ PhLTemplateGroupRepository >> createZipArchiveFrom: anImage named: aString [
 		do: [ :e | "ignore the file" ].
 	anImage versionFile exists
 		ifTrue: [ archive addFile: anImage versionFile as: anImage versionFile basename ].
-	archive writeToFileNamed: (PhLDownloadedTemplateGroup default baseDirectory / aString , 'zip') fullName
+	archive writeToFileNamed: (self localTemplatesDirectory / aString , 'zip')
 ]
 
 { #category : #action }
@@ -69,21 +70,38 @@ PhLTemplateGroupRepository >> deleteTemplates: someTemplates [
 
 { #category : #testing }
 PhLTemplateGroupRepository >> hasLocalTemplateNamed: aString [
-	^ PhLDownloadedTemplateGroup default templatesAndGroups 
+	^ self localTemplates
 		anySatisfy: [ :each | each name = aString ]
 ]
 
 { #category : #accessing }
 PhLTemplateGroupRepository >> localTemplateNamed: aString [
-	^ PhLDownloadedTemplateGroup default templatesAndGroups 
-		detect: [ :each | each name = aString ]
+	^ self localTemplates detect: [ :each | each name = aString ]
+]
+
+{ #category : #accessing }
+PhLTemplateGroupRepository >> localTemplateNames [
+	^ self localTemplates collect: #name
+]
+
+{ #category : #accessing }
+PhLTemplateGroupRepository >> localTemplates [
+	^ self localTemplatesGroup templatesAndGroups
+]
+
+{ #category : #accessing }
+PhLTemplateGroupRepository >> localTemplatesDirectory [
+	^ self localTemplatesGroup baseDirectory
+]
+
+{ #category : #accessing }
+PhLTemplateGroupRepository >> localTemplatesGroup [
+	^ PhLDownloadedTemplateGroup default
 ]
 
 { #category : #action }
 PhLTemplateGroupRepository >> makeUniqueTemplateName: aString [
-	|  localTemplateNames |
-	localTemplateNames := PhLDownloadedTemplateGroup default templatesAndGroups collect: [ :each | each name ].
-	^ self makeUniqueTemplateName: aString among: localTemplateNames
+	^ self makeUniqueTemplateName: aString among: self localTemplateNames
 ]
 
 { #category : #action }

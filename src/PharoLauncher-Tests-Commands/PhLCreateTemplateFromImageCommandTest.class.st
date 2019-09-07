@@ -13,6 +13,29 @@ PhLCreateTemplateFromImageCommandTest >> setUp [
 ]
 
 { #category : #tests }
+PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhenSingleImageSelected [
+	| command templates |
+	command := PhLCreateTemplateFromImageCommand2 new
+		willRemoveImage;
+		yourself.
+	command context: presenter.
+	presenter requestAnswer: 'TestTemplate'.
+	
+	self assert: presenter templateRepository localTemplates isEmpty.
+	self assert: (presenter imageRepository hasImageNamed: 'TestImage').
+	command execute.
+	
+	templates := presenter templateRepository localTemplateNames.
+	self 
+		assert: templates size 
+		equals: 1.	
+	self
+		assertCollection: templates
+		hasSameElements: #('TestTemplate').
+	self deny: (presenter imageRepository hasImageNamed: 'TestImage').
+]
+
+{ #category : #tests }
 PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateWhenSingleImageSelected [
 	| command templates |
 	command := PhLCreateTemplateFromImageCommand2 new.

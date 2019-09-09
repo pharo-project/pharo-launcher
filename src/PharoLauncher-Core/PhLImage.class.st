@@ -33,6 +33,15 @@ PhLImage class >> descriptionFileName [
 	^ 'description.txt'
 ]
 
+{ #category : #example }
+PhLImage class >> example [
+	| fsRoot imageFile |
+	fsRoot := FileSystem memory root.
+	imageFile := fsRoot / 'foo.image'.
+	imageFile ensureCreateFile.
+	^ self location: imageFile
+]
+
 { #category : #'instance creation' }
 PhLImage class >> imageFromMetadata: imageFileReference [
 	"Will recreate the image object from its STON serialized version if possible"
@@ -238,6 +247,11 @@ PhLImage >> launchWithSettings: usePharoSettings [
 ]
 
 { #category : #accessing }
+PhLImage >> location [ 
+	^ file fullName
+]
+
+{ #category : #accessing }
 PhLImage >> name [
 	^ file basenameWithoutExtension
 ]
@@ -260,6 +274,14 @@ PhLImage >> originTemplateName [
 
 	^ self originTemplate 
 		ifNotNil: [ :template | template name ] 
+		ifNil: [ #unknown ]
+]
+
+{ #category : #accessing }
+PhLImage >> originTemplateUrl [
+
+	^ self originTemplate 
+		ifNotNil: [ :template | template url asString ] 
 		ifNil: [ #unknown ]
 ]
 

@@ -29,16 +29,22 @@ PhLNullImage >> lastModification [
 { #category : #accessing }
 PhLNullImage >> location [
 
-	^ nil
-]
-
-{ #category : #accessing }
-PhLNullImage >> name [
 	^ ''
 ]
 
 { #category : #accessing }
+PhLNullImage >> name [
+	^ 'No image selected'
+]
+
+{ #category : #accessing }
 PhLNullImage >> originTemplateName [
+	
+	^ ''
+]
+
+{ #category : #accessing }
+PhLNullImage >> originTemplateUrl [
 	
 	^ ''
 ]

@@ -2,30 +2,31 @@
 Pharo Launcher main window presenting the list of managed images as well as a tollbar and a status bar.
 
 To open me:
-	(PhLMainWindowPresenter on: PhLDirectoryBasedImageRepository default) openWithSpec
+	(self on: PhLDirectoryBasedImageRepository default) openWithSpec
 "
 Class {
-	#name : #PhLMainWindowPresenter,
+	#name : #PhLImagesPresenter,
 	#superclass : #SpPresenterWithModel,
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageTable',
 		'launchButton',
-		'buttonBar'
+		'buttonBar',
+		'descriptionPanel'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #commands }
-PhLMainWindowPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
+PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 	rootCommandGroup
 		register: (self buildToolbarGroup);
 		register: (self buildContextualMenuGroup)
 ]
 
 { #category : #commands }
-PhLMainWindowPresenter class >> buildContextualMenuGroup [
+PhLImagesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		basicDescription: 'Images table contextual menu';
 		register: PhLLaunchImageCommand2 forSpec;
@@ -39,7 +40,7 @@ PhLMainWindowPresenter class >> buildContextualMenuGroup [
 ]
 
 { #category : #commands }
-PhLMainWindowPresenter class >> buildToolbarGroup [
+PhLImagesPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		basicDescription: 'Pharo Launcher toolbar';
 		register: PhLLaunchImageCommand2 forSpec;
@@ -53,19 +54,19 @@ PhLMainWindowPresenter class >> buildToolbarGroup [
 ]
 
 { #category : #specs }
-PhLMainWindowPresenter class >> defaultSpec [
+PhLImagesPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
 		add: (SpPanedLayout newVertical
 			add: #imageTable;
-			"add: #descriptionPanel;"
+			add: #descriptionPanel;
 			yourself);
 		"add: #buttonBar expand: false fill: false padding: 0;"
 		yourself
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildDeleteButtonToolbarItem [
+PhLImagesPresenter >> buildDeleteButtonToolbarItem [
 	^ SpToolBarButton new
 		label: 'Delete';
 		icon: (self iconNamed: #smallDelete);
@@ -75,7 +76,7 @@ PhLMainWindowPresenter >> buildDeleteButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildFileMenu [
+PhLImagesPresenter >> buildFileMenu [
 
 	^ MenuPresenter new
 		addGroup: [ :group | group
@@ -91,7 +92,7 @@ PhLMainWindowPresenter >> buildFileMenu [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildHelpMenu [
+PhLImagesPresenter >> buildHelpMenu [
 	
 	^ MenuPresenter new 
 		addGroup: [ :fileGroup | fileGroup
@@ -100,7 +101,7 @@ PhLMainWindowPresenter >> buildHelpMenu [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildImportButtonToolbarItem [
+PhLImagesPresenter >> buildImportButtonToolbarItem [
 	^ SpToolBarButton new
 		label: 'Import';
 		icon: (self iconNamed: #smallLoadProject);
@@ -110,7 +111,7 @@ PhLMainWindowPresenter >> buildImportButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildLaunchButtonToolbarItem [
+PhLImagesPresenter >> buildLaunchButtonToolbarItem [
 	^ SpToolBarButton new
 		label: 'Launch';
 		icon: (self iconNamed: #smallDoItIcon);
@@ -120,7 +121,7 @@ PhLMainWindowPresenter >> buildLaunchButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildLaunchWithoutSettingsButtonToolbarItem [
+PhLImagesPresenter >> buildLaunchWithoutSettingsButtonToolbarItem [
 	^ SpToolBarButton new
 		label: 'Basic launch';
 		icon: (self iconNamed: #smallDoItIcon) asGrayScaleWithAlpha;
@@ -130,7 +131,7 @@ PhLMainWindowPresenter >> buildLaunchWithoutSettingsButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildListContextMenu [
+PhLImagesPresenter >> buildListContextMenu [
 
 	^ MenuPresenter new 
 		addGroup: [ :group | group 
@@ -150,7 +151,7 @@ PhLMainWindowPresenter >> buildListContextMenu [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildMenuBar [
+PhLImagesPresenter >> buildMenuBar [
 
 	^ SpMenuBarPresenter new 
 		addGroup: [ :group | group
@@ -159,7 +160,7 @@ PhLMainWindowPresenter >> buildMenuBar [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildNewButtonToolbarItem [
+PhLImagesPresenter >> buildNewButtonToolbarItem [
 
 	^ SpToolBarButton new
 		label: 'New';
@@ -170,7 +171,7 @@ PhLMainWindowPresenter >> buildNewButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildRefreshButtonToolbarItem [
+PhLImagesPresenter >> buildRefreshButtonToolbarItem [
 	^ SpToolBarButton new
 		label: 'Refresh';
 		icon: (self iconNamed: #smallUpdateIcon);
@@ -180,7 +181,7 @@ PhLMainWindowPresenter >> buildRefreshButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildSettingsButtonToolbarItem [
+PhLImagesPresenter >> buildSettingsButtonToolbarItem [
 	^ SpToolBarButton new 
 		label: 'Settings';
 		icon: (self iconNamed: #smallConfiguration);
@@ -190,7 +191,7 @@ PhLMainWindowPresenter >> buildSettingsButtonToolbarItem [
 ]
 
 { #category : #'private - building' }
-PhLMainWindowPresenter >> buildToolbar [
+PhLImagesPresenter >> buildToolbar [
 
 	^ self newToolBar
 		addItem: self buildNewButtonToolbarItem;
@@ -204,28 +205,28 @@ PhLMainWindowPresenter >> buildToolbar [
 ]
 
 { #category : #'api - actions' }
-PhLMainWindowPresenter >> createLocalTemplateFromSelectionNamed: aString [
+PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
 ]
 
 { #category : #private }
-PhLMainWindowPresenter >> ensure: aBoolean [
+PhLImagesPresenter >> ensure: aBoolean [
 	aBoolean
 		ifFalse: [ PhLCommandError signal ]
 ]
 
 { #category : #'api - selection' }
-PhLMainWindowPresenter >> hasSingleImageSelected [
+PhLImagesPresenter >> hasSingleImageSelected [
 	^ imageTable selectedItems size = 1
 ]
 
 { #category : #'api - accessing' }
-PhLMainWindowPresenter >> imageRepository [
+PhLImagesPresenter >> imageRepository [
 	^ self model
 ]
 
 { #category : #initialization }
-PhLMainWindowPresenter >> initializePresenter [
+PhLImagesPresenter >> initializePresenter [
 
 	super initializePresenter.
 	
@@ -233,30 +234,32 @@ PhLMainWindowPresenter >> initializePresenter [
 		selectedImage := sel isEmpty
 			ifTrue: [ PhLNullImage new ]
 			ifFalse: [ sel selectedItem ].
-		"descriptionPanel model: selectedImage."
 		"launchButton enabled: sel isEmpty not" ].
 	"launchButton whenActivatedDo: [ self doLaunch ]"
+		
+	imageTable transmitTo: descriptionPanel
 ]
 
 { #category : #initialization }
-PhLMainWindowPresenter >> initializeWidgets [ 
+PhLImagesPresenter >> initializeWidgets [ 
 	imageTable := self newTable
 		items: self model images;
 		sortingBlock: #lastModification descending;
 		contextMenu: self buildListContextMenu;
 		doubleClickAction: [ :selected | self doLaunch ];
-		addColumn: (SpStringTableColumn title: 'Name' evaluated: #name);
-		addColumn: (SpStringTableColumn title: 'Architecture' evaluated: #architecture);
-		addColumn: (SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion);
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 350; yourself);
+		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture) width: 80; yourself);
+		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion) width: 80; yourself);
 		addColumn: (SpStringTableColumn title: 'Last modified' evaluated: [ :v | self readableDateFor: v lastModification ]);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		beResizable;
 		yourself.
 
-	"descriptionPanel := self instantiate: PLImageDescriptionPanel on: PhLNullImage new."
+	descriptionPanel := self instantiate: PhLImageDetailPresenter on: PhLNullImage new.
 ]
 
 { #category : #initialization }
-PhLMainWindowPresenter >> initializeWindow: aWindowPresenter [
+PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
@@ -267,30 +270,30 @@ PhLMainWindowPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #private }
-PhLMainWindowPresenter >> readableDateFor: aDateAndTime [ 
+PhLImagesPresenter >> readableDateFor: aDateAndTime [ 
 	
 	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime
 ]
 
 { #category : #'api - selection' }
-PhLMainWindowPresenter >> selectedImages [
+PhLImagesPresenter >> selectedImages [
 	^ imageTable selectedItems
 ]
 
 { #category : #'api - selection' }
-PhLMainWindowPresenter >> singleImage [
+PhLImagesPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
 	^ imageTable selectedItems anyOne
 ]
 
 { #category : #'api - selection' }
-PhLMainWindowPresenter >> singleImageName [
+PhLImagesPresenter >> singleImageName [
 	self
 		ensure: self hasSingleImageSelected.
 	^ imageTable selection selectedItem name
 ]
 
 { #category : #'api - accessing' }
-PhLMainWindowPresenter >> templateRepository [
+PhLImagesPresenter >> templateRepository [
 	^ self application templateRepository
 ]

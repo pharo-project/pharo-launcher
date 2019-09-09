@@ -32,7 +32,7 @@ PharoLauncherApplication >> initialize [
 
 { #category : #running }
 PharoLauncherApplication >> run [ 
-	self open: (PhLMainWindowPresenter newApplication: self model: imageRepository)
+	self open: (PhLImagesPresenter newApplication: self model: imageRepository)
 ]
 
 { #category : #accessing }

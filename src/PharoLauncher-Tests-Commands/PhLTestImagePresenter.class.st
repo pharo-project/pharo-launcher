@@ -3,7 +3,7 @@ A presenter for Pharo Launcher images used for test purposes
 "
 Class {
 	#name : #PhLTestImagePresenter,
-	#superclass : #PhLMainWindowPresenter,
+	#superclass : #PhLImagesPresenter,
 	#instVars : [
 		'fs',
 		'request',

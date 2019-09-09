@@ -75,6 +75,12 @@ PhLImageDetailPresenter >> imageLabel [
 ]
 
 { #category : #initialization }
+PhLImageDetailPresenter >> initializePresenter [
+	description
+		whenTextIsAcceptedDo: [ :text | self image description: text ]
+]
+
+{ #category : #initialization }
 PhLImageDetailPresenter >> initializeWidgets [
 	imageLabel := self newLabel.
 	description := self newText.

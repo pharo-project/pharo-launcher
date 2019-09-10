@@ -47,7 +47,9 @@ PhLImagesPresenter class >> buildToolbarGroup [
 		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
 		register: PhLLaunchImageFromDiskCommand forSpec;
 		register: PhLImportImageCommand2 forSpec;
-		register: PhLShowImageInFolderCommand2 forSpec;
+		register: (PhLShowImageInFolderCommand2 forSpec 
+			basicName: 'Show';
+			yourself);
 		register: PhLDeleteImageCommand2 forSpec;
 		beDisplayedAsGroup;
 		yourself

@@ -24,6 +24,14 @@ PhLAboutCommand2 >> aboutText [
 	
 ]
 
+{ #category : #converting }
+PhLAboutCommand2 >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #help;
+		shortcutKey: $? meta;
+		yourself
+]
+
 { #category : #executing }
 PhLAboutCommand2 >> execute [
 	| presenter |
@@ -32,6 +40,14 @@ PhLAboutCommand2 >> execute [
 		iconName: #pharo.
 	presenter openDialogWithSpec.
 	^ presenter
+]
+
+{ #category : #initialization }
+PhLAboutCommand2 >> initialize [
+	super initialize.
+	self
+		basicName: 'About';
+		basicDescription: 'About Pharo Launcher'
 ]
 
 { #category : #querying }

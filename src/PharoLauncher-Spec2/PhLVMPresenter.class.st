@@ -59,11 +59,12 @@ PhLVMPresenter >> datasource [
 
 { #category : #initialization }
 PhLVMPresenter >> initializeWidgets [
-	vmTable := self newTable.
-	vmTable
+	vmTable := self newTable
 		items: self datasource virtualMachines;
-		"sortingBlock: #lastModification descending;"
-		"doubleClickAction: [ :selected | self doLaunch ];"
+		doubleClickAction: [ :selected | 
+			PhLShowVmInFolderCommand new
+				context: self;
+				execute  ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 50; yourself);
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
@@ -73,12 +74,6 @@ PhLVMPresenter >> initializeWidgets [
 		beResizable;
 		beMultipleSelection;
 		yourself.
-	
-	
-		"intercellSpacing: 1;"
-		
-	"self refresh.
-	vmTable widget selectFirstVisibleRow."
 ]
 
 { #category : #initialization }

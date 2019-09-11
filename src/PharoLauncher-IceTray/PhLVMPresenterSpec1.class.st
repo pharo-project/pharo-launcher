@@ -2,7 +2,7 @@
 A simple UI to show locally available Virtual Machines to launch Pharo images.
 "
 Class {
-	#name : #PhLVMPresenter,
+	#name : #PhLVMPresenterSpec1,
 	#superclass : #ITBasicPresenter,
 	#instVars : [
 		'vmTable',
@@ -13,27 +13,27 @@ Class {
 		'vmBlock',
 		'privateVmsBlock'
 	],
-	#category : 'PharoLauncher-IceTray'
+	#category : #'PharoLauncher-IceTray'
 }
 
 { #category : #specs }
-PhLVMPresenter class >> defaultSpec [
+PhLVMPresenterSpec1 class >> defaultSpec [
 	^ SpecLayout composed
 		add: #vmTable;
 		yourself
 ]
 
 { #category : #specs }
-PhLVMPresenter class >> example [
+PhLVMPresenterSpec1 class >> example [
 	<example>
 	| vmBlock |
 	vmBlock := [ PhLVirtualMachineManager new availableVirtualMachines 
 		asSortedCollection: [ :vm1 :vm2 | vm1 name > vm2 name ] ].
-	(self on: vmBlock) openWithSpec
+	(self on: {vmBlock}) openWithSpec
 ]
 
 { #category : #'instance creation' }
-PhLVMPresenter class >> on: aDomainObject [
+PhLVMPresenterSpec1 class >> on: aDomainObject [
 	| decorator |
 	decorator := self basicNewWithOwner: nil.
 	decorator decoree
@@ -43,12 +43,12 @@ PhLVMPresenter class >> on: aDomainObject [
 ]
 
 { #category : #specs }
-PhLVMPresenter >> initialExtent [
+PhLVMPresenterSpec1 >> initialExtent [
 	^ 520@300
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> initializeToolbar [
+PhLVMPresenterSpec1 >> initializeToolbar [
 	self toolbar
 		addItem:
 			(ITButton new
@@ -86,7 +86,7 @@ PhLVMPresenter >> initializeToolbar [
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> initializeWidgets [
+PhLVMPresenterSpec1 >> initializeWidgets [
 	| lastUpdateColumn |
 	
 	self initializeToolbar.
@@ -112,7 +112,7 @@ PhLVMPresenter >> initializeWidgets [
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> newSmartFastTable [
+PhLVMPresenterSpec1 >> newSmartFastTable [
 	^ FTSmartTableMorph new
 		hResizing: #spaceFill;
 		vResizing: #spaceFill;
@@ -120,25 +120,25 @@ PhLVMPresenter >> newSmartFastTable [
 ]
 
 { #category : #refreshing }
-PhLVMPresenter >> refresh [
+PhLVMPresenterSpec1 >> refresh [
 	vmTable widget 
 		elements: self virtualMachines;
 		refresh.
 ]
 
 { #category : #actions }
-PhLVMPresenter >> removeVms [
+PhLVMPresenterSpec1 >> removeVms [
 	self selectedItems do: #removeFromSystem.
 	self refresh.
 ]
 
 { #category : #selection }
-PhLVMPresenter >> selectedItems [
+PhLVMPresenterSpec1 >> selectedItems [
 	^ vmTable widget selectedItems
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> setModelBeforeInitialization: aDomainObject [
+PhLVMPresenterSpec1 >> setModelBeforeInitialization: aDomainObject [
 	vmBlock := aDomainObject first.
 	privateVmsBlock := (aDomainObject size = 1)
 		ifTrue: [ [ #() ] ]
@@ -147,7 +147,7 @@ PhLVMPresenter >> setModelBeforeInitialization: aDomainObject [
 ]
 
 { #category : #actions }
-PhLVMPresenter >> showInFolder [
+PhLVMPresenterSpec1 >> showInFolder [
 	| vms |
 	vms := self selectedItems.
 	vms size >= 1
@@ -155,7 +155,7 @@ PhLVMPresenter >> showInFolder [
 ]
 
 { #category : #actions }
-PhLVMPresenter >> showPrivateVms: aBoolean [
+PhLVMPresenterSpec1 >> showPrivateVms: aBoolean [
 	elementsBlock := aBoolean
 		ifTrue: [ privateVmsBlock ]
 		ifFalse: [ vmBlock ].
@@ -163,22 +163,22 @@ PhLVMPresenter >> showPrivateVms: aBoolean [
 ]
 
 { #category : #accessing }
-PhLVMPresenter >> title [
+PhLVMPresenterSpec1 >> title [
 	^ 'Locally available Virtual Machines'
 ]
 
 { #category : #actions }
-PhLVMPresenter >> updateVms [
+PhLVMPresenterSpec1 >> updateVms [
 	self selectedItems do: #update.
 	self refresh.
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> virtualMachines [
+PhLVMPresenterSpec1 >> virtualMachines [
 	^ elementsBlock value
 ]
 
 { #category : #accessing }
-PhLVMPresenter >> vmTable [
+PhLVMPresenterSpec1 >> vmTable [
 	^ vmTable 
 ]

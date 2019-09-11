@@ -1,8 +1,8 @@
 "
-Ask the image repository to update.
+Ask the template repository to update.
 "
 Class {
-	#name : #PhLRefreshImageRepositoryCommand2,
+	#name : #PhLRefreshTemplateRepositoryCommand2,
 	#superclass : #PhLGeneralCommand2,
 	#classVars : [
 		'LauncherVersion'
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #converting }
-PhLRefreshImageRepositoryCommand2 >> asSpecCommand [
+PhLRefreshTemplateRepositoryCommand2 >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallUpdateIcon;
 		shortcutKey: $u meta;
@@ -19,14 +19,14 @@ PhLRefreshImageRepositoryCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLRefreshImageRepositoryCommand2 >> execute [
-	self context imageRepository contentsChanged.
+PhLRefreshTemplateRepositoryCommand2 >> execute [
+	self context templateRepository refresh
 ]
 
 { #category : #initialization }
-PhLRefreshImageRepositoryCommand2 >> initialize [ 
+PhLRefreshTemplateRepositoryCommand2 >> initialize [ 
 	super initialize.
 	self
 		basicName: 'Refresh';
-		basicDescription: 'Refresh image list'.
+		basicDescription: 'Refresh template list'.
 ]

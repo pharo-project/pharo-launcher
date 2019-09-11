@@ -24,7 +24,5 @@ PhLShowImageInFolderCommand2 >> execute [
 { #category : #initialization }
 PhLShowImageInFolderCommand2 >> initialize [
 	super initialize.
-	self
-		basicName: 'Show in folder';
-		basicDescription: 'Open your OS''s file browser on the selected image directory.'
+	self basicName: 'Show in folder'.
 ]

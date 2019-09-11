@@ -35,6 +35,7 @@ PhLVMPresenter class >> buildToolbarGroup [
 		register: (PhLShowVmInFolderCommand forSpec 
 			basicName: 'Show';
 			yourself);
+		register: PhLDeleteVmCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]

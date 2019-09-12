@@ -21,7 +21,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar.image'.
 	archive addDeflateString: 'foo' as: 'bar.changes'.
-	zipFile := presenter fs / 'template.zip'. 
+	zipFile := presenter fileSystem / 'template.zip'. 
 	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
 	images do: [ :img | img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: zipFile)].
 	presenter selection: images.
@@ -32,7 +32,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	self
 		assertCollection: images
 		hasSameElements: #('TestImage').
-	image := presenter fs / 'TestImage' /'TestImage.image'.
+	image := presenter fileSystem / 'TestImage' /'TestImage.image'.
 	self assert: image exists.
 	self assert: image contents equals: 'foo'.
 ]

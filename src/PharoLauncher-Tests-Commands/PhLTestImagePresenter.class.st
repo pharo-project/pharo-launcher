@@ -5,11 +5,10 @@ Class {
 	#name : #PhLTestImagePresenter,
 	#superclass : #PhLImagesPresenter,
 	#instVars : [
-		'fs',
 		'request',
 		'selection',
-		'fileSystem',
-		'templateRepository'
+		'templateRepository',
+		'fileSystem'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -17,7 +16,7 @@ Class {
 { #category : #private }
 PhLTestImagePresenter >> createImageNamed: aName [
 	| imageDirectory |
-	imageDirectory := (fs root / aName).
+	imageDirectory := (fileSystem root / aName).
 	imageDirectory ensureCreateDirectory.
 	(imageDirectory / (aName , '.image')) 
 		binaryWriteStreamDo: [:stream | stream nextPutAll: #(105 25 0 0)].
@@ -27,8 +26,8 @@ PhLTestImagePresenter >> createImageNamed: aName [
 ]
 
 { #category : #private }
-PhLTestImagePresenter >> fs [
-	^ fs
+PhLTestImagePresenter >> fileSystem [
+	^ fileSystem
 ]
 
 { #category : #selection }
@@ -38,8 +37,8 @@ PhLTestImagePresenter >> hasSingleImageSelected [
 
 { #category : #initialization }
 PhLTestImagePresenter >> initialize [
-	fs := FileSystem memory.
-	self model: (PhLDirectoryBasedImageRepository forDirectory: fs root).
+	fileSystem := FileSystem memory.
+	self model: (PhLDirectoryBasedImageRepository forDirectory: fileSystem root).
 	templateRepository := PhLTemplateGroupTestRepository new.
 	self application: PharoLauncherApplication new.
 	self createImageNamed: self singleImageName.	
@@ -77,12 +76,12 @@ PhLTestImagePresenter >> selection: aListOfImages [
 
 { #category : #configuring }
 PhLTestImagePresenter >> selectionNames: aListOfImageNames [
-	selection := aListOfImageNames collect: [ :name | PhLImage location: fs root / name ].
+	selection := aListOfImageNames collect: [ :name | PhLImage location: fileSystem root / name ].
 ]
 
 { #category : #selection }
 PhLTestImagePresenter >> singleImage [
-	^ selection ifNil: [ PhLImage location: fs root / self singleImageName / (self singleImageName , '.image') ]
+	^ selection ifNil: [ PhLImage location: fileSystem root / self singleImageName / (self singleImageName , '.image') ]
 ]
 
 { #category : #selection }

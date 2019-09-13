@@ -17,5 +17,5 @@ PhLPrivateVirtualMachine >> downloadUrl [
 
 { #category : #accessing }
 PhLPrivateVirtualMachine >> vmStore [
-	^ PhLVirtualMachineManager privateVmStore
+	^ vmStore ifNil: [ PhLVirtualMachineManager privateVmStore ]
 ]

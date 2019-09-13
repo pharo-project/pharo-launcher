@@ -8,7 +8,8 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
-		'dataSource'
+		'dataSource',
+		'shouldShowPrivateVms'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -59,6 +60,12 @@ PhLVMPresenter >> datasource [
 ]
 
 { #category : #initialization }
+PhLVMPresenter >> initializePresenter [
+	super initializePresenter.
+	shouldShowPrivateVms := false.
+]
+
+{ #category : #initialization }
 PhLVMPresenter >> initializeWidgets [
 	vmTable := self newTable
 		items: self datasource virtualMachines;
@@ -94,6 +101,29 @@ PhLVMPresenter >> readableDateFor: aTimestamp [
 ]
 
 { #category : #accessing }
+PhLVMPresenter >> refresh [ 
+	| vms |
+	vms := shouldShowPrivateVms
+		ifTrue: [ self datasource privateVirtualMachines ]
+		ifFalse: [ self datasource virtualMachines ].
+	vmTable
+		items: vms";
+		updatePresenter".
+]
+
+{ #category : #accessing }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
+]
+
+{ #category : #configuring }
+PhLVMPresenter >> showPrivateVms [
+	shouldShowPrivateVms := true.
+	self refresh.
+]
+
+{ #category : #configuring }
+PhLVMPresenter >> showVms [
+	shouldShowPrivateVms := false.
+	self refresh.
 ]

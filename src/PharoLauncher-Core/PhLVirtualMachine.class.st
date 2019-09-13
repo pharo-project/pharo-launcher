@@ -10,9 +10,10 @@ Class {
 	#instVars : [
 		'executableRef',
 		'vmBinaryRef',
-		'name'
+		'name',
+		'vmStore'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #'instance creation' }
@@ -186,5 +187,10 @@ PhLVirtualMachine >> vmFolderPath [
 
 { #category : #accessing }
 PhLVirtualMachine >> vmStore [
-	^ PhLVirtualMachineManager vmStore
+	^ vmStore ifNil: [ PhLVirtualMachineManager vmStore ]
+]
+
+{ #category : #configuring }
+PhLVirtualMachine >> vmStore: aFileReference [ 
+	vmStore := aFileReference
 ]

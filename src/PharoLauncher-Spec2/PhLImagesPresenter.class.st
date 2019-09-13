@@ -71,16 +71,6 @@ PhLImagesPresenter class >> defaultSpec [
 ]
 
 { #category : #'private - building' }
-PhLImagesPresenter >> buildDeleteButtonToolbarItem [
-	^ SpToolBarButton new
-		label: 'Delete';
-		icon: (self iconNamed: #smallDelete);
-		help: 'Delete selected image';
-		action: [ self deleteSelectedImage ];
-		yourself
-]
-
-{ #category : #'private - building' }
 PhLImagesPresenter >> buildFileMenu [
 
 	^ MenuPresenter new
@@ -106,107 +96,12 @@ PhLImagesPresenter >> buildHelpMenu [
 ]
 
 { #category : #'private - building' }
-PhLImagesPresenter >> buildImportButtonToolbarItem [
-	^ SpToolBarButton new
-		label: 'Import';
-		icon: (self iconNamed: #smallLoadProject);
-		help: 'Import an external image into Pharo Launcher';
-		action: [ self doImport ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildLaunchButtonToolbarItem [
-	^ SpToolBarButton new
-		label: 'Launch';
-		icon: (self iconNamed: #smallDoItIcon);
-		help: 'Launch image with settings';
-		action: [ self launchSelectedImageWithSettings ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildLaunchWithoutSettingsButtonToolbarItem [
-	^ SpToolBarButton new
-		label: 'Basic launch';
-		icon: (self iconNamed: #smallDoItIcon) asGrayScaleWithAlpha;
-		help: 'Launch image without settings';
-		action: [ self launchSelectedImageWithoutSettings ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildListContextMenu [
-
-	^ MenuPresenter new 
-		addGroup: [ :group | group 
-			addItem: [ :item | item name: 'Launch'; action: [ self doLaunch ] ];
-			addItem: [ :item | item name: 'Launch without settings'; action: [  ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Edit'; action: [  ] ];
-			addItem: [ :item | item name: 'Recreate'; action: [  ] ];
-			addItem: [ :item | item name: 'Copy'; action: [  ] ];
-			addItem: [ :item | item name: 'Delete'; action: [  ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Show in folder'; action: [  ] ];
-			addItem: [ :item | item name: 'Copy path'; action: [  ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Create template'; action: [ ] ] ];
-		yourself
-]
-
-{ #category : #'private - building' }
 PhLImagesPresenter >> buildMenuBar [
 
 	^ SpMenuBarPresenter new 
 		addGroup: [ :group | group
 			addItem: [ :item | item name: 'File'; subMenu: self buildFileMenu ];
 			addItem: [ :item | item name: 'Help'; subMenu: self buildHelpMenu ] ]
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildNewButtonToolbarItem [
-
-	^ SpToolBarButton new
-		label: 'New';
-		icon: (self iconNamed: #smallNew);
-		help: 'Create an new image';
-		action: [ self doNewImage ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildRefreshButtonToolbarItem [
-	^ SpToolBarButton new
-		label: 'Refresh';
-		icon: (self iconNamed: #smallUpdateIcon);
-		help: 'Refresh image table';
-		action: [ self refresh ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildSettingsButtonToolbarItem [
-	^ SpToolBarButton new 
-		label: 'Settings';
-		icon: (self iconNamed: #smallConfiguration);
-		help: 'Allows you to change settings';
-		action: [ self doSettings ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildToolbar [
-
-	^ self newToolBar
-		addItem: self buildNewButtonToolbarItem;
-		addItem: self buildImportButtonToolbarItem;
-		addItem: self buildLaunchButtonToolbarItem;
-		addItem: self buildLaunchWithoutSettingsButtonToolbarItem;
-		addItem: self buildDeleteButtonToolbarItem;
-		addItem: self buildRefreshButtonToolbarItem;
-		addItem: self buildSettingsButtonToolbarItem;
-		yourself
 ]
 
 { #category : #'api - actions' }
@@ -250,8 +145,9 @@ PhLImagesPresenter >> initializeWidgets [
 	imageTable := self newTable
 		items: self model images;
 		sortingBlock: #lastModification descending;
-		contextMenu: self buildListContextMenu;
-		doubleClickAction: [ :selected | self doLaunch ];
+		doubleClickAction: [ :selected | | cmd |
+				cmd := (self rootCommandsGroup / 'Toolbar') commandOrGroupNamed: 'Launch'.
+				cmd execute. ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 350; yourself);
 		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture) width: 80; yourself);
 		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion) width: 80; yourself);

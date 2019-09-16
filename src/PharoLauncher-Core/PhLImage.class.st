@@ -223,6 +223,25 @@ PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
 ]
 
 { #category : #action }
+PhLImage >> launchWithConfiguration: aConfiguration [
+	| architectureWarningEnabled continue |
+	architectureWarningEnabled := true.
+	continue := true.
+	[ [ | command |
+	command := self launchCommandWith: aConfiguration vm executablePath useSettings: true.
+	^ command runUnwatch ]
+		on: PhLImageVersionDeterminationError
+		do: [ :error |  error uiAlert ] ]
+		on: PhLArchitectureMismatchWarning
+		do: [ :warning | |  |
+			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
+				ifTrue: [ 
+					architectureWarningEnabled := false. "only raise one warning"
+					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
+			continue ifTrue: [ warning resume ]. ]
+]
+
+{ #category : #action }
 PhLImage >> launchWithSettings: usePharoSettings [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.

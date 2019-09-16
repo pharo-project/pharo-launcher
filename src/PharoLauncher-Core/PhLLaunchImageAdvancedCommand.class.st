@@ -94,6 +94,13 @@ PhLLaunchImageAdvancedCommand >> asMenuItem [
 	^ super asMenuItem
 		subMenu: (MenuPresenter new
 			addGroup: [ :group |
+				self model singleImage configurations do: [ :e |
+					 group addMenuItem: (MenuItemPresenter new
+						name: e name;
+						action: [ self model singleImage launchWithConfiguration: e ];
+						yourself)]
+				];
+			addGroup: [ :group |
 				group addMenuItem: (MenuItemPresenter new
 					name: 'Edit...';
 					action: [ (PhLEditImageConfiguration on: self model singleImage) openWithSpec ]

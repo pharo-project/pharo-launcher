@@ -13,7 +13,7 @@ Class {
 PhLImageConfiguration class >> defaultWithImage: anImage [
 
 	^ (self withImage: anImage)
-		name: 'default';
+		name: 'Default';
 		yourself
 ]
 

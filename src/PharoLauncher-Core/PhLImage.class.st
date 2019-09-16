@@ -158,6 +158,12 @@ PhLImage >> descriptionFromFile [
 ]
 
 { #category : #accessing }
+PhLImage >> directory [
+	
+	^ file parent
+]
+
+{ #category : #accessing }
 PhLImage >> file [ 
 	^file
 ]
@@ -312,6 +318,12 @@ PhLImage >> printOn: aStream [
 PhLImage >> privOriginTemplate: aPhLTemplate [
 	
 	originTemplate := aPhLTemplate.
+]
+
+{ #category : #storing }
+PhLImage >> saveConfigurations [
+	
+	self serializeMetadata
 ]
 
 { #category : #serialization }

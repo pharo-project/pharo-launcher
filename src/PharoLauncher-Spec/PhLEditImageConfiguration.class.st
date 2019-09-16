@@ -8,7 +8,8 @@ Class {
 		'selectedConfigurationNameField',
 		'selectedConfigurationVMField',
 		'image',
-		'newConfigurationButton'
+		'newConfigurationButton',
+		'saveConfigurationButton'
 	],
 	#category : #'PharoLauncher-Spec'
 }
@@ -32,7 +33,9 @@ PhLEditImageConfiguration class >> defaultSpec [
 								newColumn: #selectedConfigurationVMField ] height: 30;
 						newRow: [ :x ];
 						newRow: [ :buttons |
-							buttons add: #newConfigurationButton ] height: 50 ];
+							buttons newColumn: [ :empty ].
+							buttons add: #newConfigurationButton.
+							buttons add: #saveConfigurationButton ] height: 50 ];
 				yourself ]
 ]
 
@@ -98,6 +101,10 @@ PhLEditImageConfiguration >> initializeWidgets [
 	newConfigurationButton := self newButton.
 	newConfigurationButton label: 'New'.
 	newConfigurationButton action: [ self addConfiguration ].
+	
+	saveConfigurationButton := self newButton.
+	saveConfigurationButton label: 'Save'.
+	saveConfigurationButton action: [ self saveConfiguration ].
 ]
 
 { #category : #accessing }
@@ -125,6 +132,22 @@ PhLEditImageConfiguration >> refresh [
 	configurationTable widget 
 		elements: image configurations;
 		refresh.
+]
+
+{ #category : #model }
+PhLEditImageConfiguration >> saveConfiguration [
+	
+	image saveConfigurations
+]
+
+{ #category : #accessing }
+PhLEditImageConfiguration >> saveConfigurationButton [
+	^ saveConfigurationButton
+]
+
+{ #category : #accessing }
+PhLEditImageConfiguration >> saveConfigurationButton: anObject [
+	saveConfigurationButton := anObject
 ]
 
 { #category : #events }

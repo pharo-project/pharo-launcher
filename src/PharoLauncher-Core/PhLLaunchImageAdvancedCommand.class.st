@@ -40,6 +40,12 @@ PhLLaunchImageAdvancedCommand class >> icon [
 ]
 
 { #category : #settings }
+PhLLaunchImageAdvancedCommand class >> positionInGroup [
+
+	^ 3
+]
+
+{ #category : #settings }
 PhLLaunchImageAdvancedCommand class >> quitOnLaunch [
 	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
 ]
@@ -75,7 +81,7 @@ PhLLaunchImageAdvancedCommand class >> settingsOn: aBuilder [
 
 { #category : #accessing }
 PhLLaunchImageAdvancedCommand class >> title [
-	^ 'Launch Pablo...'
+	^ 'Launch with configuration...'
 ]
 
 { #category : #settings }

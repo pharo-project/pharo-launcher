@@ -20,7 +20,8 @@ Class {
 		'formatNumber',
 		'architecture',
 		'pharoVersion',
-		'originTemplate'
+		'originTemplate',
+		'configurations'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
@@ -91,6 +92,12 @@ PhLImage class >> stonAllInstVarNames [
 ]
 
 { #category : #accessing }
+PhLImage >> addConfiguration [
+
+	^ configurations add: PhLImageConfiguration new
+]
+
+{ #category : #accessing }
 PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
@@ -121,6 +128,12 @@ PhLImage >> computePharoVersionWith: vmManager [
 	pharoVersion := vmManager imageVersion.
 	self computeArchitecture.
 	self serializeMetadata.
+]
+
+{ #category : #accessing }
+PhLImage >> configurations [
+	
+	^ configurations
 ]
 
 { #category : #accessing }
@@ -162,6 +175,14 @@ PhLImage >> hasChildren [
 { #category : #accessing }
 PhLImage >> imageFile [
 	^ self file
+]
+
+{ #category : #accessing }
+PhLImage >> initialize [
+
+	super initialize.
+	configurations := OrderedCollection new.
+	configurations add: PhLImageConfiguration new.
 ]
 
 { #category : #testing }

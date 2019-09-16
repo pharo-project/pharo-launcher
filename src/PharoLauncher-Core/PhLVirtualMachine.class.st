@@ -52,6 +52,12 @@ PhLVirtualMachine class >> id: aString [
 		yourself
 ]
 
+{ #category : #comparing }
+PhLVirtualMachine >> = aVM [
+
+	^ aVM id = self id
+]
+
 { #category : #querying }
 PhLVirtualMachine >> archPath [
 
@@ -135,6 +141,12 @@ PhLVirtualMachine >> flavour [
 	^ flavour
 ]
 
+{ #category : #comparing }
+PhLVirtualMachine >> hash [
+
+	^ self id hash
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> id [
 	^ id
@@ -180,6 +192,12 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isDefaultVM [
+
+	^ false
 ]
 
 { #category : #testing }

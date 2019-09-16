@@ -185,7 +185,8 @@ PharoLauncher >> commandClassesForImagesMenu [
 PharoLauncher >> commandClassesForImagesToolbar [
 	^ Array 
 		with: PhLLaunchImageCommand 
-		with: PhLLaunchImageWithoutSettingCommand 
+		with: PhLLaunchImageWithoutSettingCommand
+		with: PhLLaunchImageAdvancedCommand 
 		with: PhLImportImageCommand 
 		with: PhLDeleteImageCommand 
 		with: PhLRefreshImageRepositoryCommand

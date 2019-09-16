@@ -3,17 +3,35 @@ Class {
 	#superclass : #PhLObject,
 	#instVars : [
 		'name',
-		'vm'
+		'vm',
+		'image'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
-PhLImageConfiguration >> initialize [
+PhLImageConfiguration class >> defaultWithImage: anImage [
+
+	^ (self withImage: anImage)
+		name: 'default';
+		yourself
+]
+
+{ #category : #accessing }
+PhLImageConfiguration class >> withImage: anImage [
+
+	^ self new
+		initializeWithImage: anImage;
+		yourself
+]
+
+{ #category : #accessing }
+PhLImageConfiguration >> initializeWithImage: anImage [
 
 	super initialize.
+	image := anImage.
 	name := 'new configuration...'.
-	vm := PhLDefaultVM new
+	vm := PhLDefaultVM image: image
 ]
 
 { #category : #accessing }

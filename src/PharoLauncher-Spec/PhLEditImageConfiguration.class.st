@@ -71,7 +71,7 @@ PhLEditImageConfiguration >> initialExtent [
 PhLEditImageConfiguration >> initializePresenter [
 	
 	self refresh.
-	selectedConfigurationVMField items: { PhLDefaultVM new },(PhLVirtualMachineManager new virtualMachines).
+	selectedConfigurationVMField items: { PhLDefaultVM image: image },(PhLVirtualMachineManager new virtualMachines).
 	configurationTable widget selectFirstVisibleRow.
 
 	selectedConfigurationVMField whenSelectedItemChanged: [ self updateConfigurationVM ].

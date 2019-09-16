@@ -94,7 +94,7 @@ PhLImage class >> stonAllInstVarNames [
 { #category : #accessing }
 PhLImage >> addConfiguration [
 
-	^ configurations add: PhLImageConfiguration new
+	^ configurations add: (PhLImageConfiguration withImage: self)
 ]
 
 { #category : #accessing }
@@ -182,7 +182,7 @@ PhLImage >> initialize [
 
 	super initialize.
 	configurations := OrderedCollection new.
-	configurations add: PhLImageConfiguration new.
+	configurations add: (PhLImageConfiguration defaultWithImage: self).
 ]
 
 { #category : #testing }

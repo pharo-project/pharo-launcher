@@ -1,3 +1,7 @@
+"
+I am a non-resolved VM that will define how to open an image on demand.
+My method #executablePath checks for the correct image to use when running from an image configuration and uses that image.
+"
 Class {
 	#name : #PhLDefaultVM,
 	#superclass : #Object,

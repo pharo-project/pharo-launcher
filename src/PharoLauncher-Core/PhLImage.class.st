@@ -217,6 +217,17 @@ PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
 ]
 
 { #category : #action }
+PhLImage >> launchCommandWithConfiguration: aConfiguration [
+	^ PhLImageProcessConfigurator new 
+		vmPath: aConfiguration vm executablePath;
+		launchInALoginShell: self class launchInALoginShell;
+		usePharoSettings: aConfiguration useSettings;
+		imageArguments: aConfiguration imageArguments;
+		imageFile: file;
+		visit.
+]
+
+{ #category : #action }
 PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
 	| shouldUsePharoSettings |
 	shouldUsePharoSettings := usePharoSettings.
@@ -234,7 +245,7 @@ PhLImage >> launchWithConfiguration: aConfiguration [
 	architectureWarningEnabled := true.
 	continue := true.
 	[ [ | command |
-	command := self launchCommandWith: aConfiguration vm executablePath useSettings: true.
+	command := self launchCommandWithConfiguration: aConfiguration.
 	^ command runUnwatch ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]

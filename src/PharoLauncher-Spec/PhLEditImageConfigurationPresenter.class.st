@@ -1,5 +1,9 @@
+"
+I am a presenter to edit launcher configurations.
+Each image in the pharo launcher has many configurations to run (vm, arguments...) and I list and edit them.
+"
 Class {
-	#name : #PhLEditImageConfiguration,
+	#name : #PhLEditImageConfigurationPresenter,
 	#superclass : #ComposablePresenter,
 	#instVars : [
 		'configurationTable',
@@ -10,13 +14,15 @@ Class {
 		'image',
 		'newConfigurationButton',
 		'saveConfigurationButton',
-		'deleteConfigurationButton'
+		'deleteConfigurationButton',
+		'selectedConfigurationImageArgumentsLabel',
+		'selectedConfigurationImageArgumentsField'
 	],
 	#category : #'PharoLauncher-Spec'
 }
 
 { #category : #specs }
-PhLEditImageConfiguration class >> defaultSpec [
+PhLEditImageConfigurationPresenter class >> defaultSpec [
 
 	^ SpecLayout composed
 		newRow: [ :row |
@@ -26,12 +32,16 @@ PhLEditImageConfiguration class >> defaultSpec [
 					column
 						newRow: [ :fieldRow |
 							fieldRow
-								newColumn: #selectedConfigurationNameLabel width: 80;
+								newColumn: #selectedConfigurationNameLabel width: 100;
 								newColumn: #selectedConfigurationNameField ] height: 30;
 						newRow: [ :fieldRow |
 							fieldRow
-								newColumn: #selectedConfigurationVMLabel width: 80;
+								newColumn: #selectedConfigurationVMLabel width: 100;
 								newColumn: #selectedConfigurationVMField ] height: 30;
+						newRow: [ :fieldRow |
+							fieldRow
+								newColumn: #selectedConfigurationImageArgumentsLabel width: 100;
+								newColumn: #selectedConfigurationImageArgumentsField ] height: 30;
 						newRow: [ :x ];
 						newRow: [ :buttons |
 							buttons newColumn: [ :empty ].
@@ -42,7 +52,7 @@ PhLEditImageConfiguration class >> defaultSpec [
 ]
 
 { #category : #model }
-PhLEditImageConfiguration >> addConfiguration [
+PhLEditImageConfigurationPresenter >> addConfiguration [
 	
 	| configuration |
 	configuration := image addConfiguration.
@@ -51,27 +61,27 @@ PhLEditImageConfiguration >> addConfiguration [
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> configurationTable [
+PhLEditImageConfigurationPresenter >> configurationTable [
 	^ configurationTable
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> configurationTable: anObject [
+PhLEditImageConfigurationPresenter >> configurationTable: anObject [
 	configurationTable := anObject
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> deleteConfigurationButton [
+PhLEditImageConfigurationPresenter >> deleteConfigurationButton [
 	^ deleteConfigurationButton
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> deleteConfigurationButton: anObject [
+PhLEditImageConfigurationPresenter >> deleteConfigurationButton: anObject [
 	deleteConfigurationButton := anObject
 ]
 
 { #category : #model }
-PhLEditImageConfiguration >> deleteSelectedConfiguration [
+PhLEditImageConfigurationPresenter >> deleteSelectedConfiguration [
 	
 	self selectedConfiguration ifNil: [ ^ self ].
 
@@ -81,18 +91,18 @@ PhLEditImageConfiguration >> deleteSelectedConfiguration [
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> image [
+PhLEditImageConfigurationPresenter >> image [
 	^ image
 ]
 
 { #category : #api }
-PhLEditImageConfiguration >> initialExtent [
+PhLEditImageConfigurationPresenter >> initialExtent [
 
 	^ 800@400
 ]
 
 { #category : #initialization }
-PhLEditImageConfiguration >> initializePresenter [
+PhLEditImageConfigurationPresenter >> initializePresenter [
 	
 	self refresh.
 	selectedConfigurationVMField items: { PhLDefaultVM image: image },(PhLVirtualMachineManager new virtualMachines).
@@ -102,7 +112,7 @@ PhLEditImageConfiguration >> initializePresenter [
 ]
 
 { #category : #initialization }
-PhLEditImageConfiguration >> initializeWidgets [
+PhLEditImageConfigurationPresenter >> initializeWidgets [
 	
 	configurationTable := self newSmartFastTable.
 	configurationTable widget add: #Name accessing: #name.
@@ -118,6 +128,12 @@ PhLEditImageConfiguration >> initializeWidgets [
 	selectedConfigurationVMLabel label: 'VM'.
 	selectedConfigurationVMField := self newDropList.
 	selectedConfigurationVMField displayBlock: [ :vm | vm name ].
+
+	selectedConfigurationImageArgumentsLabel := self newLabel.
+	selectedConfigurationImageArgumentsLabel label: 'Image Arguments'.
+	selectedConfigurationImageArgumentsField := self newTextInput.
+	selectedConfigurationImageArgumentsField autoAccept: true.
+	selectedConfigurationImageArgumentsField whenTextChanged: [ self updateImageArguments ].
 	
 	newConfigurationButton := self newButton.
 	newConfigurationButton label: 'New'.
@@ -133,17 +149,17 @@ PhLEditImageConfiguration >> initializeWidgets [
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> newConfigurationButton [
+PhLEditImageConfigurationPresenter >> newConfigurationButton [
 	^ newConfigurationButton
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> newConfigurationButton: anObject [
+PhLEditImageConfigurationPresenter >> newConfigurationButton: anObject [
 	newConfigurationButton := anObject
 ]
 
 { #category : #initialization }
-PhLEditImageConfiguration >> newSmartFastTable [
+PhLEditImageConfigurationPresenter >> newSmartFastTable [
 
 	^ FTSmartTableMorph new
 		hResizing: #spaceFill;
@@ -152,7 +168,7 @@ PhLEditImageConfiguration >> newSmartFastTable [
 ]
 
 { #category : #refreshing }
-PhLEditImageConfiguration >> refresh [
+PhLEditImageConfigurationPresenter >> refresh [
 
 	configurationTable widget 
 		elements: image configurations;
@@ -162,7 +178,7 @@ PhLEditImageConfiguration >> refresh [
 ]
 
 { #category : #events }
-PhLEditImageConfiguration >> refreshDeleteButton [
+PhLEditImageConfigurationPresenter >> refreshDeleteButton [
 
 	| item |
 	item := self selectedConfiguration.
@@ -171,95 +187,118 @@ PhLEditImageConfiguration >> refreshDeleteButton [
 ]
 
 { #category : #model }
-PhLEditImageConfiguration >> saveConfiguration [
+PhLEditImageConfigurationPresenter >> saveConfiguration [
 	
 	image saveConfigurations
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> saveConfigurationButton [
+PhLEditImageConfigurationPresenter >> saveConfigurationButton [
 	^ saveConfigurationButton
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> saveConfigurationButton: anObject [
+PhLEditImageConfigurationPresenter >> saveConfigurationButton: anObject [
 	saveConfigurationButton := anObject
 ]
 
 { #category : #events }
-PhLEditImageConfiguration >> selectedConfiguration [
+PhLEditImageConfigurationPresenter >> selectedConfiguration [
 
 	configurationTable widget selectedItems ifEmpty: [ ^ nil ].
 	^ configurationTable widget selectedItems anyOne
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationNameField [
+PhLEditImageConfigurationPresenter >> selectedConfigurationImageArgumentsField [
+	^ selectedConfigurationImageArgumentsField
+]
+
+{ #category : #accessing }
+PhLEditImageConfigurationPresenter >> selectedConfigurationImageArgumentsField: anObject [
+	selectedConfigurationImageArgumentsField := anObject
+]
+
+{ #category : #accessing }
+PhLEditImageConfigurationPresenter >> selectedConfigurationImageArgumentsLabel [
+	^ selectedConfigurationImageArgumentsLabel
+]
+
+{ #category : #accessing }
+PhLEditImageConfigurationPresenter >> selectedConfigurationImageArgumentsLabel: anObject [
+	selectedConfigurationImageArgumentsLabel := anObject
+]
+
+{ #category : #accessing }
+PhLEditImageConfigurationPresenter >> selectedConfigurationNameField [
 	^ selectedConfigurationNameField
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationNameField: anObject [
+PhLEditImageConfigurationPresenter >> selectedConfigurationNameField: anObject [
 	selectedConfigurationNameField := anObject
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationNameLabel [
+PhLEditImageConfigurationPresenter >> selectedConfigurationNameLabel [
 	^ selectedConfigurationNameLabel
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationNameLabel: anObject [
+PhLEditImageConfigurationPresenter >> selectedConfigurationNameLabel: anObject [
 	selectedConfigurationNameLabel := anObject
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationVMField [
+PhLEditImageConfigurationPresenter >> selectedConfigurationVMField [
 	^ selectedConfigurationVMField
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationVMField: anObject [
+PhLEditImageConfigurationPresenter >> selectedConfigurationVMField: anObject [
 	selectedConfigurationVMField := anObject
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationVMLabel [
+PhLEditImageConfigurationPresenter >> selectedConfigurationVMLabel [
 	^ selectedConfigurationVMLabel
 ]
 
 { #category : #accessing }
-PhLEditImageConfiguration >> selectedConfigurationVMLabel: anObject [
+PhLEditImageConfigurationPresenter >> selectedConfigurationVMLabel: anObject [
 	selectedConfigurationVMLabel := anObject
 ]
 
 { #category : #events }
-PhLEditImageConfiguration >> selectionChanged [
+PhLEditImageConfigurationPresenter >> selectionChanged [
 
 	| item |
 	item := self selectedConfiguration.
 	selectedConfigurationNameField enabled: item notNil.
 	selectedConfigurationVMField enabled: item notNil.
+	selectedConfigurationImageArgumentsField enabled: item notNil.
 	self refreshDeleteButton.
 	
 	item ifNil: [ 
 		selectedConfigurationNameField text: ''.
 		selectedConfigurationVMField setIndex: 0.
+		selectedConfigurationImageArgumentsField text: ''.
 		^ self
 	].
 	
 	selectedConfigurationNameField text: item name.
 	selectedConfigurationVMField setIndex: (selectedConfigurationVMField listItems indexOf: item vm).
+	selectedConfigurationImageArgumentsField text: item imageArguments.
 ]
 
 { #category : #'model access' }
-PhLEditImageConfiguration >> setModelBeforeInitialization: anImage [
+PhLEditImageConfigurationPresenter >> setModelBeforeInitialization: anImage [
 
 	image := anImage
 ]
 
 { #category : #model }
-PhLEditImageConfiguration >> updateConfigurationName [
+PhLEditImageConfigurationPresenter >> updateConfigurationName [
 	
 	self selectedConfiguration ifNil: [ ^ self ].
 	
@@ -268,11 +307,17 @@ PhLEditImageConfiguration >> updateConfigurationName [
 ]
 
 { #category : #model }
-PhLEditImageConfiguration >> updateConfigurationVM [
+PhLEditImageConfigurationPresenter >> updateConfigurationVM [
 
 	"there is no selection"
 	self selectedConfiguration ifNil: [ ^ self ].
 	selectedConfigurationVMField selectedIndex = 0 ifTrue: [ ^ self ].
 
 	self selectedConfiguration vm: selectedConfigurationVMField selectedItem
+]
+
+{ #category : #model }
+PhLEditImageConfigurationPresenter >> updateImageArguments [
+	
+	self selectedConfiguration imageArguments: selectedConfigurationImageArgumentsField text
 ]

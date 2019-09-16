@@ -9,7 +9,8 @@ Class {
 		'vmPath',
 		'launchInALoginShell',
 		'imageFile',
-		'usePharoSettings'
+		'usePharoSettings',
+		'imageArguments'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -32,6 +33,12 @@ PhLImageProcessConfigurator >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
 		($: join: ((self cleanLDLibraryPath copyWithFirst: vmDirectoryPath) collect: #surroundedBySingleQuotes))
 
+]
+
+{ #category : #accessing }
+PhLImageProcessConfigurator >> imageArguments: aString [ 
+
+	imageArguments := aString
 ]
 
 { #category : #accessing }
@@ -61,6 +68,7 @@ PhLImageProcessConfigurator >> visit [
 		
 	process addArgument: imagePath surroundedByDoubleQuotes.
 	usePharoSettings ifFalse: [ process addArgument: '--no-default-preferences' ].
+	process addArgument: imageArguments.
 
 	^ process
 ]

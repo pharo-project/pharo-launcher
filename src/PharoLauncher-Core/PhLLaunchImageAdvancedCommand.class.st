@@ -1,3 +1,9 @@
+"
+I am a pharo launcher command that shows as children a list of configurations.
+Selecting a child configuration launches the image with the selected configuration.
+
+See #asMenuItem to see how the submenu is built
+"
 Class {
 	#name : #PhLLaunchImageAdvancedCommand,
 	#superclass : #PhLImageCommand,
@@ -109,7 +115,7 @@ PhLLaunchImageAdvancedCommand >> asMenuItem [
 			addGroup: [ :group |
 				group addMenuItem: (MenuItemPresenter new
 					name: 'Edit...';
-					action: [ (PhLEditImageConfiguration on: self model singleImage) openWithSpec ]
+					action: [ (PhLEditImageConfigurationPresenter on: self model singleImage) openWithSpec ]
 					yourself) ])
 ]
 

@@ -10,8 +10,10 @@ Class {
 	#instVars : [
 		'executableRef',
 		'vmBinaryRef',
-		'name',
-		'flavour'
+		'flavour',
+		'id',
+		'blessing',
+		'arch'
 	],
 	#category : #'PharoLauncher-Core-Download'
 }
@@ -42,19 +44,34 @@ PhLVirtualMachine class >> executableName [
 	^ PlatformResolver forCurrentPlatform vmExecutableName
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine class >> id: aString [
+
+	^ self new
+		id: aString;
+		yourself
+]
+
 { #category : #querying }
 PhLVirtualMachine >> archPath [
-	| arch |
-	arch := (name last: 3).
-	arch = 'x64' ifTrue: [ ^ '64' ].
+
+	arch ifNotNil: [ ^ arch ].
+	
+	(self id last: 3) = 'x64'
+		ifTrue: [ ^ '64' ].
 	^ ''
 ]
 
 { #category : #intialization }
 PhLVirtualMachine >> basicInitializeOn: aFolder [
 	"No flavour means heafull vm, it will be used to fetch the vm"
-	flavour := ''.
-	name := aFolder basename
+	id := aFolder basename
+]
+
+{ #category : #querying }
+PhLVirtualMachine >> be64bits [
+
+	arch := '64'
 ]
 
 { #category : #intialization }
@@ -64,13 +81,19 @@ PhLVirtualMachine >> beHeadless [
 	flavour := '-headless'
 ]
 
+{ #category : #intialization }
+PhLVirtualMachine >> beLatest [
+
+	blessing := 'latest'
+]
+
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
 	| manager |
 	manager := PhLVirtualMachineManager new.
 	
 	^ manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . flavour . 'stable' }
+		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . flavour . blessing }
 ]
 
 { #category : #ensuring }
@@ -100,9 +123,27 @@ PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine >> id [
+	^ id
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> id: aString [
+
+	id := aString
+]
+
 { #category : #testing }
 PhLVirtualMachine >> ifValid: aBlockClosure [ 
 	self isValid ifTrue: [ aBlockClosure value ]
+]
+
+{ #category : #intialization }
+PhLVirtualMachine >> initialize [
+	super initialize.
+	flavour := ''.
+	blessing := 'stable'.
 ]
 
 { #category : #intialization }
@@ -140,14 +181,23 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
+{ #category : #description }
+PhLVirtualMachine >> lastUpdateTimeDescription [
+	
+	| timestamp |
+	self isValid ifFalse: [ ^ 'Not available' ].
+	timestamp := self lastUpdateTime.
+	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24 
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> name [
-	^ name
+	^ self id
 ]
 
 { #category : #querying }
 PhLVirtualMachine >> pharoVersion [
-	^ ($- split: name ) first
+	^ ($- split: self id ) first
 ]
 
 { #category : #printing }
@@ -155,7 +205,7 @@ PhLVirtualMachine >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPut: $(;
-		nextPutAll: self name;
+		nextPutAll: self id;
 		nextPut: $)
 ]
 
@@ -173,7 +223,7 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : #actions }
 PhLVirtualMachine >> showInFolder [
-	PhLFileBrowser openOn: self vmStore / name
+	PhLFileBrowser openOn: self vmStore / self id
 ]
 
 { #category : #updating }

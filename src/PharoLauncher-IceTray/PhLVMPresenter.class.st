@@ -44,7 +44,7 @@ PhLVMPresenter class >> on: aDomainObject [
 
 { #category : #specs }
 PhLVMPresenter >> initialExtent [
-	^ 520@300
+	^ 720@300
 ]
 
 { #category : #initialization }
@@ -103,14 +103,10 @@ PhLVMPresenter >> initializeWidgets [
 				yourself ])
 		 width: 20.
 	vmTable widget
-		add: #Name accessing: #name width: 50.
+		add: #Name accessing: #name width: 100.
 	lastUpdateColumn := vmTable widget 
 		add: #'Last update' 
-		display: [ :vm |
-			| timestamp |
-			timestamp := vm lastUpdateTime. 
-			timestamp asDate yyyymmdd, ' ', timestamp asTime print24 
-			].
+		display: [ :vm | vm lastUpdateTimeDescription ].
 	lastUpdateColumn width: 120.
 	vmTable widget
 		add: #'Download URL' accessing: #downloadUrl;

@@ -489,6 +489,18 @@ PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 ]
 
 { #category : #querying }
+PhLVirtualMachineManager >> virtualMachines [
+
+	^ { 
+		(PhLVirtualMachine id: '80-x64-headless')
+			beHeadless;
+			beLatest;
+			be64bits;
+			yourself
+	} , self availableVirtualMachines values
+]
+
+{ #category : #querying }
 PhLVirtualMachineManager >> vm [
 	| vm |
 	UIManager default

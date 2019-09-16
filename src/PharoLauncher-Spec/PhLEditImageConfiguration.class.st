@@ -9,7 +9,8 @@ Class {
 		'selectedConfigurationVMField',
 		'image',
 		'newConfigurationButton',
-		'saveConfigurationButton'
+		'saveConfigurationButton',
+		'deleteConfigurationButton'
 	],
 	#category : #'PharoLauncher-Spec'
 }
@@ -35,6 +36,7 @@ PhLEditImageConfiguration class >> defaultSpec [
 						newRow: [ :buttons |
 							buttons newColumn: [ :empty ].
 							buttons add: #newConfigurationButton.
+							buttons add: #deleteConfigurationButton.
 							buttons add: #saveConfigurationButton ] height: 50 ];
 				yourself ]
 ]
@@ -43,7 +45,6 @@ PhLEditImageConfiguration class >> defaultSpec [
 PhLEditImageConfiguration >> addConfiguration [
 	
 	| configuration |
-1haltOnce.
 	configuration := image addConfiguration.
 	self refresh.
 	configurationTable widget selectRowIndex: (image configurations indexOf: configuration)
@@ -57,6 +58,26 @@ PhLEditImageConfiguration >> configurationTable [
 { #category : #accessing }
 PhLEditImageConfiguration >> configurationTable: anObject [
 	configurationTable := anObject
+]
+
+{ #category : #accessing }
+PhLEditImageConfiguration >> deleteConfigurationButton [
+	^ deleteConfigurationButton
+]
+
+{ #category : #accessing }
+PhLEditImageConfiguration >> deleteConfigurationButton: anObject [
+	deleteConfigurationButton := anObject
+]
+
+{ #category : #model }
+PhLEditImageConfiguration >> deleteSelectedConfiguration [
+	
+	self selectedConfiguration ifNil: [ ^ self ].
+
+	image removeConfiguration: self selectedConfiguration.
+	configurationTable widget selectRowIndex: 0.
+	self refresh.
 ]
 
 { #category : #accessing }
@@ -105,6 +126,10 @@ PhLEditImageConfiguration >> initializeWidgets [
 	saveConfigurationButton := self newButton.
 	saveConfigurationButton label: 'Save'.
 	saveConfigurationButton action: [ self saveConfiguration ].
+	
+	deleteConfigurationButton := self newButton.
+	deleteConfigurationButton label: 'Delete'.
+	deleteConfigurationButton action: [ self deleteSelectedConfiguration ].
 ]
 
 { #category : #accessing }
@@ -132,6 +157,17 @@ PhLEditImageConfiguration >> refresh [
 	configurationTable widget 
 		elements: image configurations;
 		refresh.
+	self refreshDeleteButton.
+
+]
+
+{ #category : #events }
+PhLEditImageConfiguration >> refreshDeleteButton [
+
+	| item |
+	item := self selectedConfiguration.
+	deleteConfigurationButton
+		enabled: (item notNil and: [ image configurations size > 1 ])
 ]
 
 { #category : #model }
@@ -153,6 +189,7 @@ PhLEditImageConfiguration >> saveConfigurationButton: anObject [
 { #category : #events }
 PhLEditImageConfiguration >> selectedConfiguration [
 
+	configurationTable widget selectedItems ifEmpty: [ ^ nil ].
 	^ configurationTable widget selectedItems anyOne
 ]
 
@@ -201,6 +238,16 @@ PhLEditImageConfiguration >> selectionChanged [
 
 	| item |
 	item := self selectedConfiguration.
+	selectedConfigurationNameField enabled: item notNil.
+	selectedConfigurationVMField enabled: item notNil.
+	self refreshDeleteButton.
+	
+	item ifNil: [ 
+		selectedConfigurationNameField text: ''.
+		selectedConfigurationVMField setIndex: 0.
+		^ self
+	].
+	
 	selectedConfigurationNameField text: item name.
 	selectedConfigurationVMField setIndex: (selectedConfigurationVMField listItems indexOf: item vm).
 ]
@@ -214,6 +261,8 @@ PhLEditImageConfiguration >> setModelBeforeInitialization: anImage [
 { #category : #model }
 PhLEditImageConfiguration >> updateConfigurationName [
 	
+	self selectedConfiguration ifNil: [ ^ self ].
+	
 	self selectedConfiguration name: selectedConfigurationNameField text.
 	self refresh.
 ]
@@ -222,6 +271,7 @@ PhLEditImageConfiguration >> updateConfigurationName [
 PhLEditImageConfiguration >> updateConfigurationVM [
 
 	"there is no selection"
+	self selectedConfiguration ifNil: [ ^ self ].
 	selectedConfigurationVMField selectedIndex = 0 ifTrue: [ ^ self ].
 
 	self selectedConfiguration vm: selectedConfigurationVMField selectedItem

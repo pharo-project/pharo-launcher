@@ -320,6 +320,12 @@ PhLImage >> privOriginTemplate: aPhLTemplate [
 	originTemplate := aPhLTemplate.
 ]
 
+{ #category : #configurations }
+PhLImage >> removeConfiguration: aPhLImageConfiguration [ 
+
+	configurations remove: aPhLImageConfiguration
+]
+
 { #category : #storing }
 PhLImage >> saveConfigurations [
 	

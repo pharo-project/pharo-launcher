@@ -10,9 +10,10 @@ Class {
 	#instVars : [
 		'executableRef',
 		'vmBinaryRef',
-		'name'
+		'name',
+		'flavour'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #'instance creation' }
@@ -51,7 +52,16 @@ PhLVirtualMachine >> archPath [
 
 { #category : #intialization }
 PhLVirtualMachine >> basicInitializeOn: aFolder [
+	"No flavour means heafull vm, it will be used to fetch the vm"
+	flavour := ''.
 	name := aFolder basename
+]
+
+{ #category : #intialization }
+PhLVirtualMachine >> beHeadless [
+
+	"Set the flavour to attach to the vm download url"
+	flavour := '-headless'
 ]
 
 { #category : #querying }
@@ -60,7 +70,7 @@ PhLVirtualMachine >> downloadUrl [
 	manager := PhLVirtualMachineManager new.
 	
 	^ manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . 'stable' }
+		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . flavour . 'stable' }
 ]
 
 { #category : #ensuring }
@@ -92,8 +102,7 @@ PhLVirtualMachine >> executablePath [
 
 { #category : #testing }
 PhLVirtualMachine >> ifValid: aBlockClosure [ 
-	(executableRef isNotNil and: [ vmBinaryRef isNotNil ])
-		ifTrue: [ aBlockClosure value ]
+	self isValid ifTrue: [ aBlockClosure value ]
 ]
 
 { #category : #intialization }
@@ -118,6 +127,12 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isValid [
+	^ executableRef isNotNil
+		and: [ vmBinaryRef isNotNil ]
 ]
 
 { #category : #querying }
@@ -167,6 +182,14 @@ PhLVirtualMachine >> update [
 	PhLVirtualMachineManager 
 		fetch: self downloadUrl
 		to: self name
+]
+
+{ #category : #description }
+PhLVirtualMachine >> validityDescription [
+	
+	^ self isValid
+		ifTrue: [ 'VM available' ]
+		ifFalse: [ 'VM not available' ]
 ]
 
 { #category : #setting }

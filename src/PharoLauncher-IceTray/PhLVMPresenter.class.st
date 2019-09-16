@@ -92,6 +92,16 @@ PhLVMPresenter >> initializeWidgets [
 	self initializeToolbar.
 	
 	vmTable := self newSmartFastTable.
+	(vmTable widget 
+		add: #' ' 
+		display: [ :vm | | icon |
+			icon := vm isValid
+				ifTrue: [ self iconNamed: #testGreen ]
+				ifFalse: [ self iconNamed: #testNotRun ].
+			icon asMorph
+				setBalloonText: vm validityDescription;
+				yourself ])
+		 width: 20.
 	vmTable widget
 		add: #Name accessing: #name width: 50.
 	lastUpdateColumn := vmTable widget 

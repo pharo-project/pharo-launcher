@@ -243,10 +243,10 @@ PhLVirtualMachineManager >> compatibleVmUrl [
 PhLVirtualMachineManager >> compatibleVmUrls [
 	"50-preSpur stable is not the latest stable pre-Spur VM. 40 vm is the latest stable pre-Spur"
 	^ Dictionary newFromPairs: { 
-		self class imageFormat6504 . self vmUrlTemplate format: { '13' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormatPreSpur . self vmUrlTemplate format: { '40' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormat32bits . self vmUrlTemplate format: { '70' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormat64bits . self vmUrlTemplate format: { '70' . '64' . self downloadPathOSTypeSegment . 'stable' }
+		self class imageFormat6504 . self vmUrlTemplate format: { '13' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormatPreSpur . self vmUrlTemplate format: { '40' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormat32bits . self vmUrlTemplate format: { '70' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormat64bits . self vmUrlTemplate format: { '70' . '64' . self downloadPathOSTypeSegment . ''. 'stable' }
 	}
 ]
 
@@ -539,14 +539,15 @@ PhLVirtualMachineManager >> vmUrl [
 		ifTrue: [ '50-preSpur' ]
 		ifFalse: [ self imageVersion ].
 	^ self vmUrlTemplate
-		format: { pharoVersion . architecture . self downloadPathOSTypeSegment . 'stable' }
+		format: { pharoVersion . architecture . self downloadPathOSTypeSegment . ''. 'stable' }
 ]
 
 { #category : #private }
 PhLVirtualMachineManager >> vmUrlTemplate [
-	"$1: IMAGE_VERSION
-	 $2: VM_ARCH
-	 $3: OS
-	 $4: VM_STATUS"
-	^ 'https://files.pharo.org/get-files/{1}/pharo{2}-{3}-{4}.zip'
+	"$1: IMAGE_VERSION (11 .. 70, 80)
+	 $2: VM_ARCH (32 or 64)
+	 $3: OS (win mac or linux)
+	 $4: FLAVOUR? (-headless or empty)
+	 $5: VM_STATUS (stable or latest)"
+	^ 'https://files.pharo.org/get-files/{1}/pharo{2}-{3}{4}-{5}.zip'
 ]

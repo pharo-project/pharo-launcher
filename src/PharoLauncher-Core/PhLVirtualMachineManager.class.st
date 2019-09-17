@@ -90,7 +90,7 @@ PhLVirtualMachineManager class >> is32bits: anImageFormatVersion [
 
 { #category : #testing }
 PhLVirtualMachineManager class >> is64bits [
-	^ PhLVirtualMachineManager is64bits: Smalltalk image imageFormatVersion
+	^ self is64bits: Smalltalk image imageFormatVersion
 ]
 
 { #category : #testing }
@@ -189,7 +189,7 @@ PhLVirtualMachineManager >> availableVirtualMachines [
 
 { #category : #querying }
 PhLVirtualMachineManager >> availableVirtualMachinesByImageFormat [
-	^ [ self availableVirtualMachinesIn: self class privateVmStore] 
+	^ [ self availableVirtualMachinesIn: self privateVmStore] 
 		on: PhLExecutableNotFoundError 
 		do: [ :ex | ex path asFileReference ensureDeleteAll. ex retry ]
 ]
@@ -202,7 +202,7 @@ PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	aFileReference directories
 		reject: [ :entry | entry basename = 'private' ]
 		thenDo: [ :entry | | vm |
-			vm := PhLVirtualMachine directory: entry private: (aFileReference = self class privateVmStore).
+			vm := PhLVirtualMachine directory: entry private: (aFileReference = self privateVmStore).
 			vm ifValid: [ vmsOnDisk at: entry basename put: vm ] ].
 	^ vmsOnDisk
 ]
@@ -258,13 +258,13 @@ PhLVirtualMachineManager >> downloadPathOSTypeSegment [
 { #category : #private }
 PhLVirtualMachineManager >> fetchCompatibleVm [
 	[ | targetFile | 
-	targetFile := self class privateVmStore / (self imageFormatNumber asString , '.zip').
+	targetFile := self privateVmStore / (self imageFormatNumber asString , '.zip').
 	PhLDownloadManager default 
 		download: self compatibleVmUrl
 		toFile: targetFile.
 	self class
 		unzip: targetFile
-		to: (self class privateVmStore / self imageFormatNumber asString) ]
+		to: (self privateVmStore / self imageFormatNumber asString) ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageFormatNumber asString, ' image format. Maybe you need to update known formats?' ]
 ]
@@ -276,7 +276,7 @@ PhLVirtualMachineManager >> fetchSourcesFileForCompatibleVm [
 	(self imageFormatNumber = self class imageFormatPreSpur or: [ self imageFormatNumber = self class imageFormat6504 ])
 		ifTrue: [ self 
 			fetchSourcesFilesFor: '14' 
-			in: self class privateVmStore / self imageFormatNumber asString ]
+			in: self privateVmStore / self imageFormatNumber asString ]
 ]
 
 { #category : #private }
@@ -469,6 +469,11 @@ PhLVirtualMachineManager >> imageVersionFromFileWith: aPhLProcessWrapperCommand 
 			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
 			ifAbsent: [ PhLImageVersionDeterminationError signalCommand: aPhLProcessWrapperCommand printString ].
 	^ imageVersion
+]
+
+{ #category : #accessing }
+PhLVirtualMachineManager >> privateVmStore [
+	^ self class privateVmStore
 ]
 
 { #category : #accessing }

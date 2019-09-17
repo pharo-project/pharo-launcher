@@ -11,7 +11,8 @@ Class {
 		'executableRef',
 		'vmBinaryRef',
 		'name',
-		'vmStore'
+		'vmStore',
+		'manager'
 	],
 	#category : #'PharoLauncher-Core-Download'
 }
@@ -57,11 +58,8 @@ PhLVirtualMachine >> basicInitializeOn: aFolder [
 
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
-	| manager |
-	manager := PhLVirtualMachineManager new.
-	
-	^ manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . 'stable' }
+	^ self manager vmUrlTemplate
+		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . 'stable' }
 ]
 
 { #category : #ensuring }
@@ -126,6 +124,11 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
+{ #category : #updating }
+PhLVirtualMachine >> manager [
+	^ manager ifNil: [ manager := PhLVirtualMachineManager new ]
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> name [
 	^ name
@@ -165,7 +168,7 @@ PhLVirtualMachine >> showInFolder [
 { #category : #updating }
 PhLVirtualMachine >> update [
 	"fetch a new version of this Virtual Machine if available"
-	PhLVirtualMachineManager 
+	self manager class 
 		fetch: self downloadUrl
 		to: self name
 ]
@@ -187,7 +190,7 @@ PhLVirtualMachine >> vmFolderPath [
 
 { #category : #accessing }
 PhLVirtualMachine >> vmStore [
-	^ vmStore ifNil: [ PhLVirtualMachineManager vmStore ]
+	^ vmStore ifNil: [ self manager vmStore ]
 ]
 
 { #category : #configuring }

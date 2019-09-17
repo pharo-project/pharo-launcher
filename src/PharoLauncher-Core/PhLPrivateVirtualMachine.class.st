@@ -12,10 +12,11 @@ Class {
 
 { #category : #querying }
 PhLPrivateVirtualMachine >> downloadUrl [
-	^ PhLVirtualMachineManager new compatibleVmUrls at: self name asInteger
+	^ self manager compatibleVmUrls 
+		at: self name asInteger
 ]
 
 { #category : #accessing }
 PhLPrivateVirtualMachine >> vmStore [
-	^ vmStore ifNil: [ PhLVirtualMachineManager privateVmStore ]
+	^ vmStore ifNil: [ self manager privateVmStore ]
 ]

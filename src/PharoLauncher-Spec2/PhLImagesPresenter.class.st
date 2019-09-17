@@ -51,8 +51,19 @@ PhLImagesPresenter class >> buildToolbarGroup [
 			basicName: 'Show';
 			yourself);
 		register: PhLDeleteImageCommand2 forSpec;
+		register: (PhLQuitCommand2 forSpec
+			beDisplayedOnRightSide;
+			yourself);
+		register: (PhLAboutCommand2 forSpec
+			beDisplayedOnRightSide;
+			yourself);
+		register: (PhLOpenSettingsCommand2 forSpec
+			basicName: 'Settings';
+			beDisplayedOnRightSide;
+			yourself);
 		register: (PhLOpenVmManagerCommand2 forSpec
 			basicName: 'VMs';
+			beDisplayedOnRightSide;
 			yourself);
 		beDisplayedAsGroup;
 		yourself

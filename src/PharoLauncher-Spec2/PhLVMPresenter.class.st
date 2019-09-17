@@ -127,3 +127,9 @@ PhLVMPresenter >> showVms [
 	shouldShowPrivateVms := false.
 	self refresh.
 ]
+
+{ #category : #configuring }
+PhLVMPresenter >> toggleShowVmPrivateVm [
+	shouldShowPrivateVms := shouldShowPrivateVms not.
+	self refresh
+]

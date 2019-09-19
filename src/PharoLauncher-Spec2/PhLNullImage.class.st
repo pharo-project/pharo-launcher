@@ -23,7 +23,7 @@ PhLNullImage >> description [
 { #category : #accessing }
 PhLNullImage >> lastModification [
 	
-	^ nil
+	^ 'N/A'
 ]
 
 { #category : #accessing }

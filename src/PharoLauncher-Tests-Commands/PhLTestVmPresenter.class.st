@@ -76,7 +76,7 @@ PhLTestVmPresenter >> vmFor: aName private: isPrivateVm [
 	vm := PhLVirtualMachine
 		directory: root / aName
 		private: isPrivateVm.
-	vm vmStore: root.
+	vm manager: PhLTestVirtualMachineManager new.
 	^ vm
 ]
 

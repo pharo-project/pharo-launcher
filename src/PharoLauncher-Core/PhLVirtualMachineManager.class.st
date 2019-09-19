@@ -10,10 +10,10 @@ Class {
 		'imageFormatNumber',
 		'imageVersion'
 	],
-	#classVars : [
-		'VMStore'
+	#classInstVars : [
+		'vmStore'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #unzipping }
@@ -160,13 +160,13 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore [
-	^ VMStore ifNil: [ VMStore := (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
+	^ vmStore ifNil: [ vmStore := (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
 ]
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore: anObject [
-	VMStore := anObject asFileReference.
-	VMStore ensureCreateDirectory
+	vmStore := anObject asFileReference.
+	vmStore ensureCreateDirectory
 ]
 
 { #category : #accessing }

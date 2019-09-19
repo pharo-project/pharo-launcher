@@ -33,10 +33,12 @@ PhLVMPresenter class >> buildContextualMenuGroup [
 PhLVMPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		basicDescription: 'Pharo Launcher VM Manager toolbar';
+		register: PhLUpdateVmCommand forSpec;
 		register: (PhLShowVmInFolderCommand forSpec 
 			basicName: 'Show';
 			yourself);
 		register: PhLDeleteVmCommand forSpec;
+		register: PhLToggleVmPrivateVmCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]

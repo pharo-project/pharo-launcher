@@ -11,7 +11,6 @@ Class {
 		'executableRef',
 		'vmBinaryRef',
 		'name',
-		'vmStore',
 		'manager'
 	],
 	#category : #'PharoLauncher-Core-Download'
@@ -130,6 +129,11 @@ PhLVirtualMachine >> manager [
 ]
 
 { #category : #accessing }
+PhLVirtualMachine >> manager: aPhLVirtualMachineManager [ 
+	manager := aPhLVirtualMachineManager
+]
+
+{ #category : #accessing }
 PhLVirtualMachine >> name [
 	^ name
 ]
@@ -190,10 +194,5 @@ PhLVirtualMachine >> vmFolderPath [
 
 { #category : #accessing }
 PhLVirtualMachine >> vmStore [
-	^ vmStore ifNil: [ self manager vmStore ]
-]
-
-{ #category : #configuring }
-PhLVirtualMachine >> vmStore: aFileReference [ 
-	vmStore := aFileReference
+	^ self manager vmStore
 ]

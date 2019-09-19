@@ -77,6 +77,7 @@ PhLImportImageCommand2 >> importImage [
 PhLImportImageCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Import';
-		basicDescription: 'Import into Pharo Launcher an existing Pharo image (and possibly its parent folder)'
+		name: 'Import';
+		description:
+			'Import into Pharo Launcher an existing Pharo image (and possibly its parent folder)'
 ]

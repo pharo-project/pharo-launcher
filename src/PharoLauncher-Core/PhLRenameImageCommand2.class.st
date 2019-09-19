@@ -30,8 +30,8 @@ PhLRenameImageCommand2 >> execute [
 PhLRenameImageCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Rename';
-		basicDescription: 'Rename the currently selected image and move the files accordingly.'
+		name: 'Rename';
+		description: 'Rename the currently selected image and move the files accordingly.'
 ]
 
 { #category : #private }

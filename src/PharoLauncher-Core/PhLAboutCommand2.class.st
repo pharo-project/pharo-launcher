@@ -46,8 +46,8 @@ PhLAboutCommand2 >> execute [
 PhLAboutCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'About';
-		basicDescription: 'About Pharo Launcher'
+		name: 'About';
+		description: 'About Pharo Launcher'
 ]
 
 { #category : #querying }

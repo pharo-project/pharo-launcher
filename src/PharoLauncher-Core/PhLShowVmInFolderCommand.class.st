@@ -26,5 +26,5 @@ PhLShowVmInFolderCommand >> execute [
 { #category : #initialization }
 PhLShowVmInFolderCommand >> initialize [
 	super initialize.
-	self basicName: 'Show in Folder'
+	self name: 'Show in Folder'
 ]

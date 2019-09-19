@@ -26,6 +26,6 @@ PhLOpenSettingsCommand2 >> execute [
 PhLOpenSettingsCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Open settings';
-		basicDescription: 'Open Pharo Launcher settings'
+		name: 'Open settings';
+		description: 'Open Pharo Launcher settings'
 ]

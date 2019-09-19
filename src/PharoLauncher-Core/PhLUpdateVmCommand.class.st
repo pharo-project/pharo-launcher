@@ -24,5 +24,5 @@ PhLUpdateVmCommand >> execute [
 { #category : #initialization }
 PhLUpdateVmCommand >> initialize [
 	super initialize.
-	self basicName: 'Update'
+	self name: 'Update'
 ]

@@ -38,6 +38,6 @@ PhLDeleteImageCommand2 >> execute [
 PhLDeleteImageCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Delete';
-		basicDescription: 'Delete the selected Pharo images'
+		name: 'Delete';
+		description: 'Delete the selected Pharo images'
 ]

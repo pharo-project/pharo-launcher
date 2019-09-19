@@ -24,5 +24,5 @@ PhLShowImageInFolderCommand2 >> execute [
 { #category : #initialization }
 PhLShowImageInFolderCommand2 >> initialize [
 	super initialize.
-	self basicName: 'Show in folder'.
+	self name: 'Show in folder'
 ]

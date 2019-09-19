@@ -25,6 +25,6 @@ PhLQuitCommand2 >> execute [
 PhLQuitCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Quit';
-		basicDescription: 'Quit Pharo Launcher'
+		name: 'Quit';
+		description: 'Quit Pharo Launcher'
 ]

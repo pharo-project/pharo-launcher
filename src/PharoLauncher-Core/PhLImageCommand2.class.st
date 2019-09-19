@@ -18,7 +18,7 @@ PhLImageCommand2 >> imagesPresenter [
 ]
 
 { #category : #initialization }
-PhLImageCommand2 >> initialize [ 
+PhLImageCommand2 >> initialize [
 	super initialize.
-	self basicDescription: self class comment
+	self description: self class comment
 ]

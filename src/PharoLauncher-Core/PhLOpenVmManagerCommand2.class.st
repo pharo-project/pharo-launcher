@@ -34,9 +34,10 @@ PhLOpenVmManagerCommand2 >> iconNamed: aName [
 ]
 
 { #category : #executing }
-PhLOpenVmManagerCommand2 >> initialize [ 
+PhLOpenVmManagerCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Open VM Manager';
-		basicDescription: 'Open a new window allowing to manage Virtual Machines used to launch images'.
+		name: 'Open VM Manager';
+		description:
+			'Open a new window allowing to manage Virtual Machines used to launch images'
 ]

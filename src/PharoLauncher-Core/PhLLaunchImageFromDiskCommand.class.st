@@ -33,5 +33,5 @@ PhLLaunchImageFromDiskCommand >> execute [
 { #category : #initialization }
 PhLLaunchImageFromDiskCommand >> initialize [
 	super initialize.
-	self basicName: 'Launch from disk'.
+	self name: 'Launch from disk'
 ]

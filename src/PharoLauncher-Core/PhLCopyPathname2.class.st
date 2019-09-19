@@ -26,5 +26,5 @@ PhLCopyPathname2 >> execute [
 { #category : #initialization }
 PhLCopyPathname2 >> initialize [
 	super initialize.
-	self basicName: 'Copy'.
+	self name: 'Copy'
 ]

@@ -28,7 +28,7 @@ PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: r
 { #category : #commands }
 PhLImagesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
-		basicDescription: 'Images table contextual menu';
+		description: 'Images table contextual menu';
 		register: PhLLaunchImageCommand2 forSpec;
 		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
 		register: PhLRenameImageCommand2 forSpec;
@@ -42,29 +42,34 @@ PhLImagesPresenter class >> buildContextualMenuGroup [
 { #category : #commands }
 PhLImagesPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
-		basicDescription: 'Pharo Launcher toolbar';
+		description: 'Pharo Launcher toolbar';
 		register: PhLLaunchImageCommand2 forSpec;
 		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
 		register: PhLLaunchImageFromDiskCommand forSpec;
 		register: PhLImportImageCommand2 forSpec;
-		register: (PhLShowImageInFolderCommand2 forSpec 
-			basicName: 'Show';
-			yourself);
+		register:
+			(PhLShowImageInFolderCommand2 forSpec
+				name: 'Show';
+				yourself);
 		register: PhLDeleteImageCommand2 forSpec;
-		register: (PhLQuitCommand2 forSpec
-			beDisplayedOnRightSide;
-			yourself);
-		register: (PhLAboutCommand2 forSpec
-			beDisplayedOnRightSide;
-			yourself);
-		register: (PhLOpenSettingsCommand2 forSpec
-			basicName: 'Settings';
-			beDisplayedOnRightSide;
-			yourself);
-		register: (PhLOpenVmManagerCommand2 forSpec
-			basicName: 'VMs';
-			beDisplayedOnRightSide;
-			yourself);
+		register:
+			(PhLQuitCommand2 forSpec
+				beDisplayedOnRightSide;
+				yourself);
+		register:
+			(PhLAboutCommand2 forSpec
+				beDisplayedOnRightSide;
+				yourself);
+		register:
+			(PhLOpenSettingsCommand2 forSpec
+				name: 'Settings';
+				beDisplayedOnRightSide;
+				yourself);
+		register:
+			(PhLOpenVmManagerCommand2 forSpec
+				name: 'VMs';
+				beDisplayedOnRightSide;
+				yourself);
 		beDisplayedAsGroup;
 		yourself
 ]

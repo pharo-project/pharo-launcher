@@ -35,6 +35,6 @@ PhLDeleteVmCommand >> execute [
 PhLDeleteVmCommand >> initialize [
 	super initialize.
 	self
-		basicName: 'Delete';
-		basicDescription: 'Delete the selected Pharo Virtual Machines'
+		name: 'Delete';
+		description: 'Delete the selected Pharo Virtual Machines'
 ]

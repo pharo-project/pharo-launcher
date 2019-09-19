@@ -24,5 +24,5 @@ PhLToggleVmPrivateVmCommand >> execute [
 { #category : #initialization }
 PhLToggleVmPrivateVmCommand >> initialize [
 	super initialize.
-	self basicName: 'private'
+	self name: 'private'
 ]

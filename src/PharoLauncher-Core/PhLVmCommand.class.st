@@ -8,9 +8,9 @@ Class {
 }
 
 { #category : #initialization }
-PhLVmCommand >> initialize [ 
+PhLVmCommand >> initialize [
 	super initialize.
-	self basicDescription: self class comment
+	self description: self class comment
 ]
 
 { #category : #accessing }

@@ -49,17 +49,13 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
-	| version manager |
+	| version |
 	self timeLimit: 30 seconds.
 	
 	self withCopyOfCurrentImageDo: 
 	[ :imagePath |
-	manager := PhLVirtualMachineManager forImage: imagePath.
-	manager fetchSourcesFilesFor: '61' in: manager compatibleVm vmFolder.
-
-	
-	version := (PhLVirtualMachineManager
-		forImage: imagePath) imageVersion.
+	version := (PhLVirtualMachineManager forImage: imagePath) 
+		imageVersion.
 	self assert: version equals: self currentImageVersion ]
 ]
 

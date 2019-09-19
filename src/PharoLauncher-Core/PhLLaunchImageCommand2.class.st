@@ -83,7 +83,8 @@ PhLLaunchImageCommand2 >> asSpecLaunchWithoutSettingsCommand [
 		basicDescription: 'Launch the selected Pharo image without settings'.
 
 	^ super asSpecCommand
-		iconName: #smallDoItIcon; "asGrayScaleWithAlpha"
+		iconProvider: self;
+		iconName: #smallDoItIcon;
 		"shortcutKey: $l meta, $b meta ;"
 		beDisabledWhenCantBeRun;
 		yourself
@@ -98,6 +99,12 @@ PhLLaunchImageCommand2 >> doNotUseSettings [
 PhLLaunchImageCommand2 >> execute [
 	self imagesPresenter hasSingleImageSelected
 		ifTrue: [ self launchSelectedImage ]
+]
+
+{ #category : #private }
+PhLLaunchImageCommand2 >> iconNamed: aName [
+	"Only used for basic launch command"
+	^ (super iconNamed: aName) asGrayScaleWithAlpha
 ]
 
 { #category : #initialization }

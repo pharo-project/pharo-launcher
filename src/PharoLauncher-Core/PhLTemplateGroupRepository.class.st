@@ -11,6 +11,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+PhLTemplateGroupRepository class >> default [
+	^ self newFromGroups: PhLTemplateGroupsBuilder build
+]
+
+{ #category : #'instance creation' }
 PhLTemplateGroupRepository class >> newFromGroups: aCollection [
 	^ self new
 		setGroups: aCollection;

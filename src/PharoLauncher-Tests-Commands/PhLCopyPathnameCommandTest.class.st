@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 PhLCopyPathnameCommandTest >> setUp [
-	presenter := PhLTestImagePresenter new.
+	presenter := PhLTestImagesPresenter new.
 ]
 
 { #category : #tests }

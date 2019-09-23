@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 PhLRefreshImagerepositoryCommandTest >> setUp [
-	presenter := PhLTestImagePresenter new.
+	presenter := PhLTestImagesPresenter new.
 ]
 
 { #category : #tests }

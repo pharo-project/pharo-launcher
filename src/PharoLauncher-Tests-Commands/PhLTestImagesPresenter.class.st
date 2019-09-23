@@ -2,7 +2,7 @@
 A presenter for Pharo Launcher images used for test purposes
 "
 Class {
-	#name : #PhLTestImagePresenter,
+	#name : #PhLTestImagesPresenter,
 	#superclass : #PhLImagesPresenter,
 	#instVars : [
 		'request',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #private }
-PhLTestImagePresenter >> createImageNamed: aName [
+PhLTestImagesPresenter >> createImageNamed: aName [
 	| imageDirectory |
 	imageDirectory := (fileSystem root / aName).
 	imageDirectory ensureCreateDirectory.
@@ -26,17 +26,17 @@ PhLTestImagePresenter >> createImageNamed: aName [
 ]
 
 { #category : #private }
-PhLTestImagePresenter >> fileSystem [
+PhLTestImagesPresenter >> fileSystem [
 	^ fileSystem
 ]
 
 { #category : #selection }
-PhLTestImagePresenter >> hasSingleImageSelected [
+PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ self selectedImages size = 1
 ]
 
 { #category : #initialization }
-PhLTestImagePresenter >> initialize [
+PhLTestImagesPresenter >> initialize [
 	fileSystem := FileSystem memory.
 	self model: (PhLDirectoryBasedImageRepository forDirectory: fileSystem root).
 	templateRepository := PhLTemplateGroupTestRepository new.
@@ -46,22 +46,22 @@ PhLTestImagePresenter >> initialize [
 ]
 
 { #category : #'user interaction' }
-PhLTestImagePresenter >> newConfirmation [
+PhLTestImagesPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
 ]
 
 { #category : #'user interaction' }
-PhLTestImagePresenter >> newRequest [
+PhLTestImagesPresenter >> newRequest [
 	^ request
 ]
 
 { #category : #configuring }
-PhLTestImagePresenter >> requestAnswer: answer [
+PhLTestImagesPresenter >> requestAnswer: answer [
 	request answer: answer
 ]
 
 { #category : #selection }
-PhLTestImagePresenter >> selectedImages [
+PhLTestImagesPresenter >> selectedImages [
 	^ selection 
 		ifNotNil: [ selection isCollection
 			ifTrue: [ selection ]
@@ -70,26 +70,26 @@ PhLTestImagePresenter >> selectedImages [
 ]
 
 { #category : #configuring }
-PhLTestImagePresenter >> selection: aListOfImages [
+PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages
 ]
 
 { #category : #configuring }
-PhLTestImagePresenter >> selectionNames: aListOfImageNames [
+PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
 	selection := aListOfImageNames collect: [ :name | PhLImage location: fileSystem root / name ].
 ]
 
 { #category : #selection }
-PhLTestImagePresenter >> singleImage [
+PhLTestImagesPresenter >> singleImage [
 	^ selection ifNil: [ PhLImage location: fileSystem root / self singleImageName / (self singleImageName , '.image') ]
 ]
 
 { #category : #selection }
-PhLTestImagePresenter >> singleImageName [
+PhLTestImagesPresenter >> singleImageName [
 	^ 'TestImage'
 ]
 
 { #category : #'api - accessing' }
-PhLTestImagePresenter >> templateRepository [ 
+PhLTestImagesPresenter >> templateRepository [ 
 	^ templateRepository
 ]

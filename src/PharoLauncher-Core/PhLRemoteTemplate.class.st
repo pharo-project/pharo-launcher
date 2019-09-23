@@ -10,6 +10,11 @@ Class {
 	#category : 'PharoLauncher-Core-Model'
 }
 
+{ #category : #'as yet unclassified' }
+PhLRemoteTemplate class >> example [ 
+	^ self name: 'Pharo Mooc' url: 'https://mooc.pharo.org/image/PharoWeb.zip'
+]
+
 { #category : #'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl [
 	^ self new

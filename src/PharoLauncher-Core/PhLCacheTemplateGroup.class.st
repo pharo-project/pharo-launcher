@@ -22,6 +22,11 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 		yourself
 ]
 
+{ #category : #accessing }
+PhLCacheTemplateGroup >> icon [
+	^ delegate icon
+]
+
 { #category : #testing }
 PhLCacheTemplateGroup >> isHighlighted [
 	^ delegate isHighlighted

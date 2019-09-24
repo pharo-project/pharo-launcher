@@ -69,6 +69,11 @@ PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTe
 ]
 
 { #category : #accessing }
+PhLDownloadedTemplateGroup >> icon [
+	^ self iconNamed: #home
+]
+
+{ #category : #accessing }
 PhLDownloadedTemplateGroup >> initialize [ 
 	super initialize.
 	baseDirectory := (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory

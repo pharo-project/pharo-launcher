@@ -17,6 +17,11 @@ PhLFixedURLsTemplateGroup >> addTemplate: aTemplate [
 ]
 
 { #category : #accessing }
+PhLFixedURLsTemplateGroup >> icon [
+	^ self iconNamed: #remote
+]
+
+{ #category : #accessing }
 PhLFixedURLsTemplateGroup >> name [
 	^ name
 ]

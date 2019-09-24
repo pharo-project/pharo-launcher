@@ -11,9 +11,9 @@ Class {
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
+		'categoryTable',
 		'templateTable',
-		'descriptionPanel',
-		'categoryTable'
+		'descriptionPanel'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -21,9 +21,18 @@ Class {
 { #category : #specs }
 PhLTemplatesPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
-		add: #categoryTable;
+		spacing: 5;
+		add: (SpBoxLayout newHorizontal
+			add: (SpBoxLayout newVertical 
+				add: '1. Choose a template category:' height: self labelHeight;
+				add: #categoryTable;
+				yourself);
+			add: (SpBoxLayout newVertical 
+				add: '2. Choose a template:' height: self labelHeight;
+				add: #templateTable;
+				yourself);
+			yourself);
 		add: (SpBoxLayout newVertical 
-			add: #templateTable;
 			add: #descriptionPanel;
 			yourself);
 		yourself		
@@ -35,28 +44,57 @@ PhLTemplatesPresenter class >> example [
 ]
 
 { #category : #initialization }
-PhLTemplatesPresenter >> initializePresenter [
+PhLTemplatesPresenter >> connectPresenters [
 
-	super initializePresenter.
-	categoryTable transmitTo: templateTable transform: [ :group | group children ]
+	super connectPresenters.
+	categoryTable transmitTo: templateTable transform: [ :group | group children ].
+	templateTable transmitTo: descriptionPanel.
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> hasSingleTemplateSelected [
+	^ (templateTable selectedItems size = 1) 
+			and: [ templateTable selectedItem isTemplate ]
+]
+
+{ #category : #'api -  accessing' }
+PhLTemplatesPresenter >> imageRepository [
+	^ self application imageRepository
 ]
 
 { #category : #initialization }
-PhLTemplatesPresenter >> initializeWidgets [ 
-	categoryTable := self newList
+PhLTemplatesPresenter >> initializePresenters [
+	categoryTable := "self newList
 		items: self model roots;
+		display: #name;
+		yourself."
+		self newTable
+			items: self model roots;
+			addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
+			addColumn: (SpStringTableColumn evaluated: #name);
+			yourself.
+	templateTable := self newTreeTable
+		children: #children;
+		addColumn: (SpStringTableColumn evaluated: #name)
 		yourself.
-	templateTable := self newList.
-
-	descriptionPanel := self instantiate: PhLImageDetailPresenter on: PhLNullImage new.
+	descriptionPanel := self
+		instantiate: PhLImageCreationPresenter
+		on: nil
 ]
 
 { #category : #initialization }
 PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher - Image creation';
-		initialExtent: 700 @ 500;
+		initialExtent: 800 @ 400;
 		"toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;"
 		whenBuiltDo: [ :ann | ann model centered ].	
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> singleTemplate [
+	self hasSingleTemplateSelected
+		ifFalse: [ PhLCommandError  signal ].
+	^ templateTable selectedItem
 ]

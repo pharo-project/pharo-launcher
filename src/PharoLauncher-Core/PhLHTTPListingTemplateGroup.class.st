@@ -54,6 +54,11 @@ PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templa
 ]
 
 { #category : #accessing }
+PhLHTTPListingTemplateGroup >> icon [
+	^ self iconNamed: #remote
+]
+
+{ #category : #accessing }
 PhLHTTPListingTemplateGroup >> name [
 	^ name
 ]

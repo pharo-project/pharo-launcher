@@ -19,6 +19,12 @@ PhLAbstractTemplateGroup >> children [
 	^ self templatesAndGroups
 ]
 
+{ #category : #accessing }
+PhLAbstractTemplateGroup >> icon [ 
+	"icon used to display the group"
+	self subclassResponsibility 
+]
+
 { #category : #testing }
 PhLAbstractTemplateGroup >> isHighlighted [
 	^ isHighlighted ifNil: [ isHighlighted := false ]

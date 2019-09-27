@@ -76,4 +76,11 @@ has to be in a new directory. So either use the "Copy" image, then "Launch" and 
 Download the latest stable Pharo image and use Iceberg (Pharo git client) to clone this repository.
 Once done, you can load the project through Metacello integration (uses BaselineOfPharoLauncher).
 
+```Smalltalk
+Metacello new
+	baseline: 'PharoLauncher';
+	repository: 'github://pharo-project/pharo-launcher:development/src';
+	load
+ ```
+
 Then evaluate  "PharoLauncher open". You can also launch it from the World menu.

@@ -10,7 +10,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 		spec 
-			baseline: #Spec "Spec2"
+			baseline: #Spec2
 				with: [ spec repository: 'github://pharo-spec/Spec/src' ];
 			baseline: #OSSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
@@ -39,7 +39,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 
-				spec requires: #(#'PharoLauncher-Core' #Spec). ];
+				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
 			package: #'PharoLauncher-IceTray' with: [ spec
 				requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
 

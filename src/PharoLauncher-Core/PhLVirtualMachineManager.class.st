@@ -123,6 +123,11 @@ PhLVirtualMachineManager class >> privateVmStore [
 	^ (self vmStore / 'private') ensureCreateDirectory
 ]
 
+{ #category : #initialization }
+PhLVirtualMachineManager class >> reset [
+	vmStore := nil
+]
+
 { #category : #settings }
 PhLVirtualMachineManager class >> settingsOn: aBuilder [
 	<systemsettings>

@@ -15,3 +15,8 @@ PhLPrivateVirtualMachine >> downloadUrl [
 	^ self manager compatibleVmUrls 
 		at: self name asInteger
 ]
+
+{ #category : #accessing }
+PhLPrivateVirtualMachine >> vmStore [
+	^ self manager privateVmStore
+]

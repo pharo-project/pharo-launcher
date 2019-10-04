@@ -5,10 +5,10 @@ Class {
 	#name : #PhLTestVmPresenter,
 	#superclass : #PhLVMPresenter,
 	#instVars : [
-		'fileSystem',
 		'request',
-		'vmStore',
-		'selection'
+		'selection',
+		'vmManager',
+		'vmStoreRoot'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -22,8 +22,8 @@ PhLTestVmPresenter >> createVmNamed: aName [
 PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
 	| vmDirectory appDir root |
 	root := isPrivateVm 
-		ifTrue: [ fileSystem root / 'private' ] 
-		ifFalse: [ fileSystem root ].
+		ifTrue: [ vmStoreRoot / 'private' ] 
+		ifFalse: [ vmStoreRoot ].
 	vmDirectory := root / aName.
 	vmDirectory ensureCreateDirectory.
 	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.
@@ -33,14 +33,14 @@ PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
 { #category : #initialization }
 PhLTestVmPresenter >> initialize [
 	| datasource |
-	fileSystem := FileSystem memory.
-	(fileSystem root / 'private') ensureCreateDirectory.
+	vmManager := PhLTestVirtualMachineManager new.
+	vmStoreRoot := vmManager vmStore.
+	(vmStoreRoot / 'private') ensureCreateDirectory.
 	datasource := PhLVirtualMachinesDataSource
 		vmsBlock:
-			[ fileSystem root directoryNames reject: [ :name | name = 'private' ] ]
-		privateVmsBlock: [ (fileSystem root / 'private') directoryNames ].
+			[ vmStoreRoot directoryNames reject: [ :name | name = 'private' ] ]
+		privateVmsBlock: [ (vmStoreRoot / 'private') directoryNames ].
 	self model: datasource.
-	vmStore := fileSystem root.
 	self createVmNamed: self singleVmName.
 	super initialize
 ]
@@ -71,8 +71,8 @@ PhLTestVmPresenter >> singleVmName [
 PhLTestVmPresenter >> vmFor: aName private: isPrivateVm [
 	| root vm |
 	root := isPrivateVm 
-		ifTrue: [ fileSystem root / 'private' ] 
-		ifFalse: [ fileSystem root ].
+		ifTrue: [ vmStoreRoot / 'private' ] 
+		ifFalse: [ vmStoreRoot ].
 	vm := PhLVirtualMachine
 		directory: root / aName
 		private: isPrivateVm.

@@ -18,5 +18,5 @@ PhLTestVirtualMachineManager class >> fetch: aVmUrl to: vmName [
 
 { #category : #private }
 PhLTestVirtualMachineManager class >> vmStore [
-	^ vmStore ifNil: [ vmStore :=  FileSystem memory root ]
+	^ vmStore ifNil: [ vmStore := FileSystem memory root ]
 ]

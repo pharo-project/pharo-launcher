@@ -12,19 +12,27 @@ PhLDeleteVmCommandTest >> setUp [
 	presenter := PhLTestVmPresenter new.
 ]
 
+{ #category : #running }
+PhLDeleteVmCommandTest >> tearDown [
+	PhLTestVirtualMachineManager reset "reset vm store to use for tests"
+]
+
 { #category : #tests }
 PhLDeleteVmCommandTest >> testCanDeleteAPrivateVM [
-	| command vms |
+	| command vms |		
 	command := PhLDeleteVmCommand new.
 	command context: presenter.
-	presenter createVmNamed: 'Foo'.
+	presenter 
+		showPrivateVms;
+		createVmNamed: 'Bar' private: true;
+		selection: { presenter vmFor: 'Bar' private: true }.
 	
 	command execute.
 	
 	vms := command vmsPresenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #('Foo').
+		hasSameElements: #().
 ]
 
 { #category : #tests }
@@ -49,15 +57,18 @@ PhLDeleteVmCommandTest >> testCanDeleteManyPrivateVms [
 	command context: presenter.
 	presenter 
 		showPrivateVms;
+		createVmNamed: 'Foo' private: true;
 		createVmNamed: 'Bar' private: true;
-		selection: { presenter vmFor: 'Bar' private: true }.
+		createVmNamed: 'Zee' private: true;
+		selection: { presenter vmFor: 'Foo' private: true .
+						presenter vmFor: 'Bar' private: true }.
 	
 	command execute.
 	
 	vms := command vmsPresenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #().
+		hasSameElements: #('Zee').
 ]
 
 { #category : #tests }

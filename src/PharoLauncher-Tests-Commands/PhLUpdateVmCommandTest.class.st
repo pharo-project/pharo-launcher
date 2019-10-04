@@ -12,6 +12,11 @@ PhLUpdateVmCommandTest >> setUp [
 	presenter := PhLTestVmPresenter new.
 ]
 
+{ #category : #running }
+PhLUpdateVmCommandTest >> tearDown [ 
+	PhLTestVirtualMachineManager reset
+]
+
 { #category : #tests }
 PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
 	| command vms vmFolderEntries |
@@ -31,7 +36,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
 	self
 		assertCollection: vms
 		hasSameElements: #('68021' '6504').
-	vmFolderEntries := (presenter selectedVms first vmStore / 'TestVM') entries.
+	vmFolderEntries := (presenter selectedVms first vmStore / '68021') entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
 		hasSameElements: #('fetched!').
@@ -57,7 +62,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 		vmFolderEntries := (vm vmStore / vm name) entries.
 		self 
 			assertCollection: (vmFolderEntries collect: #name)
-			hasSameElements: #('fetched!'). ]
+			hasSameElements: #('Pharo.app' 'fetched!'). ]
 
 ]
 
@@ -76,5 +81,5 @@ PhLUpdateVmCommandTest >> testCanUpdateOneVm [
 	vmFolderEntries := (presenter selectedVms first vmStore / 'TestVM') entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('fetched!').
+		hasSameElements: #('Pharo.app' 'fetched!').
 ]

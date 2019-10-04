@@ -59,8 +59,8 @@ PhLCreateTemplateFromImageCommand2 >> initialize [
 	super initialize.
 	willRemoveImage := false.
 	self
-		basicName: 'Create Template';
-		basicDescription: 'Create a Template from the selected Pharo image'
+		name: 'Create Template';
+		description: 'Create a Template from the selected Pharo image'
 ]
 
 { #category : #accessing }

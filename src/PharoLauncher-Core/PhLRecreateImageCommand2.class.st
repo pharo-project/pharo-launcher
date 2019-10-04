@@ -39,6 +39,6 @@ PhLRecreateImageCommand2 >> execute [
 PhLRecreateImageCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Recreate';
-		basicDescription: self class comment
+		name: 'Recreate';
+		description: self class comment
 ]

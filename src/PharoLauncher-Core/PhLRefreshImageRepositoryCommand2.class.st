@@ -24,9 +24,9 @@ PhLRefreshImageRepositoryCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLRefreshImageRepositoryCommand2 >> initialize [ 
+PhLRefreshImageRepositoryCommand2 >> initialize [
 	super initialize.
 	self
-		basicName: 'Refresh';
-		basicDescription: 'Refresh image list'.
+		name: 'Refresh';
+		description: 'Refresh image list'
 ]

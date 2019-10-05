@@ -174,7 +174,7 @@ PhLVirtualMachine >> update [
 	"fetch a new version of this Virtual Machine if available"
 	self manager class 
 		fetch: self downloadUrl
-		to: self name
+		to: self vmStore / name
 ]
 
 { #category : #setting }

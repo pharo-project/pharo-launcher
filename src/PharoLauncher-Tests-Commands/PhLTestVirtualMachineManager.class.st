@@ -9,9 +9,9 @@ Class {
 }
 
 { #category : #private }
-PhLTestVirtualMachineManager class >> fetch: aVmUrl to: vmName [
+PhLTestVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	| vmFolder |
-	vmFolder := (self vmStore / vmName).
+	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
 	vmFolder ensureCreateDirectory.
 	(vmFolder / 'fetched!') ensureCreateFile.
 ]

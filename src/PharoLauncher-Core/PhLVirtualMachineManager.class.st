@@ -22,16 +22,13 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 ]
 
 { #category : #private }
-PhLVirtualMachineManager class >> fetch: aVmUrl to: vmName [
-	| targetFile | 
-	
-	targetFile := self vmStore / (vmName , '.zip').
+PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	PhLDownloadManager default 
 		download: aVmUrl
 		toFile: targetFile.
 	self
 		unzip: targetFile
-		to: (self vmStore / vmName)
+		to: (targetFile parent / targetFile basenameWithoutExtension)
 ]
 
 { #category : #'instance creation' }
@@ -262,14 +259,9 @@ PhLVirtualMachineManager >> downloadPathOSTypeSegment [
 
 { #category : #private }
 PhLVirtualMachineManager >> fetchCompatibleVm [
-	[ | targetFile | 
-	targetFile := self privateVmStore / (self imageFormatNumber asString , '.zip').
-	PhLDownloadManager default 
-		download: self compatibleVmUrl
-		toFile: targetFile.
-	self class
-		unzip: targetFile
-		to: (self privateVmStore / self imageFormatNumber asString) ]
+	[ self class 
+		fetch: self compatibleVmUrl
+		to: self privateVmStore / (self imageFormatNumber asString , '.zip') ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageFormatNumber asString, ' image format. Maybe you need to update known formats?' ]
 ]
@@ -333,9 +325,11 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 
 { #category : #private }
 PhLVirtualMachineManager >> fetchVm [
-	[ self class fetch: self vmUrl to: self vmFileName ]
-		on: KeyNotFound
-		do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
+	[ self class 
+		fetch: self vmUrl 
+		to: self vmStore / (self vmFileName , '.zip') ]
+	on: KeyNotFound
+	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
 ]
 
 { #category : #accessing }

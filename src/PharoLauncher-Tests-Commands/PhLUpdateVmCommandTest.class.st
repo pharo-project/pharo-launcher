@@ -39,7 +39,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
 	vmFolderEntries := (presenter selectedVms first vmStore / '68021') entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('fetched!').
+		hasSameElements: #('Pharo.app' 'fetched!').
 ]
 
 { #category : #tests }

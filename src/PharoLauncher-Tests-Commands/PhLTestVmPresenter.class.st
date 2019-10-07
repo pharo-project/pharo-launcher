@@ -30,7 +30,7 @@ PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
 	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.
 	(appDir / 'Pharo') ensureCreateFile.
 	"needed on Linux"
-	(vmDirectory / 'pharo') ensureCreateFile.
+	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 	 
 ]
 

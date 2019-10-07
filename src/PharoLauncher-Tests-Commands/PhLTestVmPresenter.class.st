@@ -26,8 +26,12 @@ PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
 		ifFalse: [ vmStoreRoot ].
 	vmDirectory := root / aName.
 	vmDirectory ensureCreateDirectory.
+	"needed on OS X"
 	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.
-	(appDir / PhLVirtualMachine executableName) ensureCreateFile.
+	(appDir / 'Pharo') ensureCreateFile.
+	"needed on Linux"
+	(vmDirectory / 'pharo') ensureCreateFile.
+	 
 ]
 
 { #category : #initialization }

@@ -39,7 +39,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
 	vmFolderEntries := (presenter selectedVms first vmStore / '68021') entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('Pharo.app' 'fetched!').
+		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').
 ]
 
 { #category : #tests }
@@ -62,7 +62,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 		vmFolderEntries := (vm vmStore / vm name) entries.
 		self 
 			assertCollection: (vmFolderEntries collect: #name)
-			hasSameElements: #('Pharo.app' 'fetched!'). ]
+			hasSameElements: #('pharo' 'Pharo.app' 'fetched!'). ]
 
 ]
 
@@ -81,5 +81,5 @@ PhLUpdateVmCommandTest >> testCanUpdateOneVm [
 	vmFolderEntries := (presenter selectedVms first vmStore / 'TestVM') entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('Pharo.app' 'fetched!').
+		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').
 ]

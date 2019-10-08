@@ -12,6 +12,11 @@ PhLToggleVmPrivateVmCommandTest >> setUp [
 	presenter := PhLTestVmPresenter new.
 ]
 
+{ #category : #running }
+PhLToggleVmPrivateVmCommandTest >> tearDown [ 
+	PhLTestVirtualMachineManager reset
+]
+
 { #category : #tests }
 PhLToggleVmPrivateVmCommandTest >> testPrivateVmsShownWhenButtonToggledOnce [
 	| command vms |

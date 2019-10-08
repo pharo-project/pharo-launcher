@@ -22,5 +22,5 @@ PhLCopyLaunchCommandTest >> testCanCopyImageLaunchCommand [
 	command := Clipboard clipboardText asString.
 	
 	self assert: (command beginsWith: 'bash -c ''cd "/TestImage" && "').
-	self assert: (command endsWith: 'Pharo.app/Contents/MacOS/Pharo" "/TestImage/TestImage.image" --no-default-preferences''').
+	self assert: (command endsWith: ' "/TestImage/TestImage.image" --no-default-preferences''').
 ]

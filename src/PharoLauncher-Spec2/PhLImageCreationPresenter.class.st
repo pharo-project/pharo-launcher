@@ -81,5 +81,9 @@ PhLImageCreationPresenter >> modelChanged [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> template [
-	^ self model
+	"Multiple selection is allowed in templates pane => we get a list of templates"
+	
+	^ self model isEmptyOrNil 
+		ifTrue: [ nil ]
+		ifFalse: [ self model first ]
 ]

@@ -53,8 +53,13 @@ PhLTemplatesPresenter >> connectPresenters [
 
 { #category : #'api - selection' }
 PhLTemplatesPresenter >> hasSingleTemplateSelected [
-	^ (templateTable selectedItems size = 1) 
+	^ (templateTable selection selectedItems size = 1) 
 			and: [ templateTable selectedItem isTemplate ]
+]
+
+{ #category : #'api -  accessing' }
+PhLTemplatesPresenter >> imageName [ 
+	^ descriptionPanel imageName
 ]
 
 { #category : #'api -  accessing' }
@@ -69,13 +74,14 @@ PhLTemplatesPresenter >> initializePresenters [
 		display: #name;
 		yourself."
 		self newTable
-			items: self model roots;
+			items: self templateRepository roots;
 			addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
 			addColumn: (SpStringTableColumn evaluated: #name);
 			yourself.
 	templateTable := self newTreeTable
 		children: #children;
-		addColumn: (SpStringTableColumn evaluated: #name)
+		addColumn: (SpStringTableColumn evaluated: #name);
+		beMultipleSelection;
 		yourself.
 	descriptionPanel := self
 		instantiate: PhLImageCreationPresenter
@@ -96,5 +102,10 @@ PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 PhLTemplatesPresenter >> singleTemplate [
 	self hasSingleTemplateSelected
 		ifFalse: [ PhLCommandError  signal ].
-	^ templateTable selectedItem
+	^ templateTable selectedItems first "multiple selection enabled, always return a collection"
+]
+
+{ #category : #'api -  accessing' }
+PhLTemplatesPresenter >> templateRepository [
+	^ self model
 ]

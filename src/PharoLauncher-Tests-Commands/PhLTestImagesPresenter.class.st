@@ -13,7 +13,7 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #private }
+{ #category : #configuring }
 PhLTestImagesPresenter >> createImageNamed: aName [
 	| imageDirectory |
 	imageDirectory := (fileSystem root / aName).

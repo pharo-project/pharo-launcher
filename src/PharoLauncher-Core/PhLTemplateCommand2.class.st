@@ -9,5 +9,5 @@ Class {
 
 { #category : #accessing }
 PhLTemplateCommand2 >> templatesPresenter [
-	^ self model
+	^ self context
 ]

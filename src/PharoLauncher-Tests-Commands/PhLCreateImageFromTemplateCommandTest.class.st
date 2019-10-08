@@ -15,7 +15,7 @@ PhLCreateImageFromTemplateCommandTest >> setUp [
 
 { #category : #tests }
 PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateSelected [
-	| command |
+	| command images |
 	command := PhLCreateImageFromTemplateCommand2 new.
 	command context: presenter.
 	presenter 
@@ -24,7 +24,13 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 		
 	command execute.
 	
-	"assertions"
+	images := presenter imageRepository imageNames.
+	self 
+		assert: images size 
+		equals: 1.
+	self 
+		assertCollection: images
+		hasSameElements: #('TestCreateImage').
 ]
 
 { #category : #tests }

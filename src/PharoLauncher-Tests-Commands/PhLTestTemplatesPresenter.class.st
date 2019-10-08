@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'request',
 		'selection',
-		'templates'
+		'templates',
+		'imageRepository'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -22,12 +23,18 @@ PhLTestTemplatesPresenter >> createTemplateNamed: aName [
 
 { #category : #selecting }
 PhLTestTemplatesPresenter >> hasSingleTemplateSelected [
-	^ selection size = 1
+	^ selection notNil and: [ selection size = 1 ]
 ]
 
 { #category : #'api -  accessing' }
 PhLTestTemplatesPresenter >> imageName [
 	^ 'TestCreateImage'
+]
+
+{ #category : #'api -  accessing' }
+PhLTestTemplatesPresenter >> imageRepository [
+	^ imageRepository ifNil: [ imageRepository := PhLDirectoryBasedImageRepository forDirectory: FileSystem memory root ]
+	
 ]
 
 { #category : #initialization }

@@ -63,13 +63,18 @@ PhLImageCreationPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
+{ #category : #accessing }
+PhLImageCreationPresenter >> imageName [
+	^ imageName text
+]
+
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
 	imageArguments := self newTextInput.
 	imageName := self newTextInput.
 	initScript := self newText.
 	vm := self newDropList.
-	createButton := PhLCreateImageFromTemplateCommand2 forSpec asButtonPresenter.
+	createButton := (PhLCreateImageFromTemplateCommand2 forSpecContext: owner) asButtonPresenter.
 ]
 
 { #category : #initialization }

@@ -40,7 +40,14 @@ PhLTemplatesPresenter class >> defaultSpec [
 
 { #category : #example }
 PhLTemplatesPresenter class >> example [
-	(self on: PhLTemplateGroupRepository default) openWithSpec
+	| app |
+	app := PharoLauncherApplication new 
+		imageRepository: (PhLDirectoryBasedImageRepository forDirectory: FileSystem memory root);
+		yourself.
+
+	(self on: PhLTemplateGroupRepository default) 
+		application: app;
+		openWithSpec
 ]
 
 { #category : #initialization }

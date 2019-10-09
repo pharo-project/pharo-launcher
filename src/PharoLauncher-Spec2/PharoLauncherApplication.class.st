@@ -24,6 +24,11 @@ PharoLauncherApplication >> imageRepository [
 	^ imageRepository
 ]
 
+{ #category : #accessing }
+PharoLauncherApplication >> imageRepository: aPhlImageRepository [
+	imageRepository := aPhlImageRepository
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> initialize [ 
 	imageRepository :=  PhLDirectoryBasedImageRepository default.

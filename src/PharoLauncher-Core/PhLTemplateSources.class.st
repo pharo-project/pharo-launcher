@@ -108,6 +108,11 @@ PhLTemplateSources class >> resetLauncherCoreDir [
 	LauncherCoreDir := nil
 ]
 
+{ #category : #reseting }
+PhLTemplateSources class >> resetSourcesUrl [
+	self sourcesUrl: self defaultSourcesUrl
+]
+
 { #category : #settings }
 PhLTemplateSources class >> settingsOn: aBuilder [
 	<systemsettings>
@@ -243,12 +248,6 @@ PhLTemplateSources >> sources [
 PhLTemplateSources >> sourcesUrl [
 
 	^ self class sourcesUrl
-]
-
-{ #category : #accessing }
-PhLTemplateSources >> sourcesUrl: anUrlString [
-
-	self class sourcesUrl: anUrlString
 ]
 
 { #category : #actions }

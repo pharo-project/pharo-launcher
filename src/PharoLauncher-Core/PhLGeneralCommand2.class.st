@@ -6,3 +6,8 @@ Class {
 	#superclass : #CmCommand,
 	#category : #'PharoLauncher-Core-Commands2'
 }
+
+{ #category : #accessing }
+PhLGeneralCommand2 >> application [
+	^ self context application
+]

@@ -43,6 +43,7 @@ PhLImagesPresenter class >> buildContextualMenuGroup [
 PhLImagesPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher toolbar';
+		register: PhLNewImageCommand forSpec;
 		register: PhLLaunchImageCommand2 forSpec;
 		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
 		register: PhLLaunchImageFromDiskCommand forSpec;

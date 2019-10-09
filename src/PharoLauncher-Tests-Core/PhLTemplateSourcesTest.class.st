@@ -12,6 +12,11 @@ PhLTemplateSourcesTest >> setUp [
 	sourcesFile := FileSystem memory / 'templates-sources.test'
 ]
 
+{ #category : #initialization }
+PhLTemplateSourcesTest >> tearDown [ 
+	PhLTemplateSources resetSourcesUrl
+]
+
 { #category : #tests }
 PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
 	| templatesSources1 templatesSources2 |
@@ -70,7 +75,7 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 			ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
 		
 	sources := PhLTemplateSources withFile: sourcesFile.
-	sources sourcesUrl: server localUrl.
+	PhLTemplateSources sourcesUrl: server localUrl.
 	
 	PhLTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
@@ -106,7 +111,7 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 			ZnResponse ok: (ZnEntity text: (STON toString: false)) ].
 		
 	sources := PhLTemplateSources withFile: sourcesFile.
-	sources sourcesUrl: server localUrl.
+	PhLTemplateSources sourcesUrl: server localUrl.
 	
 	PhLTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable

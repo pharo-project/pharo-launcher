@@ -6,7 +6,9 @@ Class {
 	#name : #PhLTemplateGroupTestRepository,
 	#superclass : #PhLTemplateGroupRepository,
 	#instVars : [
-		'fileSystem'
+		'fileSystem',
+		'localTemplateGroup',
+		'remoteTemplatesGroup'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -15,15 +17,32 @@ Class {
 PhLTemplateGroupTestRepository >> initialize [ 
 	super initialize.
 	fileSystem := FileSystem memory.
+	localTemplateGroup := self newLocalTemplatesGroup.
+	remoteTemplatesGroup := self newRemoteTemplatesGroup.
+	self setGroups: { localTemplateGroup . remoteTemplatesGroup }.
 ]
 
 { #category : #accessing }
 PhLTemplateGroupTestRepository >> localTemplatesGroup [
-	^ PhLDownloadedTemplateGroup new 
-		baseDirectory: fileSystem root
+	^ localTemplateGroup
 ]
 
-{ #category : #action }
-PhLTemplateGroupTestRepository >> refresh [ 
-	"NOOP"
+{ #category : #accessing }
+PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
+	^ PhLDownloadedTemplateGroup new 
+		baseDirectory: fileSystem root;
+		setName: 'Local test templates';
+		yourself
+]
+
+{ #category : #accessing }
+PhLTemplateGroupTestRepository >> newRemoteTemplatesGroup [
+	^ PhLFixedURLsTemplateGroup new 
+			setName: 'Remote test templates' Templates: OrderedCollection new;
+			yourself
+]
+
+{ #category : #accessing }
+PhLTemplateGroupTestRepository >> remoteTemplatesGroup [
+	^ remoteTemplatesGroup
 ]

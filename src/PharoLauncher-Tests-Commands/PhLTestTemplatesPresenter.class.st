@@ -8,30 +8,36 @@ Class {
 		'request',
 		'selection',
 		'templates',
+		'templatesGroup',
 		'imageRepository'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
 { #category : #configuring }
-PhLTestTemplatesPresenter >> createTemplateNamed: aName [
+PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
 	| zipFile |
-	zipFile := (aName ,'.zip') asFileReference.
-	templates add: (PhLLocalTemplate name: aName zipFile: zipFile).
+	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
+	self localTemplatesGroup
+		register: (PhLLocalTemplate name: aName zipFile: zipFile)
+		withZip: zipFile.
 	self newZipArchive: zipFile.
+	self refresh.
 ]
 
-{ #category : #selecting }
-PhLTestTemplatesPresenter >> hasSingleTemplateSelected [
-	^ selection notNil and: [ selection size = 1 ]
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> createRemoteTemplateNamed: aName [
+	self remoteTemplatesGroup
+		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+	self refresh.
 ]
 
-{ #category : #'api -  accessing' }
+{ #category : #'api - accessing' }
 PhLTestTemplatesPresenter >> imageName [
 	^ 'TestCreateImage'
 ]
 
-{ #category : #'api -  accessing' }
+{ #category : #'api - accessing' }
 PhLTestTemplatesPresenter >> imageRepository [
 	^ imageRepository ifNil: [ imageRepository := PhLDirectoryBasedImageRepository forDirectory: FileSystem memory root ]
 	
@@ -39,12 +45,22 @@ PhLTestTemplatesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLTestTemplatesPresenter >> initialize [
-	self model: (PhLTemplateGroupRepository default).
+	self model: (PhLTemplateGroupTestRepository new).
 	self application: PharoLauncherApplication new.
 	request := PhLTestRequest new.
 	templates := OrderedCollection new.
 	
 	super initialize.
+]
+
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> localTemplatesGroup [
+	^ self templateRepository localTemplatesGroup
+]
+
+{ #category : #'user interaction' }
+PhLTestTemplatesPresenter >> newConfirmation [
+	^ PhLTestConfirmation new
 ]
 
 { #category : #private }
@@ -59,15 +75,43 @@ PhLTestTemplatesPresenter >> newZipArchive: aFileReference [
 
 ]
 
-{ #category : #configuring }
-PhLTestTemplatesPresenter >> selectionNames: aListOfTemplateNames [
-	selection := templates select: [ :template | 
-		aListOfTemplateNames includes: template name ].
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> remoteTemplatesGroup [
+	^ self templateRepository remoteTemplatesGroup
 ]
 
 { #category : #selecting }
-PhLTestTemplatesPresenter >> singleTemplate [
-	self hasSingleTemplateSelected
-		ifFalse: [ PhLCommandError  signal ].
-	^ selection first "multiple selection enabled, always return a collection"
+PhLTestTemplatesPresenter >> selectCategory: anIndex [
+	categoryTable selectIndex: anIndex
+]
+
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> selectLocalGroup [
+	self selectCategory: 1
+]
+
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> selectRemoteGroup [
+	self selectCategory: 2
+]
+
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> selectTemplateNamed: aTemplateName [
+	templateTable selectItem: ( self templates detect: [ :each | each name = aTemplateName ])
+
+]
+
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> templateNames [
+	^ self templates collect: #name
+]
+
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> templateRoots [
+	^ templateTable roots
+]
+
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> templates [
+	^ self localTemplatesGroup templatesAndGroups asOrderedCollection, self remoteTemplatesGroup templatesAndGroups
 ]

@@ -27,6 +27,19 @@ PhLLocalTemplate class >> name: aString zipFile: aFileReference [
 		
 ]
 
+{ #category : #comparing }
+PhLLocalTemplate >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ name = anObject name 
+		and: [ zipFile = anObject zipArchive ]
+]
+
+{ #category : #comparing }
+PhLLocalTemplate >> hash [
+	^ name hash bitXor: zipFile hash
+]
+
 { #category : #testing }
 PhLLocalTemplate >> isLocalTemplate [
 	^ true

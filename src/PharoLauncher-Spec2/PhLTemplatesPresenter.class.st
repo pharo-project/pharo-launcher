@@ -18,6 +18,21 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
+{ #category : #'as yet unclassified' }
+PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
+	rootCommandGroup
+		register: (self buildContextualMenuGroup)
+]
+
+{ #category : #'as yet unclassified' }
+PhLTemplatesPresenter class >> buildContextualMenuGroup [
+	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		description: 'Images table contextual menu';
+		register: PhLRemoveTemplateCommand2 forSpec;
+		beDisplayedAsGroup;
+		yourself
+]
+
 { #category : #specs }
 PhLTemplatesPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
@@ -54,8 +69,21 @@ PhLTemplatesPresenter class >> example [
 PhLTemplatesPresenter >> connectPresenters [
 
 	super connectPresenters.
-	categoryTable transmitTo: templateTable transform: [ :group | group children ].
+	categoryTable 
+		transmitTo: templateTable 
+		transform: [ :group | 
+			group 
+				ifNil: [ #() ]
+				ifNotNil: [ group children ] ].
 	templateTable transmitTo: descriptionPanel.
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> hasLocalTemplatesSelected [
+	| items |
+	items := templateTable selectedItems.
+	^ items size > 0 
+		and: [ items allSatisfy: #isLocalTemplate ]
 ]
 
 { #category : #'api - selection' }
@@ -88,6 +116,7 @@ PhLTemplatesPresenter >> initializePresenters [
 	templateTable := self newTreeTable
 		children: #children;
 		addColumn: (SpStringTableColumn evaluated: #name);
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection;
 		yourself.
 	descriptionPanel := self
@@ -103,6 +132,20 @@ PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 		"toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;"
 		whenBuiltDo: [ :ann | ann model centered ].	
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"
+]
+
+{ #category : #updating }
+PhLTemplatesPresenter >> refresh [
+	| selectedCategory |
+	selectedCategory := categoryTable selection selectedItem.
+	self templateRepository refresh. "refresh caches"
+	categoryTable items: categoryTable items.
+	categoryTable selectItem: selectedCategory
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> selectedTemplates [
+	^ templateTable selectedItems
 ]
 
 { #category : #'api - selection' }

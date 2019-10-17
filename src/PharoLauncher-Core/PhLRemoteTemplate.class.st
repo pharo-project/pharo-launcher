@@ -22,6 +22,19 @@ PhLRemoteTemplate class >> name: aString url: anUrl [
 		yourself
 ]
 
+{ #category : #comparing }
+PhLRemoteTemplate >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ name = anObject name 
+		and: [ url = anObject url ]
+]
+
+{ #category : #comparing }
+PhLRemoteTemplate >> hash [
+	^ name hash bitXor: url hash
+]
+
 { #category : #'initialize-release' }
 PhLRemoteTemplate >> setName: aName url: anUrl [
 	name := aName.

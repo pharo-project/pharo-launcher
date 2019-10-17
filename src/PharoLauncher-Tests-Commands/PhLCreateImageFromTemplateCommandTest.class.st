@@ -19,8 +19,8 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 	command := PhLCreateImageFromTemplateCommand2 new.
 	command context: presenter.
 	presenter 
-		createTemplateNamed: 'Foo';
-		selectionNames: #('Foo').
+		createLocalTemplateNamed: 'Foo';
+		selectTemplateNamed: 'Foo'.
 		
 	command execute.
 	
@@ -39,9 +39,10 @@ PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenManyTemplate
 	command := PhLCreateImageFromTemplateCommand2 new.
 	command context: presenter.
 	presenter 
-		createTemplateNamed: 'Foo';
-		createTemplateNamed: 'Bar';
-		selectionNames: #('Foo' 'Bar').
+		createLocalTemplateNamed: 'Foo';
+		createLocalTemplateNamed: 'Bar';
+		selectTemplateNamed: 'Foo';
+		selectTemplateNamed: 'Bar'.
 		
 	self 
 		should: [ command execute ]

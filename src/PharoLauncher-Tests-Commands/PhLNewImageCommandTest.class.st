@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLNewImagCommandTest,
+	#name : #PhLNewImageCommandTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter'
@@ -8,12 +8,12 @@ Class {
 }
 
 { #category : #running }
-PhLNewImagCommandTest >> tearDown [ 
+PhLNewImageCommandTest >> tearDown [ 
 	presenter ifNotNil: [ presenter window close ]
 ]
 
 { #category : #tests }
-PhLNewImagCommandTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
+PhLNewImageCommandTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
 	presenter := PhLNewImageCommand new 
 		context: PhLImagesPresenter basicNew;
 		execute.

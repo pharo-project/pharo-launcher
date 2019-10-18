@@ -124,6 +124,12 @@ PhLTemplateGroupRepository >> refresh [
 	self contentsChanged.
 ]
 
+{ #category : #updating }
+PhLTemplateGroupRepository >> rename: aPhLLocalTemplate to: aString [
+	aPhLLocalTemplate renameTo: aString.
+	self localTemplatesGroup register: aPhLLocalTemplate withZip: aPhLLocalTemplate zipArchive.
+]
+
 { #category : #accessing }
 PhLTemplateGroupRepository >> roots [
 	^ groupCaches

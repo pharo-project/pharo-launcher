@@ -63,6 +63,11 @@ PhLTestTemplatesPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
 ]
 
+{ #category : #'user interaction' }
+PhLTestTemplatesPresenter >> newRequest [
+	^ request
+]
+
 { #category : #private }
 PhLTestTemplatesPresenter >> newZipArchive: aFileReference [
 	| archive |
@@ -78,6 +83,11 @@ PhLTestTemplatesPresenter >> newZipArchive: aFileReference [
 { #category : #accessing }
 PhLTestTemplatesPresenter >> remoteTemplatesGroup [
 	^ self templateRepository remoteTemplatesGroup
+]
+
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> requestAnswer: answer [
+	request answer: answer
 ]
 
 { #category : #selecting }

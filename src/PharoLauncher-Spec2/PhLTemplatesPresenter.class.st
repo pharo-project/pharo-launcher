@@ -27,7 +27,8 @@ PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot
 { #category : #'as yet unclassified' }
 PhLTemplatesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
-		description: 'Images table contextual menu';
+		description: 'Templates tree contextual menu';
+		register: PhLRenameTemplateCommand2 forSpec;
 		register: PhLRemoveTemplateCommand2 forSpec;
 		beDisplayedAsGroup;
 		yourself
@@ -76,6 +77,14 @@ PhLTemplatesPresenter >> connectPresenters [
 				ifNil: [ #() ]
 				ifNotNil: [ group children ] ].
 	templateTable transmitTo: descriptionPanel.
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> hasLocalTemplateSelected [
+	| items |
+	items := templateTable selectedItems.
+	^ items size = 1
+		and: [ items first isLocalTemplate ]
 ]
 
 { #category : #'api - selection' }

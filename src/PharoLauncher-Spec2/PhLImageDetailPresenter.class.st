@@ -59,7 +59,7 @@ PhLImageDetailPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> description [
 	^ description
 ]
@@ -69,7 +69,7 @@ PhLImageDetailPresenter >> image [
 	^ self model
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> imageLabel [
 	^ imageLabel
 ]
@@ -90,7 +90,7 @@ PhLImageDetailPresenter >> initializeWidgets [
 	vm := self newTextInput.
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> location [
 	^ location
 ]
@@ -106,17 +106,17 @@ PhLImageDetailPresenter >> modelChanged [
 	vm text: 'N/A'"self image vm".
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> template [
 	^ template
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> templateUrl [
 	^ templateUrl
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 PhLImageDetailPresenter >> vm [
 	^ vm
 ]

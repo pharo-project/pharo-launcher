@@ -90,11 +90,6 @@ PhLTestTemplatesPresenter >> requestAnswer: answer [
 	request answer: answer
 ]
 
-{ #category : #selecting }
-PhLTestTemplatesPresenter >> selectCategory: anIndex [
-	categoryTable selectIndex: anIndex
-]
-
 { #category : #configuring }
 PhLTestTemplatesPresenter >> selectLocalGroup [
 	self selectCategory: 1

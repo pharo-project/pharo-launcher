@@ -13,6 +13,17 @@ PhLNewImageCommandTest >> tearDown [
 ]
 
 { #category : #tests }
+PhLNewImageCommandTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPresenter [
+	presenter := PhLNewImageCommand new 
+		context: PhLImagesPresenter basicNew;
+		execute.
+
+	self 
+		assert: presenter selectedTemplateCategory name
+		equals: 'Official distributions'
+]
+
+{ #category : #tests }
 PhLNewImageCommandTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
 	presenter := PhLNewImageCommand new 
 		context: PhLImagesPresenter basicNew;

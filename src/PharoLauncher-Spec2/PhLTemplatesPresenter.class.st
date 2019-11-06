@@ -61,9 +61,10 @@ PhLTemplatesPresenter class >> example [
 		imageRepository: (PhLDirectoryBasedImageRepository forDirectory: FileSystem memory root);
 		yourself.
 
-	(self on: PhLTemplateGroupRepository default) 
+	^ (self on: PhLTemplateGroupRepository default) 
 		application: app;
-		openWithSpec
+		openWithSpec;
+		yourself
 ]
 
 { #category : #initialization }
@@ -113,11 +114,7 @@ PhLTemplatesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLTemplatesPresenter >> initializePresenters [
-	categoryTable := "self newList
-		items: self model roots;
-		display: #name;
-		yourself."
-		self newTable
+	categoryTable := self newTable
 			items: self templateRepository roots;
 			addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
 			addColumn: (SpStringTableColumn evaluated: #name);
@@ -150,6 +147,16 @@ PhLTemplatesPresenter >> refresh [
 	self templateRepository refresh. "refresh caches"
 	categoryTable items: categoryTable items.
 	categoryTable selectItem: selectedCategory
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> selectCategory: anIndex [
+	categoryTable selectIndex: anIndex
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> selectedTemplateCategory [
+	^ categoryTable selection selectedItem
 ]
 
 { #category : #'api - selection' }

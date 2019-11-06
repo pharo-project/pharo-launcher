@@ -20,6 +20,7 @@ PhLNewImageCommand >> execute [
 	^ (PhLTemplatesPresenter 
 			newApplication: self application
 			model: PhLTemplateGroupRepository default)
+		selectCategory: 3; "official category"
 		openWithSpec;
 		yourself
 ]

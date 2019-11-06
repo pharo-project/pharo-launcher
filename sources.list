@@ -31,12 +31,12 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 7.0 - 32bit (stable)',
-				#url : 'https://files.pharo.org/image/70/latest.zip'
+				#url : 'https://files.pharo.org/image/70/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 7.0 - 64bit (stable)',
-				#url : 'https://files.pharo.org/image/70/latest-64.zip'
+				#url : 'https://files.pharo.org/image/70/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,

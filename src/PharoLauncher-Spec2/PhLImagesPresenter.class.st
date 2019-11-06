@@ -121,6 +121,21 @@ PhLImagesPresenter >> buildMenuBar [
 			addItem: [ :item | item name: 'Help'; subMenu: self buildHelpMenu ] ]
 ]
 
+{ #category : #initialization }
+PhLImagesPresenter >> connectPresenters [
+
+	super connectPresenters.
+	
+	imageTable whenSelectionChangedDo: [ :sel | | selectedImage |
+		selectedImage := sel isEmpty
+			ifTrue: [ PhLNullImage new ]
+			ifFalse: [ sel selectedItem ].
+		"launchButton enabled: sel isEmpty not" ].
+	"launchButton whenActivatedDo: [ self doLaunch ]"
+		
+	imageTable transmitTo: descriptionPanel
+]
+
 { #category : #'api - actions' }
 PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
@@ -143,22 +158,7 @@ PhLImagesPresenter >> imageRepository [
 ]
 
 { #category : #initialization }
-PhLImagesPresenter >> initializePresenter [
-
-	super initializePresenter.
-	
-	imageTable whenSelectionChangedDo: [ :sel | | selectedImage |
-		selectedImage := sel isEmpty
-			ifTrue: [ PhLNullImage new ]
-			ifFalse: [ sel selectedItem ].
-		"launchButton enabled: sel isEmpty not" ].
-	"launchButton whenActivatedDo: [ self doLaunch ]"
-		
-	imageTable transmitTo: descriptionPanel
-]
-
-{ #category : #initialization }
-PhLImagesPresenter >> initializeWidgets [ 
+PhLImagesPresenter >> initializePresenters [
 	imageTable := self newTable
 		items: self model images;
 		sortingBlock: #lastModification descending;

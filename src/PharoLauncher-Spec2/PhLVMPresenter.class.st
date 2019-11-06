@@ -57,19 +57,19 @@ PhLVMPresenter class >> example [
 	(self on: PhLVirtualMachinesDataSource default) openWithSpec
 ]
 
+{ #category : #initialization }
+PhLVMPresenter >> connectPresenters [
+	super connectPresenters.
+	shouldShowPrivateVms := false.
+]
+
 { #category : #accessing }
 PhLVMPresenter >> datasource [
 	^ self model
 ]
 
 { #category : #initialization }
-PhLVMPresenter >> initializePresenter [
-	super initializePresenter.
-	shouldShowPrivateVms := false.
-]
-
-{ #category : #initialization }
-PhLVMPresenter >> initializeWidgets [
+PhLVMPresenter >> initializePresenters [
 	vmTable := self newTable
 		items: self datasource virtualMachines;
 		doubleClickAction: [ :selected | 

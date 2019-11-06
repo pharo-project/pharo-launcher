@@ -78,7 +78,7 @@ PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 ]
 
 { #category : #initialization }
-PhLAboutPresenter >> initializeWidgets [ 
+PhLAboutPresenter >> initializePresenters [ 
 	description := self newText.
 	icon := self newImage.
 

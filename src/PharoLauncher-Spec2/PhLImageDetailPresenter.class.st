@@ -59,6 +59,12 @@ PhLImageDetailPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
+{ #category : #initialization }
+PhLImageDetailPresenter >> connectPresenters [
+	description
+		whenTextIsAcceptedDo: [ :text | self image description: text ]
+]
+
 { #category : #accessing }
 PhLImageDetailPresenter >> description [
 	^ description
@@ -75,13 +81,7 @@ PhLImageDetailPresenter >> imageLabel [
 ]
 
 { #category : #initialization }
-PhLImageDetailPresenter >> initializePresenter [
-	description
-		whenTextIsAcceptedDo: [ :text | self image description: text ]
-]
-
-{ #category : #initialization }
-PhLImageDetailPresenter >> initializeWidgets [
+PhLImageDetailPresenter >> initializePresenters [
 	imageLabel := self newLabel.
 	description := self newText.
 	template := self newLabel.

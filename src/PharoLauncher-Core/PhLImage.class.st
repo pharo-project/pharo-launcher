@@ -51,7 +51,7 @@ PhLImage class >> imageFromMetadata: imageFileReference [
 			(object isKindOf: PhLImage)
 				ifTrue: [ ^ object ]. 
 			(object isKindOf: Dictionary)
-				ifTrue: [ "old metadata file"
+				ifTrue: [ "old metadata file format"
 					^ self new 
 						privOriginTemplate: (object at: #template);
 						yourself ]. 
@@ -151,6 +151,7 @@ PhLImage >> description: aString [
 { #category : #accessing }
 PhLImage >> descriptionFromFile [
 	| descriptionFile |
+	self flag: 'This method is there for backward compatibility. description.txt file has been superseded by the metainformation file meta-inf.ston'.
 	descriptionFile := file parent / self class descriptionFileName.
 	
 	^ descriptionFile exists

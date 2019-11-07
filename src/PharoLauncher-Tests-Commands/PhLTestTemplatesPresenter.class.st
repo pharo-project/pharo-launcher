@@ -14,6 +14,11 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #'user interaction' }
+PhLTestTemplatesPresenter >> clickOnCreateButton [
+	(descriptionPanel instVarNamed: 'createButton') click
+]
+
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
 	| zipFile |

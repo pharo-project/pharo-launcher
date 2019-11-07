@@ -63,6 +63,11 @@ PhLImageCreationPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
+{ #category : #closing }
+PhLImageCreationPresenter >> close [ 
+	self window ifNotNil: [ :window | window close ]
+]
+
 { #category : #accessing }
 PhLImageCreationPresenter >> imageName [
 	^ imageName text
@@ -75,10 +80,14 @@ PhLImageCreationPresenter >> initializePresenters [
 		yourself.
 	imageName := self newTextInput
 		autoAccept: true;
-		yourself.	
+		yourself.
 	initScript := self newText.
 	vm := self newDropList.
-	createButton := (PhLCreateImageFromTemplateCommand2 forSpecContext: owner) asButtonPresenter.
+	
+	(PhLCreateImageFromTemplateCommand2 forSpecContext: owner)
+	in: [ :createImageCommand |
+		createButton := createImageCommand asButtonPresenter.
+		createButton action: [ createImageCommand execute. self close ] ].
 ]
 
 { #category : #initialization }

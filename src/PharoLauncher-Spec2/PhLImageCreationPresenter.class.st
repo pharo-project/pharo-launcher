@@ -70,8 +70,12 @@ PhLImageCreationPresenter >> imageName [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
-	imageArguments := self newTextInput.
-	imageName := self newTextInput.
+	imageArguments := self newTextInput
+		autoAccept: true;
+		yourself.
+	imageName := self newTextInput
+		autoAccept: true;
+		yourself.	
 	initScript := self newText.
 	vm := self newDropList.
 	createButton := (PhLCreateImageFromTemplateCommand2 forSpecContext: owner) asButtonPresenter.

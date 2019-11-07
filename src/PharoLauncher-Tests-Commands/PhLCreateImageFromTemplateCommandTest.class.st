@@ -20,6 +20,7 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 	command context: presenter.
 	presenter 
 		createLocalTemplateNamed: 'Foo';
+		selectCategory: 1;
 		selectTemplateNamed: 'Foo'.
 		
 	command execute.

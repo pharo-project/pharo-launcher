@@ -102,7 +102,7 @@ PhLTestTemplatesPresenter >> selectRemoteGroup [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> selectTemplateNamed: aTemplateName [
-	templateTable selectItem: ( self templates detect: [ :each | each name = aTemplateName ])
+	templateTable selectItem: (self templates detect: [ :each | each name = aTemplateName ])
 
 ]
 

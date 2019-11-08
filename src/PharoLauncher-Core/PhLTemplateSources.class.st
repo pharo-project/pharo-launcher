@@ -16,6 +16,7 @@ Class {
 		'file'
 	],
 	#classVars : [
+		'DownloadedSourcesFileLock',
 		'LauncherCoreDir',
 		'SourcesAnnouncer',
 		'SourcesUrl'
@@ -52,6 +53,11 @@ PhLTemplateSources class >> defaultSources [
 PhLTemplateSources class >> defaultSourcesUrl [
 
 	^ 'https://files.pharo.org/pharo-launcher/sources.list'
+]
+
+{ #category : #'as yet unclassified' }
+PhLTemplateSources class >> downloadedSourcesFileLock [
+	^  DownloadedSourcesFileLock ifNil: [ DownloadedSourcesFileLock := Semaphore forMutualExclusion ].
 ]
 
 { #category : #serializing }
@@ -180,10 +186,12 @@ PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 PhLTemplateSources >> checkForUpdates [
 	| downloadedSources |
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self downloadedSourcesFile ensureDelete.
-	self fetchSourcesFile.
+	self downloadedSourcesFileLock
+		critical: 
+		[ self downloadedSourcesFile ensureDelete.
+		self fetchSourcesFile.
+		downloadedSources := self downloadedSources. ].
 	
-	downloadedSources := self downloadedSources.
 	self sources = downloadedSources
 		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
 ]
@@ -204,6 +212,12 @@ PhLTemplateSources >> downloadedSources [
 { #category : #accessing }
 PhLTemplateSources >> downloadedSourcesFile [
 	^ file parent / (file basename, '.dl')
+]
+
+{ #category : #accessing }
+PhLTemplateSources >> downloadedSourcesFileLock [
+	"downloadedSourcesFileLock is a class variable because it points to a file that can only be used by one instance at a time."
+	^ self class downloadedSourcesFileLock
 ]
 
 { #category : #actions }

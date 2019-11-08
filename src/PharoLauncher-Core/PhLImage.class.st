@@ -144,7 +144,7 @@ PhLImage >> description [
 
 { #category : #accessing }
 PhLImage >> description: aString [
-	description := aString.
+	description := aString asString. "ensure we do not get Text"
 	self serializeMetadata.
 ]
 

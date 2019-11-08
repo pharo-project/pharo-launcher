@@ -12,7 +12,10 @@ Class {
 		'vmBinaryRef',
 		'name',
 		'manager',
-		'flavour'
+		'flavour',
+		'id',
+		'blessing',
+		'arch'
 	],
 	#category : #'PharoLauncher-Core-Download'
 }
@@ -43,33 +46,50 @@ PhLVirtualMachine class >> executableName [
 	^ PlatformResolver forCurrentPlatform vmExecutableName
 ]
 
+{ #category : #'instance creation' }
+PhLVirtualMachine class >> id: aString [
+
+	^ self new
+		id: aString;
+		initializeExecutableRef;
+		yourself
+]
+
 { #category : #querying }
 PhLVirtualMachine >> archPath [
-	| arch |
-	arch := (name last: 3).
-	arch = 'x64' ifTrue: [ ^ '64' ].
-	^ ''
+	arch ifNotNil: [ ^ arch ].
+	
+	^ (self id last: 3) = 'x64'
+		ifTrue: [ '64' ]
+		ifFalse: [ '' ]
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
 PhLVirtualMachine >> basicInitializeOn: aFolder [
-	name := aFolder basename.
-	"No flavour means heafull vm, it will be used to fetch the vm"
-	flavour := ''.
-
+	id := aFolder basename.
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
+PhLVirtualMachine >> be64bits [
+	arch := '64'
+]
+
+{ #category : #initialization }
 PhLVirtualMachine >> beHeadless [
 
 	"Set the flavour to attach to the vm download url"
 	flavour := '-headless'
 ]
 
+{ #category : #initialization }
+PhLVirtualMachine >> beLatest [
+	blessing := 'latest'
+]
+
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
 	^ self manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . flavour . 'stable' }
+		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . flavour . blessing }
 ]
 
 { #category : #ensuring }
@@ -99,13 +119,38 @@ PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine >> id [
+	^ id
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> id: aString [
+	id := aString
+]
+
 { #category : #testing }
 PhLVirtualMachine >> ifValid: aBlockClosure [ 
 	self isValid
 		ifTrue: [ aBlockClosure value ]
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
+PhLVirtualMachine >> initialize [
+	super initialize.
+	flavour := ''. "No flavour means heafull vm, it will be used to fetch the vm"
+	blessing := 'stable'.
+]
+
+{ #category : #initialization }
+PhLVirtualMachine >> initializeExecutableRef [
+	
+	executableRef ifNil: [ | vmFolder |
+		vmFolder := self vmStore / self id.
+		vmFolder exists ifTrue: [ self initializeExecutableRefFrom: vmFolder ] ]
+]
+
+{ #category : #initialization }
 PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	| executables |
 	executables := aFolder allChildrenMatching: self class executableName.
@@ -123,7 +168,7 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	self ensureIsExecutable: executableRef fullName
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
@@ -140,6 +185,15 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
+{ #category : #querying }
+PhLVirtualMachine >> lastUpdateTimeDescription [
+	
+	| timestamp |
+	self isValid ifFalse: [ ^ 'Not available' ].
+	timestamp := self lastUpdateTime.
+	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
+]
+
 { #category : #updating }
 PhLVirtualMachine >> manager [
 	^ manager ifNil: [ manager := PhLVirtualMachineManager new ]
@@ -152,12 +206,12 @@ PhLVirtualMachine >> manager: aPhLVirtualMachineManager [
 
 { #category : #accessing }
 PhLVirtualMachine >> name [
-	^ name
+	^ self id
 ]
 
 { #category : #querying }
 PhLVirtualMachine >> pharoVersion [
-	^ ($- split: name ) first
+	^ ($- split: self id) first
 ]
 
 { #category : #printing }
@@ -165,7 +219,7 @@ PhLVirtualMachine >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPut: $(;
-		nextPutAll: self name;
+		nextPutAll: self id;
 		nextPut: $)
 ]
 
@@ -183,7 +237,7 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : #actions }
 PhLVirtualMachine >> showInFolder [
-	PhLFileBrowser openOn: self vmStore / name
+	PhLFileBrowser openOn: self vmStore / self id
 ]
 
 { #category : #updating }
@@ -191,7 +245,9 @@ PhLVirtualMachine >> update [
 	"fetch a new version of this Virtual Machine if available"
 	self manager class 
 		fetch: self downloadUrl
-		to: self vmStore / name
+		to: self vmStore / (self id , '.zip').
+		
+	executableRef ifNil: [ self initializeExecutableRefFrom: self vmStore / self id ]
 ]
 
 { #category : #accessing }

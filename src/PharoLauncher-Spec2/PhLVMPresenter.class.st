@@ -86,11 +86,12 @@ PhLVMPresenter >> initializePresenters [
 				yourself.
 			]) 
 			width: 20);
-		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 50; yourself);
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 100; yourself);
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
-			evaluated: [ :vm | self readableDateFor: vm lastUpdateTime ]) width: 120; yourself);
+			evaluated: #lastUpdateTimeDescription) width: 120; yourself);
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
+		showColumnHeaders;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		beMultipleSelection;
@@ -101,7 +102,7 @@ PhLVMPresenter >> initializePresenters [
 PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
-		initialExtent: 520 @ 300;
+		initialExtent: 720 @ 300;
 		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
 		whenBuiltDo: [ :ann | ann model centered ].	
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter

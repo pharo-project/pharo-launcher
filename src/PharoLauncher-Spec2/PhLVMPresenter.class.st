@@ -76,6 +76,16 @@ PhLVMPresenter >> initializePresenters [
 			PhLShowVmInFolderCommand new
 				context: self;
 				execute  ];
+		addColumn: ((SpImageTableColumn evaluated: 
+			[ :vm | | icon |
+			icon := vm isValid
+				ifTrue: [ self iconNamed: #testGreen ]
+				ifFalse: [ self iconNamed: #testNotRun ].
+			icon asMorph
+				setBalloonText: vm validityDescription;
+				yourself.
+			]) 
+			width: 20);
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 50; yourself);
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 

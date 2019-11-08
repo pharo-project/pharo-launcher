@@ -23,7 +23,7 @@ PhLRefreshImagerepositoryCommandTest >> testCanRefreshImageList [
 	command execute.
 	
 	self 
-		assertCollection: presenter imageRepository imageNames
+		assertCollection: presenter imageNames
 		hasSameElements: (images copyWith: 'Foo').
 	
 ]

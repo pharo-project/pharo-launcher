@@ -20,7 +20,7 @@ PhLRenameImageCommandTest >> testCanRenameAnImage [
 	command context: presenter.
 	command execute.
 	
-	images := command imagesPresenter imageRepository imageNames.
+	images := command imagesPresenter imageNames.
 	
 	self
 		assertCollection: images
@@ -35,7 +35,7 @@ PhLRenameImageCommandTest >> testCannotRenameAnImageWithAnExistingName [
 	command context: presenter.
 	command execute.
 	
-	images := command imagesPresenter imageRepository imageNames.
+	images := command imagesPresenter imageNames.
 	
 	self
 		assertCollection: images

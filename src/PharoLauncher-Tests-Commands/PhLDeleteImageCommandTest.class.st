@@ -20,7 +20,7 @@ PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 	presenter createImageNamed: 'Foo'.
 	command execute.
 	
-	images := command imagesPresenter imageRepository imageNames.
+	images := command imagesPresenter imageNames.
 	
 	self
 		assertCollection: images
@@ -37,7 +37,7 @@ PhLDeleteImageCommandTest >> testCanDeleteManyImages [
 		selectionNames: #('Foo' 'TestImage').
 	command execute.
 	
-	images := command imagesPresenter imageRepository imageNames.
+	images := command imagesPresenter imageNames.
 	
 	self
 		assertCollection: images

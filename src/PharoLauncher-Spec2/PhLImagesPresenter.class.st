@@ -160,7 +160,7 @@ PhLImagesPresenter >> imageRepository [
 { #category : #initialization }
 PhLImagesPresenter >> initializePresenters [
 	imageTable := self newTable
-		items: self model images;
+		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		doubleClickAction: [ :selected | | cmd |
 				cmd := (self rootCommandsGroup / 'Toolbar') commandOrGroupNamed: 'Launch'.
@@ -174,6 +174,8 @@ PhLImagesPresenter >> initializePresenters [
 		yourself.
 
 	descriptionPanel := self instantiate: PhLImageDetailPresenter on: PhLNullImage new.
+	
+	self imageRepository whenChangedSend: #refresh to: self.
 ]
 
 { #category : #initialization }
@@ -183,14 +185,20 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 700 @ 500;
 		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
 		menu: self buildMenuBar;
-		whenBuiltDo: [ :ann | ann model centered ].	
-	self rootCommandsGroup installShortcutsIn: aWindowPresenter
+		whenBuiltDo: [ :ann | ann model centered ];
+		whenClosedDo: [ self imageRepository unsubscribe: self ].
+	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 ]
 
 { #category : #private }
 PhLImagesPresenter >> readableDateFor: aDateAndTime [ 
 	
 	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime
+]
+
+{ #category : #accessing }
+PhLImagesPresenter >> refresh [ 
+	imageTable items: self imageRepository images
 ]
 
 { #category : #'api - selection' }

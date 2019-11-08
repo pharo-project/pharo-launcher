@@ -28,7 +28,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	
 	command execute.
 	
-	images := command imagesPresenter imageRepository imageNames.
+	images := command imagesPresenter imageNames.
 	self
 		assertCollection: images
 		hasSameElements: #('TestImage').

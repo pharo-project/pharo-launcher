@@ -24,7 +24,8 @@ PhLCreateImageFromTemplateCommand2 >> execute [
 	
 	[ self templatesPresenter imageRepository 
 		extractTemplate: self templatesPresenter singleTemplate 
-		to: name ]
+		to: name.
+	self templatesPresenter application imageRepositoryChanged. ]
 	on: PhLCorruptedTemplateError
 	do: [ :error | UIManager default alert: 'This template appears to be corrupted! Please try again.' ].
 ]

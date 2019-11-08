@@ -8,7 +8,8 @@ Class {
 	#superclass : #SpApplication,
 	#instVars : [
 		'imageRepository',
-		'templateRepository'
+		'templateRepository',
+		'imagesPresenter'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -29,6 +30,11 @@ PharoLauncherApplication >> imageRepository: aPhlImageRepository [
 	imageRepository := aPhlImageRepository
 ]
 
+{ #category : #announcements }
+PharoLauncherApplication >> imageRepositoryChanged [
+	imagesPresenter ifNotNil: #refresh
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> initialize [ 
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
@@ -37,7 +43,8 @@ PharoLauncherApplication >> initialize [
 
 { #category : #running }
 PharoLauncherApplication >> run [ 
-	self open: (PhLImagesPresenter newApplication: self model: imageRepository)
+	imagesPresenter := PhLImagesPresenter newApplication: self model: imageRepository.
+	self open: imagesPresenter.
 ]
 
 { #category : #accessing }

@@ -35,13 +35,24 @@ PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ self selectedImages size = 1
 ]
 
+{ #category : #acccessing }
+PhLTestImagesPresenter >> imageNames [
+	^ imageTable items collect: #name
+]
+
 { #category : #initialization }
 PhLTestImagesPresenter >> initialize [
 	fileSystem := FileSystem memory.
 	self model: (PhLDirectoryBasedImageRepository forDirectory: fileSystem root).
 	templateRepository := PhLTemplateGroupTestRepository new.
-	self application: PharoLauncherApplication new.
-	self createImageNamed: self singleImageName.	
+	self application: (PharoLauncherApplication new
+		imageRepository: self model;
+		instVarNamed: 'imagesPresenter' put: self;
+		yourself).
+	super initialize.
+
+	self createImageNamed: self singleImageName.
+	self refresh.
 	request := PhLTestRequest new.
 ]
 

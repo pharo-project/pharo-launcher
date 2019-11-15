@@ -247,6 +247,27 @@ PhLVirtualMachineManager >> compatibleVmUrls [
 	}
 ]
 
+{ #category : #querying }
+PhLVirtualMachineManager >> defaultVirtualMachines [
+	^ { 
+		(PhLVirtualMachine id: '80-x64-headless')
+			beHeadless;
+			beLatest;
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '80-x64')
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '80-x86')
+			yourself.
+		(PhLVirtualMachine id: '70-x64')
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '70-x86')
+			yourself
+	}
+]
+
 { #category : #private }
 PhLVirtualMachineManager >> downloadPathOSTypeSegment [
 	| os |
@@ -484,13 +505,13 @@ PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 
 { #category : #querying }
 PhLVirtualMachineManager >> virtualMachines [
-
-	^ { (PhLVirtualMachine id: '80-x64-headless')
-			beHeadless;
-			beLatest;
-			be64bits;
-			yourself
-	} , (self availableVirtualMachines values reject: [ :each | each id = '80-x64-headless' ])
+	| vmsInVmStore defaultVms |
+	
+	defaultVms := self defaultVirtualMachines.
+	vmsInVmStore := self availableVirtualMachines values
+		reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
+		
+	^ vmsInVmStore , defaultVms
 ]
 
 { #category : #querying }

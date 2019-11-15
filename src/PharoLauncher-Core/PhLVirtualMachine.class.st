@@ -86,10 +86,15 @@ PhLVirtualMachine >> beLatest [
 	blessing := 'latest'
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine >> blessing [
+	^ blessing
+]
+
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
 	^ self manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . flavour . blessing }
+		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . self flavour . self blessing }
 ]
 
 { #category : #ensuring }
@@ -117,6 +122,11 @@ PhLVirtualMachine >> executableFolderPath [
 { #category : #accessing }
 PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> flavour [
+	^ flavour
 ]
 
 { #category : #accessing }

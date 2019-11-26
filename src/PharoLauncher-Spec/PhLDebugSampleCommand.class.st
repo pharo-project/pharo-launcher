@@ -3,8 +3,8 @@ A PhLDebugSampleCommand is provided simply as an example to assist users to lear
 "
 Class {
 	#name : #PhLDebugSampleCommand,
-	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Spec'
+	#superclass : #Object,
+	#category : #'PharoLauncher-Spec'
 }
 
 { #category : #'as yet unclassified' }

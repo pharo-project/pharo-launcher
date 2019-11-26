@@ -20,10 +20,8 @@ Class {
 		'formatNumber',
 		'architecture',
 		'pharoVersion',
-		'originTemplate'
-	],
-	#classVars : [
-		'LaunchInALoginShell'
+		'originTemplate',
+		'vmManager'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -37,8 +35,21 @@ PhLImage class >> descriptionFileName [
 PhLImage class >> example [
 	| fsRoot imageFile |
 	fsRoot := FileSystem memory root.
-	imageFile := fsRoot / 'foo.image'.
-	imageFile ensureCreateFile.
+	imageFile := fsRoot / 'foo64.image'.
+	imageFile binaryWriteStreamDo: 
+		[ :stream | 
+		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat64bits ].
+	^ self location: imageFile
+]
+
+{ #category : #example }
+PhLImage class >> example32 [
+	| fsRoot imageFile |
+	fsRoot := FileSystem memory root.
+	imageFile := fsRoot / 'foo32.image'.
+	imageFile binaryWriteStreamDo: 
+		[ :stream | 
+		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat32bits ].
 	^ self location: imageFile
 ]
 
@@ -60,16 +71,6 @@ PhLImage class >> imageFromMetadata: imageFileReference [
 	
 ]
 
-{ #category : #settings }
-PhLImage class >> launchInALoginShell [
-	^ LaunchInALoginShell ifNil: [ LaunchInALoginShell := true ].
-]
-
-{ #category : #settings }
-PhLImage class >> launchInALoginShell: aBoolean [
-	LaunchInALoginShell := aBoolean
-]
-
 { #category : #'instance creation' }
 PhLImage class >> location: imageFileReference [
 	^ (self imageFromMetadata: imageFileReference)
@@ -80,18 +81,6 @@ PhLImage class >> location: imageFileReference [
 { #category : #accessing }
 PhLImage class >> metadataFileName [
 	^ 'meta-inf.ston'
-]
-
-{ #category : #settings }
-PhLImage class >> settingsOn: aBuilder [
-	<systemsettings>
-	<pharoLauncherSettings>
-	(aBuilder setting: #launchInALoginShell)
-		label: 'Launch image from a login shell' translated;
-		parent: #pharoLauncher;
-		target: self;
-		order: 31;
-		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
 ]
 
 { #category : #serialization }
@@ -131,10 +120,24 @@ PhLImage >> computeFormatNumber [
 ]
 
 { #category : #computing }
+PhLImage >> computePharoVersion [
+	pharoVersion := self vmManager imageVersion.
+	self computeArchitecture.
+	self serializeMetadata.
+	^ pharoVersion
+]
+
+{ #category : #computing }
 PhLImage >> computePharoVersionWith: vmManager [
 	pharoVersion := vmManager imageVersion.
 	self computeArchitecture.
 	self serializeMetadata.
+]
+
+{ #category : #accessing }
+PhLImage >> defaultLaunchConfiguration [
+
+	^ PhLLaunchConfiguration defaultWithImage: self
 ]
 
 { #category : #accessing }
@@ -157,6 +160,15 @@ PhLImage >> descriptionFromFile [
 	^ descriptionFile exists
 		ifTrue: [ descriptionFile contents withNoLineLongerThan: 80 ]
 		ifFalse: [ 'There is no description' ]
+]
+
+{ #category : #computing }
+PhLImage >> ensurePharoVersion [
+	(self pharoVersion isNil or: [ self pharoVersion = '' ])
+		ifFalse: [ self vmManager imageVersion: self pharoVersion.
+					^ self pharoVersion ].
+	^ self computePharoVersion.
+	
 ]
 
 { #category : #accessing }
@@ -195,52 +207,21 @@ PhLImage >> lastModification [
 ]
 
 { #category : #action }
-PhLImage >> launchCommandStringWithSettings: usePharoSettings [
-	^ (self launchProcessWithSettings: usePharoSettings) commandLineString
-
+PhLImage >> launch [
+	^ self launchWithConfiguration: self defaultLaunchConfiguration 
 ]
 
 { #category : #action }
-PhLImage >> launchProcessWithSettings: usePharoSettings [
-	| vmManager |
-	vmManager := PhLVirtualMachineManager forImage: file.
-	^ self launchProcessWithVmManager: vmManager useSettings: usePharoSettings.
-
-]
-
-{ #category : #action }
-PhLImage >> launchProcessWithVm: vmPath useSettings: usePharoSettings [
-	^ PhLImageProcessConfigurator new 
-		vmPath: vmPath;
-		launchInALoginShell: self class launchInALoginShell;
-		usePharoSettings: usePharoSettings;
-		imageFile: file;
-		visit.
-]
-
-{ #category : #action }
-PhLImage >> launchProcessWithVmManager: vmManager useSettings: usePharoSettings [
-	| shouldUsePharoSettings |
-	shouldUsePharoSettings := usePharoSettings.
-	self computePharoVersionWith: vmManager.
-	pharoVersion < '30'
-		ifTrue: [ shouldUsePharoSettings := true ].	" Cannot skip Pharo settings before 3.0"
-	^ self
-		launchProcessWithVm: vmManager vm
-		useSettings: shouldUsePharoSettings
-]
-
-{ #category : #action }
-PhLImage >> launchWithSettings: usePharoSettings [
+PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ ^ (self launchProcessWithSettings: usePharoSettings) runUnwatch ]
+	[ [ ^ (aPhLLaunchConfiguration launchProcess) runUnwatch ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
+			(PhLLaunchImageCommand2 warnOnArchMismatch and: [ architectureWarningEnabled  ])
 				ifTrue: [ 
 					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
@@ -295,7 +276,7 @@ PhLImage >> pharoVersion [
 PhLImage >> pharoVersionFromFile [
 	file ifNil: [ ^ '' ].
 	^ self versionFile exists
-		ifTrue: [ pharoVersion := self versionFile contents ]
+		ifTrue: [ pharoVersion := self versionFile contents trim ]
 		ifFalse: [ '' ]
 ]
 
@@ -363,4 +344,9 @@ PhLImage >> versionFile [
 { #category : #action }
 PhLImage >> vm [
 	^ (PhLVirtualMachineManager forImage: file pathString) vmFileName
+]
+
+{ #category : #'private - accessing' }
+PhLImage >> vmManager [
+	^ vmManager ifNil: [ vmManager := PhLVirtualMachineManager forImage: self file ]
 ]

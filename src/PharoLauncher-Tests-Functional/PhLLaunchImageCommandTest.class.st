@@ -12,8 +12,8 @@ Class {
 
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
-	launchInALoginShellBackup := PhLImage launchInALoginShell.
-	PhLImage launchInALoginShell: false.
+	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
+	PhLLaunchConfiguration launchInALoginShell: false.
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès',  UUIDGenerator next asString.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
@@ -26,7 +26,7 @@ PhLLaunchImageCommandTest >> setUp [
 { #category : #running }
 PhLLaunchImageCommandTest >> tearDown [ 
 	"imageDir ensureDeleteAll "
-	PhLImage launchInALoginShell: launchInALoginShellBackup.
+	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.	
 ]
@@ -38,7 +38,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
 	FileLocator image copyTo: imageDir / FileLocator image basename.
 	image := PhLImage location: imageDir / FileLocator image basename.
 	
-	image launchWithSettings: false.
+	image launch.
 	
 	"ensure image determination succeeded"
 	self
@@ -52,6 +52,6 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
 { #category : #tests }
 PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 	
-	PhLImage launchInALoginShell: true.
+	PhLLaunchConfiguration launchInALoginShell: true.
 	self testCanLaunchImageWithNonAsciiCharacters.
 ]

@@ -55,6 +55,14 @@ PhLVirtualMachine class >> id: aString [
 		yourself
 ]
 
+{ #category : #comparing }
+PhLVirtualMachine >> = aVM [
+	self class = aVM class 
+		ifFalse: [ ^ false ]. 
+	
+	^ aVM id = self id
+]
+
 { #category : #querying }
 PhLVirtualMachine >> archPath [
 	arch ifNotNil: [ ^ arch ].
@@ -129,6 +137,12 @@ PhLVirtualMachine >> flavour [
 	^ flavour
 ]
 
+{ #category : #comparing }
+PhLVirtualMachine >> hash [
+
+	^ self id hash
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> id [
 	^ id
@@ -136,7 +150,9 @@ PhLVirtualMachine >> id [
 
 { #category : #accessing }
 PhLVirtualMachine >> id: aString [
-	id := aString
+	id := aString.
+	(aString includesAll: '-x64')
+		ifTrue: [ self be64bits ].
 ]
 
 { #category : #testing }
@@ -188,6 +204,14 @@ PhLVirtualMachine >> initializeOn: aFolder [
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
 		and: [ vmBinaryRef isNotNil ]
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isValidAfterUpdate [
+	self isValid ifTrue: [ ^ true ].
+	
+	self updateFromUrl.
+	^ self isValid
 ]
 
 { #category : #querying }
@@ -251,7 +275,7 @@ PhLVirtualMachine >> showInFolder [
 ]
 
 { #category : #updating }
-PhLVirtualMachine >> update [
+PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
 	self manager class 
 		fetch: self downloadUrl

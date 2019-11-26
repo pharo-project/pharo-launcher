@@ -17,7 +17,7 @@ PhLUpdateVmCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLUpdateVmCommand >> execute [
-	self vmsPresenter selectedVms do: #update.
+	self vmsPresenter selectedVms do: #updateFromUrl.
 	self vmsPresenter refresh.
 ]
 

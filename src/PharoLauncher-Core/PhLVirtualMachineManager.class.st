@@ -324,8 +324,8 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString [
 	| vmFolder |
 	
 	vmFolder := anImageVersionString asInteger < 30
-		ifTrue: [ self vmStore / self vmFileName ]
-		ifFalse: [ (self availableVirtualMachines at: self vmFileName) vmFolder ].
+		ifTrue: [ self vmStore / self vmId ]
+		ifFalse: [ (self availableVirtualMachines at: self vmId) vmFolder ].
 	self fetchSourcesFilesFor: anImageVersionString in: vmFolder
 
 ]
@@ -348,7 +348,7 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 PhLVirtualMachineManager >> fetchVm [
 	[ self class 
 		fetch: self vmUrl 
-		to: self vmStore / (self vmFileName , '.zip') ]
+		to: self vmStore / (self vmId , '.zip') ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
 ]
@@ -504,6 +504,13 @@ PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 ]
 
 { #category : #querying }
+PhLVirtualMachineManager >> virtualMachine [
+	^ self virtualMachines
+		detect: [ :vm | vm id = self vmId ]
+		ifNone: [ PhLVirtualMachine id: self vmId ]
+]
+
+{ #category : #querying }
 PhLVirtualMachineManager >> virtualMachines [
 	| vmsInVmStore defaultVms |
 	
@@ -521,13 +528,13 @@ PhLVirtualMachineManager >> vm [
 		informUserDuring: [ :bar | 
 			bar label: 'Determining Image version'.
 			vm := self availableVirtualMachines 
-				at: self vmFileName 
+				at: self vmId 
 				ifAbsent: 
 					[ bar 
 						label: 'Fetching VM to run Pharo ', self imageVersion , ' images';
 						current: 25.
 					self fetchVm.
-					vm := self availableVirtualMachines at: self vmFileName.
+					vm := self availableVirtualMachines at: self vmId.
 					bar 
 						label: 'Fetching sources files for Pharo ', self imageVersion;
 						current: 50.
@@ -540,7 +547,7 @@ PhLVirtualMachineManager >> vm [
 ]
 
 { #category : #accessing }
-PhLVirtualMachineManager >> vmFileName [
+PhLVirtualMachineManager >> vmId [
 	| architecture pharoVersion |
 	self checkImageArchitecture.
 	architecture := (self class is64bits: self imageFormatNumber)

@@ -10,5 +10,5 @@ Class {
 { #category : #executing }
 PhLCopyLaunchCommand >> execute [
 	Clipboard clipboardText: 
-		(self imagesPresenter singleImage launchCommandStringWithSettings: false)
+		self imagesPresenter singleImage defaultLaunchConfiguration commandString
 ]

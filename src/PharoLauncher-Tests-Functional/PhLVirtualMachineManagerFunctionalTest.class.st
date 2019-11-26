@@ -136,34 +136,47 @@ PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersio
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
-	| image command |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
+	| image command launchConfig |
+	image := PhLImage example.
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig vm executable: 'pharo'.
 	
-	command := image launchProcessWithVm: 'pharo' useSettings: true.
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
 	
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
-	| image command vmManager |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
-	vmManager := PhLVirtualMachineManager forImage: image file pathString.
-	vmManager 
-		imageFormatNumber: PhLVirtualMachineManager imageFormat32bits;
-		imageVersion: '20'.
+	| image command launchConfig |
+	image := PhLImage example32.
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '20' ].
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig doNotUseSettings.
+	launchConfig vm executable: 'pharo'.
 	
-	command := image launchProcessWithVmManager: vmManager useSettings: false.
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
 	
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
-	| image command |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
+	| image command launchConfig |
+	image := PhLImage example.
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig doNotUseSettings.
+	launchConfig vm executable: 'pharo'.
 	
-	command := image launchProcessWithVm: 'pharo' useSettings: false.
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
 	
 	self assert: (command arguments includes: '--no-default-preferences')
 ]

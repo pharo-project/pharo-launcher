@@ -115,7 +115,10 @@ PhLLaunchImageCommand2 >> initialize [
 
 { #category : #executing }
 PhLLaunchImageCommand2 >> launchImage: aPhLImage [
-	[ aPhLImage launchWithSettings: useSettings ]
+	[ | launchConfig |
+	launchConfig := aPhLImage defaultLaunchConfiguration.
+	useSettings ifFalse: [ launchConfig doNotUseSettings ].
+	aPhLImage launch. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	self class quitOnLaunch

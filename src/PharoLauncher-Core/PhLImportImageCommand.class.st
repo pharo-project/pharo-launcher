@@ -4,16 +4,16 @@ I can be used to import an image into Pharo Launcher.
 I move the image file and its associated changes file to the default location of Pharo Launcher images store.
 "
 Class {
-	#name : #PhLImportImageCommand2,
-	#superclass : #PhLImageCommand2,
+	#name : #PhLImportImageCommand,
+	#superclass : #PhLImageCommand,
 	#instVars : [
 		'importSiblings'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : 'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLImportImageCommand2 >> asSpecCommand [
+PhLImportImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallLoadProject;
 		shortcutKey: $y meta;
@@ -22,7 +22,7 @@ PhLImportImageCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLImportImageCommand2 >> execute [
+PhLImportImageCommand >> execute [
 	| answer |
 	importSiblings := false.
 	answer := self imagesPresenter newRequest
@@ -36,7 +36,7 @@ PhLImportImageCommand2 >> execute [
 ]
 
 { #category : #executing }
-PhLImportImageCommand2 >> import: imagePath [
+PhLImportImageCommand >> import: imagePath [
 	| infoMessage destFolderName |
 	destFolderName := imagePath asFileReference basenameWithoutExtension.
 	importSiblings 
@@ -53,7 +53,7 @@ PhLImportImageCommand2 >> import: imagePath [
 ]
 
 { #category : #executing }
-PhLImportImageCommand2 >> importImage [
+PhLImportImageCommand >> importImage [
 	| imagePath |
 	imagePath := self imagesPresenter newFileRequest
 		title: 'Import a Pharo image (will move image, changes file and pharo-local folder)';
@@ -74,7 +74,7 @@ PhLImportImageCommand2 >> importImage [
 ]
 
 { #category : #initialization }
-PhLImportImageCommand2 >> initialize [
+PhLImportImageCommand >> initialize [
 	super initialize.
 	self
 		name: 'Import';

@@ -2,17 +2,17 @@
 Create a new local template based on the selected image.
 "
 Class {
-	#name : #PhLCreateTemplateFromImageCommand2,
-	#superclass : #PhLImageCommand2,
+	#name : #PhLCreateTemplateFromImageCommand,
+	#superclass : #PhLImageCommand,
 	#instVars : [
 		'newTemplateName',
 		'willRemoveImage'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLCreateTemplateFromImageCommand2 >> asSpecCommand [
+PhLCreateTemplateFromImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNewIcon;
 		shortcutKey: $t meta;
@@ -21,7 +21,7 @@ PhLCreateTemplateFromImageCommand2 >> asSpecCommand [
 ]
 
 { #category : #converting }
-PhLCreateTemplateFromImageCommand2 >> asSpecCommandWithImageRemoval [
+PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 	self
 		willRemoveImage;
 		basicName: 'Create Template and delete image';
@@ -35,27 +35,27 @@ PhLCreateTemplateFromImageCommand2 >> asSpecCommandWithImageRemoval [
 ]
 
 { #category : #accessing }
-PhLCreateTemplateFromImageCommand2 >> confirmTemplateOverride [
+PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
 	^ self imagesPresenter newConfirmation
 		message: 'Do you want to override exisiting template?';
 		confirm
 ]
 
 { #category : #executing }
-PhLCreateTemplateFromImageCommand2 >> execute [
+PhLCreateTemplateFromImageCommand >> execute [
 	| name |
 	name := self newTemplateName.
 	name ifNil: [ PhLCommandCancellation signal ].
 	self imagesPresenter createLocalTemplateFromSelectionNamed: name.
 	"ensure the template is created before removing the image"
 	(willRemoveImage and: [self imagesPresenter templateRepository hasLocalTemplateNamed: name])
-		ifTrue: [ PhLDeleteImageCommand2 new
+		ifTrue: [ PhLDeleteImageCommand new
 						context: context;
 						execute ]
 ]
 
 { #category : #initialization }
-PhLCreateTemplateFromImageCommand2 >> initialize [
+PhLCreateTemplateFromImageCommand >> initialize [
 	super initialize.
 	willRemoveImage := false.
 	self
@@ -64,13 +64,13 @@ PhLCreateTemplateFromImageCommand2 >> initialize [
 ]
 
 { #category : #accessing }
-PhLCreateTemplateFromImageCommand2 >> newTemplateName [
+PhLCreateTemplateFromImageCommand >> newTemplateName [
 	^ newTemplateName 
 		ifNil: [ newTemplateName := self requestNewTemplateName: self imagesPresenter singleImageName ]
 ]
 
 { #category : #accessing }
-PhLCreateTemplateFromImageCommand2 >> requestNewTemplateName: aString [
+PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 	| templateRepository |
 	templateRepository := self imagesPresenter templateRepository.
 	^ self imagesPresenter newRequest
@@ -84,6 +84,6 @@ PhLCreateTemplateFromImageCommand2 >> requestNewTemplateName: aString [
 ]
 
 { #category : #configuring }
-PhLCreateTemplateFromImageCommand2 >> willRemoveImage [
+PhLCreateTemplateFromImageCommand >> willRemoveImage [
 	willRemoveImage := true.
 ]

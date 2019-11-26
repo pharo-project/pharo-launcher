@@ -2,28 +2,28 @@
 Command to open the Settings browser.
 "
 Class {
-	#name : #PhLOpenSettingsCommand2,
-	#superclass : #PhLGeneralCommand2,
+	#name : #PhLOpenSettingsCommand,
+	#superclass : #PhLGeneralCommand,
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLOpenSettingsCommand2 >> asSpecCommand [
+PhLOpenSettingsCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #configurationIcon;
 		yourself
 ]
 
 { #category : #executing }
-PhLOpenSettingsCommand2 >> execute [
+PhLOpenSettingsCommand >> execute [
 	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings )) open
 ]
 
 { #category : #initialization }
-PhLOpenSettingsCommand2 >> initialize [
+PhLOpenSettingsCommand >> initialize [
 	super initialize.
 	self
 		name: 'Open settings';

@@ -2,23 +2,23 @@
 Superclass of all commands that are applied to one image or multiple images.
 "
 Class {
-	#name : #PhLImageCommand2,
+	#name : #PhLImageCommand,
 	#superclass : #CmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #accessing }
-PhLImageCommand2 >> canBeExecuted [
+PhLImageCommand >> canBeExecuted [
 	^ self imagesPresenter hasSingleImageSelected
 ]
 
 { #category : #accessing }
-PhLImageCommand2 >> imagesPresenter [
+PhLImageCommand >> imagesPresenter [
 	^ self context
 ]
 
 { #category : #initialization }
-PhLImageCommand2 >> initialize [
+PhLImageCommand >> initialize [
 	super initialize.
 	self description: self class comment
 ]

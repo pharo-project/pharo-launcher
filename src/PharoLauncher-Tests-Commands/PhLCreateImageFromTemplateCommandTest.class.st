@@ -16,7 +16,7 @@ PhLCreateImageFromTemplateCommandTest >> setUp [
 { #category : #tests }
 PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateSelected [
 	| command images |
-	command := PhLCreateImageFromTemplateCommand2 new.
+	command := PhLCreateImageFromTemplateCommand new.
 	command context: presenter.
 	presenter 
 		createLocalTemplateNamed: 'Foo';
@@ -37,7 +37,7 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 { #category : #tests }
 PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenManyTemplatesSelected [
 	| command |
-	command := PhLCreateImageFromTemplateCommand2 new.
+	command := PhLCreateImageFromTemplateCommand new.
 	command context: presenter.
 	presenter 
 		createLocalTemplateNamed: 'Foo';
@@ -53,7 +53,7 @@ PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenManyTemplate
 { #category : #tests }
 PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenNoTemplateSelected [
 	| command |
-	command := PhLCreateImageFromTemplateCommand2 new.
+	command := PhLCreateImageFromTemplateCommand new.
 	command context: presenter.
 
 	self

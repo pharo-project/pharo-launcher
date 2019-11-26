@@ -14,7 +14,7 @@ PhLOpenSettingsCommandTest >> tearDown [
 
 { #category : #tests }
 PhLOpenSettingsCommandTest >> testCanOpenAboutDialog [
-	settingsBrowser := PhLOpenSettingsCommand2 new execute.
+	settingsBrowser := PhLOpenSettingsCommand new execute.
 
 	self assert: (settingsBrowser model isKindOf: PhLSettingBrowser)
 ]

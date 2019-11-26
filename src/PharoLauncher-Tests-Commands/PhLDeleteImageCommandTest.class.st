@@ -15,7 +15,7 @@ PhLDeleteImageCommandTest >> setUp [
 { #category : #tests }
 PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 	| command images |
-	command := PhLDeleteImageCommand2 new.
+	command := PhLDeleteImageCommand new.
 	command context: presenter.
 	presenter createImageNamed: 'Foo'.
 	command execute.
@@ -30,7 +30,7 @@ PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 { #category : #tests }
 PhLDeleteImageCommandTest >> testCanDeleteManyImages [
 	| command images |
-	command := PhLDeleteImageCommand2 new.
+	command := PhLDeleteImageCommand new.
 	command context: presenter.
 	presenter 
 		createImageNamed: 'Foo';

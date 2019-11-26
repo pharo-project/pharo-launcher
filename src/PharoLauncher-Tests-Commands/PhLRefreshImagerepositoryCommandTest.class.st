@@ -15,7 +15,7 @@ PhLRefreshImagerepositoryCommandTest >> setUp [
 { #category : #tests }
 PhLRefreshImagerepositoryCommandTest >> testCanRefreshImageList [
 	| command images |
-	command := PhLRefreshImageRepositoryCommand2 new.
+	command := PhLRefreshImageRepositoryCommand new.
 	command context: presenter.
 	images := presenter imageRepository imageNames.
 	presenter createImageNamed: 'Foo'.

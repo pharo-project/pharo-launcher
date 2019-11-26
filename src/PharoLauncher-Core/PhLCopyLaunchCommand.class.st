@@ -3,8 +3,8 @@ Copy the command used to launch the selected image to the system clipboard.
 "
 Class {
 	#name : #PhLCopyLaunchCommand,
-	#superclass : #PhLImageCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#superclass : #PhLImageCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #executing }

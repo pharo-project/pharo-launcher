@@ -2,16 +2,16 @@
 Ask the image repository to update.
 "
 Class {
-	#name : #PhLRefreshImageRepositoryCommand2,
-	#superclass : #PhLGeneralCommand2,
+	#name : #PhLRefreshImageRepositoryCommand,
+	#superclass : #PhLGeneralCommand,
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLRefreshImageRepositoryCommand2 >> asSpecCommand [
+PhLRefreshImageRepositoryCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallUpdateIcon;
 		shortcutKey: $u meta;
@@ -19,12 +19,12 @@ PhLRefreshImageRepositoryCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLRefreshImageRepositoryCommand2 >> execute [
+PhLRefreshImageRepositoryCommand >> execute [
 	self context imageRepository contentsChanged.
 ]
 
 { #category : #initialization }
-PhLRefreshImageRepositoryCommand2 >> initialize [
+PhLRefreshImageRepositoryCommand >> initialize [
 	super initialize.
 	self
 		name: 'Refresh';

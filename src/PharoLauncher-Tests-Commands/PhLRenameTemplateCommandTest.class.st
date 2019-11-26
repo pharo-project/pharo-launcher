@@ -25,7 +25,7 @@ PhLRenameTemplateCommandTest >> setUp [
 { #category : #tests }
 PhLRenameTemplateCommandTest >> testCanRenameALocalTemplate [
 	| command |
-	command := PhLRenameTemplateCommand2 new.
+	command := PhLRenameTemplateCommand new.
 	command context: presenter.
 	presenter
 		createLocalTemplateNamed: 'Foo';
@@ -46,7 +46,7 @@ PhLRenameTemplateCommandTest >> testCanRenameALocalTemplate [
 { #category : #tests }
 PhLRenameTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSelected [
 	| command |
-	command := PhLRenameTemplateCommand2 new.
+	command := PhLRenameTemplateCommand new.
 	command context: presenter.
 	presenter
 		createLocalTemplateNamed: 'Foo';
@@ -58,7 +58,7 @@ PhLRenameTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSel
 { #category : #tests }
 PhLRenameTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 	| command |
-	command := PhLRenameTemplateCommand2 new.
+	command := PhLRenameTemplateCommand new.
 	command context: presenter.
 	presenter createLocalTemplateNamed: 'Foo'. 
 
@@ -74,7 +74,7 @@ PhLRenameTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 { #category : #tests }
 PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplateSelected [
 	| command |
-	command := PhLRenameTemplateCommand2 new.
+	command := PhLRenameTemplateCommand new.
 	command context: presenter.
 	presenter
 	 	createRemoteTemplateNamed: 'Foo';
@@ -87,7 +87,7 @@ PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplat
 { #category : #tests }
 PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsNoTemplateSelected [
 	| command |
-	command := PhLRenameTemplateCommand2 new.
+	command := PhLRenameTemplateCommand new.
 	command context: presenter.
 	
  	self deny: self renameTemplateMenuItem isEnabled

@@ -29,12 +29,12 @@ PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: r
 PhLImagesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Images table contextual menu';
-		register: PhLLaunchImageCommand2 forSpec;
-		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
-		register: PhLRenameImageCommand2 forSpec;
-		register: PhLDeleteImageCommand2 forSpec;
-		register: PhLShowImageInFolderCommand2 forSpec;
-		register: PhLCopyPathname2 forSpec;
+		register: PhLLaunchImageCommand forSpec;
+		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
+		register: PhLRenameImageCommand forSpec;
+		register: PhLDeleteImageCommand forSpec;
+		register: PhLShowImageInFolderCommand forSpec;
+		register: PhLCopyPathname forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]
@@ -44,30 +44,30 @@ PhLImagesPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher toolbar';
 		register: PhLNewImageCommand forSpec;
-		register: PhLLaunchImageCommand2 forSpec;
-		register: PhLLaunchImageCommand2 new asSpecLaunchWithoutSettingsCommand;
+		register: PhLLaunchImageCommand forSpec;
+		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
 		register: PhLLaunchImageFromDiskCommand forSpec;
-		register: PhLImportImageCommand2 forSpec;
+		register: PhLImportImageCommand forSpec;
 		register:
-			(PhLShowImageInFolderCommand2 forSpec
+			(PhLShowImageInFolderCommand forSpec
 				name: 'Show';
 				yourself);
-		register: PhLDeleteImageCommand2 forSpec;
+		register: PhLDeleteImageCommand forSpec;
 		register:
-			(PhLQuitCommand2 forSpec
+			(PhLQuitCommand forSpec
 				beDisplayedOnRightSide;
 				yourself);
 		register:
-			(PhLAboutCommand2 forSpec
+			(PhLAboutCommand forSpec
 				beDisplayedOnRightSide;
 				yourself);
 		register:
-			(PhLOpenSettingsCommand2 forSpec
+			(PhLOpenSettingsCommand forSpec
 				name: 'Settings';
 				beDisplayedOnRightSide;
 				yourself);
 		register:
-			(PhLOpenVmManagerCommand2 forSpec
+			(PhLOpenVmManagerCommand forSpec
 				name: 'VMs';
 				beDisplayedOnRightSide;
 				yourself);

@@ -2,16 +2,16 @@
 Ask the template repository to update.
 "
 Class {
-	#name : #PhLRefreshTemplateRepositoryCommand2,
-	#superclass : #PhLGeneralCommand2,
+	#name : #PhLRefreshTemplateRepositoryCommand,
+	#superclass : #PhLGeneralCommand,
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLRefreshTemplateRepositoryCommand2 >> asSpecCommand [
+PhLRefreshTemplateRepositoryCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallUpdateIcon;
 		shortcutKey: $u meta;
@@ -19,12 +19,12 @@ PhLRefreshTemplateRepositoryCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLRefreshTemplateRepositoryCommand2 >> execute [
+PhLRefreshTemplateRepositoryCommand >> execute [
 	self context templateRepository refresh
 ]
 
 { #category : #initialization }
-PhLRefreshTemplateRepositoryCommand2 >> initialize [ 
+PhLRefreshTemplateRepositoryCommand >> initialize [ 
 	super initialize.
 	self
 		basicName: 'Refresh';

@@ -15,7 +15,7 @@ PhLRenameImageCommandTest >> setUp [
 { #category : #tests }
 PhLRenameImageCommandTest >> testCanRenameAnImage [
 	| command images |
-	command := PhLRenameImageCommand2 new.
+	command := PhLRenameImageCommand new.
 	presenter requestAnswer: 'TestRenameImage'.
 	command context: presenter.
 	command execute.
@@ -30,7 +30,7 @@ PhLRenameImageCommandTest >> testCanRenameAnImage [
 { #category : #tests }
 PhLRenameImageCommandTest >> testCannotRenameAnImageWithAnExistingName [
 	| command images |
-	command := PhLRenameImageCommand2 new.
+	command := PhLRenameImageCommand new.
 	presenter requestAnswer: 'TestImage'.
 	command context: presenter.
 	command execute.

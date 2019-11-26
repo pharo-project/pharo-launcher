@@ -28,8 +28,8 @@ PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot
 PhLTemplatesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Templates tree contextual menu';
-		register: PhLRenameTemplateCommand2 forSpec;
-		register: PhLRemoveTemplateCommand2 forSpec;
+		register: PhLRenameTemplateCommand forSpec;
+		register: PhLRemoveTemplateCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]

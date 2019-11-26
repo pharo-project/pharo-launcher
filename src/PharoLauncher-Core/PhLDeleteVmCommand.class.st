@@ -4,7 +4,7 @@ Remove a VM from the hard disk. Can be applied to multiple VMs at the same time.
 Class {
 	#name : #PhLDeleteVmCommand,
 	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

@@ -3,8 +3,8 @@ Open the image creation UI.
 "
 Class {
 	#name : #PhLNewImageCommand,
-	#superclass : #PhLGeneralCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#superclass : #PhLGeneralCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

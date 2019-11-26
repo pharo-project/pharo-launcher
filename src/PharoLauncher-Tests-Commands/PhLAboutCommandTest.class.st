@@ -16,7 +16,7 @@ PhLAboutCommandTest >> tearDown [
 { #category : #tests }
 PhLAboutCommandTest >> testCanOpenAboutDialog [
 	| command |
-	command := PhLAboutCommand2 new.
+	command := PhLAboutCommand new.
 	
 	presenter := command execute.
 

@@ -2,12 +2,12 @@
 Abstract superclass for all general-purpose commands. These commands concern the launcher in general, not a particular template or image.
 "
 Class {
-	#name : #PhLGeneralCommand2,
+	#name : #PhLGeneralCommand,
 	#superclass : #CmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #accessing }
-PhLGeneralCommand2 >> application [
+PhLGeneralCommand >> application [
 	^ self context application
 ]

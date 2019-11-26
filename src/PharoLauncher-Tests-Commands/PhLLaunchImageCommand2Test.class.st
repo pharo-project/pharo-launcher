@@ -18,7 +18,7 @@ PhLLaunchImageCommand2Test >> setUp [
 { #category : #tests }
 PhLLaunchImageCommand2Test >> testCanLaunchImage [
 	| command image |
-	command := PhLLaunchImageCommand2 new.
+	command := PhLLaunchImageCommand new.
 	command context: presenter.
 	FileLocator image copyTo: imageDir / FileLocator image basename.
 	image := PhLImage location:  imageDir / FileLocator image basename.

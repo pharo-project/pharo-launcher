@@ -2,13 +2,13 @@
 Open your OS's file browser on the selected image directory.
 "
 Class {
-	#name : #PhLShowImageInFolderCommand2,
-	#superclass : #PhLImageCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLShowImageInFolderCommand,
+	#superclass : #PhLImageCommand,
+	#category : 'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLShowImageInFolderCommand2 >> asSpecCommand [
+PhLShowImageInFolderCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #openIcon;
 		shortcutKey: $o meta;
@@ -17,12 +17,12 @@ PhLShowImageInFolderCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLShowImageInFolderCommand2 >> execute [
+PhLShowImageInFolderCommand >> execute [
 	self imagesPresenter singleImage showNativeFolder
 ]
 
 { #category : #initialization }
-PhLShowImageInFolderCommand2 >> initialize [
+PhLShowImageInFolderCommand >> initialize [
 	super initialize.
 	self name: 'Show in folder'
 ]

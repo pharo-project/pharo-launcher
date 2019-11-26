@@ -4,7 +4,7 @@ Open your OS's file browser on the selected VM directory.
 Class {
 	#name : #PhLShowVmInFolderCommand,
 	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

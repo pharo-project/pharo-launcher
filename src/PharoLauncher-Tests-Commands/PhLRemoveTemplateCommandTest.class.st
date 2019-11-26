@@ -25,7 +25,7 @@ PhLRemoveTemplateCommandTest >> setUp [
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCanRemoveALocalTemplate [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	presenter
 		createLocalTemplateNamed: 'Foo';
@@ -43,7 +43,7 @@ PhLRemoveTemplateCommandTest >> testCanRemoveALocalTemplate [
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCanRemoveManyLocalTemplates [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	presenter
 		createLocalTemplateNamed: 'Foo';
@@ -66,7 +66,7 @@ PhLRemoveTemplateCommandTest >> testCanRemoveManyLocalTemplates [
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSelected [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	presenter
 		createLocalTemplateNamed: 'Foo';
@@ -78,7 +78,7 @@ PhLRemoveTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSel
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	presenter createLocalTemplateNamed: 'Foo'. 
 
@@ -92,7 +92,7 @@ PhLRemoveTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplateSelected [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	presenter
 	 	createRemoteTemplateNamed: 'Foo';
@@ -105,7 +105,7 @@ PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplat
 { #category : #tests }
 PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsNoTemplateSelected [
 	| command |
-	command := PhLRemoveTemplateCommand2 new.
+	command := PhLRemoveTemplateCommand new.
 	command context: presenter.
 	
  	self deny: self removeTemplateMenuItem isEnabled

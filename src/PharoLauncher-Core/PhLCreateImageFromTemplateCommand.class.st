@@ -2,13 +2,13 @@
 Extract the selected template to a new image.
 "
 Class {
-	#name : #PhLCreateImageFromTemplateCommand2,
-	#superclass : #PhLTemplateCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLCreateImageFromTemplateCommand,
+	#superclass : #PhLTemplateCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLCreateImageFromTemplateCommand2 >> asSpecCommand [
+PhLCreateImageFromTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNewIcon;
 		shortcutKey: $s meta;
@@ -17,7 +17,7 @@ PhLCreateImageFromTemplateCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLCreateImageFromTemplateCommand2 >> execute [
+PhLCreateImageFromTemplateCommand >> execute [
 	| name |
 	name := self templatesPresenter imageName.
 	name isEmptyOrNil ifTrue: [ ^ self ].
@@ -31,7 +31,7 @@ PhLCreateImageFromTemplateCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLCreateImageFromTemplateCommand2 >> initialize [
+PhLCreateImageFromTemplateCommand >> initialize [
 	super initialize.
 	self
 		name: 'Create image';

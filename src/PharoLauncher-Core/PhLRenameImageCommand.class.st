@@ -2,13 +2,13 @@
 Rename the currently selected image and move the files accordingly.
 "
 Class {
-	#name : #PhLRenameImageCommand2,
-	#superclass : #PhLImageCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLRenameImageCommand,
+	#superclass : #PhLImageCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLRenameImageCommand2 >> asSpecCommand [
+PhLRenameImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #workspaceIcon;
 		shortcutKey: $r meta;
@@ -17,7 +17,7 @@ PhLRenameImageCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLRenameImageCommand2 >> execute [
+PhLRenameImageCommand >> execute [
 	| name |
 	name := self newImageName.
 	name ifNil: [ ^ self ].
@@ -27,7 +27,7 @@ PhLRenameImageCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLRenameImageCommand2 >> initialize [
+PhLRenameImageCommand >> initialize [
 	super initialize.
 	self
 		name: 'Rename';
@@ -35,12 +35,12 @@ PhLRenameImageCommand2 >> initialize [
 ]
 
 { #category : #private }
-PhLRenameImageCommand2 >> newImageName [
+PhLRenameImageCommand >> newImageName [
 	^ self newImageName: self imagesPresenter singleImageName
 ]
 
 { #category : #private }
-PhLRenameImageCommand2 >> newImageName: aString [ 
+PhLRenameImageCommand >> newImageName: aString [ 
 	^ self imagesPresenter newRequest 
 		title: 'Image name?';
 		initialAnswer: aString;

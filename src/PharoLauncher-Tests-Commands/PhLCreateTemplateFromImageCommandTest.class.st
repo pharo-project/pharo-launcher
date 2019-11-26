@@ -15,7 +15,7 @@ PhLCreateTemplateFromImageCommandTest >> setUp [
 { #category : #tests }
 PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhenSingleImageSelected [
 	| command templates |
-	command := PhLCreateTemplateFromImageCommand2 new
+	command := PhLCreateTemplateFromImageCommand new
 		willRemoveImage;
 		yourself.
 	command context: presenter.
@@ -38,7 +38,7 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhe
 { #category : #tests }
 PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateWhenSingleImageSelected [
 	| command templates |
-	command := PhLCreateTemplateFromImageCommand2 new.
+	command := PhLCreateTemplateFromImageCommand new.
 	command context: presenter.
 	presenter requestAnswer: 'TestTemplate'.
 	

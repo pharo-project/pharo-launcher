@@ -4,7 +4,7 @@ Toggle between display of VMs used to launch Pharo images and ""private"" VMs us
 Class {
 	#name : #PhLToggleVmPrivateVmCommand,
 	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

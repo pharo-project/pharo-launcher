@@ -221,7 +221,7 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |
-			(PhLLaunchImageCommand2 warnOnArchMismatch and: [ architectureWarningEnabled  ])
+			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
 				ifTrue: [ 
 					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].

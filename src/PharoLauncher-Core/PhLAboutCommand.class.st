@@ -2,16 +2,16 @@
 Command to display a box with information related to the Pharo Launcher
 "
 Class {
-	#name : #PhLAboutCommand2,
-	#superclass : #PhLGeneralCommand2,
+	#name : #PhLAboutCommand,
+	#superclass : #PhLGeneralCommand,
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #querying }
-PhLAboutCommand2 >> aboutText [
+PhLAboutCommand >> aboutText [
 	^ String streamContents: [:stream |
 		stream
 			<< 'Pharo Launcher version: ';
@@ -25,7 +25,7 @@ PhLAboutCommand2 >> aboutText [
 ]
 
 { #category : #converting }
-PhLAboutCommand2 >> asSpecCommand [
+PhLAboutCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #help;
 		shortcutKey: $? meta;
@@ -33,7 +33,7 @@ PhLAboutCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLAboutCommand2 >> execute [
+PhLAboutCommand >> execute [
 	| presenter |
 	presenter := PhLAboutPresenter 
 		text: self aboutText
@@ -43,7 +43,7 @@ PhLAboutCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLAboutCommand2 >> initialize [
+PhLAboutCommand >> initialize [
 	super initialize.
 	self
 		name: 'About';
@@ -51,7 +51,7 @@ PhLAboutCommand2 >> initialize [
 ]
 
 { #category : #querying }
-PhLAboutCommand2 >> launcherVersion [
+PhLAboutCommand >> launcherVersion [
 
 	^ LauncherVersion ifNil: [ 'N/A' ] 
 ]

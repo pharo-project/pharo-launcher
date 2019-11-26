@@ -2,13 +2,13 @@
 Open the VM Manager UI
 "
 Class {
-	#name : #PhLOpenVmManagerCommand2,
-	#superclass : #PhLGeneralCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLOpenVmManagerCommand,
+	#superclass : #PhLGeneralCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLOpenVmManagerCommand2 >> asSpecCommand [
+PhLOpenVmManagerCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconProvider: self;
 		iconName: #configurationIcon;
@@ -16,14 +16,14 @@ PhLOpenVmManagerCommand2 >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLOpenVmManagerCommand2 >> execute [
+PhLOpenVmManagerCommand >> execute [
 	(PhLVMPresenter 
 		newApplication: self application
 		model: PhLVirtualMachinesDataSource default) openWithSpec
 ]
 
 { #category : #accessing }
-PhLOpenVmManagerCommand2 >> icon [
+PhLOpenVmManagerCommand >> icon [
 	"encoded with 
 		ZnBase64Encoder new encode: 'Cog-icon-grey.png' asFileReference binaryReadStream upToEnd."
 	^ ImageReadWriter formFromStream: (ZnBase64Encoder new decode: 
@@ -31,12 +31,12 @@ PhLOpenVmManagerCommand2 >> icon [
 ]
 
 { #category : #accessing }
-PhLOpenVmManagerCommand2 >> iconNamed: aName [
+PhLOpenVmManagerCommand >> iconNamed: aName [
 	^ self icon
 ]
 
 { #category : #executing }
-PhLOpenVmManagerCommand2 >> initialize [
+PhLOpenVmManagerCommand >> initialize [
 	super initialize.
 	self
 		name: 'Open VM Manager';

@@ -15,7 +15,7 @@ PhLRecreateImageCommandTest >> setUp [
 { #category : #tests }
 PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	| command images archive zipFile image |
-	command := PhLRecreateImageCommand2 new.
+	command := PhLRecreateImageCommand new.
 	command context: presenter.
 	images := presenter selectedImages.
 	archive := ZipArchive new.
@@ -40,7 +40,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 { #category : #tests }
 PhLRecreateImageCommandTest >> testErrorRaiseWhenImageTemplateNotSet [
 	| command |
-	command := PhLRecreateImageCommand2 new.
+	command := PhLRecreateImageCommand new.
 	command context: presenter.
 	
 	self

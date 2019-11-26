@@ -2,13 +2,13 @@
 Removes the selected template
 "
 Class {
-	#name : #PhLRemoveTemplateCommand2,
-	#superclass : #PhLTemplateCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLRemoveTemplateCommand,
+	#superclass : #PhLTemplateCommand,
+	#category : 'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLRemoveTemplateCommand2 >> asSpecCommand [
+PhLRemoveTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDelete;
 		shortcutKey: $x meta;
@@ -17,12 +17,12 @@ PhLRemoveTemplateCommand2 >> asSpecCommand [
 ]
 
 { #category : #testing }
-PhLRemoveTemplateCommand2 >> canBeExecuted [
+PhLRemoveTemplateCommand >> canBeExecuted [
 	^ self templatesPresenter hasLocalTemplatesSelected
 ]
 
 { #category : #executing }
-PhLRemoveTemplateCommand2 >> execute [ 
+PhLRemoveTemplateCommand >> execute [ 
 	| templates templateNames confirmMessage answer |
 	templates := self templatesPresenter selectedTemplates.
 	templates ifEmpty: [ ^ self ].
@@ -39,7 +39,7 @@ PhLRemoveTemplateCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLRemoveTemplateCommand2 >> initialize [
+PhLRemoveTemplateCommand >> initialize [
 	super initialize.
 	self
 		name: 'Remove template';

@@ -2,13 +2,13 @@
 Rename the selected template
 "
 Class {
-	#name : #PhLRenameTemplateCommand2,
-	#superclass : #PhLTemplateCommand2,
-	#category : #'PharoLauncher-Core-Commands2'
+	#name : #PhLRenameTemplateCommand,
+	#superclass : #PhLTemplateCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLRenameTemplateCommand2 >> asSpecCommand [
+PhLRenameTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #workspace;
 		beDisabledWhenCantBeRun;
@@ -16,12 +16,12 @@ PhLRenameTemplateCommand2 >> asSpecCommand [
 ]
 
 { #category : #testing }
-PhLRenameTemplateCommand2 >> canBeExecuted [
+PhLRenameTemplateCommand >> canBeExecuted [
 	^ self templatesPresenter hasLocalTemplateSelected
 ]
 
 { #category : #executing }
-PhLRenameTemplateCommand2 >> execute [ 
+PhLRenameTemplateCommand >> execute [ 
 	| name template |
 	template := self templatesPresenter singleTemplate.
 	name := self newTemplateName.
@@ -31,7 +31,7 @@ PhLRenameTemplateCommand2 >> execute [
 ]
 
 { #category : #initialization }
-PhLRenameTemplateCommand2 >> initialize [
+PhLRenameTemplateCommand >> initialize [
 	super initialize.
 	self
 		name: 'Rename template';
@@ -39,12 +39,12 @@ PhLRenameTemplateCommand2 >> initialize [
 ]
 
 { #category : #'instance creation' }
-PhLRenameTemplateCommand2 >> newTemplateName [
+PhLRenameTemplateCommand >> newTemplateName [
 	^ self newTemplateName: self templatesPresenter singleTemplate name
 ]
 
 { #category : #'instance creation' }
-PhLRenameTemplateCommand2 >> newTemplateName: aString [ 
+PhLRenameTemplateCommand >> newTemplateName: aString [ 
 	^ self templatesPresenter newRequest 
 		title: 'New name for the template?';
 		initialAnswer: aString;

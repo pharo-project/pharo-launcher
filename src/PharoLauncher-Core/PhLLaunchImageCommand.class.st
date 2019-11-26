@@ -2,8 +2,8 @@
 Launch the selected image with the appropriate virtual machine.
 "
 Class {
-	#name : #PhLLaunchImageCommand2,
-	#superclass : #PhLImageCommand2,
+	#name : #PhLLaunchImageCommand,
+	#superclass : #PhLImageCommand,
 	#instVars : [
 		'useSettings'
 	],
@@ -11,32 +11,32 @@ Class {
 		'QuitOnLaunch',
 		'WarnOnArchMismatch'
 	],
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> archMismatchSettingDescription [
+PhLLaunchImageCommand class >> archMismatchSettingDescription [
 	^ 'Get a warning when trying to launch an image with a different architecture than the Launcher (i.e. trying to launch a 32-bit image from Pharo Launcher 64-bit). '
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> archMismatchSettingLabel [
+PhLLaunchImageCommand class >> archMismatchSettingLabel [
 	^ 'Warn on image architecture mismatch? ' translated
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> quitOnLaunch [
+PhLLaunchImageCommand class >> quitOnLaunch [
 	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> quitOnLaunch: aBoolean [
+PhLLaunchImageCommand class >> quitOnLaunch: aBoolean [
 	QuitOnLaunch = aBoolean 
 		ifFalse: [ QuitOnLaunch := aBoolean ]
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> settingsOn: aBuilder [
+PhLLaunchImageCommand class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder setting: #quitOnLaunch)
@@ -56,18 +56,18 @@ PhLLaunchImageCommand2 class >> settingsOn: aBuilder [
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> warnOnArchMismatch [
+PhLLaunchImageCommand class >> warnOnArchMismatch [
 	^ WarnOnArchMismatch ifNil: [  WarnOnArchMismatch := true ].
 ]
 
 { #category : #settings }
-PhLLaunchImageCommand2 class >> warnOnArchMismatch: aBoolean [
+PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 	WarnOnArchMismatch := aBoolean.
 
 ]
 
 { #category : #converting }
-PhLLaunchImageCommand2 >> asSpecCommand [
+PhLLaunchImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDoItIcon;
 		shortcutKey: $l meta;
@@ -76,7 +76,7 @@ PhLLaunchImageCommand2 >> asSpecCommand [
 ]
 
 { #category : #converting }
-PhLLaunchImageCommand2 >> asSpecLaunchWithoutSettingsCommand [
+PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 	self
 		doNotUseSettings;
 		name: 'Basic launch';
@@ -90,31 +90,31 @@ PhLLaunchImageCommand2 >> asSpecLaunchWithoutSettingsCommand [
 ]
 
 { #category : #configuring }
-PhLLaunchImageCommand2 >> doNotUseSettings [
+PhLLaunchImageCommand >> doNotUseSettings [
 	useSettings := false.
 ]
 
 { #category : #executing }
-PhLLaunchImageCommand2 >> execute [
+PhLLaunchImageCommand >> execute [
 	self imagesPresenter hasSingleImageSelected
 		ifTrue: [ self launchSelectedImage ]
 ]
 
 { #category : #private }
-PhLLaunchImageCommand2 >> iconNamed: aName [
+PhLLaunchImageCommand >> iconNamed: aName [
 	"Only used for basic launch command"
 	^ (super iconNamed: aName) asGrayScaleWithAlpha
 ]
 
 { #category : #initialization }
-PhLLaunchImageCommand2 >> initialize [
+PhLLaunchImageCommand >> initialize [
 	super initialize.
 	useSettings := true.
 	self name: 'Launch'
 ]
 
 { #category : #executing }
-PhLLaunchImageCommand2 >> launchImage: aPhLImage [
+PhLLaunchImageCommand >> launchImage: aPhLImage [
 	[ | launchConfig |
 	launchConfig := aPhLImage defaultLaunchConfiguration.
 	useSettings ifFalse: [ launchConfig doNotUseSettings ].
@@ -126,11 +126,11 @@ PhLLaunchImageCommand2 >> launchImage: aPhLImage [
 ]
 
 { #category : #executing }
-PhLLaunchImageCommand2 >> launchSelectedImage [
+PhLLaunchImageCommand >> launchSelectedImage [
 	self launchImage: self imagesPresenter singleImage
 ]
 
 { #category : #private }
-PhLLaunchImageCommand2 >> quit [
-	(PhLQuitCommand2 forSpec context: self imagesPresenter) execute
+PhLLaunchImageCommand >> quit [
+	(PhLQuitCommand forSpec context: self imagesPresenter) execute
 ]

@@ -4,7 +4,7 @@ Will update selected Virtual Machines. Update will download and install the last
 Class {
 	#name : #PhLUpdateVmCommand,
 	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands2'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

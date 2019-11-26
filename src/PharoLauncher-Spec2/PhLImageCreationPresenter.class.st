@@ -84,7 +84,7 @@ PhLImageCreationPresenter >> initializePresenters [
 	initScript := self newText.
 	vm := self newDropList.
 	
-	(PhLCreateImageFromTemplateCommand2 forSpecContext: owner)
+	(PhLCreateImageFromTemplateCommand forSpecContext: owner)
 	in: [ :createImageCommand |
 		createButton := createImageCommand asButtonPresenter.
 		createButton action: [ createImageCommand execute. self close ] ].

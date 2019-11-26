@@ -1,3 +1,6 @@
+"
+Error raised when a virtual machine object describes a VM that cannot be found on disk (i.e. executable not found).
+"
 Class {
 	#name : #PhLMissingVirtualMachineError,
 	#superclass : #PhLError,

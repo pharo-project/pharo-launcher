@@ -26,11 +26,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 					className: #ConfigurationOfXMLParser;
 					versionString: #'stable';
 					loads: #('Core' );
-					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
-			baseline: #Icetray
-				with: [ spec repository: 'github://pharo-spec/icetray/src' ];
-			package: #FastTableExtentions
-				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
+					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ].
 		spec
 			package: #'PharoLauncher-ZipArchive';
 			package: #'PharoLauncher-70Compatibility'; 
@@ -40,8 +36,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 
 				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
-			package: #'PharoLauncher-IceTray' with: [ spec
-				requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
@@ -54,5 +48,5 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional'). ].
 ]

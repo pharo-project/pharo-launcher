@@ -9,9 +9,8 @@ Class {
 	#instVars : [
 		'imageName',
 		'initScript',
-		'vm',
-		'imageArguments',
-		'createButton'
+		'createButton',
+		'launchConfiguration'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -32,14 +31,8 @@ PhLImageCreationPresenter class >> defaultSpec [
 		add: #initScript height: 100;
 		add:
 			(SpBoxLayout newHorizontal
-				add: 'VM:' withConstraints: self labelConstraintsBlock;
-				add: #vm;
-				yourself)
-			height: self inputTextHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Image arguments:' withConstraints: self labelConstraintsBlock;
-				add: #imageArguments;
+				add: 'Launch configuration:' withConstraints: self labelConstraintsBlock;
+				add: #launchConfiguration;
 				yourself)
 			height: self inputTextHeight;
 		add: #createButton
@@ -52,7 +45,7 @@ PhLImageCreationPresenter class >> defaultSpec [
 
 { #category : #example }
 PhLImageCreationPresenter class >> example [
-	(self on: PhLRemoteTemplate example) openWithSpec
+	(self on: {PhLRemoteTemplate example}) openWithSpec
 ]
 
 { #category : #specs }
@@ -61,6 +54,11 @@ PhLImageCreationPresenter class >> labelConstraintsBlock [
 	constraints
 		height: self labelHeight;
 		width: self labelWidth ]
+]
+
+{ #category : #specs }
+PhLImageCreationPresenter class >> labelWidth [
+	^ 125
 ]
 
 { #category : #closing }
@@ -75,14 +73,11 @@ PhLImageCreationPresenter >> imageName [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
-	imageArguments := self newTextInput
-		autoAccept: true;
-		yourself.
 	imageName := self newTextInput
 		autoAccept: true;
 		yourself.
 	initScript := self newText.
-	vm := self newDropList.
+	launchConfiguration := self newDropList.
 	
 	(PhLCreateImageFromTemplateCommand forSpecContext: owner)
 	in: [ :createImageCommand |

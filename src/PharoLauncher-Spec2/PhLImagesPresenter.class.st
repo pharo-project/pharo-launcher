@@ -1,5 +1,5 @@
 "
-Pharo Launcher main window presenting the list of managed images as well as a tollbar and a status bar.
+Pharo Launcher main window presenting the list of managed images as well as a toolbar and a status bar.
 
 To open me:
 	(self on: PhLDirectoryBasedImageRepository default) openWithSpec

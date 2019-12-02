@@ -6,6 +6,8 @@ PharoLauncherApplication open
 Class {
 	#name : #PharoLauncherApplication,
 	#superclass : #SpApplication,
+	#traits : 'TPhLInteractionTrait',
+	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',

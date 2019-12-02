@@ -84,6 +84,11 @@ PhLLaunchConfiguration >> image [
 	^ image
 ]
 
+{ #category : #accessing }
+PhLLaunchConfiguration >> imageArguments [
+	^ imageArguments
+]
+
 { #category : #initialization }
 PhLLaunchConfiguration >> initializeWithImage: anImage [
 
@@ -91,7 +96,7 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	image := anImage.
 	name := 'new configuration...'.
 	usePharoSettings := true.
-	imageArguments := ''
+	imageArguments := OrderedCollection new.
 ]
 
 { #category : #accessing }
@@ -112,6 +117,11 @@ PhLLaunchConfiguration >> launchProcess [
 ]
 
 { #category : #accessing }
+PhLLaunchConfiguration >> name [
+	^ name
+]
+
+{ #category : #accessing }
 PhLLaunchConfiguration >> name: aString [ 
 	name := aString
 ]
@@ -120,4 +130,9 @@ PhLLaunchConfiguration >> name: aString [
 PhLLaunchConfiguration >> vm [
 	^ vm ifNil: [ vm := self defaultVm ]
 
+]
+
+{ #category : #accessing }
+PhLLaunchConfiguration >> vmArguments [
+	^ OrderedCollection new
 ]

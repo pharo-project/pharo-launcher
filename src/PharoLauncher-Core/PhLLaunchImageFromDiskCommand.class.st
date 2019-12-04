@@ -1,5 +1,5 @@
 "
-Launch an image frome the filesystem without importing it into Pharo Launcher
+Launch an image from the filesystem without importing it into Pharo Launcher
 "
 Class {
 	#name : #PhLLaunchImageFromDiskCommand,

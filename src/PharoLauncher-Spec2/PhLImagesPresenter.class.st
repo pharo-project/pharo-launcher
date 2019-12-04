@@ -87,40 +87,6 @@ PhLImagesPresenter class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildFileMenu [
-
-	^ MenuPresenter new
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'New image'; action: [ self doNewImage ] ];
-			addItem: [ :item | item name: 'Import'; action: [ self doImport ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Settings...'; action: [ self doSettings ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Manage VMs...'; action: [  ] ] ];
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'Quit'; action: [  ] ] ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildHelpMenu [
-	
-	^ MenuPresenter new 
-		addGroup: [ :fileGroup | fileGroup
-			addItem: [ :subitem | subitem name: 'About...'; action: [  ] ] ];
-		yourself
-]
-
-{ #category : #'private - building' }
-PhLImagesPresenter >> buildMenuBar [
-
-	^ SpMenuBarPresenter new 
-		addGroup: [ :group | group
-			addItem: [ :item | item name: 'File'; subMenu: self buildFileMenu ];
-			addItem: [ :item | item name: 'Help'; subMenu: self buildHelpMenu ] ]
-]
-
 { #category : #initialization }
 PhLImagesPresenter >> connectPresenters [
 
@@ -184,7 +150,6 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
 		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
-		menu: self buildMenuBar;
 		whenBuiltDo: [ :ann | ann model centered ];
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.

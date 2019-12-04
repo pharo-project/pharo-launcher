@@ -23,10 +23,15 @@ Class {
 }
 
 { #category : #'instance creation' }
+PhLLaunchConfiguration class >> defaultName [
+	^ 'Default'
+]
+
+{ #category : #'instance creation' }
 PhLLaunchConfiguration class >> defaultWithImage: anImage [
 
 	^ (self withImage: anImage)
-		name: 'Default';
+		name: self defaultName;
 		yourself
 ]
 

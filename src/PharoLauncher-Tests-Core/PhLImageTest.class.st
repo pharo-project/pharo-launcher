@@ -20,6 +20,17 @@ PhLImageTest >> setUp [
 ]
 
 { #category : #tests }
+PhLImageTest >> testCanGetDefaultLaunchConfigurationWhenNoLaunchConfiguration [
+	| config |
+
+	config := image defaultLaunchConfiguration.
+	
+	self 
+		assert: config name
+		equals: 'Default'.
+]
+
+{ #category : #tests }
 PhLImageTest >> testCanInitializeImageFromMetadatafile [
 	| deserializedImage |
 	image 
@@ -77,6 +88,23 @@ PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 	self 
 		assert: deserializedImage originTemplate url asString
 		equals: image originTemplate url asString.
+]
+
+{ #category : #tests }
+PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWhenAvailable [
+	| config |
+
+	config := image defaultLaunchConfiguration.
+	config imageArguments: #( #foo ).
+	image launchConfigurations: { config }.
+		
+	self 
+		assert: image defaultLaunchConfiguration
+		equals: config.
+		
+	self 
+		assert: image defaultLaunchConfiguration imageArguments
+		equals: #( #foo ).
 ]
 
 { #category : #tests }

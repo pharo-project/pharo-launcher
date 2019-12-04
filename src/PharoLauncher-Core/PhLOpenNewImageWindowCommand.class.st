@@ -2,13 +2,13 @@
 Open the image creation UI.
 "
 Class {
-	#name : #PhLNewImageCommand,
+	#name : #PhLOpenNewImageWindowCommand,
 	#superclass : #PhLGeneralCommand,
 	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
-PhLNewImageCommand >> asSpecCommand [
+PhLOpenNewImageWindowCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNew;
 		shortcutKey: $n meta;
@@ -16,7 +16,7 @@ PhLNewImageCommand >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLNewImageCommand >> execute [
+PhLOpenNewImageWindowCommand >> execute [
 	^ (PhLTemplatesPresenter 
 			newApplication: self application
 			model: PhLTemplateGroupRepository default)
@@ -26,7 +26,7 @@ PhLNewImageCommand >> execute [
 ]
 
 { #category : #initialization }
-PhLNewImageCommand >> initialize [
+PhLOpenNewImageWindowCommand >> initialize [
 	super initialize.
 	self
 		name: 'New';

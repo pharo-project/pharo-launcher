@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLNewImageCommandTest,
+	#name : #PhLOpenNewImageWindowTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter'
@@ -8,13 +8,13 @@ Class {
 }
 
 { #category : #running }
-PhLNewImageCommandTest >> tearDown [ 
+PhLOpenNewImageWindowTest >> tearDown [ 
 	presenter ifNotNil: [ presenter window close ]
 ]
 
 { #category : #tests }
-PhLNewImageCommandTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPresenter [
-	presenter := PhLNewImageCommand new 
+PhLOpenNewImageWindowTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPresenter [
+	presenter := PhLOpenNewImageWindowCommand new 
 		context: PhLImagesPresenter basicNew;
 		execute.
 
@@ -24,8 +24,8 @@ PhLNewImageCommandTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPres
 ]
 
 { #category : #tests }
-PhLNewImageCommandTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
-	presenter := PhLNewImageCommand new 
+PhLOpenNewImageWindowTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
+	presenter := PhLOpenNewImageWindowCommand new 
 		context: PhLImagesPresenter basicNew;
 		execute.
 

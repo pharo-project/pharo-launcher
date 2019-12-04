@@ -132,5 +132,5 @@ PhLLaunchImageCommand >> launchSelectedImage [
 
 { #category : #private }
 PhLLaunchImageCommand >> quit [
-	(PhLQuitCommand forSpec context: self imagesPresenter) execute
+	(PhLQuitCommand forSpecContext: self imagesPresenter) execute
 ]

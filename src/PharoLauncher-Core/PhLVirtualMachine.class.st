@@ -86,7 +86,7 @@ PhLVirtualMachine >> be64bits [
 PhLVirtualMachine >> beHeadless [
 
 	"Set the flavour to attach to the vm download url"
-	flavour := '-headless'
+	flavour := self headlessFlavour
 ]
 
 { #category : #initialization }
@@ -144,6 +144,11 @@ PhLVirtualMachine >> hash [
 ]
 
 { #category : #accessing }
+PhLVirtualMachine >> headlessFlavour [
+	^ '-headless'
+]
+
+{ #category : #accessing }
 PhLVirtualMachine >> id [
 	^ id
 ]
@@ -198,6 +203,11 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isHeadless [ 
+	^ flavour = self headlessFlavour
 ]
 
 { #category : #testing }

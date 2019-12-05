@@ -14,7 +14,8 @@ Class {
 		'name',
 		'imageArguments',
 		'usePharoSettings',
-		'vm'
+		'vm',
+		'vmArguments'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
@@ -65,6 +66,17 @@ PhLLaunchConfiguration class >> withImage: anImage [
 		yourself
 ]
 
+{ #category : #comparing }
+PhLLaunchConfiguration >> = anObject [
+
+	self == anObject
+		ifTrue: [ ^ true ].
+	self class = anObject class
+		ifFalse: [ ^ false ].
+
+	^ self name = anObject name
+]
+
 { #category : #querying }
 PhLLaunchConfiguration >> commandString [
 	^ self launchProcess commandLineString
@@ -84,6 +96,11 @@ PhLLaunchConfiguration >> doNotUseSettings [
 
 ]
 
+{ #category : #comparing }
+PhLLaunchConfiguration >> hash [ 
+	^ self name hash
+]
+
 { #category : #accessing }
 PhLLaunchConfiguration >> image [
 	^ image
@@ -92,6 +109,11 @@ PhLLaunchConfiguration >> image [
 { #category : #accessing }
 PhLLaunchConfiguration >> imageArguments [
 	^ imageArguments
+]
+
+{ #category : #accessing }
+PhLLaunchConfiguration >> imageArguments: aCollection [ 
+	imageArguments := aCollection
 ]
 
 { #category : #initialization }
@@ -138,6 +160,16 @@ PhLLaunchConfiguration >> vm [
 ]
 
 { #category : #accessing }
+PhLLaunchConfiguration >> vm: aPhLVirtualMachine [ 
+	vm := aPhLVirtualMachine
+]
+
+{ #category : #accessing }
 PhLLaunchConfiguration >> vmArguments [
 	^ OrderedCollection new
+]
+
+{ #category : #accessing }
+PhLLaunchConfiguration >> vmArguments: aCollection [ 
+	vmArguments := aCollection
 ]

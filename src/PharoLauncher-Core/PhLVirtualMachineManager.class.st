@@ -122,6 +122,7 @@ PhLVirtualMachineManager class >> privateVmStore [
 
 { #category : #initialization }
 PhLVirtualMachineManager class >> reset [
+	<script>
 	vmStore := nil
 ]
 

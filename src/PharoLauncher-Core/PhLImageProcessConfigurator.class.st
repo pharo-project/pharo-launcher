@@ -6,10 +6,8 @@ Class {
 	#superclass : #OSPlatformVisitor,
 	#instVars : [
 		'process',
-		'vmPath',
 		'launchInALoginShell',
-		'imageFile',
-		'usePharoSettings'
+		'launchConfiguration'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -19,6 +17,15 @@ PhLImageProcessConfigurator >> cleanLDLibraryPath [
 	^ (self currentLDLibraryPaths
 		reject: [ :path | path = FileLocator vmDirectory pathString ])
 
+]
+
+{ #category : #visiting }
+PhLImageProcessConfigurator >> configureVm [
+	super visit.	"platform specific behavior"
+	launchConfiguration vm isHeadless
+		ifTrue: [ process addArgument: launchConfiguration vm class headlessOptionString ].
+	launchConfiguration vmArguments 
+		do: [ :arg | process addArgument: arg ].
 ]
 
 { #category : #'private - unix' }
@@ -35,8 +42,13 @@ PhLImageProcessConfigurator >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> imageFile: anObject [
-	imageFile := anObject
+PhLImageProcessConfigurator >> imageFile [
+	^ launchConfiguration image imageFile
+]
+
+{ #category : #accessing }
+PhLImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguration [
+	launchConfiguration := aPhLLaunchConfiguration
 ]
 
 { #category : #accessing }
@@ -45,23 +57,21 @@ PhLImageProcessConfigurator >> launchInALoginShell: anObject [
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> usePharoSettings: anObject [
-	usePharoSettings := anObject
+PhLImageProcessConfigurator >> usePharoSettings [
+	^ launchConfiguration isUsingPharoSettings
 ]
 
 { #category : #visiting }
-PhLImageProcessConfigurator >> visit [ 
-	| imagePath |
-
-	imagePath := imageFile pathString.
+PhLImageProcessConfigurator >> visit [
 	process := PhLProcessWrapper new.
-	process workingDirectory: imageFile parent pathString.
-	
-	super visit. "add platform specific behavior"
-		
-	process addArgument: imagePath surroundedByDoubleQuotes.
-	usePharoSettings ifFalse: [ process addArgument: '--no-default-preferences' ].
-
+	process workingDirectory: self imageFile parent pathString.
+	self configureVm.
+	process
+		addArgument: self imageFile pathString surroundedByDoubleQuotes.
+	self usePharoSettings
+		ifFalse: [ process addArgument: '--no-default-preferences' ].
+	launchConfiguration imageArguments 
+		do: [ :arg | process addArgument: arg ].
 	^ process
 ]
 
@@ -69,8 +79,8 @@ PhLImageProcessConfigurator >> visit [
 PhLImageProcessConfigurator >> visitGeneric: aPlatform [
 	launchInALoginShell
 		ifTrue: [ process loginShellCommand.
-					process addArgument: vmPath surroundedByDoubleQuotes ]
-		ifFalse: [process command: vmPath "surroundedByDoubleQuotes" ].
+					process addArgument: self vmPath surroundedByDoubleQuotes ]
+		ifFalse: [process command: self vmPath "surroundedByDoubleQuotes" ].
 ]
 
 { #category : #visiting }
@@ -82,15 +92,15 @@ PhLImageProcessConfigurator >> visitUnix: aPlatform [
 	process 
 		addArguments: (self exportLDLibraryPathCommandWith: self vmDirectoryPath);
 		addArguments: '&& export SQUEAK_PLUGINS="" &&';
-		addArgument: vmPath.
+		addArgument: self vmPath.
 ]
 
 { #category : #private }
 PhLImageProcessConfigurator >> vmDirectoryPath [
-	^ vmPath asFileReference parent fullName
+	^ self vmPath asFileReference parent fullName
 ]
 
-{ #category : #accessing }
-PhLImageProcessConfigurator >> vmPath: anObject [
-	vmPath := anObject
+{ #category : #private }
+PhLImageProcessConfigurator >> vmPath [
+	^ launchConfiguration vm executablePath
 ]

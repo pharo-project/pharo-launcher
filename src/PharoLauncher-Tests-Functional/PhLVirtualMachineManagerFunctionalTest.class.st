@@ -135,53 +135,6 @@ PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersio
 ]
 
 { #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
-	| image command launchConfig |
-	image := PhLImage example.
-	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
-	launchConfig := image defaultLaunchConfiguration.
-	launchConfig vm executable: 'pharo'.
-	
-	[ command := launchConfig launchProcess ]
-	on: PhLMissingVirtualMachineError 
-	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
-	
-	self deny: (command arguments includes: '--no-default-preferences')
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
-	| image command launchConfig |
-	image := PhLImage example32.
-	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '20' ].
-	launchConfig := image defaultLaunchConfiguration.
-	launchConfig doNotUseSettings.
-	launchConfig vm executable: 'pharo'.
-	
-	[ command := launchConfig launchProcess ]
-	on: PhLMissingVirtualMachineError 
-	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
-	
-	self deny: (command arguments includes: '--no-default-preferences')
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
-	| image command launchConfig |
-	image := PhLImage example.
-	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
-	launchConfig := image defaultLaunchConfiguration.
-	launchConfig doNotUseSettings.
-	launchConfig vm executable: 'pharo'.
-	
-	[ command := launchConfig launchProcess ]
-	on: PhLMissingVirtualMachineError 
-	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
-	
-	self assert: (command arguments includes: '--no-default-preferences')
-]
-
-{ #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testImageVersionDeterminationIsRunWithoutSettings [
 	| manager command |
 	manager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.

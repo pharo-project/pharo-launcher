@@ -46,6 +46,11 @@ PhLVirtualMachine class >> executableName [
 	^ PlatformResolver forCurrentPlatform vmExecutableName
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine class >> headlessOptionString [
+	^ '--headless'
+]
+
 { #category : #'instance creation' }
 PhLVirtualMachine class >> id: aString [
 

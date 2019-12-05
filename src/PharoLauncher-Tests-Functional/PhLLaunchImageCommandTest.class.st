@@ -10,6 +10,29 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
+{ #category : #tests }
+PhLLaunchImageCommandTest >> pharo80HeadlessVm [
+	^ PhLVirtualMachineManager new virtualMachines
+		detect: [ :each | each id = '80-x64-headless' ]
+		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
+		ifNone: [ self fail: 'cannot find VM!' ]
+]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> prepare80imageIn: dir [
+	| imageFile |
+	ZnClient new
+		url: 'https://files.pharo.org/image/80/latest-minimal-64.zip';
+		downloadTo: dir / '80.zip'.
+	ZipArchive new
+		readFrom: dir / '80.zip';
+		extractAllTo: dir / '80'.
+	imageFile := (dir / '80' childrenMatching: '*.image') first.
+	dir / '80' / PhLImage versionFileName
+		writeStreamDo: [ :s | s nextPutAll: '80' ].
+	^ PhLImage location: imageFile.
+]
+
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
 	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
@@ -29,6 +52,31 @@ PhLLaunchImageCommandTest >> tearDown [
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.	
+]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> testCanLaunchImageWithHeadlessVM [
+	| dir vm image config |
+	dir := (FileLocator temp / ('PL-LaunchTest-' , UUIDGenerator next asString)) ensureCreateDirectory.
+	image := self prepare80imageIn: dir.
+	vm := self pharo80HeadlessVm.
+ 
+	config := image defaultLaunchConfiguration.
+	config
+		vm: vm;
+		vmArguments: #('--headless');
+		imageArguments:
+			#('eval' '"''result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"').
+			
+	image launchWithConfiguration: config.
+	1 second wait. "wait for file generation"
+	
+	self
+		assert: (dir / '80' / 'result') exists
+		description: 'Image run did not generate result file.'.
+	self
+		assert: (dir / '80' / 'result') contents
+		equals: '2'
 ]
 
 { #category : #tests }

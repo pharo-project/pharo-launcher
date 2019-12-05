@@ -21,7 +21,8 @@ Class {
 		'architecture',
 		'pharoVersion',
 		'originTemplate',
-		'vmManager'
+		'vmManager',
+		'launchConfigurations'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -136,8 +137,14 @@ PhLImage >> computePharoVersionWith: vmManager [
 
 { #category : #accessing }
 PhLImage >> defaultLaunchConfiguration [
+	^ launchConfigurations 
+		detect: [ :each | each name = PhLLaunchConfiguration defaultName ]
+		ifNone: [ PhLLaunchConfiguration defaultWithImage: self ]
+]
 
-	^ PhLLaunchConfiguration defaultWithImage: self
+{ #category : #accessing }
+PhLImage >> defaultLaunchConfigurationName [
+	^ 'Default'
 ]
 
 { #category : #accessing }
@@ -191,6 +198,11 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
+{ #category : #'initialize-release' }
+PhLImage >> initialize [
+	launchConfigurations := OrderedCollection new.
+]
+
 { #category : #testing }
 PhLImage >> isHighlighted [
 	^ false
@@ -209,6 +221,11 @@ PhLImage >> lastModification [
 { #category : #action }
 PhLImage >> launch [
 	^ self launchWithConfiguration: self defaultLaunchConfiguration 
+]
+
+{ #category : #accessing }
+PhLImage >> launchConfigurations: aCollection [ 
+	launchConfigurations := aCollection
 ]
 
 { #category : #action }

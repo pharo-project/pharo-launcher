@@ -35,7 +35,7 @@ PhLTemplateSources class >> checkForUpdates [
 	self fromFile checkForUpdates
 ]
 
-{ #category : #serializing }
+{ #category : #accessing }
 PhLTemplateSources class >> defaultSources [
 	^ OrderedCollection new 
 		add: PhLTemplateSource cacheGroup;
@@ -55,7 +55,7 @@ PhLTemplateSources class >> defaultSourcesUrl [
 	^ 'https://files.pharo.org/pharo-launcher/sources.list'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhLTemplateSources class >> downloadedSourcesFileLock [
 	^  DownloadedSourcesFileLock ifNil: [ DownloadedSourcesFileLock := Semaphore forMutualExclusion ].
 ]

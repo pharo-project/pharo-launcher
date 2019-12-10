@@ -8,7 +8,7 @@ try {
   println "Building Pharo Launcher $version"
   cleanUploadFolderIfNeeded(uploadDirectoryName())
   timeout(time: 60, unit: 'MINUTES') { 
-    buildArchitecture('32', '80')
+    // buildArchitecture('32', '80')
     buildArchitecture('64', '80')
   }
   finalizeUpload(uploadDirectoryName())

@@ -14,13 +14,21 @@ PhLCopyLaunchCommandTest >> setUp [
 
 { #category : #tests }
 PhLCopyLaunchCommandTest >> testCanCopyImageLaunchCommand [
-	| command |
+	| image config commandString |
+	image := presenter singleImage.
+	config := image defaultLaunchConfiguration
+		          doNotUseSettings;
+		          yourself.
+	image launchConfigurations: { config }.
+	presenter selection: image.
+	
 	PhLCopyLaunchCommand new
 		context: presenter;
 		execute.
-	
-	command := Clipboard clipboardText asString.
-	
-	self assert: (command beginsWith: 'bash -c ''cd "/TestImage" && ').
-	self assert: (command endsWith: ' "/TestImage/TestImage.image" --no-default-preferences''').
+		
+	commandString := Clipboard clipboardText asString.
+	self assert:
+		(commandString beginsWith: 'bash -c ''cd "/TestImage" && ').
+	self assert: (commandString endsWith:
+			 ' "/TestImage/TestImage.image" --no-default-preferences''')
 ]

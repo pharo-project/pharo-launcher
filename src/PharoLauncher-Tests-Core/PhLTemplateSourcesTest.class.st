@@ -69,7 +69,7 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
 	
 	announcements := OrderedCollection new. 
-	ZnClientTests new 
+	ZnClientTest new 
 	withServerDo: [ :server |
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
@@ -105,7 +105,7 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
 	
 	announcements := OrderedCollection new. 
-	ZnClientTests new 
+	ZnClientTest new 
 	withServerDo: [ :server |
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: false)) ].

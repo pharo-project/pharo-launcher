@@ -72,10 +72,9 @@ PhLVMPresenter >> datasource [
 PhLVMPresenter >> initializePresenters [
 	vmTable := self newTable
 		items: self datasource virtualMachines;
-		doubleClickAction: [ :selected | 
-			PhLShowVmInFolderCommand new
-				context: self;
-				execute  ];
+		whenActivatedDo: [ PhLShowVmInFolderCommand new
+									context: self;
+									execute  ];
 		addColumn: ((SpImageTableColumn evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid

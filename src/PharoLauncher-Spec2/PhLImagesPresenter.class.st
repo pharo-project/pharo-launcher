@@ -128,7 +128,7 @@ PhLImagesPresenter >> initializePresenters [
 	imageTable := self newTable
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
-		doubleClickAction: [ :selected | | cmd |
+		whenActivatedDo: [ | cmd |
 				cmd := (self rootCommandsGroup / 'Toolbar') commandOrGroupNamed: 'Launch'.
 				cmd execute. ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 350; yourself);

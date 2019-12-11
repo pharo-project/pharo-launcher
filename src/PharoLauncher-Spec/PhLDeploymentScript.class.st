@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'Save'
 	],
-	#category : 'PharoLauncher-Spec'
+	#category : #'PharoLauncher-Spec'
 }
 
 { #category : #actions }
@@ -59,11 +59,6 @@ PhLDeploymentScript class >> closeWindowsAndOpenLauncher [
 	self 
 		closeAllWindows;
 		openLauncher
-]
-
-{ #category : #settings }
-PhLDeploymentScript class >> deactivateDeployed [
-	PharoLauncherModel deactivateDeployed
 ]
 
 { #category : #actions }
@@ -149,12 +144,17 @@ PhLDeploymentScript class >> launcherStartUpPriority [
 
 { #category : #settings }
 PhLDeploymentScript class >> makeDeployed [
-	PharoLauncherModel makeDeployed
+	PharoLauncherApplication beDeployed
+]
+
+{ #category : #settings }
+PhLDeploymentScript class >> makeUndeployed [
+	PharoLauncherApplication beUndeployed
 ]
 
 { #category : #actions }
 PhLDeploymentScript class >> openLauncher [
-	PharoLauncher openFull
+	PharoLauncherApplication openFull
 ]
 
 { #category : #actions }
@@ -226,7 +226,7 @@ PhLDeploymentScript class >> undoAll [
 		activateStartupActions;
 		doRaiseWarningForMissingChangesOrSourcesFiles;
 		activateDeprecationWarnings;
-		deactivateDeployed;
+		makeUndeployed;
 		removeFromStartupList;
 		askForConfirmationWhenQuitting
 ]

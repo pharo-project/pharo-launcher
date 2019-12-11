@@ -13,8 +13,26 @@ Class {
 		'templateRepository',
 		'imagesPresenter'
 	],
+	#classVars : [
+		'IsDeployed'
+	],
 	#category : #'PharoLauncher-Spec2'
 }
+
+{ #category : #testing }
+PharoLauncherApplication class >> beDeployed [
+	IsDeployed := true
+]
+
+{ #category : #testing }
+PharoLauncherApplication class >> beUndeployed [
+	IsDeployed := false
+]
+
+{ #category : #testing }
+PharoLauncherApplication class >> isDeployed [
+	^ IsDeployed ifNil: [ IsDeployed := false ]
+]
 
 { #category : #'instance creation' }
 PharoLauncherApplication class >> open [

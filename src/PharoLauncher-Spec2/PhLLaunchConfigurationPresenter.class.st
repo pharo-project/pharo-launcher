@@ -15,10 +15,10 @@ Class {
 		'configurationTable',
 		'selectedConfiguration',
 		'selectedConfigurationNameField',
-		'imageArgumentsField',
-		'selectedConfigurationVmList',
-		'vmArgumentsField',
-		'saveConfigurationButton'
+		'saveConfigurationButton',
+		'vmList',
+		'vmArgumentList',
+		'imageArgumentList'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -36,19 +36,19 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		add:
 			(SpBoxLayout newHorizontal
 				add: 'VM:' withConstraints: self labelConstraintsBlock;
-				add: #selectedConfigurationVmList;
+				add: #vmList;
 				yourself)
 			height: self inputTextHeight;
 		add:
 			(SpBoxLayout newHorizontal
 				add: 'VM arguments:' withConstraints: self labelConstraintsBlock;
-				add: #vmArgumentsField;
+				add: #vmArgumentList;
 				yourself)
 			height: 200"80";
 		add:
 			(SpBoxLayout newHorizontal
 				add: 'Image arguments:' withConstraints: self labelConstraintsBlock;
-				add: #imageArgumentsField;
+				add: #imageArgumentList;
 				yourself)
 			height: 200"150";
 		add: 
@@ -118,18 +118,18 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 			self selectedConfigurationChanged ];
 		yourself.
 	selectedConfigurationNameField := self newTextInput
-		autoAccept: true;
+		disable;
 		yourself.
-	selectedConfigurationVmList := self newDropList
+	vmList := self newDropList
 		items: image vmManager virtualMachines;
 		display: [ :each | each id];
 		yourself.
-	vmArgumentsField := (self instantiate: SpEditableList)
+	vmArgumentList := (self instantiate: SpEditableList)
 		addItemBlock: [ self application newRequest
 			title: 'New VM argument?';
 			request ];
 		yourself.
-	imageArgumentsField := self instantiate: SpEditableList
+	imageArgumentList := self instantiate: SpEditableList
 		yourself.
 	saveConfigurationButton := self newButton
 		label: 'Save';
@@ -153,9 +153,9 @@ PhLLaunchConfigurationPresenter >> selectedConfiguration [
 PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [ 
 
 	selectedConfigurationNameField text: self selectedConfiguration name.
-	selectedConfigurationVmList selectItem: self selectedConfiguration vm.
-	vmArgumentsField items: self selectedConfiguration vmArguments.
-	imageArgumentsField items: self selectedConfiguration imageArguments.
+	vmList selectItem: self selectedConfiguration vm.
+	vmArgumentList items: self selectedConfiguration vmArguments.
+	imageArgumentList items: self selectedConfiguration imageArguments.
 
 ]
 

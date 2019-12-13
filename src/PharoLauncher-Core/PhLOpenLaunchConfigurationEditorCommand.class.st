@@ -3,7 +3,7 @@ Open Launch configuration editor for the selected image.
 "
 Class {
 	#name : #PhLOpenLaunchConfigurationEditorCommand,
-	#superclass : #PhLGeneralCommand,
+	#superclass : #PhLImageCommand,
 	#category : #'PharoLauncher-Core-Commands'
 }
 
@@ -17,8 +17,8 @@ PhLOpenLaunchConfigurationEditorCommand >> asSpecCommand [
 { #category : #executing }
 PhLOpenLaunchConfigurationEditorCommand >> execute [
 	^ (PhLLaunchConfigurationPresenter 
-			newApplication: self application
-			model: nil)
+			newApplication: self imagesPresenter application
+			model: self imagesPresenter singleImage)
 		openWithSpec;
 		yourself
 ]

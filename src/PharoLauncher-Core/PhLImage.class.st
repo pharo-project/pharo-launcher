@@ -224,6 +224,14 @@ PhLImage >> launch [
 ]
 
 { #category : #accessing }
+PhLImage >> launchConfigurations [
+	^ launchConfigurations
+		ifEmpty: [ launchConfigurations 
+						add: self defaultLaunchConfiguration;
+						yourself ]
+]
+
+{ #category : #accessing }
 PhLImage >> launchConfigurations: aCollection [ 
 	launchConfigurations := aCollection
 ]

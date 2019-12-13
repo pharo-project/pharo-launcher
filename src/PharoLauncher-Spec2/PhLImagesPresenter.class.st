@@ -11,9 +11,8 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageTable',
-		'launchButton',
-		'buttonBar',
-		'descriptionPanel'
+		'descriptionPanel',
+		'launchConfigurationList'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -83,7 +82,6 @@ PhLImagesPresenter class >> defaultSpec [
 			add: #imageTable;
 			add: #descriptionPanel;
 			yourself);
-		"add: #buttonBar expand: false fill: false padding: 0;"
 		yourself
 ]
 
@@ -108,6 +106,11 @@ PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 ]
 
 { #category : #private }
+PhLImagesPresenter >> editLaunchConfigurations [
+	(PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
+]
+
+{ #category : #private }
 PhLImagesPresenter >> ensure: aBoolean [
 	aBoolean
 		ifFalse: [ PhLCommandError signal ]
@@ -129,8 +132,9 @@ PhLImagesPresenter >> initializePresenters [
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ | cmd |
-				cmd := (self rootCommandsGroup / 'Toolbar') commandOrGroupNamed: 'Launch'.
+				cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
 				cmd execute. ];
+		whenSelectionChangedDo: [ :selection | self refreshLaunchConfigurationList ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 350; yourself);
 		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture) width: 80; yourself);
 		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion) width: 80; yourself);
@@ -149,10 +153,19 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
-		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
+		toolBar: self toolbarGroup asToolbarPresenter;
 		whenBuiltDo: [ :ann | ann model centered ];
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+	aWindowPresenter toolBar 
+		addItemLeft: self newLaunchConfigurationDropList afterIndex: 1.
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> newLaunchConfigurationDropList [
+	^ launchConfigurationList := SpDropListPresenter new
+			items: #();
+			yourself
 ]
 
 { #category : #private }
@@ -161,14 +174,42 @@ PhLImagesPresenter >> readableDateFor: aDateAndTime [
 	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime
 ]
 
-{ #category : #accessing }
+{ #category : #updating }
 PhLImagesPresenter >> refresh [ 
-	imageTable items: self imageRepository images
+	imageTable items: self imageRepository images.
+	self refreshLaunchConfigurationList
+]
+
+{ #category : #updating }
+PhLImagesPresenter >> refreshLaunchConfigurationList [
+	| image items |
+	image := self singleImage.
+	items := image launchConfigurations collect: [ :each | 
+			SpDropListItem new
+				model: each;
+				display: [ :config | config name ];
+				icon: (self iconNamed: #configuration);
+				yourself ].
+	items addFirst: (SpDropListItem new
+				model: 'Edit configurations ...';
+				action: [ self 
+					editLaunchConfigurations;
+					refreshLaunchConfigurationList ];
+				icon: (self iconNamed: #edit);
+				yourself ).
+	launchConfigurationList 
+		dropListItems: items;
+		selectItem: image defaultLaunchConfiguration.
 ]
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectedImages [
 	^ imageTable selectedItems
+]
+
+{ #category : #'api - accessing' }
+PhLImagesPresenter >> selectedLaunchConfiguration [
+	^ launchConfigurationList selectedItem
 ]
 
 { #category : #'api - selection' }
@@ -187,4 +228,9 @@ PhLImagesPresenter >> singleImageName [
 { #category : #'api - accessing' }
 PhLImagesPresenter >> templateRepository [
 	^ self application templateRepository
+]
+
+{ #category : #accessing }
+PhLImagesPresenter >> toolbarGroup [
+	^ self rootCommandsGroup / 'Toolbar'
 ]

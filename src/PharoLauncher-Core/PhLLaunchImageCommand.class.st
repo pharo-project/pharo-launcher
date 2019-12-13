@@ -116,7 +116,7 @@ PhLLaunchImageCommand >> initialize [
 { #category : #executing }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	[ | launchConfig |
-	launchConfig := aPhLImage defaultLaunchConfiguration.
+	launchConfig := self imagesPresenter selectedLaunchConfiguration.
 	useSettings ifFalse: [ launchConfig doNotUseSettings ].
 	aPhLImage launch. ]
 		on: PhLError

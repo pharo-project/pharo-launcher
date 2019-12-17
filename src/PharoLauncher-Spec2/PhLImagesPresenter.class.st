@@ -34,6 +34,7 @@ PhLImagesPresenter class >> buildContextualMenuGroup [
 		register: PhLDeleteImageCommand forSpec;
 		register: PhLShowImageInFolderCommand forSpec;
 		register: PhLCopyPathname forSpec;
+		register: PhLInspectCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]

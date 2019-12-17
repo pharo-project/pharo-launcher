@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'url'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #'as yet unclassified' }
@@ -39,6 +39,15 @@ PhLRemoteTemplate >> hash [
 PhLRemoteTemplate >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl
+]
+
+{ #category : #querying }
+PhLRemoteTemplate >> suggestedImageName [
+	| rxMatcher |
+	rxMatcher := '(\((\w+).zip\)).*' asRegex.
+	^ (rxMatcher matches: self name)
+		ifTrue: [ rxMatcher subexpression: 3 "extract zip filename" ]
+		ifFalse: [ self name ]
 ]
 
 { #category : #accessing }

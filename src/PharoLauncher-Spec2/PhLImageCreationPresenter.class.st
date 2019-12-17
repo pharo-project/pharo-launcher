@@ -75,7 +75,7 @@ PhLImageCreationPresenter >> modelChanged [
 	self template ifNil: [ ^ self ].
 	self template isTemplate
 		ifTrue: [ self enable.
-			imageName text: self template name ]
+			imageName text: self template suggestedImageName ]
 		ifFalse: [ self disable ]
 ]
 

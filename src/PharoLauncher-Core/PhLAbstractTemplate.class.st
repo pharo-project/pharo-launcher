@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #actions }
@@ -107,6 +107,11 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 { #category : #actions }
 PhLAbstractTemplate >> renameTo: aString [
 	name := aString
+]
+
+{ #category : #querying }
+PhLAbstractTemplate >> suggestedImageName [
+	^ self name
 ]
 
 { #category : #accessing }

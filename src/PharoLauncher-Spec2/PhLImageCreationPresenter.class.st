@@ -8,9 +8,9 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageName',
-		'initScript',
 		'createButton',
-		'launchConfiguration'
+		'initScriptText',
+		'initScript'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -21,44 +21,18 @@ PhLImageCreationPresenter class >> defaultSpec [
 		spacing: 5;
 		add: ''"New Image:'"
 			withConstraints: [ :constraints | constraints height: self labelHeight * 1.5 ];
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Image name:' withConstraints: self labelConstraintsBlock;
-				add: #imageName;
-				yourself)
-			height: self inputTextHeight;
-		add: 'Initialization script:' withConstraints: self labelConstraintsBlock;
-		add: #initScript height: 100;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Launch configuration:' withConstraints: self labelConstraintsBlock;
-				add: #launchConfiguration;
-				yourself)
-			height: self inputTextHeight;
-		add: #createButton
-			withConstraints: [ :constraints | 
-				constraints
-					height: self buttonHeight;
-					width: 100 ];
+		add: 'Image name:' expand: false;
+		add: #imageName expand: false;
+		add: 'Initialization script:' expand: false;
+		add: #initScript expand: false;
+		add: #initScriptText height: 100;
+		add: #createButton expand: false;
 		yourself
 ]
 
 { #category : #example }
 PhLImageCreationPresenter class >> example [
 	(self on: {PhLRemoteTemplate example}) openWithSpec
-]
-
-{ #category : #specs }
-PhLImageCreationPresenter class >> labelConstraintsBlock [
-	^ [ :constraints | 
-	constraints
-		height: self labelHeight;
-		width: self labelWidth ]
-]
-
-{ #category : #specs }
-PhLImageCreationPresenter class >> labelWidth [
-	^ 125
 ]
 
 { #category : #closing }

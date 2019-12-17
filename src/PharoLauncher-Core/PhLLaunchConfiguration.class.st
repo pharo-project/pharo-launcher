@@ -108,7 +108,7 @@ PhLLaunchConfiguration >> image [
 
 { #category : #accessing }
 PhLLaunchConfiguration >> imageArguments [
-	^ imageArguments
+	^ imageArguments ifNil: [ OrderedCollection new ]
 ]
 
 { #category : #accessing }
@@ -153,18 +153,19 @@ PhLLaunchConfiguration >> name: aString [
 
 { #category : #accessing }
 PhLLaunchConfiguration >> vm [
-	^ vm ifNil: [ vm := self defaultVm ]
+	^ vm ifNil: [ self vm: self defaultVm. vm ]
 
 ]
 
 { #category : #accessing }
 PhLLaunchConfiguration >> vm: aPhLVirtualMachine [ 
-	vm := aPhLVirtualMachine
+	vm := aPhLVirtualMachine.
+	vm manager: self image vmManager.
 ]
 
 { #category : #accessing }
 PhLLaunchConfiguration >> vmArguments [
-	^ OrderedCollection new
+	^ vmArguments ifNil: [ OrderedCollection new ]
 ]
 
 { #category : #accessing }

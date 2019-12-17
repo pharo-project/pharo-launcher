@@ -127,3 +127,14 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag
 	
 	self assert: (command arguments includes: '--no-default-preferences')
 ]
+
+{ #category : #tests }
+PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
+	| launchConfig |
+	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig vm executable: 'pharo'.
+	
+	self 
+		assert: launchConfig image vmManager
+		identicalTo: launchConfig vm manager
+]

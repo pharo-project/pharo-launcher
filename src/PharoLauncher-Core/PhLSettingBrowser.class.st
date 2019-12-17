@@ -4,7 +4,7 @@ I'm exactly the same as the standard settings browser except I save to a dedicat
 Class {
 	#name : #PhLSettingBrowser,
 	#superclass : #SettingBrowser,
-	#category : 'PharoLauncher-Core-Settings'
+	#category : #'PharoLauncher-Core-Settings'
 }
 
 { #category : #'class initialization' }
@@ -15,7 +15,7 @@ PhLSettingBrowser class >> initialize [
 
 { #category : #'system startup' }
 PhLSettingBrowser class >> launcherStartUp [
-	PharoLauncherModel isDeployed
+	PharoLauncherApplication isDeployed
 		ifFalse: [ ^ self ].
 	self preferencesFile ifNotNil: [ self new treeHolder updateSettingNodes ]
 ]

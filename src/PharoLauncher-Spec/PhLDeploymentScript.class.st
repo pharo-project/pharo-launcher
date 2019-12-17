@@ -128,7 +128,7 @@ PhLDeploymentScript class >> initialize [
 
 { #category : #settings }
 PhLDeploymentScript class >> isDeployed [
-	^ PharoLauncherModel isDeployed
+	^ PharoLauncherApplication isDeployed
 ]
 
 { #category : #'system startup' }

@@ -366,11 +366,6 @@ PhLImage >> versionFile [
 	^ self file parent / self class versionFileName
 ]
 
-{ #category : #action }
-PhLImage >> vm [
-	^ (PhLVirtualMachineManager forImage: file pathString) vmFileName
-]
-
 { #category : #'private - accessing' }
 PhLImage >> vmManager [
 	^ vmManager ifNil: [ vmManager := PhLVirtualMachineManager forImage: self file ]

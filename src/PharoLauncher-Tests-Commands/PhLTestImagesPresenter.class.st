@@ -56,6 +56,11 @@ PhLTestImagesPresenter >> initialize [
 	request := PhLTestRequest new.
 ]
 
+{ #category : #acccessing }
+PhLTestImagesPresenter >> launchConfigurations [
+	^ launchConfigurationList listItems allButFirst
+]
+
 { #category : #'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
@@ -64,6 +69,11 @@ PhLTestImagesPresenter >> newConfirmation [
 { #category : #'user interaction' }
 PhLTestImagesPresenter >> newRequest [
 	^ request
+]
+
+{ #category : #updating }
+PhLTestImagesPresenter >> refreshLaunchConfigurationList [
+	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
 ]
 
 { #category : #configuring }
@@ -92,7 +102,7 @@ PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
 
 { #category : #selection }
 PhLTestImagesPresenter >> singleImage [
-	^ selection ifNil: [ PhLImage location: fileSystem root / self singleImageName / (self singleImageName , '.image') ]
+	^ selection ifNil: [ selection := PhLImage location: fileSystem root / self singleImageName / (self singleImageName , '.image') ]
 ]
 
 { #category : #selection }

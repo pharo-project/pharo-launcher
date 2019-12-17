@@ -94,6 +94,14 @@ PhLImage class >> versionFileName [
 	^ 'pharo.version'
 ]
 
+{ #category : #adding }
+PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
+	launchConfigurations 
+		detect: [ :each | each name = aPhLLaunchConfiguration name ]
+		ifFound: [ PhLError signal: 'Cannot add configuration! A configuration with the same name already exists.' ]
+		ifNone: [ launchConfigurations add: aPhLLaunchConfiguration ]
+]
+
 { #category : #accessing }
 PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]

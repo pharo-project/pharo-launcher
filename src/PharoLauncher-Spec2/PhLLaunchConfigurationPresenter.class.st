@@ -18,7 +18,8 @@ Class {
 		'saveConfigurationButton',
 		'vmList',
 		'vmArgumentList',
-		'imageArgumentList'
+		'imageArgumentList',
+		'onClosedBlock'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -106,12 +107,10 @@ PhLLaunchConfigurationPresenter >> image [
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> initializePresenters [
 	configurationTable := (self instantiate: SpEditableList)
-		addItemBlock: [ self application newRequest
-			title: 'New Launch configuration name?';
-			request ];
+		addItemBlock: [ self newConfiguration ];
 		label: 'Launch configurations';
-		items: {self image defaultLaunchConfiguration};
-		display: #name;
+		items: self image launchConfigurations;
+		display: [ :each | each name ];
 		whenSelectionChangedDo: [ :selection | 
 			selectedConfiguration := selection selectedItem
 				ifNil: [ PhLNullLaunchConfiguration new ].
@@ -134,6 +133,7 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 	saveConfigurationButton := self newButton
 		label: 'Save';
 		icon: (self iconNamed: #smallSave);
+		action: [ self saveSelectedConfiguration ];
 		yourself.
 ]
 
@@ -141,7 +141,40 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self image name, ' image launch configurations';
-		initialExtent: 800@550"400".
+		initialExtent: 800@550;
+		whenClosedDo: [ onClosedBlock value ]..
+]
+
+{ #category : #initialization }
+PhLLaunchConfigurationPresenter >> newConfiguration [
+	| newName configuration |
+	newName := self application newRequest
+			title: 'New Launch configuration name?';
+			validateAnswer: [ :answer | 
+				self image launchConfigurations noneSatisfy: [ :each | each name = answer ] ];
+			request.
+	newName ifNil: [ ^ nil ].
+	
+	configuration := (PhLLaunchConfiguration  withImage: self image)
+		name: newName;
+		yourself.
+	self image addLaunchConfiguration: configuration.
+	^ configuration
+]
+
+{ #category : #action }
+PhLLaunchConfigurationPresenter >> onClosedBlock: aBlock [ 
+	onClosedBlock := aBlock
+]
+
+{ #category : #action }
+PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
+	| config |
+	config := self selectedConfiguration.
+	config imageArguments: imageArgumentList displayedItems.
+	config vmArguments: vmArgumentList displayedItems.
+	config vm: vmList selectedItem.
+	self image serializeMetadata.
 ]
 
 { #category : #accessing }

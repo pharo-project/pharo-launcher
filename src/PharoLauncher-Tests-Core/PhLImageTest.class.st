@@ -61,6 +61,30 @@ PhLImageTest >> testCanInitializeImageFromMetadatafile [
 ]
 
 { #category : #tests }
+PhLImageTest >> testCanSerializeAndDeserializeImageLaunchConfigurationMetadata [
+	| deserializedImage launchConfig deserializedLaunchConfig |
+	image 	launchConfigurations. "Add default launch ocnfig to the list of configurations"
+	launchConfig := image defaultLaunchConfiguration 
+		imageArguments: #('foo');
+		vmArguments: #(1 2);
+		yourself.
+		
+	deserializedImage := STON fromString: image stonString.
+	deserializedLaunchConfig := deserializedImage defaultLaunchConfiguration.
+
+	self
+		assert: deserializedLaunchConfig name 
+		equals: launchConfig name.
+	self
+		assertCollection: deserializedLaunchConfig imageArguments  
+		hasSameElements: launchConfig imageArguments.
+	self
+		assertCollection: deserializedLaunchConfig vmArguments  
+		hasSameElements: launchConfig vmArguments.
+
+]
+
+{ #category : #tests }
 PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 	| deserializedImage |
 	image 

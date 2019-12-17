@@ -108,7 +108,7 @@ PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 
 { #category : #private }
 PhLImagesPresenter >> editLaunchConfigurations [
-	(PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
+	^ (PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
 ]
 
 { #category : #private }
@@ -201,6 +201,11 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 	launchConfigurationList 
 		dropListItems: items;
 		selectItem: image defaultLaunchConfiguration.
+]
+
+{ #category : #'api - selection' }
+PhLImagesPresenter >> selectImageAt: anIndex [
+	imageTable selectIndex: anIndex
 ]
 
 { #category : #'api - selection' }

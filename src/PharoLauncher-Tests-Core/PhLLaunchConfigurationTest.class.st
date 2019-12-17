@@ -50,6 +50,31 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
+	| launchConfig deserializedConfig |
+	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig vm executable: 'pharo'.
+	launchConfig
+		vmArguments: #(1 2 3);
+		imageArguments: #(#A #B).
+	
+	deserializedConfig := STON fromString: (STON toStringPretty: launchConfig).
+	
+	self
+		assert: deserializedConfig name 
+		equals: launchConfig name.
+	self
+		assertCollection: deserializedConfig vmArguments
+		hasSameElements: launchConfig vmArguments.
+	self
+		assertCollection: deserializedConfig imageArguments
+		hasSameElements: launchConfig imageArguments.
+	self 
+		assert: deserializedConfig vm
+		equals: launchConfig vm
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].

@@ -40,6 +40,17 @@ PhLImageCreationPresenter >> close [
 	self window ifNotNil: [ :window | window close ]
 ]
 
+{ #category : #'as yet unclassified' }
+PhLImageCreationPresenter >> disable [
+	createButton disable.	
+	imageName text: ''
+]
+
+{ #category : #'as yet unclassified' }
+PhLImageCreationPresenter >> enable [
+	createButton enable.
+]
+
 { #category : #accessing }
 PhLImageCreationPresenter >> imageName [
 	^ imageName text
@@ -50,8 +61,8 @@ PhLImageCreationPresenter >> initializePresenters [
 	imageName := self newTextInput
 		autoAccept: true;
 		yourself.
-	initScript := self newText.
-	launchConfiguration := self newDropList.
+	initScriptText := self newText.
+	initScript := self newDropList.
 	
 	(PhLCreateImageFromTemplateCommand forSpecContext: owner)
 	in: [ :createImageCommand |
@@ -62,8 +73,10 @@ PhLImageCreationPresenter >> initializePresenters [
 { #category : #initialization }
 PhLImageCreationPresenter >> modelChanged [ 
 	self template ifNil: [ ^ self ].
-	
-	imageName text: self template name.
+	self template isTemplate
+		ifTrue: [ self enable.
+			imageName text: self template name ]
+		ifFalse: [ self disable ]
 ]
 
 { #category : #initialization }

@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'Save'
 	],
-	#category : #'PharoLauncher-Spec'
+	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #actions }

@@ -1,6 +1,6 @@
 Extension { #name : #SettingTreeBuilder }
 
-{ #category : #'*pharoLauncher-Spec' }
+{ #category : #'*PharoLauncher-Spec2' }
 SettingTreeBuilder >> pharoLauncherSettings [
 	"Process a <pharoLauncherSettings> pragma"
 	self systemsettings

@@ -1,11 +1,11 @@
 Extension { #name : #Duration }
 
-{ #category : #'*PharoLauncher-Spec' }
+{ #category : #'*PharoLauncher-Spec2' }
 Duration >> simpleTime: aString ago: aCount [
 	^ aCount asFloat floor asString , ' ' , (aString asPluralBasedOn: aCount) , ' ago'
 ]
 
-{ #category : #'*PharoLauncher-Spec' }
+{ #category : #'*PharoLauncher-Spec2' }
 Duration >> simpleTimeAgo [
 	"Maybe there is a better way to do that, but for now I'll let it like this."
 	

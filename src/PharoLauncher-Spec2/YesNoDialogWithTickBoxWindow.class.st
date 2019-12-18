@@ -6,7 +6,7 @@ self confirm: 'Is this widget fine?' label: 'Title'
 Class {
 	#name : #YesNoDialogWithTickBoxWindow,
 	#superclass : #QuestionWithoutCancelDialogWindow,
-	#category : 'PharoLauncher-Spec'
+	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #'ui requests' }

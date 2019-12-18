@@ -11,7 +11,7 @@ Example:
 Class {
 	#name : #PhLDateAndTimeDisplayStrategy,
 	#superclass : #PhLAbstractDateDisplayStrategy,
-	#category : 'PharoLauncher-Spec'
+	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #accessing }

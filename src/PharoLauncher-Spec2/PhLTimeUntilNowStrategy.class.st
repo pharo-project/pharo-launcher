@@ -13,7 +13,7 @@ Example:
 Class {
 	#name : #PhLTimeUntilNowStrategy,
 	#superclass : #PhLAbstractDateDisplayStrategy,
-	#category : 'PharoLauncher-Spec'
+	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #accessing }

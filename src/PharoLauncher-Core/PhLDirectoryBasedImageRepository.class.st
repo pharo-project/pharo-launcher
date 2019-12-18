@@ -18,7 +18,7 @@ Class {
 		'Default',
 		'Location'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #'instance creation' }
@@ -86,12 +86,11 @@ PhLDirectoryBasedImageRepository class >> locationString: aDirectoryString [
 { #category : #private }
 PhLDirectoryBasedImageRepository class >> migrateFrom: oldLocation to: newLocation [
 	(oldLocation exists and: [ (self forDirectory: oldLocation) hasImages ])
-		ifTrue: [ 
-			| command |
-			command := PhLRelocateImageDirectoryCommand new
+		ifTrue: 
+			[ PhLRelocateImageDirectoryCommand new
 				source: oldLocation;
 				target: newLocation;
-				executeOrInform ]
+				execute ]
 ]
 
 { #category : #settings }

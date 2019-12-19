@@ -171,8 +171,8 @@ PhLLaunchConfigurationPresenter >> onClosedBlock: aBlock [
 PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	| config |
 	config := self selectedConfiguration.
-	config imageArguments: imageArgumentList displayedItems.
-	config vmArguments: vmArgumentList displayedItems.
+	config imageArguments: imageArgumentList items.
+	config vmArguments: vmArgumentList items.
 	config vm: vmList selectedItem.
 	self image serializeMetadata.
 ]

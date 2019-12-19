@@ -145,7 +145,7 @@ PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 		whenClosedDo: [ onClosedBlock value ]..
 ]
 
-{ #category : #initialization }
+{ #category : #action }
 PhLLaunchConfigurationPresenter >> newConfiguration [
 	| newName configuration |
 	newName := self application newRequest
@@ -158,7 +158,6 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 	configuration := (PhLLaunchConfiguration  withImage: self image)
 		name: newName;
 		yourself.
-	self image addLaunchConfiguration: configuration.
 	^ configuration
 ]
 

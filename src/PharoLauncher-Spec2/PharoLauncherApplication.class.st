@@ -17,6 +17,7 @@ Class {
 	#classVars : [
 		'Default',
 		'IsDeployed',
+		'TemplateRepository',
 		'TemplatesClearedOnStartup'
 	],
 	#classInstVars : [
@@ -106,6 +107,11 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
+{ #category : #initialization }
+PharoLauncherApplication class >> resetTemplateRepository [
+	TemplateRepository := nil
+]
+
 { #category : #settings }
 PharoLauncherApplication class >> settingsOn: aBuilder [
 	<systemsettings>
@@ -136,9 +142,9 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 		]
 ]
 
-{ #category : #settings }
+{ #category : #accessing }
 PharoLauncherApplication class >> templatesClearedOnStartup [
-	^ TemplatesClearedOnStartup ifNil: [  TemplatesClearedOnStartup := false ].
+	^ TemplatesClearedOnStartup ifNil: [ TemplatesClearedOnStartup := false ].
 ]
 
 { #category : #settings }
@@ -170,12 +176,15 @@ PharoLauncherApplication >> imageRepositoryChanged [
 PharoLauncherApplication >> initialize [ 
 	openInWorld := false.
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
+	self templatesClearedOnStartup 
+		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository
 ]
 
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
-	templateRepository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build.
+	templateRepository := TemplateRepository 
+		ifNil: [ TemplateRepository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build ] 
 ]
 
 { #category : #running }
@@ -200,4 +209,9 @@ PharoLauncherApplication >> templateRepository [
 { #category : #accessing }
 PharoLauncherApplication >> templateRepository: aPhLTemplateGroupRepository [
 	templateRepository := aPhLTemplateGroupRepository
+]
+
+{ #category : #accessing }
+PharoLauncherApplication >> templatesClearedOnStartup [
+	^ self class templatesClearedOnStartup
 ]

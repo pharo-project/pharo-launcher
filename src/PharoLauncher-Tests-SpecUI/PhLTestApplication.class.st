@@ -11,6 +11,21 @@ Class {
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
 
+{ #category : #confirmation }
+PhLTestApplication >> confirm [
+	^ true
+]
+
+{ #category : #confirmation }
+PhLTestApplication >> message: aString [ 
+	"do nothing"
+]
+
+{ #category : #confirmation }
+PhLTestApplication >> newConfirmation [
+	"do nothing"
+]
+
 { #category : #request }
 PhLTestApplication >> newRequest [
 	"do nothing"

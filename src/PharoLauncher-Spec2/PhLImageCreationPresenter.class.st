@@ -10,7 +10,8 @@ Class {
 		'imageName',
 		'createButton',
 		'initScriptText',
-		'initScript'
+		'initScript',
+		'editInitScriptButton'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -24,7 +25,11 @@ PhLImageCreationPresenter class >> defaultSpec [
 		add: 'Image name:' expand: false;
 		add: #imageName expand: false;
 		add: 'Initialization script:' expand: false;
-		add: #initScript expand: false;
+		add: (SpBoxLayout newHorizontal 
+			add: #initScript;
+			add: #editInitScriptButton expand: false;
+			yourself)
+			expand: false;
 		add: #initScriptText height: 100;
 		add: #createButton expand: false;
 		yourself
@@ -40,13 +45,13 @@ PhLImageCreationPresenter >> close [
 	self window ifNotNil: [ :window | window close ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuring }
 PhLImageCreationPresenter >> disable [
 	createButton disable.	
 	imageName text: ''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #configuring }
 PhLImageCreationPresenter >> enable [
 	createButton enable.
 ]
@@ -57,12 +62,27 @@ PhLImageCreationPresenter >> imageName [
 ]
 
 { #category : #initialization }
+PhLImageCreationPresenter >> initializationScripts [
+	^ self application scriptsDirectory files
+]
+
+{ #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
 	imageName := self newTextInput
 		autoAccept: true;
 		yourself.
 	initScriptText := self newText.
-	initScript := self newDropList.
+	initScript := self newDropList
+		items: self initializationScripts;
+		display: [ :file | file basename ];
+		whenSelectionChangedDo: [ :selection | 
+			initScriptText text: selection selectedItem model contents ];
+		yourself.
+	editInitScriptButton := self newButton 
+		addStyle: 'small';
+		action: [ self openScriptPresenter ];
+		icon: (self iconNamed: #edit);
+		yourself.
 	
 	(PhLCreateImageFromTemplateCommand forSpecContext: owner)
 	in: [ :createImageCommand |
@@ -77,6 +97,14 @@ PhLImageCreationPresenter >> modelChanged [
 		ifTrue: [ self enable.
 			imageName text: self template suggestedImageName ]
 		ifFalse: [ self disable ]
+]
+
+{ #category : #action }
+PhLImageCreationPresenter >> openScriptPresenter [
+	(PhLScriptPresenter 
+		newApplication: self application 
+		model: self application scriptsDirectory )
+		openWithSpec
 ]
 
 { #category : #initialization }

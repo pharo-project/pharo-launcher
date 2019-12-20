@@ -12,7 +12,8 @@ Class {
 		'imageRepository',
 		'templateRepository',
 		'imagesPresenter',
-		'openInWorld'
+		'openInWorld',
+		'scriptsDirectory'
 	],
 	#classVars : [
 		'Default',
@@ -42,6 +43,11 @@ PharoLauncherApplication class >> default [
 ]
 
 { #category : #settings }
+PharoLauncherApplication class >> defaultInitializationScriptLocation [
+	^ PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'scripts' 
+]
+
+{ #category : #settings }
 PharoLauncherApplication class >> hardResetPersistanceState [
 	^false
 ]
@@ -66,6 +72,33 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 			thenDo: [ :class | class classPool keys do: [ :key | class classPool at: key put: nil ] ] ].
 
 	self open.
+]
+
+{ #category : #accessing }
+PharoLauncherApplication class >> initializationScriptsDirectory [
+	^ self default scriptsDirectory
+]
+
+{ #category : #accessing }
+PharoLauncherApplication class >> initializationScriptsDirectory: aFileUrl [
+	| directory |
+	directory := aFileUrl asFileReference.
+	self default scriptsDirectory: directory.
+	^ directory ensureCreateDirectory
+	
+]
+
+{ #category : #settings }
+PharoLauncherApplication class >> initializationScriptsLocation [
+	" Used to display a nice file url in settings browser"
+	^ self initializationScriptsDirectory pathString 
+	
+]
+
+{ #category : #settings }
+PharoLauncherApplication class >> initializationScriptsLocation: aFileUrl [
+	" Used to display a nice file url in settings browser"
+	^ self initializationScriptsDirectory: aFileUrl
 ]
 
 { #category : #testing }
@@ -128,7 +161,15 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 								'When enabled, Launcher startup clears the Templates List. ' , String cr
 										, 'When disabled, Launcher startup retains the Templates List from last run.' translated.
 		
-					(aBuilder setting: #hardResetPersistanceState)
+					(aBuilder setting: #initializationScriptsLocation)
+						label: 'Location of your image initialization scripts' translated;
+						type: #Directory;
+						parent: #pharoLauncher;
+						target: self;
+						order: 40;
+						description: 'A directory where all your Pharo images initialization scripts will be saved (executed once at image creation)'.
+		
+							(aBuilder setting: #hardResetPersistanceState)
 						label: 'Hard reset persistent state' translated;
 						target: self;
 						order: 70;
@@ -199,6 +240,17 @@ PharoLauncherApplication >> run [
 		open: imagesPresenter 
 		withSpecLayout: imagesPresenter defaultSpec
 		using: presenterClass
+]
+
+{ #category : #accessing }
+PharoLauncherApplication >> scriptsDirectory [
+	^ (scriptsDirectory 
+		ifNil: [ self class initializationScriptsDirectory: self class defaultInitializationScriptLocation ]) 	ensureCreateDirectory
+]
+
+{ #category : #accessing }
+PharoLauncherApplication >> scriptsDirectory: aFileReference [
+	scriptsDirectory := aFileReference
 ]
 
 { #category : #accessing }

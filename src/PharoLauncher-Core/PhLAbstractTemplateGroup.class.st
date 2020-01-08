@@ -11,12 +11,20 @@ Class {
 	#instVars : [
 		'isHighlighted'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
 PhLAbstractTemplateGroup >> children [
-	^ self templatesAndGroups
+	^ [ self templatesAndGroups ]
+		on: PhLDownloadError
+		do: [ :error | | children |
+			PhlRetryPresenter new
+				explanation: error longDescription;
+				retryBlock: [ children := self children ];
+				cancelBlock: [ children := #() ];
+				openModalWithSpec.
+			children ]
 ]
 
 { #category : #accessing }

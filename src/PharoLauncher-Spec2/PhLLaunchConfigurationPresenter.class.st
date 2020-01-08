@@ -142,7 +142,7 @@ PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self image name, ' image launch configurations';
 		initialExtent: 800@550;
-		whenClosedDo: [ onClosedBlock value ]..
+		whenClosedDo: [ onClosedBlock value ].
 ]
 
 { #category : #action }

@@ -13,7 +13,7 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #accessing }
@@ -48,8 +48,15 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 
 { #category : #action }
 PhLDownloadManager >> download: url toFile: destinationFile [
-	destinationFile ensureDelete. "ensure download will not fail if zip file already exists"
-	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: destinationFile ]
+	[ destinationFile ensureDelete. "ensure download will not fail if zip file already exists"
+	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: destinationFile ] ]
+	on: PhLDownloadError 
+	do: [ :error |
+			PhlRetryPresenter new
+				explanation: error longDescription;
+				retryBlock: [ self download: url toFile: destinationFile ];
+				cancelBlock: [ error pass ];
+				openModalWithSpec. ]
 ]
 
 { #category : #private }

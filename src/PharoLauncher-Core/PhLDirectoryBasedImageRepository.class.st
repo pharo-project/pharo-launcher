@@ -157,11 +157,12 @@ PhLDirectoryBasedImageRepository >> ensureNoImageWithName: anImageName [
 
 { #category : #action }
 PhLDirectoryBasedImageRepository >> extractTemplate: aTemplate to: anImageName [
-	| destination |
+	| destination image |
 	self ensureNoImageWithName: anImageName.
 	destination := self prepareForNewImageNamed: anImageName.
-	aTemplate extractTo: destination named: anImageName.
+	image := aTemplate extractTo: destination named: anImageName.
 	self contentsChanged.
+	^ image
 ]
 
 { #category : #testing }

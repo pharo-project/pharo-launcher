@@ -4,8 +4,19 @@ Extract the selected template to a new image.
 Class {
 	#name : #PhLCreateImageFromTemplateCommand,
 	#superclass : #PhLTemplateCommand,
+	#instVars : [
+		'image'
+	],
 	#category : #'PharoLauncher-Core-Commands'
 }
+
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
+	| initScript |
+	initScript := self templatesPresenter initializationScript.
+	(initScript exists and: [ initScript contents isNotEmpty ])
+		ifTrue: [ image initializationScript: initScript ].
+]
 
 { #category : #converting }
 PhLCreateImageFromTemplateCommand >> asSpecCommand [
@@ -22,10 +33,12 @@ PhLCreateImageFromTemplateCommand >> execute [
 	name := self templatesPresenter imageName.
 	name isEmptyOrNil ifTrue: [ ^ self ].
 	
-	[ self templatesPresenter imageRepository 
+	[ image := self templatesPresenter imageRepository 
 		extractTemplate: self templatesPresenter singleTemplate 
 		to: name.
-	self templatesPresenter application imageRepositoryChanged. ]
+	self addInitializationScriptMetadataIfPresent.
+	self templatesPresenter application imageRepositoryChanged.
+	^ image ]
 	on: PhLCorruptedTemplateError
 	do: [ :error | UIManager default alert: 'This template appears to be corrupted! Please try again.' ].
 ]

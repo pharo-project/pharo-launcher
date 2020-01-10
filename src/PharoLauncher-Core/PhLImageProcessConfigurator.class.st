@@ -19,6 +19,18 @@ PhLImageProcessConfigurator >> cleanLDLibraryPath [
 
 ]
 
+{ #category : #private }
+PhLImageProcessConfigurator >> configurePotentialInitializationScript [
+	launchConfiguration image shouldRunInitializationScript 
+		ifFalse: [ ^ self ].
+		
+	launchConfiguration image initializationScript 
+		ifNotNil: [ :script | 
+						process 
+							addArgument: 'eval';
+							addArgument: script fullName surroundedByDoubleQuotes ].
+]
+
 { #category : #visiting }
 PhLImageProcessConfigurator >> configureVm [
 	super visit.	"platform specific behavior"
@@ -70,6 +82,7 @@ PhLImageProcessConfigurator >> visit [
 		addArgument: self imageFile pathString surroundedByDoubleQuotes.
 	self usePharoSettings
 		ifFalse: [ process addArgument: '--no-default-preferences' ].
+	self configurePotentialInitializationScript.
 	launchConfiguration imageArguments 
 		do: [ :arg | process addArgument: arg ].
 	^ process

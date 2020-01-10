@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'scriptTable',
 		'fileEditor',
-		'saveButton'
+		'saveButton',
+		'scriptListChangedBlock'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -83,16 +84,24 @@ PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 800@550.
 ]
 
-{ #category : #'instance creation' }
+{ #category : #action }
 PhLScriptPresenter >> newScript [
 	| newName |
 	newName := self application newRequest
 			title: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.
-	newName ifNil: [ ^ nil ].
+	^ self newScriptNamed: newName
+]
+
+{ #category : #action }
+PhLScriptPresenter >> newScriptNamed: aName [
+	| file |
+	aName ifNil: [ ^ nil ].
 	
-	^ (self scriptDirectory / newName) ensureCreateFile
+	file := (self scriptDirectory / aName) ensureCreateFile.
+	self scriptListChanged.
+	^ file
 ]
 
 { #category : #action }
@@ -105,7 +114,7 @@ PhLScriptPresenter >> removeScript: aFileReference [
 		
 	aFileReference ensureDelete.
 	scriptTable	removeItem: aFileReference.
-	scriptTable refresh.
+	self scriptListChanged.
 
 ]
 
@@ -113,6 +122,9 @@ PhLScriptPresenter >> removeScript: aFileReference [
 PhLScriptPresenter >> saveSelectedScript [
 	| file |
 	file := scriptTable selectedItem.
+	file ifNil: [ ^ self application newInformation
+		message: 'Cannot save: no script selected!';
+		inform ].
 	file
 		ensureDelete;
 		writeStreamDo: [ :stream | stream nextPutAll: fileEditor text asString ]
@@ -123,12 +135,25 @@ PhLScriptPresenter >> scriptDirectory [
 	^ self model 
 ]
 
+{ #category : #action }
+PhLScriptPresenter >> scriptListChanged [
+	scriptTable refresh.
+	scriptListChangedBlock ifNotNil: [ scriptListChangedBlock cull: self ].
+]
+
 { #category : #accessing }
 PhLScriptPresenter >> scripts [
-	^ self scriptDirectory files asSortedCollection 
+	^ (self scriptDirectory files 
+		select: [ :file | file extension = 'st' ])
+			asSortedCollection 
 ]
 
 { #category : #action }
 PhLScriptPresenter >> selectScript: aFileReference [
 	^ scriptTable selectItem: aFileReference
+]
+
+{ #category : #events }
+PhLScriptPresenter >> whenScriptListChanged: aBlock [ 
+	scriptListChangedBlock := aBlock.
 ]

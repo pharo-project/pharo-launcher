@@ -103,3 +103,17 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginS
 	PhLLaunchConfiguration launchInALoginShell: true.
 	self testCanLaunchImageWithNonAsciiCharacters.
 ]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
+	| image |
+	
+	FileLocator image copyTo: imageDir / FileLocator image basename.
+	image := PhLImage location: imageDir / FileLocator image basename.
+	image initializationScript: '.' asFileReference.
+	
+	image launch.
+	
+	image := PhLImage location: imageDir / FileLocator image basename. "read image metadata from disk"
+	self deny: image shouldRunInitializationScript.
+]

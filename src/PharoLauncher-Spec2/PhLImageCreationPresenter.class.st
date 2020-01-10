@@ -61,33 +61,45 @@ PhLImageCreationPresenter >> imageName [
 	^ imageName text
 ]
 
+{ #category : #accessing }
+PhLImageCreationPresenter >> initializationScript [
+	^ initScript selectedItem
+]
+
+{ #category : #initialization }
+PhLImageCreationPresenter >> initializationScriptItems [
+	^ self initializationScripts copyWithFirst: self noInitializationScriptItem
+]
+
 { #category : #initialization }
 PhLImageCreationPresenter >> initializationScripts [
-	^ self application scriptsDirectory files
+	^ self application scriptsDirectory files 
+		select: [ :file | file extension = 'st' ]
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
 	imageName := self newTextInput
-		autoAccept: true;
-		yourself.
+		             autoAccept: true;
+		             yourself.
 	initScriptText := self newText.
 	initScript := self newDropList
-		items: self initializationScripts;
-		display: [ :file | file basename ];
-		whenSelectionChangedDo: [ :selection | 
-			initScriptText text: selection selectedItem model contents ];
-		yourself.
-	editInitScriptButton := self newButton 
-		addStyle: 'small';
-		action: [ self openScriptPresenter ];
-		icon: (self iconNamed: #edit);
-		yourself.
-	
-	(PhLCreateImageFromTemplateCommand forSpecContext: owner)
-	in: [ :createImageCommand |
+		              items: self initializationScriptItems;
+		              display: [ :file | file basename ];
+		              whenSelectionChangedDo: [ :selection | 
+			              initScriptText text: selection selectedItem model contents ];
+		              yourself.
+	editInitScriptButton := self newButton
+		                        addStyle: 'small';
+		                        action: [ self openScriptPresenter ];
+		                        icon: (self iconNamed: #edit);
+		                        yourself.
+	(PhLCreateImageFromTemplateCommand forSpecContext: owner) 
+		in: [ 	:createImageCommand | 
 		createButton := createImageCommand asButtonPresenter.
-		createButton action: [ createImageCommand execute. self close ] ].
+		createButton action: [ 
+			createImageCommand execute.
+			self close ] ]
 ]
 
 { #category : #initialization }
@@ -99,12 +111,24 @@ PhLImageCreationPresenter >> modelChanged [
 		ifFalse: [ self disable ]
 ]
 
+{ #category : #initialization }
+PhLImageCreationPresenter >> noInitializationScriptItem [
+	^ (FileSystem memory root / 'No initialization script') ensureCreateFile
+]
+
 { #category : #action }
 PhLImageCreationPresenter >> openScriptPresenter [
-	(PhLScriptPresenter 
+	^ (PhLScriptPresenter 
 		newApplication: self application 
 		model: self application scriptsDirectory )
-		openWithSpec
+		whenScriptListChanged: [ self refreshInitializationScriptList ];
+		openWithSpec;
+		yourself
+]
+
+{ #category : #refreshing }
+PhLImageCreationPresenter >> refreshInitializationScriptList [
+	initScript items: self initializationScriptItems.
 ]
 
 { #category : #initialization }

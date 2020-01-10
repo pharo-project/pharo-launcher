@@ -8,6 +8,13 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #helper }
+PhLCreateImageFromTemplateCommandTest >> createInitScriptNamed: aString [ 
+	presenter application scriptsDirectory / aString
+		writeStreamDo: [ :s | s nextPutAll: 'Transcript show: ''init done!''' ].
+	presenter refreshInitializationScriptList.
+]
+
 { #category : #running }
 PhLCreateImageFromTemplateCommandTest >> setUp [
 	presenter := PhLTestTemplatesPresenter new.
@@ -32,6 +39,28 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 	self 
 		assertCollection: images
 		hasSameElements: #('TestCreateImage').
+]
+
+{ #category : #tests }
+PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWithAnInitializationScript [
+	| command image |
+	command := PhLCreateImageFromTemplateCommand new.
+	command context: presenter.
+	self createInitScriptNamed: 'foo-init.st'.
+	
+	presenter 
+		createLocalTemplateNamed: 'Foo';
+		selectCategory: 1;
+		selectTemplateNamed: 'Foo';
+		selectInitializationScript: 2.
+		
+	image := command execute.
+	
+	self
+		assert: image initializationScript basename
+		equals: 'foo-init.st'.
+		
+	self assert: image shouldRunInitializationScript.
 ]
 
 { #category : #tests }

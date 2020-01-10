@@ -112,6 +112,11 @@ PhLTemplatesPresenter >> imageRepository [
 	^ self application imageRepository
 ]
 
+{ #category : #accessing }
+PhLTemplatesPresenter >> initializationScript [
+	^ descriptionPanel initializationScript
+]
+
 { #category : #initialization }
 PhLTemplatesPresenter >> initializePresenters [
 	categoryTable := self newTable
@@ -147,6 +152,11 @@ PhLTemplatesPresenter >> refresh [
 	self templateRepository refresh. "refresh caches"
 	categoryTable items: categoryTable items.
 	categoryTable selectItem: selectedCategory
+]
+
+{ #category : #reseting }
+PhLTemplatesPresenter >> refreshInitializationScriptList [
+	descriptionPanel refreshInitializationScriptList
 ]
 
 { #category : #'api - selection' }

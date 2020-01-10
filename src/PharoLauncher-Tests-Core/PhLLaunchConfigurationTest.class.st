@@ -75,6 +75,43 @@ PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptIsNil [
+	| command launchConfig |
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig vm executable: 'pharo'.
+	
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
+	
+	self 
+		assert: command arguments size
+	 	equals: 2.
+	self deny: (command arguments includes: 'eval').
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptShouldNotBeRun [
+	| command launchConfig |
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
+	image 
+		initializationScript: (FileSystem memory root / 'foo.st') asFileReference;
+		doNotRunInitializationScript.
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig vm executable: 'pharo'.
+	
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
+	
+	self 
+		assert: command arguments size
+	 	equals: 2.
+	self deny: (command arguments includesAny: #('eval' '"/foo.st')).
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -87,6 +124,23 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
 	
 	self assert: (command arguments includesAll: #( 1 2 3 )).
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationTest >> testImageLaunchProcessHasInitializationScriptArgumentsIfInitializationScriptNotNil [
+	| command launchConfig |
+	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
+	image initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+	launchConfig := image defaultLaunchConfiguration.
+	launchConfig vm executable: 'pharo'.
+	
+	[ command := launchConfig launchProcess ]
+	on: PhLMissingVirtualMachineError 
+	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
+	
+	self 
+		assertCollection: (command arguments allButFirst: 2) "remove vm and image argument"
+	 	hasSameElements: #('eval' '"/foo.st"').
 ]
 
 { #category : #tests }

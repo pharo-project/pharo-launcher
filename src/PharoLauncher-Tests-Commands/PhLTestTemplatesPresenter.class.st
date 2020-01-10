@@ -51,7 +51,9 @@ PhLTestTemplatesPresenter >> imageRepository [
 { #category : #initialization }
 PhLTestTemplatesPresenter >> initialize [
 	self model: (PhLTemplateGroupTestRepository new).
-	self application: PharoLauncherApplication new.
+	self application: (PharoLauncherApplication new
+		scriptsDirectory: FileSystem memory root;
+		yourself).
 	request := PhLTestRequest new.
 	templates := OrderedCollection new.
 	
@@ -93,6 +95,11 @@ PhLTestTemplatesPresenter >> remoteTemplatesGroup [
 { #category : #configuring }
 PhLTestTemplatesPresenter >> requestAnswer: answer [
 	request answer: answer
+]
+
+{ #category : #configuring }
+PhLTestTemplatesPresenter >> selectInitializationScript: anIndex [
+	descriptionPanel selectInitializationScript: anIndex
 ]
 
 { #category : #configuring }

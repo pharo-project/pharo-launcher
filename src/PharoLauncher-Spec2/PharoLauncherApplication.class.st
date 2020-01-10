@@ -244,8 +244,9 @@ PharoLauncherApplication >> run [
 
 { #category : #accessing }
 PharoLauncherApplication >> scriptsDirectory [
-	^ (scriptsDirectory 
-		ifNil: [ self class initializationScriptsDirectory: self class defaultInitializationScriptLocation ]) 	ensureCreateDirectory
+	^ (scriptsDirectory ifNil: [ 
+		   self class initializationScriptsDirectory: self class defaultInitializationScriptLocation ])
+		  ensureCreateDirectory
 ]
 
 { #category : #accessing }

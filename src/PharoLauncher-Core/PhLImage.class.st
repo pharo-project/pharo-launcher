@@ -22,7 +22,9 @@ Class {
 		'pharoVersion',
 		'originTemplate',
 		'vmManager',
-		'launchConfigurations'
+		'launchConfigurations',
+		'initializationScript',
+		'shouldRunInitializationScript'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -94,7 +96,7 @@ PhLImage class >> versionFileName [
 	^ 'pharo.version'
 ]
 
-{ #category : #adding }
+{ #category : #configuring }
 PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
 	launchConfigurations 
 		detect: [ :each | each name = aPhLLaunchConfiguration name ]
@@ -177,6 +179,12 @@ PhLImage >> descriptionFromFile [
 		ifFalse: [ 'There is no description' ]
 ]
 
+{ #category : #configuring }
+PhLImage >> doNotRunInitializationScript [
+	shouldRunInitializationScript := false.
+	self serializeMetadata.
+]
+
 { #category : #computing }
 PhLImage >> ensurePharoVersion [
 	(self pharoVersion isNil or: [ self pharoVersion = '' ])
@@ -206,9 +214,21 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
+{ #category : #accessing }
+PhLImage >> initializationScript [
+	^ initializationScript ifNotNil: [ :script | script asFileReference ]
+]
+
+{ #category : #accessing }
+PhLImage >> initializationScript: aFileReference [
+	initializationScript := aFileReference.
+	self serializeMetadata
+]
+
 { #category : #'initialize-release' }
 PhLImage >> initialize [
 	launchConfigurations := OrderedCollection new.
+	shouldRunInitializationScript := true.
 ]
 
 { #category : #testing }
@@ -249,7 +269,10 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ ^ (aPhLLaunchConfiguration launchProcess) runUnwatch ]
+	[ [ | processWrapper|
+		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
+		self doNotRunInitializationScript. "Just run, image already initialized"
+		^ processWrapper ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
@@ -337,6 +360,11 @@ PhLImage >> serializeMetadata [
 { #category : #'initialize-release' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
+]
+
+{ #category : #accessing }
+PhLImage >> shouldRunInitializationScript [
+	^ shouldRunInitializationScript
 ]
 
 { #category : #printing }

@@ -118,7 +118,7 @@ PhLLaunchImageCommand >> launchImage: aPhLImage [
 	[ | launchConfig |
 	launchConfig := self imagesPresenter selectedLaunchConfiguration.
 	useSettings ifFalse: [ launchConfig doNotUseSettings ].
-	aPhLImage launch. ]
+	aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	self class quitOnLaunch

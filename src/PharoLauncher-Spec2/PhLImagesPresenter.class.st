@@ -184,7 +184,10 @@ PhLImagesPresenter >> refresh [
 { #category : #updating }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image items |
-	image := self singleImage.
+	[ image := self singleImage ]
+	on: PhLCommandError
+	do: [ launchConfigurationList := #() "no image selected". ^ self].
+	
 	items := image launchConfigurations collect: [ :each | 
 			SpDropListItem new
 				model: each;

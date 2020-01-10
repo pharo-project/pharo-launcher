@@ -31,7 +31,7 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
 	extractionDirectory deleteAll.
 	"Will serialize image metadata with the template information"
-	(PhLImage location: aDirectory / aString , 'image') 
+	^ (PhLImage location: aDirectory / aString , 'image') 
 		originTemplate: self.
 ]
 

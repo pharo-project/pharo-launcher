@@ -1,7 +1,7 @@
 Class {
 	#name : #BaselineOfPharoLauncher,
 	#superclass : #BaselineOf,
-	#category : 'BaselineOfPharoLauncher'
+	#category : #BaselineOfPharoLauncher
 }
 
 { #category : #baselines }
@@ -16,11 +16,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
 			baseline: #OSWinSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ];
-			project: 'Ston' with: [
-				spec
-					className: #ConfigurationOfSton;
-					versionString: #'stable';
-					repository: 'http://ss3.gemstone.com/ss/STON' ];
 			project: 'XMLParser' with: [
 				spec
 					className: #ConfigurationOfXMLParser;
@@ -31,7 +26,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-ZipArchive';
 			package: #'PharoLauncher-70Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'OSWinSubprocess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
+				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 

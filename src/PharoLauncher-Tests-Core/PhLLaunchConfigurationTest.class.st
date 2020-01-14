@@ -4,7 +4,7 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
-{ #category : #tests }
+{ #category : #helper }
 PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x64-headless' ]
@@ -19,6 +19,13 @@ PhLLaunchConfigurationTest >> setUp [
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: '70' ].
 	
 
+]
+
+{ #category : #helper }
+PhLLaunchConfigurationTest >> stripExportFrom: arguments [ 
+	^ arguments first = 'export'
+		ifTrue: [ self stripExportFrom: (arguments allButFirst: 3) "export foo=bar &&" ]
+		ifFalse: [ arguments ]
 ]
 
 { #category : #tests }
@@ -76,7 +83,7 @@ PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptIsNil [
-	| command launchConfig |
+	| command launchConfig arguments |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
 	launchConfig := image defaultLaunchConfiguration.
 	launchConfig vm executable: 'pharo'.
@@ -84,16 +91,17 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScr
 	[ command := launchConfig launchProcess ]
 	on: PhLMissingVirtualMachineError 
 	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
+	arguments := self stripExportFrom: command arguments.
 	
 	self 
-		assert: command arguments size
+		assert: arguments size
 	 	equals: 2.
-	self deny: (command arguments includes: 'eval').
+	self deny: (arguments includes: 'eval').
 ]
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptShouldNotBeRun [
-	| command launchConfig |
+	| command launchConfig arguments |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
 	image 
 		initializationScript: (FileSystem memory root / 'foo.st') asFileReference;
@@ -104,11 +112,12 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScr
 	[ command := launchConfig launchProcess ]
 	on: PhLMissingVirtualMachineError 
 	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
+	arguments := self stripExportFrom: command arguments.
 	
 	self 
-		assert: command arguments size
+		assert: arguments size
 	 	equals: 2.
-	self deny: (command arguments includesAny: #('eval' '"/foo.st')).
+	self deny: (arguments includesAny: #('eval' '"/foo.st')).
 ]
 
 { #category : #tests }
@@ -139,7 +148,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasInitializationScriptArgum
 	do: [ :error | error resume. "ignore. We are just testing command arguments" ].
 	
 	self 
-		assertCollection: (command arguments allButFirst: 2) "remove vm and image argument"
+		assertCollection: (command arguments last: 2) "remove vm and image argument (and possible exports)"
 	 	hasSameElements: #('eval' '"/foo.st"').
 ]
 

@@ -16,6 +16,11 @@ PhLTestApplication >> confirm [
 	^ true
 ]
 
+{ #category : #request }
+PhLTestApplication >> inform [
+	"do nothing"
+]
+
 { #category : #confirmation }
 PhLTestApplication >> message: aString [ 
 	"do nothing"
@@ -23,6 +28,11 @@ PhLTestApplication >> message: aString [
 
 { #category : #confirmation }
 PhLTestApplication >> newConfirmation [
+	"do nothing"
+]
+
+{ #category : #confirmation }
+PhLTestApplication >> newInformation [
 	"do nothing"
 ]
 

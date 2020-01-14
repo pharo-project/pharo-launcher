@@ -41,7 +41,7 @@ PhLScriptPresenterTest >> testCanAddNewScript [
 { #category : #tests }
 PhLScriptPresenterTest >> testCanRemoveScript [
 	| file |
-	file := (scriptFolder / 'foo') ensureCreateFile.
+	file := (scriptFolder / 'foo.st') ensureCreateFile.
 	self setUpPresenter.
 	self
 		assert: scriptFolder files size 
@@ -59,7 +59,7 @@ PhLScriptPresenterTest >> testCanRemoveScript [
 { #category : #tests }
 PhLScriptPresenterTest >> testCanSaveScript [
 	| file |
-	file := (scriptFolder / 'foo') ensureCreateFile.
+	file := (scriptFolder / 'foo.st') ensureCreateFile.
 	self setUpPresenter.
 	presenter selectScript: file.
 	presenter fileEditor text: 'bar'.

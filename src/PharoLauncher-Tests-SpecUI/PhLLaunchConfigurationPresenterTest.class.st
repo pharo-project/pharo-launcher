@@ -9,6 +9,11 @@ Class {
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
 
+{ #category : #accessing }
+PhLLaunchConfigurationPresenterTest >> defaultTimeLimit [
+	^ 20 seconds
+]
+
 { #category : #running }
 PhLLaunchConfigurationPresenterTest >> setUp [
 	image := PhLImage example.

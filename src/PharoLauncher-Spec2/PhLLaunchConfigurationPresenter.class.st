@@ -106,7 +106,7 @@ PhLLaunchConfigurationPresenter >> image [
 
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> initializePresenters [
-	configurationTable := (self instantiate: SpEditableList)
+	configurationTable := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self newConfiguration ];
 		label: 'Launch configurations';
 		items: self image launchConfigurations;
@@ -123,12 +123,12 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		items: image vmManager virtualMachines;
 		display: [ :each | each id];
 		yourself.
-	vmArgumentList := (self instantiate: SpEditableList)
+	vmArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 			title: 'New VM argument?';
 			request ];
 		yourself.
-	imageArgumentList := self instantiate: SpEditableList
+	imageArgumentList := self instantiate: SpEditableListPresenter
 		yourself.
 	saveConfigurationButton := self newButton
 		label: 'Save';

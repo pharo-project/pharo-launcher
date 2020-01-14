@@ -57,7 +57,7 @@ PhLScriptPresenter class >> icebergLoadExample [
 
 { #category : #initialization }
 PhLScriptPresenter >> initializePresenters [ 
-	scriptTable := (self instantiate: SpEditableList)
+	scriptTable := (self instantiate: SpEditableListPresenter)
 		items: self scripts;
 		display: [ :file | file basename ];
 		whenSelectionChangedDo: [ :selection | 

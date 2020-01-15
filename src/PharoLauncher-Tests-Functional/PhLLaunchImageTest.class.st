@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLLaunchImageCommandTest,
+	#name : #PhLLaunchImageTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'launchInALoginShellBackup',
@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> pharo80HeadlessVm [
+PhLLaunchImageTest >> pharo80HeadlessVm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x64-headless' ]
 		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
@@ -19,7 +19,7 @@ PhLLaunchImageCommandTest >> pharo80HeadlessVm [
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> prepare80imageIn: dir [
+PhLLaunchImageTest >> prepare80imageIn: dir [
 	| imageFile |
 	ZnClient new
 		url: 'https://files.pharo.org/image/80/latest-minimal-64.zip';
@@ -34,7 +34,7 @@ PhLLaunchImageCommandTest >> prepare80imageIn: dir [
 ]
 
 { #category : #running }
-PhLLaunchImageCommandTest >> setUp [
+PhLLaunchImageTest >> setUp [
 	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
 	PhLLaunchConfiguration launchInALoginShell: false.
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès',  UUIDGenerator next asString.
@@ -47,7 +47,7 @@ PhLLaunchImageCommandTest >> setUp [
 ]
 
 { #category : #running }
-PhLLaunchImageCommandTest >> tearDown [ 
+PhLLaunchImageTest >> tearDown [ 
 	"imageDir ensureDeleteAll "
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
@@ -55,7 +55,7 @@ PhLLaunchImageCommandTest >> tearDown [
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> testCanLaunchImageWithHeadlessVM [
+PhLLaunchImageTest >> testCanLaunchImageWithHeadlessVM [
 	| dir vm image config |
 	dir := (FileLocator temp / ('PL-LaunchTest-' , UUIDGenerator next asString)) ensureCreateDirectory.
 	image := self prepare80imageIn: dir.
@@ -80,7 +80,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithHeadlessVM [
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
+PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 	| image |
 	
 	FileLocator image copyTo: imageDir / FileLocator image basename.
@@ -98,14 +98,14 @@ PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharacters [
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
+PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 	
 	PhLLaunchConfiguration launchInALoginShell: true.
 	self testCanLaunchImageWithNonAsciiCharacters.
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
+PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	
 	FileLocator image copyTo: imageDir / FileLocator image basename.

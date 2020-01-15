@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLLaunchImageCommand2Test,
+	#name : #PhLLaunchImageCommandTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter',
@@ -9,14 +9,14 @@ Class {
 }
 
 { #category : #running }
-PhLLaunchImageCommand2Test >> setUp [
+PhLLaunchImageCommandTest >> setUp [
 	presenter := PhLTestImagesPresenter new.
 	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command',  UUIDGenerator next asString.
 	imageDir ensureCreateDirectory.
 ]
 
 { #category : #tests }
-PhLLaunchImageCommand2Test >> testCanLaunchImage [
+PhLLaunchImageCommandTest >> testCanLaunchImage [
 	| command image |
 	command := PhLLaunchImageCommand new.
 	command context: presenter.

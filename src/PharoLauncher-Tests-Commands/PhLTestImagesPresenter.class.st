@@ -90,6 +90,11 @@ PhLTestImagesPresenter >> selectedImages [
 		ifNil: { self singleImage }
 ]
 
+{ #category : #selection }
+PhLTestImagesPresenter >> selectedLaunchConfiguration [
+	^ self singleImage defaultLaunchConfiguration 
+]
+
 { #category : #configuring }
 PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages

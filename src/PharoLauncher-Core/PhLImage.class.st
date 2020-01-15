@@ -138,13 +138,6 @@ PhLImage >> computePharoVersion [
 	^ pharoVersion
 ]
 
-{ #category : #computing }
-PhLImage >> computePharoVersionWith: vmManager [
-	pharoVersion := vmManager imageVersion.
-	self computeArchitecture.
-	self serializeMetadata.
-]
-
 { #category : #accessing }
 PhLImage >> defaultLaunchConfiguration [
 	^ launchConfigurations 

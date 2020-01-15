@@ -21,11 +21,11 @@ PhLLaunchImageCommand2Test >> testCanLaunchImage [
 	command := PhLLaunchImageCommand new.
 	command context: presenter.
 	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location:  imageDir / FileLocator image basename.
+	image := PhLImage location: imageDir / FileLocator image basename.
 	image versionFile 
 		writeStreamDo: [ :stream | 
-			SystemVersion current major putOn: stream.
-			SystemVersion current minor putOn: stream ].
+			SystemVersion current major asString putOn: stream.
+			SystemVersion current minor asString putOn: stream ].
 	presenter selection: image.
 
 	command execute.

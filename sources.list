@@ -30,22 +30,22 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 32bit (next stable - feature freeze, latest)',
-				#url : 'https://files.pharo.org/image/80/latest.zip'
+				#name : 'Pharo 8.0 - 32bit (stable)',
+				#url : 'https://files.pharo.org/image/80/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 64bit (next stable - feature freeze, latest)',
-				#url : 'https://files.pharo.org/image/80/latest-64.zip'
+				#name : 'Pharo 8.0 - 64bit (stable)',
+				#url : 'https://files.pharo.org/image/80/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 7.0 - 32bit (stable)',
+				#name : 'Pharo 7.0 - 32bit (old stable)',
 				#url : 'https://files.pharo.org/image/70/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 7.0 - 64bit (stable)',
+				#name : 'Pharo 7.0 - 64bit (old stable)',
 				#url : 'https://files.pharo.org/image/70/stable-64.zip'
 			},
 			PhLTemplateSource {
@@ -65,6 +65,16 @@ OrderedCollection [
 		#type : #URLGroup,
 		#name : 'Deprecated distributions',
 		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 6.1 - 32bit',
+				#url : 'https://files.pharo.org/image/60/latest.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 6.1 - 64bit',
+				#url : 'https://files.pharo.org/image/60/latest-64.zip'
+			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 5.0',
@@ -94,16 +104,6 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Moose Suite 6.0 (old stable)',
 				#url : 'https://ci.inria.fr/moose/job/moose-6.0/lastSuccessfulBuild/artifact/moose-6.0.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Pharo 6.1 - 32bit (old stable)',
-				#url : 'https://files.pharo.org/image/60/latest.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Pharo 6.1 - 64bit (old tech preview)',
-				#url : 'https://files.pharo.org/image/60/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,

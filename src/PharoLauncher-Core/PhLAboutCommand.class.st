@@ -10,6 +10,12 @@ Class {
 	#category : #'PharoLauncher-Core-Commands'
 }
 
+{ #category : #versions }
+PhLAboutCommand class >> version: aString [
+
+	LauncherVersion := aString.
+]
+
 { #category : #querying }
 PhLAboutCommand >> aboutText [
 	^ String streamContents: [:stream |

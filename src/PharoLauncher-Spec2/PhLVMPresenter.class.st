@@ -75,6 +75,7 @@ PhLVMPresenter >> initializePresenters [
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;
 									execute  ];
+		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		addColumn: ((SpImageTableColumn evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid

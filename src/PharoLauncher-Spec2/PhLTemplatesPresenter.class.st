@@ -129,6 +129,7 @@ PhLTemplatesPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection;
+		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		yourself.
 	descriptionPanel := self
 		instantiate: PhLImageCreationPresenter

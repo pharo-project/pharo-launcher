@@ -80,6 +80,7 @@ PhLImagesPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
 		add: (SpPanedLayout newVertical
+			position: 66 percent;
 			add: #imageTable;
 			add: #descriptionPanel;
 			yourself);

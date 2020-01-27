@@ -18,6 +18,7 @@ Class {
 { #category : #example }
 PhLScriptPresenter class >> defaultSpec [
 	^ SpPanedLayout newHorizontal
+		position: 30 percent;
 		add: #scriptTable
 			withConstraints: [ :constraints | 
 				constraints 

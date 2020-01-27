@@ -12,7 +12,8 @@ Class {
 	#instVars : [
 		'imageTable',
 		'descriptionPanel',
-		'launchConfigurationList'
+		'launchConfigurationList',
+		'imageFilter'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -79,6 +80,7 @@ PhLImagesPresenter class >> buildToolbarGroup [
 PhLImagesPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
+		add: #imageFilter expand: false;
 		add: (SpPanedLayout newVertical
 			position: 66 percent;
 			add: #imageTable;
@@ -118,6 +120,17 @@ PhLImagesPresenter >> ensure: aBoolean [
 		ifFalse: [ PhLCommandError signal ]
 ]
 
+{ #category : #private }
+PhLImagesPresenter >> filter: regexMatcher [
+
+	| images |
+	images := regexMatcher
+		ifNil: [ self imageRepository images ]
+		ifNotNil: [ self imageRepository images
+				select: [ :each | regexMatcher search: each name asString ] ].
+	imageTable items: images
+]
+
 { #category : #'api - selection' }
 PhLImagesPresenter >> hasSingleImageSelected [
 	^ imageTable selectedItems size = 1
@@ -130,25 +143,42 @@ PhLImagesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLImagesPresenter >> initializePresenters [
+	imageFilter := self newTextInput
+		placeholder: 'Enter image name filter ...';
+	whenTextChangedDo: [ :filterString | self filter: filterString ];
+		autoAccept: true;
+		yourself.
 	imageTable := self newTable
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ | cmd |
-				cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
-				cmd execute. ];
+			cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
+			cmd execute ];
 		whenSelectionChangedDo: [ :selection | self refreshLaunchConfigurationList ];
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
-		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 350; yourself);
-		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture) width: 80; yourself);
-		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion) width: 80; yourself);
-		addColumn: (SpStringTableColumn title: 'Last modified' evaluated: [ :v | self readableDateFor: v lastModification ]);
+		addColumn:
+			((SpStringTableColumn title: 'Name' evaluated: #name)
+				width: 350;
+				yourself);
+		addColumn:
+			((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
+				width: 80;
+				yourself);
+		addColumn:
+			((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+				width: 80;
+				yourself);
+		addColumn:
+			(SpStringTableColumn
+				title: 'Last modified'
+				evaluated: [ :v | self readableDateFor: v lastModification ]);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		yourself.
-
-	descriptionPanel := self instantiate: PhLImageDetailPresenter on: PhLNullImage new.
-	
-	self imageRepository whenChangedSend: #refresh to: self.
+	descriptionPanel := self
+		instantiate: PhLImageDetailPresenter
+		on: PhLNullImage new.
+	self imageRepository whenChangedSend: #refresh to: self
 ]
 
 { #category : #initialization }

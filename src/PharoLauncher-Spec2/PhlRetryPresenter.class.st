@@ -46,7 +46,7 @@ PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 		initialExtent: 400 @ 120;
 		addButton: 'Retry' do: [ :presenter | presenter close. retryBlock value. ];
 		addButton: 'Cancel' do: [ :presenter | presenter beCancel; close. cancelBlock value. ];
-		whenBuiltDo: [ :ann | ann model centered ].
+		centered.
 	
 ]
 

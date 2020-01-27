@@ -142,7 +142,7 @@ PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Pharo Launcher - Image creation';
 		initialExtent: 800 @ 400;
 		"toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;"
-		whenBuiltDo: [ :ann | ann model centered ].	
+		centered.	
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"
 ]
 

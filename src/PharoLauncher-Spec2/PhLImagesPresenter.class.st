@@ -189,7 +189,7 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
 		toolBar: self toolbarGroup asToolbarPresenter;
-		whenBuiltDo: [ :ann | ann model centered ];
+		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	aWindowPresenter toolBar 

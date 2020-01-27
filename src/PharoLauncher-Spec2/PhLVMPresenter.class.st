@@ -104,7 +104,7 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
 		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
-		whenBuiltDo: [ :ann | ann model centered ].	
+		centered.	
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter
 ]
 

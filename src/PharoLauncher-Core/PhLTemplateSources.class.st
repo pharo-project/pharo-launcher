@@ -233,8 +233,9 @@ PhLTemplateSources >> ensureSourcesFile [
 
 { #category : #actions }
 PhLTemplateSources >> fetchSourcesFile [
+	"Avoid to have a retry dialog"
 	PhLDownloadManager default
-		download: self sourcesUrl
+		basicDownload: self sourcesUrl
 		toFile: self downloadedSourcesFile. 
 	
 ]

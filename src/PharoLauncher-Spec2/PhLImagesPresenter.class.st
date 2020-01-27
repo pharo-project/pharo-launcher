@@ -169,9 +169,11 @@ PhLImagesPresenter >> initializePresenters [
 				width: 80;
 				yourself);
 		addColumn:
-			(SpStringTableColumn
+			((SpStringTableColumn
 				title: 'Last modified'
-				evaluated: [ :v | self readableDateFor: v lastModification ]);
+				evaluated: [ :image | self readableDateFor: image lastModification ])
+				sortFunction: #lastModification descending;
+				yourself);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		yourself.

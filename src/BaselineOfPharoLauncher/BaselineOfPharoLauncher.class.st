@@ -10,6 +10,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 		spec 
+			baseline: #Ston
+				with: [ spec repository: 'github://svenvc/ston:master/repository' ];
 			baseline: #Spec2
 				with: [ spec repository: 'github://demarey/Spec:pharo-launcher/src' ];
 			baseline: #OSSubprocess
@@ -25,7 +27,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		spec
 			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess'  #'PharoLauncher-80Compatibility'). ];
+				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 

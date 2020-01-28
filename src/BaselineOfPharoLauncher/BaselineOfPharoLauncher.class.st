@@ -23,10 +23,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 					loads: #('Core' );
 					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ].
 		spec
-			package: #'PharoLauncher-ZipArchive';
 			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'PharoLauncher-ZipArchive'  #'PharoLauncher-80Compatibility'). ];
+				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess'  #'PharoLauncher-80Compatibility'). ];
 			package: #'PharoLauncher-Spec' with: [ 
 				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 

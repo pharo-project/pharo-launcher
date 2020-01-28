@@ -1,7 +1,7 @@
 Class {
 	#name : #PhLLocalTemplateTest,
 	#superclass : #PhLAbstractTemplateTest,
-	#category : 'PharoLauncher-Tests-Core'
+	#category : #'PharoLauncher-Tests-Core'
 }
 
 { #category : #coverage }
@@ -25,12 +25,12 @@ PhLLocalTemplateTest >> testDeserializationGivesAFileReferenceToTheTemplate [
 { #category : #tests }
 PhLLocalTemplateTest >> testSerializationDoesNotIncludeZipFileButAFileReferenceToIt [
 	| template zipFile stonString |
-	zipFile := root / 'phl-abstract-template-test-template-extraction.zip'.
+	zipFile := '/phl-abstract-template-test-template-extraction.zip' asFileReference.
 	template := PhLLocalTemplate name: 'Test' zipFile: zipFile.
 	
 	stonString := STON toString: template.
 	
-	self assert: stonString equals: 'PhLLocalTemplate{#name:''Test'',#zipFile:''/phl-abstract-template-test-template-extraction.zip''}'.
+	self assert: stonString equals: 'PhLLocalTemplate{#name:''Test'',#zipFile:FILE[''/phl-abstract-template-test-template-extraction.zip'']}'.
 ]
 
 { #category : #tests }

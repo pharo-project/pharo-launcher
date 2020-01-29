@@ -138,7 +138,16 @@ function package_windows_version() {
 		#   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
 		installerVerion=${VERSION_NUMBER%-*}
 	fi
-	INSTALLER_VERSION=$installerVerion cmd /c windows\\build-launcher-installer.bat
+	OS_NAME=$(uname -s)
+	OS_NAME=${OS_NAME:0:6}
+	if [[ "$OS_NAME" = "CYGWIN" ]]
+	then
+   		# Cygwin specific stuff
+   		CMD="cygstart cmd"
+	else
+   		CMD=cmd
+	fi
+	INSTALLER_VERSION=$installerVerion $CMD /c windows\\build-launcher-installer.bat
 	if [ "$should_sign" = true ] ; then
 		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
 		rm pharo-windows-certificate.p12

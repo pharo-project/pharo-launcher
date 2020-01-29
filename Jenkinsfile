@@ -49,21 +49,19 @@ def buildArchitecture(architecture, pharoVersion) {
         }
       }
       node('windows') {
-        if (architecture == '32') {
-          stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-            deleteDir()
-            unstash "pharo-launcher-one-${architecture}"
-            // Disable signing for now because the signing process now requires manual action
-            /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
-              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
-            /* } else { 
-              withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-                bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
-              }              
-            } */
-            archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
-            stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
-          }
+        stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
+          deleteDir()
+          unstash "pharo-launcher-one-${architecture}"
+          // Disable signing for now because the signing process now requires manual action
+          /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
+            bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
+          /* } else { 
+            withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
+            }              
+          } */
+          archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
+          stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
         }
       }
       node('osx') {

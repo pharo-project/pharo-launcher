@@ -13,6 +13,8 @@ PhLLaunchImageFromDiskCommand >> asSpecCommand [
 		"iconName: #smallLoadProject;
 		shortcutKey: $d meta;"
 		beDisabledWhenCantBeRun;
+		iconName: self;
+		iconProvider: self;
 		yourself
 ]
 
@@ -30,8 +32,13 @@ PhLLaunchImageFromDiskCommand >> execute [
 		launchImage: (PhLImage location: imagePath asFileReference).
 ]
 
+{ #category : #accessing }
+PhLLaunchImageFromDiskCommand >> iconNamed: anIconName [
+	^ (super iconNamed: #open) mergeWith: (super iconNamed: #smallDoItIcon) at:0@0
+]
+
 { #category : #initialization }
 PhLLaunchImageFromDiskCommand >> initialize [
 	super initialize.
-	self name: 'Launch from disk'
+	self name: 'from disk'
 ]

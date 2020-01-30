@@ -79,7 +79,7 @@ PhLLaunchImageCommand >> asSpecCommand [
 PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 	self
 		doNotUseSettings;
-		name: 'Basic launch';
+		name: 'Basic lau...';
 		description: 'Launch the selected Pharo image without settings'.
 	^ super asSpecCommand
 		iconProvider: self;

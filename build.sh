@@ -143,7 +143,7 @@ function package_windows_version() {
 	if [[ "$OS_NAME" = "CYGWIN" ]]
 	then
    		# Cygwin specific stuff
-   		CMD="cygstart cmd"
+   		CMD="cygstart --wait cmd"
 	else
    		CMD=cmd
 	fi

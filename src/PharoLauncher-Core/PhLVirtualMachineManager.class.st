@@ -150,6 +150,7 @@ PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirec
 		addArguments: 'unzip -o -d';
 		addArgument: outputDirectory fullName surroundedByDoubleQuotes;
 		addArgument: aZipFileReference fullName surroundedByDoubleQuotes;
+		addArgument: ' > nul'; "on Windows, unzip logs can corrupt extracted files. See https://github.com/pharo-project/pharo-launcher/issues/349"
 		runAndWait.
 ]
 

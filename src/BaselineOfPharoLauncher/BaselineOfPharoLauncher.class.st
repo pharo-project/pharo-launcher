@@ -28,8 +28,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
 				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility'). ];
-			package: #'PharoLauncher-Spec' with: [ 
-				spec requires: #(#'PharoLauncher-Core' ). ];
 			package: #'PharoLauncher-Spec2' with: [ 
 				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
 
@@ -38,11 +36,11 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-Tests-Commands' with: [
 				spec requires: #(#'PharoLauncher-Spec2' ). ];
 			package: #'PharoLauncher-Tests-SpecUI' with: [
-				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec'). ];
+				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec2'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Tests-Core' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional'). ].
 ]

@@ -141,6 +141,11 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 ]
 
 { #category : #initialization }
+PharoLauncherApplication class >> reset [
+	^ Default := nil
+]
+
+{ #category : #initialization }
 PharoLauncherApplication class >> resetTemplateRepository [
 	TemplateRepository := nil
 ]

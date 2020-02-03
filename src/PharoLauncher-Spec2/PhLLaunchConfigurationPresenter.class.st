@@ -128,7 +128,10 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 			title: 'New VM argument?';
 			request ];
 		yourself.
-	imageArgumentList := self instantiate: SpEditableListPresenter
+	imageArgumentList := (self instantiate: SpEditableListPresenter)
+		addItemBlock: [ self application newRequest
+			title: 'New image argument?';
+			request ];
 		yourself.
 	saveConfigurationButton := self newButton
 		label: 'Save';

@@ -235,7 +235,8 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 					refreshLaunchConfigurationList ];
 				icon: (self iconNamed: #edit);
 				yourself ).
-	launchConfigurationList 
+	launchConfigurationList
+		resetSelection;
 		dropListItems: items;
 		selectItem: image defaultLaunchConfiguration.
 ]

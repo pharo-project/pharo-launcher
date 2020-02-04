@@ -21,6 +21,11 @@ PhLNullImage >> description [
 ]
 
 { #category : #accessing }
+PhLNullImage >> initializationScript [
+	^ nil
+]
+
+{ #category : #accessing }
 PhLNullImage >> lastModification [
 	
 	^ 'N/A'
@@ -47,4 +52,9 @@ PhLNullImage >> originTemplateName [
 PhLNullImage >> originTemplateUrl [
 	
 	^ ''
+]
+
+{ #category : #accessing }
+PhLNullImage >> shouldRunInitializationScript [
+	^ false
 ]

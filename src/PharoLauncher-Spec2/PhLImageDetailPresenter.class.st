@@ -13,9 +13,11 @@ Class {
 		'description',
 		'imageLabel',
 		'template',
+		'initializationScript',
 		'location',
 		'vm',
-		'templateUrl'
+		'templateUrl',
+		'shouldRunInitializationScript'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -44,6 +46,13 @@ PhLImageDetailPresenter class >> defaultSpec [
 			height: self labelHeight;
 		add:
 			(SpBoxLayout newHorizontal
+				add: 'Initialization script:' withConstraints: self labelConstraintsBlock;
+				add: #initializationScript expand: false;
+				add: #shouldRunInitializationScript expand: false;
+				yourself)
+			height: self labelHeight;
+		add:
+			(SpBoxLayout newHorizontal
 				add: 'Location:' withConstraints: self labelConstraintsBlock;
 				add: #location;
 				yourself)
@@ -59,10 +68,17 @@ PhLImageDetailPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
+{ #category : #'labelled-presenters' }
+PhLImageDetailPresenter class >> labelWidth [
+	^ 110
+]
+
 { #category : #initialization }
 PhLImageDetailPresenter >> connectPresenters [
 	description
-		whenTextIsAcceptedDo: [ :text | self image description: text ]
+		whenTextIsAcceptedDo: [ :text | self image description: text ].
+	shouldRunInitializationScript 
+		whenChangedDo: [ :state | self image shouldRunInitializationScript: state ].
 ]
 
 { #category : #accessing }
@@ -86,6 +102,10 @@ PhLImageDetailPresenter >> initializePresenters [
 	description := self newText.
 	template := self newLabel.
 	templateUrl := self newLabel.
+	initializationScript := self newLabel.
+	shouldRunInitializationScript := self newCheckBox
+		help: 'Run the initialization script at next launch?';
+		disable.
 	location := self newLabel.
 	vm := self newTextInput.
 ]
@@ -97,12 +117,22 @@ PhLImageDetailPresenter >> location [
 
 { #category : #initialization }
 PhLImageDetailPresenter >> modelChanged [ 
-
-	imageLabel label: self image name asText allBold, ' image, last edited ', self image lastModification asString.
-	description text: self image description.
-	template label: self image originTemplateName.
-	templateUrl label: self image originTemplateUrl.
-	location label: self image location.
+	| image |
+	image := self image.
+	
+	imageLabel label: image name asText allBold, ' image, last edited ', image lastModification asString.
+	description text: image description.
+	template label: image originTemplateName.
+	templateUrl label: image originTemplateUrl.
+	image initializationScript 
+		ifNil: [ initializationScript label: '<none>'.
+			shouldRunInitializationScript disable. ] 
+		ifNotNil: [:script | 
+			initializationScript label: script basename.
+			shouldRunInitializationScript 
+				enable;
+				state: image shouldRunInitializationScript. ].
+	location label: image location.
 	vm text: 'N/A'"self image vm".
 ]
 

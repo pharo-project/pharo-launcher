@@ -174,8 +174,7 @@ PhLImage >> descriptionFromFile [
 
 { #category : #configuring }
 PhLImage >> doNotRunInitializationScript [
-	shouldRunInitializationScript := false.
-	self serializeMetadata.
+	self shouldRunInitializationScript: false.
 ]
 
 { #category : #computing }
@@ -358,6 +357,12 @@ PhLImage >> setLocation: aFile [
 { #category : #accessing }
 PhLImage >> shouldRunInitializationScript [
 	^ shouldRunInitializationScript
+]
+
+{ #category : #configuring }
+PhLImage >> shouldRunInitializationScript: aBoolean [
+	shouldRunInitializationScript := aBoolean.
+	self serializeMetadata.
 ]
 
 { #category : #printing }

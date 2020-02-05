@@ -62,14 +62,19 @@ PhLScriptPresenter >> initializePresenters [
 		items: self scripts;
 		display: [ :file | file basename ];
 		whenSelectionChangedDo: [ :selection | 
-			fileEditor text: (selection isEmpty
-				ifTrue: [ '' ]
-				ifFalse: [ selection selectedItem contents ]) ];
+			selection isEmpty
+				ifTrue: [ fileEditor 
+								text: '' ;
+								disable. ]
+				ifFalse: [ fileEditor 
+								text: selection selectedItem contents;
+								enable. ] ];
 		addItemBlock: [ self newScript ];
 		removeItemBlock: [ :item | self removeScript: item ]
 		yourself.
 	fileEditor := self newCode
 		autoAccept: true;
+		disable;
 		yourself.
 	saveButton := self newButton
 		label: 'Save';

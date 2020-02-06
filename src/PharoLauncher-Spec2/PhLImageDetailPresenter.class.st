@@ -118,7 +118,7 @@ PhLImageDetailPresenter >> location [
 { #category : #initialization }
 PhLImageDetailPresenter >> modelChanged [ 
 	| image |
-	image := self image.
+	image := self image ifNil: [ PhLNullImage new ].
 	
 	imageLabel label: image name asText allBold, ' image, last edited ', image lastModification asString.
 	description text: image description.

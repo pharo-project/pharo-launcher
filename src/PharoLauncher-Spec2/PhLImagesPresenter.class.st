@@ -242,6 +242,11 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 ]
 
 { #category : #'api - selection' }
+PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
+	launchConfigurationList selectItem: aPhLLaunchConfiguration.
+]
+
+{ #category : #'api - selection' }
 PhLImagesPresenter >> selectImageAt: anIndex [
 	imageTable selectIndex: anIndex
 ]

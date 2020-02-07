@@ -92,7 +92,9 @@ PhLTestImagesPresenter >> selectedImages [
 
 { #category : #selection }
 PhLTestImagesPresenter >> selectedLaunchConfiguration [
-	^ self singleImage defaultLaunchConfiguration 
+	^ launchConfigurationList 
+		ifNil: [ self singleImage defaultLaunchConfiguration ]
+		ifNotNil: [ launchConfigurationList selectedItem ]
 ]
 
 { #category : #configuring }

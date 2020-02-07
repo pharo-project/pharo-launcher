@@ -23,9 +23,14 @@ PhLLaunchConfigurationPresenterTest >> setUp [
 
 { #category : #running }
 PhLLaunchConfigurationPresenterTest >> setUpPresenter [
-	application := PhLTestApplication new.
+	self setUpPresenterWithApplication: PhLTestApplication new.
+
+]
+
+{ #category : #running }
+PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplication [
 	presenter := PhLLaunchConfigurationPresenter
-		             newApplication: application
+		             newApplication: anSpApplication
 		             model: image
 ]
 
@@ -53,6 +58,35 @@ PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultLi
 		equals: config vm id
 	
 	
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
+	| config imagesPresenter |
+	imagesPresenter := PhLTestImagesPresenter new.
+	image := imagesPresenter singleImage.
+	image launchConfigurations. "generate default configuration"
+	config := (PhLLaunchConfiguration withImage: image)
+				name: 'test config';
+				yourself.
+	image addLaunchConfiguration: config.
+	presenter application imagesPresenter: imagesPresenter.
+	imagesPresenter 
+		openWithSpec;
+		selectImageAt: 1.
+	self setUpPresenterWithApplication: imagesPresenter application.
+	presenter connectPresenters. "Select first config"
+	self 
+		assert: imagesPresenter selectedLaunchConfiguration name
+		equals: 'Default'.
+			
+	presenter selectConfiguration: config.
+	presenter saveSelectedConfiguration.
+	
+	self 
+		assert: imagesPresenter selectedLaunchConfiguration name
+		equals: config name.
+	imagesPresenter delete.
 ]
 
 { #category : #tests }

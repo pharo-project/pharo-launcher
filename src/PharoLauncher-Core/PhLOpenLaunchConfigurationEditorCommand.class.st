@@ -19,7 +19,6 @@ PhLOpenLaunchConfigurationEditorCommand >> execute [
 	^ (PhLLaunchConfigurationPresenter 
 			newApplication: self imagesPresenter application
 			model: self imagesPresenter singleImage)
-		onClosedBlock: [ self imagesPresenter refreshLaunchConfigurationList ];
 		openWithSpec;
 		yourself
 ]

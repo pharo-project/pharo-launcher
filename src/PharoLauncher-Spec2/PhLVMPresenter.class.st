@@ -108,6 +108,12 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter
 ]
 
+{ #category : #private }
+PhLVMPresenter >> readableDateFor: aTimestamp [
+	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
+
+]
+
 { #category : #accessing }
 PhLVMPresenter >> refresh [ 
 	| vms |

@@ -45,7 +45,7 @@ function package_user_version() {
         # Avoid to have PL core dir set to the slave location and having an outdated list of templates
 	./pharo PharoLauncher.image eval --save \
 		"PhLTemplateSources resetLauncherCoreDir.
-		PharoLauncherApplication resetTemplateRepository.
+		PharoLauncher resetTemplateRepository.
 		PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
 
 	# Create the platform-specific archives

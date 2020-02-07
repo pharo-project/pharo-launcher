@@ -234,6 +234,15 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : #events }
+PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
+	"set the last edited launch configuration in the toolbar "
+
+	imagesPresenter 
+		refreshLaunchConfigurationList;
+		selectConfiguration: aLaunchConfiguration.
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := TemplateRepository 

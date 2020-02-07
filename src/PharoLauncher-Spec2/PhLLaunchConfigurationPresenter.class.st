@@ -18,8 +18,7 @@ Class {
 		'saveConfigurationButton',
 		'vmList',
 		'vmArgumentList',
-		'imageArgumentList',
-		'onClosedBlock'
+		'imageArgumentList'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -157,8 +156,7 @@ PhLLaunchConfigurationPresenter >> initializeVmListContent [
 PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self image name, ' image launch configurations';
-		initialExtent: 800@550;
-		whenClosedDo: [ onClosedBlock value ].
+		initialExtent: 800@550.
 ]
 
 { #category : #action }
@@ -178,11 +176,6 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 ]
 
 { #category : #action }
-PhLLaunchConfigurationPresenter >> onClosedBlock: aBlock [ 
-	onClosedBlock := aBlock
-]
-
-{ #category : #action }
 PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	| config |
 	config := self selectedConfiguration.
@@ -190,6 +183,7 @@ PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	config vmArguments: vmArgumentList items.
 	config vm: vmList selectedItem.
 	self image serializeMetadata.
+	self application launchConfigurationEdited: config.
 ]
 
 { #category : #accessing }

@@ -6,7 +6,8 @@ Class {
 	#name : #PhLTestApplication,
 	#superclass : #SpApplication,
 	#instVars : [
-		'requestAnswer'
+		'requestAnswer',
+		'imagesPresenter'
 	],
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
@@ -14,6 +15,11 @@ Class {
 { #category : #confirmation }
 PhLTestApplication >> confirm [
 	^ true
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLTestApplication >> imagesPresenter: aPhLImagesPresenter [
+	imagesPresenter := aPhLImagesPresenter
 ]
 
 { #category : #request }

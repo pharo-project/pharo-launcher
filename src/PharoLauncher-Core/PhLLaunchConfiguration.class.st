@@ -151,6 +151,11 @@ PhLLaunchConfiguration >> name: aString [
 	name := aString
 ]
 
+{ #category : #printing }
+PhLLaunchConfiguration >> printOn: aStream [
+	aStream << self class name << '(' << self name << ')'
+]
+
 { #category : #accessing }
 PhLLaunchConfiguration >> vm [
 	^ vm ifNil: [ self vm: self defaultVm. vm ]

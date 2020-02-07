@@ -227,6 +227,13 @@ PharoLauncherApplication >> initialize [
 	self resetTemplateRepository
 ]
 
+{ #category : #private }
+PharoLauncherApplication >> initializeImagesPresenter [
+	^ imagesPresenter := PhLImagesPresenter
+		newApplication: self
+		model: imageRepository
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := TemplateRepository 
@@ -234,15 +241,14 @@ PharoLauncherApplication >> resetTemplateRepository [
 ]
 
 { #category : #running }
-PharoLauncherApplication >> run [ 
+PharoLauncherApplication >> run [
 	| presenterClass |
-	
-	imagesPresenter := PhLImagesPresenter newApplication: self model: imageRepository.
-	presenterClass := openInWorld 
+	self initializeImagesPresenter.
+	presenterClass := openInWorld
 		ifTrue: [ SpWorldPresenter ]
 		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
-	self 
-		open: imagesPresenter 
+	self
+		open: imagesPresenter
 		withSpecLayout: imagesPresenter defaultSpec
 		using: presenterClass
 ]

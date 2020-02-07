@@ -120,9 +120,11 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		disable;
 		yourself.
 	vmList := self newDropList
-		items: image vmManager virtualMachines;
+		sortingBlock: [ :a :b | a model id > b model id ];
 		display: [ :each | each id];
 		yourself.
+	"Run in a separate process to do not block UI. Can take some seconds."
+	[ self initializeVmListContent ] fork.
 	vmArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 			title: 'New VM argument?';
@@ -138,6 +140,12 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedConfiguration ];
 		yourself.
+]
+
+{ #category : #initialization }
+PhLLaunchConfigurationPresenter >> initializeVmListContent [
+	vmList items: image vmManager virtualMachines.
+	self setVmFromConfiguration.
 ]
 
 { #category : #initialization }

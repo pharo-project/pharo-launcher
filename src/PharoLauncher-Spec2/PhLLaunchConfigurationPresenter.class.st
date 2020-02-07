@@ -185,16 +185,26 @@ PhLLaunchConfigurationPresenter >> selectedConfiguration [
 ]
 
 { #category : #updating }
-PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [ 
+PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [
 
 	selectedConfigurationNameField text: self selectedConfiguration name.
-	vmList selectItem: self selectedConfiguration vm.
+	self setVmFromConfiguration.
 	vmArgumentList items: self selectedConfiguration vmArguments.
-	imageArgumentList items: self selectedConfiguration imageArguments.
-
+	imageArgumentList items: self selectedConfiguration imageArguments
 ]
 
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> setModelBeforeInitialization: aPhLImage [
 	image := aPhLImage 
+]
+
+{ #category : #updating }
+PhLLaunchConfigurationPresenter >> setVmFromConfiguration [
+	| vm |
+	vm := self selectedConfiguration vm.
+	[ vmList selectItem: vm ]
+		on: NotFound
+		do: [ vmList
+				addItemLabeled: vm do: [ "no action" ];
+				selectItem: vm ]
 ]

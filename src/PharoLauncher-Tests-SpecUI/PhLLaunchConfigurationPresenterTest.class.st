@@ -35,6 +35,27 @@ PhLLaunchConfigurationPresenterTest >> tearDown [
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultListNorOnDisk [
+	| config |
+	config := (PhLLaunchConfiguration withImage: image)
+				name: 'test config';
+				vm: (PhLVirtualMachine id: '01-x86')
+				yourself.
+	image addLaunchConfiguration: config.
+	self setUpPresenter.
+	presenter initializeVmListContent.
+
+	self assert: (presenter vmListItems noneSatisfy: [ :each | each id = config vm id]). "ensure we test with vm not listed in presenter"
+	presenter selectConfiguration: config.
+	
+	self 
+		assert: presenter selectedVm id 
+		equals: config vm id
+	
+	
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationAdded [
 	self setUpPresenter.
 	application requestAnswer: 'foo'.

@@ -14,3 +14,13 @@ PhLLaunchConfigurationPresenter >> clickDeleteConfigurationButton [
 PhLLaunchConfigurationPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 	configurationTable selectItem: aPhLLaunchConfiguration
 ]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> selectedVm [
+	^ vmList selectedItem 
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> vmListItems [
+	^ vmList listItems
+]

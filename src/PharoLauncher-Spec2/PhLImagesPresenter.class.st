@@ -98,6 +98,7 @@ PhLImagesPresenter >> connectPresenters [
 		selectedImage := sel isEmpty
 			ifTrue: [ PhLNullImage new ]
 			ifFalse: [ sel selectedItem ].
+		self refreshLaunchConfigurationList.
 		"launchButton enabled: sel isEmpty not" ].
 	"launchButton whenActivatedDo: [ self doLaunch ]"
 		
@@ -154,7 +155,6 @@ PhLImagesPresenter >> initializePresenters [
 		whenActivatedDo: [ | cmd |
 			cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
 			cmd execute ];
-		whenSelectionChangedDo: [ :selection | self refreshLaunchConfigurationList ];
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		addColumn:
 			((SpStringTableColumn title: 'Name' evaluated: #name)

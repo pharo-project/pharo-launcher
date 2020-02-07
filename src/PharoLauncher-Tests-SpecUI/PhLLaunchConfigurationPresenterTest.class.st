@@ -110,3 +110,13 @@ PhLLaunchConfigurationPresenterTest >> testVmsAreSortedById [
 	vms withIndexDo: [ :vm :index |
 		self assert: vm id equals: (sortedVms at: index) id ].
 ]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testWhenOpeningPresenterThenSelectedConfigurationIsDefaultConfiguration [
+	self setUpPresenter.
+
+	self deny: presenter selectedConfiguration isNil.
+	self 
+		assert: presenter selectedConfiguration name
+		equals: 'Default'
+]

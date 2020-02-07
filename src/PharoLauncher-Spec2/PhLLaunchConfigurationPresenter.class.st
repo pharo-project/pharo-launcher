@@ -99,6 +99,11 @@ PhLLaunchConfigurationPresenter class >> labelWidth [
 	^ 120
 ]
 
+{ #category : #initialization }
+PhLLaunchConfigurationPresenter >> connectPresenters [
+	configurationTable selectIndex: 1.
+]
+
 { #category : #accessing }
 PhLLaunchConfigurationPresenter >> image [
 	^ image

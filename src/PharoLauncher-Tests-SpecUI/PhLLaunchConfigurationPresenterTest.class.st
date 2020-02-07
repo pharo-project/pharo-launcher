@@ -99,12 +99,11 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 
 { #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testVmsAreSortedById [
-	| vmList vms sortedVms |
+	| vms sortedVms |
 	self setUpPresenter.
 	presenter initializeVmListContent.
-	vmList := presenter instVarNamed: 'vmList'.
-	vms := vmList listItems.
 	
+	vms := presenter vmListItems.
 	sortedVms := vms sorted: [ :a :b | a id > b id ].
 	
 	vms withIndexDo: [ :vm :index |

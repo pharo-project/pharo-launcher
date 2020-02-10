@@ -126,6 +126,11 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	imageArguments := OrderedCollection new.
 ]
 
+{ #category : #testing }
+PhLLaunchConfiguration >> isNullConfiguration [
+	^ false
+]
+
 { #category : #accessing }
 PhLLaunchConfiguration >> isUsingPharoSettings [
 	^ usePharoSettings

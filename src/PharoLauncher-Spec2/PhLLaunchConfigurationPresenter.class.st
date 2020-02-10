@@ -166,7 +166,8 @@ PhLLaunchConfigurationPresenter >> initializeVmListContent [
 PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self image name, ' image launch configurations';
-		initialExtent: 800@550.
+		initialExtent: 800@550;
+		whenClosedDo: [ self application launchConfigurationEdited: self selectedConfiguration ].
 ]
 
 { #category : #action }
@@ -189,6 +190,8 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	| config |
 	config := self selectedConfiguration.
+	config isNullConfiguration ifTrue: [ ^ self ].
+	
 	config imageArguments: imageArgumentList items.
 	config vmArguments: vmArgumentList items.
 	config vm: vmList selectedItem.

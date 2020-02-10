@@ -29,6 +29,7 @@ PhLLaunchConfigurationPresenterTest >> setUpPresenter [
 
 { #category : #running }
 PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplication [
+	application := anSpApplication.
 	presenter := PhLLaunchConfigurationPresenter
 		             newApplication: anSpApplication
 		             model: image

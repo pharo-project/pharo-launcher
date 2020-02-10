@@ -6,13 +6,13 @@ PhLLaunchConfigurationPresenter >> clickAddConfigurationButton [
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
-PhLLaunchConfigurationPresenter >> clickDeleteConfigurationButton [
-	configurationTable removeButton click
+PhLLaunchConfigurationPresenter >> clickApplyChangesButton [
+	applyChangesButton click
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
-PhLLaunchConfigurationPresenter >> clickSaveConfigurationButton [
-	saveConfigurationButton click
+PhLLaunchConfigurationPresenter >> clickDeleteConfigurationButton [
+	configurationTable removeButton click
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }

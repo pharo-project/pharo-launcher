@@ -150,6 +150,32 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
+	| config imagesPresenter window |
+	imagesPresenter := PhLTestImagesPresenter new.
+	image := imagesPresenter singleImage.
+	image launchConfigurations. "generate default configuration"
+	config := (PhLLaunchConfiguration withImage: image)
+				name: 'test config';
+				yourself.
+	image addLaunchConfiguration: config.
+	presenter application imagesPresenter: imagesPresenter.
+	imagesPresenter 
+		openWithSpec;
+		selectImageAt: 1.
+	self setUpPresenterWithApplication: imagesPresenter application.
+	
+	window := presenter openWithSpec.		
+	presenter selectConfiguration: config.
+	window close.
+	
+	self 
+		assert: imagesPresenter selectedLaunchConfiguration name
+		equals: config name.
+	imagesPresenter delete.
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testVmsAreSortedById [
 	| vms sortedVms |
 	self setUpPresenter.

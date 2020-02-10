@@ -13,6 +13,11 @@ PhLNullLaunchConfiguration >> imageArguments [
 	^ #()
 ]
 
+{ #category : #testing }
+PhLNullLaunchConfiguration >> isNullConfiguration [
+	^ true
+]
+
 { #category : #accessing }
 PhLNullLaunchConfiguration >> name [
 	^ ''

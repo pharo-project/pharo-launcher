@@ -237,8 +237,10 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 				yourself ).
 	launchConfigurationList
 		resetSelection;
-		dropListItems: items;
-		selectItem: image defaultLaunchConfiguration.
+		dropListItems: items.
+	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
+		on: NotFound "Default configuration has been deleted but there are still other configurations"
+		do: [ launchConfigurationList selectIndex: 2 ]
 ]
 
 { #category : #'api - selection' }

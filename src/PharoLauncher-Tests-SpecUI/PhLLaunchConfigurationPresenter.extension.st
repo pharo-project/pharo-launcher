@@ -11,6 +11,11 @@ PhLLaunchConfigurationPresenter >> clickDeleteConfigurationButton [
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> clickSaveConfigurationButton [
+	saveConfigurationButton click
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
 PhLLaunchConfigurationPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 	configurationTable selectItem: aPhLLaunchConfiguration
 ]

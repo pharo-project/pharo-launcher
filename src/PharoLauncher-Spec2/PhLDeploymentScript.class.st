@@ -49,7 +49,7 @@ PhLDeploymentScript class >> closeWindowsAndOpenDevelopmentEnvironment [
 	PanelMorph allInstancesDo: [  :pm | pm delete ].
 	self closeAllWindows.
 	TaskbarMorph reset.
-	Workspace open contents: 'PharoLauncher open.'.
+	Workspace open contents: 'PharoLauncherApplication open.'.
 	
 	"PanelMorph comes from use of #openWorldWithSpec"
 ]

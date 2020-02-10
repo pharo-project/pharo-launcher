@@ -30,7 +30,7 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConf
 			(PhLLaunchConfiguration withImage: presenter singleImage) 
 				name: 'foo';
 				yourself).
-	launchConfigurationPresenter clickSaveConfigurationButton.
+	launchConfigurationPresenter clickApplyChangesButton.
 	launchConfigurationPresenter window close.
 		
 	self

@@ -15,10 +15,10 @@ Class {
 		'configurationTable',
 		'selectedConfiguration',
 		'selectedConfigurationNameField',
-		'saveConfigurationButton',
 		'vmList',
 		'vmArgumentList',
-		'imageArgumentList'
+		'imageArgumentList',
+		'applyChangesButton'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -54,7 +54,7 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		add: 
 			(SpBoxLayout newHorizontal
 				add: ''; "work-around to center the button"
-				add: #saveConfigurationButton width: self buttonWidth;
+				add: #applyChangesButton width: self buttonWidth;
 				add: '  '; "work-around to center the button"
 				yourself)
 			height: self buttonHeight;
@@ -139,8 +139,8 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 			title: 'New image argument?';
 			request ];
 		yourself.
-	saveConfigurationButton := self newButton
-		label: 'Save';
+	applyChangesButton := self newButton
+		label: 'Apply';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedConfiguration ];
 		yourself.

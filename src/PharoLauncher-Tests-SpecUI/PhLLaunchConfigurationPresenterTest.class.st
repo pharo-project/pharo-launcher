@@ -62,6 +62,23 @@ PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultLi
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfigurationDeleted [
+	| config |
+	self setUpPresenter.
+	config := image defaultLaunchConfiguration.
+
+	presenter 
+		selectConfiguration: config;
+		clickDeleteConfigurationButton.
+	
+	self assert: presenter imageArguments isEmpty.
+	self assert: presenter vmArguments isEmpty.
+	self assert: presenter configurationName isEmpty.
+	
+	
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
 	| config imagesPresenter |
 	imagesPresenter := PhLTestImagesPresenter new.

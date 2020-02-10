@@ -98,6 +98,11 @@ PhLLaunchConfigurationPresenter class >> labelWidth [
 	^ 120
 ]
 
+{ #category : #accessing }
+PhLLaunchConfigurationPresenter >> configurationName [
+	^ selectedConfigurationNameField text
+]
+
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> connectPresenters [
 	configurationTable selectIndex: 1.
@@ -106,6 +111,11 @@ PhLLaunchConfigurationPresenter >> connectPresenters [
 { #category : #accessing }
 PhLLaunchConfigurationPresenter >> image [
 	^ image
+]
+
+{ #category : #accessing }
+PhLLaunchConfigurationPresenter >> imageArguments [
+	^ imageArgumentList items
 ]
 
 { #category : #initialization }
@@ -214,4 +224,9 @@ PhLLaunchConfigurationPresenter >> setVmFromConfiguration [
 		do: [ vmList
 				addItemLabeled: vm do: [ "no action" ];
 				selectItem: vm ]
+]
+
+{ #category : #accessing }
+PhLLaunchConfigurationPresenter >> vmArguments [
+	^ vmArgumentList items
 ]

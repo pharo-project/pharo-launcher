@@ -18,7 +18,8 @@ Class {
 		'vmList',
 		'vmArgumentList',
 		'imageArgumentList',
-		'applyChangesButton'
+		'applyChangesButton',
+		'saveAndSelectsButton'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -54,7 +55,9 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		add: 
 			(SpBoxLayout newHorizontal
 				add: ''; "work-around to center the button"
-				add: #applyChangesButton width: self buttonWidth;
+				add: #applyChangesButton expand: false;
+				add: '   ' expand: false;
+				add: #saveAndSelectsButton expand: false;
 				add: '  '; "work-around to center the button"
 				yourself)
 			height: self buttonHeight;
@@ -153,6 +156,11 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		label: 'Apply';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedConfiguration ];
+		yourself.
+	saveAndSelectsButton := self newButton
+		label: 'Save and select';
+		icon: (self iconNamed: #smallSave);
+		action: [ self saveSelectedConfiguration. self delete ];
 		yourself.
 ]
 

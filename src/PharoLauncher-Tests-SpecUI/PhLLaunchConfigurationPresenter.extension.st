@@ -21,6 +21,11 @@ PhLLaunchConfigurationPresenter >> selectConfiguration: aPhLLaunchConfiguration 
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> selectVm: aPhLVirtualMachine [
+	vmList selectItem: aPhLVirtualMachine
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
 PhLLaunchConfigurationPresenter >> selectedVm [
 	^ vmList selectedItem 
 ]

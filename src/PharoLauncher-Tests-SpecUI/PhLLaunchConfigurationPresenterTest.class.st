@@ -108,6 +108,29 @@ PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelects
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsAddedWhenHeadlessVMSelectedAndArgumentNotAlreadyPresent [
+	| headlessVm |
+	headlessVm := presenter vmListItems anyOne beHeadless.
+	
+	presenter selectVm: headlessVm.
+	
+	self assert: (presenter imageArguments includes: '--interactive')
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsNotAddedWhenHeadlessVMSelectedAndArgumentAlreadyPresent [
+	| headlessVm |
+	headlessVm := presenter vmListItems anyOne beHeadless.
+	presenter imageArguments add: '--interactive'.
+	
+	presenter selectVm: headlessVm.
+	
+	self 
+		assert: (presenter imageArguments select: [ :arg | arg = '--interactive' ]) size 
+		equals: 1
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationAdded [
 	self setUpPresenter.
 	application requestAnswer: 'foo'.

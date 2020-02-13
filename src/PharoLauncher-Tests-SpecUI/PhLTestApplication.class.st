@@ -27,6 +27,11 @@ PhLTestApplication >> inform [
 	"do nothing"
 ]
 
+{ #category : #events }
+PhLTestApplication >> launchConfigurationEdited: aPhLLaunchConfiguration [ 
+	"do nothing"
+]
+
 { #category : #confirmation }
 PhLTestApplication >> message: aString [ 
 	"do nothing"

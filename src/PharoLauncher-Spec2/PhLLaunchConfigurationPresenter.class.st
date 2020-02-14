@@ -169,11 +169,11 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		yourself.
 	applyChangesButton := self newButton
 		label: 'Apply';
-		icon: (self iconNamed: #smallSave);
+		icon: (self iconNamed: #scriptManager);
 		action: [ self saveSelectedConfiguration ];
 		yourself.
 	saveAndSelectsButton := self newButton
-		label: 'Save and select';
+		label: 'Save & select';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedConfiguration.
 			self delete ];

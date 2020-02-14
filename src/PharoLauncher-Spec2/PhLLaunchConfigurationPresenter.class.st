@@ -18,7 +18,8 @@ Class {
 		'vmList',
 		'vmArgumentList',
 		'imageArgumentList',
-		'applyChangesButton'
+		'applyChangesButton',
+		'saveAndSelectsButton'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -54,7 +55,9 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		add: 
 			(SpBoxLayout newHorizontal
 				add: ''; "work-around to center the button"
-				add: #applyChangesButton width: self buttonWidth;
+				add: #applyChangesButton expand: false;
+				add: '   ' expand: false;
+				add: #saveAndSelectsButton expand: false;
 				add: '  '; "work-around to center the button"
 				yourself)
 			height: self buttonHeight;
@@ -98,6 +101,16 @@ PhLLaunchConfigurationPresenter class >> labelWidth [
 	^ 120
 ]
 
+{ #category : #private }
+PhLLaunchConfigurationPresenter >> addInteractiveImageArgument [
+	| interactiveFlag |
+	interactiveFlag := '--interactive'.
+	(imageArgumentList items includes: interactiveFlag)
+		ifTrue: [ ^ self ].
+	imageArgumentList items add: interactiveFlag.
+	imageArgumentList refresh.
+]
+
 { #category : #accessing }
 PhLLaunchConfigurationPresenter >> configurationName [
 	^ selectedConfigurationNameField text
@@ -135,25 +148,36 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		yourself.
 	vmList := self newDropList
 		sortingBlock: [ :a :b | a model id > b model id ];
-		display: [ :each | each id];
+		display: [ :each | each id ];
+		whenSelectedItemChangedDo:
+			[ :vm | 
+			vm ifNotNil: 
+				[ vm isHeadless
+					ifTrue: [ self addInteractiveImageArgument ] ] ];
 		yourself.
 	"Run in a separate process to do not block UI. Can take some seconds."
 	[ self initializeVmListContent ] fork.
 	vmArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
-			title: 'New VM argument?';
-			request ];
+				title: 'New VM argument?';
+				request ];
 		yourself.
 	imageArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
-			title: 'New image argument?';
-			request ];
+				title: 'New image argument?';
+				request ];
 		yourself.
 	applyChangesButton := self newButton
 		label: 'Apply';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedConfiguration ];
 		yourself.
+	saveAndSelectsButton := self newButton
+		label: 'Save and select';
+		icon: (self iconNamed: #smallSave);
+		action: [ self saveSelectedConfiguration.
+			self delete ];
+		yourself
 ]
 
 { #category : #initialization }

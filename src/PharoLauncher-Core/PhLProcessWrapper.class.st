@@ -1,7 +1,10 @@
 "
-This class  allow to run external (OS) processes for the Pharo Launcher.
-It hides some complexity to the Launcer.
-OSProcess is used on Linux and OS X, while ProcessWrapper is used on Windows (OSProcess hangs on some processes on Windows and the Launcher becomes unusable).
+This class allows to run external (OS) processes for Pharo Launcher.
+It hides some complexity to the Launcher.
+OSSubProcess is used on Linux and OS X, while OSWinSubprocess is used on Windows.
+
+Use me as a builder to configure the process, then call prepareProcess (will use a visitor pattern to visit code specific to targeted OS) to have a PhLProcess ready to run.
+I act as a facade to OSSubProcess and OSWinSubprocess.
 "
 Class {
 	#name : #PhLProcessWrapper,

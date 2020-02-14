@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'importSiblings'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
@@ -30,8 +30,10 @@ PhLImportImageCommand >> execute [
 		chooseFrom:
 			{ 'Import an image into Pharo Launcher images store (will move files)' .
 			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' }.
-	answer = 3
-		ifTrue:	[ importSiblings := true ].
+	answer = 0 
+		ifTrue: [ ^ self "cancel" ].
+	answer = 2
+		ifTrue: [ importSiblings := true ].
 	self importImage.
 ]
 

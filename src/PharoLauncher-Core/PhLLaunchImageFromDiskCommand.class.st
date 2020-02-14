@@ -40,5 +40,5 @@ PhLLaunchImageFromDiskCommand >> iconNamed: anIconName [
 { #category : #initialization }
 PhLLaunchImageFromDiskCommand >> initialize [
 	super initialize.
-	self name: 'from disk'
+	self name: 'From disk'
 ]

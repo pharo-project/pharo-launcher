@@ -109,6 +109,11 @@ PhLAbstractTemplate >> renameTo: aString [
 	name := aString
 ]
 
+{ #category : #testing }
+PhLAbstractTemplate >> shouldComputeChildrenLazily [ 
+	^ false
+]
+
 { #category : #querying }
 PhLAbstractTemplate >> suggestedImageName [
 	^ self name

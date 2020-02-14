@@ -130,6 +130,8 @@ PhLTemplatesPresenter >> initializePresenters [
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection;
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
+		whenRootsChangedDo: [ :roots | 
+			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ]
 		yourself.
 	descriptionPanel := self
 		instantiate: PhLImageCreationPresenter

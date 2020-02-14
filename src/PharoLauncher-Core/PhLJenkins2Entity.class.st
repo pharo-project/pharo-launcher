@@ -8,7 +8,7 @@ Class {
 		'properties',
 		'parent'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }
@@ -135,6 +135,13 @@ PhLJenkins2Entity >> query: jenkinsType [
 { #category : #initialization }
 PhLJenkins2Entity >> setProperties: json [ 
 	properties := json
+]
+
+{ #category : #testing }
+PhLJenkins2Entity >> shouldComputeChildrenLazily [
+	"to know if the group has children, we need to send an ReST request. It can take a lot of time.
+	It is better to do it lazily"
+	^ true
 ]
 
 { #category : #accessing }

@@ -63,6 +63,11 @@ PhLAbstractTemplateGroup >> refresh [
 	"Clear any cached data - this is a noop for non caching groups"
 ]
 
+{ #category : #testing }
+PhLAbstractTemplateGroup >> shouldComputeChildrenLazily [
+	^ false
+]
+
 { #category : #accessing }
 PhLAbstractTemplateGroup >> templatesAndGroups [
 	"Return a collection of all the templates and subgroups I contain"

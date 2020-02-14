@@ -71,7 +71,6 @@ PhLVMPresenter >> datasource [
 { #category : #initialization }
 PhLVMPresenter >> initializePresenters [
 	vmTable := self newTable
-		items: self datasource virtualMachines;
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;
 									execute  ];
@@ -96,6 +95,8 @@ PhLVMPresenter >> initializePresenters [
 		beResizable;
 		beMultipleSelection;
 		yourself.
+	"Run in a separate process to do not block UI. Can take some seconds."
+	[ vmTable items: self datasource virtualMachines ] fork.
 ]
 
 { #category : #initialization }

@@ -12,7 +12,7 @@ Class {
 { #category : #action }
 PhLUIFileRequest >> chooseFullFileName [
 	^ UIManager default
-		chooseFullFileName: title
+		chooseExistingFileReference: title
 		extensions: extensionsToShow
 		path: path
 		preview: false.

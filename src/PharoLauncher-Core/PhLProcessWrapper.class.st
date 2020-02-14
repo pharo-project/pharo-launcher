@@ -1,5 +1,5 @@
 "
-This class  allow to run external (OS) processes for Pharo Launcher.
+This class allows to run external (OS) processes for Pharo Launcher.
 It hides some complexity to the Launcher.
 OSSubProcess is used on Linux and OS X, while OSWinSubprocess is used on Windows.
 

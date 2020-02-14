@@ -28,19 +28,27 @@ PhLCreateImageFromTemplateCommand >> asSpecCommand [
 ]
 
 { #category : #executing }
-PhLCreateImageFromTemplateCommand >> execute [
+PhLCreateImageFromTemplateCommand >> createImage [
 	| name |
 	name := self templatesPresenter imageName.
 	name isEmptyOrNil ifTrue: [ ^ self ].
 	
-	[ image := self templatesPresenter imageRepository 
-		extractTemplate: self templatesPresenter singleTemplate 
+	image := self templatesPresenter imageRepository
+		extractTemplate: self templatesPresenter singleTemplate
 		to: name.
 	self addInitializationScriptMetadataIfPresent.
 	self templatesPresenter application imageRepositoryChanged.
-	^ image ]
-	on: PhLCorruptedTemplateError
-	do: [ :error | UIManager default alert: 'This template appears to be corrupted! Please try again.' ].
+	^ image
+]
+
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> execute [
+	
+	[ ^ self createImage ]
+		on: PhLCorruptedTemplateError
+		do: [ :error | 
+			UIManager default
+				alert: 'This template appears to be corrupted! Please try again.' ]
 ]
 
 { #category : #initialization }

@@ -98,8 +98,12 @@ PhLImageCreationPresenter >> initializePresenters [
 		in: [ 	:createImageCommand | 
 		createButton := createImageCommand asButtonPresenter.
 		createButton action: [ 
-			createImageCommand execute.
-			self close ] ]
+			[ createImageCommand execute.
+			self close. ]
+				on: PhLNameNotAvailableError 
+				do: [ PhLUIInformation new 
+						message: 'An image with the same name already exists! Please choose a new one.';
+						alert ] ] ]
 ]
 
 { #category : #initialization }

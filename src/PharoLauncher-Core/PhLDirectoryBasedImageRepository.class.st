@@ -152,7 +152,7 @@ PhLDirectoryBasedImageRepository >> directoryForImageNamed: aString [
 { #category : #action }
 PhLDirectoryBasedImageRepository >> ensureNoImageWithName: anImageName [
 	(self hasImageNamed: anImageName)
-		ifTrue: [ PhLError signal: 'An image with the same name already exists' ]
+		ifTrue: [ PhLNameNotAvailableError signalName: anImageName ]
 ]
 
 { #category : #action }

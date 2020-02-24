@@ -24,7 +24,9 @@ PhLVMPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootC
 { #category : #commands }
 PhLVMPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		register: PhLUpdateVmCommand forSpec;
 		register: PhLShowVmInFolderCommand forSpec;
+		register: PhLDeleteVmCommand forSpec;
 		yourself
 
 ]

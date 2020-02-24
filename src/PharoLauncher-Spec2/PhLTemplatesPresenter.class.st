@@ -80,6 +80,11 @@ PhLTemplatesPresenter >> connectPresenters [
 	templateTable transmitTo: descriptionPanel.
 ]
 
+{ #category : #accessing }
+PhLTemplatesPresenter >> description [
+	^ descriptionPanel description
+]
+
 { #category : #'api - selection' }
 PhLTemplatesPresenter >> hasLocalTemplateSelected [
 	| items |

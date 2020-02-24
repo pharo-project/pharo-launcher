@@ -11,7 +11,8 @@ Class {
 		'createButton',
 		'initScriptText',
 		'initScript',
-		'editInitScriptButton'
+		'editInitScriptButton',
+		'descriptionText'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -24,6 +25,8 @@ PhLImageCreationPresenter class >> defaultSpec [
 			withConstraints: [ :constraints | constraints height: self labelHeight * 1.5 ];
 		add: 'Image name:' expand: false;
 		add: #imageName expand: false;
+		add: 'Image description:' expand: false;
+		add: #descriptionText height: 60;
 		add: 'Initialization script:' expand: false;
 		add: (SpBoxLayout newHorizontal 
 			add: #initScript;
@@ -37,12 +40,19 @@ PhLImageCreationPresenter class >> defaultSpec [
 
 { #category : #example }
 PhLImageCreationPresenter class >> example [
-	(self on: {PhLRemoteTemplate example}) openWithSpec
+	(self 
+		newApplication: PharoLauncherApplication new
+		model: {PhLRemoteTemplate example}) openWithSpec
 ]
 
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
 	self window ifNotNil: [ :window | window close ]
+]
+
+{ #category : #accessing }
+PhLImageCreationPresenter >> description [
+	^ descriptionText text asString
 ]
 
 { #category : #configuring }
@@ -91,6 +101,9 @@ PhLImageCreationPresenter >> initializePresenters [
 		              whenSelectionChangedDo: [ :selection | 
 			              initScriptText text: selection selectedItem model contents ];
 		              yourself.
+	descriptionText := self newText
+								autoAccept: true;
+				             yourself.
 	editInitScriptButton := self newButton
 		                        addStyle: 'small';
 		                        action: [ self openScriptPresenter ];

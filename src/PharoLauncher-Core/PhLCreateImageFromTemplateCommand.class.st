@@ -11,6 +11,14 @@ Class {
 }
 
 { #category : #executing }
+PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
+	| description |
+	description := self templatesPresenter description.
+	description isNotEmpty
+		ifTrue: [ image description: description ].
+]
+
+{ #category : #executing }
 PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 	| initScript |
 	initScript := self templatesPresenter initializationScript.
@@ -37,6 +45,7 @@ PhLCreateImageFromTemplateCommand >> createImage [
 		extractTemplate: self templatesPresenter singleTemplate
 		to: name.
 	self addInitializationScriptMetadataIfPresent.
+	self addDescriptionIfAny.
 	self templatesPresenter application imageRepositoryChanged.
 	^ image
 ]

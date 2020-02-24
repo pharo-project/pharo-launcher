@@ -38,17 +38,17 @@ PhLImportImageCommand >> execute [
 ]
 
 { #category : #executing }
-PhLImportImageCommand >> import: imagePath [
+PhLImportImageCommand >> import: imageFileRef [
 	| infoMessage destFolderName |
-	destFolderName := imagePath asFileReference basenameWithoutExtension.
+	destFolderName := imageFileRef basenameWithoutExtension.
 	importSiblings 
 		ifTrue: [ self imagesPresenter imageRepository
-			importImageNamed: imagePath
+			importImageNamed: imageFileRef
 			 andSiblingFilesto: destFolderName ]
 		ifFalse: [ self imagesPresenter imageRepository
-			importImageNamed: imagePath
+			importImage: imageFileRef
 			to: destFolderName ].
-	infoMessage := 'Image ' , imagePath , ' imported!'.
+	infoMessage := 'Image ' , imageFileRef fullName, ' imported!'.
 	self imagesPresenter newInformation
 		message: (infoMessage withNoLineLongerThan: 60);
 		inform
@@ -56,23 +56,23 @@ PhLImportImageCommand >> import: imagePath [
 
 { #category : #executing }
 PhLImportImageCommand >> importImage [
-	| imagePath |
-	imagePath := self imagesPresenter newFileRequest
+	| imageFile |
+	imageFile := self imagesPresenter newFileRequest
 		title: 'Import a Pharo image (will move image, changes file and pharo-local folder)';
 		extensionsToShow: #('image');
 		path: FileLocator home;
-		chooseFullFileName.
-	imagePath ifNil: [ 
+		chooseFile.
+	imageFile ifNil: [ 
 		self imagesPresenter newInformation 
 			message: 'No path selected. Import failed.';
 			inform.
 		^ self ].
-	imagePath asFileReference isDirectory ifTrue: [ 
+	imageFile asFileReference isDirectory ifTrue: [ 
 		self imagesPresenter newInformation 
 			message: 'The file selected is a directory and not a Pharo image. Import failed.';
 			inform.
 		^ self ].
-	self import: imagePath
+	self import: imageFile
 ]
 
 { #category : #initialization }

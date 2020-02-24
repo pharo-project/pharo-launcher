@@ -20,16 +20,16 @@ PhLLaunchImageFromDiskCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLLaunchImageFromDiskCommand >> execute [
-	| imagePath |
-	imagePath := self imagesPresenter newFileRequest 
+	| imageFile |
+	imageFile := self imagesPresenter newFileRequest 
 		title: 'Open a Pharo image';
 		extensionsToShow: #('image');
 		path: FileLocator home;
-		chooseFullFileName.
-	imagePath ifNil: [ ^ self ].
-	imagePath asFileReference isFile ifFalse: [ ^self ].
+		chooseFile.
+	imageFile ifNil: [ ^ self ].
+	imageFile isFile ifFalse: [ ^self ].
 	PhLLaunchImageCommand new 
-		launchImage: (PhLImage location: imagePath asFileReference).
+		launchImage: (PhLImage location: imageFile).
 ]
 
 { #category : #accessing }

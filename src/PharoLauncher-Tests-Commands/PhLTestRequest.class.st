@@ -21,7 +21,22 @@ PhLTestRequest >> answer: anObject [
 	answer := anObject
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhLTestRequest >> chooseFile [
+	^ answer
+]
+
+{ #category : #accessing }
+PhLTestRequest >> chooseFrom: aCollection [ 
+	^ 1
+]
+
+{ #category : #noop }
+PhLTestRequest >> extensionsToShow: aCollection [ 
+	"noop"
+]
+
+{ #category : #accessing }
 PhLTestRequest >> initialAnswer: aString [ 
 	self noop
 ]
@@ -31,19 +46,24 @@ PhLTestRequest >> noop [
 	"do nothing"
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #noop }
+PhLTestRequest >> path: aFileLocator [ 
+	"noop"
+]
+
+{ #category : #accessing }
 PhLTestRequest >> request [
 	^ (validationBlock value: self answer)
 		ifTrue: [ self answer ]
 		ifFalse: [ nil ]
 ]
 
-{ #category : #noop }
+{ #category : #accessing }
 PhLTestRequest >> title: aString [ 
 	self noop
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhLTestRequest >> validateAnswer: aBlock [
 	validationBlock := aBlock
 ]

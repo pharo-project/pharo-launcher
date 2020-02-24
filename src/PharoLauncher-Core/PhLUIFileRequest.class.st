@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : #action }
-PhLUIFileRequest >> chooseFullFileName [
+PhLUIFileRequest >> chooseFile [
 	^ UIManager default
 		chooseExistingFileReference: title
 		extensions: extensionsToShow

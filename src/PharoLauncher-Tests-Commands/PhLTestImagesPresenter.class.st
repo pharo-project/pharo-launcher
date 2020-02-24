@@ -15,13 +15,16 @@ Class {
 
 { #category : #configuring }
 PhLTestImagesPresenter >> createImageNamed: aName [
-	| imageDirectory |
-	imageDirectory := (fileSystem root / aName).
-	imageDirectory ensureCreateDirectory.
-	(imageDirectory / (aName , '.image')) 
+	self createImageNamed: aName in:  (fileSystem root / aName)
+]
+
+{ #category : #configuring }
+PhLTestImagesPresenter >> createImageNamed: aName in: aFolder [
+	aFolder ensureCreateDirectory.
+	(aFolder / (aName , '.image')) 
 		binaryWriteStreamDo: [:stream | stream nextPutAll: #(105 25 0 0)].
-	(imageDirectory / (aName , '.changes')) ensureCreateFile.
-	(imageDirectory / PhLImage versionFileName) writeStreamDo: [ :stream | stream nextPutAll: '70' ].
+	(aFolder / (aName , '.changes')) ensureCreateFile.
+	(aFolder / PhLImage versionFileName) writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 
 ]
 
@@ -64,6 +67,11 @@ PhLTestImagesPresenter >> launchConfigurations [
 { #category : #'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
+]
+
+{ #category : #'user interaction' }
+PhLTestImagesPresenter >> newFileRequest [
+	^ request
 ]
 
 { #category : #'user interaction' }

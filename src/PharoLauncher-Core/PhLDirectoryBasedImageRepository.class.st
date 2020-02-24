@@ -203,21 +203,12 @@ PhLDirectoryBasedImageRepository >> images [
 ]
 
 { #category : #action }
-PhLDirectoryBasedImageRepository >> importImageNamed: imagePath andSiblingFilesto: targetName [
-	| sourceDirectory |
-	imagePath asFileReference exists ifFalse: [ ^ self ].
-	
-	sourceDirectory := imagePath asFileReference parent.
-	self moveImage: sourceDirectory to: targetName
-]
-
-{ #category : #action }
-PhLDirectoryBasedImageRepository >> importImageNamed: sourceName to: targetName [
+PhLDirectoryBasedImageRepository >> importImage: sourceImageFileRef to: targetName [
 	| sourceDirectory targetDirectory imageLocalDirectory |
 	self ensureNoImageWithName: targetName.
-	sourceDirectory := sourceName asFileReference parent.
+	sourceDirectory := sourceImageFileRef parent.
 	targetDirectory := self prepareForNewImageNamed: targetName.
-	{ sourceName asFileReference . sourceName asFileReference withoutExtension , 'changes' }
+	{ sourceImageFileRef . sourceImageFileRef withoutExtension , 'changes' }
 		do: [ :file | 
 			| targetFilename |
 			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
@@ -228,6 +219,15 @@ PhLDirectoryBasedImageRepository >> importImageNamed: sourceName to: targetName 
 	sourceDirectory hasChildren 
 		ifFalse: [ sourceDirectory delete ].
 	self contentsChanged.
+]
+
+{ #category : #action }
+PhLDirectoryBasedImageRepository >> importImageNamed: imagePath andSiblingFilesto: targetName [
+	| sourceDirectory |
+	imagePath asFileReference exists ifFalse: [ ^ self ].
+	
+	sourceDirectory := imagePath asFileReference parent.
+	self moveImage: sourceDirectory to: targetName
 ]
 
 { #category : #testing }

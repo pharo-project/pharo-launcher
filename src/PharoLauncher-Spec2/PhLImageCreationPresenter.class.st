@@ -82,7 +82,9 @@ PhLImageCreationPresenter >> initializePresenters [
 	imageName := self newTextInput
 		             autoAccept: true;
 		             yourself.
-	initScriptText := self newText.
+	initScriptText := self newText
+								disable;
+								yourself.
 	initScript := self newDropList
 		              items: self initializationScriptItems;
 		              display: [ :file | file basename ];

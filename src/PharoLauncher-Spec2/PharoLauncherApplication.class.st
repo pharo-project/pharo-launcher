@@ -71,7 +71,7 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 			reject: [ :class | class = PhLStartupManager ] "Do not reset this class, else Pharo settings will not be loaded at startup and repository location couldbe wrong!"
 			thenDo: [ :class | class classPool keys do: [ :key | class classPool at: key put: nil ] ] ].
 
-	self open.
+	self openFull.
 ]
 
 { #category : #accessing }

@@ -21,6 +21,15 @@ PhLImportImageCommand >> asSpecCommand [
 		yourself
 ]
 
+{ #category : #'ui interaction' }
+PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
+	^ self imagesPresenter newRequest
+		title: 'An image with the name ', anImageName , ' already exists. Please choose a new name:';
+		initialAnswer: (self imagesPresenter imageRepository makeUniqueImageName: anImageName);
+		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
+		request
+]
+
 { #category : #executing }
 PhLImportImageCommand >> execute [
 	| answer |
@@ -39,16 +48,22 @@ PhLImportImageCommand >> execute [
 
 { #category : #executing }
 PhLImportImageCommand >> import: imageFileRef [
-	| infoMessage destFolderName |
+	| infoMessage destFolderName imageRepository |
 	destFolderName := imageFileRef basenameWithoutExtension.
-	importSiblings 
-		ifTrue: [ self imagesPresenter imageRepository
-			importImageNamed: imageFileRef
-			 andSiblingFilesto: destFolderName ]
-		ifFalse: [ self imagesPresenter imageRepository
-			importImage: imageFileRef
-			to: destFolderName ].
-	infoMessage := 'Image ' , imageFileRef fullName, ' imported!'.
+	imageRepository := self imagesPresenter imageRepository.
+	[ imageRepository ensureNoImageWithName: destFolderName ]
+		on: PhLNameNotAvailableError
+		do: [ destFolderName := self chooseNewImageNameFor: destFolderName ].
+	destFolderName ifNil: [ ^ self "abort" ].
+	
+	importSiblings
+		ifTrue: [ 
+			imageRepository
+				importImageNamed: imageFileRef
+				andSiblingFilesto: destFolderName ]
+		ifFalse:
+			[ imageRepository importImage: imageFileRef to: destFolderName ].
+	infoMessage := 'Image ' , imageFileRef fullName , ' imported!'.
 	self imagesPresenter newInformation
 		message: (infoMessage withNoLineLongerThan: 60);
 		inform

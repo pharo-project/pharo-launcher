@@ -50,6 +50,7 @@ PhLImagesPresenter class >> buildToolbarGroup [
 		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
 		register: PhLLaunchImageFromDiskCommand forSpec;
 		register: PhLImportImageCommand forSpec;
+		register: PhLRefreshImageRepositoryCommand forSpec;
 		register:
 			(PhLShowImageInFolderCommand forSpec
 				name: 'Show';

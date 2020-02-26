@@ -14,14 +14,14 @@ PhLTemplateSourcesTest >> setUp [
 
 { #category : #initialization }
 PhLTemplateSourcesTest >> tearDown [ 
-	PhLTemplateSources resetSourcesUrl
+	PhLPharoTemplateSources resetSourcesUrl
 ]
 
 { #category : #tests }
 PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
 	| templatesSources1 templatesSources2 |
-	templatesSources1 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
-	templatesSources2 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	templatesSources1 := (PhLPharoTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
+	templatesSources2 := (PhLPharoTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
 	templatesSources2 second templates first name: 'changed'.
 	
 	self deny: templatesSources1 = templatesSources2
@@ -45,16 +45,37 @@ PhLTemplateSourcesTest >> testCanCreateInstanceFromAListOfTemplateSource [
 PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 	self deny: sourcesFile exists.
 	
-	(PhLTemplateSources withFile: sourcesFile) ensureSourcesFile. 
+	(PhLPharoTemplateSources withFile: sourcesFile) ensureSourcesFile. 
 	
 	self assert: sourcesFile exists
 ]
 
 { #category : #tests }
+PhLTemplateSourcesTest >> testGivenUserSourcesFileAbsentWhenAskingUserSourcesThenGetEmptyCollection [
+	| sources |
+	self deny: sourcesFile exists.
+	
+	sources := (PhLUserTemplateSources withFile: sourcesFile) sources. 
+	
+	self assert: sources isEmpty
+]
+
+{ #category : #tests }
+PhLTemplateSourcesTest >> testGivenUserSourcesFileWithErrorsWhenAskingUserSourcesThenGetEmptyCollection [
+	| sources |
+	sourcesFile 
+		writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
+		
+	sources := (PhLTemplateSources withFile: sourcesFile) sources. 
+	
+	self assert: sources isEmpty
+]
+
+{ #category : #tests }
 PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 	| templatesSources1 templatesSources2 |
-	templatesSources1 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
-	templatesSources2 := (PhLTemplateSources withTemplateList: PhLTemplateSources defaultSources) sources.
+	templatesSources1 := (PhLTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
+	templatesSources2 := (PhLTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
 	
 	self 
 		assert: templatesSources1
@@ -74,10 +95,10 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
 		
-	sources := PhLTemplateSources withFile: sourcesFile.
-	PhLTemplateSources sourcesUrl: server localUrl.
+	sources := PhLPharoTemplateSources withFile: sourcesFile.
+	PhLPharoTemplateSources sourcesUrl: server localUrl.
 	
-	PhLTemplateSources announcer weak
+	PhLPharoTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #add:
 		to: announcements.
@@ -91,7 +112,7 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 PhLTemplateSourcesTest >> testSourcesFileNotFetchIfPresentWhenCallingEnsureSourcesFile [
 	sourcesFile ensureCreateFile.	
 	
-	(PhLTemplateSources withFile: sourcesFile) ensureSourcesFile. 
+	(PhLPharoTemplateSources withFile: sourcesFile) ensureSourcesFile. 
 	
 	self 
 		assert: sourcesFile parent children size
@@ -110,10 +131,10 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: false)) ].
 		
-	sources := PhLTemplateSources withFile: sourcesFile.
-	PhLTemplateSources sourcesUrl: server localUrl.
+	sources := PhLPharoTemplateSources withFile: sourcesFile.
+	PhLPharoTemplateSources sourcesUrl: server localUrl.
 	
-	PhLTemplateSources announcer weak
+	PhLPharoTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #add:
 		to: announcements.
@@ -123,4 +144,20 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 	self 
 		assert: announcements size 
 		equals: 1 ].
+]
+
+{ #category : #tests }
+PhLTemplateSourcesTest >> testUserTemplatesAreListedAfterPharoTemplates [
+	| userSources pharoSources sources |
+	userSources := PhLUserTemplateSources example.
+	pharoSources := PhLPharoTemplateSources fromFile.
+	
+	sources := (PhLCompositeTemplateSources new initializeWith: { pharoSources . userSources }) sources.
+	
+	self 
+		assert: sources size
+		equals: pharoSources sources size + 1.
+	self 
+		assert: sources last
+		equals: userSources sources last
 ]

@@ -2,10 +2,10 @@
 I'm in charge of building the list of templates groups and its associated templates from a list of template sources.
 
 I use as input an instance of PhLTemplateSources.
-The default input is the serialized ston file 'sources.list' defining templates sources (stored in Launcher directory).
-I'm used at Launcher creation, see PharoLauncher>>#createLauncher.
+The default input is the serialized ston file 'sources.list' defining templates sources (stored in Launcher directory) + the user ston file 'mysources.list' if exists.
+I'm used at Launcher creation, see PharoLauncherApplication >>#resetTemplateRepository.
 
-To update the liste of sources, please update the sources files hosted at http://files.pharo.org/pharo-launcher/sources.list
+To update the list of official sources, please update the sources files hosted at http://files.pharo.org/pharo-launcher/sources.list
 "
 Class {
 	#name : #PhLTemplateGroupsBuilder,
@@ -20,39 +20,24 @@ Class {
 
 { #category : #'instance creation' }
 PhLTemplateGroupsBuilder class >> build [
-	^ self buildFrom: PhLTemplateSources fromFile
+	^ self buildFrom: PhLTemplateSources defaultSources
 ]
 
 { #category : #'instance creation' }
-PhLTemplateGroupsBuilder class >> buildFrom: aPhLTemplateSources [
+PhLTemplateGroupsBuilder class >> buildFrom: aPhLTemplateSourcesList [
 	^ self new 
-		initializeWithSources: aPhLTemplateSources;
-		build
-]
-
-{ #category : #'instance creation' }
-PhLTemplateGroupsBuilder class >> buildFromSourceList: aListOfPhLTemplateSource [
-	| file |
-	file := FileSystem memory / 'sources.list'.
-file writeStreamDo: [ :stream | | stonString |
-		stonString := STON 
-			put: aListOfPhLTemplateSource
-			onStreamPretty: stream.
-		stream nextPutAll: stonString ].
-	^ self new 
-		initializeWithSources: (PhLTemplateSources withFile: file);
+		initializeWithSources: aPhLTemplateSourcesList;
 		build
 ]
 
 { #category : #building }
 PhLTemplateGroupsBuilder >> build [
-	sources ensureSourcesFile.
 	^ groups := sources
 		collect: [ :source | 
-			| group |
-			group := source asTemplateGroup.
-			source templatesDo: [ :templateSource | group addTemplate: templateSource asTemplate ].
-			group ]
+			source asTemplateGroup 
+				in: [ :group |
+					source templatesDo: [ :templateSource | group addTemplate: templateSource asTemplate ] ];
+			yourself ]
 ]
 
 { #category : #initialization }

@@ -246,7 +246,7 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := TemplateRepository 
-		ifNil: [ TemplateRepository := PhLTemplateGroupRepository newFromGroups: PhLTemplateGroupsBuilder build ] 
+		ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ] 
 ]
 
 { #category : #running }

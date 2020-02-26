@@ -1,0 +1,178 @@
+"
+I represent the official template sources used by Pharo Launcher.
+
+Preview :
+	PhLTemplateGroupsBuilder buildFrom: PhLPharoTemplateSources fromFile.
+	
+Serialization:
+	self generateSourcesFile
+"
+Class {
+	#name : #PhLPharoTemplateSources,
+	#superclass : #PhLTemplateSources,
+	#classVars : [
+		'DownloadedSourcesFileLock',
+		'SourcesAnnouncer',
+		'SourcesUrl'
+	],
+	#category : #'PharoLauncher-Core-Model'
+}
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> announcer [
+	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
+]
+
+{ #category : #updating }
+PhLPharoTemplateSources class >> checkForUpdates [
+
+	self fromFile checkForUpdates
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> defaultSources [
+	^ OrderedCollection new 
+		add: PhLTemplateSource cacheGroup;
+		add: PhLTemplateSource moocGroup;
+		add: PhLTemplateSource officialDistributionsGroup;
+		add: PhLTemplateSource deprecatedDistributionsGroup;
+		add: PhLTemplateSource inriaPharoContribution;
+		add: PhLTemplateSource inriaMoose;
+		add: PhLTemplateSource pharo60;
+		add: PhLTemplateSource pharo70;
+		yourself
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> defaultSourcesUrl [
+
+	^ 'https://files.pharo.org/pharo-launcher/sources.list'
+]
+
+{ #category : #private }
+PhLPharoTemplateSources class >> downloadedSourcesFileLock [
+	^  DownloadedSourcesFileLock ifNil: [ DownloadedSourcesFileLock := Semaphore forMutualExclusion ].
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> fromFile [
+	^ self withFile: self sourcesFile
+]
+
+{ #category : #reseting }
+PhLPharoTemplateSources class >> resetSourcesUrl [
+	self sourcesUrl: self defaultSourcesUrl
+]
+
+{ #category : #settings }
+PhLPharoTemplateSources class >> settingsOn: aBuilder [
+	<systemsettings>
+	<pharoLauncherSettings>
+	(aBuilder setting: #sourcesUrl)
+		label: 'Template sources Url' translated;
+		parent: #pharoLauncher;
+		target: self;
+		order: 38;
+		default: self defaultSourcesUrl;
+		description: 'Url for downloading the template list'
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> sourcesFile [
+	"File with the list of default templates sources for Pharo Launcher"
+	^ self launcherCoreDir / 'sources.list'
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> sourcesUrl [
+	"Url of the file with the list of default templates sources for Pharo Launcher"
+
+	^ SourcesUrl ifNil: [ SourcesUrl := self defaultSourcesUrl ]
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources class >> sourcesUrl: aUrl [
+
+	| oldUrl |
+	oldUrl := SourcesUrl.
+	SourcesUrl := aUrl.
+	
+	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
+	self checkForUpdates
+]
+
+{ #category : #actions }
+PhLPharoTemplateSources >> checkForUpdates [
+	| downloadedSources |
+	file exists ifFalse: [ ^ self ensureSourcesFile ].
+	self downloadedSourcesFileLock
+		critical: 
+		[ self downloadedSourcesFile ensureDelete.
+		self fetchSourcesFile.
+		downloadedSources := self downloadedSources. ].
+	
+	self sources = downloadedSources
+		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
+]
+
+{ #category : #reading }
+PhLPharoTemplateSources >> downloadedSources [
+	| sources |
+	self downloadedSourcesFile readStreamDo: [ :stream |
+		 sources := STON fromStream: stream].
+	^ sources
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources >> downloadedSourcesFile [
+	^ file parent / (file basename, '.dl')
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources >> downloadedSourcesFileLock [
+	"downloadedSourcesFileLock is a class variable because it points to a file that can only be used by one instance at a time."
+	^ self class downloadedSourcesFileLock
+]
+
+{ #category : #actions }
+PhLPharoTemplateSources >> ensureSourcesFile [
+	file exists ifTrue: [ ^ file ].
+	
+	self fetchSourcesFile.
+	self downloadedSourcesFile exists 
+		ifFalse: [ PhLUIInformation new 
+						message: 'Cannot fetch Pharo Launcher template sources file: {1}'. ].
+	self replaceSourcesFileWithDownloaded.
+]
+
+{ #category : #actions }
+PhLPharoTemplateSources >> fetchSourcesFile [
+	"Avoid to have a retry dialog"
+	PhLDownloadManager default
+		basicDownload: self sourcesUrl
+		toFile: self downloadedSourcesFile. 
+	
+]
+
+{ #category : #actions }
+PhLPharoTemplateSources >> replaceSourcesFileWithDownloaded [
+	file ensureDelete.
+	self downloadedSourcesFile moveTo: file 
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources >> sources [
+	self ensureSourcesFile.
+	^ super sources
+]
+
+{ #category : #accessing }
+PhLPharoTemplateSources >> sourcesUrl [
+
+	^ self class sourcesUrl
+]
+
+{ #category : #actions }
+PhLPharoTemplateSources >> updateSourcesFile [
+	self replaceSourcesFileWithDownloaded
+]

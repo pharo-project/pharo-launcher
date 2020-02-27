@@ -12,7 +12,8 @@ Class {
 		'initScriptText',
 		'initScript',
 		'editInitScriptButton',
-		'descriptionText'
+		'descriptionText',
+		'imageNameCheck'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -21,10 +22,12 @@ Class {
 PhLImageCreationPresenter class >> defaultSpec [
 	^ SpBoxLayout newVertical
 		spacing: 5;
-		add: ''"New Image:'"
-			withConstraints: [ :constraints | constraints height: self labelHeight * 1.5 ];
 		add: 'Image name:' expand: false;
-		add: #imageName expand: false;
+		add: (SpBoxLayout newHorizontal 
+			add: #imageName;
+			add: #imageNameCheck expand: false;
+			yourself)
+			expand: false;
 		add: 'Image description:' expand: false;
 		add: #descriptionText height: 60;
 		add: 'Initialization script:' expand: false;
@@ -48,6 +51,14 @@ PhLImageCreationPresenter class >> example [
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
 	self window ifNotNil: [ :window | window close ]
+]
+
+{ #category : #initialization }
+PhLImageCreationPresenter >> connectPresenters [
+	imageName whenTextChangedDo: [ :name | 
+		(name isEmpty or: [ self application imageRepository hasImageNamed: name])
+			ifTrue: [ self showNameError ]
+			ifFalse: [ self showNameOk ] ]
 ]
 
 { #category : #accessing }
@@ -92,6 +103,7 @@ PhLImageCreationPresenter >> initializePresenters [
 	imageName := self newTextInput
 		             autoAccept: true;
 		             yourself.
+	imageNameCheck := self newImage.
 	initScriptText := self newText
 								disable;
 								yourself.
@@ -148,6 +160,20 @@ PhLImageCreationPresenter >> openScriptPresenter [
 { #category : #refreshing }
 PhLImageCreationPresenter >> refreshInitializationScriptList [
 	initScript items: self initializationScriptItems.
+]
+
+{ #category : #private }
+PhLImageCreationPresenter >> showNameError [
+	imageNameCheck 
+		image: (self iconNamed: #smallError);
+		help: 'An image with the same name already exists!'
+]
+
+{ #category : #private }
+PhLImageCreationPresenter >> showNameOk [
+	imageNameCheck 
+		image: (self iconNamed: #smallOk);
+		help: 'Image name is valid!'
 ]
 
 { #category : #initialization }

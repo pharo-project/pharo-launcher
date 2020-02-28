@@ -15,7 +15,7 @@ Class {
 		'templates',
 		'expanded',
 		'username',
-		'token'
+		'password'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -276,7 +276,7 @@ PhLTemplateSource >> asBasicTemplateGroup [
 						url: url asZnUrl
 						filterPattern: pattern ].
 	type == self class jenkinsServerType 
-		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl username: username token: token ].
+		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl username: username password: password ].
 	type == self class urlGroupType
 		ifTrue: [ ^ PhLFixedURLsTemplateGroup new 
 						setName: name Templates: OrderedCollection new;
@@ -335,6 +335,16 @@ PhLTemplateSource >> name: aString [
 	name := aString
 ]
 
+{ #category : #accessing }
+PhLTemplateSource >> password [
+	^ password
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> password: anObject [
+	password := anObject
+]
+
 { #category : #printing }
 PhLTemplateSource >> printOn: aStream [
 	super printOn: aStream.
@@ -357,16 +367,6 @@ PhLTemplateSource >> templates: aListOfTemplates [
 { #category : #iterating }
 PhLTemplateSource >> templatesDo: aBlockClosure [ 
 	templates ifNotNil: [ templates do: aBlockClosure ]
-]
-
-{ #category : #accessing }
-PhLTemplateSource >> token [
-	^ token
-]
-
-{ #category : #accessing }
-PhLTemplateSource >> token: anObject [
-	token := anObject
 ]
 
 { #category : #accessing }

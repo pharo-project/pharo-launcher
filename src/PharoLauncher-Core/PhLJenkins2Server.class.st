@@ -20,10 +20,10 @@ PhLJenkins2Server class >> name: aString url: anUrl [
 ]
 
 { #category : #'instance creation' }
-PhLJenkins2Server class >> name: aString url: anUrl username: anotherString token: yetAnotherString [
+PhLJenkins2Server class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl)
 		  username: anotherString;
-		  token: yetAnotherString;
+		  password: yetAnotherString;
 		  yourself
 ]
 
@@ -37,6 +37,16 @@ PhLJenkins2Server >> name [
 	^ name
 ]
 
+{ #category : #accessing }
+PhLJenkins2Server >> password [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> password: aString [
+	url password: aString
+]
+
 { #category : #initialization }
 PhLJenkins2Server >> setName: aString url: aZnUrl [ 
 	name := aString.
@@ -46,16 +56,6 @@ PhLJenkins2Server >> setName: aString url: aZnUrl [
 { #category : #accessing }
 PhLJenkins2Server >> templatesAndGroups [
 	^ self jobs
-]
-
-{ #category : #accessing }
-PhLJenkins2Server >> token [
-	^ url password
-]
-
-{ #category : #accessing }
-PhLJenkins2Server >> token: aString [
-	url password: aString
 ]
 
 { #category : #accessing }

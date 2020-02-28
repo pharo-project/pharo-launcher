@@ -114,6 +114,11 @@ PhLJenkins2Entity >> parent: aPhLEntity [
 ]
 
 { #category : #accessing }
+PhLJenkins2Entity >> password [
+	^ parent password
+]
+
+{ #category : #accessing }
 PhLJenkins2Entity >> properties [
 	^ properties
 ]
@@ -145,18 +150,13 @@ PhLJenkins2Entity >> shouldComputeChildrenLazily [
 ]
 
 { #category : #accessing }
-PhLJenkins2Entity >> token [
-	^ parent token
-]
-
-{ #category : #accessing }
 PhLJenkins2Entity >> url [
 	"We get the URL from the json sent by Jenkins. In case of a secure Jenkins, we need to set the username and token to the URL we get."
 
 	| url |
 	url := (properties at: 'url') asUrl.
 	self username ifNotNil: [ :username | url username: username ].
-	self token ifNotNil: [ :token | url password: token ].
+	self password ifNotNil: [ :token | url password: token ].
 	^ url
 ]
 

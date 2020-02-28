@@ -6,20 +6,22 @@ Class {
 
 { #category : #helpers }
 PhLJenkins2JobTest class >> newInstance [
-	| job |
-	job := PhLJenkins2Job
-		newWithProperties: (STONJSON fromString: '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/pharo-contribution/job/A4BP/1304/","number":1304}').
-	job parent: PhLJenkins2ServerTest newInstance.
-	^ job
+	^ self newWithoutParent
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
 ]
 
 { #category : #helpers }
-PhLJenkins2JobTest class >> newSecureJenkinsInstance [
-	| job |
-	job := PhLJenkins2Job
-		newWithProperties: (STONJSON fromString: '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/pharo-contribution/job/A4BP/1304/","number":1304}').
-	job parent: PhLJenkins2ServerTest newSecureJenkinsInstance.
-	^ job
+PhLJenkins2JobTest class >> newSecureInstance [
+	^ self newWithoutParent
+		  parent: PhLJenkins2ServerTest newSecureInstance;
+		  yourself
+]
+
+{ #category : #helpers }
+PhLJenkins2JobTest class >> newWithoutParent [
+	^ PhLJenkins2Job newWithProperties: (STONJSON fromString:
+			   '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/pharo-contribution/job/A4BP/1304/","number":1304}')
 ]
 
 { #category : #helpers }

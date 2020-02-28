@@ -10,9 +10,9 @@ PhLJenkins2ServerTest class >> newInstance [
 ]
 
 { #category : #'instance creation' }
-PhLJenkins2ServerTest class >> newSecureJenkinsInstance [
+PhLJenkins2ServerTest class >> newSecureInstance [
 	^ self newInstance
-		username: 'Christophe';
+		username: 'BadetitouTheUnicorn';
 		token: 'dkewjdcnriuwefjncreiuhf';
 		yourself
 ]
@@ -39,8 +39,8 @@ PhLJenkins2ServerTest >> newInstance [
 ]
 
 { #category : #'instance creation' }
-PhLJenkins2ServerTest >> newSecureJenkinsInstance [
-	^ self class newSecureJenkinsInstance
+PhLJenkins2ServerTest >> newSecureInstance [
+	^ self class newSecureInstance
 ]
 
 { #category : #responses }

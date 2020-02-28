@@ -15,7 +15,7 @@ PhLJenkins2EntityTest class >> newInstance [
 ]
 
 { #category : #'instance creation' }
-PhLJenkins2EntityTest class >> newSecureJenkinsInstance [
+PhLJenkins2EntityTest class >> newSecureInstance [
 	^ self subclassResponsibility
 ]
 
@@ -39,8 +39,8 @@ PhLJenkins2EntityTest >> newInstance [
 ]
 
 { #category : #'instance creation' }
-PhLJenkins2EntityTest >> newSecureJenkinsInstance [
-	^ self class newSecureJenkinsInstance
+PhLJenkins2EntityTest >> newSecureInstance [
+	^ self class newSecureInstance
 ]
 
 { #category : #running }
@@ -69,6 +69,6 @@ PhLJenkins2EntityTest >> testNonSecureJenkinsDoesNotIncludesIdentifiersInUrl [
 
 { #category : #tests }
 PhLJenkins2EntityTest >> testSecureJenkinsIncludesIdentifiersInUrl [
-	self assert: self newSecureJenkinsInstance url hasUsername.
-	self assert: self newSecureJenkinsInstance url hasPassword
+	self assert: self newSecureInstance url hasUsername.
+	self assert: self newSecureInstance url hasPassword
 ]

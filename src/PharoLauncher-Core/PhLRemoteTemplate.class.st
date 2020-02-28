@@ -10,7 +10,7 @@ Class {
 	#category : #'PharoLauncher-Core-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #example }
 PhLRemoteTemplate class >> example [ 
 	^ self name: 'Pharo Mooc' url: 'https://mooc.pharo.org/image/PharoWeb.zip'
 ]
@@ -20,6 +20,14 @@ PhLRemoteTemplate class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
+]
+
+{ #category : #'instance creation' }
+PhLRemoteTemplate class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
 ]
 
 { #category : #comparing }
@@ -33,6 +41,16 @@ PhLRemoteTemplate >> = anObject [
 { #category : #comparing }
 PhLRemoteTemplate >> hash [
 	^ name hash bitXor: url hash
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> password [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> password: aString [
+	url password: aString
 ]
 
 { #category : #'initialize-release' }
@@ -53,6 +71,16 @@ PhLRemoteTemplate >> suggestedImageName [
 { #category : #accessing }
 PhLRemoteTemplate >> url [
 	^ url
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> username [
+	^ url username
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> username: aString [
+	url username: aString
 ]
 
 { #category : #accessing }

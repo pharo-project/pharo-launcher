@@ -18,12 +18,10 @@ BaselineOfPharoLauncher >> baseline: spec [
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
 			baseline: #OSWinSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ];
-			project: 'XMLParser' with: [
-				spec
-					className: #ConfigurationOfXMLParser;
-					versionString: #'stable';
-					loads: #('Core' );
-					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ].
+			baseline: #XMLParser
+				with: [ spec 
+							repository: 'github://pharo-contributions/pharo-contributions/XML-XMLParser:3.5.x';
+							loads: #('Core') ].
 		spec
 			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [

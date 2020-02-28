@@ -1,8 +1,21 @@
 Class {
 	#name : #PhLJenkins2ServerTest,
 	#superclass : #PhLJenkins2EntityTest,
-	#category : 'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Download'
 }
+
+{ #category : #'instance creation' }
+PhLJenkins2ServerTest class >> newInstance [
+	^ PhLJenkins2Server name: 'foo' url: 'bar' asUrl
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2ServerTest class >> newSecureInstance [
+	^ self newInstance
+		username: 'BadetitouTheUnicorn';
+		token: 'dkewjdcnriuwefjncreiuhf';
+		yourself
+]
 
 { #category : #responses }
 PhLJenkins2ServerTest >> defaultJobName [
@@ -22,7 +35,12 @@ PhLJenkins2ServerTest >> jobsResponse [
 
 { #category : #'instance creation' }
 PhLJenkins2ServerTest >> newInstance [
-	^ PhLJenkins2Server name: 'foo' url: 'bar' asUrl
+	^ self class newInstance
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2ServerTest >> newSecureInstance [
+	^ self class newSecureInstance
 ]
 
 { #category : #responses }

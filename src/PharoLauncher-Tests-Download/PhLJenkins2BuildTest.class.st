@@ -1,8 +1,28 @@
 Class {
 	#name : #PhLJenkins2BuildTest,
 	#superclass : #PhLJenkins2EntityTest,
-	#category : 'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Download'
 }
+
+{ #category : #'instance creation' }
+PhLJenkins2BuildTest class >> newInstance [
+	^ self newWithoutParent
+		  parent: PhLJenkins2JobTest newInstance;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2BuildTest class >> newSecureInstance [
+	^ self newWithoutParent
+		  parent: PhLJenkins2JobTest newSecureInstance;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2BuildTest class >> newWithoutParent [
+	^ PhLJenkins2Build newWithProperties: (STONJSON fromString:
+			   '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/moose/job/ClassNamesAnalyzer/223/","number":223}')
+]
 
 { #category : #helpers }
 PhLJenkins2BuildTest >> artifactRelativePath [
@@ -21,22 +41,22 @@ PhLJenkins2BuildTest >> buildUrlString [
 
 { #category : #'instance creation' }
 PhLJenkins2BuildTest >> emptyBuild [
-	^ PhLJenkins2Build
-		newWithProperties:
-			(Dictionary new
-				at: 'number' put: self buildNumber;
-				at: 'url' put: self buildUrlString;
-				yourself)
+	^ (PhLJenkins2Build newWithProperties: (Dictionary new
+				    at: 'number' put: self buildNumber;
+				    at: 'url' put: self buildUrlString;
+				    yourself))
+		  parent: PhLJenkins2JobTest newSecureInstance;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PhLJenkins2BuildTest >> emptyLastSuccessfulBuild [
-	^ PhLJenkins2Build
-		newWithProperties:
-			(Dictionary new
-				at: 'number' put: self buildNumber;
-				at: 'url' put: self lastSuccessfulBuildUrlString;
-				yourself)
+	^ (PhLJenkins2Build newWithProperties: (Dictionary new
+				    at: 'number' put: self buildNumber;
+				    at: 'url' put: self lastSuccessfulBuildUrlString;
+				    yourself))
+		  parent: PhLJenkins2JobTest newSecureInstance;
+		  yourself
 ]
 
 { #category : #helpers }

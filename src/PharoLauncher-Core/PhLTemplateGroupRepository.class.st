@@ -58,7 +58,7 @@ PhLTemplateGroupRepository >> createZipArchiveFrom: anImage named: aString [
 		do: [ :e | "ignore the file" ].
 	anImage versionFile exists
 		ifTrue: [ archive addFile: anImage versionFile as: anImage versionFile basename ].
-	archive writeToFileNamed: (self localTemplatesDirectory / aString , 'zip')
+	archive writeToFile: (self localTemplatesDirectory / aString , 'zip')
 ]
 
 { #category : #action }

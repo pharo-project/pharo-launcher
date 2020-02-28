@@ -12,6 +12,20 @@ Class {
 	#category : #'PharoLauncher-Core-Model'
 }
 
+{ #category : #protected }
+PhLJenkins2Server class >> jsonFields [
+	"Because the server is the root of the jenkins model"
+
+	^ self shouldNotImplement
+]
+
+{ #category : #protected }
+PhLJenkins2Server class >> jsonName [
+	"Because the server is the root of the jenkins model"
+
+	^ self shouldNotImplement
+]
+
 { #category : #'instance creation' }
 PhLJenkins2Server class >> name: aString url: anUrl [
 	^ self new

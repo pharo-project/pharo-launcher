@@ -9,7 +9,7 @@ Class {
 		'url',
 		'name'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #'instance creation' }
@@ -17,6 +17,14 @@ PhLJenkins2Server class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2Server class >> name: aString url: anUrl username: anotherString token: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  username: anotherString;
+		  token: yetAnotherString;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -41,6 +49,26 @@ PhLJenkins2Server >> templatesAndGroups [
 ]
 
 { #category : #accessing }
+PhLJenkins2Server >> token [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> token: aString [
+	url password: aString
+]
+
+{ #category : #accessing }
 PhLJenkins2Server >> url [
 	^ url
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> username [
+	^ url username
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> username: aString [
+	url username: aString
 ]

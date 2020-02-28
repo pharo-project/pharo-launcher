@@ -1,8 +1,28 @@
 Class {
 	#name : #PhLJenkins2EntityTest,
 	#superclass : #TestCase,
-	#category : 'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Download'
 }
+
+{ #category : #testing }
+PhLJenkins2EntityTest class >> isAbstract [
+	^ self = PhLJenkins2EntityTest
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2EntityTest class >> newInstance [
+	^ self subclassResponsibility
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2EntityTest class >> newSecureJenkinsInstance [
+	^ self subclassResponsibility
+]
+
+{ #category : #testing }
+PhLJenkins2EntityTest class >> shouldInheritSelectors [
+	^ true
+]
 
 { #category : #helpers }
 PhLJenkins2EntityTest >> downloadManager [
@@ -11,6 +31,16 @@ PhLJenkins2EntityTest >> downloadManager [
 	"If this assertion fails, you probably need to add a setUp method which calls PhLDownloadManagerMock>>install."
 	self assert: (manager isKindOf: PhLDownloadManagerMock).
 	^ manager
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2EntityTest >> newInstance [
+	^ self class newInstance
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2EntityTest >> newSecureJenkinsInstance [
+	^ self class newSecureJenkinsInstance
 ]
 
 { #category : #running }
@@ -29,4 +59,16 @@ PhLJenkins2EntityTest >> setUpResponse: aResponse [
 PhLJenkins2EntityTest >> tearDown [
 	super tearDown.
 	PhLDownloadManagerMock remove.
+]
+
+{ #category : #tests }
+PhLJenkins2EntityTest >> testNonSecureJenkinsDoesNotIncludesIdentifiersInUrl [
+	self deny: self newInstance url hasUsername.
+	self deny: self newInstance url hasPassword
+]
+
+{ #category : #tests }
+PhLJenkins2EntityTest >> testSecureJenkinsIncludesIdentifiersInUrl [
+	self assert: self newSecureJenkinsInstance url hasUsername.
+	self assert: self newSecureJenkinsInstance url hasPassword
 ]

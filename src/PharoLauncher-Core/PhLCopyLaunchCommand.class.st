@@ -7,8 +7,22 @@ Class {
 	#category : #'PharoLauncher-Core-Commands'
 }
 
+{ #category : #converting }
+PhLCopyLaunchCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallCopyIcon;
+		beDisabledWhenCantBeRun;
+		yourself
+]
+
 { #category : #executing }
 PhLCopyLaunchCommand >> execute [
 	Clipboard clipboardText: 
-		self imagesPresenter singleImage defaultLaunchConfiguration commandString
+		self imagesPresenter selectedLaunchConfiguration commandString
+]
+
+{ #category : #initialization }
+PhLCopyLaunchCommand >> initialize [
+	super initialize.
+	self name: 'Copy launch command'
 ]

@@ -24,12 +24,11 @@ PhLCreateTemplateFromImageCommand >> asSpecCommand [
 PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 	self
 		willRemoveImage;
-		basicName: 'Create Template and delete image';
-		basicDescription: 'Create a Template from the selected Pharo image and delete the image just after template creation'.
-
+		name: 'Create Template and delete image';
+		description:
+			'Create a Template from the selected Pharo image and delete the image just after template creation'.
 	^ super asSpecCommand
-		"iconName: #smallDoItIcon;"
-		"shortcutKey: $l meta, $b meta ;"
+		iconName: #smallNewIcon;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

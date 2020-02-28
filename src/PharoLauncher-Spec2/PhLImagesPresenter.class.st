@@ -29,14 +29,28 @@ PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: r
 PhLImagesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Images table contextual menu';
-		register: PhLLaunchImageCommand forSpec;
-		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
-		register: PhLRenameImageCommand forSpec;
+		register: ((CmCommandGroup named: 'launch') asSpecGroup
+			register: PhLLaunchImageCommand forSpec;
+			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
+						name: 'Launch without settings';
+						yourself);
+			beDisplayedAsGroup;
+			yourself);
+		register: ((CmCommandGroup named: 'edition') asSpecGroup
+			register: PhLRenameImageCommand forSpec;
+			register: PhLCopyImageCommand forSpec;
+			register: PhLDeleteImageCommand forSpec;
+			beDisplayedAsGroup;
+			yourself);
 		register: PhLRecreateImageCommand forSpec;
-		register: PhLDeleteImageCommand forSpec;
 		register: PhLShowImageInFolderCommand forSpec;
 		register: PhLCopyPathname forSpec;
-		register: PhLInspectCommand forSpec;
+		register: PhLCopyLaunchCommand forSpec;
+		register: PhLCreateTemplateFromImageCommand forSpec;
+		register: PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval;
+		register: ((CmCommandGroup named: 'extra') asSpecGroup
+			register: PhLInspectCommand forSpec;
+			yourself);
 		beDisplayedAsGroup;
 		yourself
 ]

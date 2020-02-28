@@ -13,7 +13,7 @@ PhLJenkins2ServerTest class >> newInstance [
 PhLJenkins2ServerTest class >> newSecureInstance [
 	^ self newInstance
 		username: 'BadetitouTheUnicorn';
-		token: 'dkewjdcnriuwefjncreiuhf';
+		password: 'dkewjdcnriuwefjncreiuhf';
 		yourself
 ]
 

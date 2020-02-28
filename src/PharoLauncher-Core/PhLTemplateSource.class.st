@@ -274,7 +274,7 @@ PhLTemplateSource >> asBasicTemplateGroup [
 					^ PhLHTTPListingTemplateGroup
 						name: name
 						url: url asZnUrl
-						filterPattern: pattern ].
+						filterPattern: pattern username: username password: password].
 	type == self class jenkinsServerType 
 		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl username: username password: password ].
 	type == self class urlGroupType
@@ -289,12 +289,13 @@ PhLTemplateSource >> asBasicTemplateGroup [
 
 { #category : #converting }
 PhLTemplateSource >> asTemplate [
-	type == self class urlType
-		ifTrue: [ ^ PhLRemoteTemplate 
-						name: name
-						url: url asUrl ].
+	type == self class urlType ifTrue: [ 
+		^ PhLRemoteTemplate
+			  name: name
+			  url: url asUrl
+			  username: username
+			  password: password ].
 	self error: 'Template type not supported!'
-
 ]
 
 { #category : #converting }

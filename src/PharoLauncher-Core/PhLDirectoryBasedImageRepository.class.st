@@ -175,30 +175,23 @@ PhLDirectoryBasedImageRepository >> hasImages [
 	^ self images notEmpty
 ]
 
-{ #category : #private }
-PhLDirectoryBasedImageRepository >> imageFromDirectory: aDirectory [
-	"Create an instance of PhLImage representing the Pharo image in aDirectory"
-
-	| imageName imageFiles changeFiles |
-	imageName := aDirectory basename.
-	imageFiles := aDirectory filesMatching: imageName , '.image'.
-	changeFiles := aDirectory filesMatching: imageName , '.changes'.
-	^ (imageFiles size ~= 1 or: [ changeFiles size ~= 1 ])
-		ifTrue: [ nil ]
-		ifFalse: [ PhLImage location: imageFiles first ]
-]
-
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> imageNames [
-	^ self images collect: #name
+	"For performances reasons we do not use the PhImage objects because we need to parse to much files and this is slow. We just get the list of file names."
+
+	| imageNames |
+	imageNames := OrderedCollection new.
+	self withImagesFilesDo: [ :imageFile | imageNames add: imageFile basename ].
+	^ imageNames
 ]
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> images [
+	"Create an instance of PhLImage representing the Pharo image in all launcher directories"
+
 	| images |
 	images := OrderedCollection new.
-	self baseDirectory directories
-		do: [ :directory | (self imageFromDirectory: directory) ifNotNil: [ :image | images add: image ] ].
+	self withImagesFilesDo: [ :imageFile | images add: (PhLImage location: imageFile) ].
 	^ images
 ]
 
@@ -235,7 +228,7 @@ PhLDirectoryBasedImageRepository >> includesImageNamedCaseInsensitive: anImageNa
 	"Windows OS doesnt care about case for folder names."
 	| lowercaseImageName |
 	lowercaseImageName := anImageName asLowercase.
-	^ self images anySatisfy: [ :image | image name asLowercase = lowercaseImageName ]
+	^ self imageNames anySatisfy: [ :imageName | imageName asLowercase = lowercaseImageName ]
 ]
 
 { #category : #testing }
@@ -325,4 +318,14 @@ PhLDirectoryBasedImageRepository >> roots [
 { #category : #'initialize-release' }
 PhLDirectoryBasedImageRepository >> setBaseDirectory: aLocation [
 	baseDirectory := aLocation
+]
+
+{ #category : #accessing }
+PhLDirectoryBasedImageRepository >> withImagesFilesDo: aBlock [
+	self baseDirectory directories
+		do: [ :aDirectory | 
+			| imageName imageFiles |
+			imageName := aDirectory basename.
+			imageFiles := aDirectory filesMatching: imageName , '.image'.
+			(imageFiles size = 1 and: [ (aDirectory filesMatching: imageName , '.changes') size = 1 ]) ifTrue: [ aBlock value: imageFiles first ] ifFalse: [ nil ] ]
 ]

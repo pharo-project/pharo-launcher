@@ -7,6 +7,7 @@ Class {
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
+		'isNameOk',
 		'imageName',
 		'createButton',
 		'initScriptText',
@@ -48,6 +49,16 @@ PhLImageCreationPresenter class >> example [
 		model: {PhLRemoteTemplate example}) openWithSpec
 ]
 
+{ #category : #initialization }
+PhLImageCreationPresenter >> checkNewName: name [
+	| isValid |
+	isValid := name isEmpty or: [ self application imageRepository hasImageNamed: name ].
+
+	isNameOk = isValid ifTrue: [ ^ self ].
+
+	(isNameOk := isValid) ifTrue: [ self showNameError ] ifFalse: [ self showNameOk ]
+]
+
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
 	self window ifNotNil: [ :window | window close ]
@@ -55,10 +66,7 @@ PhLImageCreationPresenter >> close [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> connectPresenters [
-	imageName whenTextChangedDo: [ :name | 
-		(name isEmpty or: [ self application imageRepository hasImageNamed: name])
-			ifTrue: [ self showNameError ]
-			ifFalse: [ self showNameOk ] ]
+	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
 ]
 
 { #category : #accessing }

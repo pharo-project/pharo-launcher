@@ -177,22 +177,14 @@ PhLDirectoryBasedImageRepository >> hasImages [
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> imageNames [
-	"For performances reasons we do not use the PhImage objects because we need to parse to much files and this is slow. We just get the list of file names."
-
-	| imageNames |
-	imageNames := OrderedCollection new.
-	self withImagesFilesDo: [ :imageFile | imageNames add: imageFile basenameWithoutExtension ].
-	^ imageNames
+	^ self withImagesFilesCollect: #basenameWithoutExtension
 ]
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> images [
-	"Create an instance of PhLImage representing the Pharo image in all launcher directories"
+	"Creates instances of PhLImage representing the Pharo images the launcher can manage."
 
-	| images |
-	images := OrderedCollection new.
-	self withImagesFilesDo: [ :imageFile | images add: (PhLImage location: imageFile) ].
-	^ images
+	^ self withImagesFilesCollect: [ :imageFile | PhLImage location: imageFile ]
 ]
 
 { #category : #action }
@@ -321,11 +313,17 @@ PhLDirectoryBasedImageRepository >> setBaseDirectory: aLocation [
 ]
 
 { #category : #accessing }
-PhLDirectoryBasedImageRepository >> withImagesFilesDo: aBlock [
-	self baseDirectory directories
-		do: [ :aDirectory | 
+PhLDirectoryBasedImageRepository >> withImagesFilesCollect: aBlock [
+	"I iterate over all the folders in the launcher image directory. If this directory contains one image and one change file, I execute the block provided by the user and I return the list of results obtained."
+
+	^ self baseDirectory directories
+		inject: OrderedCollection new
+		into: [ :collection :aDirectory | 
 			| imageName imageFiles |
 			imageName := aDirectory basename.
 			imageFiles := aDirectory filesMatching: imageName , '.image'.
-			(imageFiles size = 1 and: [ (aDirectory filesMatching: imageName , '.changes') size = 1 ]) ifTrue: [ aBlock value: imageFiles first ] ifFalse: [ nil ] ]
+			(imageFiles size = 1 and: [ (aDirectory filesMatching: imageName , '.changes') size = 1 ])
+				ifTrue: [ collection add: (aBlock value: imageFiles first) ]
+				ifFalse: [ nil ].
+			collection ]
 ]

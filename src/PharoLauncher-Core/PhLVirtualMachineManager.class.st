@@ -294,6 +294,23 @@ PhLVirtualMachineManager >> downloadPathOSTypeSegment [
 
 ]
 
+{ #category : #querying }
+PhLVirtualMachineManager >> ensureExecutionRightsOf: aCollectionOfVms [
+	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
+	We have to set it explicitely on Unix and OS X."
+
+	| executables command |
+	Smalltalk os isWindows ifTrue: [ ^ self ].
+
+	executables := aCollectionOfVms flatCollect: #executablesToEnsure.
+	command := PhLProcessWrapper new
+		shellCommand;
+		addArguments: 'chmod u+x';
+		yourself.
+	executables do: [ :file | command addArgument: file fullName surroundedByDoubleQuotes ].
+	command runAndWaitTimeOut: 5 seconds
+]
+
 { #category : #private }
 PhLVirtualMachineManager >> fetchCompatibleVm [
 	[ self class 
@@ -528,13 +545,12 @@ PhLVirtualMachineManager >> virtualMachine [
 
 { #category : #querying }
 PhLVirtualMachineManager >> virtualMachines [
-	| vmsInVmStore defaultVms |
-	
+	| vmsInVmStore defaultVms allVms |
 	defaultVms := self defaultVirtualMachines.
-	vmsInVmStore := self availableVirtualMachines values
-		reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
-		
-	^ vmsInVmStore , defaultVms
+	vmsInVmStore := self availableVirtualMachines values reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
+	allVms := vmsInVmStore , defaultVms.
+	self ensureExecutionRightsOf: allVms.
+	^ allVms
 ]
 
 { #category : #querying }

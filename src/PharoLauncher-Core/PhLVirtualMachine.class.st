@@ -110,18 +110,6 @@ PhLVirtualMachine >> downloadUrl [
 		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . self flavour . self blessing }
 ]
 
-{ #category : #ensuring }
-PhLVirtualMachine >> ensureIsExecutable: aPath [
-	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
-	We have to set it explicitely on Unix and OS X."
-	Smalltalk os isWindows 
-		ifFalse: 	[ PhLProcessWrapper new 
-			shellCommand;
-			addArguments: 'chmod u+x';
-			addArgument: aPath surroundedByDoubleQuotes;
-			runAndWaitTimeOut: 5 seconds ]
-]
-
 { #category : #setting }
 PhLVirtualMachine >> executable: aPathOrfileReference [
 	executableRef := aPathOrfileReference asFileReference
@@ -135,6 +123,13 @@ PhLVirtualMachine >> executableFolderPath [
 { #category : #accessing }
 PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> executablesToEnsure [
+	| vmFolder |
+	vmFolder := self vmStore / self id.
+	^ vmFolder exists ifTrue: [ (vmFolder allChildrenMatching: self class executableName) select: #isFile ] ifFalse: [ #() ]
 ]
 
 { #category : #accessing }
@@ -191,17 +186,14 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	| executables |
 	executables := aFolder allChildrenMatching: self class executableName.
 	Smalltalk os isUnix
-		ifTrue: [ executables select: #isFile thenDo: [ :fileRef | self ensureIsExecutable: fileRef fullName ].
-			"On linux, either the VM exe is at the top level or a bash script at the top level has to be used"
+		ifTrue: [ "On linux, either the VM exe is at the top level or a bash script at the top level has to be used"
 			executableRef := executables
 				detect: [ :fileRef | fileRef parent = aFolder ]
 				ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ].
 			vmBinaryRef := executables
 				detect: [ :fileRef | fileRef binaryReadStreamDo: [ :stream | (stream next: 4) = self class elfMagicNumber ] ]
 				ifNone: [ PhLExecutableNotFoundError signalKind: 'VM binary' inPath: aFolder fullName ] ]
-		ifFalse:
-			[ executableRef := vmBinaryRef := executables detect: #isFile ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ].
-	self ensureIsExecutable: executableRef fullName
+		ifFalse: [ executableRef := vmBinaryRef := executables detect: #isFile ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ]
 ]
 
 { #category : #initialization }
@@ -292,11 +284,11 @@ PhLVirtualMachine >> showInFolder [
 { #category : #updating }
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
-	self manager class 
-		fetch: self downloadUrl
-		to: self vmStore / (self id , '.zip').
-		
-	executableRef ifNil: [ self initializeExecutableRefFrom: self vmStore / self id ]
+
+	self manager class fetch: self downloadUrl to: self vmStore / (self id , '.zip').
+
+	self initializeExecutableRefFrom: self vmStore / self id.
+	self manager ensureExecutionRightsOf: {self}
 ]
 
 { #category : #accessing }

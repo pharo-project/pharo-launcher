@@ -96,9 +96,8 @@ PhLVMPresenter >> initializePresenters [
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		beMultipleSelection;
-		yourself.
-	"Run in a separate process to do not block UI. Can take some seconds."
-	[ vmTable items: self datasource virtualMachines ] fork.
+		items: self datasource virtualMachines;
+		yourself
 ]
 
 { #category : #initialization }

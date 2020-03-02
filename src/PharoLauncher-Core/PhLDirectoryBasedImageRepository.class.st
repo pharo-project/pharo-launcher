@@ -175,31 +175,16 @@ PhLDirectoryBasedImageRepository >> hasImages [
 	^ self images notEmpty
 ]
 
-{ #category : #private }
-PhLDirectoryBasedImageRepository >> imageFromDirectory: aDirectory [
-	"Create an instance of PhLImage representing the Pharo image in aDirectory"
-
-	| imageName imageFiles changeFiles |
-	imageName := aDirectory basename.
-	imageFiles := aDirectory filesMatching: imageName , '.image'.
-	changeFiles := aDirectory filesMatching: imageName , '.changes'.
-	^ (imageFiles size ~= 1 or: [ changeFiles size ~= 1 ])
-		ifTrue: [ nil ]
-		ifFalse: [ PhLImage location: imageFiles first ]
-]
-
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> imageNames [
-	^ self images collect: #name
+	^ self withImagesFilesCollect: #basenameWithoutExtension
 ]
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository >> images [
-	| images |
-	images := OrderedCollection new.
-	self baseDirectory directories
-		do: [ :directory | (self imageFromDirectory: directory) ifNotNil: [ :image | images add: image ] ].
-	^ images
+	"Creates instances of PhLImage representing the Pharo images the launcher can manage."
+
+	^ self withImagesFilesCollect: [ :imageFile | PhLImage location: imageFile ]
 ]
 
 { #category : #action }
@@ -235,7 +220,7 @@ PhLDirectoryBasedImageRepository >> includesImageNamedCaseInsensitive: anImageNa
 	"Windows OS doesnt care about case for folder names."
 	| lowercaseImageName |
 	lowercaseImageName := anImageName asLowercase.
-	^ self images anySatisfy: [ :image | image name asLowercase = lowercaseImageName ]
+	^ self imageNames anySatisfy: [ :imageName | imageName asLowercase = lowercaseImageName ]
 ]
 
 { #category : #testing }
@@ -325,4 +310,19 @@ PhLDirectoryBasedImageRepository >> roots [
 { #category : #'initialize-release' }
 PhLDirectoryBasedImageRepository >> setBaseDirectory: aLocation [
 	baseDirectory := aLocation
+]
+
+{ #category : #accessing }
+PhLDirectoryBasedImageRepository >> withImagesFilesCollect: aBlock [
+	"I iterate over all the folders in the launcher image directory. If this directory contains one image and one change file, I execute the block provided by the user and I return the list of results obtained."
+
+	^ self baseDirectory directories
+		inject: OrderedCollection new
+		into: [ :collection :aDirectory | 
+			| imageName imageFiles |
+			imageName := aDirectory basename.
+			imageFiles := aDirectory filesMatching: imageName , '.image'.
+			(imageFiles size = 1 and: [ (aDirectory filesMatching: imageName , '.changes') size = 1 ])
+				ifTrue: [ collection add: (aBlock value: imageFiles first) ].
+			collection ]
 ]

@@ -2,23 +2,23 @@
 A PhLDirectoryBasedImageGroupTest is a test class for testing the behavior of PhLDirectoryBasedImageGroup
 "
 Class {
-	#name : #PhLDirectoryBasedImageGroupTest,
+	#name : #PhLDirectoryBasedImageRepositoryTest,
 	#superclass : #ClassTestCase,
-	#category : 'PharoLauncher-Tests-Core'
+	#category : #'PharoLauncher-Tests-Core'
 }
 
 { #category : #coverage }
-PhLDirectoryBasedImageGroupTest >> classToBeTested [
+PhLDirectoryBasedImageRepositoryTest >> classToBeTested [
 	^ PhLDirectoryBasedImageRepository
 ]
 
 { #category : #'instance-creation' }
-PhLDirectoryBasedImageGroupTest >> emptyGroup [
+PhLDirectoryBasedImageRepositoryTest >> emptyGroup [
 	^ self classToBeTested forDirectory: FileSystem memory workingDirectory
 ]
 
 { #category : #'instance-creation' }
-PhLDirectoryBasedImageGroupTest >> newGroupWithAnImage [
+PhLDirectoryBasedImageRepositoryTest >> newGroupWithAnImage [
 	| group baseDirectory |
 	group := self emptyGroup.
 	baseDirectory := group baseDirectory.
@@ -29,7 +29,7 @@ PhLDirectoryBasedImageGroupTest >> newGroupWithAnImage [
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testCopyImageNamedTo [
+PhLDirectoryBasedImageRepositoryTest >> testCopyImageNamedTo [
 	| group |
 	group := self newGroupWithAnImage.
 	self assert: group imageNames asSet equals: #('test') asSet.
@@ -39,7 +39,7 @@ PhLDirectoryBasedImageGroupTest >> testCopyImageNamedTo [
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testDeleteImageNamed [
+PhLDirectoryBasedImageRepositoryTest >> testDeleteImageNamed [
 	| group |
 	group := self newGroupWithAnImage.
 	self assert: group imageNames asSet equals: #('test') asSet.
@@ -48,7 +48,7 @@ PhLDirectoryBasedImageGroupTest >> testDeleteImageNamed [
 ]
 
 { #category : #'instance-creation' }
-PhLDirectoryBasedImageGroupTest >> testDirectoryForImageNamed [
+PhLDirectoryBasedImageRepositoryTest >> testDirectoryForImageNamed [
 	| group |
 	group := self emptyGroup.
 	self assert: group images isEmpty.
@@ -56,7 +56,7 @@ PhLDirectoryBasedImageGroupTest >> testDirectoryForImageNamed [
 ]
 
 { #category : #'instance-creation' }
-PhLDirectoryBasedImageGroupTest >> testEmptyByDefault [
+PhLDirectoryBasedImageRepositoryTest >> testEmptyByDefault [
 	| group |
 	group := self emptyGroup.
 	self assert: group images isEmpty.
@@ -64,7 +64,7 @@ PhLDirectoryBasedImageGroupTest >> testEmptyByDefault [
 ]
 
 { #category : #'instance-creation' }
-PhLDirectoryBasedImageGroupTest >> testIgnoreNonConformDirectories [
+PhLDirectoryBasedImageRepositoryTest >> testIgnoreNonConformDirectories [
 	| group baseDirectory |
 	group := self emptyGroup.
 	baseDirectory := group baseDirectory.
@@ -83,14 +83,14 @@ PhLDirectoryBasedImageGroupTest >> testIgnoreNonConformDirectories [
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testImageNames [
+PhLDirectoryBasedImageRepositoryTest >> testImageNames [
 	| group |
 	group := self newGroupWithAnImage.
 	self assert: group imageNames asSet equals: #('test') asSet.
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testImages [
+PhLDirectoryBasedImageRepositoryTest >> testImages [
 	| group |
 	group := self newGroupWithAnImage.
 	self assert: group images size equals: 1.
@@ -98,7 +98,7 @@ PhLDirectoryBasedImageGroupTest >> testImages [
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testMakeUniqueImageName [
+PhLDirectoryBasedImageRepositoryTest >> testMakeUniqueImageName [
 	
 	{ 
 	"	{ basename . 	expectedResult .	{existingNames} } "	
@@ -126,7 +126,7 @@ PhLDirectoryBasedImageGroupTest >> testMakeUniqueImageName [
 ]
 
 { #category : #'tests-action' }
-PhLDirectoryBasedImageGroupTest >> testRenameImageNamedTo [
+PhLDirectoryBasedImageRepositoryTest >> testRenameImageNamedTo [
 	| group |
 	group := self newGroupWithAnImage.
 	self assert: group imageNames asSet equals: #('test') asSet.

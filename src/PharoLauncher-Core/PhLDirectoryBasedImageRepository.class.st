@@ -181,7 +181,7 @@ PhLDirectoryBasedImageRepository >> imageNames [
 
 	| imageNames |
 	imageNames := OrderedCollection new.
-	self withImagesFilesDo: [ :imageFile | imageNames add: imageFile basename ].
+	self withImagesFilesDo: [ :imageFile | imageNames add: imageFile basenameWithoutExtension ].
 	^ imageNames
 ]
 

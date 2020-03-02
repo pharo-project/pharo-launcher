@@ -1,5 +1,10 @@
 "
 I'm the view displayed to create an image from a template.
+
+Implementation points:
+
+To give feedback to the user, we display an icon helping the user to know if he already has an image of the same name or not.
+At each keystroke in the image title field we check if we already have an image with this name. If we have, we display a red cross to the user.
 "
 Class {
 	#name : #PhLImageCreationPresenter,
@@ -7,6 +12,7 @@ Class {
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
+		'isNameOk',
 		'imageName',
 		'createButton',
 		'initScriptText',
@@ -48,6 +54,21 @@ PhLImageCreationPresenter class >> example [
 		model: {PhLRemoteTemplate example}) openWithSpec
 ]
 
+{ #category : #initialization }
+PhLImageCreationPresenter >> checkNewName: name [
+	"If the image name is taken we display a red cross. Else we display a validation sign. 
+	I am called to validate the image displayed is in the right state. If not, I update it. 
+	I use a variable to know the state during the last validation."
+
+	| isValid |
+	isValid := name isEmpty or: [ self application imageRepository hasImageNamed: name ].
+
+	"Image already in the right state. We skip."
+	isNameOk = isValid ifTrue: [ ^ self ].
+
+	(isNameOk := isValid) ifTrue: [ self showNameError ] ifFalse: [ self showNameOk ]
+]
+
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
 	self window ifNotNil: [ :window | window close ]
@@ -55,10 +76,7 @@ PhLImageCreationPresenter >> close [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> connectPresenters [
-	imageName whenTextChangedDo: [ :name | 
-		(name isEmpty or: [ self application imageRepository hasImageNamed: name])
-			ifTrue: [ self showNameError ]
-			ifFalse: [ self showNameOk ] ]
+	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
 ]
 
 { #category : #accessing }

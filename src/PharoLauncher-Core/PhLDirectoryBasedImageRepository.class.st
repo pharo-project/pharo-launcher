@@ -323,7 +323,6 @@ PhLDirectoryBasedImageRepository >> withImagesFilesCollect: aBlock [
 			imageName := aDirectory basename.
 			imageFiles := aDirectory filesMatching: imageName , '.image'.
 			(imageFiles size = 1 and: [ (aDirectory filesMatching: imageName , '.changes') size = 1 ])
-				ifTrue: [ collection add: (aBlock value: imageFiles first) ]
-				ifFalse: [ nil ].
+				ifTrue: [ collection add: (aBlock value: imageFiles first) ].
 			collection ]
 ]

@@ -1,0 +1,4 @@
+# MkDocs documentation
+site/
+# ignore generated html files
+*.html

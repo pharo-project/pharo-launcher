@@ -1,0 +1,13 @@
+site_name: Pharo Launcher documentation
+nav:
+    - Home: index.md
+    - installation.md
+    - create-images.md
+    - commands.md 
+    - launch-configurations.md 
+    - templates.md
+    - manage-vms.md     
+    - settings.md
+                         
+theme:
+    name: readthedocs

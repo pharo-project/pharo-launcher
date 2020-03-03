@@ -1,0 +1,12 @@
+before_install:
+  - sudo apt-get -y install mkdocs
+
+script: mkdocs build
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: site/  # Directory to push to GitHub Pages, defaults to current directory.
+  github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+  on:
+    branch: feature/doc

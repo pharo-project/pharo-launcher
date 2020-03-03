@@ -12,6 +12,7 @@ Class {
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
+		'reservedImagesNamesCache',
 		'isNameOk',
 		'imageName',
 		'createButton',
@@ -61,7 +62,7 @@ PhLImageCreationPresenter >> checkNewName: name [
 	I use a variable to know the state during the last validation."
 
 	| isValid |
-	isValid := name isEmpty or: [ self application imageRepository hasImageNamed: name ].
+	isValid := name isEmpty or: [ reservedImagesNamesCache includes: name asLowercase ].
 
 	"Image already in the right state. We skip."
 	isNameOk = isValid ifTrue: [ ^ self ].
@@ -114,6 +115,12 @@ PhLImageCreationPresenter >> initializationScriptItems [
 PhLImageCreationPresenter >> initializationScripts [
 	^ self application scriptsDirectory files 
 		select: [ :file | file extension = 'st' ]
+]
+
+{ #category : #initialization }
+PhLImageCreationPresenter >> initialize [
+	super initialize.
+	reservedImagesNamesCache := self application imageRepository imageNames collect: #asLowercase
 ]
 
 { #category : #initialization }

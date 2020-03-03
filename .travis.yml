@@ -1,9 +1,11 @@
-language: shell
+language: python
 
-before_install:
-  - sudo apt-get -y install mkdocs
+install:
+  - pip install mkdocs
 
-script: mkdocs build
+script: 
+  - mkdocs --version
+  - mkdocs build
 
 deploy:
   provider: pages

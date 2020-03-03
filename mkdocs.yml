@@ -1,6 +1,6 @@
 site_name: Pharo Launcher documentation
 nav:
-    - Home: index.md
+    - index.md
     - installation.md
     - create-images.md
     - commands.md 

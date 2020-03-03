@@ -110,6 +110,20 @@ PhLVirtualMachine >> downloadUrl [
 		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . self flavour . self blessing }
 ]
 
+{ #category : #updating }
+PhLVirtualMachine >> ensureExecutionRights [
+	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
+	We have to set it explicitely on Unix and OS X."
+
+	Smalltalk os isWindows ifTrue: [ ^ self ].
+
+	PhLProcessWrapper new
+		shellCommand;
+		addArguments: 'chmod u+x';
+		in: [ :command | self executablesToEnsure do: [ :file | command addArgument: file fullName surroundedByDoubleQuotes ] ];
+		runAndWaitTimeOut: 5 seconds
+]
+
 { #category : #setting }
 PhLVirtualMachine >> executable: aPathOrfileReference [
 	executableRef := aPathOrfileReference asFileReference
@@ -288,7 +302,7 @@ PhLVirtualMachine >> updateFromUrl [
 	self manager class fetch: self downloadUrl to: self vmStore / (self id , '.zip').
 
 	self initializeExecutableRefFrom: self vmStore / self id.
-	self manager ensureExecutionRightsOf: {self}
+	self ensureExecutionRights
 ]
 
 { #category : #accessing }

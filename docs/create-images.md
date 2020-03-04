@@ -25,6 +25,7 @@ has to be in a new directory. So either use the "Copy" image, then "Launch" and 
 
 ## Where are stored my images?
 Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
+
 - *$HOME/Documents/Pharo* on OS X,
 - *$HOME/My Documents/Pharo* on windows,
 - *$HOME/Pharo* on Linux (some Linux distributions provide a document folder but some others not, so we put it in the HOME directory in all cases).

@@ -2,7 +2,6 @@
 You can get Pharo Launcher from the [Pharo website](https://pharo.org/download).
 The default download is a 64-bit version.
 
-<link rel="stylesheet" href="https://pharo.org/web/files/style.css"/>
 <p>
 	<a class="btn download" href="https://files.pharo.org/pharo-launcher/windows"><i class="fa fa-windows"></i> Windows</a>
 	<a class="btn download" href="https://files.pharo.org/pharo-launcher/mac"><i class="fa fa-apple"></i> MacOS</a>
@@ -36,7 +35,10 @@ In all cases OS X will still ask you if you want to open an "unsigned" applicati
 Run the installer and follow instructions. Be sure to install Pharo Launcher in a place where you have **write privileges**.
 The installer wil create a shorcut on the Desktop as well as an application entry in the Windows menu.
 
-### Installation on Windows WSL (Windows Linux Subsystem)
+**Warning**: Antinvirus can prevent Pharo Launcher to behave correctly
+It has been reported on Windows that the Antivirus prevents Pharo Launcher to download the VMs needed to run images. A workaround is to whitelist PharoLauncher or to temporary disable the antivirus when you need to download new VMs.
+
+### Installation on Windows Linux Subsystem (WSL)
 
 ## Install on GNU/Linux
 Unzip the archive in a place where you have **write privileges**.

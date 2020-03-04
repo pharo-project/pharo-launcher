@@ -20,8 +20,15 @@ You now need to provide a name to your image. If the name is not valid, a red ma
 You can optionally provide a description and an [initialization script](#image-initialization-script) to your image.
 4. Click on the **Create image** button.
 
+**Important note**: the launcher currently does not fit with the "Save as" image style - since each launcher image
+has to be in a new directory. So either use the "Copy" image, then "Launch" and then only "Save" in the target image or copy the "Saved as" image in a new folder and refresh the Launcher view on the right side.
+
 ## Where are stored my images?
-Images are stored in the location specified in Pharo settings. The default location is in Documents/Pharo/images
+Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
+- *$HOME/Documents/Pharo* on OS X,
+- *$HOME/My Documents/Pharo* on windows,
+- *$HOME/Pharo* on Linux (some Linux distributions provide a document folder but some others not, so we put it in the HOME directory in all cases).
+In this folder, you will find your images and virtual machines needed to run images. The default location can be customized in Pharo Launcher settings.
 
 ## Image initialization script
 When working with Pharo, you often need to load your project code and its dependencies. You could also want to execute some actions once to configure your image. This the purpose of the image initialization script: it is a Smalltalk script that will be **executed at the first launch of the image and will then be disabled**.

@@ -2,7 +2,7 @@ In order to launch Pharo images, Pharo Launcher needs some information. The most
 
 *Example: For a Pharo 8.0, 64-bit image, Pharo Launcher will use the stable 64-bit virtual machine of Pharo 8.*
 
-With this insformation, Pharo Launcher generates a *Default* launch configuration that will be used to launch the image.
+With this information, Pharo Launcher generates a *Default* launch configuration that will be used to launch the image.
 
 ![Launch configuration drop list](images/launch-configuration-toolbar.png)
 
@@ -12,6 +12,7 @@ That's why, if you select the *Edit configurations ...* entry in the Launch conf
 ![Launch configuration drop list](images/launch-configuration-editor.png)
 
 From this editor, you can:
+
 * add/remove Launch configuration for the selected Pharo image,
 * choose another VM than the one Pharo Launcher selected for you,
 * add/remove arguments to the Virtual Machine,

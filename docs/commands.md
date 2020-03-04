@@ -1,9 +1,9 @@
 ![Screenshot of Pharo Launcher taskbar](images/taskbar.png)
 
 # Global Commands
-![VM command](images/vm-command.png) Open a window to list and manage Pharo Virtual Machines that can be used by Pharo Launcher. More information in the [Manage vms section](/manage-vms).
+![VM command](images/vm-command.png) Open a window to list and manage Pharo Virtual Machines that can be used by Pharo Launcher. More information in the [Manage vms section](../manage-vms).
 
-![Settings command](images/settings-command.png) Open Pharo Launcher Settings window. More information on the various settings in the [Settings section](/settings).
+![Settings command](images/settings-command.png) Open Pharo Launcher Settings window. More information on the various settings in the [Settings section](../settings).
 
 ![About command](images/about-command.png) Open a dialog with information about the current Pharo Launcher version.
 

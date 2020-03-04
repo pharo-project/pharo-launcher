@@ -17,6 +17,7 @@ Pharo Launcher comes with a few settings you can customize.
 * Location of image initialization scripts: A directory where all your Pharo images initialization scripts will be saved (executed once at image creation).
 * Location of images: A directory where all your Pharo images will be saved and launched.
 * Virtual Machines directory: Path to the directory containing all the VMs to launch your Pharo images.
+
 WARNING: You must have the read/write rights on folders.The path might need to escape some whitespace characters.
 
 ## Danger zone

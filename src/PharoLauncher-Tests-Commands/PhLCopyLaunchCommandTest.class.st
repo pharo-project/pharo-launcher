@@ -9,7 +9,8 @@ Class {
 
 { #category : #running }
 PhLCopyLaunchCommandTest >> setUp [
-	presenter := PhLTestImagesPresenter new.
+	super setUp.
+	presenter := PhLTestImagesPresenter new
 ]
 
 { #category : #tests }

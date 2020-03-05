@@ -18,8 +18,9 @@ PhLRemoveTemplateCommandTest >> removeTemplateMenuItem [
 
 { #category : #running }
 PhLRemoveTemplateCommandTest >> setUp [
+	super setUp.
 	presenter := PhLTestTemplatesPresenter new.
-	presenter selectLocalGroup.
+	presenter selectLocalGroup
 ]
 
 { #category : #tests }

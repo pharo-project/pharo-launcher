@@ -9,7 +9,8 @@ Class {
 
 { #category : #running }
 PhLRecreateImageCommandTest >> setUp [
-	presenter := PhLTestImagesPresenter new.
+	super setUp.
+	presenter := PhLTestImagesPresenter new
 ]
 
 { #category : #tests }

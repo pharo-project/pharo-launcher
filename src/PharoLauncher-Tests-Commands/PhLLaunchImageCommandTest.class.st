@@ -10,9 +10,10 @@ Class {
 
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
+	super setUp.
 	presenter := PhLTestImagesPresenter new.
-	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command',  UUIDGenerator next asString.
-	imageDir ensureCreateDirectory.
+	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command' , UUIDGenerator next asString.
+	imageDir ensureCreateDirectory
 ]
 
 { #category : #tests }

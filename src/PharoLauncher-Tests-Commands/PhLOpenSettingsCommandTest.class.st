@@ -8,8 +8,9 @@ Class {
 }
 
 { #category : #running }
-PhLOpenSettingsCommandTest >> tearDown [ 
-	settingsBrowser ifNotNil: [ settingsBrowser close ]
+PhLOpenSettingsCommandTest >> tearDown [
+	settingsBrowser ifNotNil: [ settingsBrowser close ].
+	super tearDown
 ]
 
 { #category : #tests }

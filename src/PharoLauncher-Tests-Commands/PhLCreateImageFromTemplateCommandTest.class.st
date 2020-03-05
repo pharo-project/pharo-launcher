@@ -17,7 +17,8 @@ PhLCreateImageFromTemplateCommandTest >> createInitScriptNamed: aString [
 
 { #category : #running }
 PhLCreateImageFromTemplateCommandTest >> setUp [
-	presenter := PhLTestTemplatesPresenter new.
+	super setUp.
+	presenter := PhLTestTemplatesPresenter new
 ]
 
 { #category : #tests }

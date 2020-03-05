@@ -9,12 +9,14 @@ Class {
 
 { #category : #running }
 PhLUpdateVmCommandTest >> setUp [
-	presenter := PhLTestVmPresenter new.
+	super setUp.
+	presenter := PhLTestVmPresenter new
 ]
 
 { #category : #running }
-PhLUpdateVmCommandTest >> tearDown [ 
-	PhLTestVirtualMachineManager reset
+PhLUpdateVmCommandTest >> tearDown [
+	PhLTestVirtualMachineManager reset.
+	super tearDown
 ]
 
 { #category : #tests }

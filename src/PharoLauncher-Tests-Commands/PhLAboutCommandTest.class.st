@@ -9,8 +9,8 @@ Class {
 
 { #category : #running }
 PhLAboutCommandTest >> tearDown [
-	super tearDown.
-	presenter window close
+	presenter window close.
+	super tearDown
 ]
 
 { #category : #tests }

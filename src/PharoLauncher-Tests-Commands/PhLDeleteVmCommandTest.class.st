@@ -9,12 +9,14 @@ Class {
 
 { #category : #running }
 PhLDeleteVmCommandTest >> setUp [
-	presenter := PhLTestVmPresenter new.
+	super setUp.
+	presenter := PhLTestVmPresenter new
 ]
 
 { #category : #running }
 PhLDeleteVmCommandTest >> tearDown [
-	PhLTestVirtualMachineManager reset "reset vm store to use for tests"
+	PhLTestVirtualMachineManager reset.	"reset vm store to use for tests"
+	super tearDown
 ]
 
 { #category : #tests }

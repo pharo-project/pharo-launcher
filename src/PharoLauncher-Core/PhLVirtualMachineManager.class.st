@@ -529,11 +529,8 @@ PhLVirtualMachineManager >> virtualMachine [
 { #category : #querying }
 PhLVirtualMachineManager >> virtualMachines [
 	| vmsInVmStore defaultVms |
-	
 	defaultVms := self defaultVirtualMachines.
-	vmsInVmStore := self availableVirtualMachines values
-		reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
-		
+	vmsInVmStore := self availableVirtualMachines values reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
 	^ vmsInVmStore , defaultVms
 ]
 

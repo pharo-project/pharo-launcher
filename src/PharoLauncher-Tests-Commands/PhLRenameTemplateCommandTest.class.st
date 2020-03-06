@@ -18,8 +18,9 @@ PhLRenameTemplateCommandTest >> renameTemplateMenuItem [
 
 { #category : #running }
 PhLRenameTemplateCommandTest >> setUp [
+	super setUp.
 	presenter := PhLTestTemplatesPresenter new.
-	presenter selectLocalGroup.
+	presenter selectLocalGroup
 ]
 
 { #category : #tests }

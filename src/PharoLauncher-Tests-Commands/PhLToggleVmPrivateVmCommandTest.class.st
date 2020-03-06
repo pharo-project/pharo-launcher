@@ -9,12 +9,14 @@ Class {
 
 { #category : #running }
 PhLToggleVmPrivateVmCommandTest >> setUp [
-	presenter := PhLTestVmPresenter new.
+	super setUp.
+	presenter := PhLTestVmPresenter new
 ]
 
 { #category : #running }
-PhLToggleVmPrivateVmCommandTest >> tearDown [ 
-	PhLTestVirtualMachineManager reset
+PhLToggleVmPrivateVmCommandTest >> tearDown [
+	PhLTestVirtualMachineManager reset.
+	super tearDown
 ]
 
 { #category : #tests }

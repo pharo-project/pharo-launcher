@@ -11,20 +11,21 @@ Class {
 
 { #category : #running }
 PhLOpenNewImageWindowTest >> setUp [
-	| imagesDirectory app |
+	| imagesDirectory app repository |
+	super setUp.
 	fs := FileSystem memory.
 	imagesDirectory := (fs root / 'images') ensureCreateDirectory.
-	app := PharoLauncherApplication new 
-		imageRepository: imagesDirectory;
+	repository := PhLDirectoryBasedImageRepository forDirectory: imagesDirectory.
+	app := PharoLauncherApplication new
+		imageRepository: repository;
 		yourself.
-	imagesPresenter := PhLImagesPresenter 
-		newApplication: app 
-		model: (PhLDirectoryBasedImageRepository forDirectory: imagesDirectory).
+	imagesPresenter := PhLImagesPresenter newApplication: app model: repository
 ]
 
 { #category : #running }
-PhLOpenNewImageWindowTest >> tearDown [ 
-	presenter ifNotNil: [ presenter window close ]
+PhLOpenNewImageWindowTest >> tearDown [
+	presenter ifNotNil: [ presenter window close ].
+	super tearDown
 ]
 
 { #category : #tests }

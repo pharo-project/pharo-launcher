@@ -9,7 +9,8 @@ Class {
 
 { #category : #running }
 PhLCreateTemplateFromImageCommandTest >> setUp [
-	presenter := PhLTestImagesPresenter new.
+	super setUp.
+	presenter := PhLTestImagesPresenter new
 ]
 
 { #category : #tests }

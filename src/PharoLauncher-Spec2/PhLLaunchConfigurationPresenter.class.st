@@ -245,7 +245,9 @@ PhLLaunchConfigurationPresenter >> setModelBeforeInitialization: aPhLImage [
 { #category : #updating }
 PhLLaunchConfigurationPresenter >> setVmFromConfiguration [
 	| vm |
-	vm := self selectedConfiguration vm.
+	vm := self selectedConfiguration 
+		ifNil: [ ^ self "abort if no launch configuration selected" ]
+		ifNotNil: [ :config | config vm ].
 	[ vmList selectItem: vm ]
 		on: NotFound
 		do: [ vmList

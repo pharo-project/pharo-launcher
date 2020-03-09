@@ -173,6 +173,48 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testRemoveImageArgument [
+	presenter imageArguments add: '--interactive'.
+	self assert: presenter imageArguments size equals: 1.
+
+	presenter selectImageArgumentAt: 1.
+	presenter clickDeleteImageArgumentButton.
+
+	self assertEmpty: presenter imageArguments
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testRemoveImageArgumentWithoutSelectionDoesNotThrowError [
+	presenter imageArguments add: '--interactive'.
+
+	"Unselect"
+	presenter selectImageArgumentAt: 0.
+
+	self shouldnt: [ presenter clickDeleteImageArgumentButton ] raise: NotFound
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testRemoveVMArgument [
+	presenter vmArguments add: '--interactive'.
+	self assert: presenter vmArguments size equals: 1.
+
+	presenter selectVMArgumentAt: 1.
+	presenter clickDeleteVMArgumentButton.
+
+	self assertEmpty: presenter vmArguments
+]
+
+{ #category : #tests }
+PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesNotThrowError [
+	presenter vmArguments add: '--interactive'.
+
+	"Unselect"
+	presenter selectVMArgumentAt: 0.
+
+	self shouldnt: [ presenter clickDeleteVMArgumentButton ] raise: NotFound
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
 	| config imagesPresenter window |
 	imagesPresenter := PhLTestImagesPresenter new.

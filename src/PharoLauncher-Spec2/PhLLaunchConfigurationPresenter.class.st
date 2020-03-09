@@ -118,7 +118,7 @@ PhLLaunchConfigurationPresenter >> configurationName [
 
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> connectPresenters [
-	configurationTable selectIndex: 1.
+	configurationTable selectIndex: 1
 ]
 
 { #category : #accessing }
@@ -139,8 +139,7 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		items: self image launchConfigurations;
 		display: [ :each | each name ];
 		whenSelectionChangedDo: [ :selection | 
-			selectedConfiguration := selection selectedItem
-				ifNil: [ PhLNullLaunchConfiguration new ].
+			selectedConfiguration := selection selectedItem ifNil: [ PhLNullLaunchConfiguration new ].
 			self selectedConfigurationChanged ];
 		yourself.
 	selectedConfigurationNameField := self newTextInput
@@ -149,23 +148,27 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 	vmList := self newDropList
 		sortingBlock: [ :a :b | a model id > b model id ];
 		display: [ :each | each id ];
-		whenSelectedItemChangedDo:
-			[ :vm | 
-			vm ifNotNil: 
-				[ vm isHeadless
-					ifTrue: [ self addInteractiveImageArgument ] ] ];
+		whenSelectedItemChangedDo: [ :vm | vm ifNotNil: [ vm isHeadless ifTrue: [ self addInteractiveImageArgument ] ] ];
 		yourself.
 	"Run in a separate process to do not block UI. Can take some seconds."
 	[ self initializeVmListContent ] fork.
-	vmArgumentList := (self instantiate: SpEditableListPresenter)
+	(vmArgumentList := self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 				title: 'New VM argument?';
 				request ];
+		removeItemBlock: [ :item | 
+			item
+				ifNotNil: [ vmArgumentList items remove: item.
+					vmArgumentList refresh ] ];
 		yourself.
-	imageArgumentList := (self instantiate: SpEditableListPresenter)
+	(imageArgumentList := self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 				title: 'New image argument?';
 				request ];
+		removeItemBlock: [ :item | 
+			item
+				ifNotNil: [ imageArgumentList items remove: item.
+					imageArgumentList refresh ] ];
 		yourself.
 	applyChangesButton := self newButton
 		label: 'Apply';
@@ -223,6 +226,16 @@ PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	self application launchConfigurationEdited: config.
 ]
 
+{ #category : #action }
+PhLLaunchConfigurationPresenter >> selectImageArgumentAt: anIndex [
+	imageArgumentList selectIndex: anIndex
+]
+
+{ #category : #action }
+PhLLaunchConfigurationPresenter >> selectVMArgumentAt: anIndex [
+	vmArgumentList selectIndex: anIndex
+]
+
 { #category : #accessing }
 PhLLaunchConfigurationPresenter >> selectedConfiguration [
 	^ selectedConfiguration
@@ -230,11 +243,12 @@ PhLLaunchConfigurationPresenter >> selectedConfiguration [
 
 { #category : #updating }
 PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [
-
 	selectedConfigurationNameField text: self selectedConfiguration name.
 	self setVmFromConfiguration.
 	vmArgumentList items: self selectedConfiguration vmArguments.
-	imageArgumentList items: self selectedConfiguration imageArguments
+	imageArgumentList items: self selectedConfiguration imageArguments.
+	self selectImageArgumentAt: 1.
+	self selectVMArgumentAt: 1
 ]
 
 { #category : #initialization }

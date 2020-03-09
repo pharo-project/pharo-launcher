@@ -16,6 +16,16 @@ PhLLaunchConfigurationPresenter >> clickDeleteConfigurationButton [
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> clickDeleteImageArgumentButton [
+	imageArgumentList removeButton click
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLLaunchConfigurationPresenter >> clickDeleteVMArgumentButton [
+	vmArgumentList removeButton click
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
 PhLLaunchConfigurationPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 	configurationTable selectItem: aPhLLaunchConfiguration
 ]

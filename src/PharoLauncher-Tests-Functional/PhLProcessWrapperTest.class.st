@@ -27,14 +27,16 @@ PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 	fileRef := (FileLocator temp / 'Yann-Gaël Bérès.bat') asFileReference.
 	fileRef ensureCreateFile.
 
-	process := PhLProcessWrapper new 
+	[ process := PhLProcessWrapper new 
 		shellCommand;
 		addArgument: (Smalltalk os isWindows 
 			ifTrue: [ 'dir' ]
 			ifFalse: [ 'ls' ]);
 		addArgument: fileRef fullName surroundedByDoubleQuotes;
 		runAndWait.
-	self assert: process isSuccess
+	
+	self assert: process isSuccess. ]
+		ensure: [ fileRef ensureDelete ]
 ]
 
 { #category : #tests }

@@ -16,6 +16,11 @@ PhLLaunchImageCommandTest >> setUp [
 	imageDir ensureCreateDirectory
 ]
 
+{ #category : #running }
+PhLLaunchImageCommandTest >> tearDown [ 
+	imageDir ensureDeleteAll
+]
+
 { #category : #tests }
 PhLLaunchImageCommandTest >> testCanLaunchImage [
 	| command image |

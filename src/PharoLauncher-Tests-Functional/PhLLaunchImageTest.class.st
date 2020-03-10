@@ -52,13 +52,13 @@ PhLLaunchImageTest >> tearDown [
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.	
+	imageDir ensureDeleteAll.
 ]
 
 { #category : #tests }
 PhLLaunchImageTest >> testCanLaunchImageWithHeadlessVM [
-	| dir vm image config |
-	dir := (FileLocator temp / ('PL-LaunchTest-' , UUIDGenerator next asString)) ensureCreateDirectory.
-	image := self prepare80imageIn: dir.
+	| vm image config |
+	image := self prepare80imageIn: imageDir.
 	vm := self pharo80HeadlessVm.
  
 	config := image defaultLaunchConfiguration.
@@ -72,10 +72,10 @@ PhLLaunchImageTest >> testCanLaunchImageWithHeadlessVM [
 	1 second wait. "wait for file generation"
 	
 	self
-		assert: (dir / '80' / 'result') exists
+		assert: (imageDir / '80' / 'result') exists
 		description: 'Image run did not generate result file.'.
 	self
-		assert: (dir / '80' / 'result') contents
+		assert: (imageDir / '80' / 'result') contents
 		equals: '2'
 ]
 

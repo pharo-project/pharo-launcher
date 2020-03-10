@@ -148,27 +148,22 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 	vmList := self newDropList
 		sortingBlock: [ :a :b | a model id > b model id ];
 		display: [ :each | each id ];
-		whenSelectedItemChangedDo: [ :vm | vm ifNotNil: [ vm isHeadless ifTrue: [ self addInteractiveImageArgument ] ] ];
+		whenSelectedItemChangedDo: [ :vm | 
+			vm ifNotNil: 
+				[ vm isHeadless 
+					ifTrue: [ self addInteractiveImageArgument ] ] ];
 		yourself.
 	"Run in a separate process to do not block UI. Can take some seconds."
 	[ self initializeVmListContent ] fork.
-	(vmArgumentList := self instantiate: SpEditableListPresenter)
+	vmArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 				title: 'New VM argument?';
 				request ];
-		removeItemBlock: [ :item | 
-			item
-				ifNotNil: [ vmArgumentList items remove: item.
-					vmArgumentList refresh ] ];
 		yourself.
-	(imageArgumentList := self instantiate: SpEditableListPresenter)
+	imageArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self application newRequest
 				title: 'New image argument?';
 				request ];
-		removeItemBlock: [ :item | 
-			item
-				ifNotNil: [ imageArgumentList items remove: item.
-					imageArgumentList refresh ] ];
 		yourself.
 	applyChangesButton := self newButton
 		label: 'Apply';
@@ -248,7 +243,7 @@ PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [
 	vmArgumentList items: self selectedConfiguration vmArguments.
 	imageArgumentList items: self selectedConfiguration imageArguments.
 	self selectImageArgumentAt: 1.
-	self selectVMArgumentAt: 1
+	self selectVMArgumentAt: 1.
 ]
 
 { #category : #initialization }

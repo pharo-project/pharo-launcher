@@ -23,15 +23,20 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 
 { #category : #private }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: vmName [
-	| targetFile | 
+	| targetFile dm | 
 	
 	targetFile := self vmStore / (vmName , '.zip').
-	PhLDownloadManager default 
+	
+	"Can't tell if this download succeeds witha shared download manager, so use a new one"
+	dm := PhLDownloadManager new 
 		download: aVmUrl
 		toFile: targetFile.
-	self
-		unzip: targetFile
-		to: (self vmStore / vmName)
+
+	dm succeeded ifTrue: [ 
+		self
+			unzip: targetFile
+			to: (self vmStore / vmName)
+		]
 ]
 
 { #category : #'instance creation' }

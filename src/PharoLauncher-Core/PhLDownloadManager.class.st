@@ -48,8 +48,19 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 
 { #category : #action }
 PhLDownloadManager >> download: url toFile: destinationFile [
-	destinationFile ensureDelete. "ensure download will not fail if zip file already exists"
-	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: destinationFile ]
+	|tmpFile|
+	"Don't delete existing file until we KNOW download succeeded"
+	tmpFile := destinationFile , ('tmp' , 1000000000 atRandom printString).
+	[ 
+		self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+		destinationFile ensureDelete. 
+		tmpFile renameTo: destinationFile basename 
+	] on: PhLDownloadError do: 
+		[ :err | 
+			"Don't delete tmpFile if debugging"
+			(err displayModal) debugPressed ifTrue: [ err pass ].
+			tmpFile ensureDelete 
+		]
 ]
 
 { #category : #private }
@@ -97,6 +108,11 @@ PhLDownloadManager >> numberOfErrors [
 { #category : #action }
 PhLDownloadManager >> reset [
 	errors removeAll
+]
+
+{ #category : #'as yet unclassified' }
+PhLDownloadManager >> succeeded [
+	^ errors size = 0
 ]
 
 { #category : #announcements }

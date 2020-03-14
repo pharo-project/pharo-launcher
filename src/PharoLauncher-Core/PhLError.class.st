@@ -8,6 +8,26 @@ Class {
 }
 
 { #category : #accessing }
+PhLError >> displayModal [
+	| errorBox |
+	errorBox := PhErrorDialogWindow new
+			title: self displayTitle;
+			textAsFormatted: self displayText.
+
+	^errorBox openModal
+]
+
+{ #category : #accessing }
+PhLError >> displayText [ 
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
+PhLError >> displayTitle [
+	self subclassResponsibility 
+]
+
+{ #category : #accessing }
 PhLError >> longDescription [
 	^ self subclassResponsibility
 ]

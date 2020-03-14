@@ -18,6 +18,29 @@ PhLDownloadError class >> signalUrl: anUrl [
 		signal
 ]
 
+{ #category : #accessing }
+PhLDownloadError >> displayText [
+	| linkText |
+	
+	linkText := self filename asText
+		addAttribute: (TextAction new actOnClickBlock: [WebBrowser openOn: url]);
+		addAttribute: TextColor blue;
+		addAttribute: TextEmphasis underlined.
+		
+	^ 'Click ' asText, linkText, ' to try downloading in native browser'.
+
+]
+
+{ #category : #accessing }
+PhLDownloadError >> displayTitle [
+	^ 'Download error'
+]
+
+{ #category : #'as yet unclassified' }
+PhLDownloadError >> filename [
+	^ url asFileReference basename
+]
+
 { #category : #polymorphism }
 PhLDownloadError >> hasChildren [ 
 	^ false

@@ -61,8 +61,9 @@ PhLTemplatesPresenter class >> example [
 		imageRepository: (PhLDirectoryBasedImageRepository forDirectory: FileSystem memory root);
 		yourself.
 
-	^ (self on: PhLTemplateGroupRepository default) 
-		application: app;
+	^ (self 
+			newApplication: app
+			model: PhLTemplateGroupRepository default)
 		openWithSpec;
 		yourself
 ]

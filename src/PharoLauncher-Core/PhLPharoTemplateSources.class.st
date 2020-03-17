@@ -105,8 +105,7 @@ PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 PhLPharoTemplateSources >> checkForUpdates [
 	| downloadedSources |
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self downloadedSourcesFileLock
-		critical: 
+	self lockDownloadedSourcesFileDuring: 
 		[ self downloadedSourcesFile ensureDelete.
 		self fetchSourcesFile.
 		downloadedSources := self downloadedSources. ].
@@ -134,6 +133,11 @@ PhLPharoTemplateSources >> downloadedSourcesFileLock [
 	^ self class downloadedSourcesFileLock
 ]
 
+{ #category : #accessing }
+PhLPharoTemplateSources >> downloadedSourcesFileLockFile [
+	^ file parent / (file basename, '.dl.lock')
+]
+
 { #category : #actions }
 PhLPharoTemplateSources >> ensureSourcesFile [
 	file exists ifTrue: [ ^ file ].
@@ -152,6 +156,18 @@ PhLPharoTemplateSources >> fetchSourcesFile [
 		basicDownload: self sourcesUrl
 		toFile: self downloadedSourcesFile. 
 	
+]
+
+{ #category : #private }
+PhLPharoTemplateSources >> lockDownloadedSourcesFileDuring: aBlock [
+	self downloadedSourcesFileLockFile exists
+		ifTrue: [ ^ self "File already locked, do not execute the block" ]. 
+	
+	"Ensure file is locked if another Launcher instance (another image) is open".
+	self downloadedSourcesFileLockFile ensureCreateFile. 
+	"Lock working for this image."
+	[ self downloadedSourcesFileLock critical: aBlock ]
+	ensure: [ self downloadedSourcesFileLockFile ensureDelete ]
 ]
 
 { #category : #actions }

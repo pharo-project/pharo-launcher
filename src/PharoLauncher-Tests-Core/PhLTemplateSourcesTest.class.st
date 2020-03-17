@@ -72,6 +72,19 @@ PhLTemplateSourcesTest >> testGivenUserSourcesFileWithErrorsWhenAskingUserSource
 ]
 
 { #category : #tests }
+PhLTemplateSourcesTest >> testGivenUserSourcesFileWithReferencesToUnknownVariablesWhenAskingUserSourcesThenGetEmptyCollection [
+	| sources |
+	sourcesFile 
+		writeStreamDo: [ :stream | stream nextPutAll: '[PhLHTTPListingTemplateGroup{#nonexistingiv:''http://foo.org'',#name:''foo''}]' ].
+		
+	self 
+		shouldnt:[ sources := (PhLTemplateSources withFile: sourcesFile) sources ]
+		raise: InstanceVariableNotFound.
+	
+	self assert: sources isEmpty
+]
+
+{ #category : #tests }
 PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 	| templatesSources1 templatesSources2 |
 	templatesSources1 := (PhLTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.

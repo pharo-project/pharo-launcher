@@ -134,7 +134,7 @@ PhLTemplateSources >> sources [
 	
 	[ file readStreamDo: [ :stream |
 		 sources := STON fromStream: stream] ]
-	on: STONReaderError 
+	on: STONReaderError, InstanceVariableNotFound  
 	do: [ sources := #() ].
 	^ sources
 ]

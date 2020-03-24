@@ -187,7 +187,7 @@ PhLProcessWrapper >> visitUnix: aPlatform [
 		yourself.
 	isShellCommand 
 		ifTrue: [ | commandLine |
-			commandLine := (Character space join: self arguments) utf8Encoded asString.
+			commandLine := Character space join: self arguments.
 			useLoginShell 
 				ifTrue: [ process loginShellCommand: commandLine ]
 				ifFalse: [ process shellCommand: commandLine ] ] 

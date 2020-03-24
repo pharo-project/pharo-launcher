@@ -131,7 +131,7 @@ PhLProcessWrapper >> runAndWait [
 	process runAndWait.
 	
 	process isSuccess ifFalse: [
-		self error: 'command ', process commandLineString ,' failed' ].
+		self error: 'command ', self commandLineString ,' failed' ].
 
 ]
 

@@ -15,7 +15,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			baseline: #Spec2
 				with: [ spec repository: 'github://demarey/Spec:pharo-launcher/src' ];
 			baseline: #OSSubprocess
-				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
+				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.2' ];
 			baseline: #OSWinSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ];
 			baseline: #XMLParser

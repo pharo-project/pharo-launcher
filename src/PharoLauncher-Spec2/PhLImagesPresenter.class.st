@@ -150,7 +150,7 @@ PhLImagesPresenter >> filter: regexMatcher [
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> hasSingleImageSelected [
-	^ imageTable selectedItems size = 1
+	^ (imageTable selectedItems size = 1) and: [ imageTable selectedItems first notNil ]
 ]
 
 { #category : #'api - accessing' }
@@ -236,9 +236,7 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image items |
 	[ image := self singleImage ]
 	on: PhLCommandError
-	do: [ launchConfigurationList
-				resetSelection;
-				items: #() "no image selected".
+	do: [ self resetLaunchConfigurationList.
 			^ self].
 	
 	items := image launchConfigurations collect: [ :each | 
@@ -260,6 +258,13 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
 		on: NotFound "Default configuration has been deleted but there are still other configurations"
 		do: [ launchConfigurationList selectIndex: 2 ]
+]
+
+{ #category : #updating }
+PhLImagesPresenter >> resetLaunchConfigurationList [
+	launchConfigurationList
+				resetSelection;
+				items: #() "no image selected".
 ]
 
 { #category : #'api - selection' }

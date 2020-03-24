@@ -33,9 +33,9 @@ PhLTestImagesPresenter >> fileSystem [
 	^ fileSystem
 ]
 
-{ #category : #selection }
-PhLTestImagesPresenter >> hasSingleImageSelected [
-	^ self selectedImages size = 1
+{ #category : #acccessing }
+PhLTestImagesPresenter >> imageLabel [
+	^ descriptionPanel imageLabel label
 ]
 
 { #category : #acccessing }
@@ -90,15 +90,6 @@ PhLTestImagesPresenter >> requestAnswer: answer [
 ]
 
 { #category : #selection }
-PhLTestImagesPresenter >> selectedImages [
-	^ selection 
-		ifNotNil: [ selection isCollection
-			ifTrue: [ selection ]
-			ifFalse: [ { selection } ] ]
-		ifNil: { self singleImage }
-]
-
-{ #category : #selection }
 PhLTestImagesPresenter >> selectedLaunchConfiguration [
 	^ launchConfigurationList 
 		ifNil: [ self singleImage defaultLaunchConfiguration ]
@@ -113,11 +104,6 @@ PhLTestImagesPresenter >> selection: aListOfImages [
 { #category : #configuring }
 PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
 	selection := aListOfImageNames collect: [ :name | PhLImage location: fileSystem root / name ].
-]
-
-{ #category : #selection }
-PhLTestImagesPresenter >> singleImage [
-	^ selection ifNil: [ selection := PhLImage location: fileSystem root / self singleImageName / (self singleImageName , '.image') ]
 ]
 
 { #category : #selection }

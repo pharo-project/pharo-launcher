@@ -18,6 +18,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	| command images archive zipFile image |
 	command := PhLRecreateImageCommand new.
 	command context: presenter.
+	presenter selectImageAt: 1.
 	images := presenter selectedImages.
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar.image'.
@@ -43,6 +44,7 @@ PhLRecreateImageCommandTest >> testErrorRaiseWhenImageTemplateNotSet [
 	| command |
 	command := PhLRecreateImageCommand new.
 	command context: presenter.
+	presenter selectImageAt: 1.
 	
 	self
 		should: [ command execute ]

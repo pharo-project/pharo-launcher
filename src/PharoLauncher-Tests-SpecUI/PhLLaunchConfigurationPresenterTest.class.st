@@ -82,6 +82,7 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
 	| config imagesPresenter |
 	imagesPresenter := PhLTestImagesPresenter new.
+	imagesPresenter selectImageAt: 1.
 	image := imagesPresenter singleImage.
 	image launchConfigurations. "generate default configuration"
 	config := (PhLLaunchConfiguration withImage: image)
@@ -218,6 +219,7 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesN
 PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
 	| config imagesPresenter window |
 	imagesPresenter := PhLTestImagesPresenter new.
+	imagesPresenter selectImageAt: 1.
 	image := imagesPresenter singleImage.
 	image launchConfigurations. "generate default configuration"
 	config := (PhLLaunchConfiguration withImage: image)

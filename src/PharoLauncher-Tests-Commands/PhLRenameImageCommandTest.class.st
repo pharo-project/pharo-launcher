@@ -17,7 +17,9 @@ PhLRenameImageCommandTest >> setUp [
 PhLRenameImageCommandTest >> testCanRenameAnImage [
 	| command images |
 	command := PhLRenameImageCommand new.
-	presenter requestAnswer: 'TestRenameImage'.
+	presenter 
+		selectImageAt: 1;
+		requestAnswer: 'TestRenameImage'.
 	command context: presenter.
 	command execute.
 	

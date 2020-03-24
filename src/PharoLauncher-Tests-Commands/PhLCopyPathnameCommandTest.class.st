@@ -15,6 +15,7 @@ PhLCopyPathnameCommandTest >> setUp [
 
 { #category : #tests }
 PhLCopyPathnameCommandTest >> testCanCopyImagePathname [
+	presenter selectImageAt: 1.
 	PhLCopyPathname new
 		context: presenter;
 		execute.

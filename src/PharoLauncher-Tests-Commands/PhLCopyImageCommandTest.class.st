@@ -16,6 +16,7 @@ PhLCopyImageCommandTest >> setUp [
 { #category : #tests }
 PhLCopyImageCommandTest >> testCanCopyImageLaunchCommand [
 	| image config |
+	presenter selectImageAt: 1.
 	image := presenter singleImage.
 	config := image defaultLaunchConfiguration
 		          doNotUseSettings;

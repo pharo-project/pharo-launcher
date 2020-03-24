@@ -13,34 +13,41 @@ PhLDeleteImageCommandTest >> setUp [
 	presenter := PhLTestImagesPresenter new
 ]
 
+{ #category : #running }
+PhLDeleteImageCommandTest >> tearDown [ 
+	presenter delete
+]
+
 { #category : #tests }
 PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 	| command images |
 	command := PhLDeleteImageCommand new.
 	command context: presenter.
-	presenter createImageNamed: 'Foo'.
+	presenter 
+		createImageNamed: 'Foo';
+		selectImageAt: 1.
+		
 	command execute.
 	
 	images := command imagesPresenter imageNames.
-	
 	self
 		assertCollection: images
 		hasSameElements: #('Foo').
 ]
 
 { #category : #tests }
-PhLDeleteImageCommandTest >> testCanDeleteManyImages [
+PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
 	| command images |
 	command := PhLDeleteImageCommand new.
 	command context: presenter.
 	presenter 
-		createImageNamed: 'Foo';
-		selectionNames: #('Foo' 'TestImage').
+		openWithSpec;
+		selectImageAt: 1.
+
 	command execute.
 	
 	images := command imagesPresenter imageNames.
-	
 	self
-		assertCollection: images
-		hasSameElements: #().
+		assert: images isEmpty;
+		assert: (presenter imageLabel beginsWith: 'No image selected').
 ]

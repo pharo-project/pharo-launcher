@@ -20,7 +20,9 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhe
 		willRemoveImage;
 		yourself.
 	command context: presenter.
-	presenter requestAnswer: 'TestTemplate'.
+	presenter 
+		selectImageAt: 1;
+		requestAnswer: 'TestTemplate'.
 	
 	self assert: presenter templateRepository localTemplates isEmpty.
 	self assert: (presenter imageRepository hasImageNamed: 'TestImage').
@@ -41,7 +43,9 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateWhenSingleImageSe
 	| command templates |
 	command := PhLCreateTemplateFromImageCommand new.
 	command context: presenter.
-	presenter requestAnswer: 'TestTemplate'.
+	presenter 
+		selectImageAt: 1;
+		requestAnswer: 'TestTemplate'.
 	
 	self assert: presenter templateRepository localTemplates isEmpty.
 	command execute.

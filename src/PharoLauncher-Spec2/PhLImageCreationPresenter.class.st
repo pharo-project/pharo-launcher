@@ -135,8 +135,9 @@ PhLImageCreationPresenter >> initializePresenters [
 	initScript := self newDropList
 		              items: self initializationScriptItems;
 		              display: [ :file | file basename ];
-		              whenSelectionChangedDo: [ :selection | 
-			              initScriptText text: selection selectedItem model contents ];
+		              whenSelectionChangedDo: [ :selection |
+								selection selectedItem ifNotNil: [ :item |
+									initScriptText text: item model contents ] ];
 		              yourself.
 	descriptionText := self newText
 								autoAccept: true;

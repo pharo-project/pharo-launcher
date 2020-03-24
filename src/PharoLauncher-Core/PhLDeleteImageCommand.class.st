@@ -4,7 +4,7 @@ Remove an image from the hard disk. Can be applied to multiple images at the sam
 Class {
 	#name : #PhLDeleteImageCommand,
 	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
@@ -26,12 +26,13 @@ PhLDeleteImageCommand >> execute [
 	| images imageNames confirmMessage answer |
 	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
-	confirmMessage := 'Are you sure you want to delete ' , (imageNames joinUsing: ', ' last: ' and ').
+	confirmMessage := 'Are you sure you want to delete ', (imageNames joinUsing: ', ' last: ' and ').
 	answer := self imagesPresenter newConfirmation
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
-	answer
-		ifTrue: [ self imagesPresenter imageRepository deleteImages: images ]
+	answer ifFalse: [ ^ self ].
+	
+	self imagesPresenter imageRepository deleteImages: images.
 ]
 
 { #category : #initialization }

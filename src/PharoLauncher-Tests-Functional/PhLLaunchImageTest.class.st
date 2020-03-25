@@ -5,7 +5,8 @@ Class {
 		'launchInALoginShellBackup',
 		'imageDir',
 		'vmStoreBackup',
-		'tempVmStoreFolder'
+		'tempVmStoreFolder',
+		'resultDir'
 	],
 	#category : #'PharoLauncher-Tests-Functional'
 }
@@ -35,15 +36,22 @@ PhLLaunchImageTest >> prepare80imageIn: dir [
 
 { #category : #running }
 PhLLaunchImageTest >> setUp [
-	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
+	| uuid |
+	launchInALoginShellBackup := PhLLaunchConfiguration
+		launchInALoginShell.
 	PhLLaunchConfiguration launchInALoginShell: false.
-	imageDir := FileLocator temp / 'Yann-Gaël Bérès',  UUIDGenerator next asString.
+	uuid := UUIDGenerator next asString.
+	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
-
+	"Starting Pharo 9, working directory resolution handles non ascii characters. It is not the case before.
+	That's why we use a resultDir for test output files."
+	resultDir := FileLocator temp / uuid.
+	self deny: resultDir exists.
+	resultDir ensureCreateDirectory.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
-	tempVmStoreFolder := FileLocator temp / self class name, UUIDGenerator next asString.
-	PhLVirtualMachineManager vmStore: tempVmStoreFolder.	
+	tempVmStoreFolder := FileLocator temp / self class name , uuid.
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder
 ]
 
 { #category : #running }
@@ -53,29 +61,30 @@ PhLLaunchImageTest >> tearDown [
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.	
 	imageDir ensureDeleteAll.
+	resultDir ensureDeleteAll.
 ]
 
 { #category : #tests }
 PhLLaunchImageTest >> testCanLaunchImageWithHeadlessVM [
-	| vm image config |
+	| vm image config commandToEval |
 	image := self prepare80imageIn: imageDir.
 	vm := self pharo80HeadlessVm.
+	commandToEval := '"''' , resultDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
  
 	config := image defaultLaunchConfiguration.
 	config
 		vm: vm;
 		vmArguments: #('--headless');
-		imageArguments:
-			#('eval' '"''result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"').
+		imageArguments: {'eval' . commandToEval}.
 			
 	image launchWithConfiguration: config.
 	1 second wait. "wait for file generation"
 	
 	self
-		assert: (imageDir / '80' / 'result') exists
+		assert: (resultDir / 'result') exists
 		description: 'Image run did not generate result file.'.
 	self
-		assert: (imageDir / '80' / 'result') contents
+		assert: (resultDir / 'result') contents
 		equals: '2'
 ]
 

@@ -77,7 +77,7 @@ PhLVMPresenter >> initializePresenters [
 									context: self;
 									execute  ];
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
-		addColumn: ((SpImageTableColumn evaluated: 
+		addColumn: ((SpImageTableColumn title: '' evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid
 				ifTrue: [ self iconNamed: #testGreen ]

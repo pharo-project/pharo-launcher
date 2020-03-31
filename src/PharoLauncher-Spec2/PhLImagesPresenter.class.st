@@ -290,14 +290,12 @@ PhLImagesPresenter >> selectedLaunchConfiguration [
 { #category : #'api - selection' }
 PhLImagesPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
-	^ imageTable selectedItems anyOne
+	^ imageTable selection selectedItem
 ]
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> singleImageName [
-	self
-		ensure: self hasSingleImageSelected.
-	^ imageTable selection selectedItem name
+	^ self singleImage name
 ]
 
 { #category : #'api - accessing' }

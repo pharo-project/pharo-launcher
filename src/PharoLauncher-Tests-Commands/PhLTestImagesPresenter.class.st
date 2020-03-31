@@ -13,6 +13,11 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #sorting }
+PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
+	imageTable clickOnColumnHeaderAt: anIndex
+]
+
 { #category : #configuring }
 PhLTestImagesPresenter >> createImageNamed: aName [
 	self createImageNamed: aName in:  (fileSystem root / aName)

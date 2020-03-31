@@ -39,6 +39,27 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConf
 ]
 
 { #category : #tests }
+PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfImages [
+	presenter := PhLTestImagesPresenter new. 
+	presenter createImageNamed: 'Zoo'.
+	presenter application imageRepositoryChanged.
+	presenter 
+	   openWithSpec;
+		selectImageAt: 1.
+		
+	presenter 
+		clickOnColumnHeaderAt: 1;
+		selectImageAt: 1.
+		
+	self
+		assert: presenter singleImage name
+		equals: 'TestImage'.
+	self
+		assert: presenter launchConfigurations first image name
+		equals: 'TestImage'.
+]
+
+{ #category : #tests }
 PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyImageRepositoryChanged [
 	presenter := PhLTestImagesPresenter new. 
 	presenter openWithSpec.

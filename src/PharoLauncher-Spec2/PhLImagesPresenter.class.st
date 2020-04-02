@@ -112,14 +112,16 @@ PhLImagesPresenter >> connectPresenters [
 	super connectPresenters.
 	
 	imageTable whenSelectionChangedDo: [ :selection |
-		selection isEmpty
-			ifTrue: [ PhLNullImage new ]
-			ifFalse: [ selection selectedItem ].
 		self 
 			refreshLaunchConfigurationList;
 			updateToolbarCommandsAvailability ].
 		
-	imageTable transmitTo: descriptionPanel
+	imageTable 
+		transmitTo: descriptionPanel
+		transform: [ :images | 		
+						images size = 1
+							ifTrue: [ images first ]
+							ifFalse: [ PhLNullImage new ] ]
 ]
 
 { #category : #'api - actions' }
@@ -192,6 +194,7 @@ PhLImagesPresenter >> initializePresenters [
 				yourself);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
+		beMultipleSelection;
 		yourself.
 	descriptionPanel := self
 		instantiate: PhLImageDetailPresenter
@@ -295,7 +298,7 @@ PhLImagesPresenter >> selectedLaunchConfiguration [
 { #category : #'api - selection' }
 PhLImagesPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
-	^ imageTable selection selectedItem
+	^ imageTable selection selectedItems first
 ]
 
 { #category : #'api - selection' }

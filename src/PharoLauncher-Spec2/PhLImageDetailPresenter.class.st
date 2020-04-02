@@ -76,7 +76,7 @@ PhLImageDetailPresenter class >> labelWidth [
 { #category : #initialization }
 PhLImageDetailPresenter >> connectPresenters [
 	description
-		whenTextIsAcceptedDo: [ :text | self image description: text ].
+		whenSubmitDo: [ :text | self image description: text ].
 	shouldRunInitializationScript 
 		whenChangedDo: [ :state | self image shouldRunInitializationScript: state ].
 ]

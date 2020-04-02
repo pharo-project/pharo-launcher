@@ -13,7 +13,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			baseline: #Ston
 				with: [ spec repository: 'github://svenvc/ston:master/repository' ];
 			baseline: #Spec2
-				with: [ spec repository: 'github://demarey/Spec:pharo-launcher/src' ];
+				with: [ spec repository: 'github://pharo-spec/Spec:master/src' ];
 			baseline: #OSSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.2' ];
 			baseline: #OSWinSubprocess

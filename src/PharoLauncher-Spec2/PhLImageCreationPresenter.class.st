@@ -125,9 +125,7 @@ PhLImageCreationPresenter >> initialize [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
-	imageName := self newTextInput
-		             autoAccept: true;
-		             yourself.
+	imageName := self newTextInput.
 	imageNameCheck := self newImage.
 	initScriptText := self newText
 								disable;
@@ -139,9 +137,7 @@ PhLImageCreationPresenter >> initializePresenters [
 								selection selectedItem ifNotNil: [ :item |
 									initScriptText text: item model contents ] ];
 		              yourself.
-	descriptionText := self newText
-								autoAccept: true;
-				             yourself.
+	descriptionText := self newText.
 	editInitScriptButton := self newButton
 		                        addStyle: 'small';
 		                        action: [ self openScriptPresenter ];

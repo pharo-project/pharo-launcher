@@ -13,7 +13,8 @@ Class {
 		'imageTable',
 		'descriptionPanel',
 		'launchConfigurationList',
-		'imageFilter'
+		'imageFilter',
+		'rootCommandsGroup'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -163,7 +164,6 @@ PhLImagesPresenter >> initializePresenters [
 	imageFilter := self newTextInput
 		placeholder: 'Enter image name filter ...';
 	whenTextChangedDo: [ :filterString | self filter: filterString ];
-		autoAccept: true;
 		yourself.
 	imageTable := self newTable
 		items: self imageRepository images;

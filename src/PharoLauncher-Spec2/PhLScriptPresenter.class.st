@@ -73,7 +73,6 @@ PhLScriptPresenter >> initializePresenters [
 		removeItemBlock: [ :item | self removeScript: item ]
 		yourself.
 	fileEditor := self newCode
-		autoAccept: true;
 		disable;
 		yourself.
 	saveButton := self newButton

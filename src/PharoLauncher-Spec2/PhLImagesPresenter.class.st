@@ -111,13 +111,13 @@ PhLImagesPresenter >> connectPresenters [
 
 	super connectPresenters.
 	
-	imageTable whenSelectionChangedDo: [ :sel | | selectedImage |
-		selectedImage := sel isEmpty
+	imageTable whenSelectionChangedDo: [ :selection |
+		selection isEmpty
 			ifTrue: [ PhLNullImage new ]
-			ifFalse: [ sel selectedItem ].
-		self refreshLaunchConfigurationList.
-		"launchButton enabled: sel isEmpty not" ].
-	"launchButton whenActivatedDo: [ self doLaunch ]"
+			ifFalse: [ selection selectedItem ].
+		self 
+			refreshLaunchConfigurationList;
+			updateToolbarCommandsAvailability ].
 		
 	imageTable transmitTo: descriptionPanel
 ]
@@ -267,6 +267,11 @@ PhLImagesPresenter >> resetLaunchConfigurationList [
 				items: #() "no image selected".
 ]
 
+{ #category : #initialization }
+PhLImagesPresenter >> rootCommandsGroup [ 
+	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
+]
+
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 	launchConfigurationList selectItem: aPhLLaunchConfiguration.
@@ -306,4 +311,16 @@ PhLImagesPresenter >> templateRepository [
 { #category : #accessing }
 PhLImagesPresenter >> toolbarGroup [
 	^ self rootCommandsGroup / 'Toolbar'
+]
+
+{ #category : #updating }
+PhLImagesPresenter >> updateToolbarCommandsAvailability [
+	self withToolbarDo: [ :toolbar |
+		self toolbarGroup allCommands do: #updateEnableStatus ]
+
+]
+
+{ #category : #private }
+PhLImagesPresenter >> withToolbarDo: aBlock [
+	self withWindowDo: [ :window | aBlock value: window toolBar ]
 ]

@@ -4,35 +4,52 @@ Copy one image to another name.
 Class {
 	#name : #PhLCopyImageCommand,
 	#superclass : #PhLImageCommand,
-	#instVars : [
-		'newImageName'
-	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLCopyImageCommand class >> icon [
-	^ self iconNamed: #smallCopyIcon
+{ #category : #converting }
+PhLCopyImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallCopyIcon;
+		shortcutKey: $c meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLCopyImageCommand class >> title [
-	^ 'Copy'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLCopyImageCommand >> execute [
 	| name |
 	name := self newImageName.
 	name ifNil: [ ^ self ].
-	self
-		ensure: (self model isNewImageNameValid: name).
-	self model imageRepository copyImage: self model singleImage to: name.
+	self imagesPresenter ensure: (self imageRepository isNewImageNameValid: name).
+	self imageRepository
+		copyImage: self imagesPresenter singleImage
+		to: name
 ]
 
-{ #category : #accessing }
+{ #category : #executing }
+PhLCopyImageCommand >> imageRepository [
+	^ self imagesPresenter imageRepository
+]
+
+{ #category : #initialization }
+PhLCopyImageCommand >> initialize [
+	super initialize.
+	self
+		name: 'Copy image';
+		description: 'Copy the currently selected image to the new name.'
+]
+
+{ #category : #'instance creation' }
 PhLCopyImageCommand >> newImageName [
-	| potentialNewImageName |
-	potentialNewImageName := self model makeUniqueImageName: self model singleImageName.
-	^ newImageName ifNil: [ newImageName := self model requestNewImageName: potentialNewImageName ]
+	^ self newImageName: self imagesPresenter singleImageName
+]
+
+{ #category : #'instance creation' }
+PhLCopyImageCommand >> newImageName: aString [ 
+	^ self imagesPresenter newRequest 
+		title: 'Image name?';
+		initialAnswer: aString;
+		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
+		request
 ]

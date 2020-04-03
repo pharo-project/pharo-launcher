@@ -82,15 +82,14 @@ PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> basicUpdateTemplateSources [
-	PhLTemplateSources fromFile updateSourcesFile.
-	PharoLauncher allInstances do: [ :launcher | launcher window close ].
-	PharoLauncher resetTemplateRepository.
-	PharoLauncher openFull
+	PhLPharoTemplateSources fromFile updateSourcesFile.
+	PharoLauncherApplication resetTemplateRepository.
+	PharoLauncherApplication default resetTemplateRepository.
 ]
 
 { #category : #accessing }
 PhLTemplateSourcesUpdateChecker >> check [
-	[ PhLTemplateSources fromFile checkForUpdates ]
+	[ PhLPharoTemplateSources fromFile checkForUpdates ]
 	on: PhLDownloadError 
 	do: [ :e | "ignore. No internet connection available" ]
 ]
@@ -107,7 +106,7 @@ PhLTemplateSourcesUpdateChecker >> priority [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> registerOnTemplateSourcesUpdate [
-	PhLTemplateSources announcer weak
+	PhLPharoTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #updateTemplateSources:
 		to: self.
@@ -130,7 +129,7 @@ PhLTemplateSourcesUpdateChecker >> terminate [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
-	PhLTemplateSources announcer
+	PhLPharoTemplateSources announcer
 		unsubscribe: self.
 ]
 

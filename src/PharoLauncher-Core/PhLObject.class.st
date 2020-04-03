@@ -4,7 +4,7 @@ Super class of everything the user can act on
 Class {
 	#name : #PhLObject,
 	#superclass : #Object,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
@@ -19,6 +19,11 @@ PhLObject >> hasChildren [
 
 { #category : #testing }
 PhLObject >> isImage [
+	^ false
+]
+
+{ #category : #testing }
+PhLObject >> isLocalTemplate [
 	^ false
 ]
 

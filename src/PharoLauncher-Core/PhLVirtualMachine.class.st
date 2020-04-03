@@ -10,9 +10,14 @@ Class {
 	#instVars : [
 		'executableRef',
 		'vmBinaryRef',
-		'name'
+		'name',
+		'manager',
+		'flavour',
+		'id',
+		'blessing',
+		'arch'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #'instance creation' }
@@ -41,38 +46,82 @@ PhLVirtualMachine class >> executableName [
 	^ PlatformResolver forCurrentPlatform vmExecutableName
 ]
 
-{ #category : #querying }
-PhLVirtualMachine >> archPath [
-	| arch |
-	arch := (name last: 3).
-	arch = 'x64' ifTrue: [ ^ '64' ].
-	^ ''
+{ #category : #accessing }
+PhLVirtualMachine class >> headlessOptionString [
+	^ '--headless'
 ]
 
-{ #category : #intialization }
+{ #category : #'instance creation' }
+PhLVirtualMachine class >> id: aString [
+
+	^ self new
+		id: aString;
+		initializeExecutableRef;
+		yourself
+]
+
+{ #category : #comparing }
+PhLVirtualMachine >> = aVM [
+	self class = aVM class 
+		ifFalse: [ ^ false ]. 
+	
+	^ aVM id = self id
+]
+
+{ #category : #querying }
+PhLVirtualMachine >> archPath [
+	arch ifNotNil: [ ^ arch ].
+	
+	^ (self id last: 3) = 'x64'
+		ifTrue: [ '64' ]
+		ifFalse: [ '' ]
+]
+
+{ #category : #initialization }
 PhLVirtualMachine >> basicInitializeOn: aFolder [
-	name := aFolder basename
+	id := aFolder basename.
+]
+
+{ #category : #initialization }
+PhLVirtualMachine >> be64bits [
+	arch := '64'
+]
+
+{ #category : #initialization }
+PhLVirtualMachine >> beHeadless [
+
+	"Set the flavour to attach to the vm download url"
+	flavour := self headlessFlavour
+]
+
+{ #category : #initialization }
+PhLVirtualMachine >> beLatest [
+	blessing := 'latest'
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> blessing [
+	^ blessing
 ]
 
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
-	| manager |
-	manager := PhLVirtualMachineManager new.
-	
-	^ manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . manager downloadPathOSTypeSegment . 'stable' }
+	^ self manager vmUrlTemplate
+		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . self flavour . self blessing }
 ]
 
-{ #category : #ensuring }
-PhLVirtualMachine >> ensureIsExecutable: aPath [
+{ #category : #updating }
+PhLVirtualMachine >> ensureExecutionRights [
 	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
 	We have to set it explicitely on Unix and OS X."
-	Smalltalk os isWindows 
-		ifFalse: 	[ PhLProcessWrapper new 
-			shellCommand;
-			addArguments: 'chmod u+x';
-			addArgument: aPath surroundedByDoubleQuotes;
-			runAndWaitTimeOut: 5 seconds ]
+
+	Smalltalk os isWindows ifTrue: [ ^ self ].
+
+	PhLProcessWrapper new
+		shellCommand;
+		addArguments: 'chmod u+x';
+		in: [ :command | self executablesToEnsure do: [ :file | command addArgument: file fullName surroundedByDoubleQuotes ] ];
+		runAndWaitTimeOut: 5 seconds
 ]
 
 { #category : #setting }
@@ -90,34 +139,100 @@ PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
 ]
 
+{ #category : #accessing }
+PhLVirtualMachine >> executablesToEnsure [
+	| vmFolder |
+	vmFolder := self vmStore / self id.
+	^ vmFolder exists ifTrue: [ (vmFolder allChildrenMatching: self class executableName) select: #isFile ] ifFalse: [ #() ]
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> flavour [
+	^ flavour
+]
+
+{ #category : #comparing }
+PhLVirtualMachine >> hash [
+
+	^ self id hash
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> headlessFlavour [
+	^ '-headless'
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> id [
+	^ id
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> id: aString [
+	id := aString.
+	(aString includesAll: '-x64')
+		ifTrue: [ self be64bits ].
+]
+
 { #category : #testing }
 PhLVirtualMachine >> ifValid: aBlockClosure [ 
-	(executableRef isNotNil and: [ vmBinaryRef isNotNil ])
+	self isValid
 		ifTrue: [ aBlockClosure value ]
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
+PhLVirtualMachine >> initialize [
+	super initialize.
+	flavour := ''. "No flavour means heafull vm, it will be used to fetch the vm"
+	blessing := 'stable'.
+]
+
+{ #category : #initialization }
+PhLVirtualMachine >> initializeExecutableRef [
+	
+	executableRef ifNil: [ | vmFolder |
+		vmFolder := self vmStore / self id.
+		vmFolder exists ifTrue: [ self initializeExecutableRefFrom: vmFolder ] ]
+]
+
+{ #category : #initialization }
 PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	| executables |
 	executables := aFolder allChildrenMatching: self class executableName.
 	Smalltalk os isUnix
-		ifTrue: [ executables select: #isFile thenDo: [ :fileRef | self ensureIsExecutable: fileRef fullName ].
-			"On linux, either the VM exe is at the top level or a bash script at the top level has to be used"
+		ifTrue: [ "On linux, either the VM exe is at the top level or a bash script at the top level has to be used"
 			executableRef := executables
 				detect: [ :fileRef | fileRef parent = aFolder ]
 				ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ].
 			vmBinaryRef := executables
 				detect: [ :fileRef | fileRef binaryReadStreamDo: [ :stream | (stream next: 4) = self class elfMagicNumber ] ]
 				ifNone: [ PhLExecutableNotFoundError signalKind: 'VM binary' inPath: aFolder fullName ] ]
-		ifFalse:
-			[ executableRef := vmBinaryRef := executables detect: #isFile ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ].
-	self ensureIsExecutable: executableRef fullName
+		ifFalse: [ executableRef := vmBinaryRef := executables detect: #isFile ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ]
 ]
 
-{ #category : #intialization }
+{ #category : #initialization }
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isHeadless [ 
+	^ flavour = self headlessFlavour
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isValid [
+	^ executableRef isNotNil
+		and: [ vmBinaryRef isNotNil ]
+]
+
+{ #category : #testing }
+PhLVirtualMachine >> isValidAfterUpdate [
+	self isValid ifTrue: [ ^ true ].
+	
+	self updateFromUrl.
+	^ self isValid
 ]
 
 { #category : #querying }
@@ -125,14 +240,33 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
+{ #category : #querying }
+PhLVirtualMachine >> lastUpdateTimeDescription [
+	
+	| timestamp |
+	self isValid ifFalse: [ ^ 'Not available' ].
+	timestamp := self lastUpdateTime.
+	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
+]
+
+{ #category : #updating }
+PhLVirtualMachine >> manager [
+	^ manager ifNil: [ manager := PhLVirtualMachineManager new ]
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> manager: aPhLVirtualMachineManager [ 
+	manager := aPhLVirtualMachineManager
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> name [
-	^ name
+	^ self id
 ]
 
 { #category : #querying }
 PhLVirtualMachine >> pharoVersion [
-	^ ($- split: name ) first
+	^ ($- split: self id) first
 ]
 
 { #category : #printing }
@@ -140,7 +274,7 @@ PhLVirtualMachine >> printOn: aStream [
 	super printOn: aStream.
 	aStream
 		nextPut: $(;
-		nextPutAll: self name;
+		nextPutAll: self id;
 		nextPut: $)
 ]
 
@@ -158,15 +292,25 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : #actions }
 PhLVirtualMachine >> showInFolder [
-	PhLFileBrowser openOn: self vmStore / name
+	PhLFileBrowser openOn: self vmStore / self id
 ]
 
 { #category : #updating }
-PhLVirtualMachine >> update [
+PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
-	PhLVirtualMachineManager 
-		fetch: self downloadUrl
-		to: self name
+
+	self manager class fetch: self downloadUrl to: self vmStore / (self id , '.zip').
+
+	self initializeExecutableRefFrom: self vmStore / self id.
+	self ensureExecutionRights
+]
+
+{ #category : #accessing }
+PhLVirtualMachine >> validityDescription [
+	
+	^ self isValid
+		ifTrue: [ 'VM available' ]
+		ifFalse: [ 'VM not available' ]
 ]
 
 { #category : #setting }
@@ -186,5 +330,5 @@ PhLVirtualMachine >> vmFolderPath [
 
 { #category : #accessing }
 PhLVirtualMachine >> vmStore [
-	^ PhLVirtualMachineManager vmStore
+	^ self manager vmStore
 ]

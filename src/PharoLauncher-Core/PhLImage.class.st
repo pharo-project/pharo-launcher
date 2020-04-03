@@ -20,10 +20,11 @@ Class {
 		'formatNumber',
 		'architecture',
 		'pharoVersion',
-		'originTemplate'
-	],
-	#classVars : [
-		'LaunchInALoginShell'
+		'originTemplate',
+		'vmManager',
+		'launchConfigurations',
+		'initializationScript',
+		'shouldRunInitializationScript'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -31,6 +32,28 @@ Class {
 { #category : #accessing }
 PhLImage class >> descriptionFileName [
 	^ 'description.txt'
+]
+
+{ #category : #example }
+PhLImage class >> example [
+	| fsRoot imageFile |
+	fsRoot := FileSystem memory root.
+	imageFile := fsRoot / 'foo64.image'.
+	imageFile binaryWriteStreamDo: 
+		[ :stream | 
+		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat64bits ].
+	^ self location: imageFile
+]
+
+{ #category : #example }
+PhLImage class >> example32 [
+	| fsRoot imageFile |
+	fsRoot := FileSystem memory root.
+	imageFile := fsRoot / 'foo32.image'.
+	imageFile binaryWriteStreamDo: 
+		[ :stream | 
+		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat32bits ].
+	^ self location: imageFile
 ]
 
 { #category : #'instance creation' }
@@ -42,23 +65,13 @@ PhLImage class >> imageFromMetadata: imageFileReference [
 			(object isKindOf: PhLImage)
 				ifTrue: [ ^ object ]. 
 			(object isKindOf: Dictionary)
-				ifTrue: [ "old metadata file"
+				ifTrue: [ "old metadata file format"
 					^ self new 
 						privOriginTemplate: (object at: #template);
 						yourself ]. 
 			PhLError signal: 'Unrecognized metadata format'  ]
 		ifAbsent: [ ^ self new ].
 	
-]
-
-{ #category : #settings }
-PhLImage class >> launchInALoginShell [
-	^ LaunchInALoginShell ifNil: [ LaunchInALoginShell := true ].
-]
-
-{ #category : #settings }
-PhLImage class >> launchInALoginShell: aBoolean [
-	LaunchInALoginShell := aBoolean
 ]
 
 { #category : #'instance creation' }
@@ -73,21 +86,22 @@ PhLImage class >> metadataFileName [
 	^ 'meta-inf.ston'
 ]
 
-{ #category : #settings }
-PhLImage class >> settingsOn: aBuilder [
-	<systemsettings>
-	<pharoLauncherSettings>
-	(aBuilder setting: #launchInALoginShell)
-		label: 'Launch image from a login shell' translated;
-		parent: #pharoLauncher;
-		target: self;
-		order: 31;
-		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
-]
-
 { #category : #serialization }
 PhLImage class >> stonAllInstVarNames [
 	^ super stonAllInstVarNames reject: [ :varName | varName = #file ]
+]
+
+{ #category : #accessing }
+PhLImage class >> versionFileName [
+	^ 'pharo.version'
+]
+
+{ #category : #configuring }
+PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
+	launchConfigurations 
+		detect: [ :each | each name = aPhLLaunchConfiguration name ]
+		ifFound: [ PhLError signal: 'Cannot add configuration! A configuration with the same name already exists.' ]
+		ifNone: [ launchConfigurations add: aPhLLaunchConfiguration ]
 ]
 
 { #category : #accessing }
@@ -117,10 +131,23 @@ PhLImage >> computeFormatNumber [
 ]
 
 { #category : #computing }
-PhLImage >> computePharoVersionWith: vmManager [
-	pharoVersion := vmManager imageVersion.
+PhLImage >> computePharoVersion [
+	pharoVersion := self vmManager imageVersion.
 	self computeArchitecture.
 	self serializeMetadata.
+	^ pharoVersion
+]
+
+{ #category : #accessing }
+PhLImage >> defaultLaunchConfiguration [
+	^ launchConfigurations 
+		detect: [ :each | each name = PhLLaunchConfiguration defaultName ]
+		ifNone: [ PhLLaunchConfiguration defaultWithImage: self ]
+]
+
+{ #category : #accessing }
+PhLImage >> defaultLaunchConfigurationName [
+	^ 'Default'
 ]
 
 { #category : #accessing }
@@ -130,18 +157,33 @@ PhLImage >> description [
 
 { #category : #accessing }
 PhLImage >> description: aString [
-	description := aString.
+	description := aString ifNotNil: #asString. "ensure we do not get Text"
 	self serializeMetadata.
 ]
 
 { #category : #accessing }
 PhLImage >> descriptionFromFile [
 	| descriptionFile |
+	self flag: 'This method is there for backward compatibility. description.txt file has been superseded by the metainformation file meta-inf.ston'.
 	descriptionFile := file parent / self class descriptionFileName.
 	
 	^ descriptionFile exists
 		ifTrue: [ descriptionFile contents withNoLineLongerThan: 80 ]
 		ifFalse: [ 'There is no description' ]
+]
+
+{ #category : #configuring }
+PhLImage >> doNotRunInitializationScript [
+	self shouldRunInitializationScript: false.
+]
+
+{ #category : #computing }
+PhLImage >> ensurePharoVersion [
+	(self pharoVersion isNil or: [ self pharoVersion = '' ])
+		ifFalse: [ self vmManager imageVersion: self pharoVersion.
+					^ self pharoVersion ].
+	^ self computePharoVersion.
+	
 ]
 
 { #category : #accessing }
@@ -164,6 +206,23 @@ PhLImage >> imageFile [
 	^ self file
 ]
 
+{ #category : #accessing }
+PhLImage >> initializationScript [
+	^ initializationScript ifNotNil: [ :script | script asFileReference ]
+]
+
+{ #category : #accessing }
+PhLImage >> initializationScript: aFileReference [
+	initializationScript := aFileReference.
+	self serializeMetadata
+]
+
+{ #category : #'initialize-release' }
+PhLImage >> initialize [
+	launchConfigurations := OrderedCollection new.
+	shouldRunInitializationScript := true.
+]
+
 { #category : #testing }
 PhLImage >> isHighlighted [
 	^ false
@@ -180,36 +239,32 @@ PhLImage >> lastModification [
 ]
 
 { #category : #action }
-PhLImage >> launchCommandWith: vmPath useSettings: usePharoSettings [
-	^ PhLImageProcessConfigurator new 
-		vmPath: vmPath;
-		launchInALoginShell: self class launchInALoginShell;
-		usePharoSettings: usePharoSettings;
-		imageFile: file;
-		visit.
+PhLImage >> launch [
+	^ self launchWithConfiguration: self defaultLaunchConfiguration 
+]
+
+{ #category : #accessing }
+PhLImage >> launchConfigurations [
+	^ launchConfigurations
+		ifEmpty: [ launchConfigurations 
+						add: self defaultLaunchConfiguration;
+						yourself ]
+]
+
+{ #category : #accessing }
+PhLImage >> launchConfigurations: aCollection [ 
+	launchConfigurations := aCollection
 ]
 
 { #category : #action }
-PhLImage >> launchCommandWithVm: vmManager useSettings: usePharoSettings [
-	| shouldUsePharoSettings |
-	shouldUsePharoSettings := usePharoSettings.
-	self computePharoVersionWith: vmManager.
-	pharoVersion < '30'
-		ifTrue: [ shouldUsePharoSettings := true ].	" Cannot skip Pharo settings before 3.0"
-	^ self
-		launchCommandWith: vmManager vm
-		useSettings: shouldUsePharoSettings
-]
-
-{ #category : #action }
-PhLImage >> launchWithSettings: usePharoSettings [
+PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | vmManager command |
-	vmManager := PhLVirtualMachineManager forImage: file pathString.
-	command := self launchCommandWithVm: vmManager useSettings: usePharoSettings.
-	^ command runUnwatch ]
+	[ [ | processWrapper|
+		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
+		self doNotRunInitializationScript. "Just run, image already initialized"
+		^ processWrapper ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
@@ -219,6 +274,11 @@ PhLImage >> launchWithSettings: usePharoSettings [
 					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
 			continue ifTrue: [ warning resume ]. ]
+]
+
+{ #category : #accessing }
+PhLImage >> location [ 
+	^ file fullName
 ]
 
 { #category : #accessing }
@@ -248,6 +308,14 @@ PhLImage >> originTemplateName [
 ]
 
 { #category : #accessing }
+PhLImage >> originTemplateUrl [
+
+	^ self originTemplate 
+		ifNotNil: [ :template | template url asString ] 
+		ifNil: [ #unknown ]
+]
+
+{ #category : #accessing }
 PhLImage >> pharoVersion [
 	^ pharoVersion ifNil: [ self pharoVersionFromFile ]
 ]
@@ -256,7 +324,7 @@ PhLImage >> pharoVersion [
 PhLImage >> pharoVersionFromFile [
 	file ifNil: [ ^ '' ].
 	^ self versionFile exists
-		ifTrue: [ pharoVersion := self versionFile contents ]
+		ifTrue: [ pharoVersion := self versionFile contents trim ]
 		ifFalse: [ '' ]
 ]
 
@@ -284,6 +352,17 @@ PhLImage >> serializeMetadata [
 { #category : #'initialize-release' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
+]
+
+{ #category : #accessing }
+PhLImage >> shouldRunInitializationScript [
+	^ shouldRunInitializationScript
+]
+
+{ #category : #configuring }
+PhLImage >> shouldRunInitializationScript: aBoolean [
+	shouldRunInitializationScript := aBoolean.
+	self serializeMetadata.
 ]
 
 { #category : #printing }
@@ -318,10 +397,10 @@ PhLImage >> summaryInfo [
 
 { #category : #accessing }
 PhLImage >> versionFile [
-	^ self file parent / PhLVirtualMachineManager imageVersionFileName
+	^ self file parent / self class versionFileName
 ]
 
-{ #category : #action }
-PhLImage >> vm [
-	^ (PhLVirtualMachineManager forImage: file pathString) vmFileName
+{ #category : #'private - accessing' }
+PhLImage >> vmManager [
+	^ vmManager ifNil: [ vmManager := PhLVirtualMachineManager forImage: self file ]
 ]

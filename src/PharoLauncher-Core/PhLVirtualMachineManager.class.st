@@ -10,10 +10,10 @@ Class {
 		'imageFormatNumber',
 		'imageVersion'
 	],
-	#classVars : [
-		'VMStore'
+	#classInstVars : [
+		'vmStore'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #unzipping }
@@ -22,16 +22,13 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 ]
 
 { #category : #private }
-PhLVirtualMachineManager class >> fetch: aVmUrl to: vmName [
-	| targetFile | 
-	
-	targetFile := self vmStore / (vmName , '.zip').
+PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	PhLDownloadManager default 
 		download: aVmUrl
 		toFile: targetFile.
 	self
 		unzip: targetFile
-		to: (self vmStore / vmName)
+		to: (targetFile parent / targetFile basenameWithoutExtension)
 ]
 
 { #category : #'instance creation' }
@@ -81,11 +78,6 @@ PhLVirtualMachineManager class >> imageFormatPreSpur [
 	^ 6505
 ]
 
-{ #category : #accessing }
-PhLVirtualMachineManager class >> imageVersionFileName [
-	^ 'pharo.version'
-]
-
 { #category : #testing }
 PhLVirtualMachineManager class >> is32bits: anImageFormatVersion [
 	"32 bits Spur image format"
@@ -95,7 +87,7 @@ PhLVirtualMachineManager class >> is32bits: anImageFormatVersion [
 
 { #category : #testing }
 PhLVirtualMachineManager class >> is64bits [
-	^ PhLVirtualMachineManager is64bits: Smalltalk image imageFormatVersion
+	^ self is64bits: Smalltalk image imageFormatVersion
 ]
 
 { #category : #testing }
@@ -128,6 +120,12 @@ PhLVirtualMachineManager class >> privateVmStore [
 	^ (self vmStore / 'private') ensureCreateDirectory
 ]
 
+{ #category : #initialization }
+PhLVirtualMachineManager class >> reset [
+	<script>
+	vmStore := nil
+]
+
 { #category : #settings }
 PhLVirtualMachineManager class >> settingsOn: aBuilder [
 	<systemsettings>
@@ -152,6 +150,11 @@ PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirec
 		addArguments: 'unzip -o -d';
 		addArgument: outputDirectory fullName surroundedByDoubleQuotes;
 		addArgument: aZipFileReference fullName surroundedByDoubleQuotes;
+		in: [ :process |
+				"on Windows, unzip logs can corrupt extracted files. 
+				See https://github.com/pharo-project/pharo-launcher/issues/349"
+				OSPlatform current isWindows
+					ifTrue: [ process addArgument: ' > nul' ] ];
 		runAndWait.
 ]
 
@@ -165,13 +168,13 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore [
-	^ VMStore ifNil: [ VMStore := (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
+	^ vmStore ifNil: [ vmStore := (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
 ]
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore: anObject [
-	VMStore := anObject asFileReference.
-	VMStore ensureCreateDirectory
+	vmStore := anObject asFileReference.
+	vmStore ensureCreateDirectory
 ]
 
 { #category : #accessing }
@@ -194,7 +197,7 @@ PhLVirtualMachineManager >> availableVirtualMachines [
 
 { #category : #querying }
 PhLVirtualMachineManager >> availableVirtualMachinesByImageFormat [
-	^ [ self availableVirtualMachinesIn: self class privateVmStore] 
+	^ [ self availableVirtualMachinesIn: self privateVmStore] 
 		on: PhLExecutableNotFoundError 
 		do: [ :ex | ex path asFileReference ensureDeleteAll. ex retry ]
 ]
@@ -207,7 +210,7 @@ PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	aFileReference directories
 		reject: [ :entry | entry basename = 'private' ]
 		thenDo: [ :entry | | vm |
-			vm := PhLVirtualMachine directory: entry private: (aFileReference = self class privateVmStore).
+			vm := PhLVirtualMachine directory: entry private: (aFileReference = self privateVmStore).
 			vm ifValid: [ vmsOnDisk at: entry basename put: vm ] ].
 	^ vmsOnDisk
 ]
@@ -243,10 +246,41 @@ PhLVirtualMachineManager >> compatibleVmUrl [
 PhLVirtualMachineManager >> compatibleVmUrls [
 	"50-preSpur stable is not the latest stable pre-Spur VM. 40 vm is the latest stable pre-Spur"
 	^ Dictionary newFromPairs: { 
-		self class imageFormat6504 . self vmUrlTemplate format: { '13' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormatPreSpur . self vmUrlTemplate format: { '40' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormat32bits . self vmUrlTemplate format: { '70' . '' . self downloadPathOSTypeSegment . 'stable' } .
-		self class imageFormat64bits . self vmUrlTemplate format: { '70' . '64' . self downloadPathOSTypeSegment . 'stable' }
+		self class imageFormat6504 . self vmUrlTemplate format: { '13' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormatPreSpur . self vmUrlTemplate format: { '40' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormat32bits . self vmUrlTemplate format: { '70' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
+		self class imageFormat64bits . self vmUrlTemplate format: { '70' . '64' . self downloadPathOSTypeSegment . ''. 'stable' }
+	}
+]
+
+{ #category : #querying }
+PhLVirtualMachineManager >> defaultVirtualMachines [
+	^ { 
+		(PhLVirtualMachine id: '90-x64-headless')
+			beHeadless;
+			beLatest;
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '90-x64')
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '90-x86')
+			yourself.
+		(PhLVirtualMachine id: '80-x64-headless')
+			beHeadless;
+			beLatest;
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '80-x64')
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '80-x86')
+			yourself.
+		(PhLVirtualMachine id: '70-x64')
+			be64bits;
+			yourself.
+		(PhLVirtualMachine id: '70-x86')
+			yourself
 	}
 ]
 
@@ -262,14 +296,9 @@ PhLVirtualMachineManager >> downloadPathOSTypeSegment [
 
 { #category : #private }
 PhLVirtualMachineManager >> fetchCompatibleVm [
-	[ | targetFile | 
-	targetFile := self class privateVmStore / (self imageFormatNumber asString , '.zip').
-	PhLDownloadManager default 
-		download: self compatibleVmUrl
-		toFile: targetFile.
-	self class
-		unzip: targetFile
-		to: (self class privateVmStore / self imageFormatNumber asString) ]
+	[ self class 
+		fetch: self compatibleVmUrl
+		to: self privateVmStore / (self imageFormatNumber asString , '.zip') ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageFormatNumber asString, ' image format. Maybe you need to update known formats?' ]
 ]
@@ -281,7 +310,7 @@ PhLVirtualMachineManager >> fetchSourcesFileForCompatibleVm [
 	(self imageFormatNumber = self class imageFormatPreSpur or: [ self imageFormatNumber = self class imageFormat6504 ])
 		ifTrue: [ self 
 			fetchSourcesFilesFor: '14' 
-			in: self class privateVmStore / self imageFormatNumber asString ]
+			in: self privateVmStore / self imageFormatNumber asString ]
 ]
 
 { #category : #private }
@@ -311,8 +340,8 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString [
 	| vmFolder |
 	
 	vmFolder := anImageVersionString asInteger < 30
-		ifTrue: [ self vmStore / self vmFileName ]
-		ifFalse: [ (self availableVirtualMachines at: self vmFileName) vmFolder ].
+		ifTrue: [ self vmStore / self vmId ]
+		ifFalse: [ (self availableVirtualMachines at: self vmId) vmFolder ].
 	self fetchSourcesFilesFor: anImageVersionString in: vmFolder
 
 ]
@@ -333,9 +362,11 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 
 { #category : #private }
 PhLVirtualMachineManager >> fetchVm [
-	[ self class fetch: self vmUrl to: self vmFileName ]
-		on: KeyNotFound
-		do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
+	[ self class 
+		fetch: self vmUrl 
+		to: self vmStore / (self vmId , '.zip') ]
+	on: KeyNotFound
+	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
 ]
 
 { #category : #accessing }
@@ -455,12 +486,7 @@ PhLVirtualMachineManager >> imageVersionDeterminationScriptSourceCode [
 
 { #category : #private }
 PhLVirtualMachineManager >> imageVersionFile [
-	^ imageFile parent / self imageVersionFileName
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionFileName [
-	^ self class imageVersionFileName
+	^ imageFile parent / PhLImage versionFileName
 ]
 
 { #category : #accessing }
@@ -482,10 +508,30 @@ PhLVirtualMachineManager >> imageVersionFromFileWith: aPhLProcessWrapperCommand 
 ]
 
 { #category : #accessing }
+PhLVirtualMachineManager >> privateVmStore [
+	^ self class privateVmStore
+]
+
+{ #category : #accessing }
 PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 	"$1: IMAGE_VERSION"
 	^ 'https://files.pharo.org/get-files/{1}/sources.zip'
 		format: {anImageVersionString}
+]
+
+{ #category : #querying }
+PhLVirtualMachineManager >> virtualMachine [
+	^ self virtualMachines
+		detect: [ :vm | vm id = self vmId ]
+		ifNone: [ PhLVirtualMachine id: self vmId ]
+]
+
+{ #category : #querying }
+PhLVirtualMachineManager >> virtualMachines [
+	| vmsInVmStore defaultVms |
+	defaultVms := self defaultVirtualMachines.
+	vmsInVmStore := self availableVirtualMachines values reject: [ :vm | defaultVms anySatisfy: [ :diskVM | diskVM id = vm id ] ].
+	^ vmsInVmStore , defaultVms
 ]
 
 { #category : #querying }
@@ -495,13 +541,13 @@ PhLVirtualMachineManager >> vm [
 		informUserDuring: [ :bar | 
 			bar label: 'Determining Image version'.
 			vm := self availableVirtualMachines 
-				at: self vmFileName 
+				at: self vmId 
 				ifAbsent: 
 					[ bar 
 						label: 'Fetching VM to run Pharo ', self imageVersion , ' images';
 						current: 25.
 					self fetchVm.
-					vm := self availableVirtualMachines at: self vmFileName.
+					vm := self availableVirtualMachines at: self vmId.
 					bar 
 						label: 'Fetching sources files for Pharo ', self imageVersion;
 						current: 50.
@@ -514,7 +560,7 @@ PhLVirtualMachineManager >> vm [
 ]
 
 { #category : #accessing }
-PhLVirtualMachineManager >> vmFileName [
+PhLVirtualMachineManager >> vmId [
 	| architecture pharoVersion |
 	self checkImageArchitecture.
 	architecture := (self class is64bits: self imageFormatNumber)
@@ -539,14 +585,15 @@ PhLVirtualMachineManager >> vmUrl [
 		ifTrue: [ '50-preSpur' ]
 		ifFalse: [ self imageVersion ].
 	^ self vmUrlTemplate
-		format: { pharoVersion . architecture . self downloadPathOSTypeSegment . 'stable' }
+		format: { pharoVersion . architecture . self downloadPathOSTypeSegment . '' . 'stable' }
 ]
 
 { #category : #private }
 PhLVirtualMachineManager >> vmUrlTemplate [
-	"$1: IMAGE_VERSION
-	 $2: VM_ARCH
-	 $3: OS
-	 $4: VM_STATUS"
-	^ 'https://files.pharo.org/get-files/{1}/pharo{2}-{3}-{4}.zip'
+	"$1: IMAGE_VERSION (11 .. 70, 80)
+	 $2: VM_ARCH (32 or 64)
+	 $3: OS (win mac or linux)
+	 $4: FLAVOUR? (-headless or empty)
+	 $5: VM_STATUS (stable or latest)"
+	^ 'https://files.pharo.org/get-files/{1}/pharo{2}-{3}{4}-{5}.zip'
 ]

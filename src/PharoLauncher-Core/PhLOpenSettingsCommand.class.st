@@ -1,23 +1,31 @@
 "
-Command to open the Settings interface.
+Command to open the Settings browser.
 "
 Class {
 	#name : #PhLOpenSettingsCommand,
 	#superclass : #PhLGeneralCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#classVars : [
+		'LauncherVersion'
+	],
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLOpenSettingsCommand class >> icon [
-	^ self iconNamed: #configurationIcon
+{ #category : #converting }
+PhLOpenSettingsCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #configurationIcon;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLOpenSettingsCommand class >> title [
-	^ 'Open settings'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLOpenSettingsCommand >> execute [
-	PhLSettingBrowser browse: #( #pharoLauncherSettings )
+	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings )) open
+]
+
+{ #category : #initialization }
+PhLOpenSettingsCommand >> initialize [
+	super initialize.
+	self
+		name: 'Open settings';
+		description: 'Open Pharo Launcher settings'
 ]

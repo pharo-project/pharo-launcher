@@ -23,7 +23,7 @@ PhLCreateTemplateFromImageTest >> testCanCreateATemplateFromImage [
 	
 	templateName := 'newTemplate'.
 	fs := FileSystem memory root.
-	fileNames := #('a.image' 'a.changes' 'pharo.version' 'a-23456ef.sources').
+	fileNames := {'a.image' . 'a.changes' . PhLImage versionFileName . 'a-23456ef.sources'}.
 	fileNames do: [ :fileName | (fs / fileName) ensureCreateFile ].
 	image := PhLImage location: fs / fileNames first.
 	templateRepository := PhLTemplateGroupRepository newFromGroups: { PhLDownloadedTemplateGroup named: 'cache group' }.

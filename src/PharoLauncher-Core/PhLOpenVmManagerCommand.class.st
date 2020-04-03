@@ -4,14 +4,26 @@ Open the VM Manager UI
 Class {
 	#name : #PhLOpenVmManagerCommand,
 	#superclass : #PhLGeneralCommand,
-	#instVars : [
-		'project'
-	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
+{ #category : #converting }
+PhLOpenVmManagerCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconProvider: self;
+		iconName: #configurationIcon;
+		yourself
+]
+
+{ #category : #executing }
+PhLOpenVmManagerCommand >> execute [
+	(PhLVMPresenter 
+		newApplication: self application
+		model: PhLVirtualMachinesDataSource default) openWithSpec
+]
+
 { #category : #accessing }
-PhLOpenVmManagerCommand class >> icon [
+PhLOpenVmManagerCommand >> icon [
 	"encoded with 
 		ZnBase64Encoder new encode: 'Cog-icon-grey.png' asFileReference binaryReadStream upToEnd."
 	^ ImageReadWriter formFromStream: (ZnBase64Encoder new decode: 
@@ -19,16 +31,15 @@ PhLOpenVmManagerCommand class >> icon [
 ]
 
 { #category : #accessing }
-PhLOpenVmManagerCommand class >> title [
-	^ 'Open VM Manager'
+PhLOpenVmManagerCommand >> iconNamed: aName [
+	^ self icon
 ]
 
-{ #category : #action }
-PhLOpenVmManagerCommand >> execute [
-	| vmBlock privateVmBlock |
-	vmBlock := [ PhLVirtualMachineManager new availableVirtualMachines 
-		asSortedCollection: [ :vm1 :vm2 | vm1 name > vm2 name ] ].
-	privateVmBlock := [ PhLVirtualMachineManager new availableVirtualMachinesByImageFormat 
-		asSortedCollection: [ :vm1 :vm2 | vm1 name > vm2 name ] ].
-	(PhLVMPresenter on: { vmBlock . privateVmBlock }) openWithSpec
+{ #category : #executing }
+PhLOpenVmManagerCommand >> initialize [
+	super initialize.
+	self
+		name: 'Open VM Manager';
+		description:
+			'Open a new window allowing to manage Virtual Machines used to launch images'
 ]

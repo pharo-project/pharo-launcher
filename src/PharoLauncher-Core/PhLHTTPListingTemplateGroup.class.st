@@ -11,7 +11,7 @@ Class {
 	#classVars : [
 		'RegexCache'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #defaults }
@@ -34,6 +34,22 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPa
 		yourself
 ]
 
+{ #category : #'instance creation' }
+PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPatternString username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl filterPattern: aPatternString)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
+]
+
+{ #category : #'instance creation' }
+PhLHTTPListingTemplateGroup class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
+]
+
 { #category : #accessing }
 PhLHTTPListingTemplateGroup class >> regexCache [
 	"Cache the regex per version so that we don't recompute it all the time"
@@ -54,8 +70,23 @@ PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templa
 ]
 
 { #category : #accessing }
+PhLHTTPListingTemplateGroup >> icon [
+	^ self iconNamed: #remote
+]
+
+{ #category : #accessing }
 PhLHTTPListingTemplateGroup >> name [
 	^ name
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> password [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> password: aString [
+	^ url password: aString
 ]
 
 { #category : #accessing }
@@ -92,4 +123,14 @@ PhLHTTPListingTemplateGroup >> templatesAndGroups [
 		[ self createTemplateFromHref: (matcher subexpression: self subexpression)  addingTo: templates ].
 	^ templates
 	
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> username [
+	^ url username
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> username: aString [
+	url username: aString
 ]

@@ -4,26 +4,29 @@ Ask the image repository to update.
 Class {
 	#name : #PhLRefreshImageRepositoryCommand,
 	#superclass : #PhLGeneralCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#classVars : [
+		'LauncherVersion'
+	],
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRefreshImageRepositoryCommand class >> group [
-	^ 3
+{ #category : #converting }
+PhLRefreshImageRepositoryCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallUpdateIcon;
+		shortcutKey: $u meta;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLRefreshImageRepositoryCommand class >> icon [
-	^ self iconNamed: #smallUpdateIcon
-]
-
-{ #category : #accessing }
-PhLRefreshImageRepositoryCommand class >> title [
-	^ 'Refresh image list'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLRefreshImageRepositoryCommand >> execute [
-	self model imageRepository contentsChanged.
+	self context imageRepository contentsChanged.
+]
 
+{ #category : #initialization }
+PhLRefreshImageRepositoryCommand >> initialize [
+	super initialize.
+	self
+		name: 'Refresh';
+		description: 'Refresh image list'
 ]

@@ -7,35 +7,41 @@ Class {
 	#category : 'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRemoveTemplateCommand class >> group [
-	^ 2
-]
-
-{ #category : #accessing }
-PhLRemoveTemplateCommand class >> icon [
-	^ self iconNamed: #smallDelete
-]
-
-{ #category : #accessing }
-PhLRemoveTemplateCommand class >> title [
-	^ 'Remove template'
-]
-
-{ #category : #action }
-PhLRemoveTemplateCommand >> execute [
-	| templates templateNames confirmMessage answer |
-	templates := self model selectedTemplates.
-	templateNames := templates collect: #name.
-	confirmMessage := 'Are you sure you want to delete ' , (templateNames joinUsing: ', ' last: ' and ').
-	answer := self model newConfirmation
-		message: (confirmMessage withNoLineLongerThan: 60) , '?';
-		confirm.
-	answer
-		ifTrue: [ self model templateRepository deleteTemplates: templates ]
+{ #category : #converting }
+PhLRemoveTemplateCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallDelete;
+		shortcutKey: $x meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
 { #category : #testing }
-PhLRemoveTemplateCommand >> isApplicable [
-	^ super isApplicable and: [ self model hasSingleLocalTemplateSelected ]
+PhLRemoveTemplateCommand >> canBeExecuted [
+	^ self templatesPresenter hasLocalTemplatesSelected
+]
+
+{ #category : #executing }
+PhLRemoveTemplateCommand >> execute [ 
+	| templates templateNames confirmMessage answer |
+	templates := self templatesPresenter selectedTemplates.
+	templates ifEmpty: [ ^ self ].
+	
+	templateNames := templates collect: #name.
+	confirmMessage := 'Are you sure you want to delete ' , (templateNames joinUsing: ', ' last: ' and ').
+	answer := self templatesPresenter newConfirmation
+		message: (confirmMessage withNoLineLongerThan: 60) , '?';
+		confirm.
+	answer ifFalse: [ ^ self "abort" ].
+		
+	self templatesPresenter templateRepository deleteTemplates: templates.
+	self templatesPresenter refresh. 
+]
+
+{ #category : #initialization }
+PhLRemoveTemplateCommand >> initialize [
+	super initialize.
+	self
+		name: 'Remove template';
+		description: 'Remove the selected template from the local cache'
 ]

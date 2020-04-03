@@ -4,25 +4,29 @@ Ask the template repository to update.
 Class {
 	#name : #PhLRefreshTemplateRepositoryCommand,
 	#superclass : #PhLGeneralCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#classVars : [
+		'LauncherVersion'
+	],
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRefreshTemplateRepositoryCommand class >> group [
-	^ 3
+{ #category : #converting }
+PhLRefreshTemplateRepositoryCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallUpdateIcon;
+		shortcutKey: $u meta;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLRefreshTemplateRepositoryCommand class >> icon [
-	^ self iconNamed: #smallUpdateIcon
-]
-
-{ #category : #accessing }
-PhLRefreshTemplateRepositoryCommand class >> title [
-	^ 'Refresh template list'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLRefreshTemplateRepositoryCommand >> execute [
-	self model templateRepository refresh
+	self context templateRepository refresh
+]
+
+{ #category : #initialization }
+PhLRefreshTemplateRepositoryCommand >> initialize [ 
+	super initialize.
+	self
+		basicName: 'Refresh';
+		basicDescription: 'Refresh template list'.
 ]

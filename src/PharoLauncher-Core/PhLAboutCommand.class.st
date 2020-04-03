@@ -4,32 +4,19 @@ Command to display a box with information related to the Pharo Launcher
 Class {
 	#name : #PhLAboutCommand,
 	#superclass : #PhLGeneralCommand,
-	#instVars : [
-		'project'
-	],
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLAboutCommand class >> icon [
-	^ self iconNamed: #help
-]
+{ #category : #versions }
+PhLAboutCommand class >> version: aString [
 
-{ #category : #accessing }
-PhLAboutCommand class >> title [
-	^ 'About'
+	LauncherVersion := aString.
 ]
 
 { #category : #querying }
-PhLAboutCommand class >> version: anObject. [
-
-	LauncherVersion := anObject.
-]
-
-{ #category : #accessing }
 PhLAboutCommand >> aboutText [
 	^ String streamContents: [:stream |
 		stream
@@ -43,13 +30,32 @@ PhLAboutCommand >> aboutText [
 	
 ]
 
-{ #category : #action }
-PhLAboutCommand >> execute [
-	AboutDialogWindow new
-		text: self aboutText;
-		open;
-		extent: (600 @ 300) scaledByDisplayScaleFactor "needs to be done after opening because RealEstateAgent computes the window size"
+{ #category : #converting }
+PhLAboutCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #help;
+		shortcutKey: $? meta;
+		yourself
+]
 
+{ #category : #executing }
+PhLAboutCommand >> execute [
+	| presenter |
+	presenter := PhLAboutPresenter 
+		text: self aboutText
+		iconName: #pharo.
+	presenter application: self application.
+	
+	presenter openDialogWithSpec.
+	^ presenter
+]
+
+{ #category : #initialization }
+PhLAboutCommand >> initialize [
+	super initialize.
+	self
+		name: 'About';
+		description: 'About Pharo Launcher'
 ]
 
 { #category : #querying }

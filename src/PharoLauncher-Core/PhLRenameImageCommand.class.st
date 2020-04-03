@@ -4,33 +4,46 @@ Rename the currently selected image and move the files accordingly.
 Class {
 	#name : #PhLRenameImageCommand,
 	#superclass : #PhLImageCommand,
-	#instVars : [
-		'newImageName'
-	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRenameImageCommand class >> icon [
-	^ self iconNamed: #workspaceIcon
+{ #category : #converting }
+PhLRenameImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #workspaceIcon;
+		shortcutKey: $r meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLRenameImageCommand class >> title [
-	^ 'Rename'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLRenameImageCommand >> execute [
 	| name |
 	name := self newImageName.
 	name ifNil: [ ^ self ].
-	self
-		ensure: (self model isNewImageNameValid: name).
-	self model imageRepository renameImage: self model singleImage to: name
+	self imagesPresenter imageRepository 
+		renameImage: self imagesPresenter singleImage 
+		to: name
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
+PhLRenameImageCommand >> initialize [
+	super initialize.
+	self
+		name: 'Rename';
+		description: 'Rename the currently selected image and move the files accordingly.'
+]
+
+{ #category : #private }
 PhLRenameImageCommand >> newImageName [
-	^ newImageName ifNil: [ newImageName := self model requestNewImageName: self model singleImageName ]
+	^ self newImageName: self imagesPresenter singleImageName
+]
+
+{ #category : #private }
+PhLRenameImageCommand >> newImageName: aString [ 
+	^ self imagesPresenter newRequest 
+		title: 'Image name?';
+		initialAnswer: aString;
+		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
+		request
 ]

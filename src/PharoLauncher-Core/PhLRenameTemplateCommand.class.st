@@ -4,44 +4,50 @@ Rename the selected template
 Class {
 	#name : #PhLRenameTemplateCommand,
 	#superclass : #PhLTemplateCommand,
-	#instVars : [
-		'newImageName'
-	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRenameTemplateCommand class >> group [
-	^ 2
-]
-
-{ #category : #accessing }
-PhLRenameTemplateCommand class >> icon [
-	^ self iconNamed: #workspace
-]
-
-{ #category : #accessing }
-PhLRenameTemplateCommand class >> title [
-	^ 'Rename template'
-]
-
-{ #category : #action }
-PhLRenameTemplateCommand >> execute [
-	| name |
-	name := self newImageName.
-	name ifNil: [ ^ self ].
-	self
-		ensure: (self model isNewLocalTemplateNameValid: name).
-	self model singleTemplate renameTo: name.
-	self model templateRepositoryChanged
+{ #category : #converting }
+PhLRenameTemplateCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #workspace;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
 { #category : #testing }
-PhLRenameTemplateCommand >> isApplicable [
-	^ super isApplicable and: [ self model hasSingleLocalTemplateSelected ]
+PhLRenameTemplateCommand >> canBeExecuted [
+	^ self templatesPresenter hasLocalTemplateSelected
 ]
 
-{ #category : #accessing }
-PhLRenameTemplateCommand >> newImageName [
-	^ newImageName ifNil: [ newImageName := self model requestNewImageName: self model singleTemplateName ]
+{ #category : #executing }
+PhLRenameTemplateCommand >> execute [ 
+	| name template |
+	template := self templatesPresenter singleTemplate.
+	name := self newTemplateName.
+	
+	self templatesPresenter templateRepository rename: template to: name.
+	self templatesPresenter refresh. 
+]
+
+{ #category : #initialization }
+PhLRenameTemplateCommand >> initialize [
+	super initialize.
+	self
+		name: 'Rename template';
+		description: 'Rename the selected template from the local cache'
+]
+
+{ #category : #'instance creation' }
+PhLRenameTemplateCommand >> newTemplateName [
+	^ self newTemplateName: self templatesPresenter singleTemplate name
+]
+
+{ #category : #'instance creation' }
+PhLRenameTemplateCommand >> newTemplateName: aString [ 
+	^ self templatesPresenter newRequest 
+		title: 'New name for the template?';
+		initialAnswer: aString;
+		validateAnswer: [ :answer | (self templatesPresenter templateRepository hasLocalTemplateNamed: answer) not ];
+		request
 ]

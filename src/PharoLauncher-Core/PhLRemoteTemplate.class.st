@@ -7,8 +7,13 @@ Class {
 	#instVars : [
 		'url'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #example }
+PhLRemoteTemplate class >> example [ 
+	^ self name: 'Pharo Mooc' url: 'https://mooc.pharo.org/image/PharoWeb.zip'
+]
 
 { #category : #'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl [
@@ -17,15 +22,65 @@ PhLRemoteTemplate class >> name: aString url: anUrl [
 		yourself
 ]
 
+{ #category : #'instance creation' }
+PhLRemoteTemplate class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
+]
+
+{ #category : #comparing }
+PhLRemoteTemplate >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ name = anObject name 
+		and: [ url = anObject url ]
+]
+
+{ #category : #comparing }
+PhLRemoteTemplate >> hash [
+	^ name hash bitXor: url hash
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> password [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> password: aString [
+	url password: aString
+]
+
 { #category : #'initialize-release' }
 PhLRemoteTemplate >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl
 ]
 
+{ #category : #querying }
+PhLRemoteTemplate >> suggestedImageName [
+	| rxMatcher |
+	rxMatcher := '(\((\w+).zip\)).*' asRegex.
+	^ (rxMatcher matches: self name)
+		ifTrue: [ rxMatcher subexpression: 3 "extract zip filename" ]
+		ifFalse: [ self name ]
+]
+
 { #category : #accessing }
 PhLRemoteTemplate >> url [
 	^ url
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> username [
+	^ url username
+]
+
+{ #category : #accessing }
+PhLRemoteTemplate >> username: aString [
+	url username: aString
 ]
 
 { #category : #accessing }

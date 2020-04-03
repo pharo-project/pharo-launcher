@@ -1,8 +1,28 @@
 Class {
 	#name : #PhLJenkins2JobTest,
 	#superclass : #PhLJenkins2EntityTest,
-	#category : 'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Download'
 }
+
+{ #category : #helpers }
+PhLJenkins2JobTest class >> newInstance [
+	^ self newWithoutParent
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
+]
+
+{ #category : #helpers }
+PhLJenkins2JobTest class >> newSecureInstance [
+	^ self newWithoutParent
+		  parent: PhLJenkins2ServerTest newSecureInstance;
+		  yourself
+]
+
+{ #category : #helpers }
+PhLJenkins2JobTest class >> newWithoutParent [
+	^ PhLJenkins2Job newWithProperties: (STONJSON fromString:
+			   '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/pharo-contribution/job/A4BP/1304/","number":1304}')
+]
 
 { #category : #helpers }
 PhLJenkins2JobTest >> lastSuccessfulBuildNumber [
@@ -16,41 +36,38 @@ PhLJenkins2JobTest >> lastSuccessfulBuildUrlString [
 
 { #category : #'instance creation' }
 PhLJenkins2JobTest >> newJobWithNoSuccessfulBuild [
-	^ PhLJenkins2Job
-		newWithProperties:
-			(Dictionary new
-				at: 'url' put: 'url' asUrl;
-				at: 'name' put: 'thejob';
-				yourself)
+	^ (PhLJenkins2Job newWithProperties: (Dictionary new
+				    at: 'url' put: 'url' asUrl;
+				    at: 'name' put: 'thejob';
+				    yourself))
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PhLJenkins2JobTest >> newJobWithNullSuccessfulBuild [
-	^ PhLJenkins2Job
-		newWithProperties:
-			(Dictionary new
-				at: 'url' put: 'url' asUrl;
-				at: 'name' put: 'thejob';
-				at: 'lastSuccessfulBuild' put: nil;
-				yourself)
+	^ (PhLJenkins2Job newWithProperties: (Dictionary new
+				    at: 'url' put: 'url' asUrl;
+				    at: 'name' put: 'thejob';
+				    at: 'lastSuccessfulBuild' put: nil;
+				    yourself))
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
 ]
 
 { #category : #'instance creation' }
 PhLJenkins2JobTest >> newJobWithSuccessfulBuild [
-	^ PhLJenkins2Job
-		newWithProperties:
-			(Dictionary new
-				at: 'url' put: 'url' asUrl;
-				at: 'name' put: 'thejob';
-				at: 'lastSuccessfulBuild'
-					put:
-						(Dictionary
-								newFromPairs:
-									{'number'.
-									(self lastSuccessfulBuildNumber).
-									'url'.
-									(self lastSuccessfulBuildUrlString)});
-				yourself)
+	^ (PhLJenkins2Job newWithProperties: (Dictionary new
+				    at: 'url' put: 'url' asUrl;
+				    at: 'name' put: 'thejob';
+				    at: 'lastSuccessfulBuild' put: (Dictionary newFromPairs: { 
+								     'number'.
+								     self lastSuccessfulBuildNumber.
+								     'url'.
+								     self lastSuccessfulBuildUrlString });
+				    yourself))
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
 ]
 
 { #category : #responses }

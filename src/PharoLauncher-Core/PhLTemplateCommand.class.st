@@ -3,16 +3,11 @@ Superclass of all commands that are applied to one template or multiple template
 "
 Class {
 	#name : #PhLTemplateCommand,
-	#superclass : #PhLCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#superclass : #CmCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #testing }
-PhLTemplateCommand class >> isAbstract [
-	^ self name = 'PhLTemplateCommand'
-]
-
-{ #category : #testing }
-PhLTemplateCommand >> isApplicable [
-	^ super isApplicable and: [ self model hasSingleTemplateSelected ]
+{ #category : #accessing }
+PhLTemplateCommand >> templatesPresenter [
+	^ self context
 ]

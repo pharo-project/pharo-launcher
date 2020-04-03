@@ -1,26 +1,18 @@
 "
-Uses the current VirtualMachine to launch the selected image.
+Launch the selected image with the appropriate virtual machine.
 "
 Class {
 	#name : #PhLLaunchImageCommand,
 	#superclass : #PhLImageCommand,
+	#instVars : [
+		'useSettings'
+	],
 	#classVars : [
-		'CommandAnnouncer',
 		'QuitOnLaunch',
 		'WarnOnArchMismatch'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
-
-{ #category : #accessing }
-PhLLaunchImageCommand class >> announceQuitOnLaunchValueChanged [
-	self announcer announce: PhLQuitOnLaunchValueChanged
-]
-
-{ #category : #accessing }
-PhLLaunchImageCommand class >> announcer [
-	^ CommandAnnouncer ifNil: [ CommandAnnouncer := Announcer new ]
-]
 
 { #category : #settings }
 PhLLaunchImageCommand class >> archMismatchSettingDescription [
@@ -32,16 +24,6 @@ PhLLaunchImageCommand class >> archMismatchSettingLabel [
 	^ 'Warn on image architecture mismatch? ' translated
 ]
 
-{ #category : #accessing }
-PhLLaunchImageCommand class >> group [
-	^ 1
-]
-
-{ #category : #accessing }
-PhLLaunchImageCommand class >> icon [
-	^ self iconNamed: #smallDoItIcon
-]
-
 { #category : #settings }
 PhLLaunchImageCommand class >> quitOnLaunch [
 	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
@@ -49,11 +31,8 @@ PhLLaunchImageCommand class >> quitOnLaunch [
 
 { #category : #settings }
 PhLLaunchImageCommand class >> quitOnLaunch: aBoolean [
-	| oldValue |
-	oldValue := QuitOnLaunch.
-	QuitOnLaunch := aBoolean.
-	oldValue = QuitOnLaunch 
-		ifFalse: [ CommandAnnouncer announce: PhLQuitOnLaunchValueChanged ]
+	QuitOnLaunch = aBoolean 
+		ifFalse: [ QuitOnLaunch := aBoolean ]
 ]
 
 { #category : #settings }
@@ -76,11 +55,6 @@ PhLLaunchImageCommand class >> settingsOn: aBuilder [
 		description: self archMismatchSettingDescription
 ]
 
-{ #category : #accessing }
-PhLLaunchImageCommand class >> title [
-	^ 'Launch'
-]
-
 { #category : #settings }
 PhLLaunchImageCommand class >> warnOnArchMismatch [
 	^ WarnOnArchMismatch ifNil: [  WarnOnArchMismatch := true ].
@@ -92,65 +66,71 @@ PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 
 ]
 
-{ #category : #action }
+{ #category : #converting }
+PhLLaunchImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallDoItIcon;
+		shortcutKey: $l meta;
+		beDisabledWhenCantBeRun;
+		yourself
+]
+
+{ #category : #converting }
+PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
+	self
+		doNotUseSettings;
+		name: 'Basic lau...';
+		description: 'Launch the selected Pharo image without settings'.
+	^ super asSpecCommand
+		iconProvider: self;
+		iconName: #smallDoItIcon;
+		"shortcutKey: $l meta, $b meta ;"
+			beDisabledWhenCantBeRun;
+		yourself
+]
+
+{ #category : #configuring }
+PhLLaunchImageCommand >> doNotUseSettings [
+	useSettings := false.
+]
+
+{ #category : #executing }
 PhLLaunchImageCommand >> execute [
-	self model hasSingleImageSelected
+	self imagesPresenter hasSingleImageSelected
 		ifTrue: [ self launchSelectedImage ]
 ]
 
-{ #category : #testing }
-PhLLaunchImageCommand >> isApplicable [
-	^ self model hasSingleImageSelected
+{ #category : #private }
+PhLLaunchImageCommand >> iconNamed: aName [
+	"Only used for basic launch command"
+	^ (super iconNamed: aName) asGrayScaleWithAlpha
 ]
 
-{ #category : #action }
+{ #category : #initialization }
+PhLLaunchImageCommand >> initialize [
+	super initialize.
+	useSettings := true.
+	self name: 'Launch'
+]
+
+{ #category : #executing }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
-	[ aPhLImage launchWithSettings: true ]
+	[ | launchConfig |
+	launchConfig := self imagesPresenter selectedLaunchConfiguration.
+	useSettings ifFalse: [ launchConfig doNotUseSettings ].
+	aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	self class quitOnLaunch
 		ifTrue: [ self quit ]
 ]
 
-{ #category : #action }
-PhLLaunchImageCommand >> launchImageFromDisk [
-	| imagePath |
-	imagePath := UIManager default 
-		chooseFullFileName: 'Open a Pharo image'
-		extensions: #('image') 
-		path: FileLocator home 
-		preview: false.
-	imagePath ifNil: [ ^ self ].
-	imagePath asFileReference isFile ifFalse: [ ^self ].
-	self launchImage: (PhLImage location: imagePath asFileReference)
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLLaunchImageCommand >> launchSelectedImage [
-	self launchImage: self model singleImage
+	self launchImage: self imagesPresenter singleImage
 ]
 
-{ #category : #accessing }
-PhLLaunchImageCommand >> pharoStableImagePath [
-	| img |
-	img := (self resourcesPath  / 'images' / 'pharo-stable.zip') asFileReference.
-	^ img exists 
-		ifTrue: [ img ]
-		ifFalse: [ nil ]
-]
-
-{ #category : #action }
+{ #category : #private }
 PhLLaunchImageCommand >> quit [
-	(PhLQuitCommand on: self model) execute
-]
-
-{ #category : #accessing }
-PhLLaunchImageCommand >> resourcesPath [
-	| vmDirectory |
-	
-	vmDirectory := Smalltalk vm binary parent.
-
-	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
-	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
-	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
+	(PhLQuitCommand forSpecContext: self imagesPresenter) execute
 ]

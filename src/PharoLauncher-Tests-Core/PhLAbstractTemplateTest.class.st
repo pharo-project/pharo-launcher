@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'root'
 	],
-	#category : 'PharoLauncher-Tests-Core'
+	#category : #'PharoLauncher-Tests-Core'
 }
 
 { #category : #testing }
@@ -42,8 +42,7 @@ PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 	| template archive archiveFile |
 	template := self newTemplate.
-	self flag: 'TODO: I currently use concrete filesystem instead of memory fs because memory fs implementation is missing functionalities (should be solved in pharo 7.0)'.
-	archiveFile := FileLocator temp / 'phl-abstract-template-test-no-eocd-error-arch.zip'.
+	archiveFile := root / 'phl-abstract-template-test-no-eocd-error-arch.zip'.
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar'.
 

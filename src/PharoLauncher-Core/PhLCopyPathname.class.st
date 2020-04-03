@@ -5,29 +5,25 @@ Copy the selected image pathname to the system clipboard.
 Class {
 	#name : #PhLCopyPathname,
 	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #action }
-PhLCopyPathname class >> group [
-	^ 3
+{ #category : #converting }
+PhLCopyPathname >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallCopyIcon;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLCopyPathname class >> icon [
-	^ self iconNamed: #smallInfoIcon
-]
-
-{ #category : #accessing }
-PhLCopyPathname class >> title [
-	^ 'Copy pathname'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLCopyPathname >> execute [
 	Clipboard clipboardText: 
-		$" asString, 
-		self model singleImage file fullName , 
-		$" asString.
+		self imagesPresenter singleImage file fullName surroundedByDoubleQuotes.
+]
 
+{ #category : #initialization }
+PhLCopyPathname >> initialize [
+	super initialize.
+	self name: 'Copy pathname'
 ]

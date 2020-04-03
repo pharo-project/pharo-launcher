@@ -11,12 +11,26 @@ Class {
 	#instVars : [
 		'isHighlighted'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
 PhLAbstractTemplateGroup >> children [
-	^ self templatesAndGroups
+	^ [ self templatesAndGroups ]
+		on: PhLDownloadError
+		do: [ :error | | children |
+			PhlRetryPresenter new
+				explanation: error longDescription;
+				retryBlock: [ children := self children ];
+				cancelBlock: [ children := #() ];
+				openModalWithSpec.
+			children ]
+]
+
+{ #category : #accessing }
+PhLAbstractTemplateGroup >> icon [ 
+	"icon used to display the group"
+	self subclassResponsibility 
 ]
 
 { #category : #testing }
@@ -47,6 +61,11 @@ PhLAbstractTemplateGroup >> printOn: aStream [
 { #category : #actions }
 PhLAbstractTemplateGroup >> refresh [
 	"Clear any cached data - this is a noop for non caching groups"
+]
+
+{ #category : #testing }
+PhLAbstractTemplateGroup >> shouldComputeChildrenLazily [
+	^ false
 ]
 
 { #category : #accessing }

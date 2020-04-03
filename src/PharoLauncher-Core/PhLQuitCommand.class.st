@@ -1,24 +1,30 @@
 "
-Just quits the image.
+Quit Pharo Launcher.
 "
 Class {
 	#name : #PhLQuitCommand,
 	#superclass : #PhLGeneralCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLQuitCommand class >> icon [
-	^ self iconNamed: #smallQuitIcon
+{ #category : #converting }
+PhLQuitCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallQuitIcon;
+		shortcutKey: $q meta;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLQuitCommand class >> title [
-	^ 'Quit'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLQuitCommand >> execute [
-	PhLDownloadManager reset. " reset error logging"
+	PhLDownloadManager reset. "reset error logging"
 	Smalltalk snapshot: true andQuit: true
+]
+
+{ #category : #executing }
+PhLQuitCommand >> initialize [
+	super initialize.
+	self
+		name: 'Quit';
+		description: 'Quit Pharo Launcher'
 ]

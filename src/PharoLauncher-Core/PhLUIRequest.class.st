@@ -9,8 +9,16 @@ Class {
 		'initialAnswer',
 		'validationBlock'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
+
+{ #category : #action }
+PhLUIRequest >> chooseFrom: aListOfChoices [
+	^ UIManager default 
+		chooseFrom: aListOfChoices
+		lines: #()
+		title: title
+]
 
 { #category : #accessing }
 PhLUIRequest >> initialAnswer: aString [ 
@@ -21,7 +29,7 @@ PhLUIRequest >> initialAnswer: aString [
 PhLUIRequest >> request [
 	| answer |
 	[ answer := UIManager default request: title initialAnswer: initialAnswer ]
-		doWhileTrue: [ answer isNotNil and: [ (validationBlock value: answer) not ] ].
+		doWhileTrue: [ answer isNotNil and: [ validationBlock isNotNil and: [ (validationBlock value: answer) not ] ] ].
 		"answer is nil when the user press cancels. That's a possible answer we have to accept."
 	^ answer
 ]

@@ -10,7 +10,7 @@ Class {
 	#instVars : [
 		'name'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #actions }
@@ -31,7 +31,7 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
 	extractionDirectory deleteAll.
 	"Will serialize image metadata with the template information"
-	(PhLImage location: aDirectory / aString , 'image') 
+	^ (PhLImage location: aDirectory / aString , 'image') 
 		originTemplate: self.
 ]
 
@@ -89,7 +89,7 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 	imageFile := extractionDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	"A changes file must have the same name and be in the same directory as the image file:"
 	changesFile := imageFile parent / imageFile basenameWithoutExtension , 'changes'.
 	sourcesFile := imageFile parent / imageFile basenameWithoutExtension , 'sources'.
-	versionFile := imageFile parent / PhLVirtualMachineManager imageVersionFileName.
+	versionFile := imageFile parent / PhLImage versionFileName.
 	imageFile = (targetDirectory / targetName , 'image')
 		ifTrue: [ ^ self "no need to relocate" ].
 	imageFile moveTo: targetDirectory / targetName , 'image'.
@@ -107,6 +107,16 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 { #category : #actions }
 PhLAbstractTemplate >> renameTo: aString [
 	name := aString
+]
+
+{ #category : #testing }
+PhLAbstractTemplate >> shouldComputeChildrenLazily [ 
+	^ false
+]
+
+{ #category : #querying }
+PhLAbstractTemplate >> suggestedImageName [
+	^ self name
 ]
 
 { #category : #accessing }

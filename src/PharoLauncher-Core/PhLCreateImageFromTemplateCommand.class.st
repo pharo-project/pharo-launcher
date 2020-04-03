@@ -5,38 +5,65 @@ Class {
 	#name : #PhLCreateImageFromTemplateCommand,
 	#superclass : #PhLTemplateCommand,
 	#instVars : [
-		'newImageName'
+		'image'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLCreateImageFromTemplateCommand class >> group [
-	^ 1
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
+	| description |
+	description := self templatesPresenter description.
+	description isNotEmpty
+		ifTrue: [ image description: description ].
 ]
 
-{ #category : #accessing }
-PhLCreateImageFromTemplateCommand class >> icon [
-	^ self iconNamed: #smallNewIcon
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
+	| initScript |
+	initScript := self templatesPresenter initializationScript.
+	(initScript exists and: [ initScript contents isNotEmpty ])
+		ifTrue: [ image initializationScript: initScript ].
 ]
 
-{ #category : #accessing }
-PhLCreateImageFromTemplateCommand class >> title [
-	^ 'Create image'
+{ #category : #converting }
+PhLCreateImageFromTemplateCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallNewIcon;
+		shortcutKey: $s meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #action }
-PhLCreateImageFromTemplateCommand >> execute [
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> createImage [
 	| name |
-	name := self newImageName.
-	name ifNil: [ ^ self ].
-	self ensure: (model isNewImageNameValid: name).
-	[ model imageRepository extractTemplate: model singleTemplate to: name ]
-		on: PhLCorruptedTemplateError
-		do: [ :error | UIManager default alert: 'This template appears to be corrupted! Please try again.' ].
+	name := self templatesPresenter imageName.
+	name isEmptyOrNil ifTrue: [ ^ self ].
+	
+	image := self templatesPresenter imageRepository
+		extractTemplate: self templatesPresenter singleTemplate
+		to: name.
+	self addInitializationScriptMetadataIfPresent.
+	self addDescriptionIfAny.
+	self templatesPresenter application imageRepositoryChanged.
+	^ image
 ]
 
-{ #category : #accessing }
-PhLCreateImageFromTemplateCommand >> newImageName [
-	^ newImageName ifNil: [ newImageName := self model requestNewImageName: self model singleTemplateName ]
+{ #category : #executing }
+PhLCreateImageFromTemplateCommand >> execute [
+	
+	[ ^ self createImage ]
+		on: PhLCorruptedTemplateError
+		do: [ :error | 
+			UIManager default
+				alert: 'This template appears to be corrupted! Please try again.' ]
+]
+
+{ #category : #initialization }
+PhLCreateImageFromTemplateCommand >> initialize [
+	super initialize.
+	self
+		name: 'Create image';
+		description: 'Create a new image from the selected template'
 ]

@@ -9,14 +9,36 @@ Class {
 		'url',
 		'name'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #protected }
+PhLJenkins2Server class >> jsonFields [
+	"Because the server is the root of the jenkins model"
+
+	^ self shouldNotImplement
+]
+
+{ #category : #protected }
+PhLJenkins2Server class >> jsonName [
+	"Because the server is the root of the jenkins model"
+
+	^ self shouldNotImplement
+]
 
 { #category : #'instance creation' }
 PhLJenkins2Server class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
+]
+
+{ #category : #'instance creation' }
+PhLJenkins2Server class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -27,6 +49,16 @@ PhLJenkins2Server >> jobs [
 { #category : #accessing }
 PhLJenkins2Server >> name [
 	^ name
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> password [
+	^ url password
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> password: aString [
+	url password: aString
 ]
 
 { #category : #initialization }
@@ -43,4 +75,14 @@ PhLJenkins2Server >> templatesAndGroups [
 { #category : #accessing }
 PhLJenkins2Server >> url [
 	^ url
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> username [
+	^ url username
+]
+
+{ #category : #accessing }
+PhLJenkins2Server >> username: aString [
+	url username: aString
 ]

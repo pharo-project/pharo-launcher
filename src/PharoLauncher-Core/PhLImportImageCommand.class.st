@@ -9,76 +9,92 @@ Class {
 	#instVars : [
 		'importSiblings'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLImportImageCommand class >> group [
-	^ 4
+{ #category : #converting }
+PhLImportImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallLoadProject;
+		shortcutKey: $y meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLImportImageCommand class >> icon [
-	^ self iconNamed: #smallLoadProject 
+{ #category : #'ui interaction' }
+PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
+	^ self imagesPresenter newRequest
+		title: 'An image with the name ', anImageName , ' already exists. Please choose a new name:';
+		initialAnswer: (self imagesPresenter imageRepository makeUniqueImageName: anImageName);
+		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
+		request
 ]
 
-{ #category : #accessing }
-PhLImportImageCommand class >> title [
-	^ 'Import'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLImportImageCommand >> execute [
 	| answer |
 	importSiblings := false.
-	answer := UIManager default
+	answer := self imagesPresenter newRequest
+		title: 'What would you like to do?';
 		chooseFrom:
-			{ 'Launch an image from the file system' . 
-			'Import an image into Pharo Launcher images store (will move files)' .
-			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' }
-		lines: #()
-		title: 'What would you like to do?'.
-	answer = 3
-		ifTrue:	[ importSiblings := true ].
-	(answer = 2 or: [ answer = 3 ])
-		ifTrue:	[ self importImage ].
-	answer = 1 
-		ifTrue: [ (PhLLaunchImageCommand on: self model) launchImageFromDisk ].
+			{ 'Import an image into Pharo Launcher images store (will move files)' .
+			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' }.
+	answer = 0 
+		ifTrue: [ ^ self "cancel" ].
+	answer = 2
+		ifTrue: [ importSiblings := true ].
+	self importImage.
 ]
 
-{ #category : #action }
-PhLImportImageCommand >> import: imagePath [
-	| infoMessage destFolderName |
-	destFolderName := imagePath asFileReference basenameWithoutExtension.
-	importSiblings 
-		ifTrue: [ self model imageRepository
-			importImageNamed: imagePath
-			 andSiblingFilesto: destFolderName ]
-		ifFalse: [ self model imageRepository
-			importImageNamed: imagePath
-			to: destFolderName ].
-	infoMessage := 'Image ' , imagePath , ' imported!'.
-	self inform: (infoMessage withNoLineLongerThan: 60) 
+{ #category : #executing }
+PhLImportImageCommand >> import: imageFileRef [
+	| infoMessage destFolderName imageRepository |
+	destFolderName := imageFileRef basenameWithoutExtension.
+	imageRepository := self imagesPresenter imageRepository.
+	[ imageRepository ensureNoImageWithName: destFolderName ]
+		on: PhLNameNotAvailableError
+		do: [ destFolderName := self chooseNewImageNameFor: destFolderName ].
+	destFolderName ifNil: [ ^ self "abort" ].
+	
+	importSiblings
+		ifTrue: [ 
+			imageRepository
+				importImageNamed: imageFileRef
+				andSiblingFilesto: destFolderName ]
+		ifFalse:
+			[ imageRepository importImage: imageFileRef to: destFolderName ].
+	infoMessage := 'Image ' , imageFileRef fullName , ' imported!'.
+	self imagesPresenter newInformation
+		message: (infoMessage withNoLineLongerThan: 60);
+		inform
 ]
 
-{ #category : #action }
+{ #category : #executing }
 PhLImportImageCommand >> importImage [
-	| imagePath |
-	imagePath := UIManager default
-		chooseFullFileName: 'Import a Pharo image (will move image, changes file and pharo-local folder)'
-		extensions: #('image')
-		path: FileLocator home
-		preview: false.
-	imagePath ifNil: [ 
-		self inform: 'No path selected. Import failed.'.
+	| imageFile |
+	imageFile := self imagesPresenter newFileRequest
+		title: 'Import a Pharo image (will move image, changes file and pharo-local folder)';
+		extensionsToShow: #('image');
+		path: FileLocator home;
+		chooseFile.
+	imageFile ifNil: [ 
+		self imagesPresenter newInformation 
+			message: 'No path selected. Import failed.';
+			inform.
 		^ self ].
-	imagePath asFileReference isDirectory ifTrue: [ 
-		self inform: 'The file selected is a directory and not a Pharo image. Import failed.'.
+	imageFile asFileReference isDirectory ifTrue: [ 
+		self imagesPresenter newInformation 
+			message: 'The file selected is a directory and not a Pharo image. Import failed.';
+			inform.
 		^ self ].
-	self import: imagePath
+	self import: imageFile
 ]
 
-{ #category : #testing }
-PhLImportImageCommand >> isApplicable [
-	^ true
+{ #category : #initialization }
+PhLImportImageCommand >> initialize [
+	super initialize.
+	self
+		name: 'Import';
+		description:
+			'Import into Pharo Launcher an existing Pharo image (and possibly its parent folder)'
 ]

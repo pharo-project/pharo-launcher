@@ -4,38 +4,41 @@ Remove an image from the hard disk. Can be applied to multiple images at the sam
 Class {
 	#name : #PhLDeleteImageCommand,
 	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLDeleteImageCommand class >> icon [
-	^ self iconNamed: #smallDeleteIcon
+{ #category : #converting }
+PhLDeleteImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallDeleteIcon;
+		shortcutKey: $x meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
 { #category : #accessing }
-PhLDeleteImageCommand class >> positionInGroup [
-	^ 10
+PhLDeleteImageCommand >> canBeExecuted [ 
+	^ self imagesPresenter selectedImages notEmpty
 ]
 
 { #category : #accessing }
-PhLDeleteImageCommand class >> title [
-	^ 'Delete'
-]
-
-{ #category : #action }
 PhLDeleteImageCommand >> execute [
 	| images imageNames confirmMessage answer |
-	images := self model selectedImages.
+	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
-	confirmMessage := 'Are you sure you want to delete ' , (imageNames joinUsing: ', ' last: ' and ').
-	answer := self model newConfirmation
+	confirmMessage := 'Are you sure you want to delete ', (imageNames joinUsing: ', ' last: ' and ').
+	answer := self imagesPresenter newConfirmation
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
-	answer
-		ifTrue: [ self model imageRepository deleteImages: images ]
+	answer ifFalse: [ ^ self ].
+	
+	self imagesPresenter imageRepository deleteImages: images.
 ]
 
-{ #category : #testing }
-PhLDeleteImageCommand >> isApplicable [
-	^ self model hasAtLeastOneImageSelected
+{ #category : #initialization }
+PhLDeleteImageCommand >> initialize [
+	super initialize.
+	self
+		name: 'Delete';
+		description: 'Delete the selected Pharo images'
 ]

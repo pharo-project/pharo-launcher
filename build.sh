@@ -28,7 +28,7 @@ function prepare_image() {
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
-	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; load"
+	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; onConflictUseLoaded; load"
 }
 
 function run_tests() {
@@ -45,7 +45,7 @@ function package_user_version() {
         # Avoid to have PL core dir set to the slave location and having an outdated list of templates
 	./pharo PharoLauncher.image eval --save \
 		"PhLTemplateSources resetLauncherCoreDir.
-		PharoLauncher resetTemplateRepository.
+		PharoLauncherApplication resetTemplateRepository.
 		PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
 
 	# Create the platform-specific archives
@@ -138,7 +138,16 @@ function package_windows_version() {
 		#   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
 		installerVerion=${VERSION_NUMBER%-*}
 	fi
-	INSTALLER_VERSION=$installerVerion cmd /c windows\\build-launcher-installer.bat
+	OS_NAME=$(uname -s)
+	OS_NAME=${OS_NAME:0:6}
+	if [[ "$OS_NAME" = "CYGWIN" ]]
+	then
+   		# Cygwin specific stuff
+   		CMD="cygstart --wait cmd"
+	else
+   		CMD=cmd
+	fi
+	INSTALLER_VERSION=$installerVerion $CMD /c windows\\build-launcher-installer.bat
 	if [ "$should_sign" = true ] ; then
 		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
 		rm pharo-windows-certificate.p12

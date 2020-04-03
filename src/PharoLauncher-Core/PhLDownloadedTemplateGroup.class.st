@@ -9,7 +9,8 @@ Class {
 	#name : #PhLDownloadedTemplateGroup,
 	#superclass : #PhLAbstractTemplateGroup,
 	#instVars : [
-		'name'
+		'name',
+		'baseDirectory'
 	],
 	#classVars : [
 		'Default'
@@ -31,7 +32,12 @@ PhLDownloadedTemplateGroup class >> named: aName [
 
 { #category : #accessing }
 PhLDownloadedTemplateGroup >> baseDirectory [
-	^ (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory
+	^ baseDirectory
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> baseDirectory: aDirectory [
+	baseDirectory := aDirectory ensureCreateDirectory
 ]
 
 { #category : #accessing }
@@ -63,8 +69,28 @@ PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTe
 ]
 
 { #category : #accessing }
+PhLDownloadedTemplateGroup >> icon [
+	^ self iconNamed: #home
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> initialize [ 
+	super initialize.
+	baseDirectory := (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory
+]
+
+{ #category : #accessing }
 PhLDownloadedTemplateGroup >> name [
 	^ name
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> pharoStableImagePath [
+	| img |
+	img := (self resourcesPath  / 'images' / 'pharo-stable.zip') asFileReference.
+	^ img exists 
+		ifTrue: [ img ]
+		ifFalse: [ nil ]
 ]
 
 { #category : #private }
@@ -75,6 +101,17 @@ PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile [
 	templateDescription := aDictionary at: aRemoteTemplate name ifAbsentPut: [ Dictionary new ].
 	self updateTemplateDescription: templateDescription with: aRemoteTemplate.
 	self saveToFile: aDictionary
+]
+
+{ #category : #accessing }
+PhLDownloadedTemplateGroup >> resourcesPath [
+	| vmDirectory |
+	
+	vmDirectory := Smalltalk vm binary parent.
+
+	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
+	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
+	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
 ]
 
 { #category : #private }
@@ -101,7 +138,7 @@ PhLDownloadedTemplateGroup >> templatesAndGroups [
 				zipFile: self baseDirectory / (value at: #name), 'zip')  ]
 			ifFalse: [ self flag:'TODO remove non existing stuff' ].
 		].
-	PhLLaunchImageCommand new pharoStableImagePath ifNotNil: [:image | 
+	self pharoStableImagePath ifNotNil: [:image | 
 		templates add: 
 			(PhLLocalTemplate 
 				name: 'Pharo image (stable)'

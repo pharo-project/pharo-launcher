@@ -1,11 +1,14 @@
 "
-This class  allow to run external (OS) processes for the Pharo Launcher.
-It hides some complexity to the Launcer.
-OSProcess is used on Linux and OS X, while ProcessWrapper is used on Windows (OSProcess hangs on some processes on Windows and the Launcher becomes unusable).
+This class allows to run external (OS) processes for Pharo Launcher.
+It hides some complexity to the Launcher.
+OSSubProcess is used on Linux and OS X, while OSWinSubprocess is used on Windows.
+
+Use me as a builder to configure the process, then call prepareProcess (will use a visitor pattern to visit code specific to targeted OS) to have a PhLProcess ready to run.
+I act as a facade to OSSubProcess and OSWinSubprocess.
 "
 Class {
 	#name : #PhLProcessWrapper,
-	#superclass : #Object,
+	#superclass : #OSPlatformVisitor,
 	#instVars : [
 		'process',
 		'arguments',
@@ -62,9 +65,21 @@ PhLProcessWrapper >> arguments [
 		as: Array
 ]
 
+{ #category : #accessing }
+PhLProcessWrapper >> command [ 
+	^ command
+]
+
 { #category : #building }
 PhLProcessWrapper >> command: apathString [
 	command := apathString
+]
+
+{ #category : #querying }
+PhLProcessWrapper >> commandLineString [
+	^ PhLProcessWrapperCommandStringGenerator new 
+		processWrapper: self;
+		visit
 ]
 
 { #category : #accessing }
@@ -82,26 +97,15 @@ PhLProcessWrapper >> initialize [
 ]
 
 { #category : #testing }
+PhLProcessWrapper >> isShellCommand [
+	^ isShellCommand
+]
+
+{ #category : #testing }
 PhLProcessWrapper >> isSuccess [
 	^ Smalltalk os isWindows
 		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
 		ifFalse: [ process isSuccess ]
-]
-
-{ #category : #private }
-PhLProcessWrapper >> linuxCommandLine [
-	| commandLine |
-	
-	commandLine := workingDirectory 
-		ifNil: [ '' ]
-		ifNotNil: ['cd ' , workingDirectory , ' && ' ].
-	isShellCommand 
-		ifFalse: [ commandLine := commandLine , command surroundedByDoubleQuotes, ' ' ].
-	commandLine := commandLine , (Character space join: self arguments).
-	^ isShellCommand 
-		ifTrue: [ 'bash -c ''{1}''' format: { commandLine }]
-		ifFalse: [ commandLine ]
-
 ]
 
 { #category : #building }
@@ -111,29 +115,9 @@ PhLProcessWrapper >> loginShellCommand [
 ]
 
 { #category : #private }
-PhLProcessWrapper >> prepareLinuxProcess [
-	process := OSSUnixSubprocess new
-		workingDirectory: workingDirectory;
-		yourself.
-	isShellCommand 
-		ifTrue: [ | commandLine |
-			commandLine := (Character space join: self arguments) utf8Encoded asString.
-			useLoginShell 
-				ifTrue: [ process loginShellCommand: commandLine ]
-				ifFalse: [ process shellCommand: commandLine ] ] 
-		ifFalse: [ process command: command.
-					process arguments: self arguments. ].
-]
-
-{ #category : #private }
-PhLProcessWrapper >> prepareWindowsProcess [
-	process := OSWSWinProcess new
-		workingDirectory: workingDirectory;
-		yourself.
-	isShellCommand 
-		ifTrue: [ process shellCommand ] 
-		ifFalse: [ process command: command ].
-	process arguments: self arguments.
+PhLProcessWrapper >> prepareProcess [
+	"I am an OSPlatform visitor. Running the visit will actually configure thr process dependending on the Operating System"
+	self visit
 ]
 
 { #category : #private }
@@ -143,9 +127,12 @@ PhLProcessWrapper >> process: aProcessWrapper [
 
 { #category : #running }
 PhLProcessWrapper >> runAndWait [
-	Smalltalk os isWindows
-		ifTrue: [ self runOnWindowsAndWait ]
-		ifFalse: [ self runOnLinuxAndWait ]
+	self prepareProcess.
+	process runAndWait.
+	
+	process isSuccess ifFalse: [
+		self error: 'command ', self commandLineString ,' failed' ].
+
 ]
 
 { #category : #running }
@@ -156,18 +143,8 @@ PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
 ]
 
 { #category : #running }
-PhLProcessWrapper >> runOnLinuxAndWait [
-
-	self prepareLinuxProcess.
-	process runAndWait.
-	
-	process isSuccess ifFalse: [
-		self error: 'command ', command ,' failed' ].
-]
-
-{ #category : #running }
 PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
-	self prepareLinuxProcess.
+	self prepareProcess.
 	[ process 
 		run;
 		waitForExitWithTimeout: aDuration ]
@@ -176,18 +153,8 @@ PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
 ]
 
 { #category : #running }
-PhLProcessWrapper >> runOnWindowsAndWait [
-	self prepareWindowsProcess.
-	process runAndWait.
-	
-	process isSuccess ifFalse: [
-		self error: 'command ', command ,' failed' ].
-
-]
-
-{ #category : #running }
 PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
-	self prepareWindowsProcess.
+	self prepareProcess.
 	process runAndWaitTimeOut: aDuration asMilliSeconds.
 	
 	process hasTimedOut
@@ -197,16 +164,51 @@ PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
 
 { #category : #running }
 PhLProcessWrapper >> runUnwatch [
+	self prepareProcess.
 	Smalltalk os isWindows
-		ifTrue: [ self prepareWindowsProcess. 
-					process runUnwatch. ]
-		ifFalse: [ self prepareLinuxProcess.
-					process run.  ]
+		ifTrue: [ process runUnwatch. ]
+		ifFalse: [ process run. ]
 ]
 
 { #category : #building }
 PhLProcessWrapper >> shellCommand [ 
 	isShellCommand := true.
+]
+
+{ #category : #private }
+PhLProcessWrapper >> visitMacOS: aPlatform [
+	self visitUnix: aPlatform
+]
+
+{ #category : #private }
+PhLProcessWrapper >> visitUnix: aPlatform [
+	process := OSSUnixSubprocess new
+		workingDirectory: workingDirectory;
+		yourself.
+	isShellCommand 
+		ifTrue: [ | commandLine |
+			commandLine := Character space join: self arguments.
+			useLoginShell 
+				ifTrue: [ process loginShellCommand: commandLine ]
+				ifFalse: [ process shellCommand: commandLine ] ] 
+		ifFalse: [ process command: command.
+					process arguments: self arguments. ].
+]
+
+{ #category : #private }
+PhLProcessWrapper >> visitWindows: aPlatform [
+	process := OSWSWinProcess new
+		workingDirectory: workingDirectory;
+		yourself.
+	isShellCommand 
+		ifTrue: [ process shellCommand ] 
+		ifFalse: [ process command: command ].
+	process arguments: self arguments.
+]
+
+{ #category : #accessing }
+PhLProcessWrapper >> workingDirectory [ 
+	^ workingDirectory 
 ]
 
 { #category : #building }

@@ -5,41 +5,84 @@ Class {
 	#name : #PhLCreateTemplateFromImageCommand,
 	#superclass : #PhLImageCommand,
 	#instVars : [
-		'newTemplateName'
+		'newTemplateName',
+		'willRemoveImage'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #action }
-PhLCreateTemplateFromImageCommand class >> group [
-	^ 3
+{ #category : #converting }
+PhLCreateTemplateFromImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #smallNewIcon;
+		shortcutKey: $t meta;
+		beDisabledWhenCantBeRun;
+		yourself
+]
+
+{ #category : #converting }
+PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
+	self
+		willRemoveImage;
+		name: 'Create Template and delete image';
+		description:
+			'Create a Template from the selected Pharo image and delete the image just after template creation'.
+	^ super asSpecCommand
+		iconName: #smallNewIcon;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
 { #category : #accessing }
-PhLCreateTemplateFromImageCommand class >> icon [
-	^ self iconNamed: #smallNewIcon
+PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
+	^ self imagesPresenter newConfirmation
+		message: 'Do you want to override exisiting template?';
+		confirm
 ]
 
-{ #category : #accessing }
-PhLCreateTemplateFromImageCommand class >> positionInGroup [
-	^ 10
-]
-
-{ #category : #accessing }
-PhLCreateTemplateFromImageCommand class >> title [
-	^ 'Create Template'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLCreateTemplateFromImageCommand >> execute [
 	| name |
 	name := self newTemplateName.
 	name ifNil: [ PhLCommandCancellation signal ].
-	self ensure: name isNotEmpty.
-	self model templateRepository createLocalTemplateFrom: self model singleImage named: name
+	self imagesPresenter createLocalTemplateFromSelectionNamed: name.
+	"ensure the template is created before removing the image"
+	(willRemoveImage and: [self imagesPresenter templateRepository hasLocalTemplateNamed: name])
+		ifTrue: [ PhLDeleteImageCommand new
+						context: context;
+						execute ]
+]
+
+{ #category : #initialization }
+PhLCreateTemplateFromImageCommand >> initialize [
+	super initialize.
+	willRemoveImage := false.
+	self
+		name: 'Create Template';
+		description: 'Create a Template from the selected Pharo image'
 ]
 
 { #category : #accessing }
 PhLCreateTemplateFromImageCommand >> newTemplateName [
-	^ newTemplateName ifNil: [ newTemplateName := self model requestNewTemplateName: self model singleImageName ]
+	^ newTemplateName 
+		ifNil: [ newTemplateName := self requestNewTemplateName: self imagesPresenter singleImageName ]
+]
+
+{ #category : #accessing }
+PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
+	| templateRepository |
+	templateRepository := self imagesPresenter templateRepository.
+	^ self imagesPresenter newRequest
+		title: 'Template name?';
+		initialAnswer: (templateRepository makeUniqueTemplateName: aString);
+		validateAnswer: [ :answer | 
+			(templateRepository hasLocalTemplateNamed: answer)
+				ifTrue: [ self confirmTemplateOverride ]
+				ifFalse: [ true ] ];
+		request
+]
+
+{ #category : #configuring }
+PhLCreateTemplateFromImageCommand >> willRemoveImage [
+	willRemoveImage := true.
 ]

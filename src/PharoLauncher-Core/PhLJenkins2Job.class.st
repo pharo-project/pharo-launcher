@@ -4,7 +4,7 @@ I'm a job as can be available on a Jenkins platform.
 Class {
 	#name : #PhLJenkins2Job,
 	#superclass : #PhLJenkins2Entity,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }
@@ -26,12 +26,14 @@ PhLJenkins2Job >> builds [
 
 { #category : #accessing }
 PhLJenkins2Job >> lastSuccessfulBuild [
-	^ PhLJenkins2Build
+	^ (PhLJenkins2Build
 		newWithProperties:
 			(Dictionary new
 				at: 'number' put: self lastSuccessfulBuildNumber;
 				at: 'url' put: (self url / 'lastSuccessfulBuild') printString;
-				yourself)
+				yourself))
+		parent: self;
+		yourself
 ]
 
 { #category : #accessing }

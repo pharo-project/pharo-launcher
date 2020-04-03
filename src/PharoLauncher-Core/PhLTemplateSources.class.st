@@ -1,13 +1,10 @@
 "
-I represent the template sources used by Pharo Launcher.
+I represent a list of template sources used by Pharo Launcher.
 
-Preview in Launcher:
-	| groups |
-	groups := PhLTemplateGroupsBuilder buildFrom: PhLTemplateSources fromFile.
-	(PharoLauncher createLauncherWithGroups: groups) openWithSpec.
+You initialize me with a reference to a file (serialized with Ston) and then, you can ask me the list of PhlTemplateSource (you can see them as template groups).
 
-Serialization:
-	self generateSourcesFile
+ex:
+ 	(self withFile: PhLPharoTemplateSources sourcesFile) sources 
 "
 Class {
 	#name : #PhLTemplateSources,
@@ -16,42 +13,21 @@ Class {
 		'file'
 	],
 	#classVars : [
-		'LauncherCoreDir',
-		'SourcesAnnouncer',
-		'SourcesUrl'
+		'LauncherCoreDir'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
-PhLTemplateSources class >> announcer [
-	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
+PhLTemplateSources class >> defaultSources [ 
+	^ PhLCompositeTemplateSources new 
+			initializeWith: { PhLPharoTemplateSources fromFile . PhLUserTemplateSources fromFile };
+			yourself
 ]
 
-{ #category : #updating }
-PhLTemplateSources class >> checkForUpdates [
-
-	self fromFile checkForUpdates
-]
-
-{ #category : #serializing }
-PhLTemplateSources class >> defaultSources [
-	^ OrderedCollection new 
-		add: PhLTemplateSource cacheGroup;
-		add: PhLTemplateSource moocGroup;
-		add: PhLTemplateSource officialDistributionsGroup;
-		add: PhLTemplateSource deprecatedDistributionsGroup;
-		add: PhLTemplateSource inriaPharoContribution;
-		add: PhLTemplateSource inriaMoose;
-		add: PhLTemplateSource pharo60;
-		add: PhLTemplateSource pharo70;
-		yourself
-]
-
-{ #category : #accessing }
-PhLTemplateSources class >> defaultSourcesUrl [
-
-	^ 'https://files.pharo.org/pharo-launcher/sources.list'
+{ #category : #example }
+PhLTemplateSources class >> example [
+	^ self withFile: PhLPharoTemplateSources sourcesFile
 ]
 
 { #category : #serializing }
@@ -69,9 +45,9 @@ PhLTemplateSources class >> flushIn: aFileReference [
 	
 ]
 
-{ #category : #accessing }
+{ #category : #'instance creation' }
 PhLTemplateSources class >> fromFile [
-	^ self withFile: self sourcesFile
+	self subclassResponsibility
 ]
 
 { #category : #serializing }
@@ -123,37 +99,6 @@ PhLTemplateSources class >> settingsOn: aBuilder [
 			'Path to the directory that will contain Pharo Launcher template sources file.' , String cr
 				, 'You must have the read/write rights on this folder.' , String cr
 				, 'NOTE: This path might need to escape some whitespace characters.' translated.
-	(aBuilder setting: #sourcesUrl)
-		label: 'Template sources Url' translated;
-		parent: #pharoLauncher;
-		target: self;
-		order: 38;
-		default: self defaultSourcesUrl;
-		description: 'Url for downloading the template list'
-]
-
-{ #category : #accessing }
-PhLTemplateSources class >> sourcesFile [
-	"File with the list of default templates sources for Pharo Launcher"
-	^ self launcherCoreDir / 'sources.list'
-]
-
-{ #category : #accessing }
-PhLTemplateSources class >> sourcesUrl [
-	"Url of the file with the list of default templates sources for Pharo Launcher"
-
-	^ SourcesUrl ifNil: [ SourcesUrl := self defaultSourcesUrl ]
-]
-
-{ #category : #accessing }
-PhLTemplateSources class >> sourcesUrl: aUrl [
-
-	| oldUrl |
-	oldUrl := SourcesUrl.
-	SourcesUrl := aUrl.
-	
-	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
-	PhLTemplateSources checkForUpdates
 ]
 
 { #category : #'instance creation' }
@@ -171,53 +116,9 @@ PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 	^ self withFile: file
 ]
 
-{ #category : #actions }
-PhLTemplateSources >> checkForUpdates [
-	| downloadedSources |
-	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self downloadedSourcesFile ensureDelete.
-	self fetchSourcesFile.
-	
-	downloadedSources := self downloadedSources.
-	self sources = downloadedSources
-		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
-]
-
 { #category : #iterating }
 PhLTemplateSources >> collect: aBlock [
 	^ self sources collect: aBlock
-]
-
-{ #category : #reading }
-PhLTemplateSources >> downloadedSources [
-	| sources |
-	self downloadedSourcesFile readStreamDo: [ :stream |
-		 sources := STON fromStream: stream].
-	^ sources
-]
-
-{ #category : #accessing }
-PhLTemplateSources >> downloadedSourcesFile [
-	^ file parent / (file basename, '.dl')
-]
-
-{ #category : #actions }
-PhLTemplateSources >> ensureSourcesFile [
-	file exists ifTrue: [ ^ file ].
-	
-	self fetchSourcesFile.
-	self downloadedSourcesFile exists 
-		ifFalse: [ PhLUIInformation new 
-						message: 'Cannot fetch Pharo Launcher template sources file: {1}'. ].
-	self replaceSourcesFileWithDownloaded.
-]
-
-{ #category : #actions }
-PhLTemplateSources >> fetchSourcesFile [
-	PhLDownloadManager default
-		download: self sourcesUrl
-		toFile: self downloadedSourcesFile. 
-	
 ]
 
 { #category : #initialization }
@@ -225,33 +126,15 @@ PhLTemplateSources >> initializeWith: aSourcesFile [
 	file := aSourcesFile.
 ]
 
-{ #category : #actions }
-PhLTemplateSources >> replaceSourcesFileWithDownloaded [
-	file ensureDelete.
-	self downloadedSourcesFile moveTo: file 
-]
-
-{ #category : #reading }
+{ #category : #accessing }
 PhLTemplateSources >> sources [
 	| sources |
-	file readStreamDo: [ :stream |
-		 sources := STON fromStream: stream].
+	file exists 
+		ifFalse: [ ^ #() ].
+	
+	[ file readStreamDo: [ :stream |
+		 sources := STON fromStream: stream] ]
+	on: STONReaderError, InstanceVariableNotFound  
+	do: [ sources := #() ].
 	^ sources
-]
-
-{ #category : #accessing }
-PhLTemplateSources >> sourcesUrl [
-
-	^ self class sourcesUrl
-]
-
-{ #category : #accessing }
-PhLTemplateSources >> sourcesUrl: anUrlString [
-
-	self class sourcesUrl: anUrlString
-]
-
-{ #category : #actions }
-PhLTemplateSources >> updateSourcesFile [
-	self replaceSourcesFileWithDownloaded
 ]

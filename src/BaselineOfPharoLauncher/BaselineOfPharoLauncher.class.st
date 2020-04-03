@@ -1,7 +1,7 @@
 Class {
 	#name : #BaselineOfPharoLauncher,
 	#superclass : #BaselineOf,
-	#category : 'BaselineOfPharoLauncher'
+	#category : #BaselineOfPharoLauncher
 }
 
 { #category : #baselines }
@@ -10,43 +10,37 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 		spec 
+			baseline: #Ston
+				with: [ spec repository: 'github://svenvc/ston:master/repository' ];
+			baseline: #Spec2
+				with: [ spec repository: 'github://pharo-spec/Spec:master/src' ];
 			baseline: #OSSubprocess
-				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.1' ];
+				with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.2' ];
 			baseline: #OSWinSubprocess
 				with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ];
-			project: 'Ston' with: [
-				spec
-					className: #ConfigurationOfSton;
-					versionString: #'stable';
-					repository: 'http://ss3.gemstone.com/ss/STON' ];
-			project: 'XMLParser' with: [
-				spec
-					className: #ConfigurationOfXMLParser;
-					versionString: #'stable';
-					loads: #('Core' );
-					repository: 'http://smalltalkhub.com/mc/PharoExtras/XMLParser/main/' ];
-			baseline: #Icetray
-				with: [ spec repository: 'github://pharo-spec/icetray/src' ];
-			package: #FastTableExtentions
-				with: [ spec repository: 'github://sbragagnolo/FastTableExtention/src' ].
+			baseline: #XMLParser
+				with: [ spec 
+							repository: 'github://pharo-contributions/XML-XMLParser:3.5.x';
+							loads: #('Core') ].
 		spec
-			package: #'PharoLauncher-ZipArchive';
-			package: #'PharoLauncher-70Compatibility'; 
+			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'Ston' #'OSSubprocess' #'OSWinSubprocess' #'PharoLauncher-ZipArchive' #'PharoLauncher-70Compatibility'). ];
-			package: #'PharoLauncher-Spec' with: [ 
-				spec requires: #(#'PharoLauncher-Core' ). ];
-			package: #'PharoLauncher-IceTray' with: [ spec
-				requires: #(#'PharoLauncher-Core' #Icetray #FastTableExtentions) ];
+				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility'). ];
+			package: #'PharoLauncher-Spec2' with: [ 
+				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
+			package: #'PharoLauncher-SpTablePresenterExt' with: [ 
+				spec requires: #(#'PharoLauncher-Spec2'). ];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
+			package: #'PharoLauncher-Tests-Commands' with: [
+				spec requires: #(#'PharoLauncher-Spec2' ). ];
 			package: #'PharoLauncher-Tests-SpecUI' with: [
-				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec'). ];
+				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Spec2'). ];
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Tests-Core' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-IceTray'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-SpTablePresenterExt'). ].
 ]

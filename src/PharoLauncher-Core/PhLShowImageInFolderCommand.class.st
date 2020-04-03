@@ -7,22 +7,22 @@ Class {
 	#category : 'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLShowImageInFolderCommand class >> group [
-	^ 3
+{ #category : #converting }
+PhLShowImageInFolderCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #openIcon;
+		shortcutKey: $o meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLShowImageInFolderCommand class >> icon [
-	^ self iconNamed: #openIcon
-]
-
-{ #category : #accessing }
-PhLShowImageInFolderCommand class >> title [
-	^ 'Show in folder'
-]
-
-{ #category : #action }
+{ #category : #executing }
 PhLShowImageInFolderCommand >> execute [
-	self model singleImage showNativeFolder
+	self imagesPresenter singleImage showNativeFolder
+]
+
+{ #category : #initialization }
+PhLShowImageInFolderCommand >> initialize [
+	super initialize.
+	self name: 'Show in folder'
 ]

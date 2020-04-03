@@ -49,17 +49,13 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
-	| version manager |
+	| version |
 	self timeLimit: 30 seconds.
 	
 	self withCopyOfCurrentImageDo: 
 	[ :imagePath |
-	manager := PhLVirtualMachineManager forImage: imagePath.
-	manager fetchSourcesFilesFor: '61' in: manager compatibleVm vmFolder.
-
-	
-	version := (PhLVirtualMachineManager
-		forImage: imagePath) imageVersion.
+	version := (PhLVirtualMachineManager forImage: imagePath) 
+		imageVersion.
 	self assert: version equals: self currentImageVersion ]
 ]
 
@@ -136,40 +132,6 @@ PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersio
 	self
 		should: [ vmManager imageVersionFromFileWith: command ]
 		raise: PhLImageVersionDeterminationError. ]
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
-	| image command |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
-	
-	command := image launchCommandWith: 'pharo' useSettings: true.
-	
-	self deny: (command arguments includes: '--no-default-preferences')
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
-	| image command vmManager |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
-	vmManager := PhLVirtualMachineManager forImage: image file pathString.
-	vmManager 
-		imageFormatNumber: PhLVirtualMachineManager imageFormat32bits;
-		imageVersion: '20'.
-	
-	command := image launchCommandWithVm: vmManager useSettings: false.
-	
-	self deny: (command arguments includes: '--no-default-preferences')
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
-	| image command |
-	image := PhLImage location: Smalltalk image lastImagePath asFileReference.
-	
-	command := image launchCommandWith: 'pharo' useSettings: false.
-	
-	self assert: (command arguments includes: '--no-default-preferences')
 ]
 
 { #category : #tests }

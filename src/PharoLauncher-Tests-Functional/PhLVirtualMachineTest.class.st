@@ -3,7 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
-	#category : 'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Functional'
 }
 
 { #category : #tests }
@@ -73,4 +73,24 @@ PhLVirtualMachineTest >> testCanGetPharoVersion [
 	self 
 		assert: vm pharoVersion
 		equals: '70'
+]
+
+{ #category : #tests }
+PhLVirtualMachineTest >> testSerialization [
+	| vm vmDirectory deserializedVm |
+	
+	vmDirectory := (FileSystem memory root / '80-x64') ensureCreateDirectory.
+	(vmDirectory / PhLVirtualMachine executableName) 
+		binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
+	vm := PhLVirtualMachine directory: vmDirectory.
+
+	deserializedVm := STON fromString: (STON toStringPretty: vm).
+	
+	self assert: deserializedVm vmFolder class equals: FileReference.
+	self assert: deserializedVm vmFolder fullName equals: vmDirectory fullName.
+	self assert: deserializedVm id equals: vm id.
+	self assert: deserializedVm blessing equals: vm blessing.
+	self assert: deserializedVm archPath equals: vm archPath.
+	self assert: deserializedVm flavour equals: vm flavour.
+
 ]

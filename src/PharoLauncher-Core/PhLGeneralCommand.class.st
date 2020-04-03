@@ -3,6 +3,11 @@ Abstract superclass for all general-purpose commands. These commands concern the
 "
 Class {
 	#name : #PhLGeneralCommand,
-	#superclass : #PhLCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#superclass : #CmCommand,
+	#category : #'PharoLauncher-Core-Commands'
 }
+
+{ #category : #accessing }
+PhLGeneralCommand >> application [
+	^ self context application
+]

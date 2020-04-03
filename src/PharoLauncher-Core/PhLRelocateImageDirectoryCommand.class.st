@@ -1,6 +1,3 @@
-"
-Relocate the directory where the images are saved to another directory
-"
 Class {
 	#name : #PhLRelocateImageDirectoryCommand,
 	#superclass : #PhLGeneralCommand,
@@ -8,26 +5,29 @@ Class {
 		'source',
 		'target'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
-{ #category : #action }
-PhLRelocateImageDirectoryCommand >> execute [
-	self source children collect: [ :child | child moveTo: (self target resolvePath: (child relativeTo: self source)) resolve ] 
+{ #category : #executing }
+PhLRelocateImageDirectoryCommand >> canBeExecuted [
+	self target ensureCreateDirectory.
+	^ self source ~= self target 
+		and: [ self source hasChildren 
+		and: [ self target hasChildren not ] ]
 ]
 
-{ #category : #action }
-PhLRelocateImageDirectoryCommand >> executeOrInform [
-	self isApplicable
+{ #category : #executing }
+PhLRelocateImageDirectoryCommand >> execute [
+	self canBeExecuted
 		ifTrue: [ 
-			self execute.
+			self relocate.
 			self informMigrationDone ]
 		ifFalse: [ self informManualMigrationNeeded ]
 ]
 
 { #category : #'user interaction' }
 PhLRelocateImageDirectoryCommand >> informManualMigrationNeeded [
-	PhLUIInformation new
+	self application newInformation
 		message:
 				('You need to manually relocate your images from {1} to {2}'
 						format:
@@ -38,7 +38,7 @@ PhLRelocateImageDirectoryCommand >> informManualMigrationNeeded [
 
 { #category : #'user interaction' }
 PhLRelocateImageDirectoryCommand >> informMigrationDone [
-	PhLUIInformation new
+	self application newInformation
 		message:
 				('Migration of your images from {1} to {2} done'
 						format:
@@ -47,15 +47,16 @@ PhLRelocateImageDirectoryCommand >> informMigrationDone [
 		inform
 ]
 
-{ #category : #testing }
-PhLRelocateImageDirectoryCommand >> isApplicable [
-	self target ensureCreateDirectory.
-	^ self source ~= self target and: [ self source hasChildren and: [ self target hasChildren not ] ]
+{ #category : #executing }
+PhLRelocateImageDirectoryCommand >> relocate [
+	self source children do: [ :child | 
+		child moveTo:
+			(self target resolvePath: (child relativeTo: self source)) resolve ]
 ]
 
 { #category : #'user interaction' }
 PhLRelocateImageDirectoryCommand >> requestTargetLocation [
-	^ PhLUIRequest new
+	^ self application newRequest
 		initialAnswer: self source;
 		title: 'New location for your images';
 		validateAnswer: [ :answer | answer asFileReference ~= self source ];

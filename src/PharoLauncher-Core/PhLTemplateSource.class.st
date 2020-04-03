@@ -13,7 +13,9 @@ Class {
 		'url',
 		'filterPattern',
 		'templates',
-		'expanded'
+		'expanded',
+		'username',
+		'password'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -272,9 +274,9 @@ PhLTemplateSource >> asBasicTemplateGroup [
 					^ PhLHTTPListingTemplateGroup
 						name: name
 						url: url asZnUrl
-						filterPattern: pattern ].
+						filterPattern: pattern username: username password: password].
 	type == self class jenkinsServerType 
-		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl ].
+		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl username: username password: password ].
 	type == self class urlGroupType
 		ifTrue: [ ^ PhLFixedURLsTemplateGroup new 
 						setName: name Templates: OrderedCollection new;
@@ -287,12 +289,13 @@ PhLTemplateSource >> asBasicTemplateGroup [
 
 { #category : #converting }
 PhLTemplateSource >> asTemplate [
-	type == self class urlType
-		ifTrue: [ ^ PhLRemoteTemplate 
-						name: name
-						url: url asUrl ].
+	type == self class urlType ifTrue: [ 
+		^ PhLRemoteTemplate
+			  name: name
+			  url: url asUrl
+			  username: username
+			  password: password ].
 	self error: 'Template type not supported!'
-
 ]
 
 { #category : #converting }
@@ -331,6 +334,16 @@ PhLTemplateSource >> name [
 { #category : #accessing }
 PhLTemplateSource >> name: aString [ 
 	name := aString
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> password [
+	^ password
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> password: anObject [
+	password := anObject
 ]
 
 { #category : #printing }
@@ -375,4 +388,14 @@ PhLTemplateSource >> url [
 { #category : #accessing }
 PhLTemplateSource >> url: aString [ 
 	url := aString
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> username [
+	^ username
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> username: anObject [
+	username := anObject
 ]

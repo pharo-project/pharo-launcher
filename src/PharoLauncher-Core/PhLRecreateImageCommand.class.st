@@ -8,43 +8,37 @@ Class {
 	#category : 'PharoLauncher-Core-Commands'
 }
 
-{ #category : #accessing }
-PhLRecreateImageCommand class >> icon [
-	^ self iconNamed: #refreshIcon
+{ #category : #converting }
+PhLRecreateImageCommand >> asSpecCommand [
+	^ super asSpecCommand
+		iconName: #refreshIcon;
+		shortcutKey: $R meta;
+		beDisabledWhenCantBeRun;
+		yourself
 ]
 
-{ #category : #accessing }
-PhLRecreateImageCommand class >> title [
-	^ 'Recreate'
-]
-
-{ #category : #private }
+{ #category : #'user interaction' }
 PhLRecreateImageCommand >> askConfirmation [
 	| confirmMessage |
 	
 	confirmMessage := 'Are you sure you want to recreate this image?' , Character cr asString, 
 							'This will overwrite the existing image and you will lose changes.'.
-	^ self model newConfirmation
+	^ self imagesPresenter newConfirmation
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 ]
 
-{ #category : #action }
+{ #category : #executing }
 PhLRecreateImageCommand >> execute [
 	self askConfirmation
-		ifTrue: [ self model selectedImages 
-			do: [ :image | | template |
-				template := image originTemplate. 
-				self model imageRepository
-					deleteImages: { image }; 
-					extractTemplate: template to: image name ]
-			]
-	
-
+		ifTrue: [ self imagesPresenter selectedImages 
+						do: [ :image |	self imagesPresenter imageRepository recreateImage: image ] ]
 ]
 
-{ #category : #testing }
-PhLRecreateImageCommand >> isApplicable [
-	^ self model hasAtLeastOneImageSelected and: 
-		[ self model selectedImages allSatisfy: [ :image | image originTemplate notNil ] ].
+{ #category : #initialization }
+PhLRecreateImageCommand >> initialize [
+	super initialize.
+	self
+		name: 'Recreate';
+		description: self class comment
 ]

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Templates - Pharo Launcher documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Templates";
+    var mkdocs_page_input_path = "templates.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Pharo Launcher documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../installation/">Installation</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../create-images/">Create images</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../commands/">Commands</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../launch-configurations/">Launch configurations</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Templates</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#template-categories">Template categories</a></li>
+    
+
+    <li class="toctree-l2"><a href="#create-your-own-template">Create your own template</a></li>
+    
+
+    <li class="toctree-l2"><a href="#create-your-own-list-of-template-categories">Create your own list of template categories</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#add-a-jenkin-server">Add a Jenkin server</a></li>
+        
+            <li><a class="toctree-l3" href="#add-a-group-from-an-url-htpp-listing">Add a group from an URL (HTPP listing)</a></li>
+        
+            <li><a class="toctree-l3" href="#add-a-group-with-individual-url-templates">Add a group with individual URL templates</a></li>
+        
+        </ul>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../manage-vms/">Manage vms</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../settings/">Settings</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Pharo Launcher documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Templates</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>Templates are the only way to create images. They are materialized by a zip file contining the Pharo image and all its associated file.</p>
+<p>For example, the Pharo 8 official template is composed of:</p>
+<ul>
+<li>the sources file: Pharo8.0-32bit-278304f.sources</li>
+<li>the image: Pharo8.0-SNAPSHOT-64bit-278304f.image</li>
+<li>the changes file: Pharo8.0-SNAPSHOT-64bit-278304f.changes</li>
+<li>the pharo version number file (used by Pharo Launcher if present): pharo.version</li>
+</ul>
+<h2 id="template-categories">Template categories</h2>
+<ul>
+<li>Official distributions : list of templates officialy supported by Pharo. You will find here latest Pharo images (development, stabl, old stable) and Moose images.</li>
+<li>Pharo Mooc: convenient category for newcomers to discover Pharo. It contains the MOOC image needed for the practical part of the MOOC.</li>
+<li>Deprecated distributions: old Pharo and Moose images version (since Pharo 2.0)</li>
+<li>Pharo Contribution Jenkins: This category represents jobs available on the Jenkins server https://ci.inria.fr/pharo-contribution. If the job provides a zip file as artefact, it will be used as a template to create an image.</li>
+<li>Moose Jenkins: This category represents jobs available on the Jenkins server https://ci.inria.fr/moose. If the job provides a zip file as artefact, it will be used as a template to create an image.</li>
+<li>Pharo xx (stable): all versions of the current stable Pharo version</li>
+<li>Pharo xx (development version): all versions of the current development Pharo version</li>
+<li>Templates: This category contains templates that are available locally (i.e. without network connection). By default, it only contains the current Pharo stable image that is shipped with Pharo Launcher. Once you start downloading some templates, they are cached in this category for further reuse. Warning: if the template is updated on the server, the cached version will NOT be invalidated, so local and server version of the template will differ.</li>
+</ul>
+<p>There are different kind of categories:</p>
+<ul>
+<li>Fixed URL: Represent a list of templates that is defined at construction time. The interesting property of this group is that is does not require the network to be shown. The network is only needed to actually download a template.</li>
+<li>HTTP listing: Represent a list of templates as given by an HTML webpage. <code>&lt;a href="*.zip"&gt;</code> are searched in the webpage. You can also provide a regular expression to filter files.</li>
+<li>Jenkins server: group of templates provided by a Jenkins server. I use Jenkins' JSON API to get the data from the server.</li>
+<li>Cache: special group taking care of caching locally downloaded templates from other template categories.</li>
+</ul>
+<h2 id="create-your-own-template">Create your own template</h2>
+<p>You can create your own templates from Pharo Launcher. From any image in the image list, right-click and select <code>Create template</code> or <code>Create template and delete image</code>. It will create a zip file from the selected image and put it in the Templates category under the provided name.</p>
+<h2 id="create-your-own-list-of-template-categories">Create your own list of template categories</h2>
+<p>Pharo already provides a wide range of templates but you can provide your own categories. It is useful to add templates that are private (e.g. private jenkins instance) or only of interest for you. It is doable thanks to the <code>mysources.list</code> file located in the Pharo folder. If present, this file defines additional template sources to the official list of templates. At this time, there is no UI to add them but you can take inspiration from the following examples.
+Warning: take care to separate each template category by a comma. All categories should be enclosed inside <code>[]</code>.</p>
+<p>Here is an example of a <code>mysources.list</code> file:</p>
+<pre><code class="json">[
+    PhLTemplateSource {
+        #type : #HttpListing,
+        #name : 'User-defined http listing',
+        #url : 'http://myserver.org/myimages/'
+    },
+    PhLTemplateSource {
+        #type : #JenkinsServer,
+        #name : 'My Jenkins server',
+        #url : 'https://jenkins.mycompany.org',
+        #username : 'john',
+        #password: 'doefkwoiekfdoekdw2302ek349039e'
+    }
+]
+</code></pre>
+
+<h3 id="add-a-jenkin-server">Add a Jenkin server</h3>
+<p>You can declare your own Jenkins server by providing its URL and using the #JenkinsServer type.</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #JenkinsServer,
+        #name : 'Another Jenkins server',
+        #url : 'https://ci.inria.fr/moose/'
+    }
+</code></pre>
+
+<p>The name will be displayed as the template category. Url will be used to determine Jenkins API to query to get jobs, builds, runs, etc.</p>
+<p>You can alse declare a <strong>private Jenkins server</strong> by providing a secure (i.e. using <strong>https</strong> protocol) URL to access it, a username and its associated token. 
+We advise you to generate an API token and not to use directly your password. See https://jenkins.io/blog/2018/07/02/new-api-token-system/ for more information.
+The token has to be specified in the <code>password</code> entry.</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #JenkinsServer,
+        #name : 'My Jenkins server',
+        #url : 'https://jenkins.mycompany.org',
+        #username : 'john',
+        #password : 'doefkwoiekfdoekdw2302ek349039e'
+    }
+</code></pre>
+
+<h3 id="add-a-group-from-an-url-htpp-listing">Add a group from an URL (HTPP listing)</h3>
+<p>An easy way to add a template category is the HTTP listing. You just provide the category name and a URL. Then the category will see all Zip files under this URL as a template available for Pharo Launcher. 
+Here is an example:</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #HttpListing,
+        #name : 'Http listing example',
+        #url : 'http://files.pharo.org/pharo-launcher/1.9.2/'
+    }
+</code></pre>
+
+<p>If needed, you can specify a filter pattern to exclude some files to be considered as templates.
+Here is an example:</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #HttpListing,
+        #name : 'Pharo 7.0 (development version)',
+        #url : 'https://files.pharo.org/image/70/',
+        #filterPattern : 'href=&quot;(Pharo-?7.0.0-(alpha|rc\\d+).build.[^&quot;]*.zip)&quot;'
+    }
+</code></pre>
+
+<p>filterPattern is given as parameter to <code>RxParser&gt;&gt;#parse:</code>. The filter pattern must have parenthesis because this is what we want to extract for each match. For more information on the regex, see <a href="https://ci.inria.fr/pharo-contribution/job/UpdatedPharoByExample/lastSuccessfulBuild/artifact/book-result/Regex/Regex.html">Pharo by example book, regex chapter</a>.</p>
+<p>You can also specify a server protected by a login / password as following:</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #HttpListing,
+        #name : 'My main images',
+        #url : 'https://intranet.mycompany.org/files',
+        #username : 'john',
+        #password : 'Doe!'
+    }
+</code></pre>
+
+<h3 id="add-a-group-with-individual-url-templates">Add a group with individual URL templates</h3>
+<p>It is also possible to create a group that will contain individual URL templates. The group name will be the template category name.</p>
+<p>Each Template you declare in this group should be of type #URL. A template basically has a name and a URL to the template. You can also specify URLs protected by a password with the <strong>#username</strong> and <strong>#password</strong> keywords.</p>
+<pre><code class="json">    PhLTemplateSource {
+        #type : #URLGroup,
+        #name : 'My main images',
+        #templates : [
+            PhLTemplateSource {
+                #type : #URL,
+                #name : 'MyProject2',
+                #url : 'https://www.mycompany.org/downloads/project2.zip'
+            },
+            PhLTemplateSource {
+                #type : #URL,
+                #name : 'MyProject1 from private',
+                #url : 'https://intranet.mycompany.org/files/project1.zip',
+                #username : 'john',
+                #password : 'Doe!'
+            }
+        ]
+    }
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../manage-vms/" class="btn btn-neutral float-right" title="Manage vms">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../launch-configurations/" class="btn btn-neutral" title="Launch configurations"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../launch-configurations/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../manage-vms/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

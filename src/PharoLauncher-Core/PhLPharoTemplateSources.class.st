@@ -161,10 +161,15 @@ PhLPharoTemplateSources >> fetchSourcesFile [
 { #category : #private }
 PhLPharoTemplateSources >> lockDownloadedSourcesFileDuring: aBlock [
 	self downloadedSourcesFileLockFile exists
-		ifTrue: [ ^ self "File already locked, do not execute the block" ]. 
+		ifTrue: [ | lockDate |
+			lockDate := DateAndTime fromString: self downloadedSourcesFileLockFile contents.
+			(DateAndTime now - lockDate > 1 day)
+				ifTrue: [ self downloadedSourcesFileLockFile ensureDelete "there was probably a problem during the update" ]
+				ifFalse: [ ^ self "File already locked, do not execute the block" ] ]. 
 	
 	"Ensure file is locked if another Launcher instance (another image) is open".
-	self downloadedSourcesFileLockFile ensureCreateFile. 
+	self downloadedSourcesFileLockFile 
+		writeStreamDo: [ :stream | stream nextPutAll: DateAndTime now asString ]. 
 	"Lock working for this image."
 	[ self downloadedSourcesFileLock critical: aBlock ]
 	ensure: [ self downloadedSourcesFileLockFile ensureDelete ]

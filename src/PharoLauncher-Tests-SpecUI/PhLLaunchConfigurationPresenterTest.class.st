@@ -82,17 +82,16 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
 	| config imagesPresenter |
 	imagesPresenter := PhLTestImagesPresenter new.
-	imagesPresenter selectImageAt: 1.
-	image := imagesPresenter singleImage.
-	image launchConfigurations. "generate default configuration"
-	config := (PhLLaunchConfiguration withImage: image)
-				name: 'test config';
-				yourself.
-	image addLaunchConfiguration: config.
 	presenter application imagesPresenter: imagesPresenter.
 	imagesPresenter 
 		openWithSpec;
 		selectImageAt: 1.
+	image := imagesPresenter singleImage.
+	config := (PhLLaunchConfiguration withImage: image)
+				name: 'test config';
+				yourself.
+	image addLaunchConfiguration: config.
+		
 	self setUpPresenterWithApplication: imagesPresenter application.
 	presenter connectPresenters. "Select first config"
 	self 

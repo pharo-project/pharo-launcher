@@ -9,7 +9,8 @@ Class {
 
 { #category : #running }
 PhLAboutCommandTest >> tearDown [
-	presenter window close.
+	presenter window 
+		ifNotNil: [ :window | window close].
 	super tearDown
 ]
 

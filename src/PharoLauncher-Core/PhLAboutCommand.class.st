@@ -44,6 +44,8 @@ PhLAboutCommand >> execute [
 	presenter := PhLAboutPresenter 
 		text: self aboutText
 		iconName: #pharo.
+	presenter application: self application.
+	
 	presenter openDialogWithSpec.
 	^ presenter
 ]

@@ -69,10 +69,7 @@ PhLAboutPresenter >> iconName: anIconName [
 
 { #category : #initialization }
 PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
-	description 
-		text: text;
-		disable.
-   icon image: (self iconNamed: iconName).
+	self initializeWindow: aDialogWindow.
 	aDialogWindow addButton: 'Ok'
 		do: [ :presenter | presenter close ].
 ]
@@ -82,6 +79,14 @@ PhLAboutPresenter >> initializePresenters [
 	description := self newText.
 	icon := self newImage.
 
+]
+
+{ #category : #initialization }
+PhLAboutPresenter >> initializeWindow: aWindow [
+	description 
+		text: text;
+		disable.
+   icon image: (self iconNamed: iconName).
 ]
 
 { #category : #accessing }

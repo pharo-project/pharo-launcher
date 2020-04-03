@@ -7,6 +7,11 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #accessing }
+PhLAboutCommandTest >> application [
+    ^ SpMockApplication new
+]
+
 { #category : #running }
 PhLAboutCommandTest >> tearDown [
 	presenter window 
@@ -17,7 +22,7 @@ PhLAboutCommandTest >> tearDown [
 { #category : #tests }
 PhLAboutCommandTest >> testCanOpenAboutDialog [
 	| command |
-	command := PhLAboutCommand new.
+	command := PhLAboutCommand forContext: self.
 	
 	presenter := command execute.
 

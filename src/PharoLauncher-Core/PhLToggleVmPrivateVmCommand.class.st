@@ -10,9 +10,9 @@ Class {
 { #category : #converting }
 PhLToggleVmPrivateVmCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallLock;
-		shortcutKey: $p meta;
+		iconName: #remote;
 		beDisplayedOnRightSide;
+		configureAsToolBarToggleButton;
 		yourself
 ]
 
@@ -24,5 +24,5 @@ PhLToggleVmPrivateVmCommand >> execute [
 { #category : #initialization }
 PhLToggleVmPrivateVmCommand >> initialize [
 	super initialize.
-	self name: 'private'
+	self name: 'public'
 ]

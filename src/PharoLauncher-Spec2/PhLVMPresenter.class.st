@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'vmTable',
 		'dataSource',
-		'shouldShowPrivateVms'
+		'shouldShowPrivateVms',
+		'rootCommandsGroup'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -63,6 +64,8 @@ PhLVMPresenter class >> example [
 PhLVMPresenter >> connectPresenters [
 	super connectPresenters.
 	shouldShowPrivateVms := false.
+	
+
 ]
 
 { #category : #accessing }
@@ -106,8 +109,21 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
 		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
-		centered.	
-	self rootCommandsGroup installShortcutsIn: aWindowPresenter
+		centered.
+	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+	self privateVmsTogglePresenter
+		whenUnselectedDo: [ self privateVmsTogglePresenter
+				label: 'public';
+				icon: (self iconNamed: #remote) ];
+		whenSelectedDo: [ self privateVmsTogglePresenter
+				label: 'private';
+				icon: (self iconNamed: #smallLock) ];
+		beUnselected
+]
+
+{ #category : #initialization }
+PhLVMPresenter >> privateVmsTogglePresenter [
+	^ (self rootCommandsGroup / 'Toolbar') allCommands last presenter
 ]
 
 { #category : #private }
@@ -125,6 +141,11 @@ PhLVMPresenter >> refresh [
 	vmTable
 		items: vms";
 		updatePresenter".
+]
+
+{ #category : #initialization }
+PhLVMPresenter >> rootCommandsGroup [ 
+	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
 ]
 
 { #category : #accessing }

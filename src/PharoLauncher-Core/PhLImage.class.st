@@ -26,6 +26,9 @@ Class {
 		'initializationScript',
 		'shouldRunInitializationScript'
 	],
+	#classInstVars : [
+		'reader'
+	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
@@ -59,19 +62,24 @@ PhLImage class >> example32 [
 { #category : #'instance creation' }
 PhLImage class >> imageFromMetadata: imageFileReference [
 	"Will recreate the image object from its STON serialized version if possible"
-	(imageFileReference parent / self metadataFileName) 
-		readStreamDo: [ :stream | | object |
-			object := STON fromStream: stream.
-			(object isKindOf: PhLImage)
-				ifTrue: [ ^ object ]. 
+
+	imageFileReference parent / self metadataFileName
+		readStreamDo: [ :stream | 
+			| object |
+			object := (self stonReader on: stream) next.
+			(object isKindOf: PhLImage) ifTrue: [ ^ object ].
 			(object isKindOf: Dictionary)
 				ifTrue: [ "old metadata file format"
-					^ self new 
+					^ self new
 						privOriginTemplate: (object at: #template);
-						yourself ]. 
-			PhLError signal: 'Unrecognized metadata format'  ]
-		ifAbsent: [ ^ self new ].
-	
+						yourself ].
+			PhLError signal: 'Unrecognized metadata format' ]
+		ifAbsent: [ ^ self new ]
+]
+
+{ #category : #'class initialization' }
+PhLImage class >> initialize [
+	SessionManager default registerUserClassNamed: self name
 ]
 
 { #category : #'instance creation' }
@@ -86,9 +94,21 @@ PhLImage class >> metadataFileName [
 	^ 'meta-inf.ston'
 ]
 
+{ #category : #'system startup' }
+PhLImage class >> startUp: isImageStarting [
+	isImageStarting ifTrue: [ reader := nil ]
+]
+
 { #category : #serialization }
 PhLImage class >> stonAllInstVarNames [
 	^ super stonAllInstVarNames reject: [ :varName | varName = #file ]
+]
+
+{ #category : #accessing }
+PhLImage class >> stonReader [
+	"The ston reader is building caches when reading a file. Since we read *a lot* of files, we cache a reader with all the built caches."
+
+	^ reader ifNil: [ reader := STONReader new ]
 ]
 
 { #category : #accessing }

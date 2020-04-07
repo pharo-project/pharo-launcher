@@ -22,11 +22,7 @@ In the past, I had several folders with images everywhere on my HD. Sometimes wi
 Now, my HD is now much cleaner - all images are in a central place and I need only one icon/starter on the desktop to open. PharoLauncher is also a convenient tool to download specific image update versions if you want to reproduce or fix Pharo bugs. I also associated one of the unused laptop keys with PharoLauncher - so the world of Smalltalk is just one click away...
 
 ## How to install?
-Download latest stable Pharo Launcher from [http://files.pharo.org/pharo-launcher](http://files.pharo.org/pharo-launcher).
-- For Linux, download PharoLauncher-linux-xxx.zip
-- For Mac OS X, download PharoLauncher-xxx.dmg
-- For Windows, download pharo-launcher-xxx.msi
-For Linux and Mac, there are both 32-bits (x86) and 64-bits (x64) bundles.
+See http://pharo.org/download for detailed download and installation instructions.
 
 ## How to use it?
 Just launch the Pharo launcher app.
@@ -79,5 +75,12 @@ has to be in a new directory. So either use the "Copy" image, then "Launch" and 
 
 Download the latest stable Pharo image and use Iceberg (Pharo git client) to clone this repository.
 Once done, you can load the project through Metacello integration (uses BaselineOfPharoLauncher).
+
+```Smalltalk
+Metacello new
+	baseline: 'PharoLauncher';
+	repository: 'github://pharo-project/pharo-launcher:development/src';
+	load
+ ```
 
 Then evaluate  "PharoLauncher open". You can also launch it from the World menu.

@@ -221,7 +221,7 @@ PharoLauncherApplication >> imageRepositoryChanged [
 { #category : #announcements }
 PharoLauncherApplication >> imageRepositoryChanged: newImage [
 	self imageRepositoryChanged.
-	imagesPresenter selectImage: newImage.
+	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
 ]
 
 { #category : #initialization }

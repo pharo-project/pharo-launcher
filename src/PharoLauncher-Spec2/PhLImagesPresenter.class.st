@@ -281,6 +281,13 @@ PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 ]
 
 { #category : #'api - selection' }
+PhLImagesPresenter >> selectImage: aPhLImage [
+	imageTable items 
+		detect: [ :image | image name = aPhLImage name ]
+		ifFound: [ :item | imageTable selectItem: item ]
+]
+
+{ #category : #'api - selection' }
 PhLImagesPresenter >> selectImageAt: anIndex [
 	imageTable selectIndex: anIndex
 ]

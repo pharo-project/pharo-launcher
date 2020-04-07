@@ -71,3 +71,17 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 		assertCollection: presenter imageNames
 		hasSameElements: #('TestImage' 'Foo').
 ]
+
+{ #category : #tests }
+PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
+	| image |
+	presenter := PhLTestImagesPresenter new. 
+	presenter openWithSpec.
+	
+	image := PhLImage location: (presenter createImageNamed: 'Foo').
+	presenter application imageRepositoryChanged: image.
+	
+	self
+		assert: presenter singleImage name
+		equals: 'Foo'.
+]

@@ -218,6 +218,12 @@ PharoLauncherApplication >> imageRepositoryChanged [
 	imagesPresenter ifNotNil: #refresh
 ]
 
+{ #category : #announcements }
+PharoLauncherApplication >> imageRepositoryChanged: newImage [
+	self imageRepositoryChanged.
+	imagesPresenter selectImage: newImage.
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> initialize [ 
 	openInWorld := false.

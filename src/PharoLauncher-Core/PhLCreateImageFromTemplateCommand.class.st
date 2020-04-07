@@ -46,7 +46,7 @@ PhLCreateImageFromTemplateCommand >> createImage [
 		to: name.
 	self addInitializationScriptMetadataIfPresent.
 	self addDescriptionIfAny.
-	self templatesPresenter application imageRepositoryChanged.
+	self templatesPresenter application imageRepositoryChanged: image.
 	^ image
 ]
 

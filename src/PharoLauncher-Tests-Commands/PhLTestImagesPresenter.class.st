@@ -20,17 +20,18 @@ PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
 
 { #category : #configuring }
 PhLTestImagesPresenter >> createImageNamed: aName [
-	self createImageNamed: aName in:  (fileSystem root / aName)
+	^ self createImageNamed: aName in:  (fileSystem root / aName)
 ]
 
 { #category : #configuring }
 PhLTestImagesPresenter >> createImageNamed: aName in: aFolder [
+	| imageFile |
+	imageFile := aFolder / (aName , '.image').
 	aFolder ensureCreateDirectory.
-	(aFolder / (aName , '.image')) 
-		binaryWriteStreamDo: [:stream | stream nextPutAll: #(105 25 0 0)].
+	imageFile binaryWriteStreamDo: [:stream | stream nextPutAll: #(105 25 0 0)].
 	(aFolder / (aName , '.changes')) ensureCreateFile.
 	(aFolder / PhLImage versionFileName) writeStreamDo: [ :stream | stream nextPutAll: '70' ].
-
+	^ imageFile
 ]
 
 { #category : #private }

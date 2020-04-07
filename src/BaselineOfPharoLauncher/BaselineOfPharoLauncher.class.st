@@ -28,8 +28,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility'). ];
 			package: #'PharoLauncher-Spec2' with: [ 
 				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
-			package: #'PharoLauncher-SpTablePresenterExt' with: [ 
-				spec requires: #(#'PharoLauncher-Spec2'). ];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
@@ -42,5 +40,5 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-SpTablePresenterExt'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional'). ].
 ]

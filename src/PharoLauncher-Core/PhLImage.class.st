@@ -108,7 +108,9 @@ PhLImage class >> stonAllInstVarNames [
 PhLImage class >> stonReader [
 	"The ston reader is building caches when reading a file. Since we read *a lot* of files, we cache a reader with all the built caches."
 
-	^ reader ifNil: [ reader := STONReader new ]
+	^ reader 
+		ifNil: [ reader := STONReader new ]
+		ifNotNil: [ reader reset; yourself ]
 ]
 
 { #category : #accessing }

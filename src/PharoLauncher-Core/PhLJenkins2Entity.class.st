@@ -6,10 +6,16 @@ Class {
 	#superclass : #PhLAbstractTemplateGroup,
 	#instVars : [
 		'properties',
-		'parent'
+		'parent',
+		'childrenCache'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #testing }
+PhLJenkins2Entity class >> isAbstract [
+	^ self = PhLJenkins2Entity
+]
 
 { #category : #protected }
 PhLJenkins2Entity class >> jsonFields [
@@ -33,7 +39,15 @@ PhLJenkins2Entity class >> newWithProperties: json [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhLJenkins2Entity >> children [
+	"Since we need to request the network to get children, it is better to cache them.
+	In the current use of the launcher, the jenkins entities are recreated each time we want to create a new image. Thus, we can cache the children, the probability of the jenkins been updated meanwhile."
+
+	^ childrenCache ifNil: [ childrenCache := super children ]
+]
+
+{ #category : #testing }
 PhLJenkins2Entity >> hasChildren [
 	^ true
 ]

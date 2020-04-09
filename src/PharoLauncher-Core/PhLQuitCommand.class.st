@@ -18,7 +18,7 @@ PhLQuitCommand >> asSpecCommand [
 { #category : #executing }
 PhLQuitCommand >> execute [
 	PhLDownloadManager reset. "reset error logging"
-	Smalltalk snapshot: true andQuit: true
+	Smalltalk snapshot: false andQuit: true
 ]
 
 { #category : #executing }

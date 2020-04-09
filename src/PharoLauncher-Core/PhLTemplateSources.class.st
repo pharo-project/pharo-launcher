@@ -57,7 +57,7 @@ PhLTemplateSources class >> generateSourcesFile [
 
 { #category : #accessing }
 PhLTemplateSources class >> launcherCoreDir [
-	^ (LauncherCoreDir ifNil: [ LauncherCoreDir := PlatformResolver forCurrentPlatform launcherUserFilesLocation ]) ensureCreateDirectory
+	^ (LauncherCoreDir ifNil: [ LauncherCoreDir := FileLocator launcherUserFilesLocation ]) ensureCreateDirectory
 ]
 
 { #category : #accessing }
@@ -94,7 +94,7 @@ PhLTemplateSources class >> settingsOn: aBuilder [
 		parent: #pharoLauncher;
 		target: self;
 		order: 37;
-		default: PlatformResolver forCurrentPlatform launcherUserFilesLocation;
+		default: FileLocator launcherUserFilesLocation;
 		description:
 			'Path to the directory that will contain Pharo Launcher template sources file.' , String cr
 				, 'You must have the read/write rights on this folder.' , String cr

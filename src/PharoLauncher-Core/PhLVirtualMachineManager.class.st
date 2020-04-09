@@ -136,7 +136,7 @@ PhLVirtualMachineManager class >> settingsOn: aBuilder [
 		parent: #pharoLauncher;
 		target: self;
 		order: 50;
-		default: (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms');
+		default: (FileLocator launcherUserFilesLocation / 'vms');
 		description:
 			'Path to the directory containing all the VMs to launch your Pharo images.' , String cr
 				, 'You must have the read/write rights on this folder.' , String cr
@@ -168,7 +168,7 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore [
-	^ vmStore ifNil: [ vmStore := (PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
+	^ vmStore ifNil: [ vmStore := (FileLocator launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
 ]
 
 { #category : #accessing }

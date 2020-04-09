@@ -44,7 +44,7 @@ PharoLauncherApplication class >> default [
 
 { #category : #settings }
 PharoLauncherApplication class >> defaultInitializationScriptLocation [
-	^ PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'scripts' 
+	^ FileLocator launcherUserFilesLocation / 'scripts' 
 ]
 
 { #category : #settings }

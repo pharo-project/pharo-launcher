@@ -28,7 +28,7 @@ PhLDirectoryBasedImageRepository class >> default [
 
 { #category : #defaults }
 PhLDirectoryBasedImageRepository class >> defaultLocation [
-	^ PlatformResolver forCurrentPlatform launcherUserFilesLocation / 'images' 
+	^ FileLocator launcherUserFilesLocation / 'images' 
 ]
 
 { #category : #'instance creation' }

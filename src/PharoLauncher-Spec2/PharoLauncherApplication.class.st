@@ -174,7 +174,7 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 						order: 40;
 						description: 'A directory where all your Pharo images initialization scripts will be saved (executed once at image creation)'.
 		
-							(aBuilder setting: #hardResetPersistanceState)
+					(aBuilder setting: #hardResetPersistanceState)
 						label: 'Hard reset persistent state' translated;
 						target: self;
 						order: 70;

@@ -27,12 +27,6 @@ PhLJenkins2ServerTest >> defaultJobUrlString [
 	^ 'http://server/segment'
 ]
 
-{ #category : #responses }
-PhLJenkins2ServerTest >> jobsResponse [
-	^ 'jobs : {' , self simpleJob , ',' , self matrixJob , ',' , self jobWithNoBuild , ',' , self jobWithNoSuccessfulBuild
-		, '}'
-]
-
 { #category : #'instance creation' }
 PhLJenkins2ServerTest >> newInstance [
 	^ self class newInstance

@@ -70,6 +70,16 @@ PhLJenkins2JobTest >> newJobWithSuccessfulBuild [
 		  yourself
 ]
 
+{ #category : #'instance creation' }
+PhLJenkins2JobTest >> newPipelineJob [
+	^ (PhLJenkins2Job newWithProperties: (Dictionary new
+				    at: 'url' put: 'url' asUrl;
+				    at: 'name' put: 'thejob';
+				    yourself))
+		  parent: PhLJenkins2ServerTest newInstance;
+		  yourself
+]
+
 { #category : #responses }
 PhLJenkins2JobTest >> noBuildsResponse [
 	^ '{"builds" : []}'
@@ -82,6 +92,17 @@ PhLJenkins2JobTest >> oneBuildResponse [
       "number" : ',self lastSuccessfulBuildNumber printString,',
       "url" : "',self lastSuccessfulBuildUrlString,'"
     }]}'
+]
+
+{ #category : #responses }
+PhLJenkins2JobTest >> pipelineResponse [
+	^ '{"jobs":[
+		{
+			"name":"1.1",
+			"url":"https://server/job/pipeline-name/job/1.1/",
+			"lastSuccessfulBuild":null
+		}
+		]}'
 ]
 
 { #category : #tests }
@@ -109,4 +130,16 @@ PhLJenkins2JobTest >> testJobWithSuccessfulBuild [
 	
 	"This assertion makes sure the url of the lastSuccessfulBuild will always refer to the latest successful build."
 	self assert: lastSuccessfulBuild url lastPathSegment equals: 'lastSuccessfulBuild'
+]
+
+{ #category : #tests }
+PhLJenkins2JobTest >> testPipelineJob [
+	| build |
+	self setUpResponse: self pipelineResponse.
+	
+	self assert: self newPipelineJob builds size equals: 1.
+	build := self newPipelineJob builds first.
+	self
+		assert: build url asString
+		equals: 'https://server/job/pipeline-name/job/1.1/'
 ]

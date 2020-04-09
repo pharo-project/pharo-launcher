@@ -21,7 +21,9 @@ PhLJenkins2Job class >> jsonName [
 
 { #category : #accessing }
 PhLJenkins2Job >> builds [
-	^ self query: PhLJenkins2Build
+	"Pipelines define jobs whereas standard jobs define builds"
+	^ (self query: PhLJenkins2Build)
+		ifEmpty: [ self query: PhLJenkins2Job ]
 ]
 
 { #category : #accessing }

@@ -20,6 +20,11 @@ PhLDeploymentScript class >> activateDeprecationWarnings [
 ]
 
 { #category : #actions }
+PhLDeploymentScript class >> activateLostChangesDetector [
+	EpLostChangesDetector initialize
+]
+
+{ #category : #actions }
 PhLDeploymentScript class >> activateStartupActions [
 	StartupPreferencesLoader allowStartupScript: true.
 ]
@@ -67,6 +72,11 @@ PhLDeploymentScript class >> deactivateDeprecationWarnings [
 ]
 
 { #category : #actions }
+PhLDeploymentScript class >> deactivateLostChangesDetector [
+	SessionManager default unregisterClassNamed: #EpLostChangesDetector
+]
+
+{ #category : #actions }
 PhLDeploymentScript class >> deactivateStartupActions [
 	StartupPreferencesLoader allowStartupScript: false.
 ]
@@ -98,6 +108,7 @@ PhLDeploymentScript class >> doAll [
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
+		deactivateLostChangesDetector;
 		makeDeployed;
 		addToStartupList;
 		dontAskForConfirmationWhenQuitting;
@@ -226,6 +237,7 @@ PhLDeploymentScript class >> undoAll [
 		activateStartupActions;
 		doRaiseWarningForMissingChangesOrSourcesFiles;
 		activateDeprecationWarnings;
+		activateLostChangesDetector;
 		makeUndeployed;
 		removeFromStartupList;
 		askForConfirmationWhenQuitting

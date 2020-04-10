@@ -62,7 +62,7 @@ PhLImageCreationPresenter >> checkNewName: name [
 	I use a variable to know the state during the last validation."
 
 	| isValid |
-	isValid := name isEmpty or: [ reservedImagesNamesCache includes: name asLowercase ].
+	isValid := name isEmpty or: [ reservedImagesNamesCache ifNotNil: [ reservedImagesNamesCache includes: name asLowercase ] ].
 
 	"Image already in the right state. We skip."
 	isNameOk = isValid ifTrue: [ ^ self ].

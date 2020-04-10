@@ -36,9 +36,8 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 
 { #category : #specs }
 PhLTemplatesPresenter class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		spacing: 5;
-		add: (SpBoxLayout newHorizontal
+	^ SpPanedLayout newHorizontal
+		add: (SpPanedLayout newHorizontal
 			add: (SpBoxLayout newVertical 
 				add: '1. Choose a template category:' height: self labelHeight;
 				add: #categoryTable;

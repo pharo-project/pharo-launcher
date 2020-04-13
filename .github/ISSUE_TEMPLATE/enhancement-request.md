@@ -6,8 +6,9 @@ labels: Enhancement
 assignees: ''
 
 ---
-An enhancement is a slight modification of an existing behavior. If you want a new feature use the 
-feature request template.
+
+_An enhancement is a slight modification of an existing behavior. If you want a new feature use the 
+feature request template._
 
 **Describe the request**
 A clear and concise description of what is missing and how it could be enhanced.

@@ -6,6 +6,7 @@ labels: New Feature
 assignees: ''
 
 ---
+A new feature is some behavior that is not existing already. If what you describe is a slight variation of something already existing please use a enhancement request.
 
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is. Ex. I'm always frustrated when [...]

@@ -97,6 +97,13 @@ PhLProcessWrapper >> initialize [
 ]
 
 { #category : #testing }
+PhLProcessWrapper >> isRunning [
+	^ Smalltalk os isWindows
+		ifTrue: [ process isRunning not ] 
+		ifFalse: [ process isComplete not ]
+]
+
+{ #category : #testing }
 PhLProcessWrapper >> isShellCommand [
 	^ isShellCommand
 ]
@@ -175,6 +182,13 @@ PhLProcessWrapper >> shellCommand [
 	isShellCommand := true.
 ]
 
+{ #category : #accessing }
+PhLProcessWrapper >> stderrString [
+	^ Smalltalk os isWindows
+		ifTrue: [ 'Std error not available on Windows' ]
+		ifFalse: [ (process stderrStream upToEndOfFile ifNil: [ '' ]) trimBoth ]
+]
+
 { #category : #private }
 PhLProcessWrapper >> visitMacOS: aPlatform [
 	self visitUnix: aPlatform
@@ -184,6 +198,7 @@ PhLProcessWrapper >> visitMacOS: aPlatform [
 PhLProcessWrapper >> visitUnix: aPlatform [
 	process := OSSUnixSubprocess new
 		workingDirectory: workingDirectory;
+		redirectStderr;
 		yourself.
 	isShellCommand 
 		ifTrue: [ | commandLine |

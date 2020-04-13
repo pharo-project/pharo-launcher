@@ -21,7 +21,8 @@ PhLUnixSubprocessTest >> testCanGetExitStatusFromLaunchCommand [
 	self assert: process isComplete.
 	self deny: process isSuccess.
 	self assert: process exitStatusInterpreter isExited.
-	self assert: process exitStatusInterpreter statusIfExited equals: 1.
+	"Exit code is 1 on OS X, 2 on Linux"
+	self assert: (#(1 2) includes: process exitStatusInterpreter statusIfExited).
 
 ]
 
@@ -40,6 +41,6 @@ PhLUnixSubprocessTest >> testCanGetStdErrFromLaunchCommand [
 	self assert: process isComplete.
 	self deny: process isSuccess.
 	self 
-		assert: process stderrStream upToEndOfFile trimBoth 
-		equals: 'ls: /foo/bar: No such file or directory'.
+		assert: (process stderrStream upToEndOfFile trimBoth 
+			includesSubstring: 'ls: /foo/bar: No such file or directory').
 ]

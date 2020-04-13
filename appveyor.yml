@@ -4,7 +4,8 @@ before_build:
 - cinst advanced-installer --version 16.9
 
 build_script:
-- bash echo $SHELL 
+- bash --vesion
+- bash -c "echo $SHELL" 
 
 test_script:
 - set

@@ -27,5 +27,9 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. iOS]
  - Version: [e.g. 1.6.1]
 
+**Expected development cost**
+As you know nothing happens magically, so do you have an idea of the development effort required? 
+In addition, are you willing to help because after all Pharo is yours too?
+
 **Additional context**
 Add any other context about the problem here.

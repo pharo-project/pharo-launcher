@@ -115,12 +115,14 @@ PhLLaunchImageCommand >> initialize [
 
 { #category : #executing }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
-	[ | launchConfig |
-	launchConfig := self imagesPresenter selectedLaunchConfiguration.
+	| process launchConfig |
+	[ launchConfig := self imagesPresenter selectedLaunchConfiguration.
 	useSettings ifFalse: [ launchConfig doNotUseSettings ].
-	aPhLImage launchWithConfiguration: launchConfig. ]
+	process := aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
+	PhLLaunchedImagesWatcher new
+		checkProcess: process image: aPhLImage.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]
 ]

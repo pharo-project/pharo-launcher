@@ -41,6 +41,6 @@ PhLUnixSubprocessTest >> testCanGetStdErrFromLaunchCommand [
 	self assert: process isComplete.
 	self deny: process isSuccess.
 	self 
-		assert: (process stderrStream upToEndOfFile trimBoth 
-			includesSubstring: 'ls: /foo/bar: No such file or directory').
+		assert: process stderrStream upToEndOfFile trimBoth 
+		equals: 'ls: /foo/bar: No such file or directory'.
 ]

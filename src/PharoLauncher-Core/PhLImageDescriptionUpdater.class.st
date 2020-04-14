@@ -47,8 +47,8 @@ PhLImageDescriptionUpdater >> image: aPhLImage description: aString [
 	
 	self terminateProcess.
 	"image changed, no more edition of description, save it without delay"	
-	(image isNotNil and: [ image ~= aPhLImage])
-		 ifTrue: [ self doSave ].
+	(image isNotNil and: [ image file path ~= aPhLImage file path ])
+		ifTrue: [ self doSave ].
 		
 	image := aPhLImage.
 	description := aString.

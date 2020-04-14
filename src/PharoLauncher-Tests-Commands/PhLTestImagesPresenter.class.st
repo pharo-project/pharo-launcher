@@ -58,6 +58,7 @@ PhLTestImagesPresenter >> initialize [
 		imageRepository: self model;
 		instVarNamed: 'imagesPresenter' put: self;
 		yourself).
+	self createImageNamed: self singleImageName.
 	super initialize.
 
 	self createImageNamed: self singleImageName.

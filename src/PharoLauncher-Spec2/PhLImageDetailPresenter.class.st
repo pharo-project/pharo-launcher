@@ -76,7 +76,7 @@ PhLImageDetailPresenter class >> labelWidth [
 { #category : #initialization }
 PhLImageDetailPresenter >> connectPresenters [
 	description
-		whenSubmitDo: [ :text | self image description: text ].
+		whenTextChangedDo: [ :text | PhLImageDescriptionUpdater image: self image description: text ].
 	shouldRunInitializationScript 
 		whenChangedDo: [ :state | self image shouldRunInitializationScript: state ].
 ]
@@ -115,7 +115,7 @@ PhLImageDetailPresenter >> location [
 	^ location
 ]
 
-{ #category : #initialization }
+{ #category : #updating }
 PhLImageDetailPresenter >> modelChanged [ 
 	| image |
 	image := self image ifNil: [ PhLNullImage new ].

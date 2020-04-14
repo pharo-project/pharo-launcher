@@ -28,7 +28,7 @@ PhLUnixSubprocessTest >> testCanGetExitStatusFromLaunchCommand [
 
 { #category : #tests }
 PhLUnixSubprocessTest >> testCanGetStdErrFromLaunchCommand [
-	| process |
+	| process stdErrString |
 	process := OSSUnixSubprocess new 
 		command: '/bin/ls';
 		arguments: #( '/foo/bar' );
@@ -40,7 +40,14 @@ PhLUnixSubprocessTest >> testCanGetStdErrFromLaunchCommand [
 	
 	self assert: process isComplete.
 	self deny: process isSuccess.
+	stdErrString := process stderrStream upToEndOfFile.
 	self 
-		assert: (process stderrStream upToEndOfFile trimBoth 
-			includesSubstring: 'ls: /foo/bar: No such file or directory').
+		assert: ( stdErrString includesSubstring: 'No such file or directory')
+		description: 'Cannot find "No such file or directory" in std err stream'.
+	self 
+		assert: (stdErrString includesSubstring: '/foo/bar')
+		description: 'Cannot find "/foo/bar" in std err stream'.
+	self 
+		assert: (stdErrString includesSubstring: 'ls')
+		description: 'Cannot find "ls" in std err stream'.
 ]

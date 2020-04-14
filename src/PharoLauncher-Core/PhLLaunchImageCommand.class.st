@@ -121,8 +121,7 @@ PhLLaunchImageCommand >> launchImage: aPhLImage [
 	process := aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
-	PhLLaunchedImagesWatcher new
-		checkProcess: process image: aPhLImage.
+	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check.
 	self class quitOnLaunch
 		ifTrue: [ self quit ]
 ]

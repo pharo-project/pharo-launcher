@@ -2,16 +2,27 @@
 A small presenter to catch errors and present them nicely to the user.
 I provide an acknowledge button ('ok') and a debug button that will open the Pharo debugger.
 
-	self example
+To use me, install me as the default debugger tool.
+I use GTGenericStackDebugger debugger as default.
+
+To try me:
+
+currentDebugger := Smalltalk tools debugger.
+Smalltalk tools debuggerTool: PhLErrorDialogPresenter.
+[ NotFound signal: 'foo'.
+	self inform: 'execution not aborted' ]
+on: Error 
+do: [ :e | UIManager default handleError: e].
+Smalltalk tools debuggerTool: currentDebugger.
 "
 Class {
 	#name : #PhLErrorDialogPresenter,
 	#superclass : #SpPresenter,
 	#instVars : [
-		'description',
 		'acceptButton',
 		'cancelButton',
-		'exception'
+		'debugSession',
+		'description'
 	],
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
@@ -24,19 +35,24 @@ PhLErrorDialogPresenter class >> defaultSpec [
 		yourself
 ]
 
-{ #category : #example }
-PhLErrorDialogPresenter class >> example [ 
-	[ NotFound signal: 'foo'. ]
-		on: NotFound 
-		do: [ :exception |
-				^ (self on: exception)
-					openDialogWithSpec;
-					yourself. ]
+{ #category : #'opening api' }
+PhLErrorDialogPresenter class >> openDebuggerOn: debugSession [
+	GTGenericStackDebugger
+		openOn: debugSession
+		withFullView: true
+		andNotification: ''
+]
+
+{ #category : #'opening api' }
+PhLErrorDialogPresenter class >> openOn: debugSession withFullView: bool andNotification: notificationString [
+	PharoLauncherApplication isDeployed
+		ifTrue: [ (self on: debugSession) openDialogWithSpec ]
+		ifFalse: [ self openDebuggerOn: debugSession ]
 ]
 
 { #category : #accessing }
-PhLErrorDialogPresenter >> exception [ 
-	^ exception
+PhLErrorDialogPresenter >> debugSession [ 
+	^ debugSession
 ]
 
 { #category : #initialization }
@@ -48,16 +64,15 @@ PhLErrorDialogPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	aDialogWindowPresenter buttons
 		detect: [ :button | button label = 'Cancel' ]
 		ifFound: [ :button | button label: 'Ignore' ].
-	aDialogWindowPresenter 
-		okAction: [ 	self delete.
-						self exception freeze; debug. ]
+	aDialogWindowPresenter
+		okAction: [ self class openDebuggerOn: self debugSession ]
 ]
 
 { #category : #initialization }
 PhLErrorDialogPresenter >> initializePresenters [ 
 	description := self newText
 		beNotEditable;
-		text: self exception description, String cr, self exception messageText;
+		text: self debugSession name;
 		yourself.
 ]
 
@@ -70,6 +85,6 @@ PhLErrorDialogPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : #initialization }
-PhLErrorDialogPresenter >> setModelBeforeInitialization: anException [
-	exception := anException
+PhLErrorDialogPresenter >> setModelBeforeInitialization: aDebugSession [
+	debugSession := aDebugSession
 ]

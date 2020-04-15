@@ -9,6 +9,7 @@ Class {
 	#name : #PhLDeploymentScript,
 	#superclass : #Object,
 	#classVars : [
+		'DefaultDebugger',
 		'Save'
 	],
 	#category : #'PharoLauncher-Spec2'
@@ -17,6 +18,12 @@ Class {
 { #category : #actions }
 PhLDeploymentScript class >> activateDeprecationWarnings [
 	Deprecation raiseWarning: true
+]
+
+{ #category : #actions }
+PhLDeploymentScript class >> activateErrorCatching [
+	DefaultDebugger := Smalltalk tools debugger.
+	Smalltalk tools debuggerTool: PhLErrorDialogPresenter.
 ]
 
 { #category : #actions }
@@ -72,6 +79,11 @@ PhLDeploymentScript class >> deactivateDeprecationWarnings [
 ]
 
 { #category : #actions }
+PhLDeploymentScript class >> deactivateErrorCatching [
+	Smalltalk tools debuggerTool: DefaultDebugger
+]
+
+{ #category : #actions }
 PhLDeploymentScript class >> deactivateLostChangesDetector [
 	SessionManager default unregisterClassNamed: #EpLostChangesDetector
 ]
@@ -109,6 +121,7 @@ PhLDeploymentScript class >> doAll [
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
 		deactivateLostChangesDetector;
+		activateErrorCatching;
 		makeDeployed;
 		addToStartupList;
 		dontAskForConfirmationWhenQuitting;
@@ -238,6 +251,7 @@ PhLDeploymentScript class >> undoAll [
 		doRaiseWarningForMissingChangesOrSourcesFiles;
 		activateDeprecationWarnings;
 		activateLostChangesDetector;
+		deactivateErrorCatching;
 		makeUndeployed;
 		removeFromStartupList;
 		askForConfirmationWhenQuitting

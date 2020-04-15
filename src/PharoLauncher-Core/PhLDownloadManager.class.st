@@ -33,8 +33,11 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 
 { #category : #action }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
-	destinationFile ensureDelete. "ensure download will not fail if zip file already exists"
-	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: destinationFile ]
+	| tmpFile |
+	tmpFile := destinationFile , UUIDGenerator  next asString.
+	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+	destinationFile ensureDelete. 
+	tmpFile renameTo: destinationFile basename.
 ]
 
 { #category : #private }

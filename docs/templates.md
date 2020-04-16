@@ -8,6 +8,8 @@ For example, the Pharo 8 official template is composed of:
 * the pharo version number file (used by Pharo Launcher if present): pharo.version
 
 ## Template categories
+![List of official template categories](images/template-categories.png){: style="width:200px"}
+
 * Official distributions : list of templates officialy supported by Pharo. You will find here latest Pharo images (development, stabl, old stable) and Moose images.
 * Pharo Mooc: convenient category for newcomers to discover Pharo. It contains the MOOC image needed for the practical part of the MOOC.
 * Deprecated distributions: old Pharo and Moose images version (since Pharo 2.0)

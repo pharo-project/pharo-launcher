@@ -1,5 +1,7 @@
 Pharo Launcher comes with a few settings you can customize.
 
+**WARNING: Settings are only persisted by clicking on the "Store settings" button!** If you do not click on "Store settings", settings changes will only apply for the current Pharo Launcher session (i.e. until you quit Pharo Launcher).
+
 ![Pharo Launcher settings](images/pharo-launcher-settings-browser.png)
 
 ## Network

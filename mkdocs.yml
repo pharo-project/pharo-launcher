@@ -1,0 +1,18 @@
+site_name: Pharo Launcher documentation
+repo_url: https://github.com/pharo-project/pharo-launcher/
+edit_uri: edit/dev/docs/
+nav:
+    - Home: index.md
+    - installation.md
+    - create-images.md
+    - commands.md 
+    - launch-configurations.md 
+    - templates.md
+    - manage-vms.md     
+    - settings.md
+                         
+theme:
+    name: readthedocs
+
+markdown_extensions:
+  - attr_list

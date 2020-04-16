@@ -33,19 +33,71 @@ In all cases OS X will still ask you if you want to open an "unsigned" applicati
 
 ## Install on Windows
 Run the installer and follow instructions. Be sure to install Pharo Launcher in a place where you have **write privileges**.
+
+![Windows installer](images/windows-installer.png)
+
+![Windows installer, choose path screen](images/windows-installer-2-folder.png)
+
+![Windows installer, last screen](images/windows-installer-3-finish.png)
+
 The installer wil create a shorcut on the Desktop as well as an application entry in the Windows menu.
+
+![Windows desktop with Pharo Launcher shorcut](images/windows-shorcut.png)
 
 **Warning**: Antinvirus can prevent Pharo Launcher to behave correctly
 It has been reported on Windows that the Antivirus prevents Pharo Launcher to download the VMs needed to run images. A workaround is to whitelist PharoLauncher or to temporary disable the antivirus when you need to download new VMs.
 
-### Installation on Windows Linux Subsystem (WSL)
+### Install on Windows Linux Subsystem (WSL)
+Thanks to Christopher Fuhrman, the original author of these instructions.
+#### Preparation
+- Install and activate WSL following [Microsoft’s instructions](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
+- Install an X Server for Windows. You can use [VcXsrv](https://sourceforge.net/projects/vcxsrv/) mentioned in [these instructions for GUI apps in WSL](https://jaipblog.wordpress.com/2018/01/21/running-linux-gui-apps-on-windows-10/).
+- You should export DISPLAY=localhost:0 (e.g., in your WSL ~/.bashrc).
+- Install Mesa with the command sudo apt install mesa-utils.  
+This is apparently needed because there are missing libraries for the X11 display used by Pharo. For reference, if you don’t do this step, you’ll get the following message that’s somewhat misleading:
+```
+$ ./pharo-ui
+could not find display driver vm-display-X11; either:
+- check that /home/myusername/pharo-dir/pharo-vm/lib/pharo/5.0-201901051900//vm-display-X11.so exists, or
+- use the '-plugins <path>' option to tell me where it is, or
+- remove DISPLAY from your environment.
+```
+
+#### Installation
+Note: these instructions are almost the same as for a standard installation on GNU/Linux
+- Download the latest version of the Linux 64 version of Pharo Launcher to your home directory:    
+```bash
+cd
+curl -o pharo-launcher.zip -L https://files.pharo.org/pharo-launcher/linux64
+```
+- Unzip it (you may need to install the unzip tool with sudo apt install unzip):
+```bash
+unzip pharo-launcher.zip
+```
+Normally this will create a ~/pharolauncher directory.
+
+- Run Pharo Launcher with the following command:
+```bash
+pharolauncher/pharo-launcher &
+```
 
 ## Install on GNU/Linux
-Unzip the archive in a place where you have **write privileges**.
+- Download the latest version of the Linux 64 version of Pharo Launcher to your home directory:    
 ```bash
-unzip PharoLauncher-linux-*.zip
+cd
+curl -o pharo-launcher.zip -L https://files.pharo.org/pharo-launcher/linux64
 ```
-Run Pharo Launcher
+- Unzip the archive in a place where you have **write privileges** (you may need to install the unzip tool with sudo apt install unzip):
+```bash
+unzip pharo-launcher.zip
+```
+Normally this will create a ~/pharolauncher directory.
+You can also do it through the UI
+
+![Pharo Launcher archive extraction](images/pharo-launcher-unzip-linux.png)
+
+- Run Pharo Launcher
 ```bash
 ./pharolauncher/pharo-launcher
 ```
+![Pharo Launcher launch](images/pharo-launcher-launch-linux.png)

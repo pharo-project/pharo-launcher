@@ -65,6 +65,7 @@ PhLErrorDialogPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 		detect: [ :button | button label = 'Cancel' ]
 		ifFound: [ :button | button label: 'Ignore' ].
 	aDialogWindowPresenter
+		cancelAction: [ self debugSession terminate ];
 		okAction: [ self class openDebuggerOn: self debugSession ]
 ]
 

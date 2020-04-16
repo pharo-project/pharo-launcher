@@ -366,6 +366,7 @@ PhLImage >> privOriginTemplate: aPhLTemplate [
 
 { #category : #serialization }
 PhLImage >> serializeMetadata [
+	file exists ifFalse: [ "image deleted" ^ self ].
 
 	(file parent / self class metadataFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self stonString ]

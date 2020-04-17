@@ -55,7 +55,7 @@ Thanks to Christopher Fuhrman, the original author of [these instructions](https
     - Run XLaunch from the start menu, which invokes a wizard.
     - Accept all the defaults on the wizard.
     - At the last page of the wizard, click *Save configuration* specifying `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup` to have VcXsrv start automatically when you start Windows.
-- You should export DISPLAY=localhost:0 (e.g., in your WSL ~/.bashrc).
+- You should `export DISPLAY=localhost:0` (e.g., in your WSL *~/.bashrc*).
 - Install Mesa with the command sudo apt install mesa-utils.  
 This is apparently needed because there are missing libraries for the X11 display used by Pharo. For reference, if you don’t do this step, you’ll get the following message that’s somewhat misleading:
 ```

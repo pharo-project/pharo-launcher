@@ -48,10 +48,13 @@ The installer wil create a shorcut on the Desktop as well as an application entr
 It has been reported on Windows that the Antivirus prevents Pharo Launcher to download the VMs needed to run images. A workaround is to whitelist PharoLauncher or to temporary disable the antivirus when you need to download new VMs.
 
 ### Install on Windows Linux Subsystem (WSL)
-Thanks to Christopher Fuhrman, the original author of these instructions.
+Thanks to Christopher Fuhrman, the original author of [these instructions](https://fuhrmanator.github.io/2019/02/27/Pharo-in-WSL.html).
 #### Preparation
 - Install and activate WSL following [Microsoft’s instructions](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
-- Install an X Server for Windows. You can use [VcXsrv](https://sourceforge.net/projects/vcxsrv/) mentioned in [these instructions for GUI apps in WSL](https://jaipblog.wordpress.com/2018/01/21/running-linux-gui-apps-on-windows-10/).
+- Install an X Server for Windows. You can use [VcXsrv](https://sourceforge.net/projects/vcxsrv/):
+    - Run XLaunch from the start menu, which invokes a wizard.
+    - Accept all the defaults on the wizard.
+    - At the last page of the wizard, click *Save configuration* specifying `%appdata%\Microsoft\Windows\Start Menu\Programs\Startup` to have VcXsrv start automatically when you start Windows.
 - You should export DISPLAY=localhost:0 (e.g., in your WSL ~/.bashrc).
 - Install Mesa with the command sudo apt install mesa-utils.  
 This is apparently needed because there are missing libraries for the X11 display used by Pharo. For reference, if you don’t do this step, you’ll get the following message that’s somewhat misleading:

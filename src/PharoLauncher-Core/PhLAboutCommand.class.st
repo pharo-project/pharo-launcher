@@ -25,6 +25,8 @@ PhLAboutCommand >> aboutText [
 			cr; cr;
 			<< 'Pharo Launcher is a tool that eases the management of Pharo images and their associated Virtual Machines. It can download official Pharo images from the Pharo repository, fetch the right virtual machine to run your image and many other things.';
 			cr;
+			<< 'Documentation is available at https://pharo-project.github.io/pharo-launcher.';
+			cr;
 			<< 'If you find a bug, please open an issue at https://github.com/pharo-project/pharo-launcher/issues.'.
  ]
 	
@@ -55,7 +57,7 @@ PhLAboutCommand >> initialize [
 	super initialize.
 	self
 		name: 'About';
-		description: 'About Pharo Launcher'
+		description: 'Documentation and information about Pharo Launcher'
 ]
 
 { #category : #querying }

@@ -11,7 +11,8 @@ Class {
 		'description',
 		'text',
 		'iconName',
-		'icon'
+		'icon',
+		'documentationLink'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -20,21 +21,19 @@ Class {
 PhLAboutPresenter class >> defaultSpec [
 	^ SpBoxLayout newHorizontal
 		add: #icon width: 90;
-		add: #description;
+		add: 
+			(SpBoxLayout newVertical
+				spacing: 15;
+				add: #description;
+				add: #documentationLink expand: false;
+			yourself);
 		yourself
 ]
 
 { #category : #'instance creation' }
 PhLAboutPresenter class >> example [
 	| text |
-	text := String streamContents: [:stream |
-		stream
-			<< 'Pharo Launcher version: 2.0';
-			cr; cr;
-			<< 'Pharo Launcher is a tool that eases the management of Pharo images and their associated Virtual Machines. It can download official Pharo images from the Pharo repository, fetch the right virtual machine to run your image and many other things.';
-			cr;
-			<< 'If you find a bug, please open an issue at https://github.com/pharo-project/pharo-launcher/issues.'.
-	].
+	text := PhLAboutCommand new aboutText.
 	
 	(self text: text iconName: #pharo) openDialogWithSpec
 ]
@@ -78,6 +77,10 @@ PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 PhLAboutPresenter >> initializePresenters [ 
 	description := self newText.
 	icon := self newImage.
+	documentationLink := self newLink
+		url: 'https://pharo-project.github.io/pharo-launcher';
+		label: 'Open Pharo Launcher documentation (web)';
+		yourself.
 
 ]
 

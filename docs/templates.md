@@ -50,7 +50,7 @@ Here is an example of a `mysources.list` file:
     }
 ]
 ```
-### Add a Jenkin server
+### Add a Jenkins server
 You can declare your own Jenkins server by providing its URL and using the #JenkinsServer type.
 ```json
     PhLTemplateSource {

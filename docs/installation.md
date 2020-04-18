@@ -9,6 +9,23 @@ The default download is a 64-bit version.
 	<a class="btn " href="https://files.pharo.org/pharo-launcher/linux32"><i class="fa fa-linux"></i> GNU/Linux (32bit)</a>
 </p>
 
+## Upgrade notes
+### Upgrading from Pharo Launcher 1.x to Pharo Launcher 2.x
+Pharo Launcher are mostly compatibles between each other.
+Pharo Launcher introduces a new serialization format for image metadata.
+Pharo Launcher 1.x uses different files to store metadata:
+
+- *meta-inf.ston* stores the template used to create the image 
+- *description.txt* file contains the description of the image if any
+- *pharo.version* file tells Pharo Launcher what is the pharo version of the image.
+
+Pharo Launcher 2.x uses a single ston file to store all metadata: *meta-inf.ston*. It stores the origin template, the description and the pahro version as well as other informations like launch configurations (VM to use, VM and image arguments) and initialization script.
+When using Pharo Launcher 2.x with pre-existing images, meta-data files will be parsed to fetch the metadata and will then be saved in *meta-inf.ston* with the new format.
+
+It means **you will not loose information** but *meta-inf.ston* will be overriden, meaning that **going back to Pharo Launcher 1.x will throw error** when parsing this metadata file. 
+Images and Virtual Machines files are not impacted by the update.
+You may encouter problems with Pharo Launcher settings parsing. If so, just delete the problematic settings from the settings file.
+
 ## Install on Mac OS X
 Double-click on the dmg file and drop Pharo Launcher app in Applications folder. 
 ![dmg installation](images/install-dmg.png)

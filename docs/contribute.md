@@ -20,6 +20,7 @@ There is an option that enables the IDE again - so you can inspect the code or f
 ### What does the Pharo launcher to launch an image? 
 To run an image, Pharo launcher needs to determine the appropriate virtual machine to run it and fetch it from the web if it is not available.
 The process is as following:
+
 1. determine the image format version
 2. find (and optionally fetch) a compatible VM (a VM able to run this image format) and run the image to get its Pharo version number
 3. find (and optionally fetch) the appropriate VM for this specific Pharo image version. Sources files are also downloaded with the VM when applicable.

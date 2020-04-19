@@ -129,19 +129,14 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
-		#name : 'Pharo 6.0 (stable)',
-		#url : 'https://files.pharo.org/image/60/'
-	},
-	PhLTemplateSource {
-		#type : #HttpListing,
-		#name : 'Pharo 7.0 (development version)',
-		#url : 'https://files.pharo.org/image/70/',
-		#filterPattern : 'href="(Pharo-?7.0.0-(alpha|rc\\d+).build.[^"]*.zip)"'
-	},
-	PhLTemplateSource {
-		#type : #HttpListing,
-		#name : 'Pharo 8.0 (development version)',
+		#name : 'Pharo 8.0 (stable)',
 		#url : 'https://files.pharo.org/image/80/',
-		#filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'
+                #filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'
+	},
+	PhLTemplateSource {
+		#type : #HttpListing,
+		#name : 'Pharo 9.0 (development version)',
+		#url : 'https://files.pharo.org/image/90/',
+		#filterPattern : 'href="(Pharo-?9.0-SNAPSHOT.build.[^"]*.zip)"'
 	}
 ]

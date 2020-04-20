@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLLaunchImageCommandTest,
+	#name : #PhLLaunchImageFromDiskCommandTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'presenter',
@@ -10,23 +10,24 @@ Class {
 }
 
 { #category : #running }
-PhLLaunchImageCommandTest >> setUp [
+PhLLaunchImageFromDiskCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new.
-	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command' , UUIDGenerator next asString.
+	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-from-disk-command' , UUIDGenerator next asString.
 	imageDir ensureCreateDirectory
 ]
 
 { #category : #running }
-PhLLaunchImageCommandTest >> tearDown [ 
+PhLLaunchImageFromDiskCommandTest >> tearDown [
 	imageDir ensureDeleteAll.
+	presenter delete.
 	process ifNotNil: [ process terminate ].
 ]
 
 { #category : #tests }
-PhLLaunchImageCommandTest >> testCanLaunchImage [
+PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	| command image |
-	command := PhLLaunchImageCommand new.
+	command := PhLLaunchImageFromDiskCommand new.
 	command context: presenter.
 	FileLocator image copyTo: imageDir / FileLocator image basename.
 	image := PhLImage location: imageDir / FileLocator image basename.
@@ -34,7 +35,8 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 		writeStreamDo: [ :stream | 
 			SystemVersion current major asString putOn: stream.
 			SystemVersion current minor asString putOn: stream ].
-	presenter selection: image.
+	presenter requestAnswer: image file.
+	presenter openWithSpec.
 
 	process := command execute.
 	2 seconds wait. "let time to the image to be opened by the VM"

@@ -3,7 +3,7 @@ Launch an image from the filesystem without importing it into Pharo Launcher
 "
 Class {
 	#name : #PhLLaunchImageFromDiskCommand,
-	#superclass : #PhLImageCommand,
+	#superclass : #PhLLaunchImageCommand,
 	#category : #'PharoLauncher-Core-Commands'
 }
 
@@ -28,8 +28,7 @@ PhLLaunchImageFromDiskCommand >> execute [
 		chooseFile.
 	imageFile ifNil: [ ^ self ].
 	imageFile isFile ifFalse: [ ^self ].
-	PhLLaunchImageCommand new 
-		launchImage: (PhLImage location: imageFile).
+	^ self launchImage: (PhLImage location: imageFile).
 ]
 
 { #category : #accessing }
@@ -41,4 +40,9 @@ PhLLaunchImageFromDiskCommand >> iconNamed: anIconName [
 PhLLaunchImageFromDiskCommand >> initialize [
 	super initialize.
 	self name: 'From disk'
+]
+
+{ #category : #executing }
+PhLLaunchImageFromDiskCommand >> launchConfigurationOfImage: aPhLImage [
+	^ aPhLImage defaultLaunchConfiguration
 ]

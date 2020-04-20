@@ -97,7 +97,8 @@ PhLLaunchImageCommand >> doNotUseSettings [
 { #category : #executing }
 PhLLaunchImageCommand >> execute [
 	self imagesPresenter hasSingleImageSelected
-		ifTrue: [ self launchSelectedImage ]
+		ifTrue: [ ^ self launchSelectedImage ]
+		ifFalse: [ ^ nil ]
 ]
 
 { #category : #private }
@@ -114,21 +115,27 @@ PhLLaunchImageCommand >> initialize [
 ]
 
 { #category : #executing }
+PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
+	^ self imagesPresenter selectedLaunchConfiguration
+]
+
+{ #category : #executing }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	| process launchConfig |
-	[ launchConfig := self imagesPresenter selectedLaunchConfiguration.
+	[ launchConfig := self launchConfigurationOfImage: aPhLImage.
 	useSettings ifFalse: [ launchConfig doNotUseSettings ].
 	process := aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].
 	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check.
 	self class quitOnLaunch
-		ifTrue: [ self quit ]
+		ifTrue: [ self quit ].
+	^ process
 ]
 
 { #category : #executing }
 PhLLaunchImageCommand >> launchSelectedImage [
-	self launchImage: self imagesPresenter singleImage
+	^ self launchImage: self imagesPresenter singleImage
 ]
 
 { #category : #private }

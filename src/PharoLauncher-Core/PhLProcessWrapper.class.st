@@ -189,6 +189,11 @@ PhLProcessWrapper >> stderrString [
 		ifFalse: [ (process stderrStream upToEndOfFile ifNil: [ '' ]) trimBoth ]
 ]
 
+{ #category : #terminating }
+PhLProcessWrapper >> terminate [ 
+	process terminate
+]
+
 { #category : #private }
 PhLProcessWrapper >> visitMacOS: aPlatform [
 	self visitUnix: aPlatform

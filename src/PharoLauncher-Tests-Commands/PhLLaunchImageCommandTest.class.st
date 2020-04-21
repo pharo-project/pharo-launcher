@@ -9,6 +9,11 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #accessing }
+PhLLaunchImageCommandTest >> defaultTimeLimit [
+	^ 20 seconds
+]
+
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
 	super setUp.

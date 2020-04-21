@@ -23,7 +23,7 @@ PhLLaunchImageCommandTest >> tearDown [
 	process ifNotNil: 
 		[ [ process terminate ]
 			on: Error
-			do: [ :error | self inform: ('Error : ', error description, ' - ', process stdoutStream upToEnd ifNil: [ '' ]) ] ].
+			do: [ :error | self inform: ('Error : ', error description, ' - ', process stderrString) ] ].
 ]
 
 { #category : #tests }

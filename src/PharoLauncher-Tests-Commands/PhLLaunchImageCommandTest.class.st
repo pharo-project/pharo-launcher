@@ -9,11 +9,6 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #accessing }
-PhLLaunchImageCommandTest >> defaultTimeLimit [
-	^ 20 seconds
-]
-
 { #category : #running }
 PhLLaunchImageCommandTest >> setUp [
 	super setUp.
@@ -25,7 +20,10 @@ PhLLaunchImageCommandTest >> setUp [
 { #category : #running }
 PhLLaunchImageCommandTest >> tearDown [ 
 	imageDir ensureDeleteAll.
-	process ifNotNil: [ process terminate ].
+	process ifNotNil: 
+		[ [ process terminate ]
+			on: Error
+			do: [ :error | self inform: ('Error : ', error description, ' - ', process stdoutStream upToEnd ifNil: [ '' ]) ] ].
 ]
 
 { #category : #tests }

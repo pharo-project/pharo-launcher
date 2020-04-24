@@ -137,3 +137,8 @@ PhLTestImagesPresenter >> singleImageName [
 PhLTestImagesPresenter >> templateRepository [ 
 	^ templateRepository
 ]
+
+{ #category : #selecting }
+PhLTestImagesPresenter >> unselectAll [
+	imageTable unselectAll.
+]

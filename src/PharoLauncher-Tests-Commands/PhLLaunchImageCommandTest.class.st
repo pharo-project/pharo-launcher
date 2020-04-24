@@ -20,10 +20,8 @@ PhLLaunchImageCommandTest >> setUp [
 { #category : #running }
 PhLLaunchImageCommandTest >> tearDown [ 
 	imageDir ensureDeleteAll.
-	process ifNotNil: 
-		[ [ process terminate ]
-			on: Error
-			do: [ :error | self inform: ('Error : ', error description, ' - ', process stderrString) ] ].
+	(process isNotNil and: [ process isRunning ])
+		ifTrue: [ process terminate ].
 ]
 
 { #category : #tests }
@@ -38,6 +36,11 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 			SystemVersion current major asString putOn: stream.
 			SystemVersion current minor asString putOn: stream ].
 	presenter selection: image.
+	image addLaunchConfiguration: 
+		(image defaultLaunchConfiguration 
+			vmArguments: #('--headless');  "be able to run test without X session"
+			imageArguments: #('--no-quit');
+			yourself).
 
 	process := command execute.
 	2 seconds wait. "let time to the image to be opened by the VM"

@@ -21,6 +21,11 @@ PhLImportImageCommand >> asSpecCommand [
 		yourself
 ]
 
+{ #category : #accessing }
+PhLImportImageCommand >> canBeExecuted [
+	^ true
+]
+
 { #category : #'ui interaction' }
 PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 	^ self imagesPresenter newRequest

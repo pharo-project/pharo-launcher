@@ -18,6 +18,11 @@ PhLLaunchImageFromDiskCommand >> asSpecCommand [
 		yourself
 ]
 
+{ #category : #accessing }
+PhLLaunchImageFromDiskCommand >> canBeExecuted [
+	^ true
+]
+
 { #category : #executing }
 PhLLaunchImageFromDiskCommand >> execute [
 	| imageFile |

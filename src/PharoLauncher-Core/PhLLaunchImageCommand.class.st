@@ -89,6 +89,12 @@ PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 		yourself
 ]
 
+{ #category : #private }
+PhLLaunchImageCommand >> basicIconNamed: aName [
+	"Only used for basic launch command"
+	^ super iconNamed: aName
+]
+
 { #category : #configuring }
 PhLLaunchImageCommand >> doNotUseSettings [
 	useSettings := false.
@@ -104,7 +110,7 @@ PhLLaunchImageCommand >> execute [
 { #category : #private }
 PhLLaunchImageCommand >> iconNamed: aName [
 	"Only used for basic launch command"
-	^ (super iconNamed: aName) asGrayScaleWithAlpha
+	^ (self basicIconNamed: aName) asGrayScaleWithAlpha
 ]
 
 { #category : #initialization }

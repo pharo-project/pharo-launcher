@@ -150,6 +150,11 @@ PhLDeploymentScript class >> initialize [
 	Save := false
 ]
 
+{ #category : #public }
+PhLDeploymentScript class >> initializeLibgit [
+	LGitLibrary uniqueInstance initializeLibGit2
+]
+
 { #category : #settings }
 PhLDeploymentScript class >> isDeployed [
 	^ PharoLauncherApplication isDeployed
@@ -254,5 +259,6 @@ PhLDeploymentScript class >> undoAll [
 		deactivateErrorCatching;
 		makeUndeployed;
 		removeFromStartupList;
-		askForConfirmationWhenQuitting
+		askForConfirmationWhenQuitting;
+		initializeLibgit
 ]

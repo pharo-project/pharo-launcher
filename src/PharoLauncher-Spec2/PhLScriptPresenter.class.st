@@ -104,7 +104,10 @@ PhLScriptPresenter >> newScriptNamed: aName [
 	| file |
 	aName ifNil: [ ^ nil ].
 	
-	file := (self scriptDirectory / aName) ensureCreateFile.
+	file := self scriptDirectory / aName.
+	file extension = 'st'
+		ifFalse: [ file := file, 'st' ].
+	file ensureCreateFile.
 	self scriptListChanged.
 	^ file
 ]

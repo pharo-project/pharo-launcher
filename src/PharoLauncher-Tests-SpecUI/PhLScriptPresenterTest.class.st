@@ -25,7 +25,7 @@ PhLScriptPresenterTest >> setUpPresenter [
 
 { #category : #tests }
 PhLScriptPresenterTest >> testCanAddNewScript [
-	application requestAnswer: 'foo'.
+	application requestAnswer: 'foo.st'.
 	self
 		assert: scriptFolder files size 
 		equals: 0.
@@ -35,7 +35,7 @@ PhLScriptPresenterTest >> testCanAddNewScript [
 	self
 		assert: scriptFolder files size
 		equals: 1.
-	self assert: (scriptFolder / 'foo') exists.
+	self assert: (scriptFolder / 'foo.st') exists.
 ]
 
 { #category : #tests }
@@ -83,4 +83,19 @@ PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 	self
 		assert: scriptFolder files size
 		equals: 1.
+]
+
+{ #category : #tests }
+PhLScriptPresenterTest >> testNewScriptEndsWithStExtension [
+	application requestAnswer: 'foo'.
+	self
+		assert: scriptFolder files size 
+		equals: 0.
+		
+	presenter clickAddScriptButton.
+		
+	self
+		assert: scriptFolder files size
+		equals: 1.
+	self assert: (scriptFolder / 'foo.st') exists.
 ]

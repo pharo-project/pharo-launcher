@@ -37,12 +37,12 @@ PhLCacheTemplateGroup >> name [
 	^ delegate name
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #actions }
 PhLCacheTemplateGroup >> refresh [
 	templatesAndGroups := nil
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLCacheTemplateGroup >> setGroup: templateGroup [
 	delegate := templateGroup.
 ]

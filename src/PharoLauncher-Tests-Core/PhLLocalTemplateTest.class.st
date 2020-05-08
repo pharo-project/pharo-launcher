@@ -9,7 +9,7 @@ PhLLocalTemplateTest >> classToBeTested [
 	^ PhLLocalTemplate 
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLLocalTemplateTest >> newTemplate [
 	^ PhLLocalTemplate name: 'Test' zipFile: root / 'Test.zip'
 ]

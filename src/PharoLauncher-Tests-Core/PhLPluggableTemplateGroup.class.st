@@ -9,7 +9,7 @@ Class {
 		'groups',
 		'templates'
 	],
-	#category : 'PharoLauncher-Tests-Core'
+	#category : #'PharoLauncher-Tests-Core'
 }
 
 { #category : #'instance creation' }
@@ -46,7 +46,7 @@ PhLPluggableTemplateGroup >> name [
 	^ name
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLPluggableTemplateGroup >> setName: aString templates: aCollection groups: anotherCollection [
 	name := aString.
 	templates := aCollection.

@@ -145,7 +145,7 @@ PhLDeploymentScript class >> dontRaiseWarningForMissingChangesOrSourcesFiles [
 	PharoFilesOpener default unsetInformAboutReadOnlyChanges.
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLDeploymentScript class >> initialize [
 	Save := false
 ]

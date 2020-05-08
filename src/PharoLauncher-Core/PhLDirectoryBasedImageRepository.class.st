@@ -38,7 +38,7 @@ PhLDirectoryBasedImageRepository class >> forDirectory: aDirectory [
 		yourself
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLDirectoryBasedImageRepository class >> initialize [
 
 	PhLStartupManager addToLauncherStartUpList: self
@@ -307,7 +307,7 @@ PhLDirectoryBasedImageRepository >> roots [
 	^ self images sorted: [ :image1 :image2 | image1 name asUppercase < image2 name asUppercase ]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLDirectoryBasedImageRepository >> setBaseDirectory: aLocation [
 	baseDirectory := aLocation
 ]

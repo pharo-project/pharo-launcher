@@ -83,7 +83,7 @@ PhLImageDescriptionUpdaterTest >> testSaveTwiceWhenDescriptionChangesManyTimesWi
 	self assert: updater nbSave equals: 3
 ]
 
-{ #category : #utility }
+{ #category : #utilities }
 PhLImageDescriptionUpdaterTest >> waitUpdate [
 	(updater waitDelay + 100 milliSeconds) wait.
 ]

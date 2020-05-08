@@ -11,11 +11,6 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #'as yet unclassified' }
-PhLVirtualMachineManagerFunctionalTest class >> availaibleVirtualMachines [
-	Smalltalk vm imageVersionNumber
-]
-
 { #category : #support }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'

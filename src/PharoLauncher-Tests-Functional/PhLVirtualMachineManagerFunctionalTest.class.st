@@ -44,7 +44,7 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectPreSpurImage [
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
-	self assert: PhLVirtualMachineManager canUseSytemZip equals: true
+	self assert: PhLVirtualMachineManager canUseSytemZip
 ]
 
 { #category : #tests }

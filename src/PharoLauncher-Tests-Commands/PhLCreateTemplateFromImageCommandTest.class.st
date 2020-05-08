@@ -20,22 +20,18 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhe
 		willRemoveImage;
 		yourself.
 	command context: presenter.
-	presenter 
+	presenter
 		selectImageAt: 1;
 		requestAnswer: 'TestTemplate'.
-	
-	self assert: presenter templateRepository localTemplates isEmpty.
+
+	self assertEmpty: presenter templateRepository localTemplates.
 	self assert: (presenter imageRepository hasImageNamed: 'TestImage').
 	command execute.
-	
+
 	templates := presenter templateRepository localTemplateNames.
-	self 
-		assert: templates size 
-		equals: 1.	
-	self
-		assertCollection: templates
-		hasSameElements: #('TestTemplate').
-	self deny: (presenter imageRepository hasImageNamed: 'TestImage').
+	self assert: templates size equals: 1.
+	self assertCollection: templates hasSameElements: #('TestTemplate').
+	self deny: (presenter imageRepository hasImageNamed: 'TestImage')
 ]
 
 { #category : #tests }
@@ -43,18 +39,14 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateWhenSingleImageSe
 	| command templates |
 	command := PhLCreateTemplateFromImageCommand new.
 	command context: presenter.
-	presenter 
+	presenter
 		selectImageAt: 1;
 		requestAnswer: 'TestTemplate'.
-	
-	self assert: presenter templateRepository localTemplates isEmpty.
+
+	self assertEmpty: presenter templateRepository localTemplates.
 	command execute.
-	
+
 	templates := presenter templateRepository localTemplateNames.
-	self 
-		assert: templates size 
-		equals: 1.	
-	self
-		assertCollection: templates
-		hasSameElements: #('TestTemplate').
+	self assert: templates size equals: 1.
+	self assertCollection: templates hasSameElements: #('TestTemplate')
 ]

@@ -31,14 +31,12 @@ PhLRemoveTemplateCommandTest >> testCanRemoveALocalTemplate [
 	presenter
 		createLocalTemplateNamed: 'Foo';
 		selectTemplateNamed: 'Foo'.
-		
+
 	command execute.
-	
-	self 
-		assertCollection: presenter templateNames
-		hasSameElements: #().
-		
-	self assert: presenter templateRoots isEmpty.
+
+	self assertCollection: presenter templateNames hasSameElements: #().
+
+	self assertEmpty: presenter templateRoots
 ]
 
 { #category : #tests }

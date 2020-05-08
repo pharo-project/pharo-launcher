@@ -55,7 +55,7 @@ PhLJenkins2ServerTest >> oneJobResponse [
 { #category : #tests }
 PhLJenkins2ServerTest >> testNoJob [
 	self setUpResponse: self noJobsResponse.
-	self assert: self newInstance jobs isEmpty
+	self assertEmpty: self newInstance jobs
 ]
 
 { #category : #tests }

@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'zipFile'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #serialization }
@@ -51,7 +51,7 @@ PhLLocalTemplate >> renameTo: aString [
 	zipFile renameTo: aString, '.zip'
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLLocalTemplate >> setName: aString zipFile: aFile [ 
 	name := aString.
 	zipFile := aFile

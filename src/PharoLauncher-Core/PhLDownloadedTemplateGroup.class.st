@@ -73,7 +73,7 @@ PhLDownloadedTemplateGroup >> icon [
 	^ self iconNamed: #home
 ]
 
-{ #category : #accessing }
+{ #category : #initialization }
 PhLDownloadedTemplateGroup >> initialize [ 
 	super initialize.
 	baseDirectory := (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory

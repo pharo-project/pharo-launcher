@@ -7,7 +7,7 @@ Class {
 	#classVars : [
 		'StartUpClasses'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #actions }
@@ -17,7 +17,7 @@ PhLStartupManager class >> addToLauncherStartUpList: aClass [
 
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLStartupManager class >> initialize [
 
 	SessionManager default registerToolClassNamed: self name

@@ -7,12 +7,12 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 PhLTemplateSourcesTest >> setUp [
 	sourcesFile := FileSystem memory / 'templates-sources.test'
 ]
 
-{ #category : #initialization }
+{ #category : #running }
 PhLTemplateSourcesTest >> tearDown [ 
 	PhLPharoTemplateSources resetSourcesUrl
 ]

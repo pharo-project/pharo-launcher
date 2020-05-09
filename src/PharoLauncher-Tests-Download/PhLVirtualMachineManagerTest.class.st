@@ -3,7 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
-	#category : 'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Download'
 }
 
 { #category : #'as yet unclassified' }
@@ -24,7 +24,7 @@ PhLVirtualMachineManagerTest >> currentImageVersion [
 				, SystemVersion current minor asString ]
 ]
 
-{ #category : #utility }
+{ #category : #utilities }
 PhLVirtualMachineManagerTest >> getImageHeader: anImageUrl [
 	| archive image |
 	archive := ZipArchive new 

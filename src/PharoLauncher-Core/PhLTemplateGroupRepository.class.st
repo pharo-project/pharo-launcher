@@ -135,7 +135,7 @@ PhLTemplateGroupRepository >> roots [
 	^ groupCaches
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLTemplateGroupRepository >> setGroups: aCollection [
 	| names |
 	names := Set new.

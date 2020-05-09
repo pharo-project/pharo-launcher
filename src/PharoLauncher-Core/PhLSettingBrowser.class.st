@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoLauncher-Core-Settings'
 }
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLSettingBrowser class >> initialize [
 
 	PhLStartupManager addToLauncherStartUpList: self

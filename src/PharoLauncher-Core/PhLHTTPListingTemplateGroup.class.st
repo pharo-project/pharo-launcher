@@ -94,14 +94,14 @@ PhLHTTPListingTemplateGroup >> regex [
 	^ self class regexCache at: self name asSymbol 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLHTTPListingTemplateGroup >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl.
 	self class regexCache at: aName asSymbol put: (RxParser parse: self class defaultFilterPattern) 
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLHTTPListingTemplateGroup >> setName: aName url: anUrl filterPattern: aPatternString [
 	name := aName.
 	url := anUrl.

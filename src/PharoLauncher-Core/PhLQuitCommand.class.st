@@ -21,7 +21,7 @@ PhLQuitCommand >> execute [
 	Smalltalk snapshot: false andQuit: true
 ]
 
-{ #category : #executing }
+{ #category : #initialization }
 PhLQuitCommand >> initialize [
 	super initialize.
 	self

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhLHTTPListingTemplateGroupTest,
 	#superclass : #PhLAbstractTemplateGroupTest,
-	#category : 'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Functional'
 }
 
 { #category : #coverage }
@@ -27,7 +27,7 @@ PhLHTTPListingTemplateGroupTest >> exampleUrl [
 	^ 'http://foo.example.com/bar' asZnUrl
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLHTTPListingTemplateGroupTest >> newGroup [
 	^ PhLHTTPListingTemplateGroup name: 'Test' url: self exampleUrl
 ]

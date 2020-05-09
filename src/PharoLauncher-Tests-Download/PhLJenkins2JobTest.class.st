@@ -108,7 +108,7 @@ PhLJenkins2JobTest >> pipelineResponse [
 { #category : #tests }
 PhLJenkins2JobTest >> testJobWithNoSuccessfulBuild [
 	self setUpResponse: self noBuildsResponse.
-	self assert: self newJobWithNoSuccessfulBuild builds isEmpty
+	self assertEmpty: self newJobWithNoSuccessfulBuild builds
 ]
 
 { #category : #tests }

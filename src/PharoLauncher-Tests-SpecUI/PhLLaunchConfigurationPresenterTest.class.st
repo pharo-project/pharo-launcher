@@ -67,15 +67,13 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 	self setUpPresenter.
 	config := image defaultLaunchConfiguration.
 
-	presenter 
+	presenter
 		selectConfiguration: config;
 		clickDeleteConfigurationButton.
-	
-	self assert: presenter imageArguments isEmpty.
-	self assert: presenter vmArguments isEmpty.
-	self assert: presenter configurationName isEmpty.
-	
-	
+
+	self assertEmpty: presenter imageArguments.
+	self assertEmpty: presenter vmArguments.
+	self assertEmpty: presenter configurationName
 ]
 
 { #category : #tests }

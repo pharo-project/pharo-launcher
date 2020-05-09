@@ -40,14 +40,14 @@ PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
 	| command images |
 	command := PhLDeleteImageCommand new.
 	command context: presenter.
-	presenter 
+	presenter
 		openWithSpec;
 		selectImageAt: 1.
 
 	command execute.
-	
+
 	images := command imagesPresenter imageNames.
 	self
-		assert: images isEmpty;
-		assert: (presenter imageLabel beginsWith: 'No image selected').
+		assertEmpty: images;
+		assert: (presenter imageLabel beginsWith: 'No image selected')
 ]

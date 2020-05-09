@@ -153,7 +153,7 @@ PhLImagesPresenter >> filter: regexMatcher [
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> hasSingleImageSelected [
-	^ (imageTable selectedItems size = 1) and: [ imageTable selectedItems first notNil ]
+	^ imageTable selectedItems size = 1 and: [ imageTable selectedItems first isNotNil ]
 ]
 
 { #category : #'api - accessing' }

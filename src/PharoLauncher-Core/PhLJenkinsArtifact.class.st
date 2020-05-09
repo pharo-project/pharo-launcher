@@ -14,7 +14,7 @@ Class {
 		'properties',
 		'parent'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }
@@ -51,22 +51,22 @@ PhLJenkinsArtifact >> fileExtension [
 
 { #category : #accessing }
 PhLJenkinsArtifact >> fullName [
-	^ self options isEmpty
-		ifTrue: [ self name ]
-		ifFalse: [ String
-		streamContents: [ :s | 
-			s
-				<< $(;
-				<< self url lastPathSegment;
-				<< $);
-				space;
-				<< self name.
-			self options
-				keysAndValuesDo: [ :key :value | 
-					s space
-						<< key;
-						<< '=';
-						<< value ] ] ]
+	^ self options
+		ifEmpty: [ self name ]
+		ifNotEmpty: [ :options | String
+				streamContents: [ :s | 
+					s
+						<< $(;
+						<< self url lastPathSegment;
+						<< $);
+						space;
+						<< self name.
+					options
+						keysAndValuesDo: [ :key :value | 
+							s space
+								<< key;
+								<< '=';
+								<< value ] ] ]
 ]
 
 { #category : #testing }

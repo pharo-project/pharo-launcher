@@ -307,7 +307,7 @@ PhLTemplateSource >> asTemplateGroup [
 
 { #category : #accessing }
 PhLTemplateSource >> expanded [
-	^ expanded notNil & expanded
+	^ expanded isNotNil & expanded
 ]
 
 { #category : #accessing }

@@ -12,9 +12,7 @@ Class {
 
 { #category : #executing }
 PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
-	| description |
-	description := self templatesPresenter description.
-	description ifNotEmpty: [ image description: description ]
+	self templatesPresenter description ifNotEmpty: [ :description | image description: description ]
 ]
 
 { #category : #executing }

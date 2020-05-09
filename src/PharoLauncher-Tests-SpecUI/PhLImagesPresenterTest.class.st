@@ -8,8 +8,9 @@ Class {
 }
 
 { #category : #running }
-PhLImagesPresenterTest >> tearDown [ 
-	presenter window ifNotNil: #close
+PhLImagesPresenterTest >> tearDown [
+	presenter window ifNotNil: #close.
+	super tearDown
 ]
 
 { #category : #tests }

@@ -90,10 +90,11 @@ PhLProcessWrapper >> exitCode [
 ]
 
 { #category : #initialization }
-PhLProcessWrapper >> initialize [ 
+PhLProcessWrapper >> initialize [
+	super initialize.
 	arguments := OrderedCollection new.
 	isShellCommand := false.
-	useLoginShell := false.
+	useLoginShell := false
 ]
 
 { #category : #testing }

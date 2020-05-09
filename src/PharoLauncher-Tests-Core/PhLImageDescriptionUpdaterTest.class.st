@@ -15,12 +15,13 @@ Class {
 
 { #category : #running }
 PhLImageDescriptionUpdaterTest >> setUp [
+	super setUp.
 	updater := PhLImageDescriptionUpdaterMock
 		reset;
 		default.
 	rootFs := FileSystem memory root.
 	image := PhLImage location: rootFs / 'one'.
-	image2 := PhLImage location: rootFs / 'two'.
+	image2 := PhLImage location: rootFs / 'two'
 ]
 
 { #category : #tests }

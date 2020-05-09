@@ -11,12 +11,11 @@ Class {
 
 { #category : #running }
 PhLImageTest >> setUp [
+	super setUp.
 	fs := FileSystem memory root.
 	imageFileRef := fs / 'foo.image'.
-	imageFileRef binaryWriteStreamDo: [ :stream | (ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: 68021 ].
-	image := PhLImage location: imageFileRef.
-	
-
+	imageFileRef binaryWriteStreamDo: [ :stream | (ZnEndianessReadWriteStream on: stream) nextLittleEndianNumber: 4 put: 68021 ].
+	image := PhLImage location: imageFileRef
 ]
 
 { #category : #tests }

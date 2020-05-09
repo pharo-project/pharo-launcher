@@ -18,10 +18,10 @@ PhLLaunchImageCommandTest >> setUp [
 ]
 
 { #category : #running }
-PhLLaunchImageCommandTest >> tearDown [ 
+PhLLaunchImageCommandTest >> tearDown [
 	imageDir ensureDeleteAll.
-	(process isNotNil and: [ process isRunning ])
-		ifTrue: [ process terminate ].
+	(process isNotNil and: [ process isRunning ]) ifTrue: [ process terminate ].
+	super tearDown
 ]
 
 { #category : #tests }

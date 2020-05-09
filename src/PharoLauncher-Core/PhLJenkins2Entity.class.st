@@ -47,11 +47,6 @@ PhLJenkins2Entity >> children [
 	^ childrenCache ifNil: [ childrenCache := super children ]
 ]
 
-{ #category : #testing }
-PhLJenkins2Entity >> hasChildren [
-	^ true
-]
-
 { #category : #accessing }
 PhLJenkins2Entity >> icon [ 
 	"(Base64MimeConverter mimeEncode: 'jenkins.png' asFileReference binaryReadStream) contents"

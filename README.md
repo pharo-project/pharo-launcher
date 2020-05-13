@@ -7,7 +7,7 @@ The Pharo Launcher is a cross-platform application that
 - automatically find and download the appropriate VM to launch your images.
 
 ## How to get Pharo Launcher and install it?
-See http://pharo.org/download for detailed download and installation instructions.
+See https://pharo.org/download for detailed download and installation instructions.
 
 ## Pharo Launcher documentation
 Pharo Launcher documentation is available at https://pharo-project.github.io/pharo-launcher/

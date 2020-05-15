@@ -9,12 +9,14 @@ Class {
 
 { #category : #running }
 PhLTemplateSourcesTest >> setUp [
+	super setUp.
 	sourcesFile := FileSystem memory / 'templates-sources.test'
 ]
 
 { #category : #running }
-PhLTemplateSourcesTest >> tearDown [ 
-	PhLPharoTemplateSources resetSourcesUrl
+PhLTemplateSourcesTest >> tearDown [
+	PhLPharoTemplateSources resetSourcesUrl.
+	super tearDown
 ]
 
 { #category : #tests }

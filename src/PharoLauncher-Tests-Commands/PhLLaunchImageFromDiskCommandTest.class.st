@@ -21,8 +21,8 @@ PhLLaunchImageFromDiskCommandTest >> setUp [
 PhLLaunchImageFromDiskCommandTest >> tearDown [
 	imageDir ensureDeleteAll.
 	presenter delete.
-	(process isNotNil and: [ process isRunning ])
-		ifTrue: [ process terminate ].
+	(process isNotNil and: [ process isRunning ]) ifTrue: [ process terminate ].
+	super tearDown
 ]
 
 { #category : #tests }

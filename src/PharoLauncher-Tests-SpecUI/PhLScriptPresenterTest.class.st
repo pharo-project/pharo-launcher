@@ -11,6 +11,7 @@ Class {
 
 { #category : #running }
 PhLScriptPresenterTest >> setUp [
+	super setUp.
 	scriptFolder := FileSystem memory root.
 	self setUpPresenter
 ]

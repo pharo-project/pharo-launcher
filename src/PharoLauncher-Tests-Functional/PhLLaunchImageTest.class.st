@@ -37,8 +37,8 @@ PhLLaunchImageTest >> prepare80imageIn: dir [
 { #category : #running }
 PhLLaunchImageTest >> setUp [
 	| uuid |
-	launchInALoginShellBackup := PhLLaunchConfiguration
-		launchInALoginShell.
+	super setUp.
+	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
 	PhLLaunchConfiguration launchInALoginShell: false.
 	uuid := UUIDGenerator next asString.
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
@@ -55,13 +55,15 @@ PhLLaunchImageTest >> setUp [
 ]
 
 { #category : #running }
-PhLLaunchImageTest >> tearDown [ 
+PhLLaunchImageTest >> tearDown [
 	"imageDir ensureDeleteAll "
+
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
-	PhLVirtualMachineManager vmStore: vmStoreBackup.	
+	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	imageDir ensureDeleteAll.
 	resultDir ensureDeleteAll.
+	super tearDown
 ]
 
 { #category : #tests }

@@ -241,8 +241,9 @@ PhLImage >> initializationScript: aFileReference [
 
 { #category : #initialization }
 PhLImage >> initialize [
+	super initialize.
 	launchConfigurations := OrderedCollection new.
-	shouldRunInitializationScript := true.
+	shouldRunInitializationScript := true
 ]
 
 { #category : #testing }

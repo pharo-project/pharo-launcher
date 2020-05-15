@@ -14,8 +14,9 @@ PhLDeleteImageCommandTest >> setUp [
 ]
 
 { #category : #running }
-PhLDeleteImageCommandTest >> tearDown [ 
-	presenter delete
+PhLDeleteImageCommandTest >> tearDown [
+	presenter delete.
+	super tearDown
 ]
 
 { #category : #tests }

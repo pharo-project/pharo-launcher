@@ -30,8 +30,8 @@ PhLAbstractTemplateGroupTest >> setUp [
 
 { #category : #running }
 PhLAbstractTemplateGroupTest >> tearDown [
-	super tearDown.
-	PhLDownloadManagerMock remove
+	PhLDownloadManagerMock remove.
+	super tearDown
 ]
 
 { #category : #tests }

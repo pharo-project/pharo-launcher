@@ -16,6 +16,7 @@ PhLLaunchConfigurationPresenterTest >> defaultTimeLimit [
 
 { #category : #running }
 PhLLaunchConfigurationPresenterTest >> setUp [
+	super setUp.
 	image := PhLImage example.
 	image versionFile writeStreamDo: [ :s | s nextPutAll: '80' ].
 	self setUpPresenter
@@ -36,8 +37,9 @@ PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplic
 ]
 
 { #category : #running }
-PhLLaunchConfigurationPresenterTest >> tearDown [ 
-	presenter window ifNotNil: #close
+PhLLaunchConfigurationPresenterTest >> tearDown [
+	presenter window ifNotNil: #close.
+	super tearDown
 ]
 
 { #category : #tests }

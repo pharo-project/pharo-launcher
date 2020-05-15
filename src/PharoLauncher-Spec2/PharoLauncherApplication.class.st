@@ -12,8 +12,8 @@ Class {
 		'imageRepository',
 		'templateRepository',
 		'imagesPresenter',
-		'openInWorld',
-		'scriptsDirectory'
+		'scriptsDirectory',
+		'openAsWorld'
 	],
 	#classVars : [
 		'Default',
@@ -121,14 +121,16 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 { #category : #opening }
 PharoLauncherApplication class >> open [
 	<script>
-	^ self default run
+	^ self default
+		openAsWorld: false;
+		run
 ]
 
 { #category : #opening }
 PharoLauncherApplication class >> openFull [ 
 	<script>
 	^ self default 
-		beOpenedInWorld;
+		beOpenedAsWorld;
 		run
 ]
 
@@ -199,8 +201,8 @@ PharoLauncherApplication class >> templatesClearedOnStartup: aBoolean [
 ]
 
 { #category : #configuring }
-PharoLauncherApplication >> beOpenedInWorld [
-	openInWorld := true
+PharoLauncherApplication >> beOpenedAsWorld [
+	self openAsWorld: true
 ]
 
 { #category : #accessing }
@@ -225,11 +227,12 @@ PharoLauncherApplication >> imageRepositoryChanged: newImage [
 ]
 
 { #category : #initialization }
-PharoLauncherApplication >> initialize [
-	super initialize.
-	openInWorld := false.
-	imageRepository := PhLDirectoryBasedImageRepository default.
-	self templatesClearedOnStartup ifTrue: [ self class resetTemplateRepository ].
+PharoLauncherApplication >> initialize [ 
+ 	super initialize.
+	openAsWorld := false.
+	imageRepository :=  PhLDirectoryBasedImageRepository default.
+	self templatesClearedOnStartup 
+		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository
 ]
 
@@ -249,6 +252,11 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
 ]
 
+{ #category : #configuring }
+PharoLauncherApplication >> openAsWorld: aBoolean [
+	openAsWorld := aBoolean
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := TemplateRepository 
@@ -259,7 +267,7 @@ PharoLauncherApplication >> resetTemplateRepository [
 PharoLauncherApplication >> run [
 	| presenterClass |
 	self initializeImagesPresenter.
-	presenterClass := openInWorld
+	presenterClass := openAsWorld
 		ifTrue: [ SpWorldPresenter ]
 		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
 	self

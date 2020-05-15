@@ -57,8 +57,8 @@ PhLJenkins2EntityTest >> setUpResponse: aResponse [
 
 { #category : #running }
 PhLJenkins2EntityTest >> tearDown [
-	super tearDown.
 	PhLDownloadManagerMock remove.
+	super tearDown
 ]
 
 { #category : #tests }

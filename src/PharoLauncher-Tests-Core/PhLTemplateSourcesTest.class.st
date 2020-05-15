@@ -7,14 +7,16 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
-{ #category : #initialization }
+{ #category : #running }
 PhLTemplateSourcesTest >> setUp [
+	super setUp.
 	sourcesFile := FileSystem memory / 'templates-sources.test'
 ]
 
-{ #category : #initialization }
-PhLTemplateSourcesTest >> tearDown [ 
-	PhLPharoTemplateSources resetSourcesUrl
+{ #category : #running }
+PhLTemplateSourcesTest >> tearDown [
+	PhLPharoTemplateSources resetSourcesUrl.
+	super tearDown
 ]
 
 { #category : #tests }
@@ -23,9 +25,8 @@ PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
 	templatesSources1 := (PhLPharoTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
 	templatesSources2 := (PhLPharoTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
 	templatesSources2 second templates first name: 'changed'.
-	
-	self deny: templatesSources1 = templatesSources2
-	
+
+	self deny: templatesSources1 equals: templatesSources2
 ]
 
 { #category : #tests }
@@ -54,34 +55,30 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 PhLTemplateSourcesTest >> testGivenUserSourcesFileAbsentWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
 	self deny: sourcesFile exists.
-	
-	sources := (PhLUserTemplateSources withFile: sourcesFile) sources. 
-	
-	self assert: sources isEmpty
+
+	sources := (PhLUserTemplateSources withFile: sourcesFile) sources.
+
+	self assertEmpty: sources
 ]
 
 { #category : #tests }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileWithErrorsWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
-	sourcesFile 
-		writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
-		
-	sources := (PhLTemplateSources withFile: sourcesFile) sources. 
-	
-	self assert: sources isEmpty
+	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
+
+	sources := (PhLTemplateSources withFile: sourcesFile) sources.
+
+	self assertEmpty: sources
 ]
 
 { #category : #tests }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileWithReferencesToUnknownVariablesWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
-	sourcesFile 
-		writeStreamDo: [ :stream | stream nextPutAll: '[PhLHTTPListingTemplateGroup{#nonexistingiv:''http://foo.org'',#name:''foo''}]' ].
-		
-	self 
-		shouldnt:[ sources := (PhLTemplateSources withFile: sourcesFile) sources ]
-		raise: InstanceVariableNotFound.
-	
-	self assert: sources isEmpty
+	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: '[PhLHTTPListingTemplateGroup{#nonexistingiv:''http://foo.org'',#name:''foo''}]' ].
+
+	self shouldnt: [ sources := (PhLTemplateSources withFile: sourcesFile) sources ] raise: InstanceVariableNotFound.
+
+	self assertEmpty: sources
 ]
 
 { #category : #tests }
@@ -99,26 +96,21 @@ PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 { #category : #tests }
 PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSources [
 	| announcements sources |
-	
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
-	
-	announcements := OrderedCollection new. 
-	ZnClientTest new 
-	withServerDo: [ :server |
-		server onRequestRespond: [ :request | 
-			ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
-		
-	sources := PhLPharoTemplateSources withFile: sourcesFile.
-	PhLPharoTemplateSources sourcesUrl: server localUrl.
-	
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #add:
-		to: announcements.
 
-	sources checkForUpdates.
+	announcements := OrderedCollection new.
+	ZnClientTest new
+		withServerDo: [ :server | 
+			server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
 
-	self assert: announcements isEmpty  ].
+			sources := PhLPharoTemplateSources withFile: sourcesFile.
+			PhLPharoTemplateSources sourcesUrl: server localUrl.
+
+			PhLPharoTemplateSources announcer weak when: PhLSourcesFileUpdateAvailable send: #add: to: announcements.
+
+			sources checkForUpdates.
+
+			self assertEmpty: announcements ]
 ]
 
 { #category : #tests }

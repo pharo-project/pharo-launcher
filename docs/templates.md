@@ -26,6 +26,13 @@ There are different kind of categories:
 * Jenkins server: group of templates provided by a Jenkins server. I use Jenkins' JSON API to get the data from the server.
 * Cache: special group taking care of caching locally downloaded templates from other template categories.
 
+## Make my own templates available
+There are different ways:
+
+- The easiest way would be to add a CI job on https://ci.inria.fr/pharo-contribution/. This job should archive a zip file with your image and the changes file. Then you will be able to browse your image as a template from *Pharo contribution Jenkins* / *<your job name>* / *Latest successful build*.
+- Another way is to [create your own template](#create-your-own-template).
+- Last but not least, you can [add your own list of template categories](#create-your-own-list-of-template-categories).
+
 ## Create your own template
 You can create your own templates from Pharo Launcher. From any image in the image list, right-click and select `Create template` or `Create template and delete image`. It will create a zip file from the selected image and put it in the Templates category under the provided name.
 
@@ -50,7 +57,7 @@ Here is an example of a `mysources.list` file:
     }
 ]
 ```
-### Add a Jenkins server
+### Add a JenkinsServer server
 You can declare your own Jenkins server by providing its URL and using the #JenkinsServer type.
 ```json
     PhLTemplateSource {

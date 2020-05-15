@@ -21,6 +21,12 @@ You can optionally provide a description and an [initialization script](#image-i
 **Important note**: the launcher currently does not fit with the "Save as" image style - since each launcher image
 has to be in a new directory. So either use the "Copy" image, then "Launch" and then only "Save" in the target image or copy the "Saved as" image in a new folder and refresh the Launcher view on the right side.
 
+## Which image to choose?
+
+In Pharo, an image is the object space containing ALL the objects of the system: objects that are part of the Pharo runtime and development environment AND objects loaded / created by the user. By default, you should use the "current stable Pharo image". You should now prefer 64-bit images over 32-bit images. You can use Pharo development image if you want to contribute to Pharo or you can’t wait to discover / use new Pharo features. You can also use any other template coming with preloaded libraries / tools according to your needs.
+
+Initially on a new computer the image list is empty. When creating a new image, you can see the image templates that are available on the web (there is also a local cache). Select the template image you want to use and download it. For instance you can download "Official distributions" -> "Pharo 8.0 (stable)" which is the latest stable image as of today. The launcher will download the image into a specific directory somewhere in your users home directory (you can configure where by clicking the Settings button). Each image gets its own folder. Use the "Show in folder" menu item if you want to open this location.
+
 ## Where are stored my images?
 Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
 

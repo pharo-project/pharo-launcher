@@ -35,7 +35,7 @@ PhLOpenVmManagerCommand >> iconNamed: aName [
 	^ self icon
 ]
 
-{ #category : #executing }
+{ #category : #initialization }
 PhLOpenVmManagerCommand >> initialize [
 	super initialize.
 	self

@@ -8,8 +8,18 @@ Class {
 }
 
 { #category : #running }
-PhLImagesPresenterTest >> tearDown [ 
-	presenter window ifNotNil: #close
+PhLImagesPresenterTest >> tearDown [
+	presenter window ifNotNil: #close.
+	super tearDown
+]
+
+{ #category : #tests }
+PhLImagesPresenterTest >> testFirstImageIsSelectedAtOpening [
+	presenter := PhLTestImagesPresenter new.
+	presenter openWithSpec.
+	
+	self assert: presenter hasSingleImageSelected.
+	self assert: presenter singleImage name equals: presenter singleImageName
 ]
 
 { #category : #tests }
@@ -70,6 +80,22 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 	self
 		assertCollection: presenter imageNames
 		hasSameElements: #('TestImage' 'Foo').
+]
+
+{ #category : #tests }
+PhLImagesPresenterTest >> testLaunchCommandIsDisabledWhenNoSelection [
+	| enabled |
+	presenter := PhLTestImagesPresenter new.
+	presenter 
+		openWithSpec;
+		unselectAll.
+		
+	presenter
+		withToolbarDo: [ :toolbar | 
+			presenter toolbarGroup allCommands
+				detect: [ :cmd | cmd name = 'Launch' ]
+				ifFound: [ :cmd | enabled := cmd presenter isEnabled ] ].
+	self deny: enabled
 ]
 
 { #category : #tests }

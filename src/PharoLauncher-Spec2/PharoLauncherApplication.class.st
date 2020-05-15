@@ -228,6 +228,7 @@ PharoLauncherApplication >> imageRepositoryChanged: newImage [
 
 { #category : #initialization }
 PharoLauncherApplication >> initialize [ 
+ 	super initialize.
 	openAsWorld := false.
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 

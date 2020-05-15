@@ -53,7 +53,7 @@ PhLRemoteTemplate >> password: aString [
 	url password: aString
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLRemoteTemplate >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl

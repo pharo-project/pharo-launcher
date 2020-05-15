@@ -77,7 +77,7 @@ PhLImage class >> imageFromMetadata: imageFileReference [
 		ifAbsent: [ ^ self new ]
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLImage class >> initialize [
 	SessionManager default registerUserClassNamed: self name
 ]
@@ -239,10 +239,11 @@ PhLImage >> initializationScript: aFileReference [
 	self serializeMetadata
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLImage >> initialize [
+	super initialize.
 	launchConfigurations := OrderedCollection new.
-	shouldRunInitializationScript := true.
+	shouldRunInitializationScript := true
 ]
 
 { #category : #testing }
@@ -372,7 +373,7 @@ PhLImage >> serializeMetadata [
 		writeStreamDo: [ :stream | stream nextPutAll: self stonString ]
 ]
 
-{ #category : #'initialize-release' }
+{ #category : #initialization }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
 ]

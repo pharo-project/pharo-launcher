@@ -18,13 +18,13 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #commands }
 PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 	rootCommandGroup
 		register: (self buildContextualMenuGroup)
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #commands }
 PhLTemplatesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Templates tree contextual menu';

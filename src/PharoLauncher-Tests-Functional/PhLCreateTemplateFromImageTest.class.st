@@ -13,8 +13,9 @@ PhLCreateTemplateFromImageTest class >> defaultTimeLimit [
 ]
 
 { #category : #running }
-PhLCreateTemplateFromImageTest >> tearDown [ 
-	template ifNotNil: [ template zipArchive ensureDelete ]
+PhLCreateTemplateFromImageTest >> tearDown [
+	template ifNotNil: [ template zipArchive ensureDelete ].
+	super tearDown
 ]
 
 { #category : #tests }

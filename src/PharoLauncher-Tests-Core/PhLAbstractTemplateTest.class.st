@@ -15,7 +15,7 @@ PhLAbstractTemplateTest class >> isAbstract [
 	^ self name = #PhLAbstractTemplateTest
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLAbstractTemplateTest >> newTemplate [
 	^ self subclassResponsibility
 ]

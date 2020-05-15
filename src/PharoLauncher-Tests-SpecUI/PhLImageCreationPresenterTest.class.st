@@ -9,11 +9,12 @@ Class {
 
 { #category : #running }
 PhLImageCreationPresenterTest >> setUp [
-	presenter := PhLImageCreationPresenter newApplication: 
-		(PharoLauncherApplication new
-			scriptsDirectory: FileSystem memory root;
-			yourself).
-
+	super setUp.
+	presenter := PhLImageCreationPresenter
+		newApplication:
+			(PharoLauncherApplication new
+				scriptsDirectory: FileSystem memory root;
+				yourself)
 ]
 
 { #category : #tests }

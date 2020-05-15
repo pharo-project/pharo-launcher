@@ -145,9 +145,14 @@ PhLDeploymentScript class >> dontRaiseWarningForMissingChangesOrSourcesFiles [
 	PharoFilesOpener default unsetInformAboutReadOnlyChanges.
 ]
 
-{ #category : #'class initialization' }
+{ #category : #initialization }
 PhLDeploymentScript class >> initialize [
 	Save := false
+]
+
+{ #category : #public }
+PhLDeploymentScript class >> initializeLibgit [
+	LGitLibrary uniqueInstance initializeLibGit2
 ]
 
 { #category : #settings }
@@ -254,5 +259,6 @@ PhLDeploymentScript class >> undoAll [
 		deactivateErrorCatching;
 		makeUndeployed;
 		removeFromStartupList;
-		askForConfirmationWhenQuitting
+		askForConfirmationWhenQuitting;
+		initializeLibgit
 ]

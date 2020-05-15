@@ -165,7 +165,7 @@ PhLImagesPresenter >> imageRepository [
 PhLImagesPresenter >> initializePresenters [
 	imageFilter := self newTextInput
 		placeholder: 'Enter image name filter ...';
-	whenTextChangedDo: [ :filterString | self filter: filterString ];
+		whenTextChangedDo: [ :filterString | self filter: filterString ];
 		yourself.
 	imageTable := self newTable
 		items: self imageRepository images;
@@ -199,7 +199,10 @@ PhLImagesPresenter >> initializePresenters [
 	descriptionPanel := self
 		instantiate: PhLImageDetailPresenter
 		on: PhLNullImage new.
-	self imageRepository whenChangedSend: #refresh to: self
+	self imageRepository whenChangedSend: #refresh to: self.
+	self whenDisplayDo: 
+		[ self imageRepository hasImages
+				ifTrue: [ self selectImageAt: 1 ] ].
 ]
 
 { #category : #initialization }

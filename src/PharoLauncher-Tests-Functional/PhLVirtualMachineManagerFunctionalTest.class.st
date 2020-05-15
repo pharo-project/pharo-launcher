@@ -11,11 +11,6 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #'as yet unclassified' }
-PhLVirtualMachineManagerFunctionalTest class >> availaibleVirtualMachines [
-	Smalltalk vm imageVersionNumber
-]
-
 { #category : #support }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'
@@ -23,15 +18,17 @@ PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 
 { #category : #running }
 PhLVirtualMachineManagerFunctionalTest >> setUp [
+	super setUp.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
-	tempVmStoreFolder := FileLocator temp / self class name, UUIDGenerator next asString.
-	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
+	tempVmStoreFolder := FileLocator temp / self class name , UUIDGenerator next asString.
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder
 ]
 
 { #category : #running }
-PhLVirtualMachineManagerFunctionalTest >> tearDown [ 
+PhLVirtualMachineManagerFunctionalTest >> tearDown [
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
+	super tearDown
 ]
 
 { #category : #tests }
@@ -44,7 +41,7 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectPreSpurImage [
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
-	self assert: PhLVirtualMachineManager canUseSytemZip equals: true
+	self assert: PhLVirtualMachineManager canUseSytemZip
 ]
 
 { #category : #tests }

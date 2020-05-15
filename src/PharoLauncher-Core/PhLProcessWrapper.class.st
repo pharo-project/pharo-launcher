@@ -90,10 +90,11 @@ PhLProcessWrapper >> exitCode [
 ]
 
 { #category : #initialization }
-PhLProcessWrapper >> initialize [ 
+PhLProcessWrapper >> initialize [
+	super initialize.
 	arguments := OrderedCollection new.
 	isShellCommand := false.
-	useLoginShell := false.
+	useLoginShell := false
 ]
 
 { #category : #testing }
@@ -187,6 +188,11 @@ PhLProcessWrapper >> stderrString [
 	^ Smalltalk os isWindows
 		ifTrue: [ 'Std error not available on Windows' ]
 		ifFalse: [ (process stderrStream upToEndOfFile ifNil: [ '' ]) trimBoth ]
+]
+
+{ #category : #terminating }
+PhLProcessWrapper >> terminate [ 
+	process terminate
 ]
 
 { #category : #private }

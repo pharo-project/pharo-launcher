@@ -4,7 +4,7 @@ Give me unit tests and I will make sure they are run for all subclasses of PhLAb
 Class {
 	#name : #PhLAbstractTemplateGroupTest,
 	#superclass : #ClassTestCase,
-	#category : 'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Functional'
 }
 
 { #category : #testing }
@@ -17,7 +17,7 @@ PhLAbstractTemplateGroupTest >> downloadManager [
 	^ PhLDownloadManager default
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLAbstractTemplateGroupTest >> newGroup [
 	^ self subclassResponsibility
 ]
@@ -30,8 +30,8 @@ PhLAbstractTemplateGroupTest >> setUp [
 
 { #category : #running }
 PhLAbstractTemplateGroupTest >> tearDown [
-	super tearDown.
-	PhLDownloadManagerMock remove
+	PhLDownloadManagerMock remove.
+	super tearDown
 ]
 
 { #category : #tests }

@@ -59,11 +59,6 @@ PhLAbstractTemplate >> hasChildren [
 ]
 
 { #category : #testing }
-PhLAbstractTemplate >> isLocalTemplate [
-	^ false
-]
-
-{ #category : #testing }
 PhLAbstractTemplate >> isTemplate [
 	^ true
 ]

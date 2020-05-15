@@ -93,7 +93,7 @@ PhLJenkins2BuildTest >> runUrlString [
 PhLJenkins2BuildTest >> testBuildWithArtifacts [
 	| artifact |
 	self setUpResponse: self oneArtifactResponse.
-	self assert: self emptyBuild runs isEmpty.
+	self assertEmpty: self emptyBuild runs.
 	self assert: self emptyBuild artifacts size equals: 1.
 	artifact := self emptyBuild artifacts first.
 	self assert: artifact relativePath equals: self artifactRelativePath.
@@ -104,7 +104,7 @@ PhLJenkins2BuildTest >> testBuildWithArtifacts [
 PhLJenkins2BuildTest >> testBuildWithRuns [
 	| run |
 	self setUpResponse: self oneRunResponse.
-	self assert: self emptyBuild artifacts isEmpty.
+	self assertEmpty: self emptyBuild artifacts.
 	self assert: self emptyBuild runs size equals: 1.
 	run := self emptyBuild runs first.
 	self assert: run number equals: self runNumber
@@ -113,8 +113,8 @@ PhLJenkins2BuildTest >> testBuildWithRuns [
 { #category : #tests }
 PhLJenkins2BuildTest >> testEmptyBuild [
 	self setUpResponse: '{}'.
-	self assert: self emptyBuild artifacts isEmpty.
-	self assert:self emptyBuild runs isEmpty.
+	self assertEmpty: self emptyBuild artifacts.
+	self assertEmpty: self emptyBuild runs
 ]
 
 { #category : #tests }

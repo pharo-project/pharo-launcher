@@ -231,10 +231,9 @@ PhLVirtualMachineManager >> compatibleVm [
 
 	^ self availableVirtualMachinesByImageFormat
 		at: self imageFormatNumber asString
-		ifAbsent: [ | vmPath |
-			self fetchCompatibleVm.
+		ifAbsent: [ self fetchCompatibleVm.
 			self fetchSourcesFileForCompatibleVm.
-			vmPath := self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString ]
+			self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString ]
 ]
 
 { #category : #private }

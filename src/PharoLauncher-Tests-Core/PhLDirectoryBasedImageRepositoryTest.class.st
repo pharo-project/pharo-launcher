@@ -12,12 +12,12 @@ PhLDirectoryBasedImageRepositoryTest >> classToBeTested [
 	^ PhLDirectoryBasedImageRepository
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLDirectoryBasedImageRepositoryTest >> emptyGroup [
 	^ self classToBeTested forDirectory: FileSystem memory workingDirectory
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #'instance creation' }
 PhLDirectoryBasedImageRepositoryTest >> newGroupWithAnImage [
 	| group baseDirectory |
 	group := self emptyGroup.
@@ -44,26 +44,26 @@ PhLDirectoryBasedImageRepositoryTest >> testDeleteImageNamed [
 	group := self newGroupWithAnImage.
 	self assert: group imageNames asSet equals: #('test') asSet.
 	group deleteImageNamed: 'test'.
-	self assert: group imageNames isEmpty
+	self assertEmpty: group imageNames
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #tests }
 PhLDirectoryBasedImageRepositoryTest >> testDirectoryForImageNamed [
 	| group |
 	group := self emptyGroup.
-	self assert: group images isEmpty.
-	self assert: group imageNames isEmpty.
+	self assertEmpty: group images.
+	self assertEmpty: group imageNames
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #tests }
 PhLDirectoryBasedImageRepositoryTest >> testEmptyByDefault [
 	| group |
 	group := self emptyGroup.
-	self assert: group images isEmpty.
-	self assert: group imageNames isEmpty.
+	self assertEmpty: group images.
+	self assertEmpty: group imageNames
 ]
 
-{ #category : #'instance-creation' }
+{ #category : #tests }
 PhLDirectoryBasedImageRepositoryTest >> testIgnoreNonConformDirectories [
 	| group baseDirectory |
 	group := self emptyGroup.

@@ -27,16 +27,6 @@ PhLJenkins2ServerTest >> defaultJobUrlString [
 	^ 'http://server/segment'
 ]
 
-{ #category : #'instance creation' }
-PhLJenkins2ServerTest >> newInstance [
-	^ self class newInstance
-]
-
-{ #category : #'instance creation' }
-PhLJenkins2ServerTest >> newSecureInstance [
-	^ self class newSecureInstance
-]
-
 { #category : #responses }
 PhLJenkins2ServerTest >> noJobsResponse [
 	^ '{"jobs" : []}'
@@ -55,7 +45,7 @@ PhLJenkins2ServerTest >> oneJobResponse [
 { #category : #tests }
 PhLJenkins2ServerTest >> testNoJob [
 	self setUpResponse: self noJobsResponse.
-	self assert: self newInstance jobs isEmpty
+	self assertEmpty: self newInstance jobs
 ]
 
 { #category : #tests }

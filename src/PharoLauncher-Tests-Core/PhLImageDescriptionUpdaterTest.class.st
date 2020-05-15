@@ -15,12 +15,13 @@ Class {
 
 { #category : #running }
 PhLImageDescriptionUpdaterTest >> setUp [
+	super setUp.
 	updater := PhLImageDescriptionUpdaterMock
 		reset;
 		default.
 	rootFs := FileSystem memory root.
 	image := PhLImage location: rootFs / 'one'.
-	image2 := PhLImage location: rootFs / 'two'.
+	image2 := PhLImage location: rootFs / 'two'
 ]
 
 { #category : #tests }
@@ -83,7 +84,7 @@ PhLImageDescriptionUpdaterTest >> testSaveTwiceWhenDescriptionChangesManyTimesWi
 	self assert: updater nbSave equals: 3
 ]
 
-{ #category : #utility }
+{ #category : #utilities }
 PhLImageDescriptionUpdaterTest >> waitUpdate [
 	(updater waitDelay + 100 milliSeconds) wait.
 ]

@@ -39,6 +39,11 @@ PhLTestImagesPresenter >> fileSystem [
 	^ fileSystem
 ]
 
+{ #category : #'api - selection' }
+PhLTestImagesPresenter >> hasSingleImageSelected [
+	^ super hasSingleImageSelected or: [ selection notNil ]
+]
+
 { #category : #acccessing }
 PhLTestImagesPresenter >> imageLabel [
 	^ descriptionPanel imageLabel label
@@ -113,6 +118,16 @@ PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
 	selection := aListOfImageNames collect: [ :name | PhLImage location: fileSystem root / name ].
 ]
 
+{ #category : #'api - accessing' }
+PhLTestImagesPresenter >> singleImage [ 
+	^ [ super singleImage ]
+		on: SubscriptOutOfBounds "no selection in real presenter"
+		do: [ :error |
+			 selection 
+				ifNil: [ error pass ]
+				ifNotNil: [ selection ] ]
+]
+
 { #category : #selection }
 PhLTestImagesPresenter >> singleImageName [
 	^ 'TestImage'
@@ -121,4 +136,9 @@ PhLTestImagesPresenter >> singleImageName [
 { #category : #'api - accessing' }
 PhLTestImagesPresenter >> templateRepository [ 
 	^ templateRepository
+]
+
+{ #category : #selecting }
+PhLTestImagesPresenter >> unselectAll [
+	imageTable unselectAll.
 ]

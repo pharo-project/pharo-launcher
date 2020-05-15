@@ -142,8 +142,9 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #initialization }
+{ #category : #opening }
 PharoLauncherApplication class >> reset [
+	<script>
 	^ Default := nil
 ]
 

@@ -147,7 +147,7 @@ PhLImagesPresenter >> filter: regexMatcher [
 	images := regexMatcher
 		ifNil: [ self imageRepository images ]
 		ifNotNil: [ self imageRepository images
-				select: [ :each | regexMatcher search: each name asString ] ].
+				select: [ :each | regexMatcher search: each name asString asLowercase ] ].
 	imageTable items: images
 ]
 
@@ -165,7 +165,7 @@ PhLImagesPresenter >> imageRepository [
 PhLImagesPresenter >> initializePresenters [
 	imageFilter := self newTextInput
 		placeholder: 'Enter image name filter ...';
-		whenTextChangedDo: [ :filterString | self filter: filterString ];
+		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
 		yourself.
 	imageTable := self newTable
 		items: self imageRepository images;

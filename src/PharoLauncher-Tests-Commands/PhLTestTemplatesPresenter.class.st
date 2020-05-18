@@ -16,7 +16,17 @@ Class {
 
 { #category : #'user interaction' }
 PhLTestTemplatesPresenter >> clickOnCreateButton [
-	(descriptionPanel instVarNamed: 'createButton') click
+	self createButton click
+]
+
+{ #category : #private }
+PhLTestTemplatesPresenter >> createButton [
+	^ descriptionPanel instVarNamed: 'createButton'
+]
+
+{ #category : #accessing }
+PhLTestTemplatesPresenter >> createButtonEnabled [
+	^ self createButton isEnabled
 ]
 
 { #category : #configuring }

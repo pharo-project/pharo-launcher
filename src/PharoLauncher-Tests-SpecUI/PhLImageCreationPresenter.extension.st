@@ -1,6 +1,11 @@
 Extension { #name : #PhLImageCreationPresenter }
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
+PhLImageCreationPresenter >> imageName: aString [
+	imageName text: aString
+]
+
+{ #category : #'*PharoLauncher-Tests-SpecUI' }
 PhLImageCreationPresenter >> initScriptPresenter [
 	^ initScript
 ]

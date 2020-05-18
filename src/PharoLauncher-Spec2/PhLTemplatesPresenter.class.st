@@ -133,14 +133,19 @@ PhLTemplatesPresenter >> initializePresenters [
 		children: #children;
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		beMultipleSelection;
+		beMultipleSelection; "bulk delete templates for example"
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		whenRootsChangedDo: [ :roots | 
-			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ]
+			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
+		whenSelectionChangedDo: [ :selection | 
+			selection isEmpty 
+				ifTrue: [ descriptionPanel disable ]
+				ifFalse: [ descriptionPanel enable ] ]
 		yourself.
 	descriptionPanel := self
 		instantiate: PhLImageCreationPresenter
-		on: nil
+		on: nil.
+	descriptionPanel disable.
 ]
 
 { #category : #initialization }

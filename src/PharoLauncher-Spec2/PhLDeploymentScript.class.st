@@ -107,7 +107,8 @@ PhLDeploymentScript class >> developmentEnvironmentEnabled: aBoolean [
 		]
 		ifFalse: 
 		[ 	self doAll. 
-			self closeWindowsAndOpenLauncher 
+			self closeWindowsAndOpenLauncher.
+			self isDeployed ifFalse: [ Smalltalk snapshot: true andQuit: false "save deployed mode" ]
 		].
 ]
 

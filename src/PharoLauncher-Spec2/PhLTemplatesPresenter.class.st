@@ -190,7 +190,7 @@ PhLTemplatesPresenter >> selectedTemplates [
 { #category : #'api - selection' }
 PhLTemplatesPresenter >> singleTemplate [
 	self hasSingleTemplateSelected
-		ifFalse: [ PhLCommandError  signal ].
+		ifFalse: [ PhLCommandError  signal: 'Only one template must be selected!' ].
 	^ templateTable selectedItems first "multiple selection enabled, always return a collection"
 ]
 

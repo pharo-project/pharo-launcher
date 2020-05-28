@@ -7,6 +7,20 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
+{ #category : #'as yet unclassified' }
+PhLDeleteImageCommandTest >> createMoreImagesAndEnableSorting [
+	presenter createImageNamed: 'Zoo'.
+	presenter createImageNamed: 'Abc'.
+	presenter application imageRepositoryChanged.
+	presenter 
+	   openWithSpec;
+		selectImageAt: 1.
+		
+	presenter 
+		clickOnColumnHeaderAt: 1;
+		selectImageAt: 3. "Zoo"
+]
+
 { #category : #running }
 PhLDeleteImageCommandTest >> setUp [
 	super setUp.
@@ -34,6 +48,19 @@ PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 	self
 		assertCollection: images
 		hasSameElements: #('Foo').
+]
+
+{ #category : #tests }
+PhLDeleteImageCommandTest >> testDeleteTheRightImageIfImagesSortingIsNotTheDefaultOne [
+	| command images |
+	command := PhLDeleteImageCommand new.
+	command context: presenter.
+	self createMoreImagesAndEnableSorting. "xx image is selected"
+
+	command execute.
+
+	images := command imagesPresenter imageNames.
+	self deny: (images includes: 'Zoo')
 ]
 
 { #category : #tests }

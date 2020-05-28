@@ -58,6 +58,11 @@ PhLLaunchConfiguration class >> settingsOn: aBuilder [
 		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
 ]
 
+{ #category : #serialization }
+PhLLaunchConfiguration class >> stonAllInstVarNames [
+	^ super stonAllInstVarNames reject: [ :varName | varName = #usePharoSettings ]
+]
+
 { #category : #'instance creation' }
 PhLLaunchConfiguration class >> withImage: anImage [
 
@@ -90,10 +95,7 @@ PhLLaunchConfiguration >> defaultVm [
 
 { #category : #configuring }
 PhLLaunchConfiguration >> doNotUseSettings [
-	"Cannot skip Pharo settings before Pharo 3.0"
-	self image ensurePharoVersion >= '30'
-		ifTrue: [ usePharoSettings := false ].
-
+	self useSettings: false
 ]
 
 { #category : #comparing }
@@ -159,6 +161,14 @@ PhLLaunchConfiguration >> name: aString [
 { #category : #printing }
 PhLLaunchConfiguration >> printOn: aStream [
 	aStream << self class name << '(' << self name << ')'
+]
+
+{ #category : #configuring }
+PhLLaunchConfiguration >> useSettings: aBoolean [
+	"Cannot skip Pharo settings before Pharo 3.0"
+	self image ensurePharoVersion < '30' ifTrue: [ ^ self ].
+
+	usePharoSettings := aBoolean.
 ]
 
 { #category : #accessing }

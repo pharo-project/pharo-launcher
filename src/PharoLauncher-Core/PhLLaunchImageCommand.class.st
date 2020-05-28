@@ -85,7 +85,7 @@ PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 		iconProvider: self;
 		iconName: #smallDoItIcon;
 		"shortcutKey: $l meta, $b meta ;"
-			beDisabledWhenCantBeRun;
+		beDisabledWhenCantBeRun;
 		yourself
 ]
 
@@ -129,7 +129,7 @@ PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	| process launchConfig |
 	[ launchConfig := self launchConfigurationOfImage: aPhLImage.
-	useSettings ifFalse: [ launchConfig doNotUseSettings ].
+	launchConfig useSettings: useSettings.
 	process := aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert ].

@@ -133,9 +133,9 @@ PhLLaunchConfiguration >> isNullConfiguration [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : #testing }
 PhLLaunchConfiguration >> isUsingPharoSettings [
-	^ usePharoSettings
+	^ usePharoSettings ifNil: [ usePharoSettings := true ]
 ]
 
 { #category : #querying }

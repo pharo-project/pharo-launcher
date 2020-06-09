@@ -21,7 +21,7 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 9.0 - 32bit (development version, latest)',
-				#url : 'https://files.pharo.org/image/90/latest.zip'
+				#url : 'https://files.pharo.org/image/90/latest-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,

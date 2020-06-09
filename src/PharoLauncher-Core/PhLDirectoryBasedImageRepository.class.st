@@ -66,11 +66,10 @@ PhLDirectoryBasedImageRepository class >> location [
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository class >> location: directory [
-	self location asFileReference = directory
-		ifFalse: [ 
-			self migrateFrom: self location to: directory.
-			Location := directory.
-			self default contentsChanged ]
+	self location = directory ifTrue: [ ^ self ].
+	self migrateFrom: self location to: directory.
+	Location := directory.
+	self default contentsChanged
 ]
 
 { #category : #accessing }

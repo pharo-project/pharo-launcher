@@ -24,8 +24,12 @@ BaselineOfPharoLauncher >> baseline: spec [
 							loads: #('Core') ].
 		spec
 			package: #'PharoLauncher-80Compatibility'; 
+			package: #'PharoLauncher-Pharo9ToRemove-FileLocator'; 
+			package: #'PharoLauncher-STON-extension' with: [ 
+				spec requires: #(#'PharoLauncher-Pharo9ToRemove-FileLocator') ]; 
+			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Core' with: [
-				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility'). ];
+				spec requires: #(#'XMLParser' #'OSSubprocess' #'OSWinSubprocess' #'Ston' #'PharoLauncher-80Compatibility' #'PharoLauncher-STON-extension'). ];
 			package: #'PharoLauncher-Spec2' with: [ 
 				spec requires: #(#'PharoLauncher-Core' #Spec2). ];
 

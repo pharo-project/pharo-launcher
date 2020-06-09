@@ -62,7 +62,7 @@ PhLTemplateSources class >> launcherCoreDir [
 
 { #category : #accessing }
 PhLTemplateSources class >> launcherCoreDir: aFileUrl [
-	LauncherCoreDir := aFileUrl asFileReference.
+	LauncherCoreDir := aFileUrl asFileLocatorOrReference.
 	LauncherCoreDir ensureCreateDirectory
 ]
 

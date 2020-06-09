@@ -126,7 +126,7 @@ PhLVirtualMachine >> ensureExecutionRights [
 
 { #category : #setting }
 PhLVirtualMachine >> executable: aPathOrfileReference [
-	executableRef := aPathOrfileReference asFileReference
+	executableRef := aPathOrfileReference asFileLocatorOrReference
 ]
 
 { #category : #accessing }
@@ -207,7 +207,11 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 			vmBinaryRef := executables
 				detect: [ :fileRef | fileRef binaryReadStreamDo: [ :stream | (stream next: 4) = self class elfMagicNumber ] ]
 				ifNone: [ PhLExecutableNotFoundError signalKind: 'VM binary' inPath: aFolder fullName ] ]
-		ifFalse: [ executableRef := vmBinaryRef := executables detect: #isFile ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ]
+		ifFalse: [ executableRef := vmBinaryRef := executables 
+			detect: #isFile 
+			ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: aFolder fullName ] ].
+	executableRef := executableRef asFileLocatorOrReference.
+	vmBinaryRef := vmBinaryRef asFileLocatorOrReference.
 ]
 
 { #category : #initialization }

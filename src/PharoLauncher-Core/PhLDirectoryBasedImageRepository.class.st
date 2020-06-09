@@ -80,7 +80,7 @@ PhLDirectoryBasedImageRepository class >> locationString [
 
 { #category : #accessing }
 PhLDirectoryBasedImageRepository class >> locationString: aDirectoryString [
-	^ self location: aDirectoryString asFileReference
+	^ self location: aDirectoryString asFileLocatorOrReference
 ]
 
 { #category : #private }

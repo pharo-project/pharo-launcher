@@ -173,7 +173,7 @@ PhLVirtualMachineManager class >> vmStore [
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore: anObject [
-	vmStore := anObject asFileReference.
+	vmStore := anObject asFileLocatorOrReference.
 	vmStore ensureCreateDirectory
 ]
 
@@ -370,7 +370,7 @@ PhLVirtualMachineManager >> fetchVm [
 
 { #category : #accessing }
 PhLVirtualMachineManager >> imageFile: anImagePathOrFileReference [
-	imageFile := anImagePathOrFileReference asFileReference
+	imageFile := anImagePathOrFileReference asFileLocatorOrReference
 ]
 
 { #category : #accessing }

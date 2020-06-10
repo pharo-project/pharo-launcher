@@ -197,7 +197,8 @@ PhLVirtualMachine >> initializeExecutableRef [
 
 { #category : #initialization }
 PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
-	| executables |
+	| executables vmFolder |
+	vmFolder := aFolder asFileReference. "ensure we compare file references and not locators"
 	executables := aFolder allChildrenMatching: self class executableName.
 	Smalltalk os isUnix
 		ifTrue: [ "On linux, either the VM exe is at the top level or a bash script at the top level has to be used"

@@ -158,6 +158,11 @@ PhLPharoTemplateSources >> fetchSourcesFile [
 	
 ]
 
+{ #category : #accessing }
+PhLPharoTemplateSources >> file [
+	^ file
+]
+
 { #category : #private }
 PhLPharoTemplateSources >> lockDownloadedSourcesFileDuring: aBlock [
 	self downloadedSourcesFileLockFile exists
@@ -195,5 +200,7 @@ PhLPharoTemplateSources >> sourcesUrl [
 
 { #category : #actions }
 PhLPharoTemplateSources >> updateSourcesFile [
+	self downloadedSourcesFile exists ifFalse: [ ^ self "nothing to update" ].
+	
 	self replaceSourcesFileWithDownloaded
 ]

@@ -125,6 +125,22 @@ PhLTemplateSourcesTest >> testSourcesFileNotFetchIfPresentWhenCallingEnsureSourc
 ]
 
 { #category : #tests }
+PhLTemplateSourcesTest >> testSourcesFileNotUpdatedWhenDownloadedSourcesFileIsAbsent [
+	| sources sourcesFileModificationTime |
+	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
+	sourcesFileModificationTime := sourcesFile modificationTime.
+
+	sources := PhLPharoTemplateSources withFile: sourcesFile.
+	sources downloadedSourcesFile ensureDelete.
+	
+	sources updateSourcesFile.
+	
+	self 
+		assert: sources file modificationTime 
+		equals: sourcesFileModificationTime
+]
+
+{ #category : #tests }
 PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloadedSourcesDifferentFromSources [
 	| announcements sources |
 	

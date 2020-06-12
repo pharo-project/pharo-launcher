@@ -150,7 +150,7 @@ PhLImageTest >> testPhLImageSerialization [
 		writeStreamDo: [ :stream | stream nextPutAll: '80' ].
 	image launchConfigurations.
 	image defaultLaunchConfiguration vm.
-	image vmManager imageFile: FileLocator documents / 'Pharo' / 'images' / (image name , '.image'). "do not serialize a memory FS"
+	image vmManager imageFile: FileLocator launcherUserFilesLocation / 'images' / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.
 	

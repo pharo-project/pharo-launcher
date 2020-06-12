@@ -144,6 +144,29 @@ PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFil
 ]
 
 { #category : #tests }
+PhLImageTest >> testPhLImageSerialization [
+	| stonString |
+	(image file parent / image class versionFileName)
+		writeStreamDo: [ :stream | stream nextPutAll: '80' ].
+	image launchConfigurations.
+	image defaultLaunchConfiguration vm.
+	image vmManager imageFile: FileLocator documents / 'Pharo' / 'images' / (image name , '.image'). "do not serialize a memory FS"
+	
+	stonString := image stonString.
+	
+	"ensure we get a file locator"
+	self assert: (stonString includesSubstring: '#executableRef : FileLocator {
+					#origin : #launcherUserFilesLocation,
+					#path : RelativePath [ ''vms'', ''80-x64''').
+	self assert: (stonString includesSubstring: '#imageFile : FileLocator {
+			#origin : #launcherUserFilesLocation,
+			#path : RelativePath [ ''images'', ''foo.image'' ]
+		}').
+	"ensure VM manager is a reference"
+	self assert: (stonString includesSubstring: '#manager : @2,').
+]
+
+{ #category : #tests }
 PhLImageTest >> testPharoVersionIsSetWhenNoVersionInMetadataButPharoVersionFileExists [
 	| version |
 	

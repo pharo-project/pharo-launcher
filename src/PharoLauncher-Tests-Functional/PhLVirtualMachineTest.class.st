@@ -77,17 +77,19 @@ PhLVirtualMachineTest >> testCanGetPharoVersion [
 
 { #category : #tests }
 PhLVirtualMachineTest >> testSerialization [
-	| vm vmDirectory deserializedVm |
+	| vm vmDirectory deserializedVm vmBinaryRef |
 	
 	vmDirectory := (FileSystem memory root / '80-x64') ensureCreateDirectory.
 	(vmDirectory / PhLVirtualMachine executableName) 
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 	vm := PhLVirtualMachine directory: vmDirectory.
+	vmBinaryRef := (FileLocator documents / 'Pharo' / 'vms' / '80-x64' / 'pharo') asFileReference.
+	vm vmBinary: vmBinaryRef. "do not serialize a memory FS"
 
 	deserializedVm := STON fromString: (STON toStringPretty: vm).
 	
-	self assert: deserializedVm vmFolder class equals: FileReference.
-	self assert: deserializedVm vmFolder fullName equals: vmDirectory fullName.
+	self assert: deserializedVm vmFolder class equals: FileLocator.
+	self assert: deserializedVm vmFolder fullName equals: vmBinaryRef parent fullName.
 	self assert: deserializedVm id equals: vm id.
 	self assert: deserializedVm blessing equals: vm blessing.
 	self assert: deserializedVm archPath equals: vm archPath.

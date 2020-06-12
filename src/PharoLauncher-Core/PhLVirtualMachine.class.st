@@ -300,6 +300,24 @@ PhLVirtualMachine >> showInFolder [
 	PhLFileBrowser openOn: self vmStore / self id
 ]
 
+{ #category : #'ston persistence' }
+PhLVirtualMachine >> stonOn: stonWriter [
+	stonWriter writeObject: self streamMap: [ :mapWriter |
+		self class stonAllInstVarNames 
+			do: [ :each | | value | 
+				value := self stonValueOf: each.
+				value ifNotNil: [ mapWriter at: each put: value ] ] ].
+]
+
+{ #category : #'ston persistence' }
+PhLVirtualMachine >> stonValueOf: anInstVarName [
+	anInstVarName = #executableRef 
+		ifTrue: [ ^ executableRef asFileLocatorOrReference ].
+	anInstVarName = #vmBinaryRef 
+		ifTrue: [ ^ vmBinaryRef asFileLocatorOrReference ].
+	^ self instVarNamed: anInstVarName
+]
+
 { #category : #updating }
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"

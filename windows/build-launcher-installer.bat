@@ -20,6 +20,6 @@ MKDIR windows\Pharo-win
 MOVE Pharo windows\Pharo-win\Pharo
 
 cd windows
-REM "%ADVINST%AdvancedInstaller.com" /newproject $ADVINST_PROJECT -lang en -overwrite
-"%ADVINST%AdvancedInstaller.com" /execute "%ADVINST_PROJECT%" "%ADVINST_COMMAND_FILE%"
+REM "%ADVINST%\AdvancedInstaller.com" /newproject $ADVINST_PROJECT -lang en -overwrite
+"%ADVINST%\AdvancedInstaller.com" /execute "%ADVINST_PROJECT%" "%ADVINST_COMMAND_FILE%"
 MOVE pharo-launcher.msi ..\pharo-launcher-%VERSION%.msi

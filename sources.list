@@ -140,69 +140,15 @@ OrderedCollection [
 		#filterPattern : 'href="(Pharo-?9.0-SNAPSHOT.build.[^"]*.zip)"'
 	},
 	PhLTemplateSource {
-		#type : #URLGroup,
-		#name : 'Pharo IoT (remote development)',
-		#templates : [
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 9.0 - 32bit (development version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo9.0-32bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 9.0 - 64bit (development version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo9.0-64bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 8.0 - 32bit (last version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo8.0-32bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 8.0 - 64bit (last version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo8.0-64bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 7.0 - 32bit (old version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo7.0-32bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'TelePharo Pharo 7.0 - 64bit (old version, continuous build)',
-				#url : 'https://github.com/pharo-ide/TelePharo/releases/download/continuous/Pharo7.0-64bit-TelePharo.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 9.0 - 32bit (development version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo9.0-32bit-PharoThings.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 9.0 - 64bit (development version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo9.0-64bit-PharoThings.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 8.0 - 32bit (last version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo8.0-32bit-PharoThings.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 8.0 - 64bit (last version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo8.0-64bit-PharoThings.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 7.0 - 32bit (old version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo7.0-32bit-PharoThings.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'PharoThings Pharo 7.0 - 64bit (old version, continuous build)',
-				#url : 'https://github.com/pharo-iot/PharoThings/releases/download/continuous/Pharo7.0-64bit-PharoThings.zip'
-			}
-		]
+		#type : #HttpGithubRelease,
+		#name : 'Pharo IoT (PharoThings)',
+		#url : 'https://github.com/pharo-iot/PharoThings/releases',
+		#filterPattern : 'href="([^"]*Pharo[0-9][^"]*.zip)"'
+	},
+	PhLTemplateSource {
+		#type : #HttpGithubRelease,
+		#name : 'Pharo Remote Development (TelePharo)',
+		#url : 'https://github.com/pharo-ide/TelePharo/releases',
+		#filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"'
 	}
 ]

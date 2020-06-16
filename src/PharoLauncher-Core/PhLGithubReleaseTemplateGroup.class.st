@@ -20,7 +20,7 @@ PhLGithubReleaseTemplateGroup >> createTemplateFromHref: filePath addingTo: temp
 	| fileName urlFile |
 	fileName := self formatFileName: filePath.
 	urlFile := 'https://',(ZnUrl fromString: url asString )host ,'/', filePath.
-	templates	 add: (PhLRemoteTemplate name: fileName url: urlFile)
+	templates	 add: (PhLRemoteTemplate name: fileName url: (ZnUrl fromString: urlFile))
 ]
 
 { #category : #accessing }

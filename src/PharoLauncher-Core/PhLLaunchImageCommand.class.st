@@ -133,7 +133,8 @@ PhLLaunchImageCommand >> launchImage: aPhLImage [
 	process := aPhLImage launchWithConfiguration: launchConfig. ]
 		on: PhLError
 		do: [ :error | error uiAlert. ^ process ].
-	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check.
+	"Waiting for https://github.com/pharo-contributions/OSSubprocess/issues/58 to be fixed
+	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check."
 	self class quitOnLaunch
 		ifTrue: [ self quit ].
 	^ process

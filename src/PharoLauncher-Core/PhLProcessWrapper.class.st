@@ -204,7 +204,7 @@ PhLProcessWrapper >> visitMacOS: aPlatform [
 PhLProcessWrapper >> visitUnix: aPlatform [
 	process := OSSUnixSubprocess new
 		workingDirectory: workingDirectory;
-		redirectStderr;
+		"redirectStderr;" "Waiting for https://github.com/pharo-contributions/OSSubprocess/issues/58 to be fixed"
 		yourself.
 	isShellCommand 
 		ifTrue: [ | commandLine |

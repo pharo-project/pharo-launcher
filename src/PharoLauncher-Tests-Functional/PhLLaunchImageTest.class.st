@@ -6,7 +6,8 @@ Class {
 		'imageDir',
 		'vmStoreBackup',
 		'tempVmStoreFolder',
-		'resultDir'
+		'resultDir',
+		'process'
 	],
 	#category : #'PharoLauncher-Tests-Functional'
 }
@@ -15,6 +16,14 @@ Class {
 PhLLaunchImageTest >> pharo80HeadlessVm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x64-headless' ]
+		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
+		ifNone: [ self fail: 'cannot find VM!' ]
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> pharo80x86Vm [
+	^ PhLVirtualMachineManager new virtualMachines
+		detect: [ :each | each id = '80-x86' ]
 		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
 		ifNone: [ self fail: 'cannot find VM!' ]
 ]
@@ -55,15 +64,26 @@ PhLLaunchImageTest >> setUp [
 ]
 
 { #category : #running }
-PhLLaunchImageTest >> tearDown [
-	"imageDir ensureDeleteAll "
-
+PhLLaunchImageTest >> tearDown [ 
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	imageDir ensureDeleteAll.
 	resultDir ensureDeleteAll.
+	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	super tearDown
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64BitOnlyOS [
+	| image |
+	image := PhLOsXMojaveTestImage example32.
+	
+	self 
+		should: [ process := image launchWithConfiguration: nil ]
+		raise: PhLArchitectureError
+	
+
 ]
 
 { #category : #tests }
@@ -113,6 +133,24 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 	
 	PhLLaunchConfiguration launchInALoginShell: true.
 	self testCanLaunchImageWithNonAsciiCharacters.
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
+	| image config commandToEval |
+	image := PhLOsXMojaveTestImage example.
+	commandToEval := '"''' , resultDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
+	config := image defaultLaunchConfiguration.
+	config
+		vm: self pharo80x86Vm;
+		imageArguments: {'eval' . commandToEval}.
+	
+	self 
+		shouldnt: [ process := image launchWithConfiguration: config ]
+		raise: PhLArchitectureError
+	
+	
+
 ]
 
 { #category : #tests }

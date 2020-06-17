@@ -131,6 +131,13 @@ PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
 
+{ #category : #testing }
+PhLImage >> canBeLaunched [
+	^ self architecture = '32' 
+		ifTrue: [ self os canRun32bitApp ]
+		ifFalse: [ true "we do not manage the case where a 64-bit image want to be launched on a 32-bit OS"]
+]
+
 { #category : #accessing }
 PhLImage >> changesFile [
 	^ self file parent / self file basenameWithoutExtension , 'changes'
@@ -282,6 +289,10 @@ PhLImage >> launchConfigurations: aCollection [
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
+	
+	self canBeLaunched
+		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
+
 	architectureWarningEnabled := true.
 	continue := true.
 	[ [ | processWrapper|
@@ -336,6 +347,11 @@ PhLImage >> originTemplateUrl [
 	^ self originTemplate 
 		ifNotNil: [ :template | template url asString ] 
 		ifNil: [ #unknown ]
+]
+
+{ #category : #'private - accessing' }
+PhLImage >> os [
+	^ OSPlatform current
 ]
 
 { #category : #accessing }

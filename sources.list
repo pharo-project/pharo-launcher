@@ -138,17 +138,19 @@ OrderedCollection [
 		#name : 'Pharo 9.0 (development version)',
 		#url : 'https://files.pharo.org/image/90/',
 		#filterPattern : 'href="(Pharo-?9.0-SNAPSHOT.build.[^"]*.zip)"'
-	},
+	},	
 	PhLTemplateSource {
-		#type : #HttpGithubRelease,
+		#type : #HttpListing,
 		#name : 'Pharo IoT (PharoThings)',
 		#url : 'https://github.com/pharo-iot/PharoThings/releases',
-		#filterPattern : 'href="([^"]*Pharo[0-9][^"]*.zip)"'
+		#filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"',
+  		#templateNameFormat: '{6} ({5})'
 	},
-	PhLTemplateSource {
-		#type : #HttpGithubRelease,
+  	PhLTemplateSource {
+		#type : #HttpListing,
 		#name : 'Pharo Remote Development (TelePharo)',
 		#url : 'https://github.com/pharo-ide/TelePharo/releases',
-		#filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"'
-	}
+		#filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"',
+  		#templateNameFormat: '{6} ({5})'
+  	}
 ]

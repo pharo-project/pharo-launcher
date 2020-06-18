@@ -25,6 +25,7 @@ PhLRenameTemplateCommand >> execute [
 	| name template |
 	template := self templatesPresenter singleTemplate.
 	name := self newTemplateName.
+	name ifNil: [ ^ self "cancel" ].
 	
 	self templatesPresenter templateRepository rename: template to: name.
 	self templatesPresenter refresh. 

@@ -15,7 +15,8 @@ Class {
 		'templates',
 		'expanded',
 		'username',
-		'password'
+		'password',
+		'templateNameFormat'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -44,11 +45,6 @@ PhLTemplateSource class >> deprecatedDistributionsGroup [
 				self moose51 .
 				self moose50 };
 		yourself
-]
-
-{ #category : #types }
-PhLTemplateSource class >> httpGithubReleaseType [
-	^ #HttpGithubRelease
 ]
 
 { #category : #types }
@@ -288,13 +284,6 @@ PhLTemplateSource >> asBasicTemplateGroup [
 						yourself ].
 	type == self class cacheType 
 		ifTrue: [ ^ PhLDownloadedTemplateGroup named: name ].
-	type == self class httpGithubReleaseType
-		ifTrue: [ | pattern |
-					pattern := filterPattern ifNil: [ PhLGithubReleaseTemplateGroup defaultFilterPattern ].
-					^ PhLGithubReleaseTemplateGroup
-						name: name
-						url: url asZnUrl
-						filterPattern: pattern username: username password: password].
 		
 	self error: 'Group type not supported!'
 ]

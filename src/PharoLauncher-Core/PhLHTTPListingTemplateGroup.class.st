@@ -75,11 +75,11 @@ PhLHTTPListingTemplateGroup class >> subexpression [
 { #category : #private }
 PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templates [
 	| templateName urlFile |
-	templateNameFormat isNotNil
-		ifTrue: [templateName := templateNameFormat formatTemplateName: filename. 
-			urlFile := url clearPath / filename ]
-		ifFalse: [ templateName := filename copyUpToLast: $..
-			urlFile := url / filename ].
+	templateNameFormat 
+		ifNil: [ templateName := filename copyUpToLast: $..
+			urlFile := url / filename ]
+		ifNotNil: [ templateName := templateNameFormat formatTemplateName: filename. 
+			urlFile := url clearPath / filename ].
 	templates add: (PhLRemoteTemplate name: templateName url: urlFile)
 ]
 

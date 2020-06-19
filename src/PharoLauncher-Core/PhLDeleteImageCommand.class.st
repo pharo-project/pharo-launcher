@@ -31,8 +31,9 @@ PhLDeleteImageCommand >> execute [
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer ifFalse: [ ^ self ].
-	
-	self imagesPresenter imageRepository deleteImages: images.
+
+	UIManager default showWaitCursorWhile:
+		[ self imagesPresenter imageRepository deleteImages: images ].
 ]
 
 { #category : #initialization }

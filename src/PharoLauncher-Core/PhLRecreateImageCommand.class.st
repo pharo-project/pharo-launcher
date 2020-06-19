@@ -5,7 +5,7 @@ It will first drop the current local image and fetch a fresh version of the temp
 Class {
 	#name : #PhLRecreateImageCommand,
 	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
@@ -32,7 +32,9 @@ PhLRecreateImageCommand >> askConfirmation [
 PhLRecreateImageCommand >> execute [
 	self askConfirmation
 		ifTrue: [ self imagesPresenter selectedImages 
-						do: [ :image |	self imagesPresenter imageRepository recreateImage: image ] ]
+						do: [ :image |	
+								UIManager default showWaitCursorWhile:
+									[ self imagesPresenter imageRepository recreateImage: image ] ] ]
 ]
 
 { #category : #initialization }

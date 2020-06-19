@@ -20,8 +20,9 @@ PhLRelocateImageDirectoryCommand >> canBeExecuted [
 PhLRelocateImageDirectoryCommand >> execute [
 	self canBeExecuted
 		ifTrue: [ 
-			self relocate.
-			self informMigrationDone ]
+			UIManager default showWaitCursorWhile:
+				[ self relocate.
+				self informMigrationDone ] ]
 		ifFalse: [ self informManualMigrationNeeded ]
 ]
 

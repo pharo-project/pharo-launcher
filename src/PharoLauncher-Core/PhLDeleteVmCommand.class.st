@@ -27,8 +27,9 @@ PhLDeleteVmCommand >> execute [
 		confirm.
 	answer ifFalse: [ ^ self ].
 	
-	vms do: #removeFromSystem.
-	self vmsPresenter refresh.
+	UIManager default showWaitCursorWhile:
+		[ vms do: #removeFromSystem.
+		self vmsPresenter refresh. ]
 ]
 
 { #category : #initialization }

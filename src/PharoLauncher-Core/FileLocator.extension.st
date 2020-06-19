@@ -1,8 +1,18 @@
 Extension { #name : #FileLocator }
 
 { #category : #'*PharoLauncher-Core' }
+FileLocator class >> launcherImagesLocation [
+	^ self origin: #launcherImagesLocation
+]
+
+{ #category : #'*PharoLauncher-Core' }
 FileLocator class >> launcherUserFilesLocation [
 	^ self origin: #launcherUserFilesLocation
+]
+
+{ #category : #'*PharoLauncher-Core' }
+FileLocator class >> launcherVMsLocation [
+	^ self origin: #launcherVMsLocation
 ]
 
 { #category : #'*PharoLauncher-Core' }

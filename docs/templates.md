@@ -101,6 +101,18 @@ Here is an example:
 	}
 ```
 filterPattern is given as parameter to `RxParser>>#parse:`. The filter pattern must have parenthesis because this is what we want to extract for each match. For more information on the regex, see [Pharo by example book, regex chapter](https://ci.inria.fr/pharo-contribution/job/UpdatedPharoByExample/lastSuccessfulBuild/artifact/book-result/Regex/Regex.html).
+There is also an option to specify the format of the template name that will be used into Pharo Launcher. It is usefull when the url has many segments.
+Here is an example:
+```json
+    PhLTemplateSource {
+        #type : #HttpListing,
+        #name : 'Pharo Remote Development (TelePharo)',
+        #url : 'https://github.com/pharo-ide/TelePharo/releases',
+        #filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"',
+        #templateNameFormat: '{6} ({5})'
+    }
+```
+Numbers {X} between brackets will be replaced with the value of the segment at position X in the URL path segments (ex: '{6} ({5})' with the url segments '/pharo-ide/TelePharo/releases/download/v0.4.2/Pharo7.0-32bit-TelePharo.zip' will give 'Pharo7.0-32bit-TelePharo (v0.4.2)'). Note that the extension of the last segment is automatically dropped.
 
 You can also specify a server protected by a login / password as following:
 ```json

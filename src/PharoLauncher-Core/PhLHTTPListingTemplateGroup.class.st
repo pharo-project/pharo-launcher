@@ -6,7 +6,8 @@ Class {
 	#superclass : #PhLAbstractTemplateGroup,
 	#instVars : [
 		'url',
-		'name'
+		'name',
+		'templateNameFormat'
 	],
 	#classVars : [
 		'RegexCache'
@@ -32,6 +33,15 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPa
 	^ self new
 		setName: aString url: anUrl filterPattern: aPatternString;
 		yourself
+]
+
+{ #category : #'instance creation' }
+PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPatternString templateNameFormat: aNameFormat username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl filterPattern: aPatternString)
+		  username: anotherString;
+		  password: yetAnotherString;
+		  templateNameFormat: aNameFormat;
+		  yourself
 ]
 
 { #category : #'instance creation' }
@@ -64,9 +74,13 @@ PhLHTTPListingTemplateGroup class >> subexpression [
 
 { #category : #private }
 PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templates [
-	| templateName |
-	templateName := filename copyUpToLast: $..
-	templates add: (PhLRemoteTemplate name: templateName url: url / filename)
+	| templateName urlFile |
+	templateNameFormat isNotNil
+		ifTrue: [templateName := templateNameFormat formatTemplateName: filename. 
+			urlFile := url clearPath / filename ]
+		ifFalse: [ templateName := filename copyUpToLast: $..
+			urlFile := url / filename ].
+	templates add: (PhLRemoteTemplate name: templateName url: urlFile)
 ]
 
 { #category : #accessing }
@@ -111,6 +125,16 @@ PhLHTTPListingTemplateGroup >> setName: aName url: anUrl filterPattern: aPattern
 { #category : #accessing }
 PhLHTTPListingTemplateGroup >> subexpression [
 	^ self class subexpression
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> templateNameFormat [
+	^ templateNameFormat
+]
+
+{ #category : #accessing }
+PhLHTTPListingTemplateGroup >> templateNameFormat: anObject [
+	templateNameFormat := anObject
 ]
 
 { #category : #accessing }

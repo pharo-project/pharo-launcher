@@ -15,7 +15,8 @@ Class {
 		'templates',
 		'expanded',
 		'username',
-		'password'
+		'password',
+		'templateNameFormat'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -274,7 +275,7 @@ PhLTemplateSource >> asBasicTemplateGroup [
 					^ PhLHTTPListingTemplateGroup
 						name: name
 						url: url asZnUrl
-						filterPattern: pattern username: username password: password].
+						filterPattern: pattern templateNameFormat: templateNameFormat username: username password: password].
 	type == self class jenkinsServerType 
 		ifTrue: [ ^ PhLJenkins2Server name: name url: url asZnUrl username: username password: password ].
 	type == self class urlGroupType
@@ -353,6 +354,16 @@ PhLTemplateSource >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: name;
 		nextPut: $)
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> templateNameFormat [
+	^ templateNameFormat
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> templateNameFormat: anObject [
+	templateNameFormat := anObject
 ]
 
 { #category : #accessing }

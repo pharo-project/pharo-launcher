@@ -2,7 +2,7 @@
 Visitor used to configure the process to launch image dependending on the target OS platform.
 "
 Class {
-	#name : #PhLImageProcessConfigurator,
+	#name : #PhLLaunchImageProcessConfigurator,
 	#superclass : #OSPlatformVisitor,
 	#instVars : [
 		'process',
@@ -13,14 +13,14 @@ Class {
 }
 
 { #category : #'private - unix' }
-PhLImageProcessConfigurator >> cleanLDLibraryPath [
+PhLLaunchImageProcessConfigurator >> cleanLDLibraryPath [
 	^ (self currentLDLibraryPaths
 		reject: [ :path | path = FileLocator vmDirectory pathString ])
 
 ]
 
 { #category : #private }
-PhLImageProcessConfigurator >> configurePotentialInitializationScript [
+PhLLaunchImageProcessConfigurator >> configurePotentialInitializationScript [
 	launchConfiguration image shouldRunInitializationScript 
 		ifFalse: [ ^ self ].
 		
@@ -32,7 +32,7 @@ PhLImageProcessConfigurator >> configurePotentialInitializationScript [
 ]
 
 { #category : #visiting }
-PhLImageProcessConfigurator >> configureVm [
+PhLLaunchImageProcessConfigurator >> configureVm [
 	super visit.	"platform specific behavior"
 	launchConfiguration vm isHeadless
 		ifTrue: [ process addArgument: launchConfiguration vm class headlessOptionString ].
@@ -41,40 +41,40 @@ PhLImageProcessConfigurator >> configureVm [
 ]
 
 { #category : #'private - unix' }
-PhLImageProcessConfigurator >> currentLDLibraryPaths [
+PhLLaunchImageProcessConfigurator >> currentLDLibraryPaths [
 	^ (OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ])
 		substrings: ':'
 ]
 
 { #category : #'private - unix' }
-PhLImageProcessConfigurator >> exportLDLibraryPathCommandWith: vmDirectoryPath [
+PhLLaunchImageProcessConfigurator >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
 		($: join: ((self cleanLDLibraryPath copyWithFirst: vmDirectoryPath) collect: #surroundedBySingleQuotes))
 
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> imageFile [
+PhLLaunchImageProcessConfigurator >> imageFile [
 	^ launchConfiguration image imageFile
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguration [
+PhLLaunchImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguration [
 	launchConfiguration := aPhLLaunchConfiguration
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> launchInALoginShell: anObject [
+PhLLaunchImageProcessConfigurator >> launchInALoginShell: anObject [
 	launchInALoginShell := anObject
 ]
 
 { #category : #accessing }
-PhLImageProcessConfigurator >> usePharoSettings [
+PhLLaunchImageProcessConfigurator >> usePharoSettings [
 	^ launchConfiguration isUsingPharoSettings
 ]
 
 { #category : #visiting }
-PhLImageProcessConfigurator >> visit [
+PhLLaunchImageProcessConfigurator >> visit [
 	process := PhLProcessWrapper new.
 	process workingDirectory: self imageFile parent pathString.
 	self configureVm.
@@ -89,7 +89,7 @@ PhLImageProcessConfigurator >> visit [
 ]
 
 { #category : #visiting }
-PhLImageProcessConfigurator >> visitGeneric: aPlatform [
+PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
 	launchInALoginShell
 		ifTrue: [ process loginShellCommand.
 					process addArgument: self vmPath surroundedByDoubleQuotes ]
@@ -97,7 +97,7 @@ PhLImageProcessConfigurator >> visitGeneric: aPlatform [
 ]
 
 { #category : #visiting }
-PhLImageProcessConfigurator >> visitUnix: aPlatform [
+PhLLaunchImageProcessConfigurator >> visitUnix: aPlatform [
 	
 	launchInALoginShell
 		ifTrue: [ process loginShellCommand ]
@@ -109,11 +109,11 @@ PhLImageProcessConfigurator >> visitUnix: aPlatform [
 ]
 
 { #category : #private }
-PhLImageProcessConfigurator >> vmDirectoryPath [
+PhLLaunchImageProcessConfigurator >> vmDirectoryPath [
 	^ self vmPath asFileReference parent fullName
 ]
 
 { #category : #private }
-PhLImageProcessConfigurator >> vmPath [
+PhLLaunchImageProcessConfigurator >> vmPath [
 	^ launchConfiguration vm executablePath
 ]

@@ -142,7 +142,7 @@ PhLLaunchConfiguration >> isUsingPharoSettings [
 PhLLaunchConfiguration >> launchProcess [
 	self vm isValidAfterUpdate
 		ifFalse: [ PhLMissingVirtualMachineError signalVm: self vm ].
-	^ PhLImageProcessConfigurator new 
+	^ PhLLaunchImageProcessConfigurator new 
 		launchConfiguration: self;
 		launchInALoginShell: self class launchInALoginShell;
 		visit.

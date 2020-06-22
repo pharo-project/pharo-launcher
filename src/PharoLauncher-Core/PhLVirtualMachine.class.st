@@ -312,9 +312,9 @@ PhLVirtualMachine >> stonOn: stonWriter [
 { #category : #'ston persistence' }
 PhLVirtualMachine >> stonValueOf: anInstVarName [
 	anInstVarName = #executableRef 
-		ifTrue: [ ^ executableRef asFileLocatorOrReference ].
+		ifTrue: [ ^ executableRef ifNotNil: [ executableRef asFileLocatorOrReference ] ].
 	anInstVarName = #vmBinaryRef 
-		ifTrue: [ ^ vmBinaryRef asFileLocatorOrReference ].
+		ifTrue: [ ^ vmBinaryRef ifNotNil: [ vmBinaryRef asFileLocatorOrReference ] ].
 	^ self instVarNamed: anInstVarName
 ]
 

@@ -3,20 +3,20 @@ Extension { #name : #PlatformResolver }
 { #category : #'*PharoLauncher-Core' }
 PlatformResolver >> launcherImagesLocation [
 	<origin>
-	^ PhLDirectoryBasedImageRepository location
+	^ PhLDirectoryBasedImageRepository location resolve
 ]
 
 { #category : #'*PharoLauncher-Core' }
 PlatformResolver >> launcherUserFilesLocation [
 	"Where to put the user files (images, virtual machines) for the pharo launcher"
 	<origin>
-	^ self documents / 'Pharo'
+	^ self documents resolve / 'Pharo'
 ]
 
 { #category : #'*PharoLauncher-Core' }
 PlatformResolver >> launcherVMsLocation [
 	<origin>
-	^ PhLVirtualMachineManager vmStore
+	^ PhLVirtualMachineManager vmStore resolve
 ]
 
 { #category : #'*PharoLauncher-Core' }

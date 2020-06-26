@@ -63,3 +63,17 @@ Then, use signtool:
 signtool.exe sign /f signing_certificate.p12 /p password app.exe
 ```
 We need to sgin both the executable and the generated installer.
+
+# Debugging
+## OS X
+On OS X, the keychain *macos-build* we create by command line does not appear in KeychainAccess.app. To see it in the KeychainAccess, we need to add it:
+```bash
+security list-keychains -d user -s macos-build.keychain
+
+```
+Then you can check it succeeded with
+ ```bash
+ security list-keychains                                
+    "/Users/ci/Library/Keychains/macos-build.keychain-db"
+    "/Library/Keychains/System.keychain"
+```

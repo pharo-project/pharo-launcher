@@ -82,10 +82,14 @@ function sign_mac_version() {
   # Set up keychain
   security delete-keychain "${keychain_name}" || true
   security create-keychain -p ${keychain_password} "${keychain_name}"
+  # add keychain to the search list
+  security list-keychains -d user -s "${keychain_name}"
   security default-keychain -s "${keychain_name}"
   security unlock-keychain -p ${keychain_password} "${keychain_name}"
   security set-keychain-settings -t 3600 -u "${keychain_name}"
+  # Importing certificate
   security import "${path_cer}" -k ~/Library/Keychains/"${keychain_name}" -T /usr/bin/codesign
+  # Importing identity
   security import "${path_p12}" -k ~/Library/Keychains/"${keychain_name}" -P "${cert_pass}" -T /usr/bin/codesign
   # Set ACL on keychain. To avoid to get codesign to yield an errSecInternalComponent you need to get the partition list (ACLs) correct.
   # See https://code-examples.net/en/q/1344e6a

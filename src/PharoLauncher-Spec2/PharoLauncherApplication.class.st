@@ -82,7 +82,7 @@ PharoLauncherApplication class >> initializationScriptsDirectory [
 { #category : #accessing }
 PharoLauncherApplication class >> initializationScriptsDirectory: aFileUrl [
 	| directory |
-	directory := aFileUrl asFileLocatorOrReference.
+	directory := aFileUrl asFileReference.
 	self default scriptsDirectory: directory.
 	^ directory ensureCreateDirectory
 	

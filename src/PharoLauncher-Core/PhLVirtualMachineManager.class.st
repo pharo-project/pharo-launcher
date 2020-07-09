@@ -173,7 +173,7 @@ PhLVirtualMachineManager class >> vmStore [
 
 { #category : #accessing }
 PhLVirtualMachineManager class >> vmStore: anObject [
-	vmStore := anObject asFileLocatorOrReference.
+	vmStore := anObject asFileReference.
 	vmStore ensureCreateDirectory
 ]
 

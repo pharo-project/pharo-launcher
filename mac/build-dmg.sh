@@ -59,10 +59,11 @@ fi
 
 # Sign the app
 function sign_mac_version() {
-  # This function expects that following environment varialbes are available:
+  # This function expects that following environment variables are available:
   # - PHARO_CERT_PASSWORD
   # - PHARO_SIGN_IDENTITY
-  local key_chain=macos-build.keychain
+  local keychain_name=macos-ci-build.keychain
+  local keychain_password=ci
   local app_dir=$1
   local cert_pass=${PHARO_CERT_PASSWORD}
   local pharo_sign_password=${PHARO_CERT_PASSWORD}
@@ -79,23 +80,30 @@ function sign_mac_version() {
 
   echo "Signing app bundle..."
   # Set up keychain
-  security delete-keychain "${key_chain}" || true
-  security create-keychain -p ci "${key_chain}"
-  security default-keychain -s "${key_chain}"
-  security unlock-keychain -p ci "${key_chain}"
-  security set-keychain-settings -t 3600 -u "${key_chain}"
-  security import "${path_cer}" -k ~/Library/Keychains/"${key_chain}" -T /usr/bin/codesign
-  security import "${path_p12}" -k ~/Library/Keychains/"${key_chain}" -P "${cert_pass}" -T /usr/bin/codesign
+  security delete-keychain "${keychain_name}" || true
+  security create-keychain -p ${keychain_password} "${keychain_name}"
+  # add keychain to the search list
+  security list-keychains -d user -s "${keychain_name}"
+  security default-keychain -s "${keychain_name}"
+  security unlock-keychain -p ${keychain_password} "${keychain_name}"
+  security set-keychain-settings -t 3600 -u "${keychain_name}"
+  # Importing certificate
+  security import "${path_cer}" -k ~/Library/Keychains/"${keychain_name}" -T /usr/bin/codesign
+  # Importing identity
+  security import "${path_p12}" -k ~/Library/Keychains/"${keychain_name}" -P "${cert_pass}" -T /usr/bin/codesign
+  # Set ACL on keychain. To avoid to get codesign to yield an errSecInternalComponent you need to get the partition list (ACLs) correct.
+  # See https://code-examples.net/en/q/1344e6a
+  security set-key-partition-list -S apple-tool:,apple: -s -k ${keychain_password} "${keychain_name}"
   # debug
   echo ${sign_identity} >> "id.txt"
   # Invoke codesign
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
-    codesign -s "${sign_identity}" --keychain "${key_chain}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
+    codesign -s "${sign_identity}" --keychain "${keychain_name}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
   fi
-  codesign -s "${sign_identity}"  --keychain "${key_chain}" --force --deep "${app_dir}"
+  codesign -s "${sign_identity}"  --keychain "${keychain_name}" --force --deep "${app_dir}"
   # Remove sensitive files again
   rm -rf "${path_cer}" "${path_p12}"
-  security delete-keychain "${key_chain}"
+  security delete-keychain "${keychain_name}"
 }
 
 if [ "$SHOULD_SIGN" = true ] ; then

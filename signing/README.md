@@ -47,6 +47,13 @@ openssl aes-256-cbc -k "${pharo_sign_password}" -in pharo-windows-certificate.p1
 The password needed to decrypt them will be stored in an environment variable (secured) on the CI tool (travis or Jenkins).
 
 # How to sign on OS X?
+Some links:
+- [macOS Code Signing In Depth](https://developer.apple.com/library/archive/technotes/tn2206/_index.html)
+- [Distribute outside the Mac App Store (macOS)](https://help.apple.com/xcode/mac/current/#/dev033e997ca)
+- [Troubleshooting Failed Signature Verification](https://developer.apple.com/library/archive/technotes/tn2318/_index.html#//apple_ref/doc/uid/DTS40013777-CH1-TNTAG2)
+- [security / codesign in Sierra: Keychain ignores access control settings and UI-prompts for permission](https://stackoverflow.com/questions/39868578/security-codesign-in-sierra-keychain-ignores-access-control-settings-and-ui-p/41220140#41220140)
+
+
 You need to use codesign (shipped with Xcode):
 ```
 codesign -s "${sign_identity}" --keychain "${key_chain}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*

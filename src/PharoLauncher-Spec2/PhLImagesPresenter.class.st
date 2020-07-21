@@ -106,6 +106,19 @@ PhLImagesPresenter class >> defaultSpec [
 		yourself
 ]
 
+{ #category : #'api - actions' }
+PhLImagesPresenter >> actionFilter [
+	^ imageFilter
+		takeKeyboardFocus
+]
+
+{ #category : #'api - actions' }
+PhLImagesPresenter >> actionLaunch [
+	| cmd |
+	cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
+	cmd execute
+]
+
 { #category : #initialization }
 PhLImagesPresenter >> connectPresenters [
 
@@ -170,9 +183,8 @@ PhLImagesPresenter >> initializePresenters [
 	imageTable := self newTable
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
-		whenActivatedDo: [ | cmd |
-			cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
-			cmd execute ];
+		whenActivatedDo: [ self actionLaunch ];
+		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
 		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		addColumn:
 			((SpStringTableColumn title: 'Name' evaluated: #name)
@@ -216,6 +228,9 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	aWindowPresenter toolBar 
 		addItemLeft: self newLaunchConfigurationDropList afterIndex: 1.
+	aWindowPresenter 
+		bindKeyCombination: $f command
+		toAction: [ self actionFilter ]
 ]
 
 { #category : #initialization }

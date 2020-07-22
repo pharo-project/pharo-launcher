@@ -33,3 +33,14 @@ PhLImportImageCommandTest >> testCanImportAnImage [
 		assertCollection: images
 		hasSameElements: #('TestImage' 'foo').
 ]
+
+{ #category : #tests }
+PhLImportImageCommandTest >> testImportNonExistingImage [
+	| command |
+	command := PhLImportImageCommand new.
+	command context: presenter.
+	presenter := presenter
+		requestAnswer: presenter fileSystem / 'tmp' / 'does_not_exists.image'.
+	self should: [ command execute ] raise: FileDoesNotExistException
+
+]

@@ -30,7 +30,7 @@ PhLVirtualMachine class >> directory: aFileReference [
 { #category : #'instance creation' }
 PhLVirtualMachine class >> directory: aFileReference private: isPrivateVm [
 	| targetClass |
-	targetClass := isPrivateVm ifTrue: [ PhLPrivateVirtualMachine ] ifFalse: [ self ].
+	targetClass := self allSubclasses detect: [ :cls | cls isClassForDirectory: aFileReference private: isPrivateVm ] ifNone: [ self ].
 	^ targetClass new 
 		initializeOn: aFileReference;
 		yourself 
@@ -58,6 +58,11 @@ PhLVirtualMachine class >> id: aString [
 		id: aString;
 		initializeExecutableRef;
 		yourself
+]
+
+{ #category : #testing }
+PhLVirtualMachine class >> isClassForDirectory: aFileReference private: isPrivateVm [
+	self subclassResponsibility
 ]
 
 { #category : #comparing }

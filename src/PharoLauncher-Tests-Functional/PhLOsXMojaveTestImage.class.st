@@ -8,6 +8,11 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
+{ #category : #testing }
+PhLOsXMojaveTestImage class >> isClassForLocation: aFileReference [ 
+	^ false
+]
+
 { #category : #'private - accessing' }
 PhLOsXMojaveTestImage >> os [
 	^ TestMacOSXMojavePlatform new

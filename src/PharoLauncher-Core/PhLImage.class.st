@@ -33,6 +33,13 @@ Class {
 }
 
 { #category : #accessing }
+PhLImage class >> classForLocation: imageFileReference [
+	^ self allSubclasses
+		detect: [ :cls | cls isClassForLocation: imageFileReference ]
+		ifNone: [ self ]
+]
+
+{ #category : #accessing }
 PhLImage class >> descriptionFileName [
 	^ 'description.txt'
 ]
@@ -60,21 +67,15 @@ PhLImage class >> example32 [
 ]
 
 { #category : #'instance creation' }
-PhLImage class >> imageFromMetadata: imageFileReference [
+PhLImage class >> imageFromMetadata: imageFileReference ifAbsent: aBlock [
 	"Will recreate the image object from its STON serialized version if possible"
 
-	imageFileReference parent / self metadataFileName
-		readStreamDo: [ :stream | 
-			| object |
-			object := (self stonReader on: stream) next.
-			(object isKindOf: PhLImage) ifTrue: [ ^ object ].
-			(object isKindOf: Dictionary)
-				ifTrue: [ "old metadata file format"
-					^ self new
-						privOriginTemplate: (object at: #template);
-						yourself ].
-			PhLError signal: 'Unrecognized metadata format' ]
-		ifAbsent: [ ^ self new ]
+	^ imageFileReference parent / self metadataFileName
+			readStreamDo: [ :stream | 
+				| object |
+				object := (self stonReader on: stream) next.
+				object asPhLImage ]
+			ifAbsent: aBlock
 ]
 
 { #category : #initialization }
@@ -82,9 +83,18 @@ PhLImage class >> initialize [
 	SessionManager default registerUserClassNamed: self name
 ]
 
+{ #category : #testing }
+PhLImage class >> isClassForLocation: imageFileReference [
+		self subclassResponsibility
+]
+
 { #category : #'instance creation' }
 PhLImage class >> location: imageFileReference [
-	^ (self imageFromMetadata: imageFileReference)
+	| instance |
+	instance := self
+		imageFromMetadata: imageFileReference
+		ifAbsent: [ (self classForLocation: imageFileReference) new ].
+	^ instance
 		setLocation: imageFileReference;
 		yourself
 ]
@@ -131,6 +141,11 @@ PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
 
+{ #category : #converting }
+PhLImage >> asPhLImage [
+	^ self
+]
+
 { #category : #testing }
 PhLImage >> canBeLaunched [
 	^ self architecture = '32' 
@@ -165,6 +180,11 @@ PhLImage >> computePharoVersion [
 	self computeArchitecture.
 	self serializeMetadata.
 	^ pharoVersion
+]
+
+{ #category : #accessing }
+PhLImage >> defaultArguments [
+	^ OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -208,10 +228,11 @@ PhLImage >> doNotRunInitializationScript [
 
 { #category : #computing }
 PhLImage >> ensurePharoVersion [
-	(self pharoVersion isNil or: [ self pharoVersion = '' ])
-		ifFalse: [ self vmManager imageVersion: self pharoVersion.
-					^ self pharoVersion ].
-	^ self computePharoVersion.
+	^ (self pharoVersion isNil or: [ self pharoVersion = '' ])
+			ifFalse: [ 
+				self vmManager imageVersion: self pharoVersion.
+				self pharoVersion ]
+			ifTrue: [ self computePharoVersion ]
 	
 ]
 

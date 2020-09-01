@@ -125,7 +125,7 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	image := anImage.
 	name := 'new configuration...'.
 	usePharoSettings := true.
-	imageArguments := OrderedCollection new.
+	imageArguments := anImage defaultArguments.
 ]
 
 { #category : #testing }

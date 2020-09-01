@@ -7,8 +7,13 @@ I represent a Pharo virtual machine used to determine an image phar version by r
 Class {
 	#name : #PhLPrivateVirtualMachine,
 	#superclass : #PhLVirtualMachine,
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
+
+{ #category : #testing }
+PhLPrivateVirtualMachine class >> isClassForDirectory: aFileReference private: isPrivateVm [
+	^ isPrivateVm
+]
 
 { #category : #querying }
 PhLPrivateVirtualMachine >> downloadUrl [

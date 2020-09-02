@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #testing }
-PhLPrivateVirtualMachine class >> isClassForDirectory: aFileReference private: isPrivateVm [
+PhLPrivateVirtualMachine class >> isSubclassForDirectory: aFileReference private: isPrivateVm [
 	^ isPrivateVm
 ]
 

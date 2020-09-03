@@ -1,5 +1,24 @@
 "
-I represent a Pharo virtual machine that can be used to run image.
+I represent a Pharo (or other) virtual machine that can be used to run an image.
+
+# Filesystem Location
+For standard Pharo VMs, this is handled automatically and users should not have to be concerned about the details. However, the name of my executable's root folder must follow an exact pattern because this is how I am matched to images. My custom subclasses will have to know where and how to install their files. My executable is kept in the Launcher VM folder, in a root folder of the form `{prefix}{version}{architecture}`, where:
+- {prefix} - Standard Pharo VMs have no prefix, which is available and used to distinguish custom images/VMs. For example, Gtoolkit uses 'gt-'.
+- {version} - Standard Pharo VMs use the image version without dots e.g. '90' for Pharo 9.0. Custom classes can use any convention they wish, e.g. Gtoolkit keeps the dots e.g. '0.8.83' for Gtoolkit 0.8.83.
+- {architecture} - one of #('x64', 'x86')
+
+Three folder naming examples:
+- 64-bit: For Pharo 9.0 64-bit, I would be in the `path/to/vms/90-x64` folder
+- 32-bit: For Pharo 8.0 32-bit, I would be in the `path/to/vms/80-x86` folder
+- Custom VM: For GToolkit 0.8.83, I would be in the `path/to/vms/gt-0.8.83-x64` folder
+
+#Customized VM Types
+Subclassing me allows you to use non-standard Pharo VMs, customizing things like the `#executableName`. Also, pick a prefix as described above in 'Filesystem Location'.
+
+##Setup
+Currently, custom VMs can't be downloaded via Launcher due to differences in URL and other conventions, although this could probably be implemented if someone was interested enough. To install VMs within Launcher
+1. Download the VM
+2. Put the VM, including all libraries and other needed resources - like the sources file - into a folder as described above in 'Filesystem Location'
 
 executableRef is a reference to the script/binary to actually use to launch images.
 vmBinaryRef is a reference to the vm binary (not a bash file).
@@ -30,7 +49,7 @@ PhLVirtualMachine class >> directory: aFileReference [
 { #category : #'instance creation' }
 PhLVirtualMachine class >> directory: aFileReference private: isPrivateVm [
 	| targetClass |
-	targetClass := self allSubclasses detect: [ :cls | cls isClassForDirectory: aFileReference private: isPrivateVm ] ifNone: [ self ].
+	targetClass := self allSubclasses detect: [ :cls | cls isSubclassForDirectory: aFileReference private: isPrivateVm ] ifNone: [ self ].
 	^ targetClass new 
 		initializeOn: aFileReference;
 		yourself 
@@ -61,8 +80,16 @@ PhLVirtualMachine class >> id: aString [
 ]
 
 { #category : #testing }
-PhLVirtualMachine class >> isClassForDirectory: aFileReference private: isPrivateVm [
-	self subclassResponsibility
+PhLVirtualMachine class >> isSubclassForDirectory: aFileReference private: isPrivateVm [
+
+	^ isPrivateVm not and: [ aFileReference basename beginsWith: self versionPrefix ]
+]
+
+{ #category : #accessing }
+PhLVirtualMachine class >> versionPrefix [
+	"See class comment, 'Filesystem Location' section"
+
+	^ ''
 ]
 
 { #category : #comparing }

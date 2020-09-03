@@ -9,7 +9,7 @@ Class {
 }
 
 { #category : #testing }
-PhLOsXMojaveTestImage class >> isClassForLocation: aFileReference [ 
+PhLOsXMojaveTestImage class >> isSubclassForLocation: aFileReference [ 
 	^ false
 ]
 

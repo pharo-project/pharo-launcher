@@ -36,17 +36,21 @@ ClapListVMs class >> outputListVMs [
 
 { #category : #accessing }
 ClapListVMs >> initialize [
-
+   repository := PhLVirtualMachineManager new.
 	stream := VTermOutputDriver stdout.
 ]
 
 { #category : #'as yet unclassified' }
 ClapListVMs >> outputListVirtualMachines [
    | virtualMachinesList |
-   virtualMachinesList := PhLVirtualMachineManager new. 
-   virtualMachinesList := virtualMachinesList availableVirtualMachines values.
+   virtualMachinesList := repository availableVirtualMachines values.
    virtualMachinesList do: [ :aVM | stream nextPutAll: aVM asString].
   
+]
+
+{ #category : #accessing }
+ClapListVMs >> repository: anObject [ 
+	repository := anObject
 ]
 
 { #category : #accessing }

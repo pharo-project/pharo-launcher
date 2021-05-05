@@ -4,6 +4,9 @@ Usefull only to run the tests. Indeed each users have not the same Images on the
 Class {
 	#name : #PhLMockImageRepository,
 	#superclass : #Object,
+	#instVars : [
+		'images'
+	],
 	#category : #'PharoLauncher-CLI'
 }
 
@@ -14,15 +17,10 @@ PhLMockImageRepository >> add: aString [
 
 { #category : #accessing }
 PhLMockImageRepository >> images [
-
-  ^ OrderedCollection streamContents: [ :s | s nextPut: (PhLImage location: 'asdsadaasdsad/Pharo 8.0 - 64bit (stable).image' asFileReference )]
+   ^ images
 ]
 
 { #category : #accessing }
-PhLMockImageRepository >> moreImages [
-  | tempMockImage |
-  tempMockImage := OrderedCollection new.
-  tempMockImage add: 'blabal'.
-  ^ OrderedCollection streamContents: [ :s | s nextPut: (PhLImage location: 'asdsadaasdsad/Pharo 8.0 - 64bit (stable).image' asFileReference ).
-	                                          s nextPut: (PhLImage location: 'asdsadaasdsad/Pharblablao 8.0 - 64bit (stable).image' asFileReference ) ]
+PhLMockImageRepository >> images: anOrderedCollectionContainingImagesAdresses [
+   images := anOrderedCollectionContainingImagesAdresses.
 ]

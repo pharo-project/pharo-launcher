@@ -48,13 +48,6 @@ ClapListImages >> initialize [
 ]
 
 { #category : #printing }
-ClapListImages >> outputListAnotherImagesItsNotAGoodMethod [
-
-	repository moreImages
-		do: [ :anImage | stream nextPutAll: anImage name ]
-]
-
-{ #category : #printing }
 ClapListImages >> outputListImages [
 
 	repository images

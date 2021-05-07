@@ -17,7 +17,9 @@ ClapListImagesTest >> testExecuteCommandWhenThereAreManyImagePrintsTheListOfImag
 			command repository: repo.
 			command stream: s.
 			command outputListImages ].
-   self assert: output equals: 'Pharo 8.0 - 64bit (stable)Pharoblabla'.
+   self assert: output equals: 'Pharo 8.0 - 64bit (stable)
+Pharoblabla
+'.
 ]
 
 { #category : #tests }
@@ -31,7 +33,8 @@ ClapListImagesTest >> testExecuteCommandWhenThereIsOneImagePrintsTheListOfImages
 			command repository: repo.
 			command stream: s.
 			command outputListImages ].
-   self assert: output equals: 'Pharo 8.0 - 64bit (stable)'.
+   self assert: output equals: 'Pharo 8.0 - 64bit (stable)
+'.
 ]
 
 { #category : #tests }

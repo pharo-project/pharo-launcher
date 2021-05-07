@@ -51,7 +51,7 @@ ClapListImages >> initialize [
 ClapListImages >> outputListImages [
 
 	repository images
-		do: [ :anImage | stream nextPutAll: anImage name ]
+		do: [ :anImage | stream nextPutAll: anImage name. stream cr. ]
 ]
 
 { #category : #printing }

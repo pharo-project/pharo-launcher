@@ -17,14 +17,14 @@ ClapListVMs class >> listVirtualMachines [
 	^ (ClapCommand withName: 'listVMs')
 		description: 'Lists all available VMs, with status.';
 		add: ClapFlag forHelp;
-		"add: ((ClapFlag withName: 'ston') description: 'To save on STON format');"
+		add: ((ClapFlag withName: 'ston') description: 'To save on STON format');
 		meaning: [ :args |
 			
 			args atName: 'help' ifFound: [ :help |
 				help value; exitSuccess ].
-			"args atName: 'ston' ifFound: [ :ston |
-				self outputListImagesAsSton. 
-				ston exitSuccess ]."
+			args atName: 'ston' ifFound: [ :ston |
+				self outputListVMsAsSton. 
+				ston exitSuccess ].
          self outputListVMs. 
 		 ]
 ]
@@ -32,6 +32,11 @@ ClapListVMs class >> listVirtualMachines [
 { #category : #'as yet unclassified' }
 ClapListVMs class >> outputListVMs [
   self new outputListVirtualMachines 
+]
+
+{ #category : #'as yet unclassified' }
+ClapListVMs class >> outputListVMsAsSton [
+	self new outputListVirtualMachinesAsSton
 ]
 
 { #category : #accessing }
@@ -44,7 +49,14 @@ ClapListVMs >> initialize [
 ClapListVMs >> outputListVirtualMachines [
    | virtualMachinesList |
    virtualMachinesList := repository availableVirtualMachines values.
-   virtualMachinesList do: [ :aVM | stream nextPutAll: aVM asString].
+   virtualMachinesList do: [ :aVM | stream nextPutAll: aVM asString.stream cr.].
+  
+]
+
+{ #category : #'as yet unclassified' }
+ClapListVMs >> outputListVirtualMachinesAsSton [
+
+	stream nextPutAll: (STON toString: (repository availableVirtualMachines collect: [:each | each file ]))
   
 ]
 

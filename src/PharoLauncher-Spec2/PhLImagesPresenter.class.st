@@ -14,7 +14,8 @@ Class {
 		'descriptionPanel',
 		'launchConfigurationList',
 		'imageFilter',
-		'rootCommandsGroup'
+		'rootCommandsGroup',
+		'toolbar'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -58,52 +59,50 @@ PhLImagesPresenter class >> buildContextualMenuGroup [
 
 { #category : #commands }
 PhLImagesPresenter class >> buildToolbarGroup [
+
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher toolbar';
-		register: PhLOpenNewImageWindowCommand forSpec;
-		register: PhLLaunchImageCommand forSpec;
-		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
-		register: PhLLaunchImageFromDiskCommand forSpec;
-		register: PhLImportImageCommand forSpec;
-		register: PhLRefreshImageRepositoryCommand forSpec;
-		register:
-			(PhLShowImageInFolderCommand forSpec
+		register: ((CmCommandGroup named: 'Create') asSpecGroup
+			beDisplayedAsGroup;
+			register: PhLOpenNewImageWindowCommand forSpec;
+			yourself);
+		register: ((CmCommandGroup named: 'Image') asSpecGroup
+			beDisplayedAsGroup;
+			register: PhLLaunchImageCommand forSpec;
+			register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
+			register: PhLLaunchImageFromDiskCommand forSpec;
+			register: PhLImportImageCommand forSpec;
+			register: PhLRefreshImageRepositoryCommand forSpec;
+			register: (PhLShowImageInFolderCommand forSpec
 				name: 'Show';
 				yourself);
-		register: PhLDeleteImageCommand forSpec;
-		register:
-			(PhLQuitCommand forSpec
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLAboutCommand forSpec
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLOpenSettingsCommand forSpec
-				name: 'Settings';
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLOpenVmManagerCommand forSpec
+			register: PhLDeleteImageCommand forSpec;
+			yourself);
+		register: ((CmCommandGroup named: 'Settings') asSpecGroup
+			register: (PhLOpenVmManagerCommand forSpec
 				name: 'VMs';
-				beDisplayedOnRightSide;
 				yourself);
-		beDisplayedAsGroup;
-		yourself
+			register: (PhLOpenSettingsCommand forSpec
+				name: 'Settings';
+				yourself);
+			register: (PhLAboutCommand forSpec);
+			register: (PhLQuitCommand forSpec);
+			yourself;
+		yourself)
 ]
 
 { #category : #specs }
 PhLImagesPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		  add: #imageFilter expand: false;
-		  add: (SpPanedLayout newVertical
-				positionOfSlider: 65 percent;
-				add: #imageTable;
-				add: #descriptionPanel;
-				yourself);
-		  yourself
+		add: #toolbar expand: false;
+		add: #imageFilter expand: false;
+		add: (SpPanedLayout newVertical
+			positionOfSlider: 65 percent;
+			add: #imageTable;
+			add: #descriptionPanel;
+			yourself);
+		yourself
 ]
 
 { #category : #'api - actions' }
@@ -117,6 +116,25 @@ PhLImagesPresenter >> actionLaunch [
 	| cmd |
 	cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
 	cmd execute
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildToolbar [
+	| toolbarGroup |
+	
+	toolbarGroup := self toolbarGroup.
+	^ self newPresenter
+		layout: (SpBoxLayout newLeftToRight
+			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Create') expand: false;
+			add: (SpBoxLayout newTopToBottom 
+				vAlignCenter;
+				add: self newLaunchConfigurationDropList expand: false;
+				yourself);
+			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;
+			add: self newLabel; "to create an space"
+			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : #initialization }
@@ -177,6 +195,7 @@ PhLImagesPresenter >> imageRepository [
 { #category : #initialization }
 PhLImagesPresenter >> initializePresenters [
 
+	toolbar := self buildToolbar.
 	imageFilter := self newTextInput
 		placeholder: 'Enter image name filter ...';
 		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
@@ -223,12 +242,9 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
-		toolbar: self toolbarGroup asToolbarPresenter;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
-	aWindowPresenter toolbar 
-		addItem: self newLaunchConfigurationDropList.
 	aWindowPresenter 
 		bindKeyCombination: $f meta
 		toAction: [ self actionFilter ]
@@ -256,27 +272,34 @@ PhLImagesPresenter >> refresh [
 { #category : #updating }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image items |
+	
 	[ image := self singleImage ]
 	on: PhLCommandError
-	do: [ self resetLaunchConfigurationList.
-			^ self].
+	do: [ 
+		self resetLaunchConfigurationList.
+		^ self ].
 	
-	items := image launchConfigurations collect: [ :each | 
+	items := image launchConfigurations 
+		collect: [ :each | 
 			SpDropListItem new
 				model: each;
 				display: [ :config | config name ];
-				icon: (self iconNamed: #configuration);
+				icon: (self application iconNamed: #configuration);
 				yourself ].
+	
 	items addFirst: (SpDropListItem new
 				model: 'Edit configurations ...';
-				action: [ self 
-					editLaunchConfigurations;
-					refreshLaunchConfigurationList ];
-				icon: (self iconNamed: #edit);
+				action: [ 
+					self 
+						editLaunchConfigurations;
+						refreshLaunchConfigurationList ];
+				icon: (self application iconNamed: #edit);
 				yourself ).
+	
 	launchConfigurationList
 		resetSelection;
 		dropListItems: items.
+	
 	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
 		on: NotFound "Default configuration has been deleted but there are still other configurations"
 		do: [ launchConfigurationList selectIndex: 2 ]
@@ -284,9 +307,10 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 
 { #category : #updating }
 PhLImagesPresenter >> resetLaunchConfigurationList [
+
 	launchConfigurationList
-				resetSelection;
-				items: #() "no image selected".
+		resetSelection;
+		items: #() "no image selected".
 ]
 
 { #category : #initialization }
@@ -296,7 +320,8 @@ PhLImagesPresenter >> rootCommandsGroup [
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
-	launchConfigurationList selectItem: aPhLLaunchConfiguration.
+
+	launchConfigurationList selectItem: aPhLLaunchConfiguration
 ]
 
 { #category : #'api - selection' }
@@ -318,6 +343,7 @@ PhLImagesPresenter >> selectedImages [
 
 { #category : #'api - accessing' }
 PhLImagesPresenter >> selectedLaunchConfiguration [
+	
 	^ launchConfigurationList selectedItem
 ]
 

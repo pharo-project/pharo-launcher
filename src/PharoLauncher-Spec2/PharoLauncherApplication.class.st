@@ -27,6 +27,12 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
+{ #category : #accessing }
+PharoLauncherApplication class >> applicationName [
+
+	^ 'pharo-launcher'
+]
+
 { #category : #testing }
 PharoLauncherApplication class >> beDeployed [
 	IsDeployed := true
@@ -130,7 +136,8 @@ PharoLauncherApplication class >> open [
 { #category : #opening }
 PharoLauncherApplication class >> openFull [ 
 	<script>
-	^ self default 
+	
+	^ (Default := self new) 
 		beOpenedAsWorld;
 		run
 ]
@@ -235,8 +242,7 @@ PharoLauncherApplication >> initialize [
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
-	self resetTemplateRepository.
-	self useBackend: #Gtk.
+	self resetTemplateRepository
 ]
 
 { #category : #private }

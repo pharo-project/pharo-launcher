@@ -105,12 +105,15 @@ PhLVMPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLVMPresenter >> initializeWindow: aWindowPresenter [
+	
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
-		toolbar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
+		toolbar: (self newLaunchToolbar fillWith: (self rootCommandsGroup / 'Toolbar'));
 		centered.
+	
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+	
 	self privateVmsTogglePresenter
 		whenUnselectedDo: [ self privateVmsTogglePresenter
 				label: 'public';

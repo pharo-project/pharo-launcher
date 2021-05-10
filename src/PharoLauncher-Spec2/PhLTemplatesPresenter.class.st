@@ -134,7 +134,7 @@ PhLTemplatesPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection; "bulk delete templates for example"
-		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
+		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		whenRootsChangedDo: [ :roots | 
 			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
 		whenSelectionChangedDo: [ :selection | 

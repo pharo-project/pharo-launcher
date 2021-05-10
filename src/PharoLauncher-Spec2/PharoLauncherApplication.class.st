@@ -121,7 +121,8 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 { #category : #opening }
 PharoLauncherApplication class >> open [
 	<script>
-	^ self default
+	
+	^ (Default := self new)
 		openAsWorld: false;
 		run
 ]
@@ -234,7 +235,8 @@ PharoLauncherApplication >> initialize [
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
-	self resetTemplateRepository
+	self resetTemplateRepository.
+	self useBackend: #Gtk.
 ]
 
 { #category : #private }
@@ -264,19 +266,6 @@ PharoLauncherApplication >> resetTemplateRepository [
 		ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ] 
 ]
 
-{ #category : #running }
-PharoLauncherApplication >> run [
-	| presenterClass |
-	self initializeImagesPresenter.
-	presenterClass := openAsWorld
-		ifTrue: [ SpWorldPresenter ]
-		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
-	self
-		open: imagesPresenter
-		withSpecLayout: imagesPresenter defaultSpec
-		using: presenterClass
-]
-
 { #category : #accessing }
 PharoLauncherApplication >> scriptsDirectory [
 	^ (scriptsDirectory ifNil: [ 
@@ -287,6 +276,20 @@ PharoLauncherApplication >> scriptsDirectory [
 { #category : #accessing }
 PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
+]
+
+{ #category : #running }
+PharoLauncherApplication >> start [
+	| presenterClass |
+	
+	self initializeImagesPresenter.
+	presenterClass := openAsWorld
+		ifTrue: [ SpWorldPresenter ]
+		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
+	self
+		open: imagesPresenter
+		withSpecLayout: imagesPresenter defaultSpec
+		using: presenterClass
 ]
 
 { #category : #accessing }

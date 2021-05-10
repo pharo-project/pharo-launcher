@@ -97,13 +97,13 @@ PhLImagesPresenter class >> buildToolbarGroup [
 PhLImagesPresenter class >> defaultSpec [
 
 	^ SpBoxLayout newVertical
-		add: #imageFilter expand: false;
-		add: (SpPanedLayout newVertical
-			position: 66 percent;
-			add: #imageTable;
-			add: #descriptionPanel;
-			yourself);
-		yourself
+		  add: #imageFilter expand: false;
+		  add: (SpPanedLayout newVertical
+				positionOfSlider: 65 percent;
+				add: #imageTable;
+				add: #descriptionPanel;
+				yourself);
+		  yourself
 ]
 
 { #category : #'api - actions' }
@@ -176,6 +176,7 @@ PhLImagesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLImagesPresenter >> initializePresenters [
+
 	imageFilter := self newTextInput
 		placeholder: 'Enter image name filter ...';
 		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
@@ -185,7 +186,7 @@ PhLImagesPresenter >> initializePresenters [
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
 		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
-		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
+		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		addColumn:
 			((SpStringTableColumn title: 'Name' evaluated: #name)
 				width: 350;
@@ -222,14 +223,14 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 500;
-		toolBar: self toolbarGroup asToolbarPresenter;
+		toolbar: self toolbarGroup asToolbarPresenter;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
-	aWindowPresenter toolBar 
-		addItemLeft: self newLaunchConfigurationDropList afterIndex: 1.
+	aWindowPresenter toolbar 
+		addItem: self newLaunchConfigurationDropList.
 	aWindowPresenter 
-		bindKeyCombination: $f command
+		bindKeyCombination: $f meta
 		toAction: [ self actionFilter ]
 ]
 
@@ -350,5 +351,6 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 
 { #category : #private }
 PhLImagesPresenter >> withToolbarDo: aBlock [
-	self withWindowDo: [ :window | aBlock value: window toolBar ]
+
+	self withWindowDo: [ :window | aBlock value: window toolbar ]
 ]

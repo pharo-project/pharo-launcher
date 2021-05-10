@@ -79,7 +79,7 @@ PhLVMPresenter >> initializePresenters [
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;
 									execute  ];
-		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
+		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		addColumn: ((SpImageTableColumn title: '' evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid
@@ -108,7 +108,7 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
-		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
+		toolbar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
 		centered.
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	self privateVmsTogglePresenter

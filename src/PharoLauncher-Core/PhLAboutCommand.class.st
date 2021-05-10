@@ -36,7 +36,7 @@ PhLAboutCommand >> aboutText [
 PhLAboutCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #help;
-		shortcutKey: $? meta;
+		shortcutKey: (KeyboardKey named: 'QUESTION') meta;
 		yourself
 ]
 

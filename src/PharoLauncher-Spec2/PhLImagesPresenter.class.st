@@ -94,15 +94,7 @@ PhLImagesPresenter class >> buildToolbarGroup [
 { #category : #specs }
 PhLImagesPresenter class >> defaultSpec [
 
-	^ SpBoxLayout newVertical
-		add: #toolbar expand: false;
-		add: #imageFilter expand: false;
-		add: (SpPanedLayout newVertical
-			positionOfSlider: 65 percent;
-			add: #imageTable;
-			add: #descriptionPanel;
-			yourself);
-		yourself
+	^ nil
 ]
 
 { #category : #'api - actions' }
@@ -116,6 +108,52 @@ PhLImagesPresenter >> actionLaunch [
 	| cmd |
 	cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
 	cmd execute
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildDescriptionPanel [
+
+	^ self
+		instantiate: PhLImageDetailPresenter
+		on: PhLNullImage new
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildImageFilter [
+			
+	^ self newTextInput
+		placeholder: 'Enter image name filter ...';
+		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
+		yourself
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildImageTable [
+
+	^ self newTable
+		items: self imageRepository images;
+		sortingBlock: #lastModification descending;
+		whenActivatedDo: [ self actionLaunch ];
+		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
+		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
+			width: 350;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
+			width: 80;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+			width: 80;
+			yourself);
+		addColumn: ((SpStringTableColumn
+			title: 'Last modified'
+			evaluated: [ :image | self readableDateFor: image lastModification ])
+			sortFunction: #lastModification descending;
+			yourself);
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		beResizable;
+		beMultipleSelection;
+		yourself
 ]
 
 { #category : #initialization }
@@ -140,9 +178,7 @@ PhLImagesPresenter >> buildToolbar [
 { #category : #initialization }
 PhLImagesPresenter >> connectPresenters [
 
-	super connectPresenters.
-	
-	imageTable whenSelectionChangedDo: [ :selection |
+	imageTable transmitDo: [ :image |
 		self 
 			refreshLaunchConfigurationList;
 			updateToolbarCommandsAvailability ].
@@ -150,9 +186,9 @@ PhLImagesPresenter >> connectPresenters [
 	imageTable 
 		transmitTo: descriptionPanel
 		transform: [ :images | 		
-						images size = 1
-							ifTrue: [ images first ]
-							ifFalse: [ PhLNullImage new ] ]
+			images size = 1
+				ifTrue: [ images first ]
+				ifFalse: [ PhLNullImage new ] ]
 ]
 
 { #category : #'api - actions' }
@@ -196,52 +232,28 @@ PhLImagesPresenter >> imageRepository [
 PhLImagesPresenter >> initializePresenters [
 
 	toolbar := self buildToolbar.
-	imageFilter := self newTextInput
-		placeholder: 'Enter image name filter ...';
-		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
-		yourself.
-	imageTable := self newTable
-		items: self imageRepository images;
-		sortingBlock: #lastModification descending;
-		whenActivatedDo: [ self actionLaunch ];
-		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
-		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
-		addColumn:
-			((SpStringTableColumn title: 'Name' evaluated: #name)
-				width: 350;
-				yourself);
-		addColumn:
-			((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
-				width: 80;
-				yourself);
-		addColumn:
-			((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
-				width: 80;
-				yourself);
-		addColumn:
-			((SpStringTableColumn
-				title: 'Last modified'
-				evaluated: [ :image | self readableDateFor: image lastModification ])
-				sortFunction: #lastModification descending;
-				yourself);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		beResizable;
-		beMultipleSelection;
-		yourself.
-	descriptionPanel := self
-		instantiate: PhLImageDetailPresenter
-		on: PhLNullImage new.
-	self imageRepository whenChangedSend: #refresh to: self.
-	self whenDisplayDo: 
-		[ self imageRepository hasImages
-				ifTrue: [ self selectImageAt: 1 ] ].
+	imageFilter := self buildImageFilter.
+	imageTable := self buildImageTable.
+	descriptionPanel := self buildDescriptionPanel.
+	
+	self layout: (SpBoxLayout newTopToBottom
+		add: toolbar expand: false;
+		add: imageFilter expand: false;
+		add: (SpPanedLayout newTopToBottom
+			positionOfSlider: 60 percent;
+			add: imageTable;
+			add: descriptionPanel;
+			yourself);
+		yourself).
+
+	self imageRepository whenChangedSend: #refresh to: self
 ]
 
 { #category : #initialization }
 PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 700 @ 500;
+		initialExtent: 700 @ 550;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
@@ -265,6 +277,7 @@ PhLImagesPresenter >> readableDateFor: aDateAndTime [
 
 { #category : #updating }
 PhLImagesPresenter >> refresh [ 
+
 	imageTable items: self imageRepository images.
 	self refreshLaunchConfigurationList
 ]
@@ -366,6 +379,14 @@ PhLImagesPresenter >> templateRepository [
 { #category : #accessing }
 PhLImagesPresenter >> toolbarGroup [
 	^ self rootCommandsGroup / 'Toolbar'
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> updatePresenter [
+
+	self imageRepository hasImages 
+		ifTrue: [ imageTable selectFirst ]
+
 ]
 
 { #category : #updating }

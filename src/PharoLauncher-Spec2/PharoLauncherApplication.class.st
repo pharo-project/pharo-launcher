@@ -286,16 +286,23 @@ PharoLauncherApplication >> scriptsDirectory: aFileReference [
 
 { #category : #running }
 PharoLauncherApplication >> start [
-	| presenterClass |
-	
+
 	self initializeImagesPresenter.
-	presenterClass := openAsWorld
-		ifTrue: [ SpWorldPresenter ]
-		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
+	
+	openAsWorld ifTrue: [ 
+		self startFull.
+		^ self ].
+	
+	imagesPresenter openWithSpec
+]
+
+{ #category : #running }
+PharoLauncherApplication >> startFull [
+	
 	self
 		open: imagesPresenter
 		withSpecLayout: imagesPresenter defaultSpec
-		using: presenterClass
+		using: SpWorldPresenter
 ]
 
 { #category : #accessing }

@@ -24,39 +24,23 @@ Class {
 
 { #category : #specs }
 PhLImageDetailPresenter class >> defaultSpec [
-	^ SpBoxLayout newVertical
-		add: #imageLabel
-			withConstraints: [ :constraints | constraints height: self labelHeight * 1.5 ];
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'description:' withConstraints: self labelConstraintsBlock;
-				add: #description;
-				yourself);
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Origin template:' withConstraints: self labelConstraintsBlock;
-				add: #template;
-				yourself)
-			height: self labelHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: '' withConstraints: self labelConstraintsBlock;
-				add: #templateUrl;
-				yourself)
-			height: self labelHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Initialization script:' withConstraints: self labelConstraintsBlock;
-				add: #initializationScript expand: false;
-				add: #shouldRunInitializationScript expand: false;
-				yourself)
-			height: self labelHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Location:' withConstraints: self labelConstraintsBlock;
-				add: #location;
-				yourself)
-			height: self labelHeight;
+
+	^ SpBoxLayout newTopToBottom
+		add: #imageLabel expand: false;
+		add: (SpGridLayout new
+			beRowNotHomogeneous;
+			beColumnNotHomogeneous;
+			column: 1 withConstraints: [ :c | c beNotExpand; vAlignStart ];
+			column: 2 withConstraints: [ :c | c beExpand ];
+			add: 'Description' 				at: 1@1; add: #description 				at: 2@1;
+			add: 'Origin template'		 	at: 1@2; add: #template 					at: 2@2;
+															   add: #templateUrl 				at: 2@3;
+			add: 'Initialization script' 	at: 1@4; add: (SpBoxLayout newLeftToRight
+																	add: #initializationScript expand: false; 
+																	add: #shouldRunInitializationScript expand: false;
+																	yourself) at: 2@4;
+			add: 'Location' 					at: 1@5; add: #location 					at: 2@5;
+			yourself);	
 		yourself
 ]
 

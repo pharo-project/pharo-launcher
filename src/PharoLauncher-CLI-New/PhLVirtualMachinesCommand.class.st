@@ -12,6 +12,25 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> delete [
+	<commandline>
+	^ (ClapCommand withName: 'delete')
+		description: 'delete a VM executable from the computer, including dependences.';
+		add: ClapFlag forHelp;
+		add: ((ClapFlag withName: 'ston') description: 'To save on STON format');
+		meaning: [ :args | | aVMName |
+			
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			args atName: 'ston' ifFound: [ :ston |
+				"self outputListVMsAsSton." 
+				ston exitSuccess ].
+			aVMName := args parent parent parent arguments at:3.
+         self outputDeleteVm: aVMName. 
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
 PhLVirtualMachinesCommand class >> list [
 	<commandline>
 	^ (ClapCommand withName: 'list')
@@ -30,6 +49,11 @@ PhLVirtualMachinesCommand class >> list [
 ]
 
 { #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> outputDeleteVm: aVMName [
+  self new outputDeleteVm: aVMName. 
+]
+
+{ #category : #'as yet unclassified' }
 PhLVirtualMachinesCommand class >> outputListVMs [
   self new outputListVirtualMachines 
 ]
@@ -44,13 +68,20 @@ PhLVirtualMachinesCommand class >> virtualMachinesCommands [
 	<commandline>
 	^(ClapCommand withName: 'virtualMachines')
 	 description: 'for virtual machines';
-	 add: (self list).
+	 add: (self list);
+	 add: (self delete).
 ]
 
 { #category : #accessing }
 PhLVirtualMachinesCommand >> initialize [
    repository := PhLVirtualMachineManager new.
 	stream := VTermOutputDriver stdout.
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesCommand >> outputDeleteVm: aVMName [
+   
+  
 ]
 
 { #category : #accessing }

@@ -13,6 +13,19 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> copy [ 
+	^(ClapCommand withName: 'copy')
+		description: 'Creates copy of given image with new name.';
+		add: ClapFlag forHelp;
+		meaning: [ :args | | anImage |
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			anImage := args parent parent parent arguments at:3.
+         self outputCopyImage: anImage.  
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
 PhLImagesClapCommand class >> create [
 	^(ClapCommand withName: 'create')
 		description: 'Downloads and creates new images on the system from remote website based on template name';
@@ -26,6 +39,19 @@ PhLImagesClapCommand class >> create [
 ]
 
 { #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> delete [
+	^(ClapCommand withName: 'delete')
+		description: 'Delete image on the local computer.';
+		add: ClapFlag forHelp;
+		meaning: [ :args | | anImage |
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			anImage := args parent parent parent arguments at:3.
+         self outputDeleteImage: anImage.  
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
 PhLImagesClapCommand class >> imagesCommands [
 	<commandline>
 	^(ClapCommand withName: 'images')
@@ -33,7 +59,10 @@ PhLImagesClapCommand class >> imagesCommands [
 	 add: (self list);
 	 add: (self info);
 	 add: (self launch);
-	 add: (self create).
+	 add: (self create);
+	 add: (self copy);
+	 add: (self delete);
+	 add: (self initScriptsDir).
 	 
 ]
 
@@ -47,6 +76,19 @@ PhLImagesClapCommand class >> info [
 				help value; exitSuccess ].
 			anImage := args parent parent parent arguments at:3.
          self outputImageInfo: anImage.  
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> initScriptsDir [
+	^(ClapCommand withName: 'iniScriptsDir')
+		description: 'sets directory path, where init scripts for images are located';
+		add: ClapFlag forHelp;
+		meaning: [ :args | | aDirectoryPath |
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			aDirectoryPath := args parent parent parent arguments at:3.
+         self outputInitScriptsDir: aDirectoryPath.  
 		 ]
 ]
 
@@ -82,8 +124,20 @@ PhLImagesClapCommand class >> list [
 ]
 
 { #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> outputCopyImage: anImage [ 
+  self new outputCopyImage: anImage. 
+  
+]
+
+{ #category : #'as yet unclassified' }
 PhLImagesClapCommand class >> outputCreateImage: anImage [
   self new outputCreateImage: anImage. 
+  
+]
+
+{ #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> outputDeleteImage: anImage [ 
+  self new outputDeleteImage: anImage. 
   
 ]
 
@@ -96,6 +150,12 @@ PhLImagesClapCommand class >> outputImageInfo: anImage [
 { #category : #'as yet unclassified' }
 PhLImagesClapCommand class >> outputImageLaunch: anImage [ 
   self new outputImageLaunch: anImage. 
+  
+]
+
+{ #category : #'as yet unclassified' }
+PhLImagesClapCommand class >> outputInitScriptsDir: aDirectoryPath [ 
+  self new outputInitScriptsDir: aDirectoryPath . 
   
 ]
 
@@ -124,15 +184,44 @@ PhLImagesClapCommand >> initialize [
 ]
 
 { #category : #accessing }
+PhLImagesClapCommand >> outputCopyImage: imageName [
+   | anImage imageCopy |
+   anImage := PhLImagesClapCommand new.
+   [anImage := anImage findImage: imageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
+   imageCopy  := PhLDirectoryBasedImageRepository new.
+   imageCopy copyImage: anImage to: 'sdkhbdfskd'
+   
+   
+   
+  
+]
+
+{ #category : #accessing }
 PhLImagesClapCommand >> outputCreateImage: aTemplateName [
    | listTemplatesAvailableForDownload templateToDownload|
    listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
    templateToDownload := listTemplatesAvailableForDownload children detect: [ :aTemplate | aTemplate name = aTemplateName ].
    
-    PhLDirectoryBasedImageRepository default extractTemplate: templateToDownload to: 'papapa'
+    PhLDirectoryBasedImageRepository default extractTemplate: templateToDownload to: '<papapa>'
 
 
+]
+
+{ #category : #accessing }
+PhLImagesClapCommand >> outputDeleteImage: imageName [
+   | anImage deleteMachine|
+   anImage := PhLImagesClapCommand new.
+   [anImage := anImage findImage: imageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
+   deleteMachine := PhLDirectoryBasedImageRepository new.
+   deleteMachine deleteImage: anImage.
+
+    
+   
+   
+   
+   
+  
 ]
 
 { #category : #accessing }
@@ -179,6 +268,10 @@ PhLImagesClapCommand >> outputImageLaunch: anImageName [
 anImage launch.
    
    
+]
+
+{ #category : #accessing }
+PhLImagesClapCommand >> outputInitScriptsDir: aDirectoryName [
 ]
 
 { #category : #'instance creation' }

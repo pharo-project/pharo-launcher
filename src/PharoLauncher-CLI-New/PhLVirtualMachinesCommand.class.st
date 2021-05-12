@@ -88,13 +88,38 @@ PhLVirtualMachinesCommand class >> outputListVMsAsSton [
 ]
 
 { #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> outputUpdateVm: aVMName [
+  self new outputUpdateVm: aVMName. 
+]
+
+{ #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> update [
+	<commandline>
+	^ (ClapCommand withName: 'update')
+		description: 'update a VM including dependences.';
+		add: ClapFlag forHelp;
+		add: ((ClapFlag withName: 'ston') description: 'To save on STON format');
+		meaning: [ :args | | aVMName |
+			
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			args atName: 'ston' ifFound: [ :ston |
+				"self outputListVMsAsSton." 
+				ston exitSuccess ].
+			aVMName := args parent parent parent arguments at:3.
+         self outputUpdateVm: aVMName. 
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
 PhLVirtualMachinesCommand class >> virtualMachinesCommands [
 	<commandline>
 	^(ClapCommand withName: 'virtualMachines')
 	 description: 'for virtual machines';
 	 add: (self list);
 	 add: (self delete);
-	 add: (self info).
+	 add: (self info);
+	 add: (self update).
 ]
 
 { #category : #accessing }
@@ -145,6 +170,16 @@ PhLVirtualMachinesCommand >> outputListVirtualMachines [
 PhLVirtualMachinesCommand >> outputListVirtualMachinesAsSton [
 
 	stream nextPutAll: (STON toString: (repository availableVirtualMachines collect: [:each | each file ]))
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesCommand >> outputUpdateVm: aVMName [
+   | aVM virtualMachinesList |
+   virtualMachinesList := repository availableVirtualMachines values.
+   aVM := virtualMachinesList detect: [ :virtualMachine | virtualMachine id = aVMName ].
+   aVM updateFromUrl. 
+   
+  
 ]
 
 { #category : #accessing }

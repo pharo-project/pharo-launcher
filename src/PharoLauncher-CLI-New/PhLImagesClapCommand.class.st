@@ -272,6 +272,9 @@ anImage launch.
 
 { #category : #accessing }
 PhLImagesClapCommand >> outputInitScriptsDir: aDirectoryName [
+   "how to definitely set a pharo launcher variable ? "
+   PharoLauncherApplication scriptsDirectory: aDirectoryName.
+   
 ]
 
 { #category : #'instance creation' }

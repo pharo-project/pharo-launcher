@@ -31,6 +31,25 @@ PhLVirtualMachinesCommand class >> delete [
 ]
 
 { #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> info [
+	<commandline>
+	^ (ClapCommand withName: 'info')
+		description: 'Prints information about VM: name, remote-site URL, last update status...';
+		add: ClapFlag forHelp;
+		add: ((ClapFlag withName: 'ston') description: 'To save on STON format');
+		meaning: [ :args | | aVMName |
+			
+			args atName: 'help' ifFound: [ :help |
+				help value; exitSuccess ].
+			args atName: 'ston' ifFound: [ :ston |
+				"self outputListVMsAsSton." 
+				ston exitSuccess ].
+			aVMName := args parent parent parent arguments at:3.
+         self outputInfoVm: aVMName. 
+		 ]
+]
+
+{ #category : #'as yet unclassified' }
 PhLVirtualMachinesCommand class >> list [
 	<commandline>
 	^ (ClapCommand withName: 'list')
@@ -54,6 +73,11 @@ PhLVirtualMachinesCommand class >> outputDeleteVm: aVMName [
 ]
 
 { #category : #'as yet unclassified' }
+PhLVirtualMachinesCommand class >> outputInfoVm: aVMName [
+  self new outputInfoVm: aVMName. 
+]
+
+{ #category : #'as yet unclassified' }
 PhLVirtualMachinesCommand class >> outputListVMs [
   self new outputListVirtualMachines 
 ]
@@ -69,7 +93,8 @@ PhLVirtualMachinesCommand class >> virtualMachinesCommands [
 	^(ClapCommand withName: 'virtualMachines')
 	 description: 'for virtual machines';
 	 add: (self list);
-	 add: (self delete).
+	 add: (self delete);
+	 add: (self info).
 ]
 
 { #category : #accessing }
@@ -80,6 +105,30 @@ PhLVirtualMachinesCommand >> initialize [
 
 { #category : #accessing }
 PhLVirtualMachinesCommand >> outputDeleteVm: aVMName [
+   | aVM virtualMachinesList |
+   virtualMachinesList := repository availableVirtualMachines values.
+   aVM := virtualMachinesList detect: [ :virtualMachine | virtualMachine id = aVMName ].
+   aVM removeFromSystem. 
+   
+  
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesCommand >> outputInfoVm: aVMName [
+   | aVM virtualMachinesList |
+   virtualMachinesList := repository availableVirtualMachines values.
+   aVM := virtualMachinesList detect: [ :virtualMachine | virtualMachine id = aVMName ].
+   stream nextPutAll: 'name: ';
+          nextPutAll: aVM id;
+          lf;
+          nextPutAll: 'last update: ';
+          nextPutAll: aVM lastUpdateTime asString;
+          lf;
+          nextPutAll: 'download Url: ';
+          nextPutAll: aVM downloadUrl asString;
+          lf.
+          
+
    
   
 ]
@@ -88,7 +137,7 @@ PhLVirtualMachinesCommand >> outputDeleteVm: aVMName [
 PhLVirtualMachinesCommand >> outputListVirtualMachines [
    | virtualMachinesList |
    virtualMachinesList := repository availableVirtualMachines values.
-   virtualMachinesList do: [ :aVM | stream nextPutAll: aVM asString.stream cr.].
+   virtualMachinesList do: [ :aVM | stream nextPutAll: aVM id.stream lf.].
   
 ]
 

@@ -106,7 +106,8 @@ PhLImagesPresenter >> actionFilter [
 { #category : #'api - actions' }
 PhLImagesPresenter >> actionLaunch [
 	| cmd |
-	cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
+
+	cmd := PhLLaunchImageCommand forContext: self.
 	cmd execute
 ]
 
@@ -131,6 +132,7 @@ PhLImagesPresenter >> buildImageFilter [
 PhLImagesPresenter >> buildImageTable [
 
 	^ self newTable
+		activateOnDoubleClick;
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
@@ -240,7 +242,7 @@ PhLImagesPresenter >> initializePresenters [
 		add: toolbar expand: false;
 		add: imageFilter expand: false;
 		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: 60 percent;
+			positionOfSlider: 55 percent;
 			add: imageTable;
 			add: descriptionPanel;
 			yourself);
@@ -251,6 +253,7 @@ PhLImagesPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLImagesPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Pharo Launcher';
 		initialExtent: 700 @ 550;

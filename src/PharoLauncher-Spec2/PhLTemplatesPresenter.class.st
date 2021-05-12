@@ -36,14 +36,15 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 
 { #category : #specs }
 PhLTemplatesPresenter class >> defaultSpec [
+
 	^ SpPanedLayout newHorizontal
 		add: (SpPanedLayout newHorizontal
 			add: (SpBoxLayout newVertical 
-				add: '1. Choose a template category:' height: self labelHeight;
+				add: '1. Choose a template category:' expand: false;
 				add: #categoryTable;
 				yourself);
 			add: (SpBoxLayout newVertical 
-				add: '2. Choose a template:' height: self labelHeight;
+				add: '2. Choose a template:' expand: false;
 				add: #templateTable;
 				yourself);
 			yourself);
@@ -64,6 +65,46 @@ PhLTemplatesPresenter class >> example [
 			newApplication: app
 			model: PhLTemplateGroupRepository default)
 		openWithSpec;
+		yourself
+]
+
+{ #category : #initialization }
+PhLTemplatesPresenter >> buildCategoryTable [
+	
+	^ self newTable
+		hideColumnHeaders;
+		items: self templateRepository roots;
+		addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
+		addColumn: (SpStringTableColumn evaluated: #name);
+		yourself
+]
+
+{ #category : #initialization }
+PhLTemplatesPresenter >> buildDescriptionPanel [
+	| panel |
+
+	panel := self instantiate: PhLImageCreationPresenter on: nil.
+	panel disable.
+	
+	^ panel
+]
+
+{ #category : #initialization }
+PhLTemplatesPresenter >> buildTemplateTable [
+	
+	^ self newTreeTable
+		hideColumnHeaders;
+		children: #children;
+		addColumn: (SpStringTableColumn evaluated: #name);
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		beMultipleSelection; "bulk delete templates for example"
+		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
+		whenRootsChangedDo: [ :roots | 
+			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
+		whenSelectionChangedDo: [ :selection | 
+			selection isEmpty 
+				ifTrue: [ descriptionPanel disable ]
+				ifFalse: [ descriptionPanel enable ] ]
 		yourself
 ]
 
@@ -107,12 +148,12 @@ PhLTemplatesPresenter >> hasSingleTemplateSelected [
 			and: [ templateTable selectedItem isTemplate ]
 ]
 
-{ #category : #'api -  accessing' }
+{ #category : #'api - accessing' }
 PhLTemplatesPresenter >> imageName [ 
 	^ descriptionPanel imageName
 ]
 
-{ #category : #'api -  accessing' }
+{ #category : #'api - accessing' }
 PhLTemplatesPresenter >> imageRepository [
 	^ self application imageRepository
 ]
@@ -124,28 +165,10 @@ PhLTemplatesPresenter >> initializationScript [
 
 { #category : #initialization }
 PhLTemplatesPresenter >> initializePresenters [
-	categoryTable := self newTable
-			items: self templateRepository roots;
-			addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
-			addColumn: (SpStringTableColumn evaluated: #name);
-			yourself.
-	templateTable := self newTreeTable
-		children: #children;
-		addColumn: (SpStringTableColumn evaluated: #name);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		beMultipleSelection; "bulk delete templates for example"
-		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
-		whenRootsChangedDo: [ :roots | 
-			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
-		whenSelectionChangedDo: [ :selection | 
-			selection isEmpty 
-				ifTrue: [ descriptionPanel disable ]
-				ifFalse: [ descriptionPanel enable ] ]
-		yourself.
-	descriptionPanel := self
-		instantiate: PhLImageCreationPresenter
-		on: nil.
-	descriptionPanel disable.
+
+	categoryTable := self buildCategoryTable.
+	templateTable := self buildTemplateTable.
+	descriptionPanel := self buildDescriptionPanel
 ]
 
 { #category : #initialization }
@@ -194,7 +217,7 @@ PhLTemplatesPresenter >> singleTemplate [
 	^ templateTable selectedItems first "multiple selection enabled, always return a collection"
 ]
 
-{ #category : #'api -  accessing' }
+{ #category : #'api - accessing' }
 PhLTemplatesPresenter >> templateRepository [
 	^ self model
 ]

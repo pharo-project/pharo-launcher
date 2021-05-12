@@ -27,24 +27,28 @@ Class {
 
 { #category : #specs }
 PhLImageCreationPresenter class >> defaultSpec [
+
 	^ SpBoxLayout newVertical
+		borderWidth: 5;
 		spacing: 5;
 		add: 'Image name:' expand: false;
 		add: (SpBoxLayout newHorizontal 
-			add: #imageName;
-			add: #imageNameCheck expand: false;
-			yourself)
+				spacing: 5;
+				add: #imageName;
+				add: #imageNameCheck expand: false;
+				yourself)
 			expand: false;
 		add: 'Image description:' expand: false;
 		add: #descriptionText height: 60;
 		add: 'Initialization script:' expand: false;
 		add: (SpBoxLayout newHorizontal 
-			add: #initScript;
-			add: #editInitScriptButton expand: false;
-			yourself)
+				spacing: 5;
+				add: #initScript;
+				add: #editInitScriptButton expand: false;
+				yourself)
 			expand: false;
 		add: #initScriptText height: 100;
-		add: #createButton expand: false;
+		addLast: #createButton expand: false;
 		yourself
 ]
 
@@ -125,24 +129,25 @@ PhLImageCreationPresenter >> initialize [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
+
 	imageName := self newTextInput.
 	imageNameCheck := self newImage.
 	initScriptText := self newText
-								disable;
-								yourself.
+		disable;
+		yourself.
 	initScript := self newDropList
-		              items: self initializationScriptItems;
-		              display: [ :file | file basename ];
-		              whenSelectionChangedDo: [ :selection |
-								selection selectedItem ifNotNil: [ :item |
-									initScriptText text: item model contents ] ];
-		              yourself.
+		items: self initializationScriptItems;
+		display: [ :file | file basename ];
+		whenSelectionChangedDo: [ :selection |
+			selection selectedItem ifNotNil: [ :item |
+				initScriptText text: item model contents ] ];
+		yourself.
 	descriptionText := self newText.
 	editInitScriptButton := self newButton
-		                        addStyle: 'small';
-		                        action: [ self openScriptPresenter ];
-		                        icon: (self iconNamed: #edit);
-		                        yourself.
+		addStyle: 'small';
+		action: [ self openScriptPresenter ];
+		icon: (self iconNamed: #edit);
+		yourself.
 	(PhLCreateImageFromTemplateCommand forSpecContext: owner) 
 		in: [ 	:createImageCommand | 
 		createButton := createImageCommand asButtonPresenter.
@@ -150,13 +155,16 @@ PhLImageCreationPresenter >> initializePresenters [
 			[ createImageCommand execute.
 			self close. ]
 				on: PhLNameNotAvailableError 
-				do: [ PhLUIInformation new 
+				do: [ 
+					self newInformation 
 						message: 'An image with the same name already exists! Please choose a new one.';
 						alert ] ] ]
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> modelChanged [ 
+'OK' crTrace.
+self template crTrace.
 	self template ifNil: [ ^ self ].
 	self template isTemplate
 		ifTrue: [ self enable.

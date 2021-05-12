@@ -11,7 +11,7 @@ PhLGtkConfiguration >> configureGeneral: anApplication [
 toolbar.compact { 
 	font-size: 0.6em }
 toolbar.compact toolbutton > button { 
-	padding: 2px;
-	margin: 2px }
+	padding: 1px;
+	margin: 1px }
 '
 ]

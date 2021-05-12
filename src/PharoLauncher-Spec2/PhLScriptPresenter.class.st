@@ -17,18 +17,17 @@ Class {
 
 { #category : #example }
 PhLScriptPresenter class >> defaultSpec [
+
 	^ SpPanedLayout newHorizontal
-		position: 30 percent;
-		add: #scriptTable
-			withConstraints: [ :constraints | 
-				constraints 
-					spec: #withoutOrderingBar"; 
+		  positionOfSlider: 30 percent;
+		  add: #scriptTable withConstraints: [ :constraints | 
+			  constraints spec: #withoutOrderingBar "; 
 					width: 200" ];
-		add: (SpBoxLayout newVertical
-			add: #fileEditor;
-			add: #saveButton expand: false;
-			yourself);
-		yourself
+		  add: (SpBoxLayout newVertical
+				   add: #fileEditor;
+				   add: #saveButton expand: false;
+				   yourself);
+		  yourself
 ]
 
 { #category : #example }
@@ -92,10 +91,12 @@ PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 { #category : #action }
 PhLScriptPresenter >> newScript [
 	| newName |
-	newName := self application newRequest
+	
+	newName := self newRequest
 			title: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.
+	
 	^ self newScriptNamed: newName
 ]
 

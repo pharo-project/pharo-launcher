@@ -17,7 +17,8 @@ Class {
 		'location',
 		'vm',
 		'templateUrl',
-		'shouldRunInitializationScript'
+		'shouldRunInitializationScript',
+		'updating'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -25,23 +26,7 @@ Class {
 { #category : #specs }
 PhLImageDetailPresenter class >> defaultSpec [
 
-	^ SpBoxLayout newTopToBottom
-		add: #imageLabel expand: false;
-		add: (SpGridLayout new
-			beRowNotHomogeneous;
-			beColumnNotHomogeneous;
-			column: 1 withConstraints: [ :c | c beNotExpand; vAlignStart ];
-			column: 2 withConstraints: [ :c | c beExpand ];
-			add: 'Description' 				at: 1@1; add: #description 				at: 2@1;
-			add: 'Origin template'		 	at: 1@2; add: #template 					at: 2@2;
-															   add: #templateUrl 				at: 2@3;
-			add: 'Initialization script' 	at: 1@4; add: (SpBoxLayout newLeftToRight
-																	add: #initializationScript expand: false; 
-																	add: #shouldRunInitializationScript expand: false;
-																	yourself) at: 2@4;
-			add: 'Location' 					at: 1@5; add: #location 					at: 2@5;
-			yourself);	
-		yourself
+	^ nil
 ]
 
 { #category : #specs }
@@ -59,10 +44,9 @@ PhLImageDetailPresenter class >> labelWidth [
 
 { #category : #initialization }
 PhLImageDetailPresenter >> connectPresenters [
-	description
-		whenTextChangedDo: [ :text | PhLImageDescriptionUpdater image: self image description: text ].
-	shouldRunInitializationScript 
-		whenChangedDo: [ :state | self image shouldRunInitializationScript: state ].
+	
+	description whenTextChangedDo: [ :text | self updateImageDescription: text ].
+	shouldRunInitializationScript whenChangedDo: [ :state | self updateImageRunScript: state ].
 ]
 
 { #category : #accessing }
@@ -81,7 +65,15 @@ PhLImageDetailPresenter >> imageLabel [
 ]
 
 { #category : #initialization }
+PhLImageDetailPresenter >> initialize [
+
+	updating := false.
+	super initialize.
+]
+
+{ #category : #initialization }
 PhLImageDetailPresenter >> initializePresenters [
+
 	imageLabel := self newLabel.
 	description := self newText.
 	template := self newLabel.
@@ -92,6 +84,23 @@ PhLImageDetailPresenter >> initializePresenters [
 		disable.
 	location := self newLabel.
 	vm := self newTextInput.
+	
+	self layout: (SpGridLayout new
+		beRowNotHomogeneous;
+		beColumnNotHomogeneous;
+		"column: 1 withConstraints: [ :c | c beNotExpand ];"
+		column: 2 withConstraints: [ :c | c beExpand ];
+		add: imageLabel 					at: 1@1 span: 2@1;
+		add: 'Description' 				at: 1@2; add: description 				at: 2@2;
+		add: 'Origin template'		 	at: 1@3; add: template 					at: 2@3;	
+														   add: templateUrl 				at: 2@4;
+		add: 'Initialization script' 	at: 1@5; add: (SpBoxLayout newLeftToRight
+																add: initializationScript expand: false; 
+																add: shouldRunInitializationScript expand: false;
+																yourself) 
+															at: 2@5;
+		add: 'Location' 					at: 1@6; add: location 					at: 2@6;
+		yourself)
 ]
 
 { #category : #accessing }
@@ -102,22 +111,28 @@ PhLImageDetailPresenter >> location [
 { #category : #updating }
 PhLImageDetailPresenter >> modelChanged [ 
 	| image |
+	
+	updating := true.
+	
 	image := self image ifNil: [ PhLNullImage new ].
 	
-	imageLabel label: image name asText allBold, ' image, last edited ', image lastModification asString.
+	imageLabel label: image name, ' image, last edited ', image lastModification asString.
 	description text: image description.
-	template label: image originTemplateName.
+	template label: (image originTemplateName ifEmpty: [ '(noname)' ]).
 	templateUrl label: image originTemplateUrl.
 	image initializationScript 
-		ifNil: [ initializationScript label: '<none>'.
+		ifNil: [ 
+			initializationScript label: '<none>'.
 			shouldRunInitializationScript disable. ] 
-		ifNotNil: [:script | 
+		ifNotNil: [ :script | 
 			initializationScript label: script basename.
 			shouldRunInitializationScript 
 				enable;
 				state: image shouldRunInitializationScript. ].
 	location label: image location.
-	vm text: 'N/A'"self image vm".
+	vm text: 'N/A'. "self image vm."
+	
+	updating := false
 ]
 
 { #category : #accessing }
@@ -128,6 +143,24 @@ PhLImageDetailPresenter >> template [
 { #category : #accessing }
 PhLImageDetailPresenter >> templateUrl [
 	^ templateUrl
+]
+
+{ #category : #initialization }
+PhLImageDetailPresenter >> updateImageDescription: text [
+	
+	updating ifTrue: [ ^ self ].
+
+	PhLImageDescriptionUpdater 
+		image: self image 
+		description: text
+]
+
+{ #category : #initialization }
+PhLImageDetailPresenter >> updateImageRunScript: state [
+
+	updating ifTrue: [ ^ self ].
+	
+	self image shouldRunInitializationScript: state
 ]
 
 { #category : #accessing }

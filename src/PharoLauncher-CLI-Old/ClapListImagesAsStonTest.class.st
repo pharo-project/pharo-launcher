@@ -1,5 +1,5 @@
 Class {
-	#name : #ClapListImagesAsStoneTest,
+	#name : #ClapListImagesAsStonTest,
 	#superclass : #TestCase,
 	#category : #'PharoLauncher-CLI-Old-PharoLauncher-CLI-Old'
 }

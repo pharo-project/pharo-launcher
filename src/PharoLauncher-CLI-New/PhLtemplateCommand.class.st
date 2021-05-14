@@ -166,7 +166,7 @@ PhLtemplateCommand >> outputListTemplatesAsSton [
 PhLtemplateCommand >> outputListTemplatesInCat: aCategory [
    | listTemplatesAvailableForDownload |
    listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
-   listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup asString = aCategory asString ].
+   [listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup asString = aCategory asString ]]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct template category name'.stream cr.^0].
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload children.
    listTemplatesAvailableForDownload do: [ :template | stream nextPutAll: template name. stream lf ]
    

@@ -17,11 +17,12 @@ PhLImagesClapCommand class >> copy [
 	^(ClapCommand withName: 'copy')
 		description: 'Creates copy of given image with new name.';
 		add: ClapFlag forHelp;
-		meaning: [ :args | | anImage |
+		meaning: [ :args | | anImage anImageCopyName |
 			args atName: 'help' ifFound: [ :help |
 				help value; exitSuccess ].
 			anImage := args parent parent parent arguments at:3.
-         self outputCopyImage: anImage.  
+			anImageCopyName := args parent parent parent arguments at:4. 
+         self outputCopyImage: anImage to: anImageCopyName.  
 		 ]
 ]
 
@@ -124,8 +125,8 @@ PhLImagesClapCommand class >> list [
 ]
 
 { #category : #'as yet unclassified' }
-PhLImagesClapCommand class >> outputCopyImage: anImage [ 
-  self new outputCopyImage: anImage. 
+PhLImagesClapCommand class >> outputCopyImage: anImage to: anImageCopyName [
+  self new outputCopyImage: anImage to: anImageCopyName. 
   
 ]
 
@@ -184,12 +185,12 @@ PhLImagesClapCommand >> initialize [
 ]
 
 { #category : #accessing }
-PhLImagesClapCommand >> outputCopyImage: imageName [
+PhLImagesClapCommand >> outputCopyImage: imageName to: newImageName [
    | anImage imageCopy |
    anImage := PhLImagesClapCommand new.
    [anImage := anImage findImage: imageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
    imageCopy  := PhLDirectoryBasedImageRepository new.
-   imageCopy copyImage: anImage to: 'sdkhbdfskd'
+   imageCopy copyImage: anImage to: newImageName
    
    
    
@@ -281,7 +282,7 @@ PhLImagesClapCommand >> outputInitScriptsDir: aDirectoryName [
 PhLImagesClapCommand >> outputListImages [
 
 	repository images
-		do: [ :anImage | stream nextPutAll: anImage name. stream lf. ]
+		do: [ :anImage | stream nextPutAll: anImage name. stream cr.stream nextPutAll:' '. ]
 ]
 
 { #category : #'instance creation' }

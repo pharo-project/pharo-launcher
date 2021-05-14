@@ -102,9 +102,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		whenRootsChangedDo: [ :roots | 
 			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
 		whenSelectionChangedDo: [ :selection | 
-			selection isEmpty 
-				ifTrue: [ descriptionPanel disable ]
-				ifFalse: [ descriptionPanel enable ] ]
+			descriptionPanel enabled: selection isEmpty not ]
 		yourself
 ]
 
@@ -118,7 +116,13 @@ PhLTemplatesPresenter >> connectPresenters [
 			group 
 				ifNil: [ #() ]
 				ifNotNil: [ group children ] ].
-	templateTable transmitTo: descriptionPanel.
+
+	templateTable 
+		transmitTo: descriptionPanel
+		transform: [ :selectionArray | 
+			selectionArray
+				ifNotEmpty: [ selectionArray last ]
+				ifEmpty: [ nil ] ].
 ]
 
 { #category : #accessing }

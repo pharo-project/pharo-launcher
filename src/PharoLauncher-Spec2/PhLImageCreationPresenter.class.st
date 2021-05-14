@@ -163,8 +163,7 @@ PhLImageCreationPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> modelChanged [ 
-'OK' crTrace.
-self template crTrace.
+
 	self template ifNil: [ ^ self ].
 	self template isTemplate
 		ifTrue: [ self enable.
@@ -210,7 +209,5 @@ PhLImageCreationPresenter >> showNameOk [
 PhLImageCreationPresenter >> template [
 	"Multiple selection is allowed in templates pane => we get a list of templates"
 	
-	^ self model isEmptyOrNil 
-		ifTrue: [ nil ]
-		ifFalse: [ self model first ]
+	^ self model
 ]

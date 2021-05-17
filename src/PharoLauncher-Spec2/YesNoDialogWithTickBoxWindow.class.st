@@ -11,11 +11,12 @@ Class {
 
 { #category : #'ui requests' }
 YesNoDialogWithTickBoxWindow class >> confirm: description label: title [
-	^ (UIManager default modalMorph openModal: (
-		(self newWithTheme: Smalltalk ui theme)
-			textFont: Smalltalk ui theme textFont;
-			title: title;
-			text: description)) answer
+
+	^ (PharoLauncherApplication default newConfirm 
+		title: title;
+		message: description;
+		openModalWithSpecParent: PharoLauncherApplication default topWindow)
+		isOk
 ]
 
 { #category : #accessing }

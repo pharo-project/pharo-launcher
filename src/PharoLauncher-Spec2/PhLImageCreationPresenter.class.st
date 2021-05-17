@@ -123,6 +123,7 @@ PhLImageCreationPresenter >> initializationScripts [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initialize [
+
 	super initialize.
 	reservedImagesNamesCache := self application imageRepository imageNames collect: #asLowercase
 ]
@@ -193,15 +194,17 @@ PhLImageCreationPresenter >> refreshInitializationScriptList [
 
 { #category : #private }
 PhLImageCreationPresenter >> showNameError [
+
 	imageNameCheck 
-		image: (self iconNamed: #smallError);
+		image: (self application iconNamed: #smallCancel);
 		help: 'An image with the same name already exists!'
 ]
 
 { #category : #private }
 PhLImageCreationPresenter >> showNameOk [
+
 	imageNameCheck 
-		image: (self iconNamed: #smallOk);
+		image: (self application iconNamed: #smallOk);
 		help: 'Image name is valid!'
 ]
 

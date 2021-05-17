@@ -256,7 +256,7 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 700 @ 550;
+		initialExtent: 850@550;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.

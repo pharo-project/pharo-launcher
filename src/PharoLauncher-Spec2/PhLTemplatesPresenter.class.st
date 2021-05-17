@@ -38,7 +38,9 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 PhLTemplatesPresenter class >> defaultSpec [
 
 	^ SpPanedLayout newHorizontal
+		positionOfSlider: 60 percent;
 		add: (SpPanedLayout newHorizontal
+			positionOfSlider: 40 percent;
 			add: (SpBoxLayout newVertical 
 				add: '1. Choose a template category:' expand: false;
 				add: #categoryTable;
@@ -94,7 +96,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 	
 	^ self newTreeTable
 		hideColumnHeaders;
-		children: #children;
+		children: [ :aTemplateGroup | self childrenOf: aTemplateGroup ];
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection; "bulk delete templates for example"
@@ -104,6 +106,21 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		whenSelectionChangedDo: [ :selection | 
 			descriptionPanel enabled: selection isEmpty not ]
 		yourself
+]
+
+{ #category : #private }
+PhLTemplatesPresenter >> childrenOf: aTemplateGroup [
+		
+	^ [ aTemplateGroup children ]
+		on: PhLDownloadError
+		do: [ :error | 
+			| children |
+			(PhlRetryPresenter newApplication: self application)
+				explanation: error longDescription;
+				retryBlock: [ children := aTemplateGroup children ];
+				cancelBlock: [ children := #() ];
+				openModalWithSpec.
+			children ]	
 ]
 
 { #category : #initialization }
@@ -168,6 +185,14 @@ PhLTemplatesPresenter >> initializationScript [
 ]
 
 { #category : #initialization }
+PhLTemplatesPresenter >> initialize [
+
+	super initialize.
+	self selectCategory: 3
+
+]
+
+{ #category : #initialization }
 PhLTemplatesPresenter >> initializePresenters [
 
 	categoryTable := self buildCategoryTable.
@@ -179,7 +204,7 @@ PhLTemplatesPresenter >> initializePresenters [
 PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher - Image creation';
-		initialExtent: 800 @ 400;
+		initialExtent: 800@400;
 		"toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;"
 		centered.	
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"
@@ -223,5 +248,6 @@ PhLTemplatesPresenter >> singleTemplate [
 
 { #category : #'api - accessing' }
 PhLTemplatesPresenter >> templateRepository [
+
 	^ self model
 ]

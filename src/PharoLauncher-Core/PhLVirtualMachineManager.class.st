@@ -106,12 +106,12 @@ PhLVirtualMachineManager class >> isPreSpur: anImageFormatVersion [
 
 { #category : #unzipping }
 PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirectory [
-	UIManager default informUserDuring: 
-		[ :bar | 
-		ZipArchive new
-			readFrom: aZipFileReference;
-			extractAllTo: outputDirectory informing: bar overwrite: true ]
 	
+	PharoLauncherApplication default newProgressDialog
+		informUserDuring: [ :bar | 
+			ZipArchive new
+				readFrom: aZipFileReference;
+				extractAllTo: outputDirectory informing: bar overwrite: true ]
 ]
 
 { #category : #private }
@@ -536,7 +536,8 @@ PhLVirtualMachineManager >> virtualMachines [
 { #category : #querying }
 PhLVirtualMachineManager >> vm [
 	| vm |
-	UIManager default
+
+	PharoLauncherApplication default newProgressDialog
 		informUserDuring: [ :bar | 
 			bar label: 'Determining Image version'.
 			vm := self availableVirtualMachines 
@@ -554,7 +555,7 @@ PhLVirtualMachineManager >> vm [
 					bar 
 						label: 'Running the image';
 						current: 100.
-					vm ]. ].
+					vm ] ].
 	^ vm executablePath
 ]
 

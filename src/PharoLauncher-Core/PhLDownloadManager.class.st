@@ -44,14 +44,14 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
-	UIManager default
-		informUserDuring: [ :bar | 
+	PharoLauncherApplication default newProgressDialog
+		informUserDuring: [ :dialog | 
 			workBlock
 				on: HTTPProgress
 				do: [ :progress | 
-					bar label: progress printString.
+					dialog label: progress printString.
 					progress isEmpty
-						ifFalse: [ bar current: progress percentage ].
+						ifFalse: [ dialog progressPercent: progress percentage ].
 					progress resume ] ]
 ]
 

@@ -303,6 +303,14 @@ PharoLauncherApplication >> startFull [
 		using: SpWorldPresenter
 ]
 
+{ #category : #api }
+PharoLauncherApplication >> syntaxHighlightTheme [
+	
+	^ self 
+		propertyAt: #syntaxHighlightTheme 
+		ifAbsent: [ nil ]
+]
+
 { #category : #accessing }
 PharoLauncherApplication >> templateRepository [
 	^ templateRepository

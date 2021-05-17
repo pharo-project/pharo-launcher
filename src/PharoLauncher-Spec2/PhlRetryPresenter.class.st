@@ -41,13 +41,13 @@ PhlRetryPresenter >> explanation: aString [
 
 { #category : #initialization }
 PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Retry?';
 		initialExtent: 400 @ 120;
 		addButton: 'Retry' do: [ :presenter | presenter close. retryBlock value. ];
 		addButton: 'Cancel' do: [ :presenter | presenter beCancel; close. cancelBlock value. ];
-		centered.
-	
+		centeredRelativeToTopWindow	
 ]
 
 { #category : #initialization }

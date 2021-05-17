@@ -45,6 +45,7 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
 	PharoLauncherApplication default newProgressDialog
+		parentWindow: PharoLauncherApplication default topWindow;
 		informUserDuring: [ :dialog | 
 			workBlock
 				on: HTTPProgress

@@ -108,6 +108,7 @@ PhLVirtualMachineManager class >> isPreSpur: anImageFormatVersion [
 PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirectory [
 	
 	PharoLauncherApplication default newProgressDialog
+		parentWindow: PharoLauncherApplication default topWindow;
 		informUserDuring: [ :bar | 
 			ZipArchive new
 				readFrom: aZipFileReference;
@@ -538,12 +539,13 @@ PhLVirtualMachineManager >> vm [
 	| vm |
 
 	PharoLauncherApplication default newProgressDialog
+		parentWindow: PharoLauncherApplication default topWindow;
 		informUserDuring: [ :bar | 
 			bar label: 'Determining Image version'.
 			vm := self availableVirtualMachines 
 				at: self vmId 
-				ifAbsent: 
-					[ bar 
+				ifAbsent: [
+					bar 
 						label: 'Fetching VM to run Pharo ', self imageVersion , ' images';
 						current: 25.
 					self fetchVm.
@@ -556,6 +558,7 @@ PhLVirtualMachineManager >> vm [
 						label: 'Running the image';
 						current: 100.
 					vm ] ].
+
 	^ vm executablePath
 ]
 

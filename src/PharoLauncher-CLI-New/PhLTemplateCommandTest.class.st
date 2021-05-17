@@ -45,6 +45,16 @@ PhLTemplateCommandTest >> testSourcesURLTemplatesWithSubcommand [
 ]
 
 { #category : #tests }
+PhLTemplateCommandTest >> testTemplateCategories [
+	| command |
+	command :=ClapContext pragmaCommands detect:[:c | c canonicalName = 'template'].
+	command := command subcommands detect:[ :f | f canonicalName ='sourcesUrl'].
+	self assert: command flags size equals:2.
+	self assert: (command flags anySatisfy:[ :c | c canonicalName ='help']).
+	self assert: (command flags anySatisfy:[ :c | c canonicalName ='ston'])
+]
+
+{ #category : #tests }
 PhLTemplateCommandTest >> testTemplatesCategoryWithSubcommand [
 	| command |
 	command :=ClapContext pragmaCommands detect:[:c | c canonicalName = 'template'].

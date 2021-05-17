@@ -1,3 +1,6 @@
+"
+A ""fake"" repository only usefull for the tests
+"
 Class {
 	#name : #PhLVirtualMachinesMockRepo,
 	#superclass : #Object,
@@ -22,4 +25,10 @@ PhLVirtualMachinesMockRepo >> availableVirtualMachines: anObject [
 { #category : #accessing }
 PhLVirtualMachinesMockRepo >> id [ 
    ^self 
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesMockRepo >> initialize [
+	super initialize.
+	availableVirtualMachines := Dictionary new
 ]

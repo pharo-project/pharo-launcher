@@ -28,15 +28,21 @@ PhLImagesClapCommand class >> copy [
 
 { #category : #'as yet unclassified' }
 PhLImagesClapCommand class >> create [
-	^(ClapCommand withName: 'create')
-		description: 'Downloads and creates new images on the system from remote website based on template name';
+	^ (ClapCommand withName: 'create')
+		description:
+			'Downloads and creates new images on the system from remote website based on template name';
 		add: ClapFlag forHelp;
-		meaning: [ :args | | anImage |
-			args atName: 'help' ifFound: [ :help |
-				help value; exitSuccess ].
-			anImage := args parent parent parent arguments at:3.
-         self outputCreateImage: anImage.  
-		 ]
+		meaning: [ :args | 
+			| aTemplate createdImageName |
+			args
+				atName: 'help'
+				ifFound: [ :help | 
+					help
+						value;
+						exitSuccess ].
+			aTemplate := args parent parent parent arguments at: 3.
+			createdImageName := args parent parent parent arguments at: 4.
+			self outputCreateImage: aTemplate to: createdImageName ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -131,8 +137,8 @@ PhLImagesClapCommand class >> outputCopyImage: anImage to: anImageCopyName [
 ]
 
 { #category : #'as yet unclassified' }
-PhLImagesClapCommand class >> outputCreateImage: anImage [
-  self new outputCreateImage: anImage. 
+PhLImagesClapCommand class >> outputCreateImage: anImage to: newImageName [
+  self new outputCreateImage: anImage to: newImageName. 
   
 ]
 
@@ -186,43 +192,44 @@ PhLImagesClapCommand >> initialize [
 
 { #category : #accessing }
 PhLImagesClapCommand >> outputCopyImage: imageName to: newImageName [
-   | anImage imageCopy |
-   anImage := PhLImagesClapCommand new.
-   [anImage := anImage findImage: imageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
-   imageCopy  := PhLDirectoryBasedImageRepository new.
-   imageCopy copyImage: anImage to: newImageName
-   
-   
-   
-  
+
+	| anImage |
+	
+	[ anImage := self findImage: imageName ]
+		on: NotFound
+		do: [ :c | 
+			stream nextPutAll: 'please enter a correct local image'.
+			stream cr.
+			^ self ].
+		
+	repository copyImage: anImage to: newImageName
 ]
 
 { #category : #accessing }
-PhLImagesClapCommand >> outputCreateImage: aTemplateName [
+PhLImagesClapCommand >> outputCreateImage: aTemplateName to:newImageName [
    | listTemplatesAvailableForDownload templateToDownload|
    listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
    templateToDownload := listTemplatesAvailableForDownload children detect: [ :aTemplate | aTemplate name = aTemplateName ].
    
-    PhLDirectoryBasedImageRepository default extractTemplate: templateToDownload to: '<papapa>'
+    repository extractTemplate: templateToDownload to: newImageName 
 
 
 ]
 
 { #category : #accessing }
 PhLImagesClapCommand >> outputDeleteImage: imageName [
-   | anImage deleteMachine|
-   anImage := PhLImagesClapCommand new.
-   [anImage := anImage findImage: imageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
-   deleteMachine := PhLDirectoryBasedImageRepository new.
-   deleteMachine deleteImage: anImage.
 
-    
-   
-   
-   
-   
-  
+	| anImage |
+	
+	[ anImage := self findImage: imageName ]
+		on: Error , NotFound
+		do: [ :c | 
+			stream nextPutAll: 'please enter a correct local image'.
+			stream cr.
+			^ 0 ].
+
+	repository deleteImage: anImage
 ]
 
 { #category : #accessing }
@@ -261,20 +268,25 @@ PhLImagesClapCommand >> outputImageInfo: anImageName [
 ]
 
 { #category : #accessing }
-PhLImagesClapCommand >> outputImageLaunch: anImageName [
-   | anImage |
-   anImage := PhLImagesClapCommand new.
-   [anImage := anImage findImage: anImageName]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local image'.stream cr.^0].
-   anImage ensureDefaultConfiguration.
-anImage launch.
-   
-   
+PhLImagesClapCommand >> outputImageLaunch: anImageName2 [
+	| anImage |
+	[ anImage := self findImage: anImageName2 ]
+		on: NotFound
+		do: [ :c | 
+			stream nextPutAll: 'please enter a correct local image'.
+			stream cr.
+			^ 0 ].
+	anImage ensureDefaultConfiguration.
+	anImage launch
 ]
 
 { #category : #accessing }
 PhLImagesClapCommand >> outputInitScriptsDir: aDirectoryName [
    "how to definitely set a pharo launcher variable ? "
-   PharoLauncherApplication scriptsDirectory: aDirectoryName.
+  
+   PharoLauncherApplication default scriptsDirectory: aDirectoryName.
+   Smalltalk saveSession.
+   
    
 ]
 

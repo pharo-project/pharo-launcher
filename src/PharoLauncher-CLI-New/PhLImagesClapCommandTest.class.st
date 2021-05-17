@@ -1,3 +1,21 @@
+"
+testFindImage
+	| repo command test1 test2 test3 |
+	repo := PhLImagesMockRepo new.
+	repo images: OrderedCollection new.
+	command :=PhLImagesClapCommand new.
+	command repository: repo.
+	test1 := PhLImagesMockRepo  new.
+	test2 := PhLImagesMockRepo new.
+	test3 := PhLImagesMockRepo new.
+	test1 name: 'ljflkdjbf.image'.
+	test2 name: 'mytestimage.image'.
+	test3 name: 'blabla.image'.
+	repo add: test1.
+	repo add: test2.
+	repo add: test3.
+	command findImage:'mytestimage.image'
+"
 Class {
 	#name : #PhLImagesClapCommandTest,
 	#superclass : #TestCase,
@@ -8,6 +26,29 @@ Class {
 }
 
 { #category : #tests }
+PhLImagesClapCommandTest >> testCopyImage [
+
+	| repo command test1 test2 test3 |
+	
+	repo := PhLImagesMockRepo new.
+	command := PhLImagesClapCommand new.
+	command repository: repo.
+	test1 := PhLImagesMock name: 'ljflkdjbf.image'.
+	test2 := PhLImagesMock name: 'mytestimage.image'.
+	test3 := PhLImagesMock name: 'blabla.image'.
+	
+	repo 
+		add: test1;
+		add: test2;
+		add: test3.
+				
+	command outputCopyImage: 'mytestimage.image' to: 'mytestimagecopy.image'.
+	
+	self assert: repo images size equals: 4.
+	
+]
+
+{ #category : #tests }
 PhLImagesClapCommandTest >> testCopyImagesWithSubcommand [
 	| command |
 	command :=ClapContext pragmaCommands detect:[:c | c canonicalName = 'images'].
@@ -15,6 +56,37 @@ PhLImagesClapCommandTest >> testCopyImagesWithSubcommand [
 	self assert: command flags size equals:1.
 	self assert: (command flags anySatisfy:[ :c | c canonicalName ='help']).
 	
+]
+
+{ #category : #tests }
+PhLImagesClapCommandTest >> testCreateImage [
+	| repo command test1 test2 test3 variableOfTest |
+	repo := PhLImagesMockRepo new.
+	command := PhLImagesClapCommand new.
+	command repository: repo.
+	test1 := PhLImagesMock name: 'ljflkdjbf.image'.
+	test2 := PhLImagesMock name: 'mytestimage.image'.
+	test3 := PhLImagesMock name: 'blabla.image'.
+
+	repo
+		add: test1;
+		add: test2;
+		add: test3.
+
+	command
+		outputCreateImage: 'Pharo 8.0 - 64bit (stable)'
+		to: 'myNewImage'.
+
+	repo images
+		do: [ :each | 
+			each name = 'myNewImage'
+				ifTrue: [ variableOfTest := 'itWorks' ] ].
+
+	self assert: (repo images includes: test2).
+	self assert: (repo images includes: test1).
+	self assert: (repo images includes: test3).
+	self assert: repo images size equals: 4.
+	self assert: variableOfTest equals: 'itWorks'
 ]
 
 { #category : #tests }
@@ -28,34 +100,27 @@ PhLImagesClapCommandTest >> testCreateImagesWithSubcommand [
 ]
 
 { #category : #tests }
-PhLImagesClapCommandTest >> testExecuteCommandCopyImage [
-	| command repo size test|
-	size :=0.
-	command := PhLImagesClapCommand  new.
-   repo := PhLImagesMockRepo new.
-   repo images: OrderedCollection new.
-   repo images add: (PhLImage location: 'asdsadaasdsad/Pharo 8.0 - 64bit (stable).image' asFileReference).
-   repo images add: (PhLImage location: 'asdsadaasdsad/Pharoblabla.image' asFileReference).
-   command repository: repo.
-	command outputCopyImage:'asdsadaasdsad/Pharo 8.0 - 64bit (stable).image' to:'blakjbzkabj'.
-	repo images do: [:each | size:=size+1. ].
-   self assert: size equals:3.
-]
+PhLImagesClapCommandTest >> testDeleteImage [
 
-{ #category : #tests }
-PhLImagesClapCommandTest >> testExecuteCommandDeleteImage [
-	| command repo test |
-	command := PhLImagesClapCommand  new.
-   repo := PhLImagesMockRepo new.
-   repo images: OrderedCollection new.
-   test := PhLImage location: 'asdsadaasdsad/Pharoblabla.image' asFileReference.
-   repo images add: (PhLImage location: 'asdsadaasdsad/Pharo 8.0 - 64bit (stable).image' asFileReference).
-   repo images add: (test).
+	| repo command test1 test2 test3 |
+	
+	repo := PhLImagesMockRepo new.
+	command := PhLImagesClapCommand new.
 	command repository: repo.
-	self assert:(repo images includes: test).
-	self halt.
-	command outputDeleteImage: 'Pharoblabla.image'.
-   self deny: (repo images includes: test).
+	test1 := PhLImagesMock name: 'ljflkdjbf.image'.
+	test2 := PhLImagesMock name: 'mytestimage.image'.
+	test3 := PhLImagesMock name: 'blabla.image'.
+	
+	repo
+		add: test1;
+		add: test2;
+		add: test3.
+		
+	command outputDeleteImage: 'mytestimage.image'.
+	
+	self deny: (repo images includes: test2).
+	self assert: (repo images includes: test1).
+	self assert: (repo images includes: test3).
 ]
 
 { #category : #tests }
@@ -93,6 +158,22 @@ PhLImagesClapCommandTest >> testExecuteCommandWhenThereAreManyImagePrintsTheList
 ]
 
 { #category : #tests }
+PhLImagesClapCommandTest >> testFindImage [
+	| repo command test1 test2 test3 |
+	repo := PhLImagesMockRepo new.
+	repo images: OrderedCollection new.
+	command :=PhLImagesClapCommand new.
+	command repository: repo.
+	test1 := PhLImagesMock  name: 'ljflkdjbf.image'.
+	test2 := PhLImagesMock name: 'mytestimage.image'.
+	test3 := PhLImagesMock name: 'blabla.image'.
+	repo add: test1;
+	     add: test2;
+	     add: test3.
+	command findImage:'mytestimage.image'
+]
+
+{ #category : #tests }
 PhLImagesClapCommandTest >> testImagesInfoWithSubcommand [
 	| command |
 	command :=ClapContext pragmaCommands detect:[:c | c canonicalName = 'images'].
@@ -110,6 +191,28 @@ PhLImagesClapCommandTest >> testImagesLaunchWithSubcommand [
 	self assert: command flags size equals:1.
 	self assert: (command flags anySatisfy:[ :c | c canonicalName ='help']).
 	
+]
+
+{ #category : #tests }
+PhLImagesClapCommandTest >> testLaunchImage [
+
+	| repo command test1 test2 test3 |
+	
+	repo := PhLImagesMockRepo new.
+	command := PhLImagesClapCommand new.
+	command repository: repo.
+	test1 := PhLImagesMock name: 'ljflkdjbf.image'.
+	test2 := PhLImagesMock name: 'mytestimage.image'.
+	test3 := PhLImagesMock name: 'blabla.image'.
+
+	repo
+		add: test1;
+		add: test2;
+		add: test3.
+		
+	command outputImageLaunch: 'blabla.image'.
+	
+	self assert: test3 launchCheck equals: 'True'
 ]
 
 { #category : #tests }

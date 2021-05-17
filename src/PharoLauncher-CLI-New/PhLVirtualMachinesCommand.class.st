@@ -130,12 +130,20 @@ PhLVirtualMachinesCommand >> initialize [
 
 { #category : #accessing }
 PhLVirtualMachinesCommand >> outputDeleteVm: aVMName [
-   | aVM virtualMachinesList |
-   virtualMachinesList := repository availableVirtualMachines values.
-   [aVM := virtualMachinesList detect: [ :virtualMachine | virtualMachine id = aVMName ]]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local virtual machine name'.stream cr.^0].
-   aVM removeFromSystem. 
-   
-  
+
+	| aVM virtualMachinesList |
+	
+	virtualMachinesList := repository availableVirtualMachines values.
+	
+	[ aVM := virtualMachinesList
+		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
+		on: NotFound
+		do: [ :c | 
+			stream nextPutAll: 'please enter a correct local virtual machine name'.
+			stream cr.
+			^ self ].
+
+	aVM removeFromSystem
 ]
 
 { #category : #accessing }

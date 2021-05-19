@@ -18,7 +18,7 @@ Class {
 	#classVars : [
 		'IsDeployed'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #settings }

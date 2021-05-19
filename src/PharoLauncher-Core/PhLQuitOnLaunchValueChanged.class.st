@@ -4,5 +4,5 @@ Annoucement used to update the UI when QuitOnLaunchValueIsChanged from another p
 Class {
 	#name : #PhLQuitOnLaunchValueChanged,
 	#superclass : #Announcement,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }

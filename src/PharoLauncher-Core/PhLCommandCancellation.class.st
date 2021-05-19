@@ -4,5 +4,5 @@ Get notified if a user canceled an operation do not run following operations if 
 Class {
 	#name : #PhLCommandCancellation,
 	#superclass : #Notification,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }

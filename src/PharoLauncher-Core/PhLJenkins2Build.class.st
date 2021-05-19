@@ -4,7 +4,7 @@ I represent a Jenkins job. If I'm a simple job, artifacts are available directly
 Class {
 	#name : #PhLJenkins2Build,
 	#superclass : #PhLJenkins2WithArtifactsEntity,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }

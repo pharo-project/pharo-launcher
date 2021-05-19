@@ -4,7 +4,7 @@ Abstract superclass for everything in a Jenkins server that produces artifacts: 
 Class {
 	#name : #PhLJenkins2WithArtifactsEntity,
 	#superclass : #PhLJenkins2Entity,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }

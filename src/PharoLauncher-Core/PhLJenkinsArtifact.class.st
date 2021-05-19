@@ -14,7 +14,7 @@ Class {
 		'properties',
 		'parent'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }

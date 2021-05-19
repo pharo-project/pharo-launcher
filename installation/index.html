@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Installation - Pharo Launcher documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Installation";
+    var mkdocs_page_input_path = "installation.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Pharo Launcher documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">Home</a>
+	    </li>
+          
+            <li class="toctree-l1 current">
+		
+    <a class="current" href="./">Installation</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l2"><a href="#downloading-pharo-launcher">Downloading Pharo Launcher</a></li>
+    
+
+    <li class="toctree-l2"><a href="#upgrade-notes">Upgrade notes</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#upgrading-from-pharo-launcher-1x-to-pharo-launcher-2x">Upgrading from Pharo Launcher 1.x to Pharo Launcher 2.x</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#install-on-mac-os-x">Install on Mac OS X</a></li>
+    
+
+    <li class="toctree-l2"><a href="#install-on-windows">Install on Windows</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l3" href="#install-on-windows-linux-subsystem-wsl">Install on Windows Linux Subsystem (WSL)</a></li>
+        
+        </ul>
+    
+
+    <li class="toctree-l2"><a href="#install-on-gnulinux">Install on GNU/Linux</a></li>
+    
+
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../create-images/">Create images</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../commands/">Commands</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../launch-configurations/">Launch configurations</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../templates/">Templates</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../manage-vms/">Manage vms</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../settings/">Settings</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../contribute/">Contribute</a>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Pharo Launcher documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+    
+    <li>Installation</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/pharo-project/pharo-launcher/edit/dev/docs/installation.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h2 id="downloading-pharo-launcher">Downloading Pharo Launcher</h2>
+<p>You can get Pharo Launcher from the <a href="https://pharo.org/download">Pharo website</a>.
+The default download is a 64-bit version.</p>
+<p>
+    <a class="btn download" href="https://files.pharo.org/pharo-launcher/windows"><i class="fa fa-windows"></i> Windows</a>
+    <a class="btn download" href="https://files.pharo.org/pharo-launcher/mac"><i class="fa fa-apple"></i> MacOS</a>
+    <a class="btn download" href="https://files.pharo.org/pharo-launcher/linux64"><i class="fa fa-linux"></i> GNU/Linux</a>
+    <a class="btn " href="https://files.pharo.org/pharo-launcher/linux32"><i class="fa fa-linux"></i> GNU/Linux (32bit)</a>
+</p>
+
+<h2 id="upgrade-notes">Upgrade notes</h2>
+<h3 id="upgrading-from-pharo-launcher-1x-to-pharo-launcher-2x">Upgrading from Pharo Launcher 1.x to Pharo Launcher 2.x</h3>
+<p>Pharo Launcher are mostly compatibles between each other.
+Pharo Launcher introduces a new serialization format for image metadata.
+Pharo Launcher 1.x uses different files to store metadata:</p>
+<ul>
+<li><em>meta-inf.ston</em> stores the template used to create the image </li>
+<li><em>description.txt</em> file contains the description of the image if any</li>
+<li><em>pharo.version</em> file tells Pharo Launcher what is the pharo version of the image.</li>
+</ul>
+<p>Pharo Launcher 2.x uses a single ston file to store all metadata: <em>meta-inf.ston</em>. It stores the origin template, the description and the pahro version as well as other informations like launch configurations (VM to use, VM and image arguments) and initialization script.
+When using Pharo Launcher 2.x with pre-existing images, meta-data files will be parsed to fetch the metadata and will then be saved in <em>meta-inf.ston</em> with the new format.</p>
+<p>It means <strong>you will not loose information</strong> but <em>meta-inf.ston</em> will be overriden, meaning that <strong>going back to Pharo Launcher 1.x will throw error</strong> when parsing this metadata file. 
+Images and Virtual Machines files are not impacted by the update.
+You may encouter problems with Pharo Launcher settings parsing. If so, just delete the problematic settings from the settings file.</p>
+<h2 id="install-on-mac-os-x">Install on Mac OS X</h2>
+<p>Double-click on the dmg file and drop Pharo Launcher app in Applications folder. 
+<img alt="dmg installation" src="../images/install-dmg.png" /></p>
+<p>Before being able to run Pharo Launcher, you may need to update temporarily your <strong>security settings</strong>: if you have Mac OS X 10.8 or higher then you might get the following message:
+<img alt="Warning OS X Gatekeeper" src="../images/warning-osx-gatekeeper.png" /></p>
+<p>This is due to the OS X Gatekeeper feature that is designed to discourage users from downloading apps from random locations and possibly installing something bad. Assuming you've downloaded Pharo Launcher from Pharo web site, then you have nothing to worry about, and you just need to bypass this warning:</p>
+<ul>
+<li>Recommended - Right click (or command+click) the application icon and select "open"</li>
+<li>Advanced - Enable all application downloads<ul>
+<li>In OS X go to the Apple Menu -&gt; System Preferences -&gt; Security &amp; Privacy -&gt; General</li>
+<li>Unlock the padlock at the bottom of the window, which will require a computer admin password</li>
+<li>Where it says "Allow applications downloaded from:" select "Anywhere"</li>
+<li>OS X will give you a scary warning that is a bit exaggerated. If you're not comfortable with this, use the "right click" method mentioned above.</li>
+</ul>
+</li>
+</ul>
+<p>In all cases OS X will still ask you if you want to open an "unsigned" application the first time it is opened, so new applications that are downloaded can't just start by themselves. Just click on "Open".</p>
+<p><img alt="Warning OS X App not downloaded from AppStore" src="../images/warning-osx-not-appstore.png" /></p>
+<p><strong>Warning</strong>: There is a high probability that the very first run of Pharo Launcher does nothing. In this case, just run it a second time and Pharo Launcher will open.</p>
+<h2 id="install-on-windows">Install on Windows</h2>
+<p>Run the installer and follow instructions. Be sure to install Pharo Launcher in a place where you have <strong>write privileges</strong>.</p>
+<p><img alt="Windows installer" src="../images/windows-installer.png" /></p>
+<p><img alt="Windows installer, choose path screen" src="../images/windows-installer-2-folder.png" /></p>
+<p><img alt="Windows installer, last screen" src="../images/windows-installer-3-finish.png" /></p>
+<p>The installer wil create a shorcut on the Desktop as well as an application entry in the Windows menu.</p>
+<p><img alt="Windows desktop with Pharo Launcher shorcut" src="../images/windows-shorcut.png" /></p>
+<p><strong>Warning</strong>: Antinvirus can prevent Pharo Launcher to behave correctly
+It has been reported on Windows that the Antivirus prevents Pharo Launcher to download the VMs needed to run images. A workaround is to whitelist PharoLauncher or to temporary disable the antivirus when you need to download new VMs.</p>
+<h3 id="install-on-windows-linux-subsystem-wsl">Install on Windows Linux Subsystem (WSL)</h3>
+<p>Thanks to Christopher Fuhrman, the original author of <a href="https://fuhrmanator.github.io/2019/02/27/Pharo-in-WSL.html">these instructions</a>.</p>
+<h4 id="preparation">Preparation</h4>
+<ul>
+<li>Install and activate WSL following <a href="https://docs.microsoft.com/en-us/windows/wsl/install-win10">Microsoft’s instructions</a>.</li>
+<li>Install an X Server for Windows. You can use <a href="https://sourceforge.net/projects/vcxsrv/">VcXsrv</a>:<ul>
+<li>Run XLaunch from the start menu, which invokes a wizard.</li>
+<li>Accept all the defaults on the wizard.</li>
+<li>At the last page of the wizard, click <em>Save configuration</em> specifying <code>%appdata%\Microsoft\Windows\Start Menu\Programs\Startup</code> to have VcXsrv start automatically when you start Windows.</li>
+</ul>
+</li>
+<li>You should <code>export DISPLAY=localhost:0</code> (e.g., in your WSL <em>~/.bashrc</em>).</li>
+<li>Install Mesa with the command <code>sudo apt install mesa-utils</code>.<br />
+This is apparently needed because there are missing libraries for the X11 display used by Pharo. For reference, if you don’t do this step, you’ll get the following message that’s somewhat misleading:</li>
+</ul>
+<pre><code>$ ./pharo-ui
+could not find display driver vm-display-X11; either:
+- check that /home/myusername/pharo-dir/pharo-vm/lib/pharo/5.0-201901051900//vm-display-X11.so exists, or
+- use the '-plugins &lt;path&gt;' option to tell me where it is, or
+- remove DISPLAY from your environment.
+</code></pre>
+<h4 id="installation">Installation</h4>
+<p>Note: these instructions are almost the same as for a standard installation on GNU/Linux
+- Download the latest version of the Linux 64 version of Pharo Launcher to your home directory:    </p>
+<pre><code class="language-bash">cd
+curl -o pharo-launcher.zip -L https://files.pharo.org/pharo-launcher/linux64
+</code></pre>
+<ul>
+<li>Unzip it (you may need to install the unzip tool with sudo apt install unzip):</li>
+</ul>
+<pre><code class="language-bash">unzip pharo-launcher.zip
+</code></pre>
+<p>Normally this will create a ~/pharolauncher directory.</p>
+<ul>
+<li>Run Pharo Launcher with the following command:</li>
+</ul>
+<pre><code class="language-bash">pharolauncher/pharo-launcher &amp;
+</code></pre>
+<h2 id="install-on-gnulinux">Install on GNU/Linux</h2>
+<ul>
+<li>Download the latest version of the Linux 64 version of Pharo Launcher to your home directory:    </li>
+</ul>
+<pre><code class="language-bash">cd
+curl -o pharo-launcher.zip -L https://files.pharo.org/pharo-launcher/linux64
+</code></pre>
+<ul>
+<li>Unzip the archive in a place where you have <strong>write privileges</strong> (you may need to install the unzip tool with sudo apt install unzip):</li>
+</ul>
+<pre><code class="language-bash">unzip pharo-launcher.zip
+</code></pre>
+<p>Normally this will create a ~/pharolauncher directory.
+You can also do it through the UI</p>
+<p><img alt="Pharo Launcher archive extraction" src="../images/pharo-launcher-unzip-linux.png" /></p>
+<ul>
+<li>Run Pharo Launcher</li>
+</ul>
+<pre><code class="language-bash">./pharolauncher/pharo-launcher
+</code></pre>
+<p><img alt="Pharo Launcher launch" src="../images/pharo-launcher-launch-linux.png" /></p>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../create-images/" class="btn btn-neutral float-right" title="Create images">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/pharo-project/pharo-launcher/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href=".." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../create-images/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

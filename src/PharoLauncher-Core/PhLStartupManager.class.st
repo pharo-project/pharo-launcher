@@ -34,7 +34,9 @@ PhLStartupManager class >> resetStartUpClasses [
 ]
 
 { #category : #'system startup' }
-PhLStartupManager class >> startUp [
+PhLStartupManager class >> startUp: isANewSession [
+
+	isANewSession ifFalse: [ ^ self ].
 	self startUpClasses do: [ :c | c ifNotNil: [ c launcherStartUp ] ]
 ]
 

@@ -18,7 +18,7 @@ PhLUIRequest >> chooseFrom: aListOfChoices [
 	^ self application newSelect 
 		title: title;
 		items: aListOfChoices;
-		openModalWithSpecParent: self application topWindow
+		openModalWithSpecParent: self relatedWindow
 ]
 
 { #category : #accessing }
@@ -35,8 +35,8 @@ PhLUIRequest >> request [
 		answer := self application newRequest
 			title: title; 
 			text: initialAnswer;
-			openModalWithSpecParent: self application topWindow. 
-	] doWhileTrue: [ 
+			openModalWithSpecParent: self relatedWindow ] 
+	doWhileTrue: [ 
 		answer isNotNil 
 			and: [ validationBlock isNotNil 
 			and: [ (validationBlock value: answer) not ] ] ].

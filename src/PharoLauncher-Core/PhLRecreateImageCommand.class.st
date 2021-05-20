@@ -23,18 +23,21 @@ PhLRecreateImageCommand >> askConfirmation [
 	
 	confirmMessage := 'Are you sure you want to recreate this image?' , Character cr asString, 
 							'This will overwrite the existing image and you will lose changes.'.
+	
 	^ self imagesPresenter newConfirmation
+		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 ]
 
 { #category : #executing }
 PhLRecreateImageCommand >> execute [
-	self askConfirmation
-		ifTrue: [ self imagesPresenter selectedImages 
-						do: [ :image |	
-								UIManager default showWaitCursorWhile:
-									[ self imagesPresenter imageRepository recreateImage: image ] ] ]
+
+	self askConfirmation ifFalse: [ ^ self ].
+	
+	self context application showWaitCursorWhile: [ 
+		self imagesPresenter selectedImages do: [ :image |	
+			self imagesPresenter imageRepository recreateImage: image ] ]
 ]
 
 { #category : #initialization }

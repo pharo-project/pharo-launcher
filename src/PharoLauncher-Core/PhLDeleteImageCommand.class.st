@@ -24,16 +24,18 @@ PhLDeleteImageCommand >> canBeExecuted [
 { #category : #accessing }
 PhLDeleteImageCommand >> execute [
 	| images imageNames confirmMessage answer |
+	
 	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
 	confirmMessage := 'Are you sure you want to delete ', (imageNames joinUsing: ', ' last: ' and ').
 	answer := self imagesPresenter newConfirmation
+		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer ifFalse: [ ^ self ].
 
-	UIManager default showWaitCursorWhile:
-		[ self imagesPresenter imageRepository deleteImages: images ].
+	self context application showWaitCursorWhile: [ 
+		self imagesPresenter imageRepository deleteImages: images ]
 ]
 
 { #category : #initialization }

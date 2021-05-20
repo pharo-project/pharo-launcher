@@ -44,7 +44,7 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
-	PharoLauncherApplication default newProgressDialog
+	PharoLauncherApplication default newProgress
 		parentWindow: PharoLauncherApplication default topWindow;
 		informUserDuring: [ :dialog | 
 			workBlock

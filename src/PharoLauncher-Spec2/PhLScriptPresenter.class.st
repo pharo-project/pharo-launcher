@@ -117,14 +117,15 @@ PhLScriptPresenter >> newScriptNamed: aName [
 PhLScriptPresenter >> removeScript: aFileReference [ 
 	
 	aFileReference ifNil: [ ^ self ].
-	(self application newConfirmation 
+	(self application newConfirmation
+		parentWindow: self window;
 		message: 'Do you want to remove ', aFileReference fullName, ' script?';
-		confirm) ifFalse: [ ^ self ].
+		confirm) 
+		ifFalse: [ ^ self ].
 		
 	aFileReference ensureDelete.
 	scriptTable	removeItem: aFileReference.
-	self scriptListChanged.
-
+	self scriptListChanged
 ]
 
 { #category : #action }

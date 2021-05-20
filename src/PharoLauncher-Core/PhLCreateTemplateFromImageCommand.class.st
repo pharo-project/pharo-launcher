@@ -35,7 +35,9 @@ PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 
 { #category : #accessing }
 PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
+
 	^ self imagesPresenter newConfirmation
+		parentWindow: self context window;
 		message: 'Do you want to override exisiting template?';
 		confirm
 ]

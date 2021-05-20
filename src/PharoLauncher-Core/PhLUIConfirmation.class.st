@@ -15,7 +15,7 @@ PhLUIConfirmation >> confirm [
 
 	^ self application newConfirm 
 		label: message;
-		openModalWithSpecParent: self application topWindow
+		openModalWithSpecParent: self relatedWindow
 ]
 
 { #category : #accessing }

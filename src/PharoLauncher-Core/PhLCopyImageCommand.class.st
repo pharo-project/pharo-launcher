@@ -22,8 +22,8 @@ PhLCopyImageCommand >> execute [
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self imagesPresenter ensure: (self imageRepository isNewImageNameValid: name).
-	UIManager default showWaitCursorWhile:
-		[ self imageRepository
+	self context application showWaitCursorWhile: [ 
+		self imageRepository
 			copyImage: self imagesPresenter singleImage
 			to: name ]
 ]

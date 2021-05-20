@@ -25,9 +25,10 @@ PhLAbstractTemplate >> extractTo: aDirectory [
 { #category : #actions }
 PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	"Extract myself to aDirectory. Name the resulting image aString"
-
-	| extractionDirectory |
-	extractionDirectory := self extractZipArchive: self zipArchive to: aDirectory.
+	| extractionDirectory archive |
+	
+	archive := self zipArchive.
+	extractionDirectory := self extractZipArchive: archive to: aDirectory.
 	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
 	extractionDirectory deleteAll.
 	"Will serialize image metadata with the template information"
@@ -42,9 +43,16 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	"We have to go through a temporary directory because we don't know where the interesting files are in the archive (maybe at the root or maybe in a subdirectory)"
 	tempDirectory := aDirectory / DateAndTime millisecondClockValue asString.
 	tempDirectory createDirectory. "will crash if directory already exists. And that's good :-)"
-	[ ZipArchive new
-		readFrom: zipFile;
-		extractAllTo: tempDirectory ]
+	[
+		PharoLauncherApplication default newProgress
+			parentWindow: PharoLauncherApplication default topWindow;
+			title: ('Extracting {1}' format: { zipFile basename }); 
+			informUserDuring: [ :bar | | zip |
+				self halt.
+				zip := ZipArchive new.
+				zip readFrom: zipFile.
+				bar max: zip numberOfMembers.
+				zip extractAllTo: aDirectory informing: bar ] ]
 	on: Error
 	do: [ :error | 
 		error messageText = 'can''t find EOCD position'

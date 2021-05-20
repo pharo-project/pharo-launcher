@@ -38,6 +38,7 @@ PhLCreateImageFromTemplateCommand >> asSpecCommand [
 { #category : #executing }
 PhLCreateImageFromTemplateCommand >> createImage [
 	| name |
+
 	name := self templatesPresenter imageName.
 	name isEmptyOrNil ifTrue: [ ^ self ].
 	
@@ -47,6 +48,7 @@ PhLCreateImageFromTemplateCommand >> createImage [
 	self addInitializationScriptMetadataIfPresent.
 	self addDescriptionIfAny.
 	self templatesPresenter application imageRepositoryChanged: image.
+
 	^ image
 ]
 

@@ -22,71 +22,78 @@ Class {
 
 { #category : #commands }
 PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
+
 	rootCommandGroup
-		register: (self buildToolbarGroup);
-		register: (self buildContextualMenuGroup)
+		register: (self buildToolbarGroupContext: anImagesPresenter);
+		register: (self buildContextualMenuGroupContext: anImagesPresenter)
 ]
 
 { #category : #commands }
-PhLImagesPresenter class >> buildContextualMenuGroup [
+PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
+
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		beDisplayedAsGroup;
 		description: 'Images table contextual menu';
 		register: ((CmCommandGroup named: 'launch') asSpecGroup
-			register: PhLLaunchImageCommand forSpec;
-			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
-						name: 'Launch without settings';
-						yourself);
 			beDisplayedAsGroup;
+			register: (PhLLaunchImageCommand forSpecContext: aContext);
+			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
+				context: aContext;
+				name: 'Launch without settings';
+				yourself);
 			yourself);
 		register: ((CmCommandGroup named: 'edition') asSpecGroup
-			register: PhLRenameImageCommand forSpec;
-			register: PhLCopyImageCommand forSpec;
-			register: PhLDeleteImageCommand forSpec;
 			beDisplayedAsGroup;
+			register: (PhLRenameImageCommand forSpecContext: aContext);
+			register: (PhLCopyImageCommand forSpecContext: aContext);
+			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
-		register: PhLRecreateImageCommand forSpec;
-		register: PhLShowImageInFolderCommand forSpec;
-		register: PhLCopyPathname forSpec;
-		register: PhLCopyLaunchCommand forSpec;
-		register: PhLCreateTemplateFromImageCommand forSpec;
-		register: PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval;
+		register: (PhLRecreateImageCommand forSpecContext: aContext);
+		register: (PhLShowImageInFolderCommand forSpecContext: aContext);
+		register: (PhLCopyPathname forSpecContext: aContext);
+		register: (PhLCopyLaunchCommand forSpecContext: aContext);
+		register: (PhLCreateTemplateFromImageCommand forSpecContext: aContext);
+		register: (PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval
+			context: aContext;
+			yourself);
 		register: ((CmCommandGroup named: 'extra') asSpecGroup
-			register: PhLInspectCommand forSpec;
+			register: (PhLInspectCommand forSpecContext: aContext);
 			yourself);
-		beDisplayedAsGroup;
 		yourself
 ]
 
 { #category : #commands }
-PhLImagesPresenter class >> buildToolbarGroup [
+PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher toolbar';
 		register: ((CmCommandGroup named: 'Create') asSpecGroup
 			beDisplayedAsGroup;
-			register: PhLOpenNewImageWindowCommand forSpec;
+			register: (PhLOpenNewImageWindowCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Image') asSpecGroup
 			beDisplayedAsGroup;
-			register: PhLLaunchImageCommand forSpec;
-			register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
-			register: PhLLaunchImageFromDiskCommand forSpec;
-			register: PhLImportImageCommand forSpec;
-			register: PhLRefreshImageRepositoryCommand forSpec;
-			register: (PhLShowImageInFolderCommand forSpec
+			register: (PhLLaunchImageCommand forSpecContext: aContext);
+			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
+				context: aContext;
+				yourself);
+			register: (PhLLaunchImageFromDiskCommand forSpecContext: aContext);
+			register: (PhLImportImageCommand forSpecContext: aContext);
+			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
+			register: ((PhLShowImageInFolderCommand forSpecContext: aContext)
 				name: 'Show';
 				yourself);
-			register: PhLDeleteImageCommand forSpec;
+			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Settings') asSpecGroup
-			register: (PhLOpenVmManagerCommand forSpec
+			register: ((PhLOpenVmManagerCommand forSpecContext: aContext)
 				name: 'VMs';
 				yourself);
-			register: (PhLOpenSettingsCommand forSpec
+			register: ((PhLOpenSettingsCommand forSpecContext: aContext)
 				name: 'Settings';
 				yourself);
-			register: (PhLAboutCommand forSpec);
-			register: (PhLQuitCommand forSpec);
+			register: (PhLAboutCommand forSpecContext: aContext);
+			register: (PhLQuitCommand forSpecContext: aContext);
 			yourself;
 		yourself)
 ]
@@ -256,7 +263,7 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 850@550;
+		initialExtent: 900@550;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.

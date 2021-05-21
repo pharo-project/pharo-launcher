@@ -40,24 +40,26 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
 	| tempDirectory |
-	"We have to go through a temporary directory because we don't know where the interesting files are in the archive (maybe at the root or maybe in a subdirectory)"
-	tempDirectory := aDirectory / DateAndTime millisecondClockValue asString.
-	tempDirectory createDirectory. "will crash if directory already exists. And that's good :-)"
-	[
-		PharoLauncherApplication default newProgress
-			parentWindow: PharoLauncherApplication default topWindow;
-			title: ('Extracting {1}' format: { zipFile basename }); 
-			informUserDuring: [ :bar | | zip |
-				self halt.
+
+	PharoLauncherApplication default newProgress
+		parentWindow: PharoLauncherApplication default topWindow;
+		title: ('Extracting {1}' format: { zipFile basename }); 
+		informUserDuring: [ :bar | | zip |	
+			"We have to go through a temporary directory because we don't know where the interesting files are in the archive (maybe at the root or maybe in a subdirectory)"
+			tempDirectory := aDirectory / DateAndTime millisecondClockValue asString.
+			tempDirectory createDirectory. "will crash if directory already exists. And that's good :-)"
+			[
 				zip := ZipArchive new.
 				zip readFrom: zipFile.
 				bar max: zip numberOfMembers.
-				zip extractAllTo: aDirectory informing: bar ] ]
-	on: Error
-	do: [ :error | 
-		error messageText = 'can''t find EOCD position'
-			ifTrue: [ PhLCorruptedTemplateError signal ]
-			ifFalse: [ error pass ] ].
+				zip extractAllTo: tempDirectory informing: bar.
+			]
+			on: Error
+			do: [ :error | 
+				error messageText = 'can''t find EOCD position'
+					ifTrue: [ PhLCorruptedTemplateError signal ]
+					ifFalse: [ error pass ] ] ].
+
 	^ tempDirectory
 ]
 

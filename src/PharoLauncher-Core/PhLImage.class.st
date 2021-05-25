@@ -1,5 +1,33 @@
 "
-I represent a Pharo image. I live in a particular location and have a name. Users can launch me.
+I represent a Pharo (or other) image. I live in a particular location and have a name. Users can launch me.
+
+#VM Matching
+I am matched to the appropriate VM to launch me via my ""version file"", which is in the same folder as me, and whose name is the string returned by #versionFileName. My version file's contents are of the form: `{prefix}{version}`*, where:
+- {prefix} is empty for standard Pharo images. It is made available and used by custom images/VMs e.g. Gtoolkit uses 'gt-'
+- {version} is whatever convention is used by the image/VM type. For standard Pharo, it is the Pharo version with dots removed. Examples:
+  - Pharo 9.0 -> `90`.
+  - Gtoolkit 0.8.83 -> `gt-0.8.83`.
+* This pattern is the same as the matching VM root folder minus the architecture. See PhLVirtualMachine comment, ""Filesystem Location"" section for more info.
+
+#Customized Image Types
+Subclassing me allows you to customize things like:
+- Which VM to use (if not using the standard mapping from Pharo image version to Pharo VM). For example, GToolkit or Squeak VMs. See below for more details.
+- Default image arguments (by overriding #defaultArguments). For example, GToolkit needs this because the image immediately closes after startup unless `'--no-quit'` is supplied.
+
+##Custom VM Mapping
+with contents `{prefix}{version}` e.g. `gt-0.8.83`. This is the same as the VM root folder minus the architecture. See PhLVirtualMachine comment, ""Filesystem Location"" section for more info.
+Let's say you have an image that should be run on a custom VM (i.e. not a standard Pharo one)... subclass me, overriding `#versionPrefix` to match the `#versionPrefix` returned by an appropriate PhLVirtualMachine subclass. N.B. To change the VM of an image that has previously been launched with another VM, you may have to delete the image's metainfo file, which would cache the VM info.
+
+##Installing an existing (on the filesystem) image in Launcher
+Currently, custom images can't be downloaded via Launcher due to differences in URL and other conventions, although this could probably be implemented if someone was interested enough. To create a template from a custom image, you must do the following:
+1. Download the image and changes file.
+2. Create a folder in your Launcher images folder which contains the image and changes file. Both files should have the same basename as the folder. For example, `/path/to/launcher_images/Gtoolkit 0.8.83`, `Gtoolkit 0.8.83.image` and `Gtoolkit 0.8.83.changes`.
+3. Create a ""version file"" as described in ""Custom VM Mapping"" above.
+4. Open or refresh Launcher. The image should appear.
+
+##Template Creation
+To create a template from a custom image, prepare an image as described above in ""Installing..."" and then select the image in Launcher, bring up its context menu, choose ""Create Template"" and go through the dialogs.
+The template should now be available to create new images.
 
 Instance Variables
 	file:		a reference to the .image file
@@ -9,7 +37,7 @@ Instance Variables
 	pharoVersion: the Pharo version number of the image 
 	originTemplate: template that was used to create this image
 	
-My metadata are serialized when setting description, template or before launching the image (implies to compute formatNumber, architecture and pharo version)
+My metadata are serialized when setting description, template or before launching the image (implies to compute formatNumber, architecture and pharo version).
 "
 Class {
 	#name : #PhLImage,
@@ -31,6 +59,13 @@ Class {
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
+
+{ #category : #accessing }
+PhLImage class >> classForLocation: imageFileReference [
+	^ self allSubclasses
+		detect: [ :cls | cls isSubclassForLocation: imageFileReference ]
+		ifNone: [ self ]
+]
 
 { #category : #accessing }
 PhLImage class >> descriptionFileName [
@@ -60,21 +95,15 @@ PhLImage class >> example32 [
 ]
 
 { #category : #'instance creation' }
-PhLImage class >> imageFromMetadata: imageFileReference [
+PhLImage class >> imageFromMetadata: imageFileReference ifAbsent: aBlock [
 	"Will recreate the image object from its STON serialized version if possible"
 
-	imageFileReference parent / self metadataFileName
-		readStreamDo: [ :stream | 
-			| object |
-			object := (self stonReader on: stream) next.
-			(object isKindOf: PhLImage) ifTrue: [ ^ object ].
-			(object isKindOf: Dictionary)
-				ifTrue: [ "old metadata file format"
-					^ self new
-						privOriginTemplate: (object at: #template);
-						yourself ].
-			PhLError signal: 'Unrecognized metadata format' ]
-		ifAbsent: [ ^ self new ]
+	^ imageFileReference parent / self metadataFileName
+			readStreamDo: [ :stream | 
+				| object |
+				object := (self stonReader on: stream) next.
+				object asPhLImage ]
+			ifAbsent: aBlock
 ]
 
 { #category : #initialization }
@@ -82,9 +111,20 @@ PhLImage class >> initialize [
 	SessionManager default registerUserClassNamed: self name
 ]
 
+{ #category : #testing }
+PhLImage class >> isSubclassForLocation: imageFileReference [
+	| versionFile |
+	versionFile := imageFileReference parent / self versionFileName.
+	^ versionFile exists and: [ versionFile contents beginsWith: self versionPrefix ]
+]
+
 { #category : #'instance creation' }
 PhLImage class >> location: imageFileReference [
-	^ (self imageFromMetadata: imageFileReference)
+	| instance |
+	instance := self
+		imageFromMetadata: imageFileReference
+		ifAbsent: [ (self classForLocation: imageFileReference) new ].
+	^ instance
 		setLocation: imageFileReference;
 		yourself
 ]
@@ -118,6 +158,13 @@ PhLImage class >> versionFileName [
 	^ 'pharo.version'
 ]
 
+{ #category : #accessing }
+PhLImage class >> versionPrefix [
+	"Used in matching me to a VM. See class comment, 'VM Matching' section"
+
+	^ ''
+]
+
 { #category : #configuring }
 PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
 	launchConfigurations 
@@ -129,6 +176,11 @@ PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
 { #category : #accessing }
 PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
+]
+
+{ #category : #converting }
+PhLImage >> asPhLImage [
+	^ self
 ]
 
 { #category : #testing }
@@ -165,6 +217,11 @@ PhLImage >> computePharoVersion [
 	self computeArchitecture.
 	self serializeMetadata.
 	^ pharoVersion
+]
+
+{ #category : #accessing }
+PhLImage >> defaultArguments [
+	^ OrderedCollection new
 ]
 
 { #category : #accessing }
@@ -206,28 +263,13 @@ PhLImage >> doNotRunInitializationScript [
 	self shouldRunInitializationScript: false.
 ]
 
-{ #category : #configuring }
-PhLImage >> ensureDefaultConfiguration [
-
-  | conf |
-
-   conf := (self defaultLaunchConfiguration 
-			vmArguments: #();  "be able to run test without X session"
-			imageArguments: #('--no-quit');
-			yourself).
-			
-	(self hasConfiguration: conf) ifFalse: [ self addLaunchConfiguration: conf ]
-
-   
-
-]
-
 { #category : #computing }
 PhLImage >> ensurePharoVersion [
-	(self pharoVersion isNil or: [ self pharoVersion = '' ])
-		ifFalse: [ self vmManager imageVersion: self pharoVersion.
-					^ self pharoVersion ].
-	^ self computePharoVersion.
+	^ (self pharoVersion isNil or: [ self pharoVersion = '' ])
+			ifFalse: [ 
+				self vmManager imageVersion: self pharoVersion.
+				self pharoVersion ]
+			ifTrue: [ self computePharoVersion ]
 	
 ]
 
@@ -310,26 +352,26 @@ PhLImage >> launchConfigurations: aCollection [
 
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
-	| architectureWarningEnabled continue processWrapper |
+	| architectureWarningEnabled continue |
 	
 	self canBeLaunched
 		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
 
 	architectureWarningEnabled := true.
 	continue := true.
-"	[ [ | processWrapper|
-"		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
+	[ [ | processWrapper|
+		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
 		self doNotRunInitializationScript. "Just run, image already initialized"
-		^ processWrapper "]
+		^ processWrapper ]
 		on: PhLImageVersionDeterminationError
 		do: [ :error |  error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
 		do: [ :warning | |  |
 			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
 				ifTrue: [ 
-					architectureWarningEnabled := false. ""only raise one warning""
+					architectureWarningEnabled := false. "only raise one warning"
 					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
-			continue ifTrue: [ warning resume ]. ]"
+			continue ifTrue: [ warning resume ]. ]
 ]
 
 { #category : #accessing }

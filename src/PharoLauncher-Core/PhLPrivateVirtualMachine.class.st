@@ -10,6 +10,11 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
+{ #category : #testing }
+PhLPrivateVirtualMachine class >> isSubclassForDirectory: aFileReference private: isPrivateVm [
+	^ isPrivateVm
+]
+
 { #category : #querying }
 PhLPrivateVirtualMachine >> downloadUrl [
 	^ self manager compatibleVmUrls 

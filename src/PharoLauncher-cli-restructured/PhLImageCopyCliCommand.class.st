@@ -11,6 +11,10 @@ I execute:
 Class {
 	#name : #PhLImageCopyCliCommand,
 	#superclass : #PhLImageCliCommand,
+	#instVars : [
+		'repository',
+		'stream'
+	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
@@ -51,4 +55,67 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app | app  ];
 					yourself)	
 	}
+]
+
+{ #category : #accessing }
+PhLImageCopyCliCommand >> copyName [ 
+  ^arguments words at: 3.
+]
+
+{ #category : #'command execution' }
+PhLImageCopyCliCommand >> execute [
+   | arg1 arg2 |
+   arg1 := self imageName.
+   arg2 := self copyName.
+   self outputCopyImage: arg1 to: arg2.
+   
+
+   
+]
+
+{ #category : #'as yet unclassified' }
+PhLImageCopyCliCommand >> findImage: anImageName [
+   |  theImage |
+   theImage := repository images detect: [ :anImage | anImage name = anImageName ]. 
+   ^theImage 
+]
+
+{ #category : #accessing }
+PhLImageCopyCliCommand >> imageName [ 
+  ^arguments words at: 2.
+]
+
+{ #category : #'command execution' }
+PhLImageCopyCliCommand >> initialize [
+
+	stream := VTermOutputDriver stdout.
+	repository := PhLDirectoryBasedImageRepository default.
+]
+
+{ #category : #accessing }
+PhLImageCopyCliCommand >> outputCopyImage: imageName to: newImageName [
+
+	| anImage |
+	
+	[ anImage := self findImage: imageName ]
+		on: NotFound
+		do: [ :c | 
+			stream nextPutAll: 'please enter a correct local image'.
+			stream cr.
+			^ self ].
+		
+	repository copyImage: anImage to: newImageName
+]
+
+{ #category : #'command execution' }
+PhLImageCopyCliCommand >> repository: aPhLMockImageRepository [ 
+	repository := aPhLMockImageRepository
+   
+]
+
+{ #category : #'command execution' }
+PhLImageCopyCliCommand >> stream: aWriteStream [ 
+	stream := aWriteStream
+   
+   
 ]

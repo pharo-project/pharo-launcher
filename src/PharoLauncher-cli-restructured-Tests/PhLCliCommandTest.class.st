@@ -5,12 +5,35 @@ Class {
 }
 
 { #category : #tests }
+PhLCliCommandTest >> emptyImageRepository [
+	^ PhLDirectoryBasedImageRepository forDirectory: FileSystem memory workingDirectory
+]
+
+{ #category : #tests }
+PhLCliCommandTest >> newImageRepositoryWithAnImage [
+	| repository baseDirectory |
+	repository := self emptyImageRepository.
+	baseDirectory := repository baseDirectory.
+	(baseDirectory / 'test') ensureCreateDirectory.
+	(baseDirectory / 'test' / 'test.image') ensureCreateFile.
+	(baseDirectory / 'test' / 'test.changes') ensureCreateFile.
+	^ repository
+]
+
+{ #category : #tests }
 PhLCliCommandTest >> testExecute [
-	context := PhLCliCommand launcherCommand activateWith: #('launcher').
+   |command commandContext|
+   command :=PhLCliCommand launcherCommand.
+   commandContext := command activationWith: #('launcher' 'image' 'copy' 'mytestimage.image' 'mytestimagecopy.image').
+   "command repository: PhLBaseDirectory."
+   
+   commandContext execute. 
+	
 	self assertSuccess.
 	self
 		assert: self outputString
 		equals: 'some content here' , self lineEnding
+		
 		
 
 ]
@@ -33,4 +56,21 @@ PhLCliCommandTest >> testMatchLauncher [
 	
 	self assert: (PhLCliCommand launcherCommand match: #('launcher')) isValid.
 	self assert: (PhLCliCommand launcherCommand match: #('launcher' '--help')) isValid.
+]
+
+{ #category : #tests }
+PhLCliCommandTest >> testOutputImageCopy [
+	 |command commandContext  repository |
+	
+	repository := self newImageRepositoryWithAnImage.
+	self assert: repository imageNames asSet equals: #('test') asSet.
+   command := PhLImageCopyCliCommand launcherCommand.
+   commandContext := command activationWith: #('launcher' 'image' 'copy' 'test' 'test2').
+   self halt.
+   "command repository: repository."
+   
+   commandContext execute. 
+
+	self assert: repository imageNames asSet equals: #('test' 'test2') asSet.
+	
 ]

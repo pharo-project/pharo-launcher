@@ -10,6 +10,10 @@ I execute:
 Class {
 	#name : #PhLImageListCliCommand,
 	#superclass : #PhLImageCliCommand,
+	#instVars : [
+		'repository',
+		'stream'
+	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
@@ -23,4 +27,33 @@ PhLImageListCliCommand class >> asCliCommand [
 PhLImageListCliCommand class >> launcherCmdDescription [
 
 	^ 'Lists all downloaded images on local computer.'
+]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> execute [
+   self outputListImages.
+]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> initialize [
+
+	stream := VTermOutputDriver stdout.
+	repository := PhLDirectoryBasedImageRepository default.
+]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> outputListImages [
+
+	repository images
+		do: [ :anImage | stream nextPutAll: anImage name. stream cr.stream nextPutAll:' '. ]
+]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> repository: aPhLMockImageRepository [ 
+	repository := aPhLMockImageRepository
+]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> stream: aWriteStream [ 
+	stream := aWriteStream
 ]

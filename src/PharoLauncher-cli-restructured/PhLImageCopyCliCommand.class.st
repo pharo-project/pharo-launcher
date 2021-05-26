@@ -20,8 +20,12 @@ Class {
 
 { #category : #'command line' }
 PhLImageCopyCliCommand class >> asCliCommand [
+	^ self asCliCommand: PharoLauncherCLIModel new.
+]
 
-	^ self newLauncherCommand: #copy
+{ #category : #'command line' }
+PhLImageCopyCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #copy launcherModel:aPharoLauncherModel 
 ]
 
 { #category : #'command line' }
@@ -63,20 +67,20 @@ PhLImageCopyCliCommand >> copyName [
 ]
 
 { #category : #'command execution' }
-PhLImageCopyCliCommand >> execute [
+PhLImageCopyCliCommand >> execute:aPharoLauncherCLIModel [
    | arg1 arg2 |
    arg1 := self imageName.
    arg2 := self copyName.
-   self outputCopyImage: arg1 to: arg2.
+   self outputCopyImage: arg1 to: arg2 dir:aPharoLauncherCLIModel.
    
 
    
 ]
 
 { #category : #'as yet unclassified' }
-PhLImageCopyCliCommand >> findImage: anImageName [
+PhLImageCopyCliCommand >> findImage: anImageName dir: someDirectory [
    |  theImage |
-   theImage := repository images detect: [ :anImage | anImage name = anImageName ]. 
+   theImage := someDirectory imageBaseRepository images detect: [ :anImage | anImage name = anImageName ]. 
    ^theImage 
 ]
 
@@ -89,28 +93,20 @@ PhLImageCopyCliCommand >> imageName [
 PhLImageCopyCliCommand >> initialize [
 
 	stream := VTermOutputDriver stdout.
-	repository := PhLDirectoryBasedImageRepository default.
+
 ]
 
 { #category : #accessing }
-PhLImageCopyCliCommand >> outputCopyImage: imageName to: newImageName [
+PhLImageCopyCliCommand >> outputCopyImage: imageName to: newImageName dir: aPharoLauncherCLIModel [ 
 
 	| anImage |
-	
-	[ anImage := self findImage: imageName ]
+	[ anImage := self findImage: imageName dir:aPharoLauncherCLIModel ]
 		on: NotFound
 		do: [ :c | 
 			stream nextPutAll: 'please enter a correct local image'.
 			stream cr.
 			^ self ].
-		
-	repository copyImage: anImage to: newImageName
-]
-
-{ #category : #'command execution' }
-PhLImageCopyCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
-   
+	aPharoLauncherCLIModel imageBaseRepository copyImage: anImage to: newImageName
 ]
 
 { #category : #'command execution' }

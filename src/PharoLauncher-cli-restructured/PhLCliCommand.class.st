@@ -79,6 +79,25 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #'command line - instance creation' }
+PhLCliCommand class >> newLauncherCommand: idOfCommand launcherModel: aLauncherModel [
+
+	"factory for pharo launcher commands"
+	
+	^ (ClapCommand id: idOfCommand)
+		description: self launcherCmdDescription;
+		add: ClapFlag forHelp;
+		addAll: self launcherCmdSubcommands;
+		addAll: self launcherCmdPositionals;
+		addAll: self launcherCmdFlags;
+		meaning: [ :args |
+			args validateAll.
+			args at: #helpFlag ifPresent: [ :help |
+				help value; exitSuccess ].
+			(self with: args) execute:aLauncherModel ];
+		yourself
+]
+
 { #category : #'command execution' }
 PhLCliCommand >> execute [ 
 	

@@ -18,9 +18,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageDeleteCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #delete
+PhLImageDeleteCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #delete launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }

@@ -11,21 +11,12 @@ I execute:
 Class {
 	#name : #PhLImageCopyCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line' }
-PhLImageCopyCliCommand class >> asCliCommand [
-	^ self asCliCommand: PharoLauncherCLIModel new.
-]
-
-{ #category : #'command line' }
 PhLImageCopyCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #copy launcherModel:aPharoLauncherModel 
+	^ self newLauncherCommand: #copy launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -67,21 +58,22 @@ PhLImageCopyCliCommand >> copyName [
 ]
 
 { #category : #'command execution' }
-PhLImageCopyCliCommand >> execute:aPharoLauncherCLIModel [
+PhLImageCopyCliCommand >> execute [
    | arg1 arg2 |
    arg1 := self imageName.
    arg2 := self copyName.
-   self outputCopyImage: arg1 to: arg2 dir:aPharoLauncherCLIModel.
+   self outputCopyImage: arg1 to: arg2 
    
 
    
 ]
 
 { #category : #'as yet unclassified' }
-PhLImageCopyCliCommand >> findImage: anImageName dir: someDirectory [
-   |  theImage |
-   theImage := someDirectory imageBaseRepository images detect: [ :anImage | anImage name = anImageName ]. 
-   ^theImage 
+PhLImageCopyCliCommand >> findImage: anImageName [
+	| theImage |
+	theImage := self pharoLauncherModel imageBaseRepository images
+		detect: [ :anImage | anImage name = anImageName ].
+	^ theImage
 ]
 
 { #category : #accessing }
@@ -89,29 +81,15 @@ PhLImageCopyCliCommand >> imageName [
   ^arguments words at: 2.
 ]
 
-{ #category : #'command execution' }
-PhLImageCopyCliCommand >> initialize [
-
-	stream := VTermOutputDriver stdout.
-
-]
-
 { #category : #accessing }
-PhLImageCopyCliCommand >> outputCopyImage: imageName to: newImageName dir: aPharoLauncherCLIModel [ 
+PhLImageCopyCliCommand >> outputCopyImage: imageName to: newImageName [ 
 
 	| anImage |
-	[ anImage := self findImage: imageName dir:aPharoLauncherCLIModel ]
+	[ anImage := self findImage: imageName ]
 		on: NotFound
 		do: [ :c | 
-			stream nextPutAll: 'please enter a correct local image'.
-			stream cr.
+			outStream nextPutAll: 'please enter a correct local image'.
+			outStream cr.
 			^ self ].
-	aPharoLauncherCLIModel imageBaseRepository copyImage: anImage to: newImageName
-]
-
-{ #category : #'command execution' }
-PhLImageCopyCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
-   
-   
+	self pharoLauncherModel imageBaseRepository copyImage: anImage to: newImageName
 ]

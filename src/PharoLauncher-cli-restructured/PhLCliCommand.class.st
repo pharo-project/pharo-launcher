@@ -14,15 +14,21 @@ Class {
 	#name : #PhLCliCommand,
 	#superclass : #ClapApplication,
 	#instVars : [
-		'outStream'
+		'outStream',
+		'pharoLauncherModel'
 	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
-{ #category : #'command line - converting' }
+{ #category : #'command line' }
 PhLCliCommand class >> asCliCommand [
+	^ self asCliCommand: PharoLauncherCLIModel new.
+	
+]
 
-	self subclassResponsibility 
+{ #category : #'command line - converting' }
+PhLCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #image launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line - description' }
@@ -64,38 +70,41 @@ PhLCliCommand class >> launcherDescription [
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
-
-	^ (ClapCommand id: idOfCommand)
-		description: self launcherCmdDescription;
-		add: ClapFlag forHelp;
-		addAll: self launcherCmdSubcommands;
-		addAll: self launcherCmdPositionals;
-		addAll: self launcherCmdFlags;
-		meaning: [ :args |
-			args validateAll.
-			args at: #helpFlag ifPresent: [ :help |
-				help value; exitSuccess ].
-			(self with: args) execute ];
-		yourself
+   
+	^ self newLauncherCommand:idOfCommand launcherModel: PharoLauncherCLIModel new
 ]
 
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand launcherModel: aLauncherModel [
-
 	"factory for pharo launcher commands"
-	
+
 	^ (ClapCommand id: idOfCommand)
 		description: self launcherCmdDescription;
 		add: ClapFlag forHelp;
 		addAll: self launcherCmdSubcommands;
 		addAll: self launcherCmdPositionals;
 		addAll: self launcherCmdFlags;
-		meaning: [ :args |
+		meaning: [ :args | 
 			args validateAll.
-			args at: #helpFlag ifPresent: [ :help |
-				help value; exitSuccess ].
-			(self with: args) execute:aLauncherModel ];
+			args
+				at: #helpFlag
+				ifPresent: [ :help | 
+					help
+						value;
+						exitSuccess ].
+			(self with: args model: aLauncherModel) execute ];
 		yourself
+]
+
+{ #category : #'instance creation' }
+PhLCliCommand class >> with: arguments model: pharoLauncherModel [ 
+	| command |
+	
+	command := self with: arguments.
+	command setPharoLauncherModel: pharoLauncherModel.
+	^ command
+	
+	
 ]
 
 { #category : #'command execution' }
@@ -109,4 +118,14 @@ PhLCliCommand >> outStream [
 
 	self flag: 'TODO: Test behavior of outstream (instance of VTermOutputDriver on Windows 10).'.
 	^ outStream ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+]
+
+{ #category : #accessing }
+PhLCliCommand >> pharoLauncherModel [
+	^ pharoLauncherModel
+]
+
+{ #category : #initialization }
+PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [ 
+	pharoLauncherModel := aPharoLauncherModel 
 ]

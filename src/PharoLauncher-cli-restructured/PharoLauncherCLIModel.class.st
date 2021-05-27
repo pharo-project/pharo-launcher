@@ -15,8 +15,8 @@ PharoLauncherCLIModel >> imageBaseRepository [
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> imageBaseRepository: aPath [
-	imageBaseRepository := aPath
+PharoLauncherCLIModel >> imageBaseRepository: aPathString [
+	imageBaseRepository := aPathString
 ]
 
 { #category : #accessing }
@@ -32,8 +32,8 @@ PharoLauncherCLIModel >> templateBaseRepository [
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> templateBaseRepository: aPath [
-	templateBaseRepository:=aPath 
+PharoLauncherCLIModel >> templateBaseRepository: aPathString [
+	templateBaseRepository:=aPathString 
 ]
 
 { #category : #accessing }
@@ -42,6 +42,6 @@ PharoLauncherCLIModel >> vmBaseRepository [
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> vmBaseRepository: aPath [
-	vmBaseRepository:=aPath 
+PharoLauncherCLIModel >> vmBaseRepository: aPathString [
+	vmBaseRepository:=aPathString 
 ]

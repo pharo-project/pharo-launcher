@@ -60,16 +60,16 @@ PhLCliCommandTest >> testMatchLauncher [
 
 { #category : #tests }
 PhLCliCommandTest >> testOutputImageCopy [
-	 |command commandContext test|
-	
-	test:=PharoLauncherCLIModel new.
+	| command commandContext test |
+	test := PharoLauncherCLIModel new.
 	test imageBaseRepository: self newImageRepositoryWithAnImage.
-	self assert: test imageBaseRepository imageNames asSet equals: #('test') asSet.
-	
-   command := PhLImageCopyCliCommand asCliCommand:test.
-   commandContext := command activationWith: #('copy' 'test' 'test2').
-   commandContext execute. 
-
-	self assert: test imageBaseRepository imageNames asSet equals: #('test' 'test2') asSet.
-	
+	self
+		assert: test imageBaseRepository imageNames asSet
+		equals: #('test') asSet.
+	command := PhLImageCopyCliCommand asCliCommand: test.
+	commandContext := command activationWith: #('copy' 'test' 'test2').
+	commandContext execute.
+	self
+		assert: test imageBaseRepository imageNames asSet
+		equals: #('test' 'test2') asSet
 ]

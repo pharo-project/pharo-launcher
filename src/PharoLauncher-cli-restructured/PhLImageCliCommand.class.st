@@ -17,9 +17,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #image
+PhLImageCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #image launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }

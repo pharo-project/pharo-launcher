@@ -80,10 +80,9 @@ def buildArchitecture(architecture, pharoVersion) {
         }
       }
 
-    //Do not deploy if in PR
-    if (isPullRequest()){
-      return;
-    }
+    //Do not deploy 
+    return;
+
     node('linux') {
       stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {

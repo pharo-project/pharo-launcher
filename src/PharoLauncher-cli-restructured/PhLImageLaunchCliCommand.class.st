@@ -10,17 +10,12 @@ I execute:
 Class {
 	#name : #PhLImageLaunchCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'stream',
-		'repository'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line' }
-PhLImageLaunchCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #launch
+PhLImageLaunchCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #launch launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -40,29 +35,20 @@ PhLImageLaunchCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self imageName.
-   self outputImageLaunch: arg1.
+   self outputImageLaunch: self imageName
 ]
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> findImage: anImageName [
-   |  theImage |
-   theImage := repository images detect: [ :anImage | anImage name = anImageName ]. 
-   ^theImage 
+	| theImage |
+	theImage := self pharoLauncherModel imageBaseRepository images
+		detect: [ :anImage | anImage name = anImageName ].
+	^ theImage
 ]
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> imageName [ 
-  ^arguments words at: 2.
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> initialize [
-
-	stream := VTermOutputDriver stdout.
-	repository := PhLDirectoryBasedImageRepository default.
+  ^ (arguments at: #existingImageName) word
 ]
 
 { #category : #accessing }
@@ -71,19 +57,9 @@ PhLImageLaunchCliCommand >> outputImageLaunch: anImageName2 [
 	[ anImage := self findImage: anImageName2 ]
 		on: NotFound
 		do: [ :c | 
-			stream nextPutAll: 'please enter a correct local image'.
-			stream cr.
-			^ 0 ].
+			self outStream nextPutAll: 'please enter a correct local image';
+			 cr.
+			^ self ].
 	anImage ensureDefaultConfiguration.
 	anImage launch
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
 ]

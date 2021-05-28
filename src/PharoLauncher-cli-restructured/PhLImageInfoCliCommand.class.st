@@ -11,17 +11,12 @@ I execute:
 Class {
 	#name : #PhLImageInfoCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'stream',
-		'repository'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line' }
-PhLImageInfoCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #info
+PhLImageInfoCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #info launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -41,41 +36,33 @@ PhLImageInfoCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self imageName.
-   self outputImageInfo: arg1.
+   self outputImageInfo: self imageName.
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> findImage: anImageName [
-   |  theImage |
-   theImage := repository images detect: [ :anImage | anImage name = anImageName ]. 
-   ^theImage 
+	| theImage |
+	theImage := self pharoLauncherModel imageBaseRepository images
+		detect: [ :anImage | anImage name = anImageName ].
+	^ theImage
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> imageName [ 
-  ^arguments words at: 2.
-]
-
-{ #category : #accessing }
-PhLImageInfoCliCommand >> initialize [
-
-	stream := VTermOutputDriver stdout.
-	repository := PhLDirectoryBasedImageRepository default.
+  ^ (arguments at: #existingImageName) word
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> outputImageInfo: anImageName [
 	| imageOriginTemplate imageName imageDescription imagePharoVersion lastModified imageOriginTemplateURL imageDirectory anImage |
-	anImage := PhLImagesClapCommand new.
-	[ anImage := anImage findImage: anImageName ]
-		on: Error , NotFound
+	
+	[ anImage := self findImage: anImageName ]
+		on: NotFound
 		do: [ :c | 
-			stream nextPutAll: 'please enter a correct local image'.
-			stream cr.
-			^ 0 ].
+			self outStream nextPutAll: 'please enter a correct local image'.
+			self outStream cr.
+			^ self ].
+		
 	imageOriginTemplate := anImage originTemplateName.
 	imageName := anImage name.
 	lastModified := anImage lastModification.
@@ -83,7 +70,7 @@ PhLImageInfoCliCommand >> outputImageInfo: anImageName [
 	imageDirectory := anImage location.
 	imageDescription := anImage description.
 	imagePharoVersion := anImage pharoVersionFromFile.
-	stream
+	self outStream
 		nextPutAll: 'image name: ';
 		nextPutAll: imageName asString;
 		cr;
@@ -105,14 +92,4 @@ PhLImageInfoCliCommand >> outputImageInfo: anImageName [
 		nextPutAll: ' image last modification ';
 		nextPutAll: lastModified asString;
 		cr
-]
-
-{ #category : #accessing }
-PhLImageInfoCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
-]
-
-{ #category : #accessing }
-PhLImageInfoCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
 ]

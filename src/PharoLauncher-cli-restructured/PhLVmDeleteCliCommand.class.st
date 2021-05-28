@@ -59,8 +59,8 @@ PhLVmDeleteCliCommand >> outputDeleteVm: aVMName [
 		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
 		on: NotFound
 		do: [ :c | 
-			stream nextPutAll: 'please enter a correct local virtual machine name'.
-			stream cr.
+			self outStream nextPutAll: 'please enter a correct local virtual machine name';
+			cr.
 			^ self ].
 
 	aVM removeFromSystem

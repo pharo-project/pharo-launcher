@@ -1,3 +1,8 @@
+"
+I represent Pharo Image sub-command invoked from cmd line of Pharo Launcher. My responsibility is to set the directory of the initialization script.
+
+
+"
 Class {
 	#name : #PhLImageInitScriptsDirCliCommand,
 	#superclass : #PhLImageCliCommand,
@@ -5,9 +10,9 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageInitScriptsDirCliCommand class >> asCliCommand [
+PhLImageInitScriptsDirCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #initScriptDir launcherModel: aPharoLauncherModel
 
-	^ self newLauncherCommand: #initScriptDir
 ]
 
 { #category : #'command line' }
@@ -27,15 +32,12 @@ PhLImageInitScriptsDirCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageInitScriptsDirCliCommand >> directoryName [ 
-  ^arguments words at: 2.
+  ^ (arguments at: #directoryName) word
 ]
 
 { #category : #accessing }
 PhLImageInitScriptsDirCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self directoryName.
-   self outputInitScriptsDir: arg1.
+   self outputInitScriptsDir: self directoryName
 ]
 
 { #category : #accessing }

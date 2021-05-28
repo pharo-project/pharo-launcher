@@ -10,10 +10,6 @@ I execute:
 Class {
 	#name : #PhLImageDeleteCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'stream',
-		'repository'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
@@ -38,54 +34,34 @@ PhLImageDeleteCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #accessing }
-PhLImageDeleteCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self imageName.
-   self outputDeleteImage: arg1.
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> findImage: anImageName [
-	| theImage |
-	theImage := repository images
-		detect: [ :anImage | anImage name = anImageName ].
-	^ theImage
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> imageName [ 
-  ^arguments words at: 2.
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> initialize [
-
-	stream := VTermOutputDriver stdout.
-	repository := PhLDirectoryBasedImageRepository default.
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> outputDeleteImage: imageName [
+PhLImageDeleteCliCommand >> deleteImage: imageName [
 
 	| anImage |
 	
 	[ anImage := self findImage: imageName ]
 		on: Error , NotFound
 		do: [ :c | 
-			stream nextPutAll: 'please enter a correct local image'.
-			stream cr.
+			self outStream nextPutAll: 'please enter a correct local image'.
+			self outStream cr.
 			^ 0 ].
 
-	repository deleteImage: anImage
+	self pharoLauncherModel imageBaseRepository deleteImage: anImage
 ]
 
 { #category : #accessing }
-PhLImageDeleteCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
+PhLImageDeleteCliCommand >> execute [
+   self deleteImage: self imageName
 ]
 
 { #category : #accessing }
-PhLImageDeleteCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
+PhLImageDeleteCliCommand >> findImage: anImageName [
+	| theImage |
+	theImage := self pharoLauncherModel imageBaseRepository images
+		detect: [ :anImage | anImage name = anImageName ].
+	^ theImage
+]
+
+{ #category : #accessing }
+PhLImageDeleteCliCommand >> imageName [ 
+  ^ (arguments at: #existingImageName) word
 ]

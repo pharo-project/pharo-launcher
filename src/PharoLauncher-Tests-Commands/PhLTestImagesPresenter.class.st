@@ -18,20 +18,14 @@ PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
 	imageTable clickOnColumnHeaderAt: anIndex
 ]
 
-{ #category : #configuring }
-PhLTestImagesPresenter >> createImageNamed: aName [
-	^ self createImageNamed: aName in:  (fileSystem root / aName)
+{ #category : #selection }
+PhLTestImagesPresenter >> createImageNamed: aString [
+	^ self model createImageNamed: aString 
 ]
 
-{ #category : #configuring }
-PhLTestImagesPresenter >> createImageNamed: aName in: aFolder [
-	| imageFile |
-	imageFile := aFolder / (aName , '.image').
-	aFolder ensureCreateDirectory.
-	imageFile binaryWriteStreamDo: [:stream | stream nextPutAll: #(105 25 0 0)].
-	(aFolder / (aName , '.changes')) ensureCreateFile.
-	(aFolder / PhLImage versionFileName) writeStreamDo: [ :stream | stream nextPutAll: '70' ].
-	^ imageFile
+{ #category : #selection }
+PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
+	^ self model createImageNamed: aString in: aPathString
 ]
 
 { #category : #private }
@@ -57,16 +51,16 @@ PhLTestImagesPresenter >> imageNames [
 { #category : #initialization }
 PhLTestImagesPresenter >> initialize [
 	fileSystem := FileSystem memory.
-	self model: (PhLDirectoryBasedImageRepository forDirectory: fileSystem root).
+	self model: PhLTestImageRepository new.
 	templateRepository := PhLTemplateGroupTestRepository new.
 	self application: (PharoLauncherApplication new
 		imageRepository: self model;
 		instVarNamed: 'imagesPresenter' put: self;
 		yourself).
-	self createImageNamed: self singleImageName.
 	super initialize.
-
-	self createImageNamed: self singleImageName.
+	
+	self flag: 'TODO remove next line if possible ? '.
+	self model createImageNamed: self model singleImageName.
 	self refresh.
 	request := PhLTestRequest new.
 ]
@@ -130,7 +124,7 @@ PhLTestImagesPresenter >> singleImage [
 
 { #category : #selection }
 PhLTestImagesPresenter >> singleImageName [
-	^ 'TestImage'
+	^ self model singleImageName
 ]
 
 { #category : #'api - accessing' }

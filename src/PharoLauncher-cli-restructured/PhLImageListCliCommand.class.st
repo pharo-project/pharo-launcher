@@ -10,17 +10,12 @@ I execute:
 Class {
 	#name : #PhLImageListCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line' }
-PhLImageListCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #list
+PhLImageListCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -35,25 +30,8 @@ PhLImageListCliCommand >> execute [
 ]
 
 { #category : #'instance creation' }
-PhLImageListCliCommand >> initialize [
-
-	stream := VTermOutputDriver stdout.
-	repository := PhLDirectoryBasedImageRepository default.
-]
-
-{ #category : #'instance creation' }
 PhLImageListCliCommand >> outputListImages [
 
-	repository images
-		do: [ :anImage | stream nextPutAll: anImage name. stream cr.stream nextPutAll:' '. ]
-]
-
-{ #category : #'instance creation' }
-PhLImageListCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
-]
-
-{ #category : #'instance creation' }
-PhLImageListCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
+	self pharoLauncherModel imageBaseRepository images
+		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream cr.self outStream nextPutAll:' '. ]
 ]

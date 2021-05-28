@@ -18,9 +18,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageCreateCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #create
+PhLImageCreateCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #create launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -47,22 +46,13 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-   | arg1 arg2 |
-    
-   arg1 := self templateName.
-   arg2 := self imageName.
-   self outputCreateImage: arg1 to: arg2.
+  
+   self outputCreateImage: self templateName to: self imageName
 ]
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [ 
-  ^arguments words at: 3.
-]
-
-{ #category : #accessing }
-PhLImageCreateCliCommand >> initialize [
-
-	repository := PhLDirectoryBasedImageRepository default.
+   ^ (arguments at: #newImageName) word
 ]
 
 { #category : #accessing }
@@ -76,11 +66,8 @@ PhLImageCreateCliCommand >> outputCreateImage: aTemplateName to:newImageName [
 ]
 
 { #category : #accessing }
-PhLImageCreateCliCommand >> repository: aPhLMockImageRepository [ 
-	repository := aPhLMockImageRepository
-]
-
-{ #category : #accessing }
 PhLImageCreateCliCommand >> templateName [ 
-  ^arguments words at: 2.
+  ^ (arguments at: #templateName) word
+
+
 ]

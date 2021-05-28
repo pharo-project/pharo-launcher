@@ -1,17 +1,21 @@
+"
+I represent Pharo Template list sub-command invoked from cmd line of Pharo Launcher. My responsibility is to list local templates. 
+
+I declare: 
+- optional flag for stonOutput
+
+I execute:
+- list local images with detailed information about image name, used VM, architecture, local dir, etc.
+"
 Class {
 	#name : #PhLTemplateListCliCommand,
 	#superclass : #PhLTemplateCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line - converting' }
-PhLTemplateListCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #list
+PhLTemplateListCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command execution' }
@@ -20,24 +24,8 @@ PhLTemplateListCliCommand >> execute [
 ]
 
 { #category : #initialization }
-PhLTemplateListCliCommand >> initialize [
-   repository := PhLTemplateGroupRepository default.
-	stream := VTermOutputDriver stdout.
-]
-
-{ #category : #initialization }
 PhLTemplateListCliCommand >> outputListTemplates [
 
-	repository localTemplateNames
-		do: [ :aTemplate | stream nextPutAll: aTemplate asString. stream cr. ]
-]
-
-{ #category : #initialization }
-PhLTemplateListCliCommand >> repository: aPhLMockTemplatesRepository [
-	repository := aPhLMockTemplatesRepository
-]
-
-{ #category : #initialization }
-PhLTemplateListCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
+	self pharoLauncherModel templateBaseRepository localTemplateNames
+		do: [ :aTemplate | self outStream nextPutAll: aTemplate asString. self outStream cr. ]
 ]

@@ -14,6 +14,23 @@ Class {
 }
 
 { #category : #initialization }
+PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
+| zipFile |
+	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
+	self localTemplatesGroup
+		register: (PhLLocalTemplate name: aName zipFile: zipFile)
+		withZip: zipFile.
+	self newZipArchive: zipFile.
+	
+]
+
+{ #category : #initialization }
+PhLTemplateGroupTestRepository >> createRemoteTemplateNamed: aName [
+	self remoteTemplatesGroup
+		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+]
+
+{ #category : #initialization }
 PhLTemplateGroupTestRepository >> initialize [ 
 	super initialize.
 	fileSystem := FileSystem memory.
@@ -40,6 +57,17 @@ PhLTemplateGroupTestRepository >> newRemoteTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: 'Remote test templates' Templates: OrderedCollection new;
 			yourself
+]
+
+{ #category : #initialization }
+PhLTemplateGroupTestRepository >> newZipArchive: aFileReference [
+	| archive |
+	archive := ZipArchive new.
+	archive
+		addDeflateString: 'foo' as: 'bar.image';
+		addDeflateString: 'foo' as: 'bar.changes'.
+	aFileReference
+		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
 ]
 
 { #category : #accessing }

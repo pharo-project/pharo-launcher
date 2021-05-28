@@ -1,17 +1,23 @@
+"
+I represent Pharo Template source directory sub-command invoked from cmd line of Pharo Launcher. My responsibility is to display the source directory of templates. 
+
+I declare: 
+- optional flag for stonOutput
+
+I execute:
+- gives the source directory of the templates
+"
 Class {
 	#name : #PhLTemplateSourcesDirCliCommand,
 	#superclass : #PhLTemplateCliCommand,
-	#instVars : [
-		'stream',
-		'repository'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line - converting' }
-PhLTemplateSourcesDirCliCommand class >> asCliCommand [
+PhLTemplateSourcesDirCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #sourcesDir launcherModel: aPharoLauncherModel
 
-	^ self newLauncherCommand: #sourcesDir
+	
 ]
 
 { #category : #initialization }
@@ -20,22 +26,6 @@ PhLTemplateSourcesDirCliCommand >> execute [
 ]
 
 { #category : #initialization }
-PhLTemplateSourcesDirCliCommand >> initialize [
-   repository := PhLTemplateGroupRepository default.
-	stream := VTermOutputDriver stdout.
-]
-
-{ #category : #initialization }
 PhLTemplateSourcesDirCliCommand >> outputSourcesDirectoryTemplate [
-   stream nextPutAll: repository localTemplatesDirectory asString. stream cr. 
-]
-
-{ #category : #initialization }
-PhLTemplateSourcesDirCliCommand >> repository: aPhLMockTemplatesRepository [
-	repository := aPhLMockTemplatesRepository
-]
-
-{ #category : #initialization }
-PhLTemplateSourcesDirCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream 
+   self outStream nextPutAll: self pharoLauncherModel templateBaseRepository localTemplatesDirectory asString. self outStream cr. 
 ]

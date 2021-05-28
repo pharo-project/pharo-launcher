@@ -53,8 +53,10 @@ PhLCliImageTest >> testOutputImageCopy [
 	model := PharoLauncherCLIModel new.
 	model imageBaseRepository: PhLTestImageRepository new.
 	imageName := model imageBaseRepository singleImageName.		
-	command := PhLImageCopyCliCommand asCliCommand: model.
-	commandContext := command activationWith: {'copy' . imageName . 'test2'}.
+	command := PhLImageCopyCliCommand asCliCommand. "this gives you copy specifciation"
+	commandContext := command activationWith: { 'copy' . imageName . 'test2' }.
+	command setPharoLauncherModel: model.
+
 	
 	commandContext execute.
 	

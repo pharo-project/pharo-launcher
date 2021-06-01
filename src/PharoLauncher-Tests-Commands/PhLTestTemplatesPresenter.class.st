@@ -39,10 +39,10 @@ PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createRemoteTemplateNamed: aName [
-	|temp|
-	temp := self model createRemoteTemplateNamed: aName.
+	|template|
+	template := self model createRemoteTemplateNamed: aName.
 	self refresh.
-	^temp
+	^template
 	
 	
 ]

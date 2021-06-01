@@ -40,14 +40,6 @@ PhLImageInfoCliCommand >> execute [
 ]
 
 { #category : #accessing }
-PhLImageInfoCliCommand >> findImage: anImageName [
-	| theImage |
-	theImage := self pharoLauncherModel imageBaseRepository images
-		detect: [ :anImage | anImage name = anImageName ].
-	^ theImage
-]
-
-{ #category : #accessing }
 PhLImageInfoCliCommand >> imageName [ 
   ^ (arguments at: #existingImageName) word
 ]

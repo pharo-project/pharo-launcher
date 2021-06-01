@@ -74,14 +74,6 @@ PhLImageCopyCliCommand >> execute [
    
 ]
 
-{ #category : #'as yet unclassified' }
-PhLImageCopyCliCommand >> findImage: anImageName [
-	| theImage |
-	theImage := self pharoLauncherModel imageBaseRepository images
-		detect: [ :anImage | anImage name = anImageName ].
-	^ theImage
-]
-
 { #category : #accessing }
 PhLImageCopyCliCommand >> imageName [ 
   ^ (arguments at: #existingImageName) word

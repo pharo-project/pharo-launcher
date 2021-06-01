@@ -43,7 +43,7 @@ PhLImageDeleteCliCommand >> deleteImage: imageName [
 		do: [ :c | 
 			self outStream nextPutAll: 'please enter a correct local image'.
 			self outStream cr.
-			^ 0 ].
+			^ self ].
 
 	self pharoLauncherModel imageBaseRepository deleteImage: anImage
 ]
@@ -51,14 +51,6 @@ PhLImageDeleteCliCommand >> deleteImage: imageName [
 { #category : #accessing }
 PhLImageDeleteCliCommand >> execute [
    self deleteImage: self imageName
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> findImage: anImageName [
-	| theImage |
-	theImage := self pharoLauncherModel imageBaseRepository images
-		detect: [ :anImage | anImage name = anImageName ].
-	^ theImage
 ]
 
 { #category : #accessing }

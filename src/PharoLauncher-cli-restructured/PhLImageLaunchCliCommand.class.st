@@ -10,6 +10,9 @@ I execute:
 Class {
 	#name : #PhLImageLaunchCliCommand,
 	#superclass : #PhLImageCliCommand,
+	#instVars : [
+		'process'
+	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
@@ -21,7 +24,7 @@ PhLImageLaunchCliCommand class >> asCliCommand: aPharoLauncherModel [
 { #category : #'command line' }
 PhLImageLaunchCliCommand class >> launcherCmdDescription [
 
-	^ 'Lauches image with using default (auto-detected) VM.'
+	^ 'Launches image with using default (auto-detected) VM.'
 ]
 
 { #category : #'command line - arguments' }
@@ -35,15 +38,7 @@ PhLImageLaunchCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> execute [
-   self outputImageLaunch: self imageName
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> findImage: anImageName [
-	| theImage |
-	theImage := self pharoLauncherModel imageBaseRepository images
-		detect: [ :anImage | anImage name = anImageName ].
-	^ theImage
+   self launchImage: self imageName
 ]
 
 { #category : #accessing }
@@ -52,14 +47,18 @@ PhLImageLaunchCliCommand >> imageName [
 ]
 
 { #category : #accessing }
-PhLImageLaunchCliCommand >> outputImageLaunch: anImageName2 [
-	| anImage |
-	[ anImage := self findImage: anImageName2 ]
+PhLImageLaunchCliCommand >> launchImage: anImageName [
+	| image |
+	[ image := self findImage: anImageName. ]
 		on: NotFound
 		do: [ :c | 
 			self outStream nextPutAll: 'please enter a correct local image';
 			 cr.
 			^ self ].
-	anImage ensureDefaultConfiguration.
-	anImage launch
+	process := image launch
+]
+
+{ #category : #accessing }
+PhLImageLaunchCliCommand >> process [ 
+	^ process
 ]

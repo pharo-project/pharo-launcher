@@ -1,10 +1,15 @@
+"
+I represent Pharo virtual machine update sub-command invoked from cmd line of Pharo Launcher. My responsibility is to update available virtual machines.
+
+I declare: 
+- optional flag for stonOutput
+
+I execute:
+- update the virtual machine according to the name.
+"
 Class {
 	#name : #PhLVmUpdateCliCommand,
 	#superclass : #PhLVmCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
@@ -31,39 +36,26 @@ PhLVmUpdateCliCommand class >> launcherCmdPositionals [
 
 { #category : #initialization }
 PhLVmUpdateCliCommand >> VMName [ 
-  ^arguments words at: 2.
+   ^ (arguments at: #existingVirtualMachineName) word
 ]
 
 { #category : #accessing }
 PhLVmUpdateCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self VMName.
-   self outputUpdateVm: arg1.
-   
-]
-
-{ #category : #initialization }
-PhLVmUpdateCliCommand >> initialize [
-   repository := PhLVirtualMachineManager new.
-	stream := VTermOutputDriver stdout.
+   self outputUpdateVm: self VMName
 ]
 
 { #category : #accessing }
 PhLVmUpdateCliCommand >> outputUpdateVm: aVMName [
-   | aVM virtualMachinesList |
-   virtualMachinesList := repository availableVirtualMachines values.
-   [aVM := virtualMachinesList detect: [ :virtualMachine | virtualMachine id = aVMName ]]on:Error,NotFound do:[:c|stream nextPutAll:'please enter a correct local virtual machine name'.stream cr.^0].
-   aVM updateFromUrl. 
-   
-]
-
-{ #category : #initialization }
-PhLVmUpdateCliCommand >> repository: anObject [ 
-	repository := anObject
-]
-
-{ #category : #initialization }
-PhLVmUpdateCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
+	| aVM virtualMachinesList |
+	virtualMachinesList := self pharoLauncherModel vmBaseRepository
+		availableVirtualMachines values.
+	[ aVM := virtualMachinesList
+		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
+		on: Error , NotFound
+		do: [ :c | 
+			self outStream
+				nextPutAll: 'please enter a correct local virtual machine name'.
+			self outStream cr.
+			^ self ].
+	aVM updateFromUrl
 ]

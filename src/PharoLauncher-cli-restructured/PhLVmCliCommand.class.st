@@ -5,9 +5,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmCliCommand class >> asCliCommand [
-		
-	^ self newLauncherCommand: #vm
+PhLVmCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #vm launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }

@@ -35,3 +35,13 @@ PhLImageListCliCommand >> outputListImages [
 	self pharoLauncherModel imageBaseRepository images
 		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream cr.self outStream nextPutAll:' '. ]
 ]
+
+{ #category : #'instance creation' }
+PhLImageListCliCommand >> outputListImagesAsSton [
+   | stonOutput |
+	stonOutput :=''.
+	self pharoLauncherModel imageBaseRepository images
+		do: [ :anImage | stonOutput:= stonOutput,STON toString: anImage.].
+	self outStream nextPutAll: stonOutput.
+	
+]

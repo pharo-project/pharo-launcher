@@ -1,17 +1,21 @@
+"
+I represent Pharo Virtual Machine delete sub-command invoked from cmd line of Pharo Launcher. My responsibility is to delete local virtual marchine within Pharo launcher based on specified vm name. 
+
+I declare: 
+- mandatory positional with existing vm name, based on which is vm deleted
+
+I execute:
+- delete vm based on specified vm name
+"
 Class {
 	#name : #PhLVmDeleteCliCommand,
 	#superclass : #PhLVmCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line - converting' }
-PhLVmDeleteCliCommand class >> asCliCommand [
-		
-	^ self newLauncherCommand: #delete
+PhLVmDeleteCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #delete launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -31,47 +35,27 @@ PhLVmDeleteCliCommand class >> launcherCmdPositionals [
 
 { #category : #initialization }
 PhLVmDeleteCliCommand >> VMName [ 
-  ^arguments words at: 2.
+  ^ (arguments at: #existingVirtualMachineName) word
 ]
 
 { #category : #initialization }
 PhLVmDeleteCliCommand >> execute [
-   | arg1 |
-    
-   arg1 := self VMName.
-   self outputDeleteVm: arg1.
-]
-
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> initialize [
-   repository := PhLVirtualMachineManager new.
-	stream := VTermOutputDriver stdout.
+   self outputDeleteVm: self VMName
 ]
 
 { #category : #initialization }
 PhLVmDeleteCliCommand >> outputDeleteVm: aVMName [
 
 	| aVM virtualMachinesList |
-	
-	virtualMachinesList := repository availableVirtualMachines values.
+	virtualMachinesList :=  self pharoLauncherModel vmBaseRepository availableVirtualMachines values.
 	
 	[ aVM := virtualMachinesList
 		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
 		on: NotFound
-		do: [ :c | 
+		do: [ :c |  
 			self outStream nextPutAll: 'please enter a correct local virtual machine name';
 			cr.
 			^ self ].
-
+	
 	aVM removeFromSystem
-]
-
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> repository: anObject [ 
-	repository := anObject
-]
-
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
 ]

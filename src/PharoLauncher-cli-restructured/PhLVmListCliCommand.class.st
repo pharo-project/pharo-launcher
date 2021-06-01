@@ -1,17 +1,21 @@
+"
+I represent Pharo Virtual machine list sub-command invoked from cmd line of Pharo Launcher. My responsibility is to list available virtual machines. 
+
+I declare: 
+- optional flag for stonOutput
+
+I execute:
+- list local virtual machines with detailed information.
+"
 Class {
 	#name : #PhLVmListCliCommand,
 	#superclass : #PhLVmCliCommand,
-	#instVars : [
-		'repository',
-		'stream'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line - converting' }
-PhLVmListCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #list
+PhLVmListCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }
@@ -26,24 +30,12 @@ PhLVmListCliCommand >> execute [
 ]
 
 { #category : #accessing }
-PhLVmListCliCommand >> initialize [
-   repository := PhLVirtualMachineManager new.
-	stream := VTermOutputDriver stdout
-]
-
-{ #category : #accessing }
 PhLVmListCliCommand >> outputListVirtualMachines [
-   | virtualMachinesList |
-   virtualMachinesList := repository availableVirtualMachines values.
-   virtualMachinesList do: [ :aVM | stream nextPutAll: aVM id.stream lf.].
-]
-
-{ #category : #accessing }
-PhLVmListCliCommand >> repository: anObject [ 
-	repository := anObject
-]
-
-{ #category : #accessing }
-PhLVmListCliCommand >> stream: aWriteStream [ 
-	stream := aWriteStream
+	| virtualMachinesList |
+	virtualMachinesList := self pharoLauncherModel vmBaseRepository
+		availableVirtualMachines values.
+	virtualMachinesList
+		do: [ :aVM | 
+			self outStream nextPutAll: aVM id.
+			self outStream lf ]
 ]

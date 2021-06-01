@@ -26,3 +26,8 @@ PhLImageCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
+
+{ #category : #accessing }
+PhLImageCliCommand >> findImage: anImageName [
+	^ self pharoLauncherModel imageBaseRepository imageNamed: anImageName asLowercase. 
+]

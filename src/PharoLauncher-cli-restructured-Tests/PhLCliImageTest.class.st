@@ -93,7 +93,6 @@ PhLCliImageTest >> testOutputListmages [
 	commandContext execute.
 	
 	output := commandContext stdio stdout contents utf8Decoded. 
-	self assert: output equals: 'TestImage[
- test2[
- '
+	self assert: (output includesSubstring: 'TestImage'). 
+	self assert: (output includesSubstring: 'test2') 
 ]

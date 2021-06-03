@@ -37,11 +37,11 @@ PhLImageInitScriptsDirCliCommand >> directoryName [
 
 { #category : #accessing }
 PhLImageInitScriptsDirCliCommand >> execute [
-   self outputInitScriptsDir: self directoryName
+   self initScriptsDir: self directoryName
 ]
 
 { #category : #accessing }
-PhLImageInitScriptsDirCliCommand >> outputInitScriptsDir: aDirectoryName [
+PhLImageInitScriptsDirCliCommand >> initScriptsDir: aDirectoryName [
    "how to definitely set a pharo launcher variable ? "
 
    PharoLauncherApplication default scriptsDirectory: aDirectoryName asFileReference .

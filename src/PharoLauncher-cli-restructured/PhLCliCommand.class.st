@@ -15,7 +15,8 @@ Class {
 	#superclass : #ClapApplication,
 	#instVars : [
 		'outStream',
-		'pharoLauncherModel'
+		'pharoLauncherModel',
+		'errorStream'
 	],
 	#category : #'PharoLauncher-cli-restructured'
 }
@@ -28,7 +29,7 @@ PhLCliCommand class >> asCliCommand [
 
 { #category : #'command line - converting' }
 PhLCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #image launcherModel: aPharoLauncherModel
+	^ self newLauncherCommand: #launcher launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line - description' }
@@ -105,6 +106,11 @@ PhLCliCommand class >> with: arguments model: pharoLauncherModel [
 	^ command
 	
 	
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> errorStream [ 
+	^ errorStream ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
 ]
 
 { #category : #'command execution' }

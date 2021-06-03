@@ -44,25 +44,25 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #'command execution' }
-PhLImageCreateCliCommand >> execute [
-  
-   self outputCreateImage: self templateName to: self imageName
-]
-
 { #category : #accessing }
-PhLImageCreateCliCommand >> imageName [ 
-   ^ (arguments at: #newImageName) word
-]
-
-{ #category : #accessing }
-PhLImageCreateCliCommand >> outputCreateImage: aTemplateName to:newImageName [
+PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
    | listTemplatesAvailableForDownload templateToDownload|
    listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
    templateToDownload := listTemplatesAvailableForDownload children detect: [ :aTemplate | aTemplate name = aTemplateName ].
    
     repository extractTemplate: templateToDownload to: newImageName 
+]
+
+{ #category : #'command execution' }
+PhLImageCreateCliCommand >> execute [
+  
+   self createImage: self templateName to: self imageName
+]
+
+{ #category : #accessing }
+PhLImageCreateCliCommand >> imageName [ 
+   ^ (arguments at: #newImageName) word
 ]
 
 { #category : #accessing }

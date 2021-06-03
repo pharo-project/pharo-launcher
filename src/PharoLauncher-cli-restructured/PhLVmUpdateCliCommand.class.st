@@ -14,9 +14,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmUpdateCliCommand class >> asCliCommand [
-
-	^ self newLauncherCommand: #update
+PhLVmUpdateCliCommand class >> asCliCommand: aPharoLauncherModel [
+	^ self newLauncherCommand: #update launcherModel: aPharoLauncherModel
 ]
 
 { #category : #'command line' }

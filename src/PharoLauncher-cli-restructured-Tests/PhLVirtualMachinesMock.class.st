@@ -5,7 +5,7 @@ Class {
 		'id',
 		'state'
 	],
-	#category : #'PharoLauncher-CLI-New'
+	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
 { #category : #accessing }

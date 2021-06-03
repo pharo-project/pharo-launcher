@@ -20,11 +20,11 @@ PhLTemplateCategoriesCliCommand class >> asCliCommand: aPharoLauncherModel [
 
 { #category : #initialization }
 PhLTemplateCategoriesCliCommand >> execute [
-   self outputTemplateCategories.
+   self templateCategories.
 ]
 
 { #category : #initialization }
-PhLTemplateCategoriesCliCommand >> outputTemplateCategories [
+PhLTemplateCategoriesCliCommand >> templateCategories [
 	| listTemplatesAvailableForDownload |
    listTemplatesAvailableForDownload := self pharoLauncherModel templateBaseRepository roots. 
    listTemplatesAvailableForDownload do: [ :category | self outStream nextPutAll: category asString; lf. ]

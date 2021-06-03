@@ -36,16 +36,11 @@ PhLImageInfoCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> execute [
-   self outputImageInfo: self imageName.
+   self imageInfo: self imageName.
 ]
 
 { #category : #accessing }
-PhLImageInfoCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
-]
-
-{ #category : #accessing }
-PhLImageInfoCliCommand >> outputImageInfo: anImageName [
+PhLImageInfoCliCommand >> imageInfo: anImageName [
 	| imageOriginTemplate imageName imageDescription imagePharoVersion lastModified imageOriginTemplateURL imageDirectory anImage |
 	
 	[ anImage := self findImage: anImageName ]
@@ -84,4 +79,9 @@ PhLImageInfoCliCommand >> outputImageInfo: anImageName [
 		nextPutAll: ' image last modification ';
 		nextPutAll: lastModified asString;
 		cr
+]
+
+{ #category : #accessing }
+PhLImageInfoCliCommand >> imageName [ 
+  ^ (arguments at: #existingImageName) word
 ]

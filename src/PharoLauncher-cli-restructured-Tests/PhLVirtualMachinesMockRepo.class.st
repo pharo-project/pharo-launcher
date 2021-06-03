@@ -9,8 +9,16 @@ Class {
 		'availableVirtualMachines',
 		'id'
 	],
-	#category : #'PharoLauncher-CLI-New'
+	#category : #'PharoLauncher-cli-restructured-Tests'
 }
+
+{ #category : #adding }
+PhLVirtualMachinesMockRepo >> addVmNamed: aVMName at: someDictionaryIndice [ 
+	| vm |
+	vm := PhLVirtualMachinesMock id:aVMName. 
+	availableVirtualMachines at: someDictionaryIndice put: vm.
+	^ self
+]
 
 { #category : #accessing }
 PhLVirtualMachinesMockRepo >> availableVirtualMachines [

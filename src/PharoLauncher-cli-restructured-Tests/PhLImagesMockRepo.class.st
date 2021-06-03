@@ -7,22 +7,20 @@ Class {
 	#instVars : [
 		'images'
 	],
-	#category : #'PharoLauncher-CLI-New'
+	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
-{ #category : #accessing }
-PhLImagesMockRepo >> add: aString [ 
-	self images add: aString.
+{ #category : #adding }
+PhLImagesMockRepo >> addImageNamed: anImageName [
+	| image |
+	image := PhLImagesMock name: anImageName.
+	self images add: image.
+	^ image
 ]
 
 { #category : #accessing }
 PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
- 
-  | copy | 
-   
-  copy := PhLImagesMock name: anImageCopy.
-  
-  self add: copy.
+  self addImageNamed: anImageCopy.
 ]
 
 { #category : #accessing }
@@ -38,6 +36,11 @@ PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: aString [
 ]
 
 { #category : #accessing }
+PhLImagesMockRepo >> imageNamed: lowercaseImageName [
+	^ self images detect: [ :image | image name asLowercase = lowercaseImageName ]
+]
+
+{ #category : #accessing }
 PhLImagesMockRepo >> images [
    ^ images
 
@@ -47,6 +50,13 @@ PhLImagesMockRepo >> images [
 { #category : #accessing }
 PhLImagesMockRepo >> images: anOrderedCollectionContainingImagesAdresses [
    images := anOrderedCollectionContainingImagesAdresses.
+]
+
+{ #category : #accessing }
+PhLImagesMockRepo >> imagesName [
+   ^ (self images collect:[:each | each name]) asSet
+
+
 ]
 
 { #category : #accessing }

@@ -59,8 +59,8 @@ PhLImageCopyCliCommand >> copyImage: imageName to: newImageName [
 	[ anImage := self findImage: imageName ]
 		on: NotFound
 		do: [ :c | 
-			outStream nextPutAll: 'please enter a correct local image'.
-			outStream cr.
+			self errorStream nextPutAll: 'please enter a correct local image'.
+			self errorStream cr.
 			^ self ].
 	self pharoLauncherModel imageBaseRepository copyImage: anImage to: newImageName
 ]

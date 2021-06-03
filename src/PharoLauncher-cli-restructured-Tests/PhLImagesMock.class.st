@@ -7,9 +7,10 @@ Class {
 	#instVars : [
 		'images',
 		'name',
-		'launchCheck'
+		'launchCheck',
+		'isLaunched'
 	],
-	#category : #'PharoLauncher-CLI-New'
+	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
 { #category : #accessing }
@@ -23,18 +24,19 @@ PhLImagesMock >> ensureDefaultConfiguration [
 ]
 
 { #category : #mock }
+PhLImagesMock >> initialize [ 
+	super initialize.
+	isLaunched := false
+]
+
+{ #category : #mock }
+PhLImagesMock >> isLaunched [
+	^ isLaunched
+]
+
+{ #category : #mock }
 PhLImagesMock >> launch [
-	self launchCheck: 'True'.
-]
-
-{ #category : #'inst var' }
-PhLImagesMock >> launchCheck [
-	^launchCheck
-]
-
-{ #category : #'inst var' }
-PhLImagesMock >> launchCheck: aString [
-	launchCheck := aString
+	isLaunched := true
 ]
 
 { #category : #accessing }

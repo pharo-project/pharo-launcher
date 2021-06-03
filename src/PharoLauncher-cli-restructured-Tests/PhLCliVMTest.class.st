@@ -61,31 +61,6 @@ PhLCliVMTest >> testOutputListVM [
 	commandContext execute.
 	
 	output := commandContext stdio stdout contents utf8Decoded. 
-	self assert: output equals: 'TestVM
-test2
-'
-]
-
-{ #category : #tests }
-PhLCliVMTest >> testOutputUpdateVM [
-
-	| command commandContext model vmFolderEntries output |
-	model := PharoLauncherCLIModel new.
-	model vmBaseRepository: PhLTestVirtualMachineManager new.
-	model vmBaseRepository createVmNamed: 'test2'.
-	self assert: model vmBaseRepository availableVirtualMachines size equals: 2.
-	self assertCollection: (model vmBaseRepository availableVirtualMachines collect: #name)
-		hasSameElements: { model vmBaseRepository singleVmName . 'test2'}.	
-	command := PhLVmUpdateCliCommand asCliCommand: model.
-	commandContext := command activationWith: {'upvsdate' . 'testefqsf2' . 'sdfsd'}.
-	
-	commandContext execute.
-	
-	output := commandContext stdio stdout contents utf8Decoded. 
-	self assert: output equals: ''.
-	vmFolderEntries := (model vmBaseRepository vmStore / 'test2') entries.
-	self 
-		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').
-	
+	self assert: (output includesSubstring: 'TestVM'). 
+	self assert: (output includesSubstring: 'test2') 
 ]

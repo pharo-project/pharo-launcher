@@ -26,18 +26,18 @@ PhLImageListCliCommand class >> launcherCmdDescription [
 
 { #category : #'instance creation' }
 PhLImageListCliCommand >> execute [
-   self outputListImages.
+   self listImages.
 ]
 
 { #category : #'instance creation' }
-PhLImageListCliCommand >> outputListImages [
+PhLImageListCliCommand >> listImages [
 
 	self pharoLauncherModel imageBaseRepository images
 		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream cr.self outStream nextPutAll:' '. ]
 ]
 
 { #category : #'instance creation' }
-PhLImageListCliCommand >> outputListImagesAsSton [
+PhLImageListCliCommand >> listImagesAsSton [
    | stonOutput |
 	stonOutput :=''.
 	self pharoLauncherModel imageBaseRepository images

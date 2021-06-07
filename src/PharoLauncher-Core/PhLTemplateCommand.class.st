@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #accessing }
+PhLTemplateCommand >> application [
+
+	^ self context application
+]
+
+{ #category : #accessing }
 PhLTemplateCommand >> templatesPresenter [
 	^ self context
 ]

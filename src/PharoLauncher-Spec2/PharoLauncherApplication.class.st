@@ -229,6 +229,7 @@ PharoLauncherApplication >> imageRepositoryChanged [
 
 { #category : #announcements }
 PharoLauncherApplication >> imageRepositoryChanged: newImage [
+
 	self imageRepositoryChanged.
 	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
 ]
@@ -264,6 +265,15 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
+{ #category : #ui }
+PharoLauncherApplication >> pushProgress: aString with: aBlock [
+	
+	self newProgress 
+		parentWindow: self topWindow;
+		title: aString;
+		informUserDuring: aBlock
+]
+
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := TemplateRepository 
@@ -280,6 +290,15 @@ PharoLauncherApplication >> scriptsDirectory [
 { #category : #accessing }
 PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
+]
+
+{ #category : #ui }
+PharoLauncherApplication >> showError: anError [
+
+	self newInform 
+		title: anError name;
+		label: anError longDescription;
+		openModalWithSpecParent: self topWindow
 ]
 
 { #category : #running }

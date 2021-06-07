@@ -4,7 +4,7 @@ I represent an error as can be signaled by any code of Pharo Launcher.
 Class {
 	#name : #PhLError,
 	#superclass : #Error,
-	#category : 'PharoLauncher-Core-Exceptions'
+	#category : #'PharoLauncher-Core-Exceptions'
 }
 
 { #category : #accessing }
@@ -19,8 +19,6 @@ PhLError >> name [
 
 { #category : #ui }
 PhLError >> uiAlert [
-	UIManager default
-		alert: self longDescription
-		title: self name
-		configure: [ :morph | (morph findDeeplyA: TextMorph) unlock ]
+
+	PharoLauncherApplication default showError: self
 ]

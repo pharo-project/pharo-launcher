@@ -347,7 +347,7 @@ PhLImage >> launchConfigurations: aCollection [
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
-	
+
 	self canBeLaunched
 		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
 
@@ -357,15 +357,14 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
 		self doNotRunInitializationScript. "Just run, image already initialized"
 		^ processWrapper ]
-		on: PhLImageVersionDeterminationError
-		do: [ :error |  error uiAlert ] ]
-		on: PhLArchitectureMismatchWarning
-		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
-				ifTrue: [ 
-					architectureWarningEnabled := false. "only raise one warning"
-					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
-			continue ifTrue: [ warning resume ]. ]
+	on: PhLImageVersionDeterminationError
+	do: [ :error | error uiAlert ] ]
+	on: PhLArchitectureMismatchWarning
+	do: [ :warning |
+		architectureWarningEnabled ifTrue: [ 	
+			architectureWarningEnabled := false. "only raise one warning"
+			continue := self showWarning: warning ].
+		continue ifTrue: [ warning resume ] ]
 ]
 
 { #category : #accessing }
@@ -466,6 +465,21 @@ PhLImage >> shouldRunInitializationScript: aBoolean [
 { #category : #printing }
 PhLImage >> showNativeFolder [
 	PhLFileBrowser openOn: file
+]
+
+{ #category : #'private ui' }
+PhLImage >> showWarning: warning [
+	| continue |
+
+	continue := true.
+	(PhLLaunchImageCommand warnOnArchMismatch)
+		ifTrue: [ 
+			continue := (PharoLauncherApplication default newConfirm 
+				title: warning name ;
+				message: warning longDescription;
+				openModalWithSpecParent: PharoLauncherApplication default topWindow) ].
+			
+	^ continue
 ]
 
 { #category : #accessing }

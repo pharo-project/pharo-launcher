@@ -136,6 +136,7 @@ PhLImage class >> metadataFileName [
 
 { #category : #'system startup' }
 PhLImage class >> startUp: isImageStarting [
+
 	isImageStarting ifTrue: [ reader := nil ]
 ]
 

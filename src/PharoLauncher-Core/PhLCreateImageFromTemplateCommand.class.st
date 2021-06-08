@@ -58,8 +58,7 @@ PhLCreateImageFromTemplateCommand >> execute [
 	[ ^ self createImage ]
 		on: PhLCorruptedTemplateError
 		do: [ :error | 
-			UIManager default
-				alert: 'This template appears to be corrupted! Please try again.' ]
+			self application showError: 'This template appears to be corrupted! Please try again.' ]
 ]
 
 { #category : #initialization }

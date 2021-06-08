@@ -258,6 +258,11 @@ PhLVirtualMachineManager >> compatibleVmUrls [
 { #category : #querying }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 	^ { 
+		(PhLVirtualMachine id: '90-ARMv7-headless')
+			beHeadless;
+			beLatest;
+			beARMv7;
+			yourself.
 		(PhLVirtualMachine id: '90-x64-headless')
 			beHeadless;
 			beLatest;

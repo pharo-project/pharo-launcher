@@ -148,14 +148,15 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #opening }
+{ #category : #accessing }
 PharoLauncherApplication class >> reset [
-	<script>
-	^ Default := nil
+
+	Default := nil
 ]
 
 { #category : #initialization }
 PharoLauncherApplication class >> resetTemplateRepository [
+
 	TemplateRepository := nil
 ]
 

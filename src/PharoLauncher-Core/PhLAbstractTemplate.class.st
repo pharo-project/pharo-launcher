@@ -19,6 +19,7 @@ PhLAbstractTemplate >> extractTo: aDirectory [
 
 	"In most cases, you probably want to call #extractTo:named: and let the user choose the new name for the image."
 
+	self halt. "Not used"
 	self extractTo: aDirectory named: self name
 ]
 
@@ -41,13 +42,15 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
 	| tempDirectory |
 
-	PharoLauncherApplication default newProgress
-		parentWindow: PharoLauncherApplication default topWindow;
-		title: ('Extracting {1}' format: { zipFile basename }); 
-		informUserDuring: [ :bar | | zip |	
-			"We have to go through a temporary directory because we don't know where the interesting files are in the archive (maybe at the root or maybe in a subdirectory)"
+	PharoLauncherApplication default
+		pushProgress: ('Extracting {1}' format: { zipFile basename }) 
+		with: [ :bar | | zip |	
+			"We have to go through a temporary directory because we don't know where 
+			 the interesting files are in the archive (maybe at the root or maybe in 
+			 a subdirectory)"
 			tempDirectory := aDirectory / DateAndTime millisecondClockValue asString.
-			tempDirectory createDirectory. "will crash if directory already exists. And that's good :-)"
+			"It will crash if directory already exists. And that's good :-)"
+			tempDirectory createDirectory. 
 			[
 				zip := ZipArchive new.
 				zip readFrom: zipFile.

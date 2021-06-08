@@ -104,13 +104,14 @@ PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 { #category : #actions }
 PhLPharoTemplateSources >> checkForUpdates [
 	| downloadedSources |
+	
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self lockDownloadedSourcesFileDuring: 
-		[ self downloadedSourcesFile ensureDelete.
+	self lockDownloadedSourcesFileDuring: [ 
+		self downloadedSourcesFile ensureDelete.
 		self fetchSourcesFile.
 		downloadedSources := self downloadedSources. ].
 	
-	self sources = downloadedSources
+	self sources = downloadedSources 
 		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
 ]
 

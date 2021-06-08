@@ -8,7 +8,7 @@ Class {
 		'announcer',
 		'wantNotification'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #announcements }
@@ -27,6 +27,12 @@ PhLRepository >> dontNotifyDuring: aBlock [
 	wantNotification := false.
 	aBlock value ]
 		ensure: [ wantNotification := wantNotificationBackup ]
+]
+
+{ #category : #visiting }
+PhLRepository >> extractOn: aVisitor [
+
+	self subclassResponsibility
 ]
 
 { #category : #initialization }

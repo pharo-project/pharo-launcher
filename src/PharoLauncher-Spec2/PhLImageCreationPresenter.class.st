@@ -76,12 +76,26 @@ PhLImageCreationPresenter >> checkNewName: name [
 
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
-	self window ifNotNil: [ :window | window close ]
+
+	self withWindowDo: [ :window | window close ]
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> connectPresenters [
 	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
+]
+
+{ #category : #action }
+PhLImageCreationPresenter >> createImageWithCommand: createCommand [
+	
+	[ 
+		createCommand execute.
+		self close ] 
+	on: PhLNameNotAvailableError 
+	do: [ 
+		self newInformation 
+			message: 'An image with the same name already exists! Please choose a new one.';
+			alert ] 
 ]
 
 { #category : #accessing }
@@ -97,7 +111,8 @@ PhLImageCreationPresenter >> disable [
 
 { #category : #configuring }
 PhLImageCreationPresenter >> enable [
-	createButton enable.
+
+	"createButton enable."
 ]
 
 { #category : #accessing }
@@ -130,7 +145,8 @@ PhLImageCreationPresenter >> initialize [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
-
+	| createCommand |
+	
 	imageName := self newTextInput.
 	imageNameCheck := self newImage.
 	initScriptText := self newText
@@ -149,17 +165,11 @@ PhLImageCreationPresenter >> initializePresenters [
 		action: [ self openScriptPresenter ];
 		icon: (self iconNamed: #edit);
 		yourself.
-	(PhLCreateImageFromTemplateCommand forSpecContext: owner) 
-		in: [ 	:createImageCommand | 
-		createButton := createImageCommand asButtonPresenter.
-		createButton action: [ 
-			[ createImageCommand execute.
-			self close. ]
-				on: PhLNameNotAvailableError 
-				do: [ 
-					self newInformation 
-						message: 'An image with the same name already exists! Please choose a new one.';
-						alert ] ] ]
+	
+	createCommand := PhLCreateImageFromTemplateCommand forSpecContext: owner.
+	(createButton := createCommand asButtonPresenter)
+		action: [ self createImageWithCommand: createCommand ].
+	createButton disable
 ]
 
 { #category : #initialization }
@@ -167,9 +177,11 @@ PhLImageCreationPresenter >> modelChanged [
 
 	self template ifNil: [ ^ self ].
 	self template isTemplate
-		ifTrue: [ self enable.
+		ifTrue: [ 
+			self enable.
 			imageName text: self template suggestedImageName ]
-		ifFalse: [ self disable ]
+		ifFalse: [ 
+			self disable ]
 ]
 
 { #category : #initialization }
@@ -195,6 +207,7 @@ PhLImageCreationPresenter >> refreshInitializationScriptList [
 { #category : #private }
 PhLImageCreationPresenter >> showNameError [
 
+	createButton disable.
 	imageNameCheck 
 		image: (self application iconNamed: #smallCancel);
 		help: 'An image with the same name already exists!'
@@ -203,6 +216,7 @@ PhLImageCreationPresenter >> showNameError [
 { #category : #private }
 PhLImageCreationPresenter >> showNameOk [
 
+	createButton enable.
 	imageNameCheck 
 		image: (self application iconNamed: #smallOk);
 		help: 'Image name is valid!'

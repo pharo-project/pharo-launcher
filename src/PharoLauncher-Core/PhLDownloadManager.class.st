@@ -34,6 +34,7 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 { #category : #action }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	| tmpFile |
+
 	tmpFile := destinationFile , UUIDGenerator  next asString.
 	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
 	destinationFile ensureDelete. 
@@ -44,15 +45,15 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
-	PharoLauncherApplication default newProgress
-		parentWindow: PharoLauncherApplication default topWindow;
-		informUserDuring: [ :dialog | 
+	PharoLauncherApplication default 
+		pushProgress: 'Downloading...' 
+		with: [ :bar |
 			workBlock
 				on: HTTPProgress
-				do: [ :progress | 
-					dialog label: progress printString.
+				do: [ :progress |
+					bar label: progress printString.
 					progress isEmpty
-						ifFalse: [ dialog progressPercent: progress percentage ].
+						ifFalse: [ bar progressPercent: progress percentage ].
 					progress resume ] ]
 ]
 

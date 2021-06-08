@@ -73,8 +73,10 @@ PhLCreateTemplateFromImageCommand >> newTemplateName [
 { #category : #accessing }
 PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 	| templateRepository |
+	
 	templateRepository := self imagesPresenter templateRepository.
 	^ self imagesPresenter newRequest
+		parentWindow: self context window;
 		title: 'Template name?';
 		initialAnswer: (templateRepository makeUniqueTemplateName: aString);
 		validateAnswer: [ :answer | 

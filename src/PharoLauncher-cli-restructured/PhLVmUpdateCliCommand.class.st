@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmUpdateCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #update launcherModel: aPharoLauncherModel
+PhLVmUpdateCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #update 
 ]
 
 { #category : #'command line' }
@@ -33,28 +33,7 @@ PhLVmUpdateCliCommand class >> launcherCmdPositionals [
 		yourself)}
 ]
 
-{ #category : #initialization }
-PhLVmUpdateCliCommand >> VMName [ 
-   ^ (arguments at: #existingVirtualMachineName) word
-]
-
 { #category : #accessing }
-PhLVmUpdateCliCommand >> execute [
-   self outputUpdateVm: self VMName
-]
-
-{ #category : #accessing }
-PhLVmUpdateCliCommand >> outputUpdateVm: aVMName [
-	| aVM virtualMachinesList |
-	virtualMachinesList := self pharoLauncherModel vmBaseRepository
-		availableVirtualMachines values.
-	[ aVM := virtualMachinesList
-		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
-		on: Error , NotFound
-		do: [ :c | 
-			self outStream
-				nextPutAll: 'please enter a correct local virtual machine name'.
-			self outStream cr.
-			^ self ].
-	aVM updateFromUrl
+PhLVmUpdateCliCommand >> executeWithVM: aVM [
+   aVM updateFromUrl
 ]

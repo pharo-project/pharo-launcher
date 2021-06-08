@@ -4,17 +4,12 @@ Class {
 	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
-{ #category : #instance }
-PhLVMDeleteCliCommandTest >> PhLCliSpecificCommand [
-	^ PhLVmUpdateCliCommand asCliCommand: model
-]
-
 { #category : #tests }
-PhLVMDeleteCliCommandTest >> testDeleteVmSucceed [
+PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
 	self addVmNamed: 'myVm1' at: 'bli'.
 	self addVmNamed: 'myVm2' at: 'blo'.
 	
-	self runCommand: #('delete' 'myVm1').
+	self runCommand: #('launcher' 'vm' 'delete' 'myVm1').
 	 
-	self assert: ((model vmBaseRepository availableVirtualMachines at:'bli') state ) equals: 'successfully deleted'. 
+	self assert: (( self vmRepository availableVirtualMachines at:'bli') state ) equals: 'successfully deleted'. 
 ]

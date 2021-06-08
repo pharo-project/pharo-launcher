@@ -8,18 +8,13 @@ Class {
 	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
-{ #category : #instance }
-PhLImageCreateCliCommandTest >> PhLCliSpecificCommand [
-	^ PhLImageCreateCliCommand asCliCommand: model
-]
-
 { #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageSucceed [
+PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	
-	self runCommand: #('create' 'aRandomTemplateName' 'myImage3').
+	self runCommand: #('launcher' 'image' 'create' 'aRandomTemplateName' 'myImage3').
 	 
 	self assertSuccess.  
-	self assert: model imageBaseRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
+	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
 ]

@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLImageDeleteCliCommandTest,
+	#name : #PhLImageListCliCommandTest,
 	#superclass : #PhLImageCliCommandTest,
 	#instVars : [
 		'process',
@@ -9,12 +9,14 @@ Class {
 }
 
 { #category : #tests }
-PhLImageDeleteCliCommandTest >> testDeleteImageShouldSucceed [
+PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	
-	self runCommand: #('launcher' 'image' 'delete' 'myImage1').
+	self runCommand: #('launcher' 'image' 'list').
 	 
 	self assertSuccess.  
-	self assert: self imageRepository imagesName equals: #( 'myImage2' ) asSet. 
+	self assert: self outputString equals: 'myImage1[
+ myImage2[
+ '
 ]

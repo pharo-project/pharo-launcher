@@ -14,18 +14,11 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLTemplateCategoriesCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #categories launcherModel: aPharoLauncherModel
+PhLTemplateCategoriesCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #categories 
 ]
 
 { #category : #initialization }
 PhLTemplateCategoriesCliCommand >> execute [
-   self templateCategories.
-]
-
-{ #category : #initialization }
-PhLTemplateCategoriesCliCommand >> templateCategories [
-	| listTemplatesAvailableForDownload |
-   listTemplatesAvailableForDownload := self pharoLauncherModel templateBaseRepository roots. 
-   listTemplatesAvailableForDownload do: [ :category | self outStream nextPutAll: category asString; lf. ]
+   self templateRepository roots do: [ :category | self outStream nextPutAll: category asString; lf. ]
 ]

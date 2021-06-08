@@ -17,8 +17,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageLaunchCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #launch launcherModel: aPharoLauncherModel
+PhLImageLaunchCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #launch 
 ]
 
 { #category : #'command line' }
@@ -37,28 +37,6 @@ PhLImageLaunchCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #accessing }
-PhLImageLaunchCliCommand >> execute [
-   self launchImage: self imageName
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> launchImage: anImageName [
-	| image |
-	[ image := self findImage: anImageName. ]
-		on: NotFound
-		do: [ :c | 
-			self outStream nextPutAll: 'please enter a correct local image';
-			 cr.
-			^ self ].
-	process := image launch
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> process [ 
-	^ process
+PhLImageLaunchCliCommand >> executeWithImage: anImage [
+   anImage launch
 ]

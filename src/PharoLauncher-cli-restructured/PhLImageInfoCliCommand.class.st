@@ -15,8 +15,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageInfoCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #info launcherModel: aPharoLauncherModel
+PhLImageInfoCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #info 
 ]
 
 { #category : #'command line' }
@@ -35,53 +35,32 @@ PhLImageInfoCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #accessing }
-PhLImageInfoCliCommand >> execute [
-   self imageInfo: self imageName.
+PhLImageInfoCliCommand >> executeWithImage: anImage [ 
+   self printInformation: anImage
 ]
 
-{ #category : #accessing }
-PhLImageInfoCliCommand >> imageInfo: anImageName [
-	| imageOriginTemplate imageName imageDescription imagePharoVersion lastModified imageOriginTemplateURL imageDirectory anImage |
-	
-	[ anImage := self findImage: anImageName ]
-		on: NotFound
-		do: [ :c | 
-			self outStream nextPutAll: 'please enter a correct local image'.
-			self outStream cr.
-			^ self ].
-		
-	imageOriginTemplate := anImage originTemplateName.
-	imageName := anImage name.
-	lastModified := anImage lastModification.
-	imageOriginTemplateURL := anImage originTemplateUrl.
-	imageDirectory := anImage location.
-	imageDescription := anImage description.
-	imagePharoVersion := anImage pharoVersionFromFile.
+{ #category : #printing }
+PhLImageInfoCliCommand >> printInformation: anImage [ 
 	self outStream
 		nextPutAll: 'image name: ';
-		nextPutAll: imageName asString;
+		nextPutAll: anImage name asString;
 		cr;
 		nextPutAll: ' image description: ';
-		nextPutAll: imageDescription asString;
+		nextPutAll: anImage description asString;
 		cr;
 		nextPutAll: ' image version: ';
-		nextPutAll: imagePharoVersion asString;
+		nextPutAll: anImage pharoVersionFromFile asString;
 		cr;
 		nextPutAll: ' image origin template: ';
-		nextPutAll: imageOriginTemplate asString;
+		nextPutAll: anImage originTemplateUrl asString;
 		cr;
 		nextPutAll: ' image template URL: ';
-		nextPutAll: imageOriginTemplateURL asString;
+		nextPutAll:  anImage originTemplateName asString;
 		cr;
 		nextPutAll: ' image path: ';
-		nextPutAll: imageDirectory asString;
+		nextPutAll: anImage location asString;
 		cr;
 		nextPutAll: ' image last modification ';
-		nextPutAll: lastModified asString;
+		nextPutAll: anImage lastModification asString;
 		cr
-]
-
-{ #category : #accessing }
-PhLImageInfoCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
 ]

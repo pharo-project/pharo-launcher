@@ -15,8 +15,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmInfoCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #delete launcherModel: aPharoLauncherModel
+PhLVmInfoCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #info
 ]
 
 { #category : #'command line' }
@@ -34,29 +34,8 @@ PhLVmInfoCliCommand class >> launcherCmdPositionals [
 		yourself)}
 ]
 
-{ #category : #initialization }
-PhLVmInfoCliCommand >> VMName [ 
-  ^ (arguments at: #existingVirtualMachineName) word
-]
-
 { #category : #accessing }
-PhLVmInfoCliCommand >> execute [
-   self outputInfoVm: self VMName
-]
-
-{ #category : #accessing }
-PhLVmInfoCliCommand >> outputInfoVm: aVMName [
-	| aVM virtualMachinesList |
-	virtualMachinesList := self pharoLauncherModel vmBaseRepository
-		availableVirtualMachines values.
-	[ aVM := virtualMachinesList
-		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
-		on: Error , NotFound
-		do: [ :c | 
-			self outStream
-				nextPutAll: 'please enter a correct virtual machine name'.
-			self outStream cr.
-			^ self ].
+PhLVmInfoCliCommand >> displayInfoVm: aVM [
 	self outStream
 		nextPutAll: 'name: ';
 		nextPutAll: aVM id;
@@ -67,4 +46,9 @@ PhLVmInfoCliCommand >> outputInfoVm: aVMName [
 		nextPutAll: 'download Url: ';
 		nextPutAll: aVM downloadUrl asString;
 		lf
+]
+
+{ #category : #accessing }
+PhLVmInfoCliCommand >> executeWithVM: aVM [
+   self displayInfoVm: aVM
 ]

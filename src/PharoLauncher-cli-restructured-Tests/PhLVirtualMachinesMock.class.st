@@ -1,3 +1,6 @@
+"
+Only usefull for the tests, is usefull to create ""fake"" virtual machines. 
+"
 Class {
 	#name : #PhLVirtualMachinesMock,
 	#superclass : #Object,
@@ -13,6 +16,11 @@ PhLVirtualMachinesMock class >> id: aString [
 	^ self new id: aString
 ]
 
+{ #category : #printing }
+PhLVirtualMachinesMock >> downloadUrl [
+	'some url'
+]
+
 { #category : #accessing }
 PhLVirtualMachinesMock >> id [ 
    ^id
@@ -21,6 +29,11 @@ PhLVirtualMachinesMock >> id [
 { #category : #accessing }
 PhLVirtualMachinesMock >> id: aString [
 	id := aString
+]
+
+{ #category : #printing }
+PhLVirtualMachinesMock >> lastUpdateTime [
+	^ 'some random update time'
 ]
 
 { #category : #instance }

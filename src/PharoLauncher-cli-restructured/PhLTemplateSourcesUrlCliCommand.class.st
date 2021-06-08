@@ -14,21 +14,20 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLTemplateSourcesUrlCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #sourcesUrl launcherModel: aPharoLauncherModel
-
+PhLTemplateSourcesUrlCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #sourcesUrl 
 	 
 ]
 
 { #category : #initialization }
 PhLTemplateSourcesUrlCliCommand >> execute [
-   self outputSourcesUrlTemplate.
+   self sourcesUrlTemplate
 ]
 
 { #category : #initialization }
-PhLTemplateSourcesUrlCliCommand >> outputSourcesUrlTemplate [
+PhLTemplateSourcesUrlCliCommand >> sourcesUrlTemplate [
 	| listTemplatesAvailableForDownload |
-   listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
+   listTemplatesAvailableForDownload := self templateRepository roots. 
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload children.
    listTemplatesAvailableForDownload do: [ :template | self outStream nextPutAll: template name. self outStream nextPutAll:': '. self outStream nextPutAll: (template url asString ). self outStream lf ]

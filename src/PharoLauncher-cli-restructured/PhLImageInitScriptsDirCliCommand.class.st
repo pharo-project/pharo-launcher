@@ -10,8 +10,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageInitScriptsDirCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #initScriptDir launcherModel: aPharoLauncherModel
+PhLImageInitScriptsDirCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #initScriptDir 
 
 ]
 

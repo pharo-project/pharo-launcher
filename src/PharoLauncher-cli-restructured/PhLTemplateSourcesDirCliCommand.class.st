@@ -14,18 +14,13 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLTemplateSourcesDirCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #sourcesDir launcherModel: aPharoLauncherModel
+PhLTemplateSourcesDirCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #sourcesDir 
 
 	
 ]
 
 { #category : #initialization }
 PhLTemplateSourcesDirCliCommand >> execute [
-   self outputSourcesDirectoryTemplate.
-]
-
-{ #category : #initialization }
-PhLTemplateSourcesDirCliCommand >> outputSourcesDirectoryTemplate [
-   self outStream nextPutAll: self pharoLauncherModel templateBaseRepository localTemplatesDirectory asString. self outStream cr. 
+   self outStream nextPutAll: self templateRepository localTemplatesDirectory asString. self outStream cr
 ]

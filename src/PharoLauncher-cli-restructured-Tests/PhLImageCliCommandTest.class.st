@@ -2,20 +2,14 @@ Class {
 	#name : #PhLImageCliCommandTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'context',
-		'model'
+		'context'
 	],
 	#category : #'PharoLauncher-cli-restructured-Tests'
 }
 
-{ #category : #instance }
-PhLImageCliCommandTest >> PhLCliSpecificCommand [
-	^ SubclassResponsibility 
-]
-
 { #category : #adding }
 PhLImageCliCommandTest >> addImageNamed: anImageName [
-	^ model imageBaseRepository addImageNamed: anImageName
+	^ self imageRepository addImageNamed: anImageName
 ]
 
 { #category : #asserting }
@@ -35,24 +29,32 @@ PhLImageCliCommandTest >> errorString [
 ]
 
 { #category : #accessing }
+PhLImageCliCommandTest >> imageRepository [ 
+	^ self launcherModel imageBaseRepository
+]
+
+{ #category : #accessing }
+PhLImageCliCommandTest >> launcherModel [
+	^ context launcherModel 
+]
+
+{ #category : #accessing }
 PhLImageCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
 ]
 
 { #category : #tests }
 PhLImageCliCommandTest >> runCommand: args [
-	| command  |
-	" PhLCliCommand asCliCommand:model"
-	command := PhLCliCommand asCliCommand: model.
-	context := command activationWith: args.
-	context execute.
-	^ command
+	^ (context arguments: args) execute.
 ]
 
 { #category : #running }
 PhLImageCliCommandTest >> setUp [
+	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
 	model imageBaseRepository: PhLImagesMockRepo new.
+	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
+	context launcherModel: model
 
 ]

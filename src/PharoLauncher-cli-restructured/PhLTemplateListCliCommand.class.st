@@ -14,18 +14,12 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLTemplateListCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
+PhLTemplateListCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #list 
 ]
 
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> execute [
-   self outputListTemplates.
-]
-
-{ #category : #initialization }
-PhLTemplateListCliCommand >> outputListTemplates [
-
-	self pharoLauncherModel templateBaseRepository localTemplateNames
+   self templateRepository localTemplateNames
 		do: [ :aTemplate | self outStream nextPutAll: aTemplate asString. self outStream cr. ]
 ]

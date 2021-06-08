@@ -5,16 +5,11 @@ Class {
 }
 
 { #category : #tests }
-PhLVMUpdateCliCommandTest >> PhLCliSpecificCommand [
-	^ PhLVmUpdateCliCommand asCliCommand: model
-]
-
-{ #category : #tests }
-PhLVMUpdateCliCommandTest >> testUpdateVmSucceed [
+PhLVMUpdateCliCommandTest >> testUpdateVmShouldSucceed [
 	self addVmNamed: 'myVm1' at: 'bli'.
 	self addVmNamed: 'myVm2' at: 'blo'.
 	
-	self runCommand: #('update' 'myVm1').
+	self runCommand: #('launcher' 'vm' 'update' 'myVm1').
 	 
-	self assert: ((model vmBaseRepository availableVirtualMachines at:'bli') state ) equals:'updated'
+	self assert: ((self vmRepository availableVirtualMachines at:'bli') state ) equals:'updated'
 ]

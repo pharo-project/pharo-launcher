@@ -21,15 +21,9 @@ Class {
 	#category : #'PharoLauncher-cli-restructured'
 }
 
-{ #category : #'command line' }
-PhLCliCommand class >> asCliCommand [
-	^ self asCliCommand: PharoLauncherCLIModel new.
-	
-]
-
 { #category : #'command line - converting' }
-PhLCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #launcher launcherModel: aPharoLauncherModel
+PhLCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #launcher 
 ]
 
 { #category : #'command line - description' }
@@ -71,14 +65,6 @@ PhLCliCommand class >> launcherDescription [
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
-   
-	^ self newLauncherCommand:idOfCommand launcherModel: PharoLauncherCLIModel new
-]
-
-{ #category : #'command line - instance creation' }
-PhLCliCommand class >> newLauncherCommand: idOfCommand launcherModel: aLauncherModel [
-	"factory for pharo launcher commands"
-
 	^ (ClapCommand id: idOfCommand)
 		description: self launcherCmdDescription;
 		add: ClapFlag forHelp;
@@ -93,19 +79,8 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand launcherModel: aLauncherM
 					help
 						value;
 						exitSuccess ].
-			(self with: args model: aLauncherModel) execute ];
+			(self with: args) execute ];
 		yourself
-]
-
-{ #category : #'instance creation' }
-PhLCliCommand class >> with: arguments model: pharoLauncherModel [ 
-	| command |
-	
-	command := self with: arguments.
-	command setPharoLauncherModel: pharoLauncherModel.
-	^ command
-	
-	
 ]
 
 { #category : #'private ' }
@@ -119,6 +94,11 @@ PhLCliCommand >> execute [
 	^ self context exitSuccess.
 ]
 
+{ #category : #accessing }
+PhLCliCommand >> imageRepository [ 
+	^ self pharoLauncherModel imageBaseRepository
+]
+
 { #category : #'private ' }
 PhLCliCommand >> outStream [ 
 
@@ -128,10 +108,20 @@ PhLCliCommand >> outStream [
 
 { #category : #accessing }
 PhLCliCommand >> pharoLauncherModel [
-	^ pharoLauncherModel
+	^ self context launcherModel
 ]
 
 { #category : #initialization }
 PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [ 
 	pharoLauncherModel := aPharoLauncherModel 
+]
+
+{ #category : #accessing }
+PhLCliCommand >> templateRepository [ 
+	^ self pharoLauncherModel templateBaseRepository
+]
+
+{ #category : #accessing }
+PhLCliCommand >> vmRepository [ 
+	^ self pharoLauncherModel vmBaseRepository availableVirtualMachines values
 ]

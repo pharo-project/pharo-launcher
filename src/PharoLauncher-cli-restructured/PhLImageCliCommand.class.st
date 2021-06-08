@@ -17,8 +17,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #image launcherModel: aPharoLauncherModel
+PhLImageCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #image
 ]
 
 { #category : #'command line' }
@@ -27,7 +27,26 @@ PhLImageCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
 
+{ #category : #'command execution' }
+PhLImageCliCommand >> execute [
+	[ self executeWithImage: self findImage ]
+		on: NotFound
+		do: [ ^ self messageErrorNotFound ].
+]
+
 { #category : #accessing }
-PhLImageCliCommand >> findImage: anImageName [
-	^ self pharoLauncherModel imageBaseRepository imageNamed: anImageName asLowercase. 
+PhLImageCliCommand >> findImage [
+	^ self imageRepository imageNamed: self imageName asLowercase. 
+]
+
+{ #category : #accessing }
+PhLImageCliCommand >> imageName [ 
+  ^ (arguments at: #existingImageName) word
+]
+
+{ #category : #printing }
+PhLImageCliCommand >> messageErrorNotFound [
+			self errorStream nextPutAll: 'please enter a correct local image'.
+			self errorStream cr.
+			^ self
 ]

@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageListCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
+PhLImageListCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #list 
 ]
 
 { #category : #'command line' }
@@ -32,7 +32,7 @@ PhLImageListCliCommand >> execute [
 { #category : #'instance creation' }
 PhLImageListCliCommand >> listImages [
 
-	self pharoLauncherModel imageBaseRepository images
+	self imageRepository  images
 		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream cr.self outStream nextPutAll:' '. ]
 ]
 

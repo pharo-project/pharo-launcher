@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmDeleteCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #delete launcherModel: aPharoLauncherModel
+PhLVmDeleteCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #delete 
 ]
 
 { #category : #'command line' }
@@ -34,28 +34,6 @@ PhLVmDeleteCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #initialization }
-PhLVmDeleteCliCommand >> VMName [ 
-  ^ (arguments at: #existingVirtualMachineName) word
-]
-
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> execute [
-   self outputDeleteVm: self VMName
-]
-
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> outputDeleteVm: aVMName [
-
-	| aVM virtualMachinesList |
-	virtualMachinesList :=  self pharoLauncherModel vmBaseRepository availableVirtualMachines values.
-	
-	[ aVM := virtualMachinesList
-		detect: [ :virtualMachine | virtualMachine id = aVMName ] ]
-		on: NotFound
-		do: [ :c |  
-			self outStream nextPutAll: 'please enter a correct local virtual machine name';
-			cr.
-			^ self ].
-	
-	aVM removeFromSystem
+PhLVmDeleteCliCommand >> executeWithVM: aVM [
+   aVM removeFromSystem
 ]

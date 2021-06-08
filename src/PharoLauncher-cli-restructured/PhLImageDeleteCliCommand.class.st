@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageDeleteCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #delete launcherModel: aPharoLauncherModel
+PhLImageDeleteCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #delete 
 ]
 
 { #category : #'command line' }
@@ -34,26 +34,6 @@ PhLImageDeleteCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #accessing }
-PhLImageDeleteCliCommand >> deleteImage: imageName [
-
-	| anImage |
-	
-	[ anImage := self findImage: imageName ]
-		on: Error , NotFound
-		do: [ :c | 
-			self outStream nextPutAll: 'please enter a correct local image'.
-			self outStream cr.
-			^ self ].
-
-	self pharoLauncherModel imageBaseRepository deleteImage: anImage
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> execute [
-   self deleteImage: self imageName
-]
-
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
+PhLImageDeleteCliCommand >> executeWithImage: anImage [
+   self pharoLauncherModel imageBaseRepository deleteImage: anImage
 ]

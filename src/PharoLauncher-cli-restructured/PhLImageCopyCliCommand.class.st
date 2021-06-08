@@ -15,8 +15,8 @@ Class {
 }
 
 { #category : #'command line' }
-PhLImageCopyCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #copy launcherModel: aPharoLauncherModel
+PhLImageCopyCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #copy
 ]
 
 { #category : #'command line' }
@@ -52,31 +52,14 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #accessing }
-PhLImageCopyCliCommand >> copyImage: imageName to: newImageName [ 
-
-	| anImage |
-	[ anImage := self findImage: imageName ]
-		on: NotFound
-		do: [ :c | 
-			self errorStream nextPutAll: 'please enter a correct local image'.
-			self errorStream cr.
-			^ self ].
-	self pharoLauncherModel imageBaseRepository copyImage: anImage to: newImageName
-]
-
 { #category : #'command execution' }
-PhLImageCopyCliCommand >> execute [
-
-   self copyImage: self imageName to: self targetName 
-   
+PhLImageCopyCliCommand >> executeWithImage: anImage [
+	 self imageRepository copyImage: anImage to: self targetName 
 
    
-]
 
-{ #category : #accessing }
-PhLImageCopyCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
+   
+
 ]
 
 { #category : #accessing }

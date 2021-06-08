@@ -1,3 +1,6 @@
+"
+Model used both for the test and the normal execution. When it is used by a normal user he doesn't need to change it, when it is used for tests the concerned repo is replaced with a Mock.
+"
 Class {
 	#name : #PharoLauncherCLIModel,
 	#superclass : #Object,
@@ -21,7 +24,7 @@ PharoLauncherCLIModel >> imageBaseRepository: aPathString [
 
 { #category : #accessing }
 PharoLauncherCLIModel >> initialize [
-	vmBaseRepository := PhLVirtualMachinesDataSource default.
+	vmBaseRepository := PhLVirtualMachineManager new.
 	imageBaseRepository := PhLDirectoryBasedImageRepository default.
 	templateBaseRepository := PhLTemplateGroupRepository default.
 ]

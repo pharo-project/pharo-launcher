@@ -17,8 +17,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLTemplateCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #template launcherModel: aPharoLauncherModel
+PhLTemplateCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #template 
 ]
 
 { #category : #'command line - description' }

@@ -14,8 +14,8 @@ Class {
 }
 
 { #category : #'command line - converting' }
-PhLVmListCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #list launcherModel: aPharoLauncherModel
+PhLVmListCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #list 
 ]
 
 { #category : #'command line' }
@@ -26,15 +26,7 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 
 { #category : #accessing }
 PhLVmListCliCommand >> execute [ 
-   self outputListVirtualMachines .
-]
-
-{ #category : #accessing }
-PhLVmListCliCommand >> outputListVirtualMachines [
-	| virtualMachinesList |
-	virtualMachinesList := self pharoLauncherModel vmBaseRepository
-		availableVirtualMachines values.
-	virtualMachinesList
+   self vmRepository
 		do: [ :aVM | 
 			self outStream nextPutAll: aVM id.
 			self outStream lf ]

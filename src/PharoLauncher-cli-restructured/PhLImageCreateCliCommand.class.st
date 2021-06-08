@@ -11,15 +11,12 @@ I execute:
 Class {
 	#name : #PhLImageCreateCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'repository'
-	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
 { #category : #'command line' }
-PhLImageCreateCliCommand class >> asCliCommand: aPharoLauncherModel [
-	^ self newLauncherCommand: #create launcherModel: aPharoLauncherModel
+PhLImageCreateCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #create 
 ]
 
 { #category : #'command line' }
@@ -46,12 +43,9 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
-   | listTemplatesAvailableForDownload templateToDownload|
-   listTemplatesAvailableForDownload := PhLTemplateGroupRepository default roots. 
-   listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
-   templateToDownload := listTemplatesAvailableForDownload children detect: [ :aTemplate | aTemplate name = aTemplateName ].
-   
-    repository extractTemplate: templateToDownload to: newImageName 
+    [^ self imageRepository extractTemplate: (self findTheTemplate: aTemplateName) to: newImageName]
+	on: NotFound 
+	do: [ self errorStream nextPutAll:'cant find the template' ] 
 ]
 
 { #category : #'command execution' }
@@ -60,9 +54,26 @@ PhLImageCreateCliCommand >> execute [
    self createImage: self templateName to: self imageName
 ]
 
+{ #category : #'as yet unclassified' }
+PhLImageCreateCliCommand >> findTheTemplate: aTemplateName [
+	|templateToDownload|
+   templateToDownload := self officialTemplateRepository children detect: [ :aTemplate | aTemplate name = aTemplateName ].
+	^templateToDownload 
+]
+
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [ 
    ^ (arguments at: #newImageName) word
+]
+
+{ #category : #'as yet unclassified' }
+PhLImageCreateCliCommand >> officialTemplateRepository [
+	| listTemplatesAvailableForDownload |
+	listTemplatesAvailableForDownload := PhLTemplateGroupRepository
+		default roots.
+	listTemplatesAvailableForDownload := listTemplatesAvailableForDownload
+		detect: [ :aGroup | aGroup name = 'Official distributions' ].
+	^ listTemplatesAvailableForDownload
 ]
 
 { #category : #accessing }

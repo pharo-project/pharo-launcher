@@ -24,8 +24,10 @@ PharoLauncherCLIModel >> imageBaseRepository: aPathString [
 
 { #category : #accessing }
 PharoLauncherCLIModel >> initialize [
-	vmBaseRepository := PhLVirtualMachineManager new.
-	imageBaseRepository := PhLDirectoryBasedImageRepository default.
+	| configuration |
+	configuration := PharoLauncherCLIConfiguration new.
+	vmBaseRepository := configuration vmsDirectory.
+	imageBaseRepository := configuration imageDirectory.
 	templateBaseRepository := PhLTemplateGroupRepository default.
 ]
 

@@ -319,7 +319,7 @@ PharoLauncherApplication >> startFull [
 	
 	self
 		open: imagesPresenter
-		withSpecLayout: imagesPresenter defaultSpec
+		withSpecLayout: imagesPresenter layout
 		using: SpWorldPresenter
 ]
 

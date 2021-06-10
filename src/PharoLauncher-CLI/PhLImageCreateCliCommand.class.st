@@ -25,10 +25,26 @@ PhLImageCreateCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image on local computer from remote site based on template name.'
 ]
 
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> launcherCmdFlags [
+
+	^ {(ClapFlag id: #templateCategory)
+				description: 'Allows to use a template categroy to search the target template ';
+				meaning: [  :arg :app | app halt. ];
+				implicitMeaning: [  :arg :app | app halt. ];
+				add: ((ClapPositional id: #templateCategoryName)
+					description: 'Name of the template category variable.';
+					meaning: [ :pos | pos word asSymbol halt. ];
+					implicitMeaning: [  :arg :app | app halt. ])}
+					
+			
+]
+
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> launcherCmdPositionals [
 
-	^ {((ClapPositional id: #templateName)
+	^ {
+		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app | app  ];
@@ -50,7 +66,7 @@ PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-  
+   ((arguments at: #templateCategory) at: #templateCategoryName) word. 
    self createImage: self templateName to: self imageName
 ]
 

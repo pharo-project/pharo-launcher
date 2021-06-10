@@ -26,17 +26,6 @@ PhLImageCopyCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'command line - arguments' }
-PhLImageCopyCliCommand class >> launcherCmdFlags [
-
-	^ {(ClapFlag id: #newImageName)
-				description: 'Name of new image created from copy of existing.';
-				add: ((ClapPositional id: #newName)
-					description: 'New image name.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | app defaultLanguage ])}
-]
-
-{ #category : #'command line - arguments' }
 PhLImageCopyCliCommand class >> launcherCmdPositionals [
 
 	^ {((ClapPositional id: #existingImageName)

@@ -5,53 +5,75 @@ Class {
 	#name : #PharoLauncherCLIConfiguration,
 	#superclass : #Object,
 	#instVars : [
-		'imageBaseRepository',
-		'templateBaseRepository',
-		'vmBaseRepository',
-		'imageDirectory',
+		'imagesDirectory',
 		'vmsDirectory',
 		'launchImageFromALoginShell',
-		'initScriptsDirectory',
-		'pathFromConfigFile'
+		'initScriptsDirectory'
 	],
 	#category : #'PharoLauncher-cli-restructured'
 }
 
-{ #category : #'as yet unclassified' }
-PharoLauncherCLIConfiguration >> createDefaultConfigFile [
-	| stream working pharoLauncherCLI collection   |
-	collection := Dictionary new.
-	imageDirectory := PhLDirectoryBasedImageRepository default.
-	vmsDirectory := PhLVirtualMachineManager new.
-	initScriptsDirectory := '//'.
-	launchImageFromALoginShell := false.
-	collection at: 'imageDirectory' put: imageDirectory .
-	collection at: 'vmsDirectory' put: vmsDirectory .
-	collection at: 'launchImageFromALoginShell' put: launchImageFromALoginShell.
-	collection at: 'initScriptsDirectory' put: initScriptsDirectory .
-	working := FileLocator preferences.
-	pharoLauncherCLI := working/'pharoLauncherCLI'.
-	pharoLauncherCLI createDirectory.
-	stream := self preferencesFile writeStream.
-	stream nextPutAll: (STON toString: collection) .
-	stream close 
+{ #category : #'instance creation' }
+PharoLauncherCLIConfiguration class >> configurationFromFile: aFile [
+	^ [ self fetchConfigurationFromFile: aFile ]
+		on: FileDoesNotExistException
+		do: [ self createConfigurationFile: aFile ]
 ]
 
-{ #category : #'as yet unclassified' }
-PharoLauncherCLIConfiguration >> getConfiguration [
-	| stream configDictionary |
-	stream := self preferencesFile readStream.
-	configDictionary := (STON fromString: stream contents).
-	imageDirectory := configDictionary at: 'imageDirectory'.
-	vmsDirectory := configDictionary at: 'vmsDirectory'.
-	launchImageFromALoginShell := configDictionary at:'launchImageFromALoginShell'.
-	initScriptsDirectory := configDictionary at: 'initScriptsDirectory'. 
-	
+{ #category : #'instance creation' }
+PharoLauncherCLIConfiguration class >> createConfigurationFile: aFileReference [ 
+	| config |
+	config := self new.
+	aFileReference writeStreamDo: [ :stream |
+		STON put: config onStreamPretty: stream ].
+	^ config
 ]
 
 { #category : #accessing }
-PharoLauncherCLIConfiguration >> imageDirectory [
-	^ imageDirectory
+PharoLauncherCLIConfiguration class >> defaultConfiguration [
+	^ self configurationFromFile: self preferencesFile 
+]
+
+{ #category : #'instance creation' }
+PharoLauncherCLIConfiguration class >> fetchConfigurationFromFile: aFile [
+	^ aFile
+		readStreamDo: [ :stream | STON fromStream: stream ]
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration class >> preferencesFile [
+	^ (FileLocator launcherUserFilesLocation  / 'launcherSettings.ston') asFileReference 
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration class >> preferencesFileName [
+	^ 'launcherSettings.ston'
+]
+
+{ #category : #comparing }
+PharoLauncherCLIConfiguration >> = anObject [
+	self == anObject ifTrue: [ ^ true ].
+	self class = anObject class ifFalse: [ ^ false ].
+	^ imagesDirectory = anObject imagesDirectory
+		and: [ initScriptsDirectory = anObject initScriptsDirectory 
+		and: [ launchImageFromALoginShell = anObject launchImageFromALoginShell 
+		and: [ vmsDirectory = anObject vmsDirectory ] ] ]
+]
+
+{ #category : #comparing }
+PharoLauncherCLIConfiguration >> hash [
+	^ imagesDirectory hash bitXor: 
+		((initScriptsDirectory hash bitXor: launchImageFromALoginShell hash) bitXor: vmsDirectory hash)
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> imagesDirectory [
+	^ imagesDirectory
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> imagesDirectory: aFileReference [ 
+	imagesDirectory := aFileReference
 ]
 
 { #category : #accessing }
@@ -60,10 +82,17 @@ PharoLauncherCLIConfiguration >> initScriptsDirectory [
 ]
 
 { #category : #accessing }
-PharoLauncherCLIConfiguration >> initialize [ 
-		super initialize.
-		[self getConfiguration ] on:FileDoesNotExistException do: [ self createDefaultConfigFile].
-		
+PharoLauncherCLIConfiguration >> initScriptsDirectory: aFileReference [ 
+	initScriptsDirectory := aFileReference
+]
+
+{ #category : #initialization }
+PharoLauncherCLIConfiguration >> initialize [
+	super initialize.
+	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation.
+	vmsDirectory := FileLocator launcherUserFilesLocation / 'vms'.
+	initScriptsDirectory := PharoLauncherApplication defaultInitializationScriptLocation.
+	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell. 
 ]
 
 { #category : #accessing }
@@ -72,16 +101,16 @@ PharoLauncherCLIConfiguration >> launchImageFromALoginShell [
 ]
 
 { #category : #accessing }
-PharoLauncherCLIConfiguration >> preferencesFile [
-	^ (self preferencesFolder / 'launcherSettings.ston') asFileReference 
-]
-
-{ #category : #accessing }
-PharoLauncherCLIConfiguration >> preferencesFolder [
-	^ FileLocator preferences / 'pharoLauncherCLI'
+PharoLauncherCLIConfiguration >> launchImageFromALoginShell: aBoolean [
+	launchImageFromALoginShell := aBoolean
 ]
 
 { #category : #accessing }
 PharoLauncherCLIConfiguration >> vmsDirectory [
 	^ vmsDirectory
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> vmsDirectory: aFileReference [ 
+	vmsDirectory := aFileReference
 ]

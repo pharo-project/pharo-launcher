@@ -37,7 +37,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'PharoLauncher-Core'). ];
 			package: #'PharoLauncher-Squeak' with: [ 
 				spec requires: #(#'PharoLauncher-Core'). ];
-			package: 'PharoLauncher-cli-restructured' with: [ spec requires: #('Clap')];
+			package: 'PharoLauncher-CLI' with: [ spec requires: #('Clap')];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
@@ -49,9 +49,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'PharoLauncher-Tests-Core' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
 				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ];
-			package: 'PharoLauncher-cli-restructured-Tests' with: [ 
-				spec requires: #('PharoLauncher-cli-restructured') ].
+			package: 'PharoLauncher-CLI-Tests' with: [ 
+				spec requires: #('PharoLauncher-CLI') ].
 
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-cli-restructured-Tests' #'PharoLauncher-GToolkit' #'PharoLauncher-Squeak'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-CLI-Tests' #'PharoLauncher-GToolkit' #'PharoLauncher-Squeak'). ].
 ]

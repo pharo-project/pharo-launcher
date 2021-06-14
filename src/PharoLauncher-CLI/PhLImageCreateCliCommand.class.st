@@ -30,8 +30,8 @@ PhLImageCreateCliCommand class >> launcherCmdFlags [
 
 	^ {(ClapFlag id: #templateCategory)
 				description: 'Allows to use a template categroy to search the target template ';
-				meaning: [  :arg :app | app halt. ];
-				implicitMeaning: [  :arg :app | app halt. ];
+				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
+				implicitMeaning: [  :arg :app | 'Official distributions'. ];
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
 					meaning: [ :pos | pos word asSymbol halt. ];
@@ -61,20 +61,23 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
     [^ self imageRepository extractTemplate: (self findTheTemplate: aTemplateName) to: newImageName]
 	on: NotFound 
-	do: [ self errorStream nextPutAll:'cant find the template' ] 
+	do: [ self errorStream nextPutAll:'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		cr. ] 
 ]
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-   ((arguments at: #templateCategory) at: #templateCategoryName) word. 
+	self templateCategory.
    self createImage: self templateName to: self imageName
 ]
 
 { #category : #'as yet unclassified' }
 PhLImageCreateCliCommand >> findTheTemplate: aTemplateName [
-	|templateToDownload|
-   templateToDownload := self officialTemplateRepository children detect: [ :aTemplate | aTemplate name = aTemplateName ].
-	^templateToDownload 
+	| templateCategory templateRepository |
+	templateCategory := self templateCategory.
+	templateRepository := self templateRepository: templateCategory.
+   ^ templateRepository templatesAndGroups detect: [ :aTemplate | aTemplate name = aTemplateName ].
+	
 ]
 
 { #category : #accessing }
@@ -92,9 +95,29 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	^ listTemplatesAvailableForDownload
 ]
 
+{ #category : #'as yet unclassified' }
+PhLImageCreateCliCommand >> templateCategory [
+  ^ (arguments at: #templateCategory) value: self
+]
+
+{ #category : #accessing }
+PhLImageCreateCliCommand >> templateCategoryName [ 
+   ^ (arguments at: #templateCategoryName) word
+]
+
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateName [ 
   ^ (arguments at: #templateName) word
 
 
+]
+
+{ #category : #'as yet unclassified' }
+PhLImageCreateCliCommand >> templateRepository: aTemplateCategoryName [
+	| listTemplatesCategories |
+	listTemplatesCategories := PhLTemplateGroupRepository
+		default roots.
+	listTemplatesCategories := listTemplatesCategories
+		detect: [ :aGroup | aGroup name = aTemplateCategoryName ].
+	^ listTemplatesCategories
 ]

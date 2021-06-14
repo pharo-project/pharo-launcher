@@ -83,6 +83,11 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #default }
+PhLCliCommand >> defaultTemplateCategory [
+	^ 'Official distributions'
+]
+
 { #category : #'private ' }
 PhLCliCommand >> errorStream [ 
 	^ errorStream ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]

@@ -67,7 +67,6 @@ PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	self templateCategory.
    self createImage: self templateName to: self imageName
 ]
 
@@ -91,7 +90,7 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	listTemplatesAvailableForDownload := PhLTemplateGroupRepository
 		default roots.
 	listTemplatesAvailableForDownload := listTemplatesAvailableForDownload
-		detect: [ :aGroup | aGroup name = 'Official distributions' ].
+		detect: [ :aGroup | aGroup name = self defaultTemplateCategory ].
 	^ listTemplatesAvailableForDownload
 ]
 
@@ -115,8 +114,7 @@ PhLImageCreateCliCommand >> templateName [
 { #category : #'as yet unclassified' }
 PhLImageCreateCliCommand >> templateRepository: aTemplateCategoryName [
 	| listTemplatesCategories |
-	listTemplatesCategories := PhLTemplateGroupRepository
-		default roots.
+	listTemplatesCategories := self templateRepository roots.
 	listTemplatesCategories := listTemplatesCategories
 		detect: [ :aGroup | aGroup name = aTemplateCategoryName ].
 	^ listTemplatesCategories

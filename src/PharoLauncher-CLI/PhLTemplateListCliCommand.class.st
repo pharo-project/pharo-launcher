@@ -34,11 +34,18 @@ PhLTemplateListCliCommand class >> launcherCmdFlags [
 
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> execute [
-	| templateCategory templateRepository |
+	| templateCategory templateRepository counter |
+	counter := 1.
 	templateCategory := self templateCategory.
 	templateRepository := self templateRepository: templateCategory.
-   templateRepository templatesAndGroups 
-		do: [ :aTemplate |self outStream nextPutAll: aTemplate name. self outStream newLine. ]
+	templateRepository templatesAndGroups
+		do: [ :aTemplate | 
+			self outStream
+				nextPutAll: counter asString;
+				nextPutAll: ' ';
+				nextPutAll: aTemplate name;
+				newLine.
+			counter := counter + 1 ]
 ]
 
 { #category : #'command execution' }

@@ -70,7 +70,7 @@ PhLImageCreateCliCommand >> execute [
    self createImage: self templateName to: self imageName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'find-select' }
 PhLImageCreateCliCommand >> findTheTemplate: aTemplateName [
 	| templateCategory templateRepository |
 	templateCategory := self templateCategory.
@@ -84,7 +84,7 @@ PhLImageCreateCliCommand >> imageName [
    ^ (arguments at: #newImageName) word
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 PhLImageCreateCliCommand >> officialTemplateRepository [
 	| listTemplatesAvailableForDownload |
 	listTemplatesAvailableForDownload := PhLTemplateGroupRepository
@@ -94,7 +94,7 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	^ listTemplatesAvailableForDownload
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 PhLImageCreateCliCommand >> templateCategory [
   ^ (arguments at: #templateCategory) value: self
 ]
@@ -111,7 +111,7 @@ PhLImageCreateCliCommand >> templateName [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance initialization' }
 PhLImageCreateCliCommand >> templateRepository: aTemplateCategoryName [
 	| listTemplatesCategories |
 	listTemplatesCategories := self templateRepository roots.

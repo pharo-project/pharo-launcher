@@ -47,6 +47,6 @@ PhLImageCliCommand >> imageName [
 { #category : #printing }
 PhLImageCliCommand >> messageErrorNotFound [
 			self errorStream nextPutAll: 'please enter a correct local image'.
-			self errorStream cr.
+			self errorStream newLine.
 			^ self
 ]

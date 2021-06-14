@@ -30,5 +30,5 @@ PhLTemplateSourcesUrlCliCommand >> sourcesUrlTemplate [
    listTemplatesAvailableForDownload := self templateRepository roots. 
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload  detect: [:aGroup | aGroup name = 'Official distributions'  ].
    listTemplatesAvailableForDownload := listTemplatesAvailableForDownload children.
-   listTemplatesAvailableForDownload do: [ :template | self outStream nextPutAll: template name. self outStream nextPutAll:': '. self outStream nextPutAll: (template url asString ). self outStream lf ]
+   listTemplatesAvailableForDownload do: [ :template | self outStream nextPutAll: template name. self outStream nextPutAll:': '. self outStream nextPutAll: (template url asString ). self outStream newLine ]
 ]

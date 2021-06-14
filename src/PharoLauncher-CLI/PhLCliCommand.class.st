@@ -101,8 +101,6 @@ PhLCliCommand >> imageRepository [
 
 { #category : #'private ' }
 PhLCliCommand >> outStream [ 
-
-	self flag: 'TODO: Test behavior of outstream (instance of VTermOutputDriver on Windows 10).'.
 	^ outStream ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
 ]
 

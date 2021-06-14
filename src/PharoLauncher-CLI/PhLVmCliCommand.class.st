@@ -48,6 +48,6 @@ PhLVmCliCommand >> findVM [
 { #category : #printing }
 PhLVmCliCommand >> messageErrorNotFound [
 			self errorStream nextPutAll: 'please enter a correct local virtual machine'.
-			self errorStream cr.
+			self errorStream newLine.
 			^ self
 ]

@@ -44,23 +44,23 @@ PhLImageInfoCliCommand >> printInformation: anImage [
 	self outStream
 		nextPutAll: 'image name: ';
 		nextPutAll: anImage name asString;
-		cr;
+		newLine;
 		nextPutAll: ' image description: ';
 		nextPutAll: anImage description asString;
-		cr;
+		newLine;
 		nextPutAll: ' image version: ';
 		nextPutAll: anImage pharoVersionFromFile asString;
-		cr;
+		newLine;
 		nextPutAll: ' image origin template: ';
 		nextPutAll: anImage originTemplateUrl asString;
-		cr;
+		newLine;
 		nextPutAll: ' image template URL: ';
 		nextPutAll:  anImage originTemplateName asString;
-		cr;
+		newLine;
 		nextPutAll: ' image path: ';
 		nextPutAll: anImage location asString;
-		cr;
+		newLine;
 		nextPutAll: ' image last modification ';
 		nextPutAll: anImage lastModification asString;
-		cr
+		newLine.
 ]

@@ -39,13 +39,13 @@ PhLVmInfoCliCommand >> displayInfoVm: aVM [
 	self outStream
 		nextPutAll: 'name: ';
 		nextPutAll: aVM id;
-		lf;
+		newLine;
 		nextPutAll: 'last update: ';
 		nextPutAll: aVM lastUpdateTime asString;
-		lf;
+		newLine;
 		nextPutAll: 'download Url: ';
 		nextPutAll: aVM downloadUrl asString;
-		lf
+		newLine
 ]
 
 { #category : #accessing }

@@ -33,7 +33,7 @@ PhLImageListCliCommand >> execute [
 PhLImageListCliCommand >> listImages [
 
 	self imageRepository  images
-		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream cr.self outStream nextPutAll:' '. ]
+		do: [ :anImage | self outStream nextPutAll: anImage name. self outStream newLine. ]
 ]
 
 { #category : #'instance creation' }

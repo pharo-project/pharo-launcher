@@ -29,5 +29,5 @@ PhLVmListCliCommand >> execute [
    self vmRepository
 		do: [ :aVM | 
 			self outStream nextPutAll: aVM id.
-			self outStream lf ]
+			self outStream newLine ]
 ]

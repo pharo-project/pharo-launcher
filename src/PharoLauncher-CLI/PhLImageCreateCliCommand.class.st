@@ -59,7 +59,7 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
-    [^ self imageRepository extractTemplate: (self findTheTemplate: aTemplateName) to: newImageName]
+    [^ self imageRepository extractTemplate: self findTheTemplate to: newImageName]
 	on: NotFound 
 	do: [ self errorStream nextPutAll:'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
 		cr. ] 
@@ -71,11 +71,10 @@ PhLImageCreateCliCommand >> execute [
 ]
 
 { #category : #'find-select' }
-PhLImageCreateCliCommand >> findTheTemplate: aTemplateName [
-	| templateCategory templateRepository |
-	templateCategory := self templateCategory.
-	templateRepository := self templateRepository: templateCategory.
-   ^ templateRepository templatesAndGroups detect: [ :aTemplate | aTemplate name = aTemplateName ].
+PhLImageCreateCliCommand >> findTheTemplate [
+	| templateRepository |
+	templateRepository := self templateRepository: self templateCategory.
+   ^ templateRepository templatesAndGroups detect: [ :aTemplate | aTemplate name = self templateName ].
 	
 ]
 

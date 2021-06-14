@@ -38,7 +38,7 @@ PhLTemplateListCliCommand >> execute [
 	templateCategory := self templateCategory.
 	templateRepository := self templateRepository: templateCategory.
    templateRepository templatesAndGroups 
-		do: [ :aTemplate | self outStream nextPutAll: aTemplate asString. self outStream newLine. ]
+		do: [ :aTemplate |self outStream nextPutAll: aTemplate name. self outStream newLine. ]
 ]
 
 { #category : #'command execution' }

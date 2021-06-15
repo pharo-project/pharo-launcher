@@ -8,10 +8,16 @@ Class {
 	#instVars : [
 		'fileSystem',
 		'localTemplateGroup',
-		'remoteTemplatesGroup'
+		'remoteTemplatesGroup',
+		'defaultTemplateGroup'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
+
+{ #category : #creation }
+PhLTemplateGroupTestRepository >> addTemplateCategoryNamed: aString [ 
+	self shouldBeImplemented.
+]
 
 { #category : #initialization }
 PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
@@ -27,6 +33,18 @@ PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
 PhLTemplateGroupTestRepository >> createRemoteTemplateNamed: aName [
 	self remoteTemplatesGroup
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+]
+
+{ #category : #initialization }
+PhLTemplateGroupTestRepository >> createTemplateInDefaultGroupNamed: aName [
+	self remoteTemplatesGroup
+		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+]
+
+{ #category : #instance }
+PhLTemplateGroupTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
+	(self categoryNamed: aCategoryName) templatesAndGroups 
+		add: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
 { #category : #initialization }
@@ -49,6 +67,13 @@ PhLTemplateGroupTestRepository >> localTemplatesGroupName [
 ]
 
 { #category : #accessing }
+PhLTemplateGroupTestRepository >> newDefaultTemplatesGroup [
+	^ PhLFixedURLsTemplateGroup new 
+			setName: self defaultTemplatesGroup Templates: OrderedCollection new;
+			yourself
+]
+
+{ #category : #accessing }
 PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
 	^ PhLDownloadedTemplateGroup new 
 		baseDirectory: fileSystem root;
@@ -60,6 +85,13 @@ PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
 PhLTemplateGroupTestRepository >> newRemoteTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: 'Remote test templates' Templates: OrderedCollection new;
+			yourself
+]
+
+{ #category : #accessing }
+PhLTemplateGroupTestRepository >> newRemoteTemplatesGroupNamed: aGroupName [
+	^ PhLFixedURLsTemplateGroup new 
+			setName: aGroupName Templates: OrderedCollection new;
 			yourself
 ]
 

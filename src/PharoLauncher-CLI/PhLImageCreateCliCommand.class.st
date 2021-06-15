@@ -51,8 +51,8 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app | app  ];
+					meaning: [ :pos | pos  word ];
+					implicitMeaning: [ :arg :app | app findLatestPharoStableVersionInALocation: (app returnDefaultTemplateCategory templatesAndGroups)   ];
 					yourself).
 	}
 ]
@@ -85,7 +85,7 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	listTemplatesAvailableForDownload := PhLTemplateGroupRepository
 		default roots.
 	listTemplatesAvailableForDownload := listTemplatesAvailableForDownload
-		detect: [ :aGroup | aGroup name = self defaultTemplateCategory ].
+		detect: [ :aGroup | aGroup name = self defaultTemplateCategoryName ].
 	^ listTemplatesAvailableForDownload
 ]
 
@@ -107,7 +107,8 @@ PhLImageCreateCliCommand >> templateCategoryName [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateName [ 
-  ^ (arguments at: #templateName) word
-
-
+	| recupArgument | 
+  recupArgument := (arguments at: #templateName) value: self.
+	^recupArgument.
+	
 ]

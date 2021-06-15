@@ -37,7 +37,7 @@ PhLTemplateListCliCommand >> execute [
 	| templateCategoryName templateCategory counter |
 	counter := 1.
 	templateCategoryName := self templateCategory.
-	templateCategory := self categoryNamed: templateCategoryName.
+	templateCategory := self templateRepository categoryNamed: templateCategoryName.
 	templateCategory templatesAndGroups
 		do: [ :aTemplate | 
 			self outStream

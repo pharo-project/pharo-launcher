@@ -83,8 +83,8 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
-{ #category : #default }
-PhLCliCommand >> defaultTemplateCategory [
+{ #category : #'as yet unclassified' }
+PhLCliCommand >> defaultTemplateCategoryName [
 	^ 'Official distributions'
 ]
 
@@ -97,6 +97,12 @@ PhLCliCommand >> errorStream [
 PhLCliCommand >> execute [ 
 	
 	^ self context exitSuccess.
+]
+
+{ #category : #querying }
+PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [ 
+	^ (aLocation detect: [ :template | template name includesSubstring: 'stable';includesSubstring: '64bit' ]) name
+	
 ]
 
 { #category : #accessing }
@@ -112,6 +118,11 @@ PhLCliCommand >> outStream [
 { #category : #accessing }
 PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
+]
+
+{ #category : #default }
+PhLCliCommand >> returnDefaultTemplateCategory [
+	^ self templateRepository categoryNamed: self defaultTemplateCategoryName 
 ]
 
 { #category : #initialization }

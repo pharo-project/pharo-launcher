@@ -58,24 +58,20 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #accessing }
-PhLImageCreateCliCommand >> createImage: aTemplateName to:newImageName [
-    [^ self imageRepository extractTemplate: self findTheTemplate to: newImageName]
-	on: NotFound 
-	do: [ self errorStream nextPutAll:'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
-		cr. ] 
+PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
+	^ [ self imageRepository
+		extractTemplate: self template
+		to: newImageName ]
+		on: NotFound
+		do: [ self errorStream
+				nextPutAll:
+					'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+				cr ]
 ]
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
    self createImage: self templateName to: self imageName
-]
-
-{ #category : #'find-select' }
-PhLImageCreateCliCommand >> findTheTemplate [
-	| templateRepository |
-	templateRepository := self templateRepository: self templateCategory.
-   ^ templateRepository templatesAndGroups detect: [ :aTemplate | aTemplate name = self templateName ].
-	
 ]
 
 { #category : #accessing }
@@ -93,6 +89,12 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	^ listTemplatesAvailableForDownload
 ]
 
+{ #category : #querying }
+PhLImageCreateCliCommand >> template [
+	^ self templateRepository templateNamed: self templateName inCategoryNamed: self templateCategory
+	
+]
+
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategory [
   ^ (arguments at: #templateCategory) value: self
@@ -108,13 +110,4 @@ PhLImageCreateCliCommand >> templateName [
   ^ (arguments at: #templateName) word
 
 
-]
-
-{ #category : #'instance initialization' }
-PhLImageCreateCliCommand >> templateRepository: aTemplateCategoryName [
-	| listTemplatesCategories |
-	listTemplatesCategories := self templateRepository roots.
-	listTemplatesCategories := listTemplatesCategories
-		detect: [ :aGroup | aGroup name = aTemplateCategoryName ].
-	^ listTemplatesCategories
 ]

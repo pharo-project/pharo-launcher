@@ -58,3 +58,8 @@ PhLImageCliCommandTest >> setUp [
 	context launcherModel: model
 
 ]
+
+{ #category : #accessing }
+PhLImageCliCommandTest >> templateRepository [ 
+	^ self launcherModel templateBaseRepository
+]

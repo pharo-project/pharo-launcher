@@ -34,11 +34,11 @@ PhLTemplateListCliCommand class >> launcherCmdFlags [
 
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> execute [
-	| templateCategory templateRepository counter |
+	| templateCategoryName templateCategory counter |
 	counter := 1.
-	templateCategory := self templateCategory.
-	templateRepository := self templateRepository: templateCategory.
-	templateRepository templatesAndGroups
+	templateCategoryName := self templateCategory.
+	templateCategory := self categoryNamed: templateCategoryName.
+	templateCategory templatesAndGroups
 		do: [ :aTemplate | 
 			self outStream
 				nextPutAll: counter asString;
@@ -51,14 +51,4 @@ PhLTemplateListCliCommand >> execute [
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> templateCategory [
   ^ (arguments at: #templateCategory) value: self
-]
-
-{ #category : #'command execution' }
-PhLTemplateListCliCommand >> templateRepository: aTemplateCategoryName [
-	| listTemplatesCategories |
-	listTemplatesCategories := PhLTemplateGroupRepository
-		default roots.
-	listTemplatesCategories := listTemplatesCategories
-		detect: [ :aGroup | aGroup name = aTemplateCategoryName ].
-	^ listTemplatesCategories
 ]

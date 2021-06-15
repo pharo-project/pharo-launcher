@@ -15,13 +15,12 @@ Class {
 
 { #category : #initialization }
 PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
-| zipFile |
+	| zipFile template |
 	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
-	self localTemplatesGroup
-		register: (PhLLocalTemplate name: aName zipFile: zipFile)
-		withZip: zipFile.
+	template := PhLLocalTemplate name: aName zipFile: zipFile.
+	self localTemplatesGroup register: template withZip: zipFile.
 	self newZipArchive: zipFile.
-	
+	^ template
 ]
 
 { #category : #initialization }
@@ -45,10 +44,15 @@ PhLTemplateGroupTestRepository >> localTemplatesGroup [
 ]
 
 { #category : #accessing }
+PhLTemplateGroupTestRepository >> localTemplatesGroupName [
+	^ 'Local test templates'
+]
+
+{ #category : #accessing }
 PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
 	^ PhLDownloadedTemplateGroup new 
 		baseDirectory: fileSystem root;
-		setName: 'Local test templates';
+		setName: self localTemplatesGroupName;
 		yourself
 ]
 

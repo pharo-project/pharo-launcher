@@ -10,5 +10,5 @@ PhLTemplateCategoriesCliCommandTest >> testTemplateCategoriesShouldSucceed [
 	self runCommand: #('launcher' 'template' 'categories').
 	
 	self assertSuccess.
-	self assert: (self outputString includesSubstring: 'Local test templates') 
+	self assert: (self outputString includesSubstring: self templateRepository localTemplatesGroupName) 
 ]

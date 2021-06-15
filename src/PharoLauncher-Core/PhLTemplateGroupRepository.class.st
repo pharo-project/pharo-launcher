@@ -29,6 +29,12 @@ PhLTemplateGroupRepository >> addGroup: aGroup [
 	groupCaches addLast: cache.
 ]
 
+{ #category : #querying }
+PhLTemplateGroupRepository >> categoryNamed: aTemplateCategoryName [
+	^ self roots
+		detect: [ :aCategory | aCategory name = aTemplateCategoryName ]
+]
+
 { #category : #action }
 PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
 	aString ifEmpty: [ PhLCommandError signal: 'Cannot give an empty name to a template' ].
@@ -145,4 +151,11 @@ PhLTemplateGroupRepository >> setGroups: aCollection [
 			(names includes: group name)
 				ifTrue: [ PhLError signal: '2 groups must not have the same name' ]
 				ifFalse: [ self addGroup: group ] ]
+]
+
+{ #category : #querying }
+PhLTemplateGroupRepository >> templateNamed: aTemplateName inCategoryNamed: aCategoryName [
+	| category |
+	category := self categoryNamed: aCategoryName.
+	^ category templateNamed: aTemplateName
 ]

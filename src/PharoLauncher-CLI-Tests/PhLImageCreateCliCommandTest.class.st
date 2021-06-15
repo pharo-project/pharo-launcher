@@ -16,7 +16,7 @@ PhLImageCreateCliCommandTest >> addLocalTemplateNamed: aName [
 
 { #category : #accessing }
 PhLImageCreateCliCommandTest >> localTemplatesGroup [
-	^ context launcherModel templateBaseRepository localTemplatesGroup
+	^ context templateRepository localTemplatesGroup
 ]
 
 { #category : #utilities }
@@ -38,7 +38,7 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage2'.
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
-	self runCommand: #('launcher' 'image' 'create' 'fakeTemplate' 'myImage3' '--templateCategory' 'Local test templates').
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
 	 
 	self assertSuccess.  
 	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 

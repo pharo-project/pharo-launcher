@@ -68,6 +68,11 @@ PhLAbstractTemplateGroup >> shouldComputeChildrenLazily [
 	^ false
 ]
 
+{ #category : #querying }
+PhLAbstractTemplateGroup >> templateNamed: aTemplateName [
+	^ self templatesAndGroups detect: [ :aTemplate | aTemplate name = aTemplateName ]
+]
+
 { #category : #accessing }
 PhLAbstractTemplateGroup >> templatesAndGroups [
 	"Return a collection of all the templates and subgroups I contain"

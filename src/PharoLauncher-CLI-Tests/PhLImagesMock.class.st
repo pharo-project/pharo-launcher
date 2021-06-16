@@ -18,6 +18,11 @@ PhLImagesMock class >> name: aString [
    ^self new name: aString.
 ]
 
+{ #category : #printing }
+PhLImagesMock >> cliPrintString [
+	^ self name
+]
+
 { #category : #accessing }
 PhLImagesMock >> description [ 
 	^ 'this is the description'

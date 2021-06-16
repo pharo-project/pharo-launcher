@@ -31,16 +31,7 @@ PhLImageListCliCommand >> execute [
 
 { #category : #'instance creation' }
 PhLImageListCliCommand >> listImages [
-	| counter |
-	counter := 1.
-	self imageRepository images
-		do: [ :anImage | 
-			self outStream
-				nextPutAll: counter asString;
-				nextPutAll: ' ';
-				nextPutAll: anImage name;
-				newLine.
-			counter := counter + 1 ]
+	self list: self imageRepository images
 ]
 
 { #category : #'instance creation' }

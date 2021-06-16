@@ -26,14 +26,5 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 
 { #category : #accessing }
 PhLVmListCliCommand >> execute [
-	| counter |
-	counter := 1.
-	self vmRepository
-		do: [ :aVM | 
-			self outStream
-				nextPutAll: counter asString;
-				nextPutAll: ' ';
-				nextPutAll: aVM id;
-				newLine.
-			counter := counter + 1 ]
+	self list: self vmRepository
 ]

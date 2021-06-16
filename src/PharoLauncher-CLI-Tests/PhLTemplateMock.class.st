@@ -1,3 +1,6 @@
+"
+Allows to create template as mock ( just contain a name instance for the moment )
+"
 Class {
 	#name : #PhLTemplateMock,
 	#superclass : #Object,

@@ -110,6 +110,20 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageBaseRepository
 ]
 
+{ #category : #'instance creation' }
+PhLCliCommand >> list: aCollection [ 
+	| counter |
+	counter := 1.
+	aCollection
+		do: [ :anItem | 
+			self outStream
+				nextPutAll: counter asString;
+				nextPutAll: ': ';
+				nextPutAll: anItem cliPrintString;
+				newLine.
+			counter := counter + 1 ]
+]
+
 { #category : #'private ' }
 PhLCliCommand >> outStream [ 
 	^ outStream ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]

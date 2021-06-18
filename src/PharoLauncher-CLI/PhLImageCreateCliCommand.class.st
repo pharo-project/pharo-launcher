@@ -63,7 +63,8 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #newImageName)
 				description: 'New image.';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app | app  ];
+					implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' .   ];
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';

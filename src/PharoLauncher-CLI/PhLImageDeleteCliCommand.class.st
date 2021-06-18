@@ -29,7 +29,8 @@ PhLImageDeleteCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
 		description: 'Local image name to be deleted.';
 		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app | app ];
+		implicitMeaning: [ :arg :app | NotFound 
+        signal: 'one argument is missing' .];
 		yourself)}
 ]
 

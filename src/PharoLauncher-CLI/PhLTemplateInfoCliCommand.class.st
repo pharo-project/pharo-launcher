@@ -39,7 +39,8 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #templateName)
 				description: 'New image.';
 					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app | app  ];
+					implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' .  ];
 					yourself).	}
 ]
 

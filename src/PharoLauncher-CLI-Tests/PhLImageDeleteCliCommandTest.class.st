@@ -9,6 +9,16 @@ Class {
 }
 
 { #category : #tests }
+PhLImageDeleteCliCommandTest >> testDeleteImageNameWithoutImageNameShouldRaiseError [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	
+	self runCommand: #('launcher' 'image' 'delete').
+ 
+	self assert: ( self errorString includesSubstring: 'please enter a correct local image').  
+]
+
+{ #category : #tests }
 PhLImageDeleteCliCommandTest >> testDeleteImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

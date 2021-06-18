@@ -29,7 +29,8 @@ PhLVmDeleteCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingVirtualMachineName)
 		description: 'Local VM name to be deleted.';
 		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app | app ];
+		implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' .  ];
 		yourself)}
 ]
 

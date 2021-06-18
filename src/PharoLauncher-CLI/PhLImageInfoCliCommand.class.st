@@ -30,7 +30,8 @@ PhLImageInfoCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
 		description: 'Local image name from which we display the informations.';
 		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app | app ];
+		implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' .  ];
 		yourself)}
 ]
 

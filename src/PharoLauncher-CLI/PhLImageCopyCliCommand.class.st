@@ -7,6 +7,10 @@ I declare:
 
 I execute:
 - copy the existing image based on specified name to new image with new name
+
+Utilisation:
+Example of utilisation with imageToCopy and copiedImageName:
+./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image copy imageToCopy copiedImageName
 "
 Class {
 	#name : #PhLImageCopyCliCommand,
@@ -31,12 +35,14 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
 				description: 'Local image name to be copied.';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app | app  ];
+					implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' . ];
 					yourself).
 		((ClapPositional id: #newImageName)
 				description: 'New image name of a copied image.';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app | app  ];
+					implicitMeaning: [ :arg :app |NotFound 
+        signal: 'one argument is missing' .   ];
 					yourself)	
 	}
 ]

@@ -16,6 +16,11 @@ PhLVirtualMachinesMock class >> id: aString [
 	^ self new id: aString
 ]
 
+{ #category : #instance }
+PhLVirtualMachinesMock >> cliPrintString [
+	^ self id
+]
+
 { #category : #printing }
 PhLVirtualMachinesMock >> downloadUrl [
 	'some url'

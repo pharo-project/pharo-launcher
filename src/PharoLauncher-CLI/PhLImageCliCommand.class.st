@@ -41,7 +41,7 @@ PhLImageCliCommand >> findImage [
 
 { #category : #accessing }
 PhLImageCliCommand >> imageName [ 
-  ^ (arguments at: #existingImageName) word
+  ^ ((arguments at: #existingImageName)value:self ; word) 
 ]
 
 { #category : #printing }

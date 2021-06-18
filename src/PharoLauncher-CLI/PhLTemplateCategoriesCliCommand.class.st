@@ -20,14 +20,6 @@ PhLTemplateCategoriesCliCommand class >> asCliCommand [
 
 { #category : #initialization }
 PhLTemplateCategoriesCliCommand >> execute [
-	| counter |
-	counter := 1.
-	self templateRepository roots
-		do: [ :category | 
-			self outStream
-				nextPutAll: counter asString;
-				nextPutAll: ' ';
-				nextPutAll: category asString;
-				newLine.
-			counter := counter + 1 ]
+	self list: self templateRepository roots
+		
 ]

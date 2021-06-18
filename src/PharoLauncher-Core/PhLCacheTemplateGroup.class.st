@@ -29,6 +29,11 @@ PhLCacheTemplateGroup >> = anObject [
 	^ delegate = anObject 
 ]
 
+{ #category : #'as yet unclassified' }
+PhLCacheTemplateGroup >> cliPrintString [
+	^ self asString 
+]
+
 { #category : #comparing }
 PhLCacheTemplateGroup >> hash [
 	^ delegate hash

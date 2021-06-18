@@ -18,6 +18,11 @@ PhLVMCliCommandTest >> addVmNamed: anImageName at: someDictionaryIndice [
 ]
 
 { #category : #accessing }
+PhLVMCliCommandTest >> errorString [
+	^ context stdio stderr contents utf8Decoded
+]
+
+{ #category : #accessing }
 PhLVMCliCommandTest >> launcherModel [
 	^ context launcherModel 
 ]

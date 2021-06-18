@@ -29,10 +29,26 @@ PhLImageLaunchCliCommandTest >> testLaunchImageToManyArguments [
 	| image |
 	image := self addImageNamed: 'myImage1'.
 	
-	self runCommand: #('launch' '4' 'myImage1').
+	self runCommand: #('launcher' 'image' 'launch' '4' 'myImage1').
 	 
 	self assert: (self errorString includesSubstring: 'Unrecognized arguments: myImage1').
 	self assertFailure.  
+	self deny: image isLaunched. 
+
+	
+
+	
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageWrongImageName [
+
+	| image |
+	image := self addImageNamed: 'myImage1'.
+	
+	self runCommand: #('launcher' 'image' 'launch' 'wrongImageName').
+	 
+	self assert: (self errorString includesSubstring: 'please enter a correct local image').
 	self deny: image isLaunched. 
 
 	

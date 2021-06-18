@@ -17,3 +17,13 @@ PhLImageInfoCliCommandTest >> testImageInfoShouldSucceed [
 	
 	self assert: (self outputString includesSubstring:'https://testurl').
 ]
+
+{ #category : #tests }
+PhLImageInfoCliCommandTest >> testImageInfoWrongImageNameShouldRaiseError [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	
+	self runCommand: #('launcher' 'image' 'info' 'myImage3').
+	
+	self assert: (self errorString includesSubstring:'please enter a correct local image').
+]

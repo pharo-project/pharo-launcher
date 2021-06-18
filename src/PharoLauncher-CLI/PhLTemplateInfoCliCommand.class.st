@@ -45,16 +45,18 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLTemplateInfoCliCommand >> execute [
-   self infoTemplate
+   [ self infoTemplate ] on:NotFound do: [ self errorMessageWrongTemplateName ]
 ]
 
 { #category : #initialization }
 PhLTemplateInfoCliCommand >> infoTemplate [
 	| template |
-	template := self templateRepository templateNamed: self templateName inCategoryNamed: self templateCategory. 
-	self outStream nextPutAll: (template url asString);
-	               newLine .
-   
+	template := self templateRepository
+		templateNamed: self templateName
+		inCategoryNamed: self templateCategory.
+	self outStream
+		nextPutAll: template url asString;
+		newLine
 ]
 
 { #category : #accessing }

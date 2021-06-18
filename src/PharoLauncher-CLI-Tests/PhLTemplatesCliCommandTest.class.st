@@ -7,10 +7,39 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
+{ #category : #adding }
+PhLTemplatesCliCommandTest >> addLocalTemplateNamed: aName [ 
+	^ context launcherModel templateBaseRepository createLocalTemplateNamed: aName
+]
+
+{ #category : #adding }
+PhLTemplatesCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [  
+	| templateCategory |
+	templateCategory := context launcherModel templateBaseRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
+	context launcherModel templateBaseRepository setGroups:{ templateCategory }.
+]
+
+{ #category : #adding }
+PhLTemplatesCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName [ 
+	^ context launcherModel templateBaseRepository createTemplateNamed: aName inCategory: aCategoryName
+]
+
 { #category : #'process actions' }
 PhLTemplatesCliCommandTest >> assertSuccess [
 	self assert: context exitStatus equals: 0.
 	self assert: self errorString equals: ''
+]
+
+{ #category : #'as yet unclassified' }
+PhLTemplatesCliCommandTest >> createOfficialRepositoryInFileSystemWithTemplatesInIt [
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'fakeTemplate' inCategory: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
+]
+
+{ #category : #instance }
+PhLTemplatesCliCommandTest >> defaultTemplateCategoryName [
+	^ 'Official distributions'
 ]
 
 { #category : #'process actions' }
@@ -21,6 +50,11 @@ PhLTemplatesCliCommandTest >> errorString [
 { #category : #'process actions' }
 PhLTemplatesCliCommandTest >> launcherModel [
 	^ context launcherModel 
+]
+
+{ #category : #accessing }
+PhLTemplatesCliCommandTest >> localTemplatesGroup [
+	^ context templateRepository localTemplatesGroup
 ]
 
 { #category : #'process actions' }

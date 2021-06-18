@@ -144,6 +144,14 @@ PhLCliCommand >> list: aCollection [
 			counter := counter + 1 ]
 ]
 
+{ #category : #'as yet unclassified' }
+PhLCliCommand >> messageErrorCategoryNotFound [
+	self errorStream nextPutAll: 'please enter a correct category '.
+			self errorStream newLine.
+			^ self
+	
+]
+
 { #category : #'private ' }
 PhLCliCommand >> outStream [ 
 	^ outStream ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]

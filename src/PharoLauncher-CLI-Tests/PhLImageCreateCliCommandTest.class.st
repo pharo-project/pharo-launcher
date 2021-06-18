@@ -37,11 +37,6 @@ PhLImageCreateCliCommandTest >> localTemplatesGroup [
 	^ context templateRepository localTemplatesGroup
 ]
 
-{ #category : #utilities }
-PhLImageCreateCliCommandTest >> newZipArchive: aFileReference [ 
-	self shouldBeImplemented.
-]
-
 { #category : #running }
 PhLImageCreateCliCommandTest >> setUp [
 	
@@ -60,6 +55,20 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	 
 	self assertSuccess.  
 	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseError [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'fakeTemplate' inCategory: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
+	
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'templateName' . 'tooManyArguments'}.
+	 
+	self assertFailure.  
+	self assert: (self errorString includesSubstring: 'tooManyArguments').  
 ]
 
 { #category : #tests }
@@ -87,6 +96,17 @@ PhLImageCreateCliCommandTest >> testCreateImageWithoutTemplateArgumentShouldSucc
 ]
 
 { #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	self addLocalTemplateNamed: 'fakeTemplate'.
+	
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'fakeTemplate' . '--templateCategory' . 'wrong category name'}.
+	 
+	self assert: (self errorString includesSubstring: 'cant find'). 
+]
+
+{ #category : #tests }
 PhLImageCreateCliCommandTest >> testFindLastestPharoVersionInALocation [
 	| category template1 template2 template3 templateFound |
 	category := OrderedCollection new. 
@@ -100,16 +120,4 @@ PhLImageCreateCliCommandTest >> testFindLastestPharoVersionInALocation [
 	templateFound := PhLCliCommand new findLatestPharoStableVersionInALocation: category.
 	
 	self assert: (templateFound includesSubstring: 'stable')
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testFindLastestPharoVersionInALocation: aLocation [
-	| templateName command |
-	command := context arguments: #('launcher' 'image' 'create' 'template' 'myImageName').
-	command ifMatch: [:match|
-		 command := match value: context ].
-	
-	templateName := command findLatestPharoStableVersion.
-	
-	self assert: (templateName includesSubstring: '8 stable')
 ]

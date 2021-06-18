@@ -32,7 +32,8 @@ PhLTemplateGroupRepository >> addGroup: aGroup [
 { #category : #querying }
 PhLTemplateGroupRepository >> categoryNamed: aTemplateCategoryName [
 	^ self roots
-		detect: [ :aCategory | aCategory name = aTemplateCategoryName ]
+		detect: [ :aCategory | aCategory name = aTemplateCategoryName ] ifNone: [ NotFound 
+        signal: aTemplateCategoryName asString,' not found, please enter a correct category name' ].
 ]
 
 { #category : #action }

@@ -7,6 +7,22 @@ I declare:
 
 I execute:
 - create new local image based on specified image template name with new name specified as flag
+
+Utilisation:
+Example of utilisation with templateToUse as your template choice and newImageName as the name of your new image:
+Open your terminal in the directory containing the pharo executable. You need to know the path of this image.
+
+-  If you want to use the default template which is the last stable pharo version :
+./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName 
+
+- If your template is in the official distributions group:
+./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse
+
+- If your template is in an other category (here yourTemplateGroup):
+./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse --templateCategory yourTemplateGroup
+
+
+
 "
 Class {
 	#name : #PhLImageCreateCliCommand,
@@ -52,7 +68,7 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
 					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app | app findLatestPharoStableVersionInALocation: (app returnDefaultTemplateCategory templatesAndGroups)   ];
+					implicitMeaning: [ :arg :app | app defaultTemplate ];
 					yourself).
 	}
 ]
@@ -69,9 +85,14 @@ PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
 				cr ]
 ]
 
+{ #category : #'as yet unclassified' }
+PhLImageCreateCliCommand >> defaultTemplate [
+	^ self findLatestPharoStableVersionInALocation: (self defaultTemplateCategory templatesAndGroups) 
+]
+
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-   self createImage: self templateName to: self imageName
+   self createImage: self templateName to: self imageName 
 ]
 
 { #category : #accessing }
@@ -103,12 +124,4 @@ PhLImageCreateCliCommand >> templateCategory [
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategoryName [ 
    ^ (arguments at: #templateCategoryName) word
-]
-
-{ #category : #accessing }
-PhLImageCreateCliCommand >> templateName [ 
-	| recupArgument | 
-  recupArgument := (arguments at: #templateName) value: self.
-	^recupArgument.
-	
 ]

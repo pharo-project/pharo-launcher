@@ -36,7 +36,8 @@ PharoLauncherCLIModel >> initialize [
 
 { #category : #accessing }
 PharoLauncherCLIModel >> templateBaseRepository [
-	^templateBaseRepository 
+	^ templateBaseRepository
+		ifNil: [ self templateBaseRepository: PhLTemplateGroupRepository default. ^ templateBaseRepository]
 ]
 
 { #category : #accessing }

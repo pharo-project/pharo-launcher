@@ -70,7 +70,8 @@ PhLAbstractTemplateGroup >> shouldComputeChildrenLazily [
 
 { #category : #querying }
 PhLAbstractTemplateGroup >> templateNamed: aTemplateName [
-	^ self templatesAndGroups detect: [ :aTemplate | aTemplate name = aTemplateName ]
+	^ self templatesAndGroups detect: [ :aTemplate | aTemplate name = aTemplateName ]  ifNone: [ NotFound
+        signal: aTemplateName asString,' not found, please enter a correct template name' ].
 ]
 
 { #category : #accessing }

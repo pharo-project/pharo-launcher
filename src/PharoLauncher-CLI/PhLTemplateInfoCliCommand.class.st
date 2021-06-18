@@ -61,8 +61,3 @@ PhLTemplateInfoCliCommand >> infoTemplate [
 PhLTemplateInfoCliCommand >> templateCategory [
   ^ (arguments at: #templateCategory) value: self
 ]
-
-{ #category : #accessing }
-PhLTemplateInfoCliCommand >> templateName [  
-  ^ (arguments at: #templateName) value: self.
-]

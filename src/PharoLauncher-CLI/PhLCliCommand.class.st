@@ -84,6 +84,16 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 ]
 
 { #category : #'as yet unclassified' }
+PhLCliCommand >> defaultTemplate [
+	self findLatestPharoStableVersionInALocation: (self defaultTemplateCategory templatesAndGroups) 
+]
+
+{ #category : #default }
+PhLCliCommand >> defaultTemplateCategory [
+	^ self templateRepository categoryNamed: self defaultTemplateCategoryName 
+]
+
+{ #category : #'as yet unclassified' }
 PhLCliCommand >> defaultTemplateCategoryName [
 	^ 'Official distributions'
 ]
@@ -134,14 +144,16 @@ PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
 ]
 
-{ #category : #default }
-PhLCliCommand >> returnDefaultTemplateCategory [
-	^ self templateRepository categoryNamed: self defaultTemplateCategoryName 
-]
-
 { #category : #initialization }
 PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [ 
 	pharoLauncherModel := aPharoLauncherModel 
+]
+
+{ #category : #accessing }
+PhLCliCommand >> templateName [ 
+	^ (arguments at: #templateName) value: self.
+	
+	
 ]
 
 { #category : #accessing }

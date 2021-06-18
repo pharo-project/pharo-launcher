@@ -78,13 +78,18 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileEx
 ]
 
 { #category : #tests }
-PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfigurationFileShouldXXXXX [
-	| root preferencesFile |
+PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfigurationFileShouldGiveExplainationMessage [
+	"unable to read the file , correct or delete"
+	|  preferencesFile |
 	root := FileSystem memory root.
 	preferencesFile := root / PharoLauncherCLIConfiguration preferencesFileName.
 	preferencesFile ensureCreateFile.
 	
-	PharoLauncherCLIConfiguration configurationFromFile: preferencesFile
+	
+	
+	self should: ([PharoLauncherCLIConfiguration configurationFromFile: preferencesFile.] ) raise: PhLInvalidConfiguration
+	
+
 ]
 
 { #category : #tests }

@@ -14,7 +14,14 @@ Class {
 
 { #category : #accessing }
 PharoLauncherCLIModel >> imageBaseRepository [
-	^imageBaseRepository 
+	^ imageBaseRepository
+		ifNil: [ | configuration |
+			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
+			self
+				imageBaseRepository:
+					(PhLDirectoryBasedImageRepository
+						forDirectory: configuration imagesDirectory).
+			imageBaseRepository ]
 ]
 
 { #category : #accessing }
@@ -24,14 +31,15 @@ PharoLauncherCLIModel >> imageBaseRepository: aPathString [
 
 { #category : #accessing }
 PharoLauncherCLIModel >> initialize [
+"
 	| configuration |
-	configuration := PharoLauncherCLIConfiguration new.
+	configuration := PharoLauncherCLIConfiguration defaultConfiguration. 
 	PhLVirtualMachineManager vmStore: configuration vmsDirectory.
 	vmBaseRepository := PhLVirtualMachineManager new.
 	PharoLauncherApplication default scriptsDirectory:  configuration initScriptsDirectory asFileReference.
 	imageBaseRepository := PhLDirectoryBasedImageRepository
 		forDirectory: configuration imagesDirectory.
-	templateBaseRepository := PhLTemplateGroupRepository default
+	templateBaseRepository := PhLTemplateGroupRepository default"
 ]
 
 { #category : #accessing }
@@ -47,7 +55,11 @@ PharoLauncherCLIModel >> templateBaseRepository: aPathString [
 
 { #category : #accessing }
 PharoLauncherCLIModel >> vmBaseRepository [
-	^vmBaseRepository
+	^ vmBaseRepository
+		ifNil: [ | configuration |
+			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
+			PhLVirtualMachineManager vmStore: configuration vmsDirectory.
+			self vmBaseRepository: PhLVirtualMachineManager new. ^ vmBaseRepository ]
 ]
 
 { #category : #accessing }

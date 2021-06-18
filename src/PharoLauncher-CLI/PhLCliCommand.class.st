@@ -79,6 +79,8 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 					help
 						value;
 						exitSuccess ].
+			PhLNotificationCenter default outStream: (VTermOutputDriver on: args context stdout) .
+			PhLNotificationCenter default errorStream: (VTermOutputDriver on: args context stderr).
 			(self with: args) execute ];
 		yourself
 ]
@@ -118,6 +120,14 @@ PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [
 { #category : #accessing }
 PhLCliCommand >> imageRepository [ 
 	^ self pharoLauncherModel imageBaseRepository
+]
+
+{ #category : #initialization }
+PhLCliCommand >> initialize [ 
+	super initialize.
+	"
+	PhLNotificationCenter default outStream: self outStream.
+	PhLNotificationCenter default errorStream: self outStream."
 ]
 
 { #category : #'instance creation' }

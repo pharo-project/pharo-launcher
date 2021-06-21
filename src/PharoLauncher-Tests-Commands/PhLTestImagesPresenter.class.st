@@ -7,8 +7,7 @@ Class {
 	#instVars : [
 		'request',
 		'selection',
-		'templateRepository',
-		'fileSystem'
+		'templateRepository'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -38,12 +37,12 @@ PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection notNil ]
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> imageLabel [
 	^ descriptionPanel imageLabel label
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> imageNames [
 	^ imageTable items collect: #name
 ]
@@ -65,7 +64,7 @@ PhLTestImagesPresenter >> initialize [
 	request := PhLTestRequest new.
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> launchConfigurations [
 	^ launchConfigurationList listItems allButFirst
 ]

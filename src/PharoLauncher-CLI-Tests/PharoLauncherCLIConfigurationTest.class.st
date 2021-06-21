@@ -2,7 +2,8 @@ Class {
 	#name : #PharoLauncherCLIConfigurationTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'root'
+		'root',
+		'errorStream'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -21,6 +22,8 @@ PharoLauncherCLIConfigurationTest >> createPreferencesFileWith: aConfiguration [
 PharoLauncherCLIConfigurationTest >> setUp [
 	super setUp.
 	root := FileSystem memory root.
+	errorStream := WriteStream on: (String new).
+	PhLNotificationCenter default errorStream: errorStream
 
 ]
 
@@ -37,6 +40,7 @@ PharoLauncherCLIConfigurationTest >> testConfigurationsWithDifferentValuesShoudN
 		vmsDirectory: FileLocator vmDirectory;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
 		launchImageFromALoginShell: true.
+		PhLNotificationCenter default errorStream close.
 
 	self deny: config1 equals: config2
 ]
@@ -54,6 +58,7 @@ PharoLauncherCLIConfigurationTest >> testConfigurationsWithSameValuesShoudBeEqua
 		vmsDirectory: FileLocator vmDirectory;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
 		launchImageFromALoginShell: true.
+		PhLNotificationCenter default errorStream close.
 
 	self assert: config1 equals: config2
 ]
@@ -63,14 +68,19 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileAb
 	
 	| config |
 	config := PharoLauncherCLIConfiguration configurationFromFile: (root / 'launcherSettings.ston') asFileReference .
+	PhLNotificationCenter default errorStream close.
 	
-	self assert: (config isKindOf: PharoLauncherCLIConfiguration)
+	self assert: (config isKindOf: PharoLauncherCLIConfiguration).
+	self assert: ( PhLNotificationCenter default errorStream contents includesSubstring: 'Config' ) 
+	
+	
 ]
 
 { #category : #tests }
 PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileExistsShouldSucceed [
 	| config preferencesFile |
 	preferencesFile := self createPreferencesFileWith: PharoLauncherCLIConfiguration new.
+	PhLNotificationCenter default errorStream close.
 	
 	config := PharoLauncherCLIConfiguration configurationFromFile: preferencesFile.
 	
@@ -84,10 +94,12 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfiguratio
 	root := FileSystem memory root.
 	preferencesFile := root / PharoLauncherCLIConfiguration preferencesFileName.
 	preferencesFile ensureCreateFile.
+	PhLNotificationCenter default errorStream close.
 	
 	
 	
-	self should: ([PharoLauncherCLIConfiguration configurationFromFile: preferencesFile.] ) raise: PhLInvalidConfiguration
+	self should: ([PharoLauncherCLIConfiguration configurationFromFile: preferencesFile.] ) raise: PhLInvalidConfiguration.
+	self assert: ( PhLNotificationCenter default errorStream contents includesSubstring: 'Incorrect config file, please changed ' ) 
 	
 
 ]
@@ -101,6 +113,7 @@ PharoLauncherCLIConfigurationTest >> testReadOfSerializedConfigurationShouldGive
 		vmsDirectory: FileLocator vmDirectory;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
 		launchImageFromALoginShell: true.
+	PhLNotificationCenter default errorStream close.
 	
 	preferencesFile := self createPreferencesFileWith: config.
 	serializedConfig := PharoLauncherCLIConfiguration configurationFromFile: preferencesFile.

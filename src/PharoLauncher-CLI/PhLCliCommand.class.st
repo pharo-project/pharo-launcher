@@ -113,7 +113,7 @@ PhLCliCommand >> execute [
 
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [ 
-	^ (aLocation detect: [ :template | template name includesSubstring: 'stable';includesSubstring: '64bit' ]) name
+	^ (aLocation detect: [ :template | (template name includesSubstring: 'stable') and: [ template name includesSubstring: '64bit' ]  ]) name
 	
 ]
 

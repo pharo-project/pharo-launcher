@@ -25,7 +25,7 @@ PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
 
 { #category : #accessing }
 PhLImagesMockRepo >> deleteImage: anImageName [
-	self images remove: anImageName ifAbsent: [ ^ 0 ]
+	self images remove: anImageName ifAbsent: [ ^ 'image not found' ]
 ]
 
 { #category : #'test methods' }

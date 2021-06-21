@@ -26,6 +26,11 @@ PhLTestImageRepository >> createImageNamed: aName in: aFolder [
 
 ]
 
+{ #category : #testing }
+PhLTestImageRepository >> hasImageOnFileSystemNamed: aName [
+	^ self baseDirectory / aName / (aName , '.image')
+]
+
 { #category : #initialization }
 PhLTestImageRepository >> initialize [
 

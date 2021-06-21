@@ -27,11 +27,6 @@ PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
 	^ self model createImageNamed: aString in: aPathString
 ]
 
-{ #category : #private }
-PhLTestImagesPresenter >> fileSystem [
-	^ fileSystem
-]
-
 { #category : #'api - selection' }
 PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection notNil ]
@@ -49,19 +44,19 @@ PhLTestImagesPresenter >> imageNames [
 
 { #category : #initialization }
 PhLTestImagesPresenter >> initialize [
-	fileSystem := FileSystem memory.
 	self model: PhLTestImageRepository new.
 	templateRepository := PhLTemplateGroupTestRepository new.
-	self application: (PharoLauncherApplication new
-		imageRepository: self model;
-		instVarNamed: 'imagesPresenter' put: self;
-		yourself).
+	self
+		application:
+			(PharoLauncherApplication new
+				imageRepository: self model;
+				instVarNamed: 'imagesPresenter' put: self;
+				yourself).
 	super initialize.
-	
 	self flag: 'TODO remove next line if possible ? '.
 	self model createImageNamed: self model singleImageName.
 	self refresh.
-	request := PhLTestRequest new.
+	request := PhLTestRequest new
 ]
 
 { #category : #accessing }
@@ -104,11 +99,6 @@ PhLTestImagesPresenter >> selectedLaunchConfiguration [
 { #category : #configuring }
 PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages
-]
-
-{ #category : #configuring }
-PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
-	selection := aListOfImageNames collect: [ :name | PhLImage location: fileSystem root / name ].
 ]
 
 { #category : #'api - accessing' }

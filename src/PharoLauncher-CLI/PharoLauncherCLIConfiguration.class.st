@@ -78,18 +78,22 @@ PharoLauncherCLIConfiguration class >> preferencesFileName [
 
 { #category : #comparing }
 PharoLauncherCLIConfiguration >> = anObject [
-	self == anObject ifTrue: [ ^ true ].
-	self class = anObject class ifFalse: [ ^ false ].
+	self == anObject
+		ifTrue: [ ^ true ].
+	self class = anObject class
+		ifFalse: [ ^ false ].
 	^ imagesDirectory = anObject imagesDirectory
-		and: [ initScriptsDirectory = anObject initScriptsDirectory 
-		and: [ launchImageFromALoginShell = anObject launchImageFromALoginShell 
-		and: [ vmsDirectory = anObject vmsDirectory ] ] ]
+		and: [ initScriptsDirectory = anObject initScriptsDirectory
+				and: [ launchImageFromALoginShell = anObject launchImageFromALoginShell
+						and: [ vmsDirectory = anObject vmsDirectory ] ] ]
 ]
 
 { #category : #comparing }
 PharoLauncherCLIConfiguration >> hash [
-	^ imagesDirectory hash bitXor: 
-		((initScriptsDirectory hash bitXor: launchImageFromALoginShell hash) bitXor: vmsDirectory hash)
+	^ imagesDirectory hash
+		bitXor:
+			((initScriptsDirectory hash bitXor: launchImageFromALoginShell hash)
+				bitXor: vmsDirectory hash)
 ]
 
 { #category : #accessing }
@@ -117,8 +121,10 @@ PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
 	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation.
 	vmsDirectory := FileLocator launcherUserFilesLocation / 'vms'.
-	initScriptsDirectory := PharoLauncherApplication defaultInitializationScriptLocation.
-	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell. 
+	initScriptsDirectory := PharoLauncherApplication
+		defaultInitializationScriptLocation.
+	launchImageFromALoginShell := PhLLaunchConfiguration
+		launchInALoginShell
 ]
 
 { #category : #accessing }

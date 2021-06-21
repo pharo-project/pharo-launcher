@@ -49,17 +49,10 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLImageCopyCliCommand >> executeWithImage: anImage [
-	 self imageRepository copyImage: anImage to: self targetName 
-
-   
-
-   
-
+	self imageRepository copyImage: anImage to: self targetName
 ]
 
 { #category : #accessing }
-PhLImageCopyCliCommand >> targetName [ 
-  ^ (arguments at: #newImageName) word
-
-
+PhLImageCopyCliCommand >> targetName [
+	^ (arguments at: #newImageName) word
 ]

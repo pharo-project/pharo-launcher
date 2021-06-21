@@ -31,22 +31,24 @@ PhLImageCliCommand class >> launcherCmdDescription [
 PhLImageCliCommand >> execute [
 	[ self executeWithImage: self findImage ]
 		on: NotFound
-		do: [ ^ self messageErrorNotFound ].
+		do: [ ^ self messageErrorNotFound ]
 ]
 
 { #category : #accessing }
 PhLImageCliCommand >> findImage [
-	^ self imageRepository imageNamed: self imageName asLowercase. 
+	^ self imageRepository imageNamed: self imageName asLowercase
 ]
 
 { #category : #accessing }
-PhLImageCliCommand >> imageName [ 
-  ^ ((arguments at: #existingImageName)value:self ; word) 
+PhLImageCliCommand >> imageName [
+	^ (arguments at: #existingImageName)
+		value: self;
+		word
 ]
 
 { #category : #printing }
 PhLImageCliCommand >> messageErrorNotFound [
-			self errorStream nextPutAll: 'please enter a correct local image'.
-			self errorStream newLine.
-			^ self
+	self errorStream nextPutAll: 'please enter a correct local image'.
+	self errorStream newLine.
+	^ self
 ]

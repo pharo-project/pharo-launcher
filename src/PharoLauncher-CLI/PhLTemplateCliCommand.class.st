@@ -27,7 +27,7 @@ PhLTemplateCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to image templates.'
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #message }
 PhLTemplateCliCommand >> errorMessageWrongTemplateName [
 	self errorStream nextPutAll: 'please enter a correct template name'
 ]

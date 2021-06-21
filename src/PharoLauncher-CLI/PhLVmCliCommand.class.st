@@ -34,20 +34,21 @@ PhLVmCliCommand >> VMName [
 
 { #category : #'command execution' }
 PhLVmCliCommand >> execute [
-	[ self executeWithVM: (self findVM) ]
+	[ self executeWithVM: self findVM ]
 		on: NotFound
-		do: [ ^ self messageErrorNotFound ].
+		do: [ ^ self messageErrorNotFound ]
 ]
 
 { #category : #'find-select' }
 PhLVmCliCommand >> findVM [
-	^ self vmRepository detect: [ :virtualMachine | virtualMachine id = self VMName ] 
-	
+	^ self vmRepository
+		detect: [ :virtualMachine | virtualMachine id = self VMName ]
 ]
 
 { #category : #printing }
 PhLVmCliCommand >> messageErrorNotFound [
-			self errorStream nextPutAll: 'please enter a correct local virtual machine'.
-			self errorStream newLine.
-			^ self
+	self errorStream
+		nextPutAll: 'please enter a correct local virtual machine'.
+	self errorStream newLine.
+	^ self
 ]

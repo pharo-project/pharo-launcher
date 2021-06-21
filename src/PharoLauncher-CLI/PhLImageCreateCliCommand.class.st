@@ -74,52 +74,63 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
+{ #category : #message }
+PhLImageCreateCliCommand >> cantFindTheTemplateMessage [
+	self errorStream
+		nextPutAll:
+			'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		cr
+]
+
 { #category : #accessing }
 PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
-	self outStream
-		nextPutAll:
-			' creation of on image based on: ' , aTemplateName
-				, 'Please wait a moment';
-		newLine.
+	self creationMessage: aTemplateName.
 	^ [ self imageRepository
 		extractTemplate: self template
 		to: newImageName ]
 		on: NotFound
-		do: [ self errorStream
-				nextPutAll:
-					'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
-				cr ]
+		do: [ self cantFindTheTemplateMessage ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #message }
+PhLImageCreateCliCommand >> creationMessage: aTemplateName [
+	self outStream
+		nextPutAll:
+			' creation of on image based on: ' , aTemplateName
+				, 'Please wait a moment';
+		newLine
+]
+
+{ #category : #default }
 PhLImageCreateCliCommand >> defaultTemplate [
-	^ self findLatestPharoStableVersionInALocation: (self defaultTemplateCategory templatesAndGroups) 
+	^ self
+		findLatestPharoStableVersionInALocation: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-   self createImage: self templateName to: self imageName 
+	self createImage: self templateName to: self imageName
 ]
 
 { #category : #accessing }
-PhLImageCreateCliCommand >> imageName [ 
-   ^ (arguments at: #newImageName) word
+PhLImageCreateCliCommand >> imageName [
+	^ (arguments at: #newImageName) word
 ]
 
 { #category : #default }
 PhLImageCreateCliCommand >> officialTemplateRepository [
-	| listTemplatesAvailableForDownload |
-	listTemplatesAvailableForDownload := PhLTemplateGroupRepository
-		default roots.
-	listTemplatesAvailableForDownload := listTemplatesAvailableForDownload
+	| templatesCategories listTemplatesAvailableForDownload |
+	templatesCategories := PhLTemplateGroupRepository default roots.
+	listTemplatesAvailableForDownload := templatesCategories
 		detect: [ :aGroup | aGroup name = self defaultTemplateCategoryName ].
 	^ listTemplatesAvailableForDownload
 ]
 
 { #category : #querying }
 PhLImageCreateCliCommand >> template [
-	^ self templateRepository templateNamed: self templateName inCategoryNamed: self templateCategory
-	
+	^ self templateRepository
+		templateNamed: self templateName
+		inCategoryNamed: self templateCategory
 ]
 
 { #category : #accessing }

@@ -36,10 +36,9 @@ PhLImageListCliCommand >> listImages [
 
 { #category : #'instance creation' }
 PhLImageListCliCommand >> listImagesAsSton [
-   | stonOutput |
-	stonOutput :=''.
+	| stonOutput |
+	stonOutput := ''.
 	self pharoLauncherModel imageBaseRepository images
-		do: [ :anImage | stonOutput:= stonOutput,STON toString: anImage.].
-	self outStream nextPutAll: stonOutput.
-	
+		do: [ :anImage | stonOutput := stonOutput , STON toString: anImage ].
+	self outStream nextPutAll: stonOutput
 ]

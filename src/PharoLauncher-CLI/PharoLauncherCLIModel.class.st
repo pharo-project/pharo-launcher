@@ -45,7 +45,8 @@ PharoLauncherCLIModel >> initialize [
 { #category : #accessing }
 PharoLauncherCLIModel >> templateBaseRepository [
 	^ templateBaseRepository
-		ifNil: [ self templateBaseRepository: PhLTemplateGroupRepository default. ^ templateBaseRepository]
+		ifNil: [ self templateBaseRepository: PhLTemplateGroupRepository default.
+			^ templateBaseRepository ]
 ]
 
 { #category : #accessing }
@@ -59,7 +60,8 @@ PharoLauncherCLIModel >> vmBaseRepository [
 		ifNil: [ | configuration |
 			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
 			PhLVirtualMachineManager vmStore: configuration vmsDirectory.
-			self vmBaseRepository: PhLVirtualMachineManager new. ^ vmBaseRepository ]
+			self vmBaseRepository: PhLVirtualMachineManager new.
+			^ vmBaseRepository ]
 ]
 
 { #category : #accessing }

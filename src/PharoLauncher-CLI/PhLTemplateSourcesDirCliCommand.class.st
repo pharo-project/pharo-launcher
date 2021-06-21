@@ -22,5 +22,7 @@ PhLTemplateSourcesDirCliCommand class >> asCliCommand [
 
 { #category : #initialization }
 PhLTemplateSourcesDirCliCommand >> execute [
-   self outStream nextPutAll: self templateRepository localTemplatesDirectory asString. self outStream newLine
+	self outStream
+		nextPutAll: self templateRepository localTemplatesDirectory asString.
+	self outStream newLine
 ]

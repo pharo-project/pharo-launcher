@@ -20,24 +20,25 @@ PhLImagesMockRepo >> addImageNamed: anImageName [
 
 { #category : #accessing }
 PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
-  self addImageNamed: anImageCopy.
+	self addImageNamed: anImageCopy
 ]
 
 { #category : #accessing }
 PhLImagesMockRepo >> deleteImage: anImageName [
-  self images remove: anImageName ifAbsent:[^0] 
+	self images remove: anImageName ifAbsent: [ ^ 0 ]
 ]
 
 { #category : #'test methods' }
-PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: aString [ 
-   | imageTest |
-   imageTest := PhLImagesMock name:aString.
-	images add: imageTest.
+PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: aString [
+	| imageTest |
+	imageTest := PhLImagesMock name: aString.
+	images add: imageTest
 ]
 
 { #category : #accessing }
 PhLImagesMockRepo >> imageNamed: lowercaseImageName [
-	^ self images detect: [ :image | image name asLowercase = lowercaseImageName ]
+	^ self images
+		detect: [ :image | image name asLowercase = lowercaseImageName ]
 ]
 
 { #category : #accessing }
@@ -49,18 +50,16 @@ PhLImagesMockRepo >> images [
 
 { #category : #accessing }
 PhLImagesMockRepo >> images: anOrderedCollectionContainingImagesAdresses [
-   images := anOrderedCollectionContainingImagesAdresses.
+	images := anOrderedCollectionContainingImagesAdresses
 ]
 
 { #category : #accessing }
 PhLImagesMockRepo >> imagesName [
-   ^ (self images collect:[:each | each name]) asSet
-
-
+	^ (self images collect: [ :each | each name ]) asSet
 ]
 
 { #category : #accessing }
-PhLImagesMockRepo >> initialize [ 
-   super initialize. 
-   images := OrderedCollection new.
+PhLImagesMockRepo >> initialize [
+	super initialize.
+	images := OrderedCollection new
 ]

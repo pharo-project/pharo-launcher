@@ -30,7 +30,7 @@ PhLTemplatesCliCommandTest >> assertSuccess [
 	self assert: self errorString equals: ''
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #creation }
 PhLTemplatesCliCommandTest >> createOfficialRepositoryInFileSystemWithTemplatesInIt [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'fakeTemplate' inCategory: self defaultTemplateCategoryName.

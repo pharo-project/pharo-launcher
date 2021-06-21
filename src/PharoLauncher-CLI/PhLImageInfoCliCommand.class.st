@@ -41,7 +41,7 @@ PhLImageInfoCliCommand >> executeWithImage: anImage [
 ]
 
 { #category : #printing }
-PhLImageInfoCliCommand >> printInformation: anImage [ 
+PhLImageInfoCliCommand >> printInformation: anImage [
 	self outStream
 		nextPutAll: 'image name: ';
 		nextPutAll: anImage name asString;
@@ -56,12 +56,12 @@ PhLImageInfoCliCommand >> printInformation: anImage [
 		nextPutAll: anImage originTemplateUrl asString;
 		newLine;
 		nextPutAll: ' image template URL: ';
-		nextPutAll:  anImage originTemplateName asString;
+		nextPutAll: anImage originTemplateName asString;
 		newLine;
 		nextPutAll: ' image path: ';
 		nextPutAll: anImage location asString;
 		newLine;
 		nextPutAll: ' image last modification ';
 		nextPutAll: anImage lastModification asString;
-		newLine.
+		newLine
 ]

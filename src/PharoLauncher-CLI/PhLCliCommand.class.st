@@ -85,40 +85,44 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 PhLCliCommand >> defaultTemplate [
-	self findLatestPharoStableVersionInALocation: (self defaultTemplateCategory templatesAndGroups) 
+	self
+		findLatestPharoStableVersionInALocation: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #default }
 PhLCliCommand >> defaultTemplateCategory [
-	^ self templateRepository categoryNamed: self defaultTemplateCategoryName 
+	^ self templateRepository
+		categoryNamed: self defaultTemplateCategoryName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 PhLCliCommand >> defaultTemplateCategoryName [
 	^ 'Official distributions'
 ]
 
 { #category : #'private ' }
-PhLCliCommand >> errorStream [ 
-	^ errorStream ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
+PhLCliCommand >> errorStream [
+	^ errorStream
+		ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
 ]
 
 { #category : #'command execution' }
-PhLCliCommand >> execute [ 
-	
-	^ self context exitSuccess.
+PhLCliCommand >> execute [
+	^ self context exitSuccess
 ]
 
 { #category : #querying }
-PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [ 
-	^ (aLocation detect: [ :template | (template name includesSubstring: 'stable') and: [ template name includesSubstring: '64bit' ]  ]) name
-	
+PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [
+	^ (aLocation
+		detect: [ :template | 
+			(template name includesSubstring: 'stable')
+				and: [ template name includesSubstring: '64bit' ] ]) name
 ]
 
 { #category : #accessing }
-PhLCliCommand >> imageRepository [ 
+PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageBaseRepository
 ]
 
@@ -144,17 +148,17 @@ PhLCliCommand >> list: aCollection [
 			counter := counter + 1 ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #message }
 PhLCliCommand >> messageErrorCategoryNotFound [
 	self errorStream nextPutAll: 'please enter a correct category '.
-			self errorStream newLine.
-			^ self
-	
+	self errorStream newLine.
+	^ self
 ]
 
 { #category : #'private ' }
-PhLCliCommand >> outStream [ 
-	^ outStream ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+PhLCliCommand >> outStream [
+	^ outStream
+		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
 ]
 
 { #category : #accessing }
@@ -180,6 +184,7 @@ PhLCliCommand >> templateRepository [
 ]
 
 { #category : #accessing }
-PhLCliCommand >> vmRepository [ 
-	^ self pharoLauncherModel vmBaseRepository availableVirtualMachines values
+PhLCliCommand >> vmRepository [
+	^ self pharoLauncherModel vmBaseRepository availableVirtualMachines
+		values
 ]

@@ -46,7 +46,9 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLTemplateInfoCliCommand >> execute [
-   [ self infoTemplate ] on:NotFound do: [ self errorMessageWrongTemplateName ]
+	[ self infoTemplate ]
+		on: NotFound
+		do: [ self errorMessageWrongTemplateName ]
 ]
 
 { #category : #initialization }

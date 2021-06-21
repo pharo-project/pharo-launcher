@@ -34,9 +34,12 @@ PhLTemplateListCliCommand class >> launcherCmdFlags [
 
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> execute [
-	|  templateCategory |
-	[templateCategory := self templateRepository categoryNamed: self templateCategory.] on: NotFound do: [  ^ self messageErrorCategoryNotFound ].
-	self list: templateCategory templatesAndGroups.
+	| templateCategory |
+	[ templateCategory := self templateRepository
+		categoryNamed: self templateCategory ]
+		on: NotFound
+		do: [ ^ self messageErrorCategoryNotFound ].
+	self list: templateCategory templatesAndGroups
 ]
 
 { #category : #'command execution' }

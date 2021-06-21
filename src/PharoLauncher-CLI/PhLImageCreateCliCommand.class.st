@@ -76,6 +76,11 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
+	self outStream
+		nextPutAll:
+			' creation of on image based on: ' , aTemplateName
+				, 'Please wait a moment';
+		newLine.
 	^ [ self imageRepository
 		extractTemplate: self template
 		to: newImageName ]

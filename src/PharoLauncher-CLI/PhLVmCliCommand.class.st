@@ -26,12 +26,6 @@ PhLVmCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to VM management.'
 ]
 
-{ #category : #'find-select' }
-PhLVmCliCommand >> VMName [ 
-  ^ (arguments at: #existingVirtualMachineName) word 
-	
-]
-
 { #category : #'command execution' }
 PhLVmCliCommand >> execute [
 	[ self executeWithVM: self findVM ]
@@ -42,7 +36,7 @@ PhLVmCliCommand >> execute [
 { #category : #'find-select' }
 PhLVmCliCommand >> findVM [
 	^ self vmRepository
-		detect: [ :virtualMachine | virtualMachine id = self VMName ]
+		detect: [ :virtualMachine | virtualMachine id = self vmName ]
 ]
 
 { #category : #printing }
@@ -51,4 +45,10 @@ PhLVmCliCommand >> messageErrorNotFound [
 		nextPutAll: 'please enter a correct local virtual machine'.
 	self errorStream newLine.
 	^ self
+]
+
+{ #category : #'find-select' }
+PhLVmCliCommand >> vmName [ 
+  ^ (arguments at: #existingVirtualMachineName) word 
+	
 ]

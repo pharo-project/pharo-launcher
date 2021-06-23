@@ -13,16 +13,7 @@ Class {
 	#category : #'PharoLauncher-CLI'
 }
 
-{ #category : #'as yet unclassified' }
-PharoLauncherCLIConfiguration class >> configFileIncorect: aFile [
-	PhLNotificationCenter default errorStream
-		nextPutAll:
-			'Incorrect config file, please changed it or delete it to create a default one ';
-		newLine.
-	^ self createConfigurationFile: aFile
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #'error signalling' }
 PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
 	PhLNotificationCenter default errorStream
 		nextPutAll:
@@ -37,8 +28,7 @@ PharoLauncherCLIConfiguration class >> configurationFromFile: aFile [
 	^ [ self fetchConfigurationFromFile: aFile ]
 		on: FileDoesNotExistException
 			do: [ self configFileNotFound: aFile ]
-		"on: PhLInvalidConfiguration
-			do: [ self configFileIncorect: aFile ]"
+
 ]
 
 { #category : #'instance creation' }
@@ -62,8 +52,17 @@ PharoLauncherCLIConfiguration class >> fetchConfigurationFromFile: aFile [
 			[ STON fromStream: stream ]
 				on: STONReaderError
 				do: [ :error | 
-					self configFileIncorect: aFile.
+					self logIncorrectConfigurationFile: aFile.
 					PhLInvalidConfiguration signal: error messageText ] ]
+]
+
+{ #category : #'error signalling' }
+PharoLauncherCLIConfiguration class >> logIncorrectConfigurationFile: aFile [
+	PhLNotificationCenter default errorStream
+		nextPutAll:
+			'Incorrect config file, please changed it or delete it to create a default one ';
+		newLine.
+	^ self createConfigurationFile: aFile
 ]
 
 { #category : #accessing }

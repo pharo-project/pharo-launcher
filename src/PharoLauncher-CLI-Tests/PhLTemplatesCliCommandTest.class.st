@@ -31,7 +31,7 @@ PhLTemplatesCliCommandTest >> assertSuccess [
 ]
 
 { #category : #creation }
-PhLTemplatesCliCommandTest >> createOfficialRepositoryInFileSystemWithTemplatesInIt [
+PhLTemplatesCliCommandTest >> createOfficialTemplatesCategoryWithFakeTemplate [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'fakeTemplate' inCategory: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.

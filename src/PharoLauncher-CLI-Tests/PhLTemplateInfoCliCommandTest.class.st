@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
-	self createOfficialRepositoryInFileSystemWithTemplatesInIt. 
+	self createOfficialTemplatesCategoryWithFakeTemplate. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'fakeTemplate').
 	
@@ -17,7 +17,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoToManyArguments [
-	self createOfficialRepositoryInFileSystemWithTemplatesInIt. 
+	self createOfficialTemplatesCategoryWithFakeTemplate. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'oneArgument' 'tooManyArguments').
 	
@@ -39,7 +39,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucce
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
-	self createOfficialRepositoryInFileSystemWithTemplatesInIt. 
+	self createOfficialTemplatesCategoryWithFakeTemplate. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
 	

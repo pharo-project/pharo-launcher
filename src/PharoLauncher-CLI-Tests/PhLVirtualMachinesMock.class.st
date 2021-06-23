@@ -37,6 +37,13 @@ PhLVirtualMachinesMock >> id: aString [
 	id := aString
 ]
 
+{ #category : #instance }
+PhLVirtualMachinesMock >> initialize [ 
+	super initialize.
+	self isDeleted: false.
+	self isUpdated: false
+]
+
 { #category : #accessing }
 PhLVirtualMachinesMock >> isDeleted [
 	^ isDeleted

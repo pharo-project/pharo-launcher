@@ -11,5 +11,5 @@ PhLVMUpdateCliCommandTest >> testUpdateVmShouldSucceed [
 	
 	self runCommand: #('launcher' 'vm' 'update' 'myVm1').
 	 
-	self assert: ((self vmRepository availableVirtualMachines at:'myVm1') state ) equals:'updated'
+	self assert: ((self vmRepository availableVirtualMachines at:'myVm1') isUpdated)
 ]

@@ -6,7 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'state'
+		'state',
+		'isUpdated'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -36,6 +37,16 @@ PhLVirtualMachinesMock >> id: aString [
 	id := aString
 ]
 
+{ #category : #accessing }
+PhLVirtualMachinesMock >> isUpdated [
+	^ isUpdated
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesMock >> isUpdated: aboolean [
+	isUpdated := aboolean
+]
+
 { #category : #printing }
 PhLVirtualMachinesMock >> lastUpdateTime [
 	^ 'some random update time'
@@ -54,5 +65,5 @@ PhLVirtualMachinesMock >> state [
 
 { #category : #instance }
 PhLVirtualMachinesMock >> updateFromUrl [
-	 state:='updated'.
+	 self isUpdated: true.
 ]

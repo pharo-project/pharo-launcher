@@ -1,10 +1,6 @@
 Class {
 	#name : #PhLImageCopyCliCommandTest,
 	#superclass : #PhLImageCliCommandTest,
-	#instVars : [
-		'process',
-		'imageDir'
-	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
 

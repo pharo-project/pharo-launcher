@@ -1,10 +1,6 @@
 Class {
 	#name : #PhLImageDeleteCliCommandTest,
 	#superclass : #PhLImageCliCommandTest,
-	#instVars : [
-		'process',
-		'imageDir'
-	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
 

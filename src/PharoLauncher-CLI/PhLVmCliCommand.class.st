@@ -30,7 +30,7 @@ PhLVmCliCommand class >> launcherCmdDescription [
 PhLVmCliCommand >> execute [
 	[ self executeWithVM: self findVM ]
 		on: NotFound
-		do: [ ^ self messageErrorNotFound ]
+		do: [ ^ self logVMNotFound  ]
 ]
 
 { #category : #'find-select' }
@@ -40,7 +40,7 @@ PhLVmCliCommand >> findVM [
 ]
 
 { #category : #printing }
-PhLVmCliCommand >> messageErrorNotFound [
+PhLVmCliCommand >> logVMNotFound [
 	self errorStream
 		nextPutAll: 'please enter a correct local virtual machine'.
 	self errorStream newLine.

@@ -21,7 +21,7 @@ PhLTemplatesCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName [ 
-	^ context launcherModel templateBaseRepository createTemplateNamed: aName inCategory: aCategoryName
+	^ self launcherModel templateBaseRepository createTemplateNamed: aName inCategory: aCategoryName
 ]
 
 { #category : #'process actions' }

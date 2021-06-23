@@ -25,15 +25,18 @@ PhLTemplateGroupRepository class >> newFromGroups: aCollection [
 { #category : #private }
 PhLTemplateGroupRepository >> addGroup: aGroup [
 	| cache |
-	cache := PhLCacheTemplateGroup group: aGroup. "wrap all groups inside a cache."
-	groupCaches addLast: cache.
+	cache := PhLCacheTemplateGroup group: aGroup.	"wrap all groups inside a cache."
+	groupCaches addLast: cache
 ]
 
 { #category : #querying }
 PhLTemplateGroupRepository >> categoryNamed: aTemplateCategoryName [
 	^ self roots
-		detect: [ :aCategory | aCategory name = aTemplateCategoryName ] ifNone: [ NotFound 
-        signal: aTemplateCategoryName asString,' not found, please enter a correct category name' ].
+		detect: [ :aCategory | aCategory name = aTemplateCategoryName ]
+		ifNone: [ NotFound
+				signal:
+					aTemplateCategoryName asString
+						, ' not found, please enter a correct category name' ]
 ]
 
 { #category : #action }

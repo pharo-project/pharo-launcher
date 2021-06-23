@@ -36,13 +36,13 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 				description: 'Local image name to be copied.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' . ];
+        signal: 'image to copy argument is missing' . ];
 					yourself).
 		((ClapPositional id: #newImageName)
 				description: 'New image name of a copied image.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' .   ];
+        signal: 'new image name argument is missing' .   ];
 					yourself)	
 	}
 ]

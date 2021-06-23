@@ -6,9 +6,9 @@ Class {
 
 { #category : #tests }
 PhLVMListCliCommandTest >> testListVirtualMachines [
-	self addVmNamed: 'myVm1' at: 'bli'.
-	self addVmNamed: 'myVm2' at: 'blo'.
-	self addVmNamed: 'myVm3' at: 'blu'.
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
+	self addVmNamed: 'myVm3'.
 
 	self runCommand: #('launcher' 'vm' 'list').
 	 

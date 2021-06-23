@@ -6,18 +6,18 @@ Class {
 
 { #category : #tests }
 PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
-	self addVmNamed: 'myVm1' at: 'bli'.
-	self addVmNamed: 'myVm2' at: 'blo'.
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
 	
 	self runCommand: #('launcher' 'vm' 'delete' 'myVm1').
 	 
-	self assert: (( self vmRepository availableVirtualMachines at:'bli') state ) equals: 'successfully deleted'. 
+	self assert: (( self vmRepository availableVirtualMachines at:'myVm1') state ) equals: 'successfully deleted'. 
 ]
 
 { #category : #tests }
 PhLVMDeleteCliCommandTest >> testDeleteVmWrongVmNameShouldRaiseError [
-	self addVmNamed: 'myVm1' at: 'bli'.
-	self addVmNamed: 'myVm2' at: 'blo'.
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
 	
 	self runCommand: #('launcher' 'vm' 'delete' 'wrongVmName').
 	 

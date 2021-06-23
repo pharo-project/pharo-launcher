@@ -6,10 +6,10 @@ Class {
 
 { #category : #tests }
 PhLVMUpdateCliCommandTest >> testUpdateVmShouldSucceed [
-	self addVmNamed: 'myVm1' at: 'bli'.
-	self addVmNamed: 'myVm2' at: 'blo'.
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
 	
 	self runCommand: #('launcher' 'vm' 'update' 'myVm1').
 	 
-	self assert: ((self vmRepository availableVirtualMachines at:'bli') state ) equals:'updated'
+	self assert: ((self vmRepository availableVirtualMachines at:'myVm1') state ) equals:'updated'
 ]

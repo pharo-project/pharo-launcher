@@ -6,8 +6,8 @@ Class {
 
 { #category : #tests }
 PhLVMInfoCliCommandTest >> testInfoVmShouldSucceed [
-	self addVmNamed: 'myVm1' at: 'bli'.
-	self addVmNamed: 'myVm2' at: 'blo'.
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
 	
 	self runCommand: #('launcher' 'vm' 'info' 'myVm1').
 	 

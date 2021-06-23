@@ -11,7 +11,7 @@ PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
 	
 	self runCommand: #('launcher' 'vm' 'delete' 'myVm1').
 	 
-	self assert: (( self vmRepository availableVirtualMachines at:'myVm1') state ) equals: 'successfully deleted'. 
+	self assert: (( self vmRepository availableVirtualMachines at:'myVm1') isDeleted). 
 ]
 
 { #category : #tests }

@@ -6,8 +6,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'id',
-		'state',
-		'isUpdated'
+		'isUpdated',
+		'isDeleted'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -38,6 +38,16 @@ PhLVirtualMachinesMock >> id: aString [
 ]
 
 { #category : #accessing }
+PhLVirtualMachinesMock >> isDeleted [
+	^ isDeleted
+]
+
+{ #category : #accessing }
+PhLVirtualMachinesMock >> isDeleted: aBoolean [
+	isDeleted := aBoolean
+]
+
+{ #category : #accessing }
 PhLVirtualMachinesMock >> isUpdated [
 	^ isUpdated
 ]
@@ -54,13 +64,8 @@ PhLVirtualMachinesMock >> lastUpdateTime [
 
 { #category : #instance }
 PhLVirtualMachinesMock >> removeFromSystem [
-	state :='successfully deleted'.
+	self isDeleted: true.
    
-]
-
-{ #category : #accessing }
-PhLVirtualMachinesMock >> state [ 
-   ^state
 ]
 
 { #category : #instance }

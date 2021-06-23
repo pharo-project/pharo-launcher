@@ -19,7 +19,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 PhLTemplateInfoCliCommandTest >> testTemplateInfoToManyArguments [
 	self createOfficialTemplatesCategoryWithFakeTemplate. 
 	
-	self runCommand: #('launcher' 'template' 'info' 'oneArgument' 'tooManyArguments').
+	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
 	
 	self assert: (self errorString includesSubstring:'tooManyArguments') .
 	

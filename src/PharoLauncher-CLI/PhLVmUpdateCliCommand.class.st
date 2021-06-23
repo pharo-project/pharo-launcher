@@ -30,11 +30,11 @@ PhLVmUpdateCliCommand class >> launcherCmdPositionals [
 		description: 'Local VM name to be deleted.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' .  ];
+        signal: 'one argument is missing, need a virtual machine name to update it' .  ];
 		yourself)}
 ]
 
 { #category : #accessing }
-PhLVmUpdateCliCommand >> executeWithVM: aVM [
-   aVM updateFromUrl
+PhLVmUpdateCliCommand >> executeWithVM: aVm [
+   aVm updateFromUrl
 ]

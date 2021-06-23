@@ -12,11 +12,6 @@ PhLVmCliCommandTest >> addVmNamed: anImageName [
 	^ self vmRepository addVmNamed: anImageName at: anImageName
 ]
 
-{ #category : #adding }
-PhLVmCliCommandTest >> addVmNamed: anImageName at: someDictionaryIndice [
-	^ self vmRepository addVmNamed: anImageName at: someDictionaryIndice 
-]
-
 { #category : #accessing }
 PhLVmCliCommandTest >> errorString [
 	^ context stdio stderr contents utf8Decoded

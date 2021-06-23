@@ -7,7 +7,6 @@ Class {
 	#instVars : [
 		'images',
 		'name',
-		'launchCheck',
 		'isLaunched'
 	],
 	#category : #'PharoLauncher-CLI-Tests'

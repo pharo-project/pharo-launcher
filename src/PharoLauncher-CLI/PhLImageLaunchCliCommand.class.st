@@ -10,9 +10,6 @@ I execute:
 Class {
 	#name : #PhLImageLaunchCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'process'
-	],
 	#category : #'PharoLauncher-CLI'
 }
 
@@ -33,7 +30,7 @@ PhLImageLaunchCliCommand class >> launcherCmdPositionals [
 		description: 'Local image name which will be launched.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' .  ];
+        signal: 'one argument is missing, you need to precise which image to launch' .  ];
 		yourself)}
 ]
 

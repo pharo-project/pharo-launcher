@@ -16,23 +16,23 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 ]
 
 { #category : #tests }
-PhLTemplateInfoCliCommandTest >> testTemplateInfoToManyArguments [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
-	
-	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
-	
-	self assert: (self errorString includesSubstring:'tooManyArguments') .
-	
-	
-]
-
-{ #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucceed [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'info' 'fakeTemplate' '--templateCategory' 'Local test templates').
 	
 	self assertSuccess.
+	
+	
+]
+
+{ #category : #tests }
+PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveErrorMessage [
+	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	
+	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
+	
+	self assert: (self errorString includesSubstring:'tooManyArguments') .
 	
 	
 ]

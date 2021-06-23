@@ -30,7 +30,7 @@ PhLVmCliCommand class >> launcherCmdDescription [
 PhLVmCliCommand >> execute [
 	[ self executeWithVM: self findVM ]
 		on: NotFound
-		do: [ ^ self logImageNotFoundMessage ]
+		do: [ ^ self messageErrorNotFound ]
 ]
 
 { #category : #'find-select' }

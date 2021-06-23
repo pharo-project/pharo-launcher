@@ -36,5 +36,5 @@ PhLImageDeleteCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageDeleteCliCommand >> executeWithImage: anImage [
-	self pharoLauncherModel imageBaseRepository deleteImage: anImage
+	self imageRepository deleteImage: anImage
 ]

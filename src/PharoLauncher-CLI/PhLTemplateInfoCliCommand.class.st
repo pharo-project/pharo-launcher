@@ -28,8 +28,8 @@ PhLTemplateInfoCliCommand class >> launcherCmdFlags [
 				implicitMeaning: [  :arg :app | 'Official distributions'. ];
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
-					meaning: [ :pos | pos word asSymbol halt. ];
-					implicitMeaning: [  :arg :app | app halt. ])}
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app | app . ])}
 ]
 
 { #category : #'command line - arguments' }
@@ -40,7 +40,7 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 				description: 'New image.';
 					meaning: [ :pos | pos  word ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' .  ];
+        signal: 'one argument is missing, needing a template name to display iformations' .  ];
 					yourself).	}
 ]
 

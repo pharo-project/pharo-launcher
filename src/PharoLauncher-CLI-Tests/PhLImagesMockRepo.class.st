@@ -26,13 +26,13 @@ PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
 
 { #category : #accessing }
 PhLImagesMockRepo >> deleteImage: anImageName [
-	self images remove: anImageName ifAbsent: [ ^ 'image not found' ]
+	self images remove: anImageName 
 ]
 
 { #category : #'test methods' }
-PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: aString [
+PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	| imageTest |
-	imageTest := PhLImagesMock name: aString.
+	imageTest := PhLImagesMock name: anImageName.
 	images add: imageTest
 ]
 
@@ -50,8 +50,8 @@ PhLImagesMockRepo >> images [
 ]
 
 { #category : #accessing }
-PhLImagesMockRepo >> images: anOrderedCollectionContainingImagesAdresses [
-	images := anOrderedCollectionContainingImagesAdresses
+PhLImagesMockRepo >> images: aListOfImageMock [
+	images := aListOfImageMock
 ]
 
 { #category : #accessing }

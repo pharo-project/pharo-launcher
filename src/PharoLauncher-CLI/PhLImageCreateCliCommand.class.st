@@ -74,14 +74,6 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #message }
-PhLImageCreateCliCommand >> cantFindTheTemplateMessage [
-	self errorStream
-		nextPutAll:
-			'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
-		cr
-]
-
 { #category : #accessing }
 PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
 	self creationMessage: aTemplateName.
@@ -89,7 +81,7 @@ PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
 		extractTemplate: self template
 		to: newImageName ]
 		on: NotFound
-		do: [ self cantFindTheTemplateMessage ]
+		do: [ self logCannotFindTemplate ]
 ]
 
 { #category : #message }
@@ -115,6 +107,14 @@ PhLImageCreateCliCommand >> execute [
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
 	^ (arguments at: #newImageName) word
+]
+
+{ #category : #message }
+PhLImageCreateCliCommand >> logCannotFindTemplate [
+	self errorStream
+		nextPutAll:
+			'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		cr
 ]
 
 { #category : #default }

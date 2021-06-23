@@ -52,7 +52,7 @@ PhLImageCopyCliCommand >> executeWithImage: anImage [
 	[ self imageRepository copyImage: anImage to: self targetName ]
 		on: PhLNameNotAvailableError
 		do: [ ^ self errorStream
-				nextPutAll: 'Name already used';
+				nextPutAll: self targetName,'Name already used';
 				newLine ]
 ]
 

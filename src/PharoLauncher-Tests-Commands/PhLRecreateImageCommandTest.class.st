@@ -13,7 +13,7 @@ PhLRecreateImageCommandTest >> setUp [
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #acccessing }
 PhLRecreateImageCommandTest >> templateZipFile [
 	| archive zipFile |
 	archive := ZipArchive new.

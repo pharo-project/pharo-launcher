@@ -33,7 +33,7 @@ PhLImageCopyCliCommandTest >> testCopyImageToManyArguments [
 
 	self runCommand: #( 'launcher' 'image' 'copy' 'myImage1' 'myImage2' 'blabla' ).
 	 
-	self deny: self errorString equals:''.  
+	self assert: (self errorString includesSubstring:'Unrecognized arguments').  
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 

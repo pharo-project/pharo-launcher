@@ -1,5 +1,5 @@
 Class {
-	#name : #PhLVMCliCommandTest,
+	#name : #PhLVmCliCommandTest,
 	#superclass : #TestCase,
 	#instVars : [
 		'context'
@@ -7,38 +7,33 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #instance }
-PhLVMCliCommandTest >> PhLCliSpecificCommand [
-	^ SubclassResponsibility 
-]
-
 { #category : #adding }
-PhLVMCliCommandTest >> addVmNamed: anImageName at: someDictionaryIndice [
+PhLVmCliCommandTest >> addVmNamed: anImageName at: someDictionaryIndice [
 	^ self vmRepository addVmNamed: anImageName at: someDictionaryIndice 
 ]
 
 { #category : #accessing }
-PhLVMCliCommandTest >> errorString [
+PhLVmCliCommandTest >> errorString [
 	^ context stdio stderr contents utf8Decoded
 ]
 
 { #category : #accessing }
-PhLVMCliCommandTest >> launcherModel [
+PhLVmCliCommandTest >> launcherModel [
 	^ context launcherModel 
 ]
 
 { #category : #accessing }
-PhLVMCliCommandTest >> outputString [
+PhLVmCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
 ]
 
 { #category : #'process actions' }
-PhLVMCliCommandTest >> runCommand: args [
+PhLVmCliCommandTest >> runCommand: args [
 	^ (context arguments: args) execute.
 ]
 
 { #category : #'process actions' }
-PhLVMCliCommandTest >> setUp [
+PhLVmCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
@@ -49,6 +44,6 @@ PhLVMCliCommandTest >> setUp [
 ]
 
 { #category : #accessing }
-PhLVMCliCommandTest >> vmRepository [ 
+PhLVmCliCommandTest >> vmRepository [ 
 	^ self launcherModel vmBaseRepository
 ]

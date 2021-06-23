@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'list').
 	

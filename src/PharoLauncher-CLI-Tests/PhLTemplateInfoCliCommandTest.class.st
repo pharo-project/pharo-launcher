@@ -6,7 +6,7 @@ Class {
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'fakeTemplate').
 	
@@ -28,8 +28,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucce
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveErrorMessage [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
-	
+	self createOfficialTemplatesCategoryWithSomeTemplates.
 	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
 	
 	self assert: (self errorString includesSubstring:'tooManyArguments') .
@@ -39,7 +38,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveE
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGiveBadCategoryMessage [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
 	
@@ -50,7 +49,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGive
 
 { #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
-	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
 	

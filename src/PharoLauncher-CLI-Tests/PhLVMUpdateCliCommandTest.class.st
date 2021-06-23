@@ -1,6 +1,6 @@
 Class {
 	#name : #PhLVMUpdateCliCommandTest,
-	#superclass : #PhLVMCliCommandTest,
+	#superclass : #PhLVmCliCommandTest,
 	#category : #'PharoLauncher-CLI-Tests'
 }
 

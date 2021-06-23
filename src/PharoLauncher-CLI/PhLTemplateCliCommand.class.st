@@ -28,6 +28,6 @@ PhLTemplateCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #message }
-PhLTemplateCliCommand >> errorMessageWrongTemplateName [
+PhLTemplateCliCommand >> logWrongTemplateName [
 	self errorStream nextPutAll: 'please enter a correct template name'
 ]

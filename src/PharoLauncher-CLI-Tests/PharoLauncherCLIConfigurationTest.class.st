@@ -28,7 +28,7 @@ PharoLauncherCLIConfigurationTest >> setUp [
 ]
 
 { #category : #running }
-PharoLauncherCLIConfigurationTest >> tearsDown [
+PharoLauncherCLIConfigurationTest >> tearDown [
 	PhLNotificationCenter default errorStream close.
 
 ]

@@ -5,6 +5,15 @@ Class {
 }
 
 { #category : #tests }
+PhLImageListCliCommandTest >> testListEmptyListImageShouldSucceed [
+	
+	self runCommand: #('launcher' 'image' 'list').
+	 
+	self assertSuccess.  
+	self assert: self outputString equals:''.
+]
+
+{ #category : #tests }
 PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

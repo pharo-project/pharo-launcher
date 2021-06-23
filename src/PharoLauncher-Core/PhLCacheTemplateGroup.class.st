@@ -22,13 +22,6 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 		yourself
 ]
 
-{ #category : #comparing }
-PhLCacheTemplateGroup >> = anObject [
-	self == anObject ifTrue: [ ^ true ].
-	delegate class = anObject class ifFalse: [ ^ false ].
-	^ delegate = anObject 
-]
-
 { #category : #'as yet unclassified' }
 PhLCacheTemplateGroup >> cliPrintString [
 	^ self asString 

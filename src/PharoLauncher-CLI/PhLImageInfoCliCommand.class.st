@@ -31,17 +31,17 @@ PhLImageInfoCliCommand class >> launcherCmdPositionals [
 		description: 'Local image name from which we display the informations.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing' .  ];
+        signal: 'one argument is missing, no image name to display informations' .  ];
 		yourself)}
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> executeWithImage: anImage [ 
-   self printInformation: anImage
+   self printInformationOf: anImage
 ]
 
 { #category : #printing }
-PhLImageInfoCliCommand >> printInformation: anImage [
+PhLImageInfoCliCommand >> printInformationOf: anImage [
 	self outStream
 		nextPutAll: 'image name: ';
 		nextPutAll: anImage name asString;

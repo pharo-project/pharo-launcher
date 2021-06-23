@@ -38,6 +38,17 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveE
 ]
 
 { #category : #tests }
+PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGiveBadCategoryMessage [
+	self createOfficialTemplatesCategoryWithFakeTemplate. 
+	
+	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
+	
+	self assert: (self errorString includesSubstring:'please enter a correct template name') .
+	
+	
+]
+
+{ #category : #tests }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
 	self createOfficialTemplatesCategoryWithFakeTemplate. 
 	

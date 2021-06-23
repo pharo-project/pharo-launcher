@@ -37,7 +37,7 @@ PhLVmCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
-	model vmBaseRepository: PhLVirtualMachinesMockRepo new.
+	model vmManager: PhLVirtualMachinesMockRepo new.
 	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
 	context launcherModel: model
 
@@ -45,5 +45,5 @@ PhLVmCliCommandTest >> setUp [
 
 { #category : #accessing }
 PhLVmCliCommandTest >> vmRepository [ 
-	^ self launcherModel vmBaseRepository
+	^ self launcherModel vmManager
 ]

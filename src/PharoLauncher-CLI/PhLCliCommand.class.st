@@ -123,7 +123,7 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
-	^ self pharoLauncherModel imageBaseRepository
+	^ self pharoLauncherModel imageRepository
 ]
 
 { #category : #initialization }
@@ -180,11 +180,11 @@ PhLCliCommand >> templateName [
 
 { #category : #accessing }
 PhLCliCommand >> templateRepository [ 
-	^ self pharoLauncherModel templateBaseRepository
+	^ self pharoLauncherModel templateRepository
 ]
 
 { #category : #accessing }
 PhLCliCommand >> vmRepository [
-	^ self pharoLauncherModel vmBaseRepository availableVirtualMachines
+	^ self pharoLauncherModel vmManager availableVirtualMachines
 		values
 ]

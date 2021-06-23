@@ -5,66 +5,53 @@ Class {
 	#name : #PharoLauncherCLIModel,
 	#superclass : #Object,
 	#instVars : [
-		'imageBaseRepository',
-		'templateBaseRepository',
-		'vmBaseRepository'
+		'imageRepository',
+		'templateRepository',
+		'vmManager'
 	],
 	#category : #'PharoLauncher-CLI'
 }
 
 { #category : #accessing }
-PharoLauncherCLIModel >> imageBaseRepository [
-	^ imageBaseRepository
+PharoLauncherCLIModel >> imageRepository [
+	^ imageRepository
 		ifNil: [ | configuration |
 			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
 			self
-				imageBaseRepository:
+				imageRepository:
 					(PhLDirectoryBasedImageRepository
 						forDirectory: configuration imagesDirectory).
-			imageBaseRepository ]
+			imageRepository ]
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> imageBaseRepository: aPathString [
-	imageBaseRepository := aPathString
+PharoLauncherCLIModel >> imageRepository: aPhLDirectoryBasedImageRepository [
+	imageRepository := aPhLDirectoryBasedImageRepository
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> initialize [
-"
-	| configuration |
-	configuration := PharoLauncherCLIConfiguration defaultConfiguration. 
-	PhLVirtualMachineManager vmStore: configuration vmsDirectory.
-	vmBaseRepository := PhLVirtualMachineManager new.
-	PharoLauncherApplication default scriptsDirectory:  configuration initScriptsDirectory asFileReference.
-	imageBaseRepository := PhLDirectoryBasedImageRepository
-		forDirectory: configuration imagesDirectory.
-	templateBaseRepository := PhLTemplateGroupRepository default"
+PharoLauncherCLIModel >> templateRepository [
+	^ templateRepository
+		ifNil: [ self templateRepository: PhLTemplateGroupRepository default.
+			^ templateRepository ]
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> templateBaseRepository [
-	^ templateBaseRepository
-		ifNil: [ self templateBaseRepository: PhLTemplateGroupRepository default.
-			^ templateBaseRepository ]
+PharoLauncherCLIModel >> templateRepository: aPathString [
+	templateRepository:=aPathString 
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> templateBaseRepository: aPathString [
-	templateBaseRepository:=aPathString 
-]
-
-{ #category : #accessing }
-PharoLauncherCLIModel >> vmBaseRepository [
-	^ vmBaseRepository
+PharoLauncherCLIModel >> vmManager [
+	^ vmManager
 		ifNil: [ | configuration |
 			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
 			PhLVirtualMachineManager vmStore: configuration vmsDirectory.
-			self vmBaseRepository: PhLVirtualMachineManager new.
-			^ vmBaseRepository ]
+			self vmManager: PhLVirtualMachineManager new.
+			^ vmManager ]
 ]
 
 { #category : #accessing }
-PharoLauncherCLIModel >> vmBaseRepository: aPathString [
-	vmBaseRepository:=aPathString 
+PharoLauncherCLIModel >> vmManager: aPathString [
+	vmManager:=aPathString 
 ]

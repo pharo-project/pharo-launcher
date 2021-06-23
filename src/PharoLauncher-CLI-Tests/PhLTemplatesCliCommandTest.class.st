@@ -9,19 +9,19 @@ Class {
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addLocalTemplateNamed: aName [ 
-	^ context launcherModel templateBaseRepository createLocalTemplateNamed: aName
+	^ context launcherModel templateRepository createLocalTemplateNamed: aName
 ]
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [  
 	| templateCategory |
-	templateCategory := context launcherModel templateBaseRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
-	context launcherModel templateBaseRepository setGroups:{ templateCategory }.
+	templateCategory := context launcherModel templateRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
+	context launcherModel templateRepository setGroups:{ templateCategory }.
 ]
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName [ 
-	^ self launcherModel templateBaseRepository createTemplateNamed: aName inCategory: aCategoryName
+	^ self launcherModel templateRepository createTemplateNamed: aName inCategory: aCategoryName
 ]
 
 { #category : #'process actions' }
@@ -72,13 +72,13 @@ PhLTemplatesCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
-	model templateBaseRepository: PhLTemplateGroupTestRepository new.
-	model templateBaseRepository createLocalTemplateNamed:'foo'.
+	model templateRepository: PhLTemplateGroupTestRepository new.
+	model templateRepository createLocalTemplateNamed:'foo'.
 	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
 	context launcherModel: model
 ]
 
 { #category : #'process actions' }
 PhLTemplatesCliCommandTest >> templateRepository [ 
-	^ self launcherModel templateBaseRepository
+	^ self launcherModel templateRepository
 ]

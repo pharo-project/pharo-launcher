@@ -30,7 +30,7 @@ PhLImageCliCommandTest >> errorString [
 
 { #category : #accessing }
 PhLImageCliCommandTest >> imageRepository [ 
-	^ self launcherModel imageBaseRepository
+	^ self launcherModel imageRepository
 ]
 
 { #category : #accessing }
@@ -53,7 +53,7 @@ PhLImageCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
-	model imageBaseRepository: PhLImagesMockRepo new.
+	model imageRepository: PhLImagesMockRepo new.
 	context := PhLCliClapContext
 		specification: PhLCliCommand launcherCommand.
 	context launcherModel: model
@@ -61,5 +61,5 @@ PhLImageCliCommandTest >> setUp [
 
 { #category : #accessing }
 PhLImageCliCommandTest >> templateRepository [ 
-	^ self launcherModel templateBaseRepository
+	^ self launcherModel templateRepository
 ]

@@ -9,7 +9,6 @@ PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	| image |
 	image := self addImageNamed: 'myImage1'.
 	
-	"self runCommand: #( 'image' 'image' 'launch' 'myImage1')."
 	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
 	
 	self assert: self errorString equals:''.

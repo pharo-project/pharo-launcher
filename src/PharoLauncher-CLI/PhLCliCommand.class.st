@@ -1,5 +1,5 @@
 "
-I represent Pharo Launcher root command line command - entry point for invoking PharoLauncher from cmd line. 
+I represent Pharo Launcher root command line command - entry point for invoking PharoLauncher from cmd line. It is the super class of all pharo launcher cli commands providing acces to output streams, pharo launcher model, etc
 
 I use: 
  - CLAP for interacting with command line (inherit behavior from ClapApplication).

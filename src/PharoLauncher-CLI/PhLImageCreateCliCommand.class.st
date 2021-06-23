@@ -50,8 +50,8 @@ PhLImageCreateCliCommand class >> launcherCmdFlags [
 				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName. ];
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
-					meaning: [ :pos | pos word asSymbol halt. ];
-					implicitMeaning: [  :arg :app | app halt. ])}
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app | ^ app ])}
 					
 			
 ]

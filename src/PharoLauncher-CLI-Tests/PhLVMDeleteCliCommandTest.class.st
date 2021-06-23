@@ -15,7 +15,7 @@ PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
 ]
 
 { #category : #tests }
-PhLVMDeleteCliCommandTest >> testDeleteVmWrongVmNameShouldRaiseError [
+PhLVMDeleteCliCommandTest >> testDeleteVmWithWrongVmNameShouldGiveBackNotFoundMessage [
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.
 	

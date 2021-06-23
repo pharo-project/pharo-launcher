@@ -38,7 +38,6 @@ PhLImageListCliCommand >> listImages [
 PhLImageListCliCommand >> listImagesAsSton [
 	| stonOutput |
 	stonOutput := ''.
-	self pharoLauncherModel imageBaseRepository images
-		do: [ :anImage | stonOutput := stonOutput , STON toString: anImage ].
+	stonOutput := STON toString: (self listImages).
 	self outStream nextPutAll: stonOutput
 ]

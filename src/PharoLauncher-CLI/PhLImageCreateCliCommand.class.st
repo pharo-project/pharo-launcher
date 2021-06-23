@@ -47,7 +47,7 @@ PhLImageCreateCliCommand class >> launcherCmdFlags [
 	^ {(ClapFlag id: #templateCategory)
 				description: 'Allows to use a template categroy to search the target template ';
 				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
-				implicitMeaning: [  :arg :app | 'Official distributions'. ];
+				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName. ];
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
 					meaning: [ :pos | pos word asSymbol halt. ];

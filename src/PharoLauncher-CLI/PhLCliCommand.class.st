@@ -88,7 +88,7 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 { #category : #default }
 PhLCliCommand >> defaultTemplate [
 	self
-		findLatestPharoStableVersionInALocation: self defaultTemplateCategory templatesAndGroups
+		findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #default }
@@ -114,7 +114,7 @@ PhLCliCommand >> execute [
 ]
 
 { #category : #querying }
-PhLCliCommand >> findLatestPharoStableVersionInALocation: aLocation [
+PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 	^ (aLocation
 		detect: [ :template | 
 			(template name includesSubstring: 'stable')

@@ -104,7 +104,7 @@ PhLImageCreateCliCommand >> creationMessage: aTemplateName [
 { #category : #default }
 PhLImageCreateCliCommand >> defaultTemplate [
 	^ self
-		findLatestPharoStableVersionInALocation: self defaultTemplateCategory templatesAndGroups
+		findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #'command execution' }

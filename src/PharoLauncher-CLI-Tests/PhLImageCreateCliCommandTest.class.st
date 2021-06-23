@@ -118,7 +118,7 @@ PhLImageCreateCliCommandTest >> testFindLatestPharoVersionInALocation [
 		add: template3.
 		
 	templateFound := PhLCliCommand new
-		findLatestPharoStableVersionInALocation: category.
+		findLatestPharoStableVersionIn: category.
 		
 	self assert: (templateFound includesSubstring: 'stable').
 	self assert: templateFound equals: template2 name

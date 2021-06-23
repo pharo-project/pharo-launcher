@@ -15,7 +15,7 @@ PhLImageCopyCliCommandTest >> testCopyImageNameAlreadyUsed [
 
 	self runCommand: #('launcher' 'image' 'copy' 'myImage1' 'myImage2' ).
 	 
-	self assert: self errorString equals:''.  
+	self assert: (self errorString includesSubstring:'Name already used'). 
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1' ) asSet. 
 ]
 

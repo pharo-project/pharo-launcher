@@ -49,7 +49,11 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLImageCopyCliCommand >> executeWithImage: anImage [
-	self imageRepository copyImage: anImage to: self targetName
+	[ self imageRepository copyImage: anImage to: self targetName ]
+		on: PhLNameNotAvailableError
+		do: [ ^ self errorStream
+				nextPutAll: 'Name already used';
+				newLine ]
 ]
 
 { #category : #accessing }

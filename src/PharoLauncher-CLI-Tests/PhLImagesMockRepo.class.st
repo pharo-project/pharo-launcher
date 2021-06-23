@@ -20,7 +20,8 @@ PhLImagesMockRepo >> addImageNamed: anImageName [
 
 { #category : #accessing }
 PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
-	self addImageNamed: anImageCopy
+  (self images anySatisfy: [:image | image name =anImageCopy ]) ifTrue:[PhLNameNotAvailableError signalName: 'Name already used' ].
+  self addImageNamed: anImageCopy
 ]
 
 { #category : #accessing }

@@ -236,8 +236,12 @@ PharoLauncherApplication >> imageRepositoryChanged: newImage [
 ]
 
 { #category : #initialization }
-PharoLauncherApplication >> initialize [ 
+PharoLauncherApplication >> initialize [
+
  	super initialize.
+	"I want to register windows in order to be able to know which one is the last opened 
+	 This can be use to push progress bars (they stack)."
+	windows := OrderedCollection new. 
 	openAsWorld := false.
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 
@@ -336,4 +340,16 @@ PharoLauncherApplication >> templateRepository: aPhLTemplateGroupRepository [
 { #category : #accessing }
 PharoLauncherApplication >> templatesClearedOnStartup [
 	^ self class templatesClearedOnStartup
+]
+
+{ #category : #ui }
+PharoLauncherApplication >> topWindow [
+	"The window that will accept a modal window related to it. 
+	 This is usually the top window, but in case of stacking dialogs, some times this is lost. 
+	 In that case, I want still choose one window"
+	
+	super topWindow ifNotNil: [ :topWindow | ^ topWindow ].
+	^ self windows 
+		ifNotEmpty: [ :aCollection | aCollection last ]
+		ifEmpty: [ nil ]
 ]

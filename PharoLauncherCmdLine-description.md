@@ -30,16 +30,14 @@ This is list of subject oriented commands of Pharo launcher, where subjects are 
 |         | `list`      | | Lists all downloaded images on local computer. |
 |         | `info`      | | Prints information about image: name, description, origin template, etc. |
 |         | `launch`    | | Lauches image with using default (auto-detected) VM. |
-|         | `kill`      | | Force terminate the running Pharo image(s).
 |         | `create`    | | Downloads and creates new image on local computer from remote site based on template name. |
 |         | `copy`      | | Creates copy of given image with new name. 
 |         | `delete`    | | Deletes image from computer, including local image directory content. |
-|         | `initScriptsDir` | | Prints, sets directory path, where init scripts for images are located. |
 | `template` |          | | All sub-commands related to templates of Pharo image. | 
 |         | `list`      | | Lists all image templates. |
 |         | `categories`| | Lists all image template categories, based on which are image templates categorized. |
 |         | `sourcesDir` | | Prints, sets directory path where file with template sources is located. |
-|         | `sourcesUrl` | | Prints, sets https URL, where template sources can be fetched remote site (official). |
+|         | `info`      | | Prints, informations (url) about templates  |
 
 
 # Description of Pharo Launcher commands  

@@ -79,8 +79,6 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 					help
 						value;
 						exitSuccess ].
-			PhLNotificationCenter default outStream: (VTermOutputDriver on: args context stdout) .
-			PhLNotificationCenter default errorStream: (VTermOutputDriver on: args context stderr).
 			(self with: args) execute ];
 		yourself
 ]
@@ -126,14 +124,6 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #initialization }
-PhLCliCommand >> initialize [ 
-	super initialize.
-	"
-	PhLNotificationCenter default outStream: self outStream.
-	PhLNotificationCenter default errorStream: self outStream."
-]
-
 { #category : #'instance creation' }
 PhLCliCommand >> list: aCollection [ 
 	| counter |
@@ -164,6 +154,13 @@ PhLCliCommand >> outStream [
 { #category : #accessing }
 PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
+]
+
+{ #category : #initialization }
+PhLCliCommand >> setArguments: args [ 
+	super setArguments: args.
+	PhLNotificationCenter default outStream: self outStream.
+	PhLNotificationCenter default errorStream: self errorStream.
 ]
 
 { #category : #initialization }

@@ -31,10 +31,10 @@ PhLTestTemplatesPresenter >> createButtonEnabled [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
-	|temp|
-	temp := self model createLocalTemplateNamed: aName.
+	| template |
+	template := self model createLocalTemplateNamed: aName.
 	self refresh.
-	^temp
+	^ template
 ]
 
 { #category : #configuring }

@@ -5,11 +5,6 @@ I mock network calls.
 Class {
 	#name : #PhLTestVirtualMachineManager,
 	#superclass : #PhLVirtualMachineManager,
-	#instVars : [
-		'vmManager',
-		'vmStoreRoot',
-		'baseDirectory'
-	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
 

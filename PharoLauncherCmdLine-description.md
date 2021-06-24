@@ -36,7 +36,7 @@ This is list of subject oriented commands of Pharo launcher, where subjects are 
 | `template` |          | | All sub-commands related to templates of Pharo image. | 
 |         | `list`      | | Lists all image templates. |
 |         | `categories`| | Lists all image template categories, based on which are image templates categorized. |
-|         | `sourcesDir` | | Prints, sets directory path where file with template sources is located. |
+|         | `sourcesDir` | | Prints directory path where file with template sources is located. |
 |         | `info`      | | Prints, informations (url) about templates  |
 
 

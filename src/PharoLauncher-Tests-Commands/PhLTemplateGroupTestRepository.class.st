@@ -8,16 +8,10 @@ Class {
 	#instVars : [
 		'fileSystem',
 		'localTemplateGroup',
-		'remoteTemplatesGroup',
-		'defaultTemplateGroup'
+		'remoteTemplatesGroup'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
-
-{ #category : #creation }
-PhLTemplateGroupTestRepository >> addTemplateCategoryNamed: aString [ 
-	self shouldBeImplemented.
-]
 
 { #category : #initialization }
 PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [

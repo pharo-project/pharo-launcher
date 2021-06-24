@@ -1,6 +1,6 @@
 Class {
 	#name : #PhLTemplatesCliCommandTest,
-	#superclass : #TestCase,
+	#superclass : #PhLCliCommandTest,
 	#instVars : [
 		'context'
 	],
@@ -24,12 +24,6 @@ PhLTemplatesCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName 
 	^ self launcherModel templateRepository createTemplateNamed: aName inCategory: aCategoryName
 ]
 
-{ #category : #'process actions' }
-PhLTemplatesCliCommandTest >> assertSuccess [
-	self assert: context exitStatus equals: 0.
-	self assert: self errorString equals: ''
-]
-
 { #category : #creation }
 PhLTemplatesCliCommandTest >> createOfficialTemplatesCategoryWithSomeTemplates [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
@@ -42,29 +36,9 @@ PhLTemplatesCliCommandTest >> defaultTemplateCategoryName [
 	^ 'Official distributions'
 ]
 
-{ #category : #'process actions' }
-PhLTemplatesCliCommandTest >> errorString [
-	^ context stdio stderr contents utf8Decoded
-]
-
-{ #category : #'process actions' }
-PhLTemplatesCliCommandTest >> launcherModel [
-	^ context launcherModel 
-]
-
 { #category : #accessing }
 PhLTemplatesCliCommandTest >> localTemplatesGroup [
 	^ context templateRepository localTemplatesGroup
-]
-
-{ #category : #'process actions' }
-PhLTemplatesCliCommandTest >> outputString [
-	^ context stdio stdout contents utf8Decoded
-]
-
-{ #category : #'process actions' }
-PhLTemplatesCliCommandTest >> runCommand: args [
-	^ (context arguments: args) execute.
 ]
 
 { #category : #tests }

@@ -1,6 +1,6 @@
 Class {
 	#name : #PhLVmCliCommandTest,
-	#superclass : #TestCase,
+	#superclass : #PhLCliCommandTest,
 	#instVars : [
 		'context'
 	],
@@ -10,26 +10,6 @@ Class {
 { #category : #adding }
 PhLVmCliCommandTest >> addVmNamed: anImageName [ 
 	^ self vmRepository addVmNamed: anImageName at: anImageName
-]
-
-{ #category : #accessing }
-PhLVmCliCommandTest >> errorString [
-	^ context stdio stderr contents utf8Decoded
-]
-
-{ #category : #accessing }
-PhLVmCliCommandTest >> launcherModel [
-	^ context launcherModel 
-]
-
-{ #category : #accessing }
-PhLVmCliCommandTest >> outputString [
-	^ context stdio stdout contents utf8Decoded
-]
-
-{ #category : #'process actions' }
-PhLVmCliCommandTest >> runCommand: args [
-	^ (context arguments: args) execute.
 ]
 
 { #category : #'process actions' }

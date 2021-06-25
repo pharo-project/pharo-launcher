@@ -1,9 +1,6 @@
 Class {
 	#name : #PhLVmCliCommandTest,
 	#superclass : #PhLCliCommandTest,
-	#instVars : [
-		'context'
-	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
 

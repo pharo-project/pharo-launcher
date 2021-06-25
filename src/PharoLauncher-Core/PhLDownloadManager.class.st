@@ -36,17 +36,19 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	| tmpFile |
 
 	tmpFile := destinationFile , UUIDGenerator  next asString.
-	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+	self 
+		displayProgress: ('Downloading {1}...' format: { url })
+		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
 	destinationFile ensureDelete. 
 	tmpFile renameTo: destinationFile basename.
 ]
 
 { #category : #private }
-PhLDownloadManager >> displayProgressDuring: workBlock [
+PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 	"Inform user about download progression"
 
 	PharoLauncherApplication default 
-		pushProgress: 'Downloading...' 
+		pushProgress: aTitle
 		with: [ :bar |
 			workBlock
 				on: HTTPProgress
@@ -55,6 +57,15 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 					progress isEmpty
 						ifFalse: [ bar progressPercent: progress percentage ].
 					progress resume ] ]
+]
+
+{ #category : #private }
+PhLDownloadManager >> displayProgressDuring: workBlock [
+	"Inform user about download progression"
+
+	self 
+		displayProgress: 'Downloading...' 
+		during: workBlock
 ]
 
 { #category : #action }
@@ -84,7 +95,9 @@ PhLDownloadManager >> downloadToPositionableStream: url mimeType: mimeType [
 		beOneShot;
 		accept: mimeType;
 		enforceAcceptContentType: true.
-	self displayProgressDuring: [ content := client get ].
+	self 
+		displayProgress: ('Downloading {1}...' format: { url }) 
+		during: [ content := client get ].
 	^ content readStream
 ]
 

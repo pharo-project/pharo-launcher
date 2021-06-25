@@ -275,7 +275,7 @@ PharoLauncherApplication >> pushProgress: aString with: aBlock [
 	
 	self newProgress 
 		parentWindow: self topWindow;
-		title: aString;
+		title: (aString contractTo: 60);
 		informUserDuring: aBlock
 ]
 

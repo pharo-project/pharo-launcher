@@ -22,14 +22,14 @@ This is list of subject oriented commands of Pharo launcher, where subjects are 
 | ------- | ----------- | --------------- | ------------- |
 | `help`  |             | | Prints all supported Pharo launcher commands. |
 | `vm`    |             | | All sub-commands related to VM management. |
-|         | `list`      | | Lists all available VMs, with status. |
+|         | `list`      | | Lists all available VMs. |
 |         | `info`      | | Prints information about VM: name, remote-site URL, last update status, etc. |
 |         | `update`    | | Updates VM executable, including depedent libs to latest version from remote site. |
 |         | `delete`    | | Deletes VM executable from local computer, including dependencies. |
 | `image` |             | | All sub-commands related to management of local Pharo images. |
 |         | `list`      | | Lists all downloaded images on local computer. |
 |         | `info`      | | Prints information about image: name, description, origin template, etc. |
-|         | `launch`    | | Lauches image with using default (auto-detected) VM. |
+|         | `launch`    | | Launches image with using default (auto-detected) VM. |
 |         | `create`    | | Downloads and creates new image on local computer from remote site based on template name. |
 |         | `copy`      | | Creates copy of given image with new name. 
 |         | `delete`    | | Deletes image from computer, including local image directory content. |
@@ -104,16 +104,15 @@ Pharo 7.0 - 32bit (Exercism new 23)         32                    70            
 Lists all available Pharo images on local computer, with image name, architecture, Pharo version, last modified date.
 Images are ordered by recent modification date.
 
-Usage:  image list [--help] [--name]
+Usage:  image list [--help] 
 
 Options:
 -h, --help                Prints help about this command.
--n, --name                Prints only image names. 
 ```
 ## Image info command
 Example of use:  
 ```
-$ PharoLauncher-cli image info "Pharo 7.0 - 32bit (Exercism new 23"
+$ PharoLauncher-cli image info "Pharo 7.0 - 32bit (Exercism new 23)"
 Image name:           Pharo 7.0 - 32bit (Exercism new 23
 Last modified:        2019-10-10T08:34:59+1:00
 Description:          (not available)

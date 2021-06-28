@@ -112,8 +112,10 @@ PhLImageCreateCliCommand >> logCannotFindTemplate [
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 	self outStream
 		nextPutAll:
-			' creation of on image based on: ' , aTemplateName
-				, 'Please wait a moment';
+			' creation of on image based on: ' , aTemplateName;
+		newLine;
+		nextPutAll:
+				'Please wait a moment';
 		newLine
 ]
 

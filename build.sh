@@ -68,7 +68,7 @@ function package_linux_version() {
 	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
 	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
 	cp linux/pharo-launcher-ui pharo-build-scripts/platform/templates/linux/pharo-launcher-ui.template
-	cp script/pharo-launcher.sh pharo-launcher
+	cp script/pharo-launcher.sh pharo-build-scripts/platform/templates/linux/pharo-launcher.template
 	EXECUTABLE_NAME=pharo-launcher-ui WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
 		 -i Pharo \
 		 -o PharoLauncher \

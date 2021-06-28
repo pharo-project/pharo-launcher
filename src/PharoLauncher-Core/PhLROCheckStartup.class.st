@@ -20,14 +20,23 @@ PhLROCheckStartup class >> initialize [
 
 { #category : #'system startup' }
 PhLROCheckStartup class >> startUp [
+	
+	self verifyCanWrite
+]
+
+{ #category : #'system startup' }
+PhLROCheckStartup class >> verifyCanWrite [
+
 	[ (FileLocator workingDirectory / 'phl-canwrite') asFileReference  
 			ensureDelete; 
 			createDirectory;
 			ensureDelete. ]
 	on: Error
-	do: [ :error |  
-		UIManager default 
-			alert: 'PharoLauncher cannot be run from a read-only filesystem. Please move it to a place where you have write permissions!' 
-			title: 'Cannot run PharoLauncher!'.
-		Smalltalk quitPrimitive ].
+	do: [ :error |
+		PharoLauncherApplication default newInform 
+			title: 'Cannot run PharoLauncher!';
+			label: 'PharoLauncher cannot be run from a read-only filesystem. 
+Please move it to a place where you have write permissions!';
+			openModalWithSpec.
+		Smalltalk exitFailure ]
 ]

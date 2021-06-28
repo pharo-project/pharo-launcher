@@ -24,7 +24,7 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 
 { #category : #'as yet unclassified' }
 PhLCacheTemplateGroup >> cliPrintString [
-	^ self asString 
+	^ self name 
 ]
 
 { #category : #comparing }

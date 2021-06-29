@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'command'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #signalling }

@@ -21,7 +21,10 @@ BaselineOfPharoLauncher >> baseline: spec [
 			baseline: #XMLParser
 				with: [ spec 
 							repository: 'github://pharo-contributions/XML-XMLParser:3.5.x';
-							loads: #('Core') ].
+							loads: #('Core') ];
+			baseline: 'Clap'
+				with: [ spec repository: 'github://cdlm/clap-st/src' ].
+		
 		spec
 			package: #'PharoLauncher-80Compatibility'; 
 			package: #'PharoLauncher-Pharo9ToRemove-FileLocator'; 
@@ -34,6 +37,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #(#'PharoLauncher-Core'). ];
 			package: #'PharoLauncher-Squeak' with: [ 
 				spec requires: #(#'PharoLauncher-Core'). ];
+			package: 'PharoLauncher-CLI' with: [ spec requires: #('Clap')];
 
 			package: #'PharoLauncher-Tests-Core' with: [
 				spec requires: #(#'PharoLauncher-Core' ). ];
@@ -44,7 +48,10 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: #'PharoLauncher-Tests-Download' with: [
 				spec requires: #(#'PharoLauncher-Tests-Core' ). ];
 			package: #'PharoLauncher-Tests-Functional' with: [
-				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ].
+				spec requires: #(#'PharoLauncher-Core' #'PharoLauncher-Tests-Download'). ];
+			package: 'PharoLauncher-CLI-Tests' with: [ 
+				spec requires: #('PharoLauncher-CLI') ].
+
 		spec 
-			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-GToolkit' #'PharoLauncher-Squeak'). ].
+			group: 'Default' with: #(#'PharoLauncher-Tests-Core' #'PharoLauncher-Tests-Download' #'PharoLauncher-Core' #'PharoLauncher-Spec2' #'PharoLauncher-Tests-SpecUI' #'PharoLauncher-Tests-Functional' #'PharoLauncher-CLI-Tests' #'PharoLauncher-GToolkit' #'PharoLauncher-Squeak'). ].
 ]

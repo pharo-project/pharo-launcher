@@ -4,7 +4,7 @@ I represent an error as can be signaled by any code of Pharo Launcher.
 Class {
 	#name : #PhLError,
 	#superclass : #Error,
-	#category : 'PharoLauncher-Core-Exceptions'
+	#category : #'PharoLauncher-Core-Exceptions'
 }
 
 { #category : #accessing }

@@ -67,8 +67,9 @@ function package_linux_version() {
 	rm -f pharo-build-scripts/platform/icons/*
 	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
 	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
-	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
-	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
+	cp linux/pharo-launcher-ui pharo-build-scripts/platform/templates/linux/pharo-launcher-ui.template
+	cp script/pharo-launcher.sh pharo-build-scripts/platform/templates/linux/pharo-launcher.template
+	EXECUTABLE_NAME=pharo-launcher-ui WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
 		 -i Pharo \
 		 -o PharoLauncher \
 		 -r $PHARO \
@@ -104,6 +105,8 @@ function package_mac_version() {
 	mv mac-installer-background.png background.png
 	rm -f PharoLauncher.app/Contents/Resources/English.lproj/MainMenu.nib
 	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
+	cp script/pharo-launcher.sh PharoLauncher.app/Contents/MacOS/pharo-launcher
+	chmod +x PharoLauncher.app/Contents/MacOS/pharo-launcher
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=$should_sign ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)

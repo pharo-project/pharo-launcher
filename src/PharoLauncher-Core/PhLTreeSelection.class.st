@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'selections'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #'instance creation' }

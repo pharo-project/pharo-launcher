@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'message'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #action }

@@ -4,7 +4,7 @@ Removes the selected template
 Class {
 	#name : #PhLRemoveTemplateCommand,
 	#superclass : #PhLTemplateCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }

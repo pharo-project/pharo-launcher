@@ -9,7 +9,7 @@ Class {
 		'launcherArchitecture',
 		'imageArchitecture'
 	],
-	#category : 'PharoLauncher-Core-Download'
+	#category : #'PharoLauncher-Core-Download'
 }
 
 { #category : #signalling }

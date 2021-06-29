@@ -22,6 +22,16 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 		yourself
 ]
 
+{ #category : #'as yet unclassified' }
+PhLCacheTemplateGroup >> cliPrintString [
+	^ self name 
+]
+
+{ #category : #comparing }
+PhLCacheTemplateGroup >> hash [
+	^ delegate hash
+]
+
 { #category : #accessing }
 PhLCacheTemplateGroup >> icon [
 	^ delegate icon

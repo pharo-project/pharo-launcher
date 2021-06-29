@@ -8,7 +8,7 @@ Class {
 		'templates',
 		'name'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #adding }

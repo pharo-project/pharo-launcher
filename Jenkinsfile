@@ -38,7 +38,7 @@ def buildArchitecture(architecture, pharoVersion) {
         }
         stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
           sh "VERSION=$version ./build.sh user"
-          stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
+          stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, script/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
           archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
         }
         stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
@@ -80,10 +80,9 @@ def buildArchitecture(architecture, pharoVersion) {
         }
       }
 
-    //Do not deploy if in PR
-    if (isPullRequest()){
-      return;
-    }
+    //Do not deploy 
+    return;
+
     node('linux') {
       stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {

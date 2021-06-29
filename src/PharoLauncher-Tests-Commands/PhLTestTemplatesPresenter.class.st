@@ -31,20 +31,20 @@ PhLTestTemplatesPresenter >> createButtonEnabled [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
-	| zipFile |
-	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
-	self localTemplatesGroup
-		register: (PhLLocalTemplate name: aName zipFile: zipFile)
-		withZip: zipFile.
-	self newZipArchive: zipFile.
+	| template |
+	template := self model createLocalTemplateNamed: aName.
 	self refresh.
+	^ template
 ]
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createRemoteTemplateNamed: aName [
-	self remoteTemplatesGroup
-		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+	|template|
+	template := self model createRemoteTemplateNamed: aName.
 	self refresh.
+	^template
+	
+	
 ]
 
 { #category : #'api - accessing' }
@@ -87,13 +87,9 @@ PhLTestTemplatesPresenter >> newRequest [
 
 { #category : #private }
 PhLTestTemplatesPresenter >> newZipArchive: aFileReference [
-	| archive |
-	archive := ZipArchive new.
-	archive
-		addDeflateString: 'foo' as: 'bar.image';
-		addDeflateString: 'foo' as: 'bar.changes'.
-	aFileReference
-		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	
+	^ self model newZipArchive: aFileReference.
+	
 
 ]
 

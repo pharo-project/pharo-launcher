@@ -288,6 +288,12 @@ PhLImage >> hasChildren [
 	^ false
 ]
 
+{ #category : #configuring }
+PhLImage >> hasConfiguration: aConf [
+
+   ^ launchConfigurations anySatisfy: [ :a | a name = aConf name ]
+]
+
 { #category : #accessing }
 PhLImage >> imageFile [
 	^ self file

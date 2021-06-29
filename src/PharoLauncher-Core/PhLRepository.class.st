@@ -8,7 +8,7 @@ Class {
 		'announcer',
 		'wantNotification'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #announcements }

@@ -30,6 +30,6 @@ fi
 # RUN THE VM and pass along all arguments as is ================================
 if [ "$OS" = "linux" ]; then
     "$ROOT"/pharo-vm/pharo --nodisplay "$ROOT"/shared/PharoLauncher.image clap launcher "$@"
-elif [ OS = mac ]; then 
-    "$ROOT"/Pharo --nodisplay "$ROOT"/../Ressources/PharoLauncher.image clap launcher "$@"
+elif [ "$OS" = "mac" ]; then 
+    "$ROOT"/Pharo --headless "$ROOT"/../Resources/PharoLauncher.image clap launcher "$@"
 fi

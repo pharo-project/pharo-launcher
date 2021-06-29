@@ -14,12 +14,13 @@ PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	self assert: self errorString equals:''.
 	self assertSuccess.  
 	self assert: image isLaunched. 
+	self deny: image hasInitializationScript 
 
 	
 ]
 
 { #category : #tests }
-PhLImageLaunchCliCommandTest >> testLaunchImageToManyArguments [
+PhLImageLaunchCliCommandTest >> testLaunchImageTooManyArguments [
 
 	| image |
 	image := self addImageNamed: 'myImage1'.
@@ -33,6 +34,50 @@ PhLImageLaunchCliCommandTest >> testLaunchImageToManyArguments [
 	
 
 	
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageWithInitializationScript [
+
+	| image script |
+	
+	image := self addImageNamed: 'myImage1'.
+	script := (FileLocator temp/ 'foo.st') ensureCreateFile.
+	
+	self runCommand: {'launcher' . 'image' . 'launch' . 'myImage1' . '--script' . script fullName}.
+	 
+	script ensureDelete.
+	self assert: image isLaunched.
+	self assert: image initializationScript equals: script asFileReference.
+
+	
+
+	
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageWithNonExistingScriptShouldGiveErrorMessage [
+	| image |
+	image := self addImageNamed: 'myImage1'.
+	
+	self runCommand: {'launcher' . 'image' . 'launch' . 'myImage1' . '--script' . 'nonExistingScript.st'}.
+	 
+	self deny: image isLaunched.
+	self assert: self errorString equals: 'script not found' 
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageWithScriptWhithoutStExtentionShouldGiveErrorMessage [
+	| image script |
+	script := Smalltalk imageFile asFileReference.	"need a non st file"
+	image := self addImageNamed: 'myImage1'.
+	
+	self
+		runCommand:
+			{'launcher'. 'image'. 'launch'. 'myImage1'. '--script'. script fullName}.
+			
+	self deny: image isLaunched.
+	self assert: self errorString equals: 'wrong script extension'
 ]
 
 { #category : #tests }

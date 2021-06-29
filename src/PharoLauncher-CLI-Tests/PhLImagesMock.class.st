@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'images',
 		'name',
-		'isLaunched'
+		'isLaunched',
+		'script'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -30,6 +31,21 @@ PhLImagesMock >> description [
 { #category : #mock }
 PhLImagesMock >> ensureDefaultConfiguration [
 	^self
+]
+
+{ #category : #testing }
+PhLImagesMock >> hasInitializationScript [
+	^ script notNil 
+]
+
+{ #category : #accessing }
+PhLImagesMock >> initializationScript [
+	^ script 
+]
+
+{ #category : #preparation }
+PhLImagesMock >> initializationScript: aFileReference [
+	 script := aFileReference
 ]
 
 { #category : #mock }
@@ -81,4 +97,9 @@ PhLImagesMock >> originTemplateUrl [
 { #category : #accessing }
 PhLImagesMock >> pharoVersionFromFile [
 	^ 'Pharo 8'
+]
+
+{ #category : #mocking }
+PhLImagesMock >> shouldRunInitializationScript: aTrue [ 
+	^ self 
 ]

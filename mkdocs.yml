@@ -5,7 +5,8 @@ nav:
     - Home: index.md
     - installation.md
     - create-images.md
-    - commands.md 
+    - Commands (UI): commands.md 
+    - Commands (cmd line): commands-cmd-line.md 
     - launch-configurations.md 
     - templates.md
     - manage-vms.md     

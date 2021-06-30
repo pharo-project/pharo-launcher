@@ -272,8 +272,9 @@ Example of use:
 ```
 $ ./pharo-launcher vm delete 90-x64
 ```
-#Exemple of scenario 
-##Launch the last pharo stable image with a script
+
+# Exemple scenarios 
+## Example: Launch the last pharo stable image with a script
 First lets write a script, this script changes the default police colors. 
 ```bash
 Metacello new
@@ -295,7 +296,7 @@ Finaly lets run the launch command with a script flag:
 see [here](#image-launch-command) if you don't understand the previous command.
 Here we go, our image is launch and the script we created is runned at startup.
 
-##Create a Mooc image
+## Example: Create a Mooc image
 The first step is to find in which template category the pharo mooc image might be. Lets list the templates categories:
 ```bash 
 $ ./pharo-launcher template categories

@@ -321,10 +321,7 @@ PharoLauncherApplication >> start [
 { #category : #running }
 PharoLauncherApplication >> startFull [
 	
-	self
-		open: imagesPresenter
-		withSpecLayout: imagesPresenter layout
-		using: SpWorldPresenter
+	imagesPresenter asWorldWindow open
 ]
 
 { #category : #accessing }

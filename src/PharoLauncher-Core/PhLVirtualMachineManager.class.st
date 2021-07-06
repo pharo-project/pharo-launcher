@@ -264,21 +264,11 @@ PhLVirtualMachineManager >> defaultVirtualMachines [
 		(PhLVirtualMachine id: '90-x64')
 			be64bits;
 			yourself.
-		(PhLVirtualMachine id: '80-x64-headless')
-			beHeadless;
-			beLatest;
-			be64bits;
-			yourself.
 		(PhLVirtualMachine id: '80-x64')
 			be64bits;
 			yourself.
 		(PhLVirtualMachine id: '80-x86')
 			yourself.
-		(PhLVirtualMachine id: '70-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '70-x86')
-			yourself
 	}
 ]
 

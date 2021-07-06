@@ -352,26 +352,26 @@ PhLImage >> launchConfigurations: aCollection [
 
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
-	| architectureWarningEnabled continue |
-	
+	| architectureWarningEnabled continue  |
 	self canBeLaunched
-		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
-
+		ifFalse: [ PhLArchitectureError signalImage: self.
+			^ self ].
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | processWrapper|
-		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
-		self doNotRunInitializationScript. "Just run, image already initialized"
-		^ processWrapper ]
+	[ [ | processWrapper |
+	processWrapper := aPhLLaunchConfiguration launchProcess runUnwatch.
+	self doNotRunInitializationScript.	"Just run, image already initialized"
+	^ processWrapper ]
 		on: PhLImageVersionDeterminationError
-		do: [ :error |  error uiAlert ] ]
+		do: [ :error | error uiAlert ] ]
 		on: PhLArchitectureMismatchWarning
-		do: [ :warning | |  |
-			(PhLLaunchImageCommand warnOnArchMismatch and: [ architectureWarningEnabled  ])
-				ifTrue: [ 
-					architectureWarningEnabled := false. "only raise one warning"
-					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name. ].
-			continue ifTrue: [ warning resume ]. ]
+		do: [ :warning | 
+			(PhLLaunchImageCommand warnOnArchMismatch
+				and: [ architectureWarningEnabled ])
+				ifTrue: [ architectureWarningEnabled := false.	"only raise one warning"
+					continue := YesNoDialogWithTickBoxWindow confirm: warning longDescription label: warning name ].
+			continue
+				ifTrue: [ warning resume ] ]
 ]
 
 { #category : #accessing }

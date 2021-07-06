@@ -5,6 +5,22 @@ Class {
 }
 
 { #category : #tests }
+PhLImageDeleteCliCommandTest >> testDeleteImageNameWithPathShouldRaiseError [
+	|  imagePath root |
+	root := FileSystem memory root.
+	imagePath := root / 'testImage.image'.
+	imagePath ensureCreateFile.
+	
+
+	self runCommand: {'launcher' . 'image' . 'delete' . imagePath asString }.
+	self
+		assert:
+			(self errorString
+				includesSubstring: 'please enter a correct local image').
+	self assert: imagePath isFile.
+]
+
+{ #category : #tests }
 PhLImageDeleteCliCommandTest >> testDeleteImageNameWithoutImageNameShouldRaiseError [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

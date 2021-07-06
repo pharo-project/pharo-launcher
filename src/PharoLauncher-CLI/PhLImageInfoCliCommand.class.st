@@ -63,5 +63,8 @@ PhLImageInfoCliCommand >> printInformationOf: anImage [
 		newLine;
 		nextPutAll: ' image last modification ';
 		nextPutAll: anImage lastModification asString;
-		newLine
+		newLine;
+		nextPutAll: ' image architecture: ';
+		nextPutAll: anImage architecture asString;
+		newLine.
 ]

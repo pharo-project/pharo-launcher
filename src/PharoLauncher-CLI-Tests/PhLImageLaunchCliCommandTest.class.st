@@ -5,6 +5,31 @@ Class {
 }
 
 { #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageFromDiskShouldRaiseNotFound [
+	| memoryFileSystem command location |
+	command := PhLImageLaunchCliCommand with: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ location := (memoryFileSystem root / 'non-existing.image') ensureCreateFile.
+			self should: [ command findImage: '/wrong/path' ] raise: NotFound ]
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageFromDiskShouldSucceed [
+	| memoryFileSystem command location |
+	command := PhLImageLaunchCliCommand with: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ 
+			location := (memoryFileSystem root / 'existing.image') ensureCreateFile.
+			self
+				shouldnt: [ command findImage: location fullName ]
+				raise: NotFound ]
+]
+
+{ #category : #tests }
 PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	| image |
 	image := self addImageNamed: 'myImage1'.
@@ -49,7 +74,6 @@ PhLImageLaunchCliCommandTest >> testLaunchImageWithInitializationScript [
 	script ensureDelete.
 	self assert: image isLaunched.
 	self assert: image initializationScript equals: script asFileReference.
-
 	
 
 	

@@ -24,14 +24,39 @@ PhLImageListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all downloaded images on local computer.'
 ]
 
+{ #category : #'command line - arguments' }
+PhLImageListCliCommand class >> launcherCmdFlags [
+	^ {(ClapFlag id: #name)
+			description: 'Allows to list images including a substring ';
+			meaning: [ :arg :app | "this argument is optional "
+				(arg at: #nameAsString) word ];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #nameAsString)
+					description: 'the substring to search through the images';
+					meaning: [ :pos | pos word asSymbol ];
+					implicitMeaning: [ :arg :app | ])}
+]
+
 { #category : #'instance creation' }
 PhLImageListCliCommand >> execute [
    self listImages.
 ]
 
+{ #category : #listing }
+PhLImageListCliCommand >> imagesFromName: aSubtring [
+	| imagesIncludingSubstring |
+	imagesIncludingSubstring := self imageRepository images
+		select: [ :anImage | anImage name includesSubstring: aSubtring ].
+	^ imagesIncludingSubstring
+]
+
 { #category : #'instance creation' }
 PhLImageListCliCommand >> listImages [
-	self list: self imageRepository images
+	| images |
+	images := self name 
+		ifNil: [  self imageRepository images ]
+		ifNotNil:[ self imagesFromName: self name ].
+	self list: images.
 ]
 
 { #category : #'instance creation' }
@@ -40,4 +65,9 @@ PhLImageListCliCommand >> listImagesAsSton [
 	stonOutput := ''.
 	stonOutput := STON toString: (self listImages).
 	self outStream nextPutAll: stonOutput
+]
+
+{ #category : #'accessing arguments' }
+PhLImageListCliCommand >> name [
+	^ (arguments at: #name) value: self
 ]

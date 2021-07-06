@@ -79,7 +79,7 @@ PhLDeleteVmCommandTest >> testCanDeleteManyVms [
 	command := PhLDeleteVmCommand new.
 	command context: presenter.
 	presenter createVmNamed: 'Foo'.
-	vms := #('Foo' 'TestVM')
+	vms := {presenter singleVmName . 'Foo'}
 		collect: [:each | presenter vmFor: each private: false ].
 	presenter selection: vms.
 	

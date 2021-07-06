@@ -272,6 +272,11 @@ PhLVirtualMachine >> isHeadless [
 ]
 
 { #category : #testing }
+PhLVirtualMachine >> isPreSpur [
+	^ id includes: 'preSpur'
+]
+
+{ #category : #testing }
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
 		and: [ vmBinaryRef isNotNil ]

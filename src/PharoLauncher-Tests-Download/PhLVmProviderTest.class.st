@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'vmProvider'
 	],
-	#category : #'PharoLauncher-Tests-Core'
+	#category : #'PharoLauncher-Tests-Download'
 }
 
 { #category : #running }

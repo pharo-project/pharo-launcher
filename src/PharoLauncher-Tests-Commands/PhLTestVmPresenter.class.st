@@ -68,7 +68,7 @@ PhLTestVmPresenter >> selection: aListOfVms [
 
 { #category : #initialization }
 PhLTestVmPresenter >> singleVmName [
-	^ 'TestVM'
+	^ '80-TestVM'
 ]
 
 { #category : #private }

@@ -358,6 +358,11 @@ PhLVirtualMachineManager >> fetchVm [
 ]
 
 { #category : #accessing }
+PhLVirtualMachineManager >> flavour [
+	^ ''
+]
+
+{ #category : #accessing }
 PhLVirtualMachineManager >> imageFile: anImagePathOrFileReference [
 	imageFile := anImagePathOrFileReference asFileLocatorOrReference
 ]

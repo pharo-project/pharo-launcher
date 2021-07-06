@@ -1,3 +1,7 @@
+"
+I'm used to provide the download URL of the Pharo Virtual Machine for Pharo version up to Pharo 8.0.
+Pharo versions > 8.0 have a diffrente URL scheme and are managed by PhLVmProvider.
+"
 Class {
 	#name : #PhLVmProviderUntilPharo80,
 	#superclass : #PhLVmProvider,
@@ -49,7 +53,7 @@ PhLVmProviderUntilPharo80 >> urlForStable: useStableVm [
 	| pharoVersion |
 	pharoVersion  := (vmManager isPreSpur and: [ vmManager imageVersion = '50' ])
 		ifTrue: [ '50-preSpur' ]
-		ifFalse: [ vmManager imageVersion ].
+		ifFalse: [ vmManager pharoVersion ].
 		
 	^ self urlForPharo: pharoVersion stable: useStableVm 
 ]

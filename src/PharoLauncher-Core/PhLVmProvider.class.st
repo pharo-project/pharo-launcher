@@ -1,8 +1,5 @@
 "
-https://files.pharo.org/vm/pharo-spur64/
-
-OS:
-Linux, Windows, and Darwin for macOS
+I'm used to provide the download URL of the Pharo Virtual Machine described as a PhLVirtualMachine object or a PhLVirtualMachineManager (used to determine VM information from an image file).
 "
 Class {
 	#name : #PhLVmProvider,
@@ -13,15 +10,15 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
-{ #category : #'as yet unclassified' }
-PhLVmProvider class >> for: aPhLVirtualMachineManager [ 
+{ #category : #'instance creation' }
+PhLVmProvider class >> for: aPhLVirtualMachineOrManager [
 	| class |
-	class := aPhLVirtualMachineManager pharoVersion asInteger < 90
+	class := aPhLVirtualMachineOrManager pharoVersion asInteger < 90
 		ifTrue: [ PhLVmProviderUntilPharo80 ]
 		ifFalse: [ self ].
 	
 	^ class new
-		vmManager: aPhLVirtualMachineManager;
+		vmManager: aPhLVirtualMachineOrManager;
 		yourself.
 ]
 
@@ -57,7 +54,7 @@ PhLVmProvider >> hostOS [
 
 { #category : #accessing }
 PhLVmProvider >> url [ 
-	^ self urlForPharo: vmManager pharoVersion stable: true
+	^ self urlForStable: true
 ]
 
 { #category : #private }
@@ -71,6 +68,12 @@ PhLVmProvider >> urlForPharo: pharoVersionNumber stable: useStableVm [
 			with: #HOST_OS -> self hostOS
 			with: #HOST_ARCH -> self hostArchitecture
 			with: #VM_STATUS -> vmStatus)
+]
+
+{ #category : #private }
+PhLVmProvider >> urlForStable: useStableVm [ 
+		
+	^ self urlForPharo: vmManager pharoVersion stable: useStableVm 
 ]
 
 { #category : #'private - accessing' }

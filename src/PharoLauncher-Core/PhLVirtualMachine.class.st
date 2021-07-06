@@ -279,7 +279,8 @@ PhLVirtualMachine >> isPreSpur [
 { #category : #testing }
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
-		and: [ vmBinaryRef isNotNil ]
+		and: [ executableRef isFile
+				and: [ vmBinaryRef isNotNil ] ]
 ]
 
 { #category : #testing }

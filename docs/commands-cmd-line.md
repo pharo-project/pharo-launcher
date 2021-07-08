@@ -64,7 +64,7 @@ $ ./pharo-launcher image list --name dev
 ```
 
 ### Image launch command
-Launch an image. If it is used with the script flag it launch the image executing the selected script. The script needs to have an st extension. 
+Launch an image. If it is used with the script flag it launch the image executing the selected script. The script needs to have an st extension. The image full path or the image name can be given to launch it.  
 ```
 Usage:  image launch <imageName> [--script] [scriptPath]
 
@@ -127,7 +127,7 @@ Example of use:
 $ ./pharo-launcher image delete "Pharo 7.0 - 32bit (Exercism new 23)" 
 ```
 ### Image info command
-Displays informations on an image. The informations displayed are Image name, Last modified, Description, Origin template, Origin template URL and Image directory
+Displays informations on an image. The informations displayed are Image name, Last modified, Description, Origin template, Origin template URL and Image directory. An image path or an image name can be given. 
 ```
 Usage:  image info <imageName>  
 

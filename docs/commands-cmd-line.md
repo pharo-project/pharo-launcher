@@ -49,6 +49,7 @@ Usage:  image list [--help]
 
 Options:
 -h, --help                Prints help about this command.
+--name                    List the images including the substring given after the flag.
 ```
 Example of use:  
 ```
@@ -56,7 +57,10 @@ $ ./pharo-launcher image list
 Image name                                 
 1: P9-64b-devel                             
 2: PharoWeb                                   
-3: Pharo 7.0 - 32bit (Exercism new 23)       
+3: Pharo 7.0 - 32bit (Exercism new 23) 
+
+$ ./pharo-launcher image list --name dev
+1: P9-64b-devel
 ```
 
 ### Image launch command

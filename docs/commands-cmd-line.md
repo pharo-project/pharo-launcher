@@ -295,7 +295,7 @@ Now lets create or image using the last stable pharo version:
 see [here](#image-create-command) if you don't understand the previous command.
 Finaly lets run the launch command with a script flag: 
 ```bash
-./pharo-launcher image launch myNewImage --scipt /home/user/Desktop/demoScript.st
+./pharo-launcher image launch myNewImage --script /home/user/Desktop/demoScript.st
 ```
 see [here](#image-launch-command) if you don't understand the previous command.
 Here we go, our image is launch and the script we created is runned at startup.

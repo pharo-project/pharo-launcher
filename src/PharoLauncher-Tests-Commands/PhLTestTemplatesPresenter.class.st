@@ -60,7 +60,7 @@ PhLTestTemplatesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLTestTemplatesPresenter >> initialize [
-	self model: (PhLTemplateGroupTestRepository new).
+	self model: (PhLTemplateTestRepository new).
 	self application: (PharoLauncherApplication new
 		scriptsDirectory: FileSystem memory root;
 		yourself).

@@ -350,6 +350,23 @@ PhLImage >> launchConfigurations: aCollection [
 	launchConfigurations := aCollection
 ]
 
+{ #category : #accessing }
+PhLImage >> launchScript [
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: '#!/usr/bin/env bash';
+			lf;
+			nextPutAll: 'pharo-launcher image launch ';
+			nextPutAll: self location;
+			lf.
+	]
+]
+
+{ #category : #accessing }
+PhLImage >> launchScriptName [
+	^ file parent / (self name , '.sh').
+]
+
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue  |

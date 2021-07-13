@@ -37,8 +37,12 @@ PhLImagesMock >> checkImageArchitecture [
 ]
 
 { #category : #printing }
-PhLImagesMock >> cliPrintString [
-	^ self name
+PhLImagesMock >> cliPrintOn: aStream [
+	aStream
+		nextPutAll: self name;
+		tab;
+		nextPutAll: 'architecture: ';
+		nextPutAll: self architecture.
 ]
 
 { #category : #accessing }
@@ -69,7 +73,7 @@ PhLImagesMock >> initializationScript: aFileReference [
 { #category : #mock }
 PhLImagesMock >> initialize [ 
 	super initialize.
-	isLaunched := false
+	isLaunched := false.
 ]
 
 { #category : #mock }

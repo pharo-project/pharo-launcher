@@ -45,7 +45,7 @@ PhLTestImagesPresenter >> imageNames [
 { #category : #initialization }
 PhLTestImagesPresenter >> initialize [
 	self model: PhLTestImageRepository new.
-	templateRepository := PhLTemplateGroupTestRepository new.
+	templateRepository := PhLTemplateTestRepository new.
 	self
 		application:
 			(PharoLauncherApplication new

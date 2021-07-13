@@ -43,7 +43,7 @@ PhLTemplatesCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
-	model templateRepository: PhLTemplateGroupTestRepository new.
+	model templateRepository: PhLTemplateTestRepository new.
 	model templateRepository createLocalTemplateNamed:'foo'.
 	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
 	context launcherModel: model

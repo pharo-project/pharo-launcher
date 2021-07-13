@@ -11,7 +11,7 @@ Class {
 }
 
 { #category : #adding }
-PhLImagesMockRepo >> addImageNamed: anImageName [
+PhLImagesMockRepo >> addImageNamed: anImageName [ 
 	| image |
 	image := PhLImagesMock name: anImageName.
 	self images add: image.

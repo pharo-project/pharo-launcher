@@ -118,10 +118,11 @@ PharoLauncherCLIConfiguration >> initScriptsDirectory: aFileReference [
 { #category : #initialization }
 PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
-	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation.
+	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation asFileReference .
 	vmsDirectory := FileLocator launcherUserFilesLocation / 'vms'.
+	vmsDirectory := vmsDirectory asFileReference.
 	initScriptsDirectory := PharoLauncherApplication
-		defaultInitializationScriptLocation.
+		defaultInitializationScriptLocation asFileReference.
 	launchImageFromALoginShell := PhLLaunchConfiguration
 		launchInALoginShell
 ]

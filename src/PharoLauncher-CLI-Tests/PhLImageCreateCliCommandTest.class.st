@@ -40,7 +40,7 @@ PhLImageCreateCliCommandTest >> localTemplatesGroup [
 PhLImageCreateCliCommandTest >> setUp [
 	super setUp.
 	context launcherModel
-		templateRepository: PhLTemplateGroupTestRepository new
+		templateRepository: PhLTemplateTestRepository new
 ]
 
 { #category : #tests }

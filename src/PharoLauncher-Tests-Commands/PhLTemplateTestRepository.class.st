@@ -3,7 +3,7 @@ TemplateGroupRepository used for test purposes.
 I override the default location of templates.
 "
 Class {
-	#name : #PhLTemplateGroupTestRepository,
+	#name : #PhLTemplateTestRepository,
 	#superclass : #PhLTemplateGroupRepository,
 	#instVars : [
 		'fileSystem',
@@ -14,7 +14,7 @@ Class {
 }
 
 { #category : #initialization }
-PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
+PhLTemplateTestRepository >> createLocalTemplateNamed: aName [
 	| zipFile template |
 	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
 	template := PhLLocalTemplate name: aName zipFile: zipFile.
@@ -24,25 +24,25 @@ PhLTemplateGroupTestRepository >> createLocalTemplateNamed: aName [
 ]
 
 { #category : #initialization }
-PhLTemplateGroupTestRepository >> createRemoteTemplateNamed: aName [
+PhLTemplateTestRepository >> createRemoteTemplateNamed: aName [
 	self remoteTemplatesGroup
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
 { #category : #initialization }
-PhLTemplateGroupTestRepository >> createTemplateInDefaultGroupNamed: aName [
+PhLTemplateTestRepository >> createTemplateInDefaultGroupNamed: aName [
 	self remoteTemplatesGroup
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
 { #category : #instance }
-PhLTemplateGroupTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
+PhLTemplateTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
 	(self categoryNamed: aCategoryName) templatesAndGroups 
 		add: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
 { #category : #initialization }
-PhLTemplateGroupTestRepository >> initialize [ 
+PhLTemplateTestRepository >> initialize [ 
 	super initialize.
 	fileSystem := FileSystem memory.
 	localTemplateGroup := self newLocalTemplatesGroup.
@@ -51,24 +51,24 @@ PhLTemplateGroupTestRepository >> initialize [
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> localTemplatesGroup [
+PhLTemplateTestRepository >> localTemplatesGroup [
 	^ localTemplateGroup
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> localTemplatesGroupName [
+PhLTemplateTestRepository >> localTemplatesGroupName [
 	^ 'Local test templates'
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> newDefaultTemplatesGroup [
+PhLTemplateTestRepository >> newDefaultTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: self defaultTemplatesGroup Templates: OrderedCollection new;
 			yourself
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
+PhLTemplateTestRepository >> newLocalTemplatesGroup [
 	^ PhLDownloadedTemplateGroup new 
 		baseDirectory: fileSystem root;
 		setName: self localTemplatesGroupName;
@@ -76,21 +76,21 @@ PhLTemplateGroupTestRepository >> newLocalTemplatesGroup [
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> newRemoteTemplatesGroup [
+PhLTemplateTestRepository >> newRemoteTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: 'Remote test templates' Templates: OrderedCollection new;
 			yourself
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> newRemoteTemplatesGroupNamed: aGroupName [
+PhLTemplateTestRepository >> newRemoteTemplatesGroupNamed: aGroupName [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: aGroupName Templates: OrderedCollection new;
 			yourself
 ]
 
 { #category : #initialization }
-PhLTemplateGroupTestRepository >> newZipArchive: aFileReference [
+PhLTemplateTestRepository >> newZipArchive: aFileReference [
 	| archive |
 	archive := ZipArchive new.
 	archive
@@ -101,6 +101,6 @@ PhLTemplateGroupTestRepository >> newZipArchive: aFileReference [
 ]
 
 { #category : #accessing }
-PhLTemplateGroupTestRepository >> remoteTemplatesGroup [
+PhLTemplateTestRepository >> remoteTemplatesGroup [
 	^ remoteTemplatesGroup
 ]

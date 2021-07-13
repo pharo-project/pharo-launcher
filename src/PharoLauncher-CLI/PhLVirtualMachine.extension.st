@@ -1,6 +1,6 @@
 Extension { #name : #PhLVirtualMachine }
 
 { #category : #'*PharoLauncher-CLI' }
-PhLVirtualMachine >> cliPrintString [
-	^ self id
+PhLVirtualMachine >> cliPrintOn: aStream [
+	aStream nextPutAll: self id
 ]

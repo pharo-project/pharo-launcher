@@ -132,9 +132,9 @@ PhLCliCommand >> list: aCollection [
 		do: [ :anItem | 
 			self outStream
 				nextPutAll: counter asString;
-				nextPutAll: ': ';
-				nextPutAll: anItem cliPrintString;
-				newLine.
+				nextPutAll: ': '.
+				anItem cliPrintOn: self outStream.
+			self outStream newLine.
 			counter := counter + 1 ]
 ]
 

@@ -1,3 +1,6 @@
+"
+Command to kill one image if given in option or all the images if the --all flag is set 
+"
 Class {
 	#name : #PhLImageKillCliCommand,
 	#superclass : #PhLImageCliCommand,
@@ -42,9 +45,10 @@ PhLImageKillCliCommand class >> launcherCmdPositionals [
 PhLImageKillCliCommand >> execute [
 	(arguments at: #all) value
 		ifTrue: [ ^ LibC
-				runCommand: 'kill $(ps -aux | grep -i Pharo | grep image | awk ''{print $2}'') ' ].
+				runCommand:
+					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f1)' ].
 	LibC
 		runCommand:
-			'kill $(ps -aux | grep -i Pharo | grep image | grep ' , self imageName
-				, ' | awk ''{print $2}'') '
+			'kill $(ps x | grep  -i Pharo | grep ''.image''  | grep '
+				, self imageName , ' | tr -s '' '' | cut -d '' '' -f1)'
 ]

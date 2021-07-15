@@ -50,18 +50,13 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 9.0 (development) - Pharo 9.0',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Pharo64-9.0-Moose.zip'
-  			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 9.0 (development) - Pharo 8.0',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Pharo64-8.0-Moose.zip'
+				#name : 'Moose Suite 9.0 (development)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip'
   			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 8.0 (stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.0.0/Pharo64-8.0-Moose.zip'
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip'
   			}
 		],
 		#expanded : true

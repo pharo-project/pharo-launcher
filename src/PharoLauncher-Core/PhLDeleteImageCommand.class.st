@@ -17,8 +17,8 @@ PhLDeleteImageCommand >> asSpecCommand [
 ]
 
 { #category : #accessing }
-PhLDeleteImageCommand >> canBeExecuted [ 
-	^ self imagesPresenter selectedImages notEmpty
+PhLDeleteImageCommand >> canBeExecuted [
+	^ self imagesPresenter selectedImages isNotEmpty
 ]
 
 { #category : #accessing }

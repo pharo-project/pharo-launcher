@@ -31,16 +31,18 @@ PhLFileBrowser >> open [
 { #category : #accessing }
 PhLFileBrowser >> path: aFileReferenceOrPathString [
 	"Opens an OS-specific file and directory browser on ==aFileReference==. If aFileReference is a file, opens the browser on its containing directory instead."
+
 	| ref |
-	aFileReferenceOrPathString isNil ifTrue: [ ^ nil ].
+	aFileReferenceOrPathString ifNil: [ ^ nil ].
 	ref := aFileReferenceOrPathString asFileReference.
 	ref exists ifFalse: [ ^ nil ].
-	
-	ref := ref isFile ifTrue: [ ref parent ] ifFalse: [ ref ].
-	(ref isNil or: [ ref exists not ])
-		ifTrue: [ ^ nil ].
 
-	path := ref fullName.
+	ref := ref isFile
+		ifTrue: [ ref parent ]
+		ifFalse: [ ref ].
+	(ref isNil or: [ ref exists not ]) ifTrue: [ ^ nil ].
+
+	path := ref fullName
 ]
 
 { #category : #visiting }

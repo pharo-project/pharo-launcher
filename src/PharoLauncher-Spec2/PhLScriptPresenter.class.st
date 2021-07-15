@@ -57,20 +57,20 @@ PhLScriptPresenter class >> icebergLoadExample [
 ]
 
 { #category : #initialization }
-PhLScriptPresenter >> initializePresenters [ 
+PhLScriptPresenter >> initializePresenters [
 	scriptTable := (self instantiate: SpEditableListPresenter)
 		items: self scripts;
 		display: [ :file | file basename ];
 		whenSelectionChangedDo: [ :selection | 
-			selection isEmpty
-				ifTrue: [ fileEditor 
-								text: '' ;
-								disable. ]
-				ifFalse: [ fileEditor 
-								text: selection selectedItem contents;
-								enable. ] ];
+			selection
+				ifEmpty: [ fileEditor
+						text: '';
+						disable ]
+				ifNotEmpty: [ fileEditor
+						text: selection selectedItem contents;
+						enable ] ];
 		addItemBlock: [ self newScript ];
-		removeItemBlock: [ :item | self removeScript: item ]
+		removeItemBlock: [ :item | self removeScript: item ];
 		yourself.
 	fileEditor := self newCode
 		disable;
@@ -79,7 +79,7 @@ PhLScriptPresenter >> initializePresenters [
 		label: 'Save';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedScript ];
-		yourself.
+		yourself
 ]
 
 { #category : #initialization }

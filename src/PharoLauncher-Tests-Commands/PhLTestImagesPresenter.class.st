@@ -41,7 +41,7 @@ PhLTestImagesPresenter >> fileSystem [
 
 { #category : #'api - selection' }
 PhLTestImagesPresenter >> hasSingleImageSelected [
-	^ super hasSingleImageSelected or: [ selection notNil ]
+	^ super hasSingleImageSelected or: [ selection isNotNil ]
 ]
 
 { #category : #acccessing }
@@ -119,13 +119,10 @@ PhLTestImagesPresenter >> selectionNames: aListOfImageNames [
 ]
 
 { #category : #'api - accessing' }
-PhLTestImagesPresenter >> singleImage [ 
+PhLTestImagesPresenter >> singleImage [
 	^ [ super singleImage ]
 		on: SubscriptOutOfBounds "no selection in real presenter"
-		do: [ :error |
-			 selection 
-				ifNil: [ error pass ]
-				ifNotNil: [ selection ] ]
+		do: [ :error | selection ifNil: [ error pass ] ]
 ]
 
 { #category : #selection }

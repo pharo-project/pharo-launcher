@@ -56,9 +56,7 @@ PhLTestVmPresenter >> newConfirmation [
 
 { #category : #accessing }
 PhLTestVmPresenter >> selectedVms [
-	^ selection 
-		ifNotNil: [ selection ]
-		ifNil: [ { self vmFor: self singleVmName private: false } ]
+	^ selection ifNil: [ {(self vmFor: self singleVmName private: false)} ]
 ]
 
 { #category : #configuring }

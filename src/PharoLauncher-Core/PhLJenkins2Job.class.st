@@ -40,8 +40,13 @@ PhLJenkins2Job >> lastSuccessfulBuild [
 
 { #category : #accessing }
 PhLJenkins2Job >> lastSuccessfulBuildNumber [
-	^ properties at: 'lastSuccessfulBuild'
-		ifPresent: [ :dict | dict ifNil: [nil] ifNotNil: [dict at: 'number' ifPresent: [:num | num ] ifAbsent: [ nil ] ]]
+	^ properties
+		at: 'lastSuccessfulBuild'
+		ifPresent: [ :dict | 
+			dict
+				ifNotNil: [ dict
+						at: 'number'
+						ifAbsent: [ nil ] ] ]
 		ifAbsent: [ nil ]
 ]
 

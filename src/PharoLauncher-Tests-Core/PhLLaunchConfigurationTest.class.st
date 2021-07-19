@@ -6,10 +6,12 @@ Class {
 
 { #category : #helper }
 PhLLaunchConfigurationTest >> pharo80HeadlessVm [
-	^ PhLVirtualMachineManager new virtualMachines
-		detect: [ :each | each id = '80-x64-headless' ]
-		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
-		ifNone: [ self fail: 'cannot find VM!' ]
+	^ (PhLVirtualMachine id: '80-x64-headless')
+			beHeadless;
+			beLatest;
+			be64bits;
+			isValidAfterUpdate;
+			yourself
 ]
 
 { #category : #running }

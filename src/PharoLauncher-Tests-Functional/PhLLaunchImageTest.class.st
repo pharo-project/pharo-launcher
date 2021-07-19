@@ -13,14 +13,6 @@ Class {
 }
 
 { #category : #tests }
-PhLLaunchImageTest >> pharo80HeadlessVm [
-	^ PhLVirtualMachineManager new virtualMachines
-		detect: [ :each | each id = '80-x64-headless' ]
-		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
-		ifNone: [ self fail: 'cannot find VM!' ]
-]
-
-{ #category : #tests }
 PhLLaunchImageTest >> pharo80x86Vm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x86' ]
@@ -84,30 +76,6 @@ PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64
 		raise: PhLArchitectureError
 	
 
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> testCanLaunchImageWithHeadlessVM [
-	| vm image config commandToEval |
-	image := self prepare80imageIn: imageDir.
-	vm := self pharo80HeadlessVm.
-	commandToEval := '"''' , resultDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
- 
-	config := image defaultLaunchConfiguration.
-	config
-		vm: vm;
-		vmArguments: #('--headless');
-		imageArguments: {'eval' . commandToEval}.
-			
-	image launchWithConfiguration: config.
-	1 second wait. "wait for file generation"
-	
-	self
-		assert: (resultDir / 'result') exists
-		description: 'Image run did not generate result file.'.
-	self
-		assert: (resultDir / 'result') contents
-		equals: '2'
 ]
 
 { #category : #tests }

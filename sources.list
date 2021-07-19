@@ -20,44 +20,44 @@ OrderedCollection [
 		#templates : [
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 9.0 - 32bit (development version, latest)',
-				#url : 'https://files.pharo.org/image/90/latest.zip'
+				#name : 'Pharo 10.0 - 64bit (development version, latest)',
+				#url : 'https://files.pharo.org/image/100/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 9.0 - 64bit (development version, latest)',
-				#url : 'https://files.pharo.org/image/90/latest-64.zip'
+				#name : 'Pharo 10.0 - 32bit (development version, latest)',
+				#url : 'https://files.pharo.org/image/100/latest-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 32bit (stable)',
-				#url : 'https://files.pharo.org/image/80/stable-32.zip'
+				#name : 'Pharo 9.0 - 64bit (stable)',
+				#url : 'https://files.pharo.org/image/90/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 64bit (stable)',
+				#name : 'Pharo 9.0 - 32bit (stable)',
+				#url : 'https://files.pharo.org/image/90/stable-32.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 8.0 - 64bit (old stable)',
 				#url : 'https://files.pharo.org/image/80/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 7.0 - 32bit (old stable)',
-				#url : 'https://files.pharo.org/image/70/stable-32.zip'
+				#name : 'Pharo 8.0 - 32bit (old stable)',
+				#url : 'https://files.pharo.org/image/80/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 7.0 - 64bit (old stable)',
-				#url : 'https://files.pharo.org/image/70/stable-64.zip'
-			},
+				#name : 'Moose Suite 9.0 (development)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip'
+  			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 8.0 (development version)',
-				#url : 'https://ci.inria.fr/moose/job/Moose-8/ARCHITECTURE=64,PHARO=80,VERSION=development,VM=vm/lastSuccessfulBuild/artifact/Moose.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 7.0 (stable)',
-				#url : 'https://ci.inria.fr/moose/job/moose-7.0-64bit/lastSuccessfulBuild/artifact/moose-7.0-64bit.zip'
-			}
+				#name : 'Moose Suite 8.0 (stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip'
+  			}
 		],
 		#expanded : true
 	},
@@ -65,6 +65,16 @@ OrderedCollection [
 		#type : #URLGroup,
 		#name : 'Deprecated distributions',
 		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 32bit',
+				#url : 'https://files.pharo.org/image/70/stable-32.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 64bit',
+				#url : 'https://files.pharo.org/image/70/stable-64.zip'
+			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 6.1 - 32bit',
@@ -140,8 +150,9 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
-		#name : 'Pharo 8.0 (development version)',
-		#url : 'https://files.pharo.org/image/80/',
-		#filterPattern : 'href="(Pharo-?8.0-SNAPSHOT.build.[^"]*.zip)"'
-	}
+		#name : 'Pharo Remote Development (TelePharo)',
+		#url : 'https://github.com/pharo-ide/TelePharo/releases',
+		#filterPattern : 'href="([^"]*/Pharo[0-9][^"]*.zip)"',
+  		#templateNameFormat: '{6} ({5})'
+  	}
 ]

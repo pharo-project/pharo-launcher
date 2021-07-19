@@ -246,31 +246,26 @@ PhLVirtualMachineManager >> compatibleVmUrl [
 
 { #category : #private }
 PhLVirtualMachineManager >> compatibleVmUrls [
+	| vmProvider |
+	vmProvider := PhLVmProviderUntilPharo80 new.
 	"50-preSpur stable is not the latest stable pre-Spur VM. 40 vm is the latest stable pre-Spur"
 	^ Dictionary newFromPairs: { 
-		self class imageFormat6504 . self vmUrlTemplate format: { '13' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
-		self class imageFormatPreSpur . self vmUrlTemplate format: { '40' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
-		self class imageFormat32bits . self vmUrlTemplate format: { '70' . '' . self downloadPathOSTypeSegment . ''. 'stable' } .
-		self class imageFormat64bits . self vmUrlTemplate format: { '70' . '64' . self downloadPathOSTypeSegment . ''. 'stable' }
+		self class imageFormat6504 . vmProvider compatibleUrlForPharo: '13' arch64: false .
+		self class imageFormatPreSpur . vmProvider compatibleUrlForPharo: '40' arch64: false .
+		self class imageFormat32bits . vmProvider compatibleUrlForPharo: '70' arch64: false .
+		self class imageFormat64bits . vmProvider compatibleUrlForPharo: '70' arch64: true
 	}
+	
 ]
 
 { #category : #querying }
 PhLVirtualMachineManager >> defaultVirtualMachines [
-	^ {
-		(PhLVirtualMachine id: '90-x64-headless')
-			beHeadless;
-			beLatest;
+
+	^ { 
+		(PhLVirtualMachine id: '100-x64')
 			be64bits;
 			yourself.
 		(PhLVirtualMachine id: '90-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '90-x86')
-			yourself.
-		(PhLVirtualMachine id: '80-x64-headless')
-			beHeadless;
-			beLatest;
 			be64bits;
 			yourself.
 		(PhLVirtualMachine id: '80-x64')
@@ -278,22 +273,7 @@ PhLVirtualMachineManager >> defaultVirtualMachines [
 			yourself.
 		(PhLVirtualMachine id: '80-x86')
 			yourself.
-		(PhLVirtualMachine id: '70-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '70-x86')
-			yourself
 	}
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> downloadPathOSTypeSegment [
-	| os |
-	os := Smalltalk os.
-	(os isMacOS or: [ os isMacOSX ]) ifTrue: [ ^ 'mac' ].	
-	os isUnix ifTrue: [ ^ 'linux' ].
-	os isWindows ifTrue: [ ^ 'win' ].
-
 ]
 
 { #category : #private }
@@ -369,6 +349,11 @@ PhLVirtualMachineManager >> fetchVm [
 		to: self vmStore / (self vmId , '.zip') ]
 	on: KeyNotFound
 	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
+]
+
+{ #category : #accessing }
+PhLVirtualMachineManager >> flavour [
+	^ ''
 ]
 
 { #category : #accessing }
@@ -509,6 +494,21 @@ PhLVirtualMachineManager >> imageVersionFromFileWith: aPhLProcessWrapperCommand 
 	^ imageVersion
 ]
 
+{ #category : #testing }
+PhLVirtualMachineManager >> is64bit [ 
+	^ self class is64bits: self imageFormatNumber 
+]
+
+{ #category : #testing }
+PhLVirtualMachineManager >> isPreSpur [
+	^ self class isPreSpur: self imageFormatNumber
+]
+
+{ #category : #accessing }
+PhLVirtualMachineManager >> pharoVersion [
+	^ self imageVersion
+]
+
 { #category : #accessing }
 PhLVirtualMachineManager >> privateVmStore [
 	^ self class privateVmStore
@@ -568,10 +568,8 @@ PhLVirtualMachineManager >> vm [
 PhLVirtualMachineManager >> vmId [
 	| architecture pharoVersion |
 	self checkImageArchitecture.
-	architecture := (self class is64bits: self imageFormatNumber)
-		ifTrue: [ 'x64' ]
-		ifFalse: [ 'x86' ].
-	pharoVersion  := ((self class isPreSpur: self imageFormatNumber) and: [ self imageVersion = '50' ])
+	architecture := self is64bit ifTrue: [ 'x64' ] ifFalse: [ 'x86' ].
+	pharoVersion  := (self isPreSpur and: [ self imageVersion = '50' ])
 		ifTrue: [ '50-preSpur' ]
 		ifFalse: [ self imageVersion ].
 	^ pharoVersion , '-' , architecture.
@@ -584,21 +582,5 @@ PhLVirtualMachineManager >> vmStore [
 
 { #category : #private }
 PhLVirtualMachineManager >> vmUrl [
-	| architecture pharoVersion |
-	architecture := (self class is64bits: imageFormatNumber) ifTrue: [ '64' ] ifFalse: [ '' ].
-	pharoVersion  := ((self class isPreSpur: imageFormatNumber) and: [ self imageVersion = '50' ])
-		ifTrue: [ '50-preSpur' ]
-		ifFalse: [ self imageVersion ].
-	^ self vmUrlTemplate
-		format: { pharoVersion . architecture . self downloadPathOSTypeSegment . '' . 'stable' }
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> vmUrlTemplate [
-	"$1: IMAGE_VERSION (11 .. 70, 80)
-	 $2: VM_ARCH (32 or 64)
-	 $3: OS (win mac or linux)
-	 $4: FLAVOUR? (-headless or empty)
-	 $5: VM_STATUS (stable or latest)"
-	^ 'https://files.pharo.org/get-files/{1}/pharo{2}-{3}{4}-{5}.zip'
+	^ (PhLVmProvider for: self) url
 ]

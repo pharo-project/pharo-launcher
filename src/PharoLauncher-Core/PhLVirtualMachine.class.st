@@ -100,11 +100,17 @@ PhLVirtualMachine >> = aVM [
 	^ aVM id = self id
 ]
 
+{ #category : #comparing }
+PhLVirtualMachine >> > aPhLVirtualMachine [ 
+	self pharoVersion = aPhLVirtualMachine pharoVersion
+		ifTrue: [ ^ self is64bit ].
+		
+	^ self pharoVersion asNumber > aPhLVirtualMachine pharoVersion asNumber
+]
+
 { #category : #querying }
 PhLVirtualMachine >> archPath [
-	arch ifNotNil: [ ^ arch ].
-	
-	^ (self id last: 3) = 'x64'
+	^ self is64bit
 		ifTrue: [ '64' ]
 		ifFalse: [ '' ]
 ]
@@ -138,8 +144,7 @@ PhLVirtualMachine >> blessing [
 
 { #category : #querying }
 PhLVirtualMachine >> downloadUrl [
-	^ self manager vmUrlTemplate
-		format: { self pharoVersion . self archPath . self manager downloadPathOSTypeSegment . self flavour . self blessing }
+	^ (PhLVmProvider for: self) url
 ]
 
 { #category : #updating }
@@ -254,14 +259,28 @@ PhLVirtualMachine >> initializeOn: aFolder [
 ]
 
 { #category : #testing }
+PhLVirtualMachine >> is64bit [
+	^ arch
+		ifNil: [ (self id last: 3) = 'x64' ] 
+		ifNotNil: [ arch = '64' ]
+	
+]
+
+{ #category : #testing }
 PhLVirtualMachine >> isHeadless [ 
 	^ flavour = self headlessFlavour
 ]
 
 { #category : #testing }
+PhLVirtualMachine >> isPreSpur [
+	^ id includes: 'preSpur'
+]
+
+{ #category : #testing }
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
-		and: [ vmBinaryRef isNotNil ]
+		and: [ executableRef isFile
+				and: [ vmBinaryRef isNotNil ] ]
 ]
 
 { #category : #testing }

@@ -46,11 +46,12 @@ PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
 
 { #category : #tests }
 PhLUpdateVmCommandTest >> testCanUpdateManyVms [
-	| command vms vmFolderEntries |
+	| command fooVmName vms vmFolderEntries |
 	command := PhLUpdateVmCommand new.
 	command context: presenter.
-	presenter createVmNamed: 'Foo'.
-	vms := #('Foo' 'TestVM')
+	fooVmName := '90-Foo'.
+	presenter createVmNamed: fooVmName.
+	vms := {fooVmName . presenter singleVmName}
 		collect: [:each | presenter vmFor: each private: false ].
 	presenter selection: vms.
 	
@@ -59,7 +60,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 	vms := presenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #('TestVM' 'Foo').
+		hasSameElements: {fooVmName . presenter singleVmName}.
 	presenter selectedVms do: [ :vm |
 		vmFolderEntries := (vm vmStore / vm name) entries.
 		self 
@@ -79,8 +80,8 @@ PhLUpdateVmCommandTest >> testCanUpdateOneVm [
 	vms := presenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #('TestVM').
-	vmFolderEntries := (presenter selectedVms first vmStore / 'TestVM') entries.
+		hasSameElements: { presenter singleVmName }.
+	vmFolderEntries := (presenter selectedVms first vmStore / presenter singleVmName) entries.
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
 		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').

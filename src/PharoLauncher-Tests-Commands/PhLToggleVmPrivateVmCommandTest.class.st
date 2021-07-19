@@ -46,7 +46,7 @@ PhLToggleVmPrivateVmCommandTest >> testVmsShownAtStartup [
 	vms := command vmsPresenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #('TestVM').
+		hasSameElements: {presenter singleVmName}.
 ]
 
 { #category : #tests }
@@ -64,5 +64,5 @@ PhLToggleVmPrivateVmCommandTest >> testVmsShownWhenButtonToggledTwice [
 	vms := command vmsPresenter vmNames.
 	self
 		assertCollection: vms
-		hasSameElements: #('TestVM' 'Foo').
+		hasSameElements: {presenter singleVmName . 'Foo'}.
 ]

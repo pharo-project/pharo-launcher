@@ -16,9 +16,9 @@ Class {
 PhLVirtualMachinesDataSource class >> default [ 
 	| vmsBlock privateVmsBlock |
 	vmsBlock := [ PhLVirtualMachineManager new virtualMachines 
-		asSortedCollection: [ :vm1 :vm2 | vm1 id > vm2 id ] ].
+		asSortedCollection: [ :vm1 :vm2 | vm1 > vm2 ] ].
 	privateVmsBlock := [ PhLVirtualMachineManager new availableVirtualMachinesByImageFormat 
-		asSortedCollection: [ :vm1 :vm2 | vm1 id > vm2 id ] ].
+		asSortedCollection: [ :vm1 :vm2 | vm1 > vm2 ] ].
 	^ self vmsBlock: vmsBlock privateVmsBlock: privateVmsBlock 
 ]
 

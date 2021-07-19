@@ -1,4 +1,4 @@
-In order to launch Pharo images, Pharo Launcher needs some information. The most important one is: **Which VM to use?** Pharo Launcher can solve this problem for you by using the recommanded VM for the Pharo version of the image to launch.
+In order to launch Pharo images, Pharo Launcher needs some information. The most important one is: **Which VM to use?** Pharo Launcher can solve this problem for you by using the recommended VM for the Pharo version of the image to launch.
 
 *Example: For a Pharo 8.0, 64-bit image, Pharo Launcher will use the stable 64-bit virtual machine of Pharo 8.*
 

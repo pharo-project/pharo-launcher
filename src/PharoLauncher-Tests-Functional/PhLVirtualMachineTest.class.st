@@ -96,3 +96,27 @@ PhLVirtualMachineTest >> testSerialization [
 	self assert: deserializedVm flavour equals: vm flavour.
 
 ]
+
+{ #category : #tests }
+PhLVirtualMachineTest >> testvm10IsGreaterThanVm1 [
+	| vm10 vm1 |
+	vm10 := (PhLVirtualMachine id: '100-x64')
+			be64bits;
+			yourself.
+	vm1 :=  (PhLVirtualMachine id: '10').
+	
+	self assert: vm10 > vm1
+
+]
+
+{ #category : #tests }
+PhLVirtualMachineTest >> testvm64IsGreaterThanVm32 [
+	| vm vm64 |
+	vm := PhLVirtualMachine id: '90-x86'.
+	vm64 :=  (PhLVirtualMachine id: '90')
+			be64bits;
+			yourself.
+	
+	self assert: vm64 > vm
+
+]

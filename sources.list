@@ -20,33 +20,33 @@ OrderedCollection [
 		#templates : [
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 9.0 - 32bit (development version, latest)',
-				#url : 'https://files.pharo.org/image/90/latest-32.zip'
+				#name : 'Pharo 10.0 - 64bit (development version, latest)',
+				#url : 'https://files.pharo.org/image/100/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 9.0 - 64bit (development version, latest)',
-				#url : 'https://files.pharo.org/image/90/latest-64.zip'
+				#name : 'Pharo 10.0 - 32bit (development version, latest)',
+				#url : 'https://files.pharo.org/image/100/latest-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 32bit (stable)',
-				#url : 'https://files.pharo.org/image/80/stable-32.zip'
+				#name : 'Pharo 9.0 - 64bit (stable)',
+				#url : 'https://files.pharo.org/image/90/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 8.0 - 64bit (stable)',
+				#name : 'Pharo 9.0 - 32bit (stable)',
+				#url : 'https://files.pharo.org/image/90/stable-32.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 8.0 - 64bit (old stable)',
 				#url : 'https://files.pharo.org/image/80/stable-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 7.0 - 32bit (old stable)',
-				#url : 'https://files.pharo.org/image/70/stable-32.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Pharo 7.0 - 64bit (old stable)',
-				#url : 'https://files.pharo.org/image/70/stable-64.zip'
+				#name : 'Pharo 8.0 - 32bit (old stable)',
+				#url : 'https://files.pharo.org/image/80/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
@@ -65,6 +65,16 @@ OrderedCollection [
 		#type : #URLGroup,
 		#name : 'Deprecated distributions',
 		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 32bit',
+				#url : 'https://files.pharo.org/image/70/stable-32.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 7.0 - 64bit',
+				#url : 'https://files.pharo.org/image/70/stable-64.zip'
+			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 6.1 - 32bit',

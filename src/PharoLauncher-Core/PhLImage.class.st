@@ -425,6 +425,12 @@ PhLImage >> pharoVersionFromFile [
 		ifFalse: [ '' ]
 ]
 
+{ #category : #accessing }
+PhLImage >> pharoVersionString [
+
+	^ (self pharoVersion asNumber / 10.0) asFloat asString
+]
+
 { #category : #printing }
 PhLImage >> printOn: aStream [
 	aStream

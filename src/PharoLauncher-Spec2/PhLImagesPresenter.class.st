@@ -151,7 +151,7 @@ PhLImagesPresenter >> buildImageTable [
 		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
 			width: 80;
 			yourself);
-		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersionString)
 			width: 80;
 			yourself);
 		addColumn: ((SpStringTableColumn

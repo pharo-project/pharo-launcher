@@ -49,11 +49,13 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 
 { #category : #'command execution' }
 PhLImageCopyCliCommand >> executeWithImage: anImage [
-	[ self imageRepository copyImage: anImage to: self targetName ]
+	[[ self imageRepository copyImage: anImage to: self targetName ]
 		on: PhLNameNotAvailableError
 		do: [ ^ self errorStream
 				nextPutAll: self targetName,'Name already used';
-				newLine ]
+				newLine ]]
+		on: MessageNotUnderstood 
+		do: [ ^self errorStream nextPutAll: 'An argument is missing, please give a name for the new image ' ]
 ]
 
 { #category : #accessing }

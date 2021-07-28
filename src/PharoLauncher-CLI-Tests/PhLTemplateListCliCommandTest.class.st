@@ -5,6 +5,16 @@ Class {
 }
 
 { #category : #tests }
+PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
+	self createOfficialTemplatesCategoryWithSomeTemplates. 
+	
+	self runCommand: #('launcher' 'template' 'list' '--STON').
+	
+	self assertSuccess.
+	self assert: (self outputString includesSubstring:'PhLRemoteTemplate{#name:''fakeTemplate')
+]
+
+{ #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
@@ -12,6 +22,16 @@ PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 	
 	self assertSuccess.
 	self assert: (self outputString includesSubstring:'fakeTemplate')
+]
+
+{ #category : #tests }
+PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed [
+	self addLocalTemplateNamed: 'fakeTemplate'.
+	
+	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'Local test templates' '--STON').
+	
+	self assertSuccess.
+	self assert: (self outputString includesSubstring:'PhLLocalTemplate{#name:''fakeTemplate''')
 ]
 
 { #category : #tests }

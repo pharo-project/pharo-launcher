@@ -20,16 +20,19 @@ PhLTemplateListCliCommand class >> asCliCommand [
 
 { #category : #'command line - arguments' }
 PhLTemplateListCliCommand class >> launcherCmdFlags [
-
-	^ {(ClapFlag id: #templateCategory)
-				description: 'Allows to use a template categroy to list the templates in it ';
-				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
-				implicitMeaning: [  :arg :app | 'Official distributions'. ];
-				add: ((ClapPositional id: #templateCategoryName)
-					description: 'Name of the template category variable.';
-					meaning: [ :pos | pos word asSymbol. ];
-					implicitMeaning: [  :arg :app | app. ])}
-					
+	^ {((ClapFlag id: #templateCategory)
+		description: 'Allows to use a template categroy to list the templates in it ';
+		meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
+		implicitMeaning: [ :arg :app | 'Official distributions' ];
+		add:
+			((ClapPositional id: #templateCategoryName)
+				description: 'Name of the template category variable.';
+				meaning: [ :pos | pos word asSymbol ];
+				implicitMeaning: [ :arg :app | app ])).
+	((ClapFlag id: #STON)
+		description: 'Allows to list images with ston output ';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])}
 ]
 
 { #category : #'command execution' }

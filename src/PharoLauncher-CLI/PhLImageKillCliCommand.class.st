@@ -46,10 +46,10 @@ PhLImageKillCliCommand >> execute [
 	(arguments at: #all) value
 		ifTrue: [ ^ LibC
 				runCommand:
-					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f2)' ].
+					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f1)' ].
 	LibC
 		runCommand:
 			'kill $(ps x | grep  -i Pharo | grep ''.image''  | grep '
-				, self imageName , ' | tr -s '' '' | cut -d '' '' -f2)'
+				, self imageName , ' | tr -s '' '' | cut -d '' '' -f1)'
 
 ]

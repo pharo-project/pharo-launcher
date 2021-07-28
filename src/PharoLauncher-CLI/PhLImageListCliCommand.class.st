@@ -34,12 +34,17 @@ PhLImageListCliCommand class >> launcherCmdFlags [
 			add: ((ClapPositional id: #nameAsString)
 					description: 'the substring to search through the images';
 					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ])}
+					implicitMeaning: [ :arg :app | ]).
+		(ClapFlag id: #STON)
+			description: 'Allows to list images with ston output ';
+			meaning: [ :arg :app | true ];
+			implicitMeaning: [ :arg :app | false  ].
+			}
 ]
 
 { #category : #'instance creation' }
 PhLImageListCliCommand >> execute [
-   self listImages.
+	^ self listImages
 ]
 
 { #category : #listing }
@@ -57,14 +62,6 @@ PhLImageListCliCommand >> listImages [
 		ifNil: [  self imageRepository images ]
 		ifNotNil:[ self imagesFromName: self name ].
 	self list: images.
-]
-
-{ #category : #'instance creation' }
-PhLImageListCliCommand >> listImagesAsSton [
-	| stonOutput |
-	stonOutput := ''.
-	stonOutput := STON toString: (self listImages).
-	self outStream nextPutAll: stonOutput
 ]
 
 { #category : #'accessing arguments' }

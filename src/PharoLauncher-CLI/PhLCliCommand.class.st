@@ -83,6 +83,13 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #accessing }
+PhLCliCommand >> STON [
+	^ (arguments at: #STON) value: self
+	
+	
+]
+
 { #category : #default }
 PhLCliCommand >> defaultTemplate [
 	self
@@ -125,16 +132,20 @@ PhLCliCommand >> imageRepository [
 ]
 
 { #category : #'instance creation' }
-PhLCliCommand >> list: aCollection [ 
-	| counter |
+PhLCliCommand >> list: aCollection [
+	| counter STONBoolean |
+	STONBoolean := self STON.
 	counter := 1.
 	aCollection
 		do: [ :anItem | 
-			self outStream
-				nextPutAll: counter asString;
-				nextPutAll: ': '.
-				anItem cliPrintOn: self outStream.
-			self outStream newLine.
+			STONBoolean
+				ifFalse: [ self outStream
+						nextPutAll: counter asString;
+						nextPutAll: ': '.
+					anItem cliPrintOn: self outStream.
+					self outStream newLine ].
+			STONBoolean
+				ifTrue: [ self outStream nextPutAll: (STON toString: anItem) ].
 			counter := counter + 1 ]
 ]
 

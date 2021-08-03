@@ -66,7 +66,7 @@ PhLImageCreateFromBuildCliCommand >> execute [
 	self downloadZip: url.
 	self createNewImageDirectoryInDefaultImageLocation.
 	newImageTemplateZip := PhLLocalTemplate name: self targetName zipFile: self zipFile.
-	newImageTemplateZip extractTo: self imageDirectory named: self targetName.
+	[newImageTemplateZip extractTo: self imageDirectory named: self targetName]  on: FileExists do: [ self outStream nextPutAll: 'An image already have that name, please choose another one'].
 	self zipFile delete
 	
 	
@@ -75,7 +75,7 @@ PhLImageCreateFromBuildCliCommand >> execute [
 { #category : #'finding/searching' }
 PhLImageCreateFromBuildCliCommand >> findSHAOfPharo: aPharoVersion build: aBuildNumber [ 
 	| urlTable begin stringIncludingUrl url SHA |
-	urlTable := (ZnClient new get: 'https://files.pharo.org/image/',self pharoVersionNumber,'0/') lines.
+	urlTable := (ZnClient new get: 'https://files.pharo.org/image/', aPharoVersion,'0/') lines.
 	1 to: urlTable size do: [ :index | 
 		(((urlTable at: index) includesSubstring: 'build.',aBuildNumber)
 			and: [ (urlTable at: index) includesSubstring: '64bit' ])

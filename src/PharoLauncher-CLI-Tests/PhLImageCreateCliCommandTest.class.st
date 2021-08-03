@@ -47,7 +47,7 @@ PhLImageCreateCliCommandTest >> setUp [
 PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo10ShouldReturnGoodURL [
 	| url command |
 	command := PhLImageCreateFromBuildCliCommand new. 
-	url := command findURLOf: '10' build: '21' withSHA:'f022266' .
+	url := command findURLOfPharo:'10' build:'21'.
 	self assert: url equals: 'https://files.pharo.org/image/100/Pharo10-SNAPSHOT.build.21.sha.f022266.arch.64bit.zip'  
 ]
 
@@ -55,7 +55,7 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo10Sh
 PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo7ShouldReturnGoodURL [
 	| url command |
 	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOf: '7' build: '510' withSHA: 'fb39ee7'.
+	url := command findURLOfPharo:'7' build:'510'.
 	self assert: url equals: 'https://files.pharo.org/image/70/Pharo-7.0.0-alpha.build.510.sha.fb39ee7.arch.64bit.zip'
 ]
 
@@ -63,7 +63,7 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo7Sho
 PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo8ShouldReturnGoodURL [
 	| url command |
 	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOf: '8' build: '210' withSHA: '5da933e'.
+	url := command findURLOfPharo: '8' build: '210'.
 	self assert: url equals: 'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
 ]
 
@@ -71,28 +71,33 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo8Sho
 PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo9ShouldReturnGoodURL [
 	| url command |
 	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOf: '9' build: '300' withSHA: 'b315fa8'.
+	url := command findURLOfPharo: '9' build: '300'.
 	self assert: url equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
 	
 ]
 
 { #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
-	| memoryFileSystem test |
-	memoryFileSystem := FileSystem memory.
-	self
-		runCommand:
-			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}
-	"
-	DiskStore
-		currentFileSystem: memoryFileSystem 
-		during: [ 
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateOnOwnComputerToImplementTheCommand [
 			self
 				runCommand:
-					{'launcher' . 'image' . 'createFromBuild' . '9' . '300' . 'b315fa8'.
-					'myNewImage'}.
-			self halt.
-			]"
+					{'launcher' . 'image' . 'createFromBuild' . '10' . '21' . 'myNewImage'}
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
+	| memoryFileSystem |
+	memoryFileSystem := FileSystem memory.
+	"self
+		runCommand:
+			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}"
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ 
+			(memoryFileSystem /'tmp') asFileReference ensureCreateDirectory.
+			self
+				runCommand:
+					{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}.
+			self halt ]
 ]
 
 { #category : #tests }

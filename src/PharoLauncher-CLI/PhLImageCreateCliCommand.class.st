@@ -51,7 +51,7 @@ PhLImageCreateCliCommand class >> launcherCmdFlags [
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
 					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app | ^ app ])}
+					implicitMeaning: [  :arg :app |  ]).}
 					
 			
 ]
@@ -72,6 +72,11 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app | app defaultTemplate ];
 					yourself).
 	}
+]
+
+{ #category : #helpers }
+PhLImageCreateCliCommand >> buildNumber [
+	^ (arguments at: #build) value: self
 ]
 
 { #category : #accessing }
@@ -129,10 +134,11 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 ]
 
 { #category : #querying }
-PhLImageCreateCliCommand >> template [
+PhLImageCreateCliCommand >> template [ 
 	^ self templateRepository
 		templateNamed: self templateName
 		inCategoryNamed: self templateCategory
+		
 ]
 
 { #category : #accessing }

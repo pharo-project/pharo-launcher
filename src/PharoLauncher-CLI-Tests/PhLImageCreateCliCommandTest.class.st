@@ -44,6 +44,59 @@ PhLImageCreateCliCommandTest >> setUp [
 ]
 
 { #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo10ShouldReturnGoodURL [
+	| url command |
+	command := PhLImageCreateFromBuildCliCommand new. 
+	url := command findURLOf: '10' build: '21' withSHA:'f022266' .
+	self assert: url equals: 'https://files.pharo.org/image/100/Pharo10-SNAPSHOT.build.21.sha.f022266.arch.64bit.zip'  
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo7ShouldReturnGoodURL [
+	| url command |
+	command := PhLImageCreateFromBuildCliCommand new.
+	url := command findURLOf: '7' build: '510' withSHA: 'fb39ee7'.
+	self assert: url equals: 'https://files.pharo.org/image/70/Pharo-7.0.0-alpha.build.510.sha.fb39ee7.arch.64bit.zip'
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo8ShouldReturnGoodURL [
+	| url command |
+	command := PhLImageCreateFromBuildCliCommand new.
+	url := command findURLOf: '8' build: '210' withSHA: '5da933e'.
+	self assert: url equals: 'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo9ShouldReturnGoodURL [
+	| url command |
+	command := PhLImageCreateFromBuildCliCommand new.
+	url := command findURLOf: '9' build: '300' withSHA: 'b315fa8'.
+	self assert: url equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
+	
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
+	| memoryFileSystem test |
+	memoryFileSystem := FileSystem memory.
+	self
+		runCommand:
+			{'launcher' . 'image' . 'createFromBuild' . '9' . '300' . 'b315fa8'.
+			'myNewImage'}
+	"
+	DiskStore
+		currentFileSystem: memoryFileSystem 
+		during: [ 
+			self
+				runCommand:
+					{'launcher' . 'image' . 'createFromBuild' . '9' . '300' . 'b315fa8'.
+					'myNewImage'}.
+			self halt.
+			]"
+]
+
+{ #category : #tests }
 PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

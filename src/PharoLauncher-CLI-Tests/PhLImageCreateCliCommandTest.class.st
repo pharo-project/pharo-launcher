@@ -82,8 +82,7 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSuccee
 	memoryFileSystem := FileSystem memory.
 	self
 		runCommand:
-			{'launcher' . 'image' . 'createFromBuild' . '9' . '300' . 'b315fa8'.
-			'myNewImage'}
+			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}
 	"
 	DiskStore
 		currentFileSystem: memoryFileSystem 

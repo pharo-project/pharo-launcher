@@ -16,7 +16,6 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
-
 	^ {
 		((ClapPositional id: #pharoVersionNumber)
 				description: 'the number of the Pharo version you want to use';
@@ -26,11 +25,6 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
 					yourself)	.
 		((ClapPositional id: #build)
 				description: 'build number of the template to download';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app |  ];
-					yourself).
-		((ClapPositional id: #SHA)
-				description: 'SHA of the template';
 					meaning: [ :pos | pos  word ];
 					implicitMeaning: [ :arg :app |  ];
 					yourself).
@@ -68,7 +62,7 @@ PhLImageCreateFromBuildCliCommand >> downloadZip: url [
 { #category : #'command execution' }
 PhLImageCreateFromBuildCliCommand >> execute [
 	| url newImageTemplateZip |
-	url := self findURLOf: self pharoVersionNumber build: self buildNumber withSHA: self SHA.
+	url := self findURLOfPharo: self pharoVersionNumber build: self buildNumber.
 	self downloadZip: url.
 	self createNewImageDirectoryInDefaultImageLocation.
 	newImageTemplateZip := PhLLocalTemplate name: self targetName zipFile: self zipFile.
@@ -79,7 +73,21 @@ PhLImageCreateFromBuildCliCommand >> execute [
 ]
 
 { #category : #'finding/searching' }
-PhLImageCreateFromBuildCliCommand >> findURLOf: aPharoVersion build: aBuildNumber withSHA: aSha [
+PhLImageCreateFromBuildCliCommand >> findSHAOfPharo: aPharoVersion build: aBuildNumber [ 
+	| urlTable begin stringIncludingUrl url SHA |
+	urlTable := (ZnClient new get: 'https://files.pharo.org/image/',self pharoVersionNumber,'0/') lines.
+	1 to: urlTable size do: [ :index | 
+		(((urlTable at: index) includesSubstring: 'build.',aBuildNumber)
+			and: [ (urlTable at: index) includesSubstring: '64bit' ])
+			ifTrue: [ stringIncludingUrl := urlTable at: index ] ].
+	begin := stringIncludingUrl findString: 'sha.'.
+	SHA := stringIncludingUrl copyFrom: (begin +4) to: (begin+10).  
+	^ SHA
+	
+]
+
+{ #category : #'finding/searching' }
+PhLImageCreateFromBuildCliCommand >> findURLOfPharo: aPharoVersion build: aBuildNumber [
 	| url pharoVersion |
 	pharoVersion := aPharoVersion.
 	pharoVersion = '10'
@@ -88,8 +96,9 @@ PhLImageCreateFromBuildCliCommand >> findURLOf: aPharoVersion build: aBuildNumbe
 		ifTrue: [ pharoVersion := '-' , pharoVersion , '.0-alpha' ]
 		ifFalse: [ pharoVersion := pharoVersion , '-SNAPSHOT' ].
 	url := 'https://files.pharo.org/image/' , aPharoVersion , '0/Pharo'
-		, pharoVersion , '.build.' , aBuildNumber , '.sha.' , aSha
-		, '.arch.64bit.zip'.
+		, pharoVersion , '.build.' , aBuildNumber , '.sha.' , (self
+		findSHAOfPharo: aPharoVersion
+		build: aBuildNumber) , '.arch.64bit.zip'.
 	^ url
 ]
 

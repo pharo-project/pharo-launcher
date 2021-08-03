@@ -46,13 +46,13 @@ PhLImageCreateFromBuildCliCommand >> buildNumber [
 	^ (arguments at: #build) word
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #creating }
 PhLImageCreateFromBuildCliCommand >> createNewImageDirectoryInDefaultImageLocation [
 	(PhLDirectoryBasedImageRepository defaultLocation / self targetName)
 		asFileReference ensureCreateDirectory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #download }
 PhLImageCreateFromBuildCliCommand >> downloadZip: url [
 	PhLDownloadManager new
 		basicDownload: url
@@ -117,7 +117,7 @@ PhLImageCreateFromBuildCliCommand >> targetName [
 	^ (arguments at: #newImageName) word
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #filenames }
 PhLImageCreateFromBuildCliCommand >> zipFile [
 	^ '/tmp/pharoDownloadImageTemp968553514446844756' asFileReference
 ]

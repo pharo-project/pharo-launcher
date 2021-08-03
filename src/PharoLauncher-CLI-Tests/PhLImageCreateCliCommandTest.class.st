@@ -39,6 +39,7 @@ PhLImageCreateCliCommandTest >> localTemplatesGroup [
 { #category : #running }
 PhLImageCreateCliCommandTest >> setUp [
 	super setUp.
+	self class defaultTimeLimit: 300 seconds.
 	context launcherModel
 		templateRepository: PhLTemplateTestRepository new
 ]
@@ -92,12 +93,14 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSuccee
 			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}"
 	DiskStore
 		currentFileSystem: memoryFileSystem
-		during: [ 
-			(memoryFileSystem /'tmp') asFileReference ensureCreateDirectory.
+		during: [ (memoryFileSystem / 'tmp') asFileReference ensureCreateDirectory.
 			self
 				runCommand:
 					{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}.
-			self halt ]
+			self
+				assert:
+					(memoryFileSystem / 'home' / 'axel' / 'Pharo' / 'images'
+						/ 'myNewImage' / 'myNewImage.image') asFileReference isFile ]
 ]
 
 { #category : #tests }

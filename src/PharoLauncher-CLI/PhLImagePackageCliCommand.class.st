@@ -28,7 +28,23 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app |NotFound 
         signal: 'need an image to create the script' . ];
 					yourself).
+		((ClapPositional id: #location)
+				description: 'Local image name to create the launch script.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app |NotFound ];
+					yourself)
 	}
+]
+
+{ #category : #copying }
+PhLImagePackageCliCommand >> copyFilesOf: anImage at: aDirectory [
+	((anImage file parent childrenMatching: '*.image') at: 1)
+		copyTo: (aDirectory , '/' , anImage name , '.image') asFileReference
+]
+
+{ #category : #'as yet unclassified' }
+PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [ 
+	aPath asFileReference ensureCreateDirectory 
 ]
 
 { #category : #creating }
@@ -40,5 +56,15 @@ PhLImagePackageCliCommand >> createLaunchScript: anImage [
 
 { #category : #accessing }
 PhLImagePackageCliCommand >> executeWithImage: anImage [
-	self createLaunchScript: anImage 
+	| userNewDirectory |
+	userNewDirectory := (self location,'/',anImage name).
+	self createLaunchScript: anImage .
+	self createDirectoryAccordingToPath: userNewDirectory .
+	self copyFilesOf: anImage at: userNewDirectory
+	
+]
+
+{ #category : #accessing }
+PhLImagePackageCliCommand >> location [
+	^ (arguments at: #location) value: self
 ]

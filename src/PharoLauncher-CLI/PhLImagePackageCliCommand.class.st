@@ -6,6 +6,9 @@ It can also the generation of a run script using pharo-launcher.
 Class {
 	#name : #PhLImagePackageCliCommand,
 	#superclass : #PhLImageCliCommand,
+	#instVars : [
+		'image'
+	],
 	#category : #'PharoLauncher-CLI'
 }
 
@@ -36,7 +39,7 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #vmName)
 				description: 'Local vm to put in the package';
 					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |  ];
+					implicitMeaning: [ :arg :app | 'default' ];
 					yourself)
 	}
 ]
@@ -75,6 +78,7 @@ PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
 { #category : #accessing }
 PhLImagePackageCliCommand >> executeWithImage: anImage [
 	| userNewDirectory |
+	self image: anImage.
 	userNewDirectory := (self location,'/',anImage name).
 	self createLaunchScriptNew: anImage .
 	self createDirectoryAccordingToPath: userNewDirectory .
@@ -82,6 +86,16 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 	LibC runCommand: 'find ',self location,'/',anImage name,'/',self vmName,' -type f -exec chmod +x {} \;'.
 	LibC runCommand: 'find ',self location,'/',anImage name, ' -iname ',anImage name, '.sh -type f -exec chmod +x {} \;'
 	
+]
+
+{ #category : #accessing }
+PhLImagePackageCliCommand >> image [ 
+	^image 
+]
+
+{ #category : #accessing }
+PhLImagePackageCliCommand >> image: anImage [
+	image := anImage 
 ]
 
 { #category : #'script generation' }
@@ -104,7 +118,16 @@ PhLImagePackageCliCommand >> location [
 	^ (arguments at: #location) value: self
 ]
 
+{ #category : #'as yet unclassified' }
+PhLImagePackageCliCommand >> selectDefaultVm [
+	^ (self image pharoVersion, '-x64' )   . 
+
+]
+
 { #category : #'find-select' }
 PhLImagePackageCliCommand >> vmName [
-	^ (arguments at: #vmName) value: self
+	| arg |
+	arg := (arguments at: #vmName) value: self.
+	arg = 'default' ifTrue:[ arg := self selectDefaultVm ].
+	^arg
 ]

@@ -32,6 +32,11 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 				description: 'Local image name to create the launch script.';
 					meaning: [ :pos | pos word asString ];
 					implicitMeaning: [ :arg :app |NotFound ];
+					yourself).
+		((ClapPositional id: #vmName)
+				description: 'Local vm to put in the package';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app |  ];
 					yourself)
 	}
 ]
@@ -39,10 +44,16 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 { #category : #copying }
 PhLImagePackageCliCommand >> copyFilesOf: anImage at: aDirectory [
 	((anImage file parent childrenMatching: '*.image') at: 1)
-		copyTo: (aDirectory , '/' , anImage name , '.image') asFileReference
+		copyTo: (aDirectory , '/' , anImage name , '.image') asFileReference.
+	((anImage file parent childrenMatching: anImage name,'.sh') at: 1)
+		copyTo: (aDirectory , '/' , anImage name , '.sh') asFileReference.
+	((anImage file parent childrenMatching: anImage name,'.changes') at: 1)
+		copyTo: (aDirectory , '/' , anImage name , '.changes') asFileReference.
+	((anImage file parent parent parent / 'vms' childrenMatching: self vmName) at: 1)
+		copyAllTo: (aDirectory , '/', self vmName) asFileReference
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #creation }
 PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [ 
 	aPath asFileReference ensureCreateDirectory 
 ]
@@ -54,17 +65,46 @@ PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	LibC runCommand: 'chmod +x ',anImage launchScriptName fullName
 ]
 
+{ #category : #'script generation' }
+PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
+	anImage launchScriptName
+		writeStreamDo: [ :stream | stream nextPutAll: (self launchScript: anImage) ].
+	LibC runCommand: 'chmod +x ',anImage launchScriptName fullName
+]
+
 { #category : #accessing }
 PhLImagePackageCliCommand >> executeWithImage: anImage [
 	| userNewDirectory |
 	userNewDirectory := (self location,'/',anImage name).
-	self createLaunchScript: anImage .
+	self createLaunchScriptNew: anImage .
 	self createDirectoryAccordingToPath: userNewDirectory .
-	self copyFilesOf: anImage at: userNewDirectory
+	self copyFilesOf: anImage at: userNewDirectory.
+	LibC runCommand: 'find ',self location,'/',anImage name,'/',self vmName,' -type f -exec chmod +x {} \;'.
+	LibC runCommand: 'find ',self location,'/',anImage name, ' -iname ',anImage name, '.sh -type f -exec chmod +x {} \;'
 	
+]
+
+{ #category : #'script generation' }
+PhLImagePackageCliCommand >> launchScript: anImage [
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: '#!/usr/bin/env bash';
+			lf;
+			nextPutAll: self vmName;
+			nextPutAll: '/pharo';
+			nextPutAll: ' ';
+			nextPutAll: anImage name;
+			nextPutAll: '.image';
+			lf.
+	]
 ]
 
 { #category : #accessing }
 PhLImagePackageCliCommand >> location [
 	^ (arguments at: #location) value: self
+]
+
+{ #category : #'find-select' }
+PhLImagePackageCliCommand >> vmName [
+	^ (arguments at: #vmName) value: self
 ]

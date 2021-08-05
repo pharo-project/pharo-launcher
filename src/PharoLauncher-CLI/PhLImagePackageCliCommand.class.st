@@ -66,13 +66,14 @@ PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	anImage launchScriptName
 		writeStreamDo: [ :stream | stream nextPutAll: anImage launchScript ].
 	LibC runCommand: 'chmod +x ',anImage launchScriptName fullName
+	
 ]
 
 { #category : #'script generation' }
 PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
 	anImage launchScriptName
 		writeStreamDo: [ :stream | stream nextPutAll: (self launchScript: anImage) ].
-	LibC runCommand: 'chmod +x ',anImage launchScriptName fullName
+	
 ]
 
 { #category : #accessing }
@@ -83,8 +84,8 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 	self createLaunchScriptNew: anImage .
 	self createDirectoryAccordingToPath: userNewDirectory .
 	self copyFilesOf: anImage at: userNewDirectory.
-	LibC runCommand: 'find ',self location,'/',anImage name,'/',self vmName,' -type f -exec chmod +x {} \;'.
-	LibC runCommand: 'find ',self location,'/',anImage name, ' -iname ',anImage name, '.sh -type f -exec chmod +x {} \;'
+	LibC runCommand: 'find ',self location,'/"',anImage name,'"/',self vmName,' -type f -exec chmod +x {} \;'.
+	LibC runCommand: 'find ',self location,'/"',anImage name, '" -iname "',anImage name, '.sh" -type f -exec chmod +x {} \;'
 	
 ]
 
@@ -106,9 +107,9 @@ PhLImagePackageCliCommand >> launchScript: anImage [
 			lf;
 			nextPutAll: self vmName;
 			nextPutAll: '/pharo';
-			nextPutAll: ' ';
+			nextPutAll: ' "';
 			nextPutAll: anImage name;
-			nextPutAll: '.image';
+			nextPutAll: '.image"';
 			lf.
 	]
 ]

@@ -61,7 +61,7 @@ PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [
 	aPath asFileReference ensureCreateDirectory 
 ]
 
-{ #category : #creating }
+{ #category : #creation }
 PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	anImage launchScriptName
 		writeStreamDo: [ :stream | stream nextPutAll: anImage launchScript ].
@@ -80,13 +80,15 @@ PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
 PhLImagePackageCliCommand >> executeWithImage: anImage [
 	| userNewDirectory |
 	self image: anImage.
-	userNewDirectory := (self location,'/',anImage name).
-	self createLaunchScriptNew: anImage .
-	self createDirectoryAccordingToPath: userNewDirectory .
-	self copyFilesOf: anImage at: userNewDirectory.
-	LibC runCommand: 'find ',self location,'/"',anImage name,'"/',self vmName,' -type f -exec chmod +x {} \;'.
-	LibC runCommand: 'find ',self location,'/"',anImage name, '" -iname "',anImage name, '.sh" -type f -exec chmod +x {} \;'
-	
+	userNewDirectory := self location , '/' , anImage name.
+	self createLaunchScriptNew: anImage.
+	self createDirectoryAccordingToPath: userNewDirectory.
+	[ self copyFilesOf: anImage at: userNewDirectory ]
+		on: FileExists
+		do: [ ^ (self outStream
+				nextPutAll: 'a File with the image name already exists at this location'; newLine )].
+	LibC runCommand: 'find ' , self location , '/"' , anImage name , '"/' , self vmName, ' -type f -exec chmod +x {} \;'.
+	LibC runCommand: 'find ' , self location , '/"' , anImage name , '" -iname "', anImage name , '.sh" -type f -exec chmod +x {} \;'
 ]
 
 { #category : #accessing }
@@ -119,7 +121,7 @@ PhLImagePackageCliCommand >> location [
 	^ (arguments at: #location) value: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'default actions' }
 PhLImagePackageCliCommand >> selectDefaultVm [
 	^ (self image pharoVersion, '-x64' )   . 
 

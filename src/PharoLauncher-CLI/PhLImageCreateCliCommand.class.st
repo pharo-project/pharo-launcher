@@ -79,14 +79,6 @@ PhLImageCreateCliCommand >> buildNumber [
 	^ (arguments at: #build) value: self
 ]
 
-{ #category : #accessing }
-PhLImageCreateCliCommand >> createImage: template to: newImageName [
-	^ self imageRepository
-		extractTemplate: template
-		to: newImageName 
-		
-]
-
 { #category : #default }
 PhLImageCreateCliCommand >> defaultTemplate [
 	^ self

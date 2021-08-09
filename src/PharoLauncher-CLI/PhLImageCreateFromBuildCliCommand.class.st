@@ -46,28 +46,12 @@ PhLImageCreateFromBuildCliCommand >> buildNumber [
 	^ (arguments at: #build) word
 ]
 
-{ #category : #creating }
-PhLImageCreateFromBuildCliCommand >> createNewImageDirectoryInDefaultImageLocation [
-	(PhLDirectoryBasedImageRepository defaultLocation / self targetName)
-		asFileReference ensureCreateDirectory
-]
-
-{ #category : #download }
-PhLImageCreateFromBuildCliCommand >> downloadZip: url [
-	PhLDownloadManager new
-		basicDownload: url
-		toFile: self zipFile.
-]
-
 { #category : #'command execution' }
 PhLImageCreateFromBuildCliCommand >> execute [
-	| url newImageTemplateZip |
-	url := self findURLOfPharo: self pharoVersionNumber build: self buildNumber.
-	self downloadZip: url.
-	self createNewImageDirectoryInDefaultImageLocation.
-	newImageTemplateZip := PhLLocalTemplate name: self targetName zipFile: self zipFile.
-	[newImageTemplateZip extractTo: self imageDirectory named: self targetName]  on: FileExists do: [ self outStream nextPutAll: 'An image already have that name, please choose another one'].
-	self zipFile delete
+	| url template  |
+	url := (self findURLOfPharo: self pharoVersionNumber build: self buildNumber) asUrl.
+	template := PhLRemoteTemplate name: self targetName url: url.
+	self createImage: template to: self targetName
 	
 	
 ]
@@ -102,11 +86,6 @@ PhLImageCreateFromBuildCliCommand >> findURLOfPharo: aPharoVersion build: aBuild
 	^ url
 ]
 
-{ #category : #origins }
-PhLImageCreateFromBuildCliCommand >> imageDirectory [
-	^ ( PhLDirectoryBasedImageRepository defaultLocation / self targetName ) asFileReference 
-]
-
 { #category : #helpers }
 PhLImageCreateFromBuildCliCommand >> pharoVersionNumber [
 	^ (arguments at: #pharoVersionNumber) word
@@ -115,9 +94,4 @@ PhLImageCreateFromBuildCliCommand >> pharoVersionNumber [
 { #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> targetName [
 	^ (arguments at: #newImageName) word
-]
-
-{ #category : #filenames }
-PhLImageCreateFromBuildCliCommand >> zipFile [
-	^ ((FileLocator temp / ('FileAttributesTests-', UUIDGenerator next asString, '.zip')) resolve)
 ]

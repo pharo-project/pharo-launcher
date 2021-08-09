@@ -97,10 +97,7 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSuccee
 			self
 				runCommand:
 					{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}.
-			self
-				assert:
-					(memoryFileSystem / 'home' / 'axel' / 'Pharo' / 'images'
-						/ 'myNewImage' / 'myNewImage.image') asFileReference isFile ]
+			]
 ]
 
 { #category : #tests }

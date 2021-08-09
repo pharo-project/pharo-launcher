@@ -80,13 +80,11 @@ PhLImageCreateCliCommand >> buildNumber [
 ]
 
 { #category : #accessing }
-PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
-	self logCreationOfImageFrom: aTemplateName.
-	^ [ self imageRepository
-		extractTemplate: self template
-		to: newImageName ]
-		on: NotFound
-		do: [ self logCannotFindTemplate ]
+PhLImageCreateCliCommand >> createImage: template to: newImageName [
+	^ self imageRepository
+		extractTemplate: template
+		to: newImageName 
+		
 ]
 
 { #category : #default }
@@ -97,7 +95,12 @@ PhLImageCreateCliCommand >> defaultTemplate [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	self createImage: self templateName to: self imageName
+	| template |
+	self logCreationOfImageFrom: self templateName.
+	template := [ self template ]
+		on: NotFound
+		do: [ ^ self logCannotFindTemplate ].
+	self createImage: template to: self imageName
 ]
 
 { #category : #accessing }

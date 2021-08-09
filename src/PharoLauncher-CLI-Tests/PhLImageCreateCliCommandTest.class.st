@@ -86,18 +86,13 @@ PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateOnOwnCompute
 
 { #category : #tests }
 PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
-	| memoryFileSystem |
-	memoryFileSystem := FileSystem memory.
-	"self
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	self
 		runCommand:
-			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}"
-	DiskStore
-		currentFileSystem: memoryFileSystem
-		during: [ (memoryFileSystem / 'tmp') asFileReference ensureCreateDirectory.
-			self
-				runCommand:
-					{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myNewImage'}.
-			]
+			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myImage3'}.
+	self assertSuccess.
+	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet
 ]
 
 { #category : #tests }

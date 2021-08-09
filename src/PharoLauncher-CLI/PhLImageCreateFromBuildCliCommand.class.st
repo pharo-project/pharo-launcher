@@ -119,5 +119,5 @@ PhLImageCreateFromBuildCliCommand >> targetName [
 
 { #category : #filenames }
 PhLImageCreateFromBuildCliCommand >> zipFile [
-	^ '/tmp/pharoDownloadImageTemp968553514446844756' asFileReference
+	^ ((FileLocator temp / ('FileAttributesTests-', UUIDGenerator next asString, '.zip')) resolve)
 ]

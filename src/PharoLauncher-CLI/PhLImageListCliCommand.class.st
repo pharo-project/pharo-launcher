@@ -35,7 +35,7 @@ PhLImageListCliCommand class >> launcherCmdFlags [
 					description: 'the substring to search through the images';
 					meaning: [ :pos | pos word asSymbol ];
 					implicitMeaning: [ :arg :app | ]).
-		(ClapFlag id: #STON)
+		(ClapFlag id: #ston)
 			description: 'Allows to list images with ston output ';
 			meaning: [ :arg :app | true ];
 			implicitMeaning: [ :arg :app | false  ].
@@ -61,6 +61,8 @@ PhLImageListCliCommand >> listImages [
 	images := self name 
 		ifNil: [  self imageRepository images ]
 		ifNotNil:[ self imagesFromName: self name ].
+	self outputAsSton 
+		ifTrue: [ ^ self outputAsSton: images ].
 	self list: images.
 ]
 

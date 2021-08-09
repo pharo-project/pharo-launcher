@@ -83,13 +83,6 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
-{ #category : #accessing }
-PhLCliCommand >> STON [
-	^ (arguments at: #STON) value: self
-	
-	
-]
-
 { #category : #default }
 PhLCliCommand >> defaultTemplate [
 	self
@@ -133,20 +126,15 @@ PhLCliCommand >> imageRepository [
 
 { #category : #'instance creation' }
 PhLCliCommand >> list: aCollection [
-	| counter STONBoolean |
-	STONBoolean := self STON.
+	| counter  |
 	counter := 1.
 	aCollection
 		do: [ :anItem | 
-			STONBoolean
-				ifFalse: [ self outStream
-						nextPutAll: counter asString;
-						nextPutAll: ': '.
-					anItem cliPrintOn: self outStream.
-					self outStream newLine ].
-			STONBoolean
-				ifTrue: [ self outStream nextPutAll: (STON toString: anItem) ].
-			counter := counter + 1 ]
+			self outStream
+				nextPutAll: counter asString;
+				nextPutAll: ': '.
+			anItem cliPrintOn: self outStream.
+			self outStream newLine ]
 ]
 
 { #category : #message }
@@ -160,6 +148,18 @@ PhLCliCommand >> messageErrorCategoryNotFound [
 PhLCliCommand >> outStream [
 	^ outStream
 		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+]
+
+{ #category : #accessing }
+PhLCliCommand >> outputAsSton [
+	^ (arguments at: #ston) value: self
+	
+	
+]
+
+{ #category : #'as yet unclassified' }
+PhLCliCommand >> outputAsSton: aCollection [
+	self outStream nextPutAll: (STON toString: aCollection) 
 ]
 
 { #category : #accessing }

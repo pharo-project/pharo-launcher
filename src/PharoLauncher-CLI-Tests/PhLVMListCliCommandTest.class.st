@@ -19,12 +19,15 @@ PhLVMListCliCommandTest >> testListVirtualMachines [
 
 { #category : #tests }
 PhLVMListCliCommandTest >> testListVirtualMachinesAsSton [
+	| test |
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.
 	self addVmNamed: 'myVm3'.
 	
-	self runCommand: #('launcher' 'vm' 'list' '--STON').
+	self runCommand: #('launcher' 'vm' 'list' '--ston').
 	
-	self assert: (self outputString includesSubstring: 'PhLVirtualMachinesMock{#id:''myVm3''').
+	"self assert: (self outputString  includesSubstring: 'PhLVitualMachinesMock{#id:''myVm3''')."
+	test:= STON fromString: self outputString.
+	self assert: (test at:1) id equals: 'myVm3' 
 	
 ]

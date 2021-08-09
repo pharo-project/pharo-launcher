@@ -29,7 +29,7 @@ PhLTemplateListCliCommand class >> launcherCmdFlags [
 				description: 'Name of the template category variable.';
 				meaning: [ :pos | pos word asSymbol ];
 				implicitMeaning: [ :arg :app | app ])).
-	((ClapFlag id: #STON)
+	((ClapFlag id: #ston)
 		description: 'Allows to list images with ston output ';
 		meaning: [ :arg :app | true ];
 		implicitMeaning: [ :arg :app | false ])}
@@ -42,6 +42,8 @@ PhLTemplateListCliCommand >> execute [
 		categoryNamed: self templateCategory ]
 		on: NotFound
 		do: [ ^ self messageErrorCategoryNotFound ].
+	self outputAsSton 
+		ifTrue: [ ^ self outputAsSton: templateCategory templatesAndGroups ].
 	self list: templateCategory templatesAndGroups
 ]
 

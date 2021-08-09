@@ -28,13 +28,17 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 
 { #category : #tests }
 PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
+	| test |
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	
-	self runCommand: #('launcher' 'image' 'list' '--STON').
+	self runCommand: #('launcher' 'image' 'list' '--ston').
 	 
 	self assertSuccess.  
 	self assert: (self outputString includesSubstring:'PhLImagesMock{#name:''myImage1''').
+	test:= STON fromString: self outputString.
+	self assert: (test at:1) name equals: 'myImage1'
+	
 ]
 
 { #category : #tests }

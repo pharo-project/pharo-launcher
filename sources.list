@@ -152,7 +152,7 @@ OrderedCollection [
 		#type : #HttpListing,
 		#name : 'Pharo 10.0 (development version)',
 		#url : 'https://files.pharo.org/image/100/',
-		#filterPattern : 'href="(Pharo-?10.0-SNAPSHOT.build.[^"]*.zip)"'
+		#filterPattern : 'href="(Pharo-?10-SNAPSHOT.build.[^"]*.zip)"'
 	},	
 	PhLTemplateSource {
 		#type : #HttpListing,

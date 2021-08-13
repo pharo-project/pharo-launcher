@@ -23,6 +23,15 @@ PhLImagePackageCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'command line - arguments' }
+PhLImagePackageCliCommand class >> launcherCmdFlags [
+	^ {(ClapFlag id: #zip)
+			description: 'The package is zipped in output ';
+			meaning: [ :arg :app | true];
+			implicitMeaning: [ :arg :app | false  ].
+			}
+]
+
+{ #category : #'command line - arguments' }
 PhLImagePackageCliCommand class >> launcherCmdPositionals [
 
 	^ {((ClapPositional id: #existingImageName)
@@ -42,6 +51,14 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app | 'default' ];
 					yourself)
 	}
+]
+
+{ #category : #conversion }
+PhLImagePackageCliCommand >> convertToZip: imagePackageFileReference [ 
+	| zip |
+	zip := ZipArchive new.
+	zip addTree: imagePackageFileReference relativeTo: (imagePackageFileReference parent ) match: [ :e | true ].
+	zip writeToFile:  ( self location, '/' ,self image name,'.zip' ) asFileReference
 ]
 
 { #category : #copying }
@@ -78,17 +95,27 @@ PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
 
 { #category : #accessing }
 PhLImagePackageCliCommand >> executeWithImage: anImage [
-	| userNewDirectory |
+	| userNewDirectory  |
 	self image: anImage.
 	userNewDirectory := self location , '/' , anImage name.
 	self createLaunchScriptNew: anImage.
 	self createDirectoryAccordingToPath: userNewDirectory.
 	[ self copyFilesOf: anImage at: userNewDirectory ]
 		on: FileExists
-		do: [ ^ (self outStream
-				nextPutAll: 'a File with the image name already exists at this location'; newLine )].
-	LibC runCommand: 'find ' , self location , '/"' , anImage name , '"/' , self vmName, ' -type f -exec chmod +x {} \;'.
-	LibC runCommand: 'find ' , self location , '/"' , anImage name , '" -iname "', anImage name , '.sh" -type f -exec chmod +x {} \;'
+		do: [ ^ self outStream
+				nextPutAll: 'a File with the image name already exists at this location';
+				newLine ].
+	LibC
+		runCommand:
+			'find ' , self location , '/"' , anImage name , '"/' , self vmName
+				, ' -type f -exec chmod +x {} \;'.
+	LibC
+		runCommand:
+			'find ' , self location , '/"' , anImage name , '" -iname "'
+				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
+	self shouldZip
+		ifTrue: [ self convertToZip: userNewDirectory asFileReference ].
+
 ]
 
 { #category : #accessing }
@@ -123,14 +150,19 @@ PhLImagePackageCliCommand >> location [
 
 { #category : #'default actions' }
 PhLImagePackageCliCommand >> selectDefaultVm [
-	^ (self image pharoVersion, '-x64' )   . 
+	^ ( self image vmManager vmId )  
 
+]
+
+{ #category : #asserting }
+PhLImagePackageCliCommand >> shouldZip [
+	^ (arguments at: #zip) value: self
 ]
 
 { #category : #'find-select' }
 PhLImagePackageCliCommand >> vmName [
-	| arg |
-	arg := (arguments at: #vmName) value: self.
-	arg = 'default' ifTrue:[ arg := self selectDefaultVm ].
-	^arg
+	| argAtVmName |
+	argAtVmName := (arguments at: #vmName) value: self.
+	argAtVmName = 'default' ifTrue:[ argAtVmName := self selectDefaultVm ].
+	^argAtVmName 
 ]

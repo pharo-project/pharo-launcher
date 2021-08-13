@@ -13,15 +13,16 @@ Example of utilisation with templateToUse as your template choice and newImageNa
 Open your terminal in the directory containing the pharo executable. You need to know the path of this image.
 
 -  If you want to use the default template which is the last stable pharo version :
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName 
+./pharo-launcher image create newImageName 
 
 - If your template is in the official distributions group:
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse
+./pharo-launcher image create newImageName templateToUse
 
 - If your template is in an other category (here yourTemplateGroup):
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse --templateCategory yourTemplateGroup
+./pharo-launcher image create newImageName templateToUse --templateCategory yourTemplateGroup
 
-
+./pharo-launcher image create newImageName --build 90-1203
+./pharo-launcher image create newImageName --sha 90-eab34
 
 "
 Class {
@@ -74,9 +75,12 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #helpers }
-PhLImageCreateCliCommand >> buildNumber [
-	^ (arguments at: #build) value: self
+{ #category : #'command execution' }
+PhLImageCreateCliCommand >> createImage: newImageName from: template [
+	^ self imageRepository
+		extractTemplate: template
+		to: newImageName 
+		
 ]
 
 { #category : #default }
@@ -92,7 +96,7 @@ PhLImageCreateCliCommand >> execute [
 	template := [ self template ]
 		on: NotFound
 		do: [ ^ self logCannotFindTemplate ].
-	self createImage: template to: self imageName
+	self createImage: self imageName from: template
 ]
 
 { #category : #accessing }
@@ -100,7 +104,7 @@ PhLImageCreateCliCommand >> imageName [
 	^ (arguments at: #newImageName) word
 ]
 
-{ #category : #message }
+{ #category : #logging }
 PhLImageCreateCliCommand >> logCannotFindTemplate [
 	self errorStream
 		nextPutAll:
@@ -108,7 +112,7 @@ PhLImageCreateCliCommand >> logCannotFindTemplate [
 		cr
 ]
 
-{ #category : #message }
+{ #category : #logging }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 	self outStream
 		nextPutAll:

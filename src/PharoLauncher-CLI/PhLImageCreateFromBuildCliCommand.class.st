@@ -1,6 +1,11 @@
+"
+I'm the command you can use to build an image either from a Pharo build number or from a git SHA.
+You need to specify the pharo version in which the Build number or SHA will be search.
+Indeed this command list availables images for the given pharo distribution from the pharo file server and select the matching version according to the build number or SHA.
+"
 Class {
 	#name : #PhLImageCreateFromBuildCliCommand,
-	#superclass : #PhLImageCliCommand,
+	#superclass : #PhLImageCreateCliCommand,
 	#category : #'PharoLauncher-CLI'
 }
 
@@ -11,7 +16,7 @@ PhLImageCreateFromBuildCliCommand class >> asCliCommand [
 
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
-	^ 'Downloads and creates new image on local computer from remote site based on a Pharo version number a build number and an SHA (would be better without but not possible for the moment) .'
+	^ 'Downloads and creates new image on local computer from remote site based on a Pharo version number a build number and a SHA (would be better without but not possible for the moment) .'
 ]
 
 { #category : #'command line' }
@@ -20,7 +25,7 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #pharoVersionNumber)
 				description: 'the number of the Pharo version you want to use';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
+					implicitMeaning: [ :arg :app | NotFound 
         signal: 'one argument is missing, there is no Pharo version for the new image' .   ];
 					yourself)	.
 		((ClapPositional id: #build)
@@ -36,62 +41,31 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #helpers }
-PhLImageCreateFromBuildCliCommand >> SHA [
-	^ (arguments at: #SHA) word
-]
-
-{ #category : #helpers }
+{ #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
 	^ (arguments at: #build) word
 ]
 
-{ #category : #'command execution' }
-PhLImageCreateFromBuildCliCommand >> execute [
-	| url template  |
-	url := (self findURLOfPharo: self pharoVersionNumber build: self buildNumber) asUrl.
-	template := PhLRemoteTemplate name: self targetName url: url.
-	self createImage: template to: self targetName
-	
-	
-]
-
-{ #category : #'finding/searching' }
-PhLImageCreateFromBuildCliCommand >> findSHAOfPharo: aPharoVersion build: aBuildNumber [ 
-	| urlTable begin stringIncludingUrl url SHA |
-	urlTable := (ZnClient new get: 'https://files.pharo.org/image/', aPharoVersion,'0/') lines.
-	1 to: urlTable size do: [ :index | 
-		(((urlTable at: index) includesSubstring: 'build.',aBuildNumber)
-			and: [ (urlTable at: index) includesSubstring: '64bit' ])
-			ifTrue: [ stringIncludingUrl := urlTable at: index ] ].
-	begin := stringIncludingUrl findString: 'sha.'.
-	SHA := stringIncludingUrl copyFrom: (begin +4) to: (begin+10).  
-	^ SHA
-	
-]
-
-{ #category : #'finding/searching' }
-PhLImageCreateFromBuildCliCommand >> findURLOfPharo: aPharoVersion build: aBuildNumber [
-	| url pharoVersion |
-	pharoVersion := aPharoVersion.
-	pharoVersion = '10'
-		ifFalse: [ pharoVersion := pharoVersion , '.0' ].
-	pharoVersion = '7.0'
-		ifTrue: [ pharoVersion := '-' , pharoVersion , '.0-alpha' ]
-		ifFalse: [ pharoVersion := pharoVersion , '-SNAPSHOT' ].
-	url := 'https://files.pharo.org/image/' , aPharoVersion , '0/Pharo'
-		, pharoVersion , '.build.' , aBuildNumber , '.sha.' , (self
-		findSHAOfPharo: aPharoVersion
-		build: aBuildNumber) , '.arch.64bit.zip'.
-	^ url
-]
-
-{ #category : #helpers }
+{ #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> pharoVersionNumber [
 	^ (arguments at: #pharoVersionNumber) word
 ]
 
 { #category : #accessing }
+PhLImageCreateFromBuildCliCommand >> sha [
+	^ (arguments at: #sha) word
+]
+
+{ #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> targetName [
 	^ (arguments at: #newImageName) word
+]
+
+{ #category : #'command execution' }
+PhLImageCreateFromBuildCliCommand >> template [
+	| url |
+	url := (PhLImageFinder pharoVersion: self pharoVersionNumber build: self buildNumber) findUrl asUrl.
+	^ PhLRemoteTemplate name: self targetName url: url.
+	
+	
 ]

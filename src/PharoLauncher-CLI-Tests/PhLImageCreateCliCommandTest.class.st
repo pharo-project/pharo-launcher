@@ -39,60 +39,8 @@ PhLImageCreateCliCommandTest >> localTemplatesGroup [
 { #category : #running }
 PhLImageCreateCliCommandTest >> setUp [
 	super setUp.
-	self class defaultTimeLimit: 300 seconds.
 	context launcherModel
 		templateRepository: PhLTemplateTestRepository new
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo10ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new. 
-	url := command findURLOfPharo:'10' build:'21'.
-	self assert: url equals: 'https://files.pharo.org/image/100/Pharo10-SNAPSHOT.build.21.sha.f022266.arch.64bit.zip'  
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo7ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOfPharo:'7' build:'510'.
-	self assert: url equals: 'https://files.pharo.org/image/70/Pharo-7.0.0-alpha.build.510.sha.fb39ee7.arch.64bit.zip'
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo8ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOfPharo: '8' build: '210'.
-	self assert: url equals: 'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateForPharo9ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOfPharo: '9' build: '300'.
-	self assert: url equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
-	
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateOnOwnComputerToImplementTheCommand [
-			self
-				runCommand:
-					{'launcher' . 'image' . 'createFromBuild' . '10' . '21' . 'myNewImage'}
-]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
-	self addImageNamed: 'myImage1'.
-	self addImageNamed: 'myImage2'.
-	self
-		runCommand:
-			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myImage3'}.
-	self assertSuccess.
-	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet
 ]
 
 { #category : #tests }

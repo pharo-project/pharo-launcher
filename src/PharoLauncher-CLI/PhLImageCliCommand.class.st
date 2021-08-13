@@ -32,14 +32,6 @@ PhLImageCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
 
-{ #category : #accessing }
-PhLImageCliCommand >> createImage: template to: newImageName [
-	^ self imageRepository
-		extractTemplate: template
-		to: newImageName 
-		
-]
-
 { #category : #'command execution' }
 PhLImageCliCommand >> execute [
 	[ self executeWithImage: self findImage ]

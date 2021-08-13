@@ -78,16 +78,8 @@ PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [
 	aPath asFileReference ensureCreateDirectory 
 ]
 
-{ #category : #creation }
-PhLImagePackageCliCommand >> createLaunchScript: anImage [
-	anImage launchScriptName
-		writeStreamDo: [ :stream | stream nextPutAll: anImage launchScript ].
-	LibC runCommand: 'chmod +x ',anImage launchScriptName fullName
-	
-]
-
 { #category : #'script generation' }
-PhLImagePackageCliCommand >> createLaunchScriptNew: anImage [
+PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	anImage launchScriptName
 		writeStreamDo: [ :stream | stream nextPutAll: (self launchScript: anImage) ].
 	
@@ -98,7 +90,7 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 	| userNewDirectory  |
 	self image: anImage.
 	userNewDirectory := self location , '/' , anImage name.
-	self createLaunchScriptNew: anImage.
+	self createLaunchScript: anImage.
 	self createDirectoryAccordingToPath: userNewDirectory.
 	[ self copyFilesOf: anImage at: userNewDirectory ]
 		on: FileExists
@@ -107,12 +99,11 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 				newLine ].
 	LibC
 		runCommand:
-			'find ' , self location , '/"' , anImage name , '"/' , self vmName
-				, ' -type f -exec chmod +x {} \;'.
+			'find ' , self location , '/"' , anImage name , '"/' , self vmName, ' -type f -exec chmod +x {} \;'.
 	LibC
 		runCommand:
-			'find ' , self location , '/"' , anImage name , '" -iname "'
-				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
+			'find ' , self location , '/"' , anImage name , '" -iname "', anImage name , '.sh" -type f -exec chmod +x {} \;'.
+			
 	self shouldZip
 		ifTrue: [ self convertToZip: userNewDirectory asFileReference ].
 

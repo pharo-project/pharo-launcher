@@ -19,9 +19,9 @@ PhLImagePackageCliCommandTest >> testCreateLaunchScriptShouldSucceed [
 	
 	DiskStore
 		currentFileSystem: self imageRepository baseDirectory fileSystem
-		during: [ self runCommand: #('launcher' 'image' 'package' 'myImage') ].
+		during: [ self runCommand: #('launcher' 'image' 'package' 'myImage' '/') ].
 	
 	script := imageFile parent / 'myImage.sh'.
 	self assert: script isFile.
-	self assert: (script readStream contents includesSubstring: 'pharo-launcher image launch ' , imageFile fullName) 
+	self assert: (script readStream contents includesSubstring: '#!/usr/bin/env bash' ) 
 ]

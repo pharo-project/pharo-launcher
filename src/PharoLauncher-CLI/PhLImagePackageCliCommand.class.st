@@ -96,7 +96,7 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 		on: FileExists
 		do: [ ^ self outStream
 				nextPutAll: 'a File with the image name already exists at this location';
-				newLine ].
+				newLine ]. 
 	LibC
 		runCommand:
 			'find ' , self location , '/"' , anImage name , '"/' , self vmName, ' -type f -exec chmod +x {} \;'.

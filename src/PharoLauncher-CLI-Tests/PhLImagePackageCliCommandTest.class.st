@@ -25,3 +25,19 @@ PhLImagePackageCliCommandTest >> testCreateLaunchScriptShouldSucceed [
 	self assert: script isFile.
 	self assert: (script readStream contents includesSubstring: '#!/usr/bin/env bash' ) 
 ]
+
+{ #category : #tests }
+PhLImagePackageCliCommandTest >> testCreateZippedPackageShouldSucceed [
+	
+	 self imageRepository createImageNamed: 'myImage'.
+	(self imageRepository baseDirectory / 'vms') ensureCreateDirectory. 
+	(self imageRepository baseDirectory / 'vms' / 'aFakeVmToPutInThePackage') ensureCreateFile. 
+	(self imageRepository baseDirectory / 'directoryWithResultingZip') ensureCreateDirectory. 
+	
+	
+	DiskStore
+		currentFileSystem: self imageRepository baseDirectory fileSystem
+		during: [ 
+			self runCommand: #('launcher' 'image' 'package' 'myImage' '/directoryWithResultingZip' 'aFakeVmToPutInThePackage' '--zip').
+					self assert: ((self imageRepository baseDirectory fileSystem / 'directoryWithResultingZip' / 'myImage.zip') isFile) ].
+]

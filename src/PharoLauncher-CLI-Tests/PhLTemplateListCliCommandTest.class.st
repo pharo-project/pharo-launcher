@@ -6,15 +6,14 @@ Class {
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
-	| test |
+	| template |
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'list' '--ston').
 	
 	self assertSuccess.
-	self assert: (self outputString includesSubstring:'PhLRemoteTemplate{#name:''fakeTemplate').
-	test := STON fromString: self outputString.
-	self assert: (test at:1) name equals:'fakeTemplate'
+	template := STON fromString: self outputString.
+	self assert: (template first) name equals:'fakeTemplate'
 	
 ]
 
@@ -30,12 +29,14 @@ PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed [
+	| templateCategory |
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'Local test templates' '--ston').
 	
 	self assertSuccess.
-	
+	templateCategory := ( STON fromString: self outputString).
+	self assert: (templateCategory first) name equals:'fakeTemplate'
 ]
 
 { #category : #tests }

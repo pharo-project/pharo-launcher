@@ -27,6 +27,56 @@ PhLImagePackageCliCommandTest >> testCreateLaunchScriptShouldSucceed [
 ]
 
 { #category : #tests }
+PhLImagePackageCliCommandTest >> testCreatePackageAlreadyCreateShouldReturnError [
+	 self imageRepository createImageNamed: 'myImage'.
+	(self imageRepository baseDirectory / 'vms') ensureCreateDirectory. 
+	(self imageRepository baseDirectory / 'vms' / 'aFakeVmToPutInThePackage') ensureCreateFile. 
+	(self imageRepository baseDirectory / 'directoryWithResultingPackage') ensureCreateDirectory. 
+	(self imageRepository baseDirectory / 'directoryWithResultingPackage' / 'myImage') ensureCreateDirectory. 
+	
+	DiskStore
+		currentFileSystem: self imageRepository baseDirectory fileSystem
+		during: [ 
+			self runCommand: #('launcher' 'image' 'package' 'myImage' '/directoryWithResultingPackage' '--vm' 'aFakeVmToPutInThePackage').
+			self assert: (self errorString includesSubstring: 'a Directory with the image name already exists') ].
+]
+
+{ #category : #tests }
+PhLImagePackageCliCommandTest >> testCreatePackageNoLocationSettedShouldReturnError [
+	 self imageRepository createImageNamed: 'myImage'.
+	(self imageRepository baseDirectory / 'vms') ensureCreateDirectory. 
+	(self imageRepository baseDirectory / 'vms' / 'aFakeVmToPutInThePackage') ensureCreateFile. 
+	(self imageRepository baseDirectory / 'directoryWithResultingPackage') ensureCreateDirectory. 
+	(self imageRepository baseDirectory / 'directoryWithResultingPackage' / 'myImage') ensureCreateDirectory. 
+	
+	DiskStore
+		currentFileSystem: self imageRepository baseDirectory fileSystem
+		during: [ 
+			self runCommand: #('launcher' 'image' 'package' 'myImage' '--vm' 'aFakeVmToPutInThePackage').
+			self assert: (self errorString includesSubstring: 'no path to put the package') ].
+]
+
+{ #category : #tests }
+PhLImagePackageCliCommandTest >> testCreatePackageShouldSucceed [
+	self imageRepository createImageNamed: 'myImage'.
+	(self imageRepository baseDirectory / 'vms') ensureCreateDirectory.
+	(self imageRepository baseDirectory / 'vms'
+		/ 'aFakeVmToPutInThePackage') ensureCreateFile.
+	(self imageRepository baseDirectory / 'directoryWithResultingPackage')
+		ensureCreateDirectory.
+	DiskStore
+		currentFileSystem: self imageRepository baseDirectory fileSystem
+		during: [ self
+				runCommand:
+					#('launcher' 'image' 'package' 'myImage' '/directoryWithResultingPackage' '--vm' 'aFakeVmToPutInThePackage').
+			self
+				assert:
+					(self imageRepository baseDirectory fileSystem
+						/ 'directoryWithResultingPackage' / 'myImage' / 'myImage.image')
+						isFile ]
+]
+
+{ #category : #tests }
 PhLImagePackageCliCommandTest >> testCreateZippedPackageShouldSucceed [
 	
 	 self imageRepository createImageNamed: 'myImage'.
@@ -38,6 +88,6 @@ PhLImagePackageCliCommandTest >> testCreateZippedPackageShouldSucceed [
 	DiskStore
 		currentFileSystem: self imageRepository baseDirectory fileSystem
 		during: [ 
-			self runCommand: #('launcher' 'image' 'package' 'myImage' '/directoryWithResultingZip' 'aFakeVmToPutInThePackage' '--zip').
+			self runCommand: #('launcher' 'image' 'package' 'myImage' '/directoryWithResultingZip' '--vm' 'aFakeVmToPutInThePackage' '--zip').
 					self assert: ((self imageRepository baseDirectory fileSystem / 'directoryWithResultingZip' / 'myImage.zip') isFile) ].
 ]

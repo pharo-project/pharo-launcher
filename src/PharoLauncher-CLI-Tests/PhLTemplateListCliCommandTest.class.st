@@ -6,14 +6,15 @@ Class {
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
-	| template |
+	| templates |
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'list' '--ston').
 	
 	self assertSuccess.
-	template := STON fromString: self outputString.
-	self assert: (template first) name equals:'fakeTemplate'
+	templates := STON fromString: self outputString.
+	self assert: templates size equals: 2.
+	self assert: (templates first) name equals:'fakeTemplate'.
 	
 ]
 

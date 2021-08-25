@@ -124,9 +124,9 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #'instance creation' }
+{ #category : #listing }
 PhLCliCommand >> list: aCollection [
-	| counter  |
+	| counter |
 	counter := 1.
 	aCollection
 		do: [ :anItem | 
@@ -135,6 +135,11 @@ PhLCliCommand >> list: aCollection [
 				nextPutAll: ': '.
 			anItem cliPrintOn: self outStream.
 			self outStream newLine ]
+]
+
+{ #category : #listing }
+PhLCliCommand >> listAsSton: aCollection [
+	self outStream nextPutAll: (STON toString: aCollection) 
 ]
 
 { #category : #message }
@@ -153,13 +158,6 @@ PhLCliCommand >> outStream [
 { #category : #accessing }
 PhLCliCommand >> outputAsSton [
 	^ (arguments at: #ston) value: self
-	
-	
-]
-
-{ #category : #'as yet unclassified' }
-PhLCliCommand >> outputAsSton: aCollection [
-	self outStream nextPutAll: (STON toString: aCollection) 
 ]
 
 { #category : #accessing }

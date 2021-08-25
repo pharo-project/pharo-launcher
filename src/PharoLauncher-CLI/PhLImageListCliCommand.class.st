@@ -62,7 +62,7 @@ PhLImageListCliCommand >> listImages [
 		ifNil: [  self imageRepository images ]
 		ifNotNil:[ self imagesFromName: self name ].
 	self outputAsSton 
-		ifTrue: [ ^ self outputAsSton: images ].
+		ifTrue: [ ^ self listAsSton: images ].
 	self list: images.
 ]
 

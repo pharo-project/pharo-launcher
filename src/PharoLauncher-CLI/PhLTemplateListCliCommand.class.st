@@ -43,7 +43,7 @@ PhLTemplateListCliCommand >> execute [
 		on: NotFound
 		do: [ ^ self messageErrorCategoryNotFound ].
 	self outputAsSton 
-		ifTrue: [ ^ self outputAsSton: (templateCategory templatesAndGroups) asOrderedCollection  ].
+		ifTrue: [ ^ self listAsSton: (templateCategory templatesAndGroups) asOrderedCollection  ].
 	self list: templateCategory templatesAndGroups
 ]
 

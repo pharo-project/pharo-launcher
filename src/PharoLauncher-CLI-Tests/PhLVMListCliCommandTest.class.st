@@ -26,9 +26,8 @@ PhLVMListCliCommandTest >> testListVirtualMachinesAsSton [
 	
 	self runCommand: #('launcher' 'vm' 'list' '--ston').
 	
-	"self assert: (self outputString  includesSubstring: 'PhLVitualMachinesMock{#id:''myVm3''')."
 	vm := STON fromString: self outputString.
+	self assert: vm size equals: 3.
 	self assert: vm first id equals: 'myVm3'.
-	self assert: vm size equals:3 
 	
 ]

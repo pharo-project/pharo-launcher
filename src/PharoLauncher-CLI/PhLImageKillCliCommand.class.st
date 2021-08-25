@@ -33,7 +33,7 @@ PhLImageKillCliCommand class >> launcherCmdFlags [
 PhLImageKillCliCommand class >> launcherCmdPositionals [
 	^ {
 		((ClapPositional id: #existingImageName)
-				description: 'New image.';
+				description: 'Selected image to kill.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
         signal: 'one argument is missing, there is no image name to kill' .   ];
@@ -44,12 +44,22 @@ PhLImageKillCliCommand class >> launcherCmdPositionals [
 { #category : #'command execution' }
 PhLImageKillCliCommand >> execute [
 	(arguments at: #all) value
-		ifTrue: [ ^ LibC
+		ifTrue: [ ^ (self killAllImages) ].
+	self killSelectedImage 
+
+]
+
+{ #category : #commands }
+PhLImageKillCliCommand >> killAllImages [
+	 ^ LibC
 				runCommand:
-					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f1)' ].
-	LibC
+					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f1)'
+]
+
+{ #category : #commands }
+PhLImageKillCliCommand >> killSelectedImage [
+LibC
 		runCommand:
 			'kill $(ps x | grep  -i Pharo | grep ''.image''  | grep '
 				, self imageName , ' | tr -s '' '' | cut -d '' '' -f1)'
-
 ]

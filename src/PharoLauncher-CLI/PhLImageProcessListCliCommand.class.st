@@ -19,7 +19,7 @@ PhLImageProcessListCliCommand class >> launcherCmdDescription [
 
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> execute [
-	"The brackets between the P of Pharo is to avoid to list the get procress whn using ps x."
+	"The brackets between the P of Pharo is to avoid to list the get procress when using ps x."
 	"The grep -v ps is to avoid to list the pharo launcher image."
 	LibC
 		runCommand:

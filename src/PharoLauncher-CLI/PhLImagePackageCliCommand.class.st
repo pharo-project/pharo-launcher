@@ -19,23 +19,23 @@ PhLImagePackageCliCommand class >> asCliCommand [
 
 { #category : #'command line' }
 PhLImagePackageCliCommand class >> launcherCmdDescription [
-	^ 'Creates a script to launch an image.'
+	^ 'Creates a package containing everything neeeded to launch easily the image.'
 ]
 
 { #category : #'command line - arguments' }
 PhLImagePackageCliCommand class >> launcherCmdFlags [
 	^ {(ClapFlag id: #zip)
-			description: 'The package is zipped in output ';
+			description: 'The resulting package is zipped';
 			meaning: [ :arg :app | true];
 			implicitMeaning: [ :arg :app | false  ].
 		(ClapFlag id: #vm)
-				description: 'Allows to select manually the vm';
-				meaning: [  :arg :app | (arg at: #vmName) word ];
-				implicitMeaning: [  :arg :app | ^'default' ];
-				add: ((ClapPositional id: #vmName)
-					description: 'Name of the vm to select';
+				description: 'Allows to specify the vm to use to launch the image';
+				meaning: [ :arg :app | (arg at: #vmId) word ];
+				implicitMeaning: [ :arg :app | 'default' ];
+				add: ((ClapPositional id: #vmId)
+					description: 'Id of the vm to use';
 					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app | ^ 'default' ]).
+					implicitMeaning: [ :arg :app | 'default' ]).
 			}
 ]
 
@@ -57,23 +57,25 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #conversion }
-PhLImagePackageCliCommand >> convertToZip: imagePackageFileReference [ 
+PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [ 
 	| zip |
 	zip := ZipArchive new.
-	zip addTree: imagePackageFileReference relativeTo: (imagePackageFileReference parent ) match: [ :e | true ].
+	zip addTree: imageFolderFileReference relativeTo: (imageFolderFileReference parent) match: [ :e | true ].
 	zip writeToFile:  ( self location, '/' ,self image name,'.zip' ) asFileReference
 ]
 
 { #category : #copying }
 PhLImagePackageCliCommand >> copyFilesOf: anImage at: aDirectory [
-	(anImage file parent / (anImage name,'.image')) 
+	| imageFolder |
+	imageFolder := anImage file parent.
+	(imageFolder / (anImage name,'.image')) 
 		copyTo: (aDirectory , '/' , anImage name , '.image') asFileReference.
-	(anImage file parent / (anImage name,'.sh')) 
+	(imageFolder / (anImage name,'.sh')) 
 		copyTo: (aDirectory , '/' , anImage name , '.sh') asFileReference.
-	(anImage file parent / (anImage name,'.changes')) 
+	(imageFolder / (anImage name,'.changes')) 
 		copyTo: (aDirectory , '/' , anImage name , '.changes') asFileReference.
-	(anImage file parent parent parent / 'vms' / self vmName)
-		copyAllTo: (aDirectory , '/', self vmName) asFileReference
+	(PhLVirtualMachineManager vmStore / self vmId)
+		copyAllTo: (aDirectory , '/', self vmId) asFileReference
 ]
 
 { #category : #creation }
@@ -88,18 +90,40 @@ PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	
 ]
 
-{ #category : #'default actions' }
-PhLImagePackageCliCommand >> defaultVmID [
-	^ ( self image vmManager vmId )  
+{ #category : #accessing }
+PhLImagePackageCliCommand >> defaultVmId [
+	^ self image vmManager vmId
 
 ]
 
-{ #category : #checking }
+{ #category : #testing }
 PhLImagePackageCliCommand >> directoryAlreadyExists: aDirectory [ 
 	^ ((self imageRepository baseDirectory fileSystem
 			exists: aDirectory)
 			and: [ self imageRepository baseDirectory fileSystem
 					isDirectory: aDirectory ])
+]
+
+{ #category : #copying }
+PhLImagePackageCliCommand >> ensureExecutionPermissionFor: anImage [
+	self ensureVmFileIsExecutable: anImage.
+	self ensureLaunchScriptIsExecutable: anImage.
+]
+
+{ #category : #copying }
+PhLImagePackageCliCommand >> ensureLaunchScriptIsExecutable: anImage [
+	LibC
+		runCommand:
+			'find ' , self location , '/"' , anImage name , '" -iname "'
+				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
+]
+
+{ #category : #copying }
+PhLImagePackageCliCommand >> ensureVmFileIsExecutable: anImage [
+	LibC
+		runCommand:
+			'find ' , self location , '/"' , anImage name , '"/' , self vmId
+				, ' -type f -exec chmod +x {} \;'.
 ]
 
 { #category : #accessing }
@@ -120,31 +144,19 @@ PhLImagePackageCliCommand >> executeWithImage: anImage [
 				newLine ].
 	self createDirectoryAccordingToPath: userNewDirectory.
 	self copyFilesOf: anImage at: userNewDirectory.
-	self giveRightPermissionsToFiles: anImage .
+	self ensureExecutionPermissionFor: anImage .
 	self shouldZip
 		ifTrue: [ self convertToZip: userNewDirectory asFileReference ]
 ]
 
-{ #category : #'as yet unclassified' }
-PhLImagePackageCliCommand >> giveRightPermissionsToFiles: anImage [
-	LibC
-		runCommand:
-			'find ' , self location , '/"' , anImage name , '"/' , self vmName
-				, ' -type f -exec chmod +x {} \;'.
-	LibC
-		runCommand:
-			'find ' , self location , '/"' , anImage name , '" -iname "'
-				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
-]
-
 { #category : #accessing }
-PhLImagePackageCliCommand >> image [ 
-	^image 
+PhLImagePackageCliCommand >> image [
+	^ image
 ]
 
 { #category : #accessing }
 PhLImagePackageCliCommand >> image: anImage [
-	image := anImage 
+	image := anImage
 ]
 
 { #category : #'script generation' }
@@ -182,15 +194,15 @@ PhLImagePackageCliCommand >> location [
 	^ (arguments at: #location) value: self
 ]
 
-{ #category : #asserting }
+{ #category : #testing }
 PhLImagePackageCliCommand >> shouldZip [
 	^ (arguments at: #zip) value: self
 ]
 
-{ #category : #'find-select' }
-PhLImagePackageCliCommand >> vmName [
+{ #category : #accessing }
+PhLImagePackageCliCommand >> vmId [
 	| argAtVmName |
 	argAtVmName := (arguments at: #vm) value: self.
-	argAtVmName = 'default' ifTrue:[ argAtVmName := self defaultVmID ].
-	^argAtVmName 
+	argAtVmName = 'default' ifTrue: [ argAtVmName := self defaultVmId ].
+	^ argAtVmName
 ]

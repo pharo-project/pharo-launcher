@@ -24,7 +24,17 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all available VMs, with status.'
 ]
 
+{ #category : #'command line - arguments' }
+PhLVmListCliCommand class >> launcherCmdFlags [
+	^ {((ClapFlag id: #ston)
+		description: 'Allows to list images with ston output ';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])}
+]
+
 { #category : #accessing }
 PhLVmListCliCommand >> execute [
+	self outputAsSton 
+		ifTrue: [ ^ self listAsSton: self vmRepository ].
 	self list: self vmRepository
 ]

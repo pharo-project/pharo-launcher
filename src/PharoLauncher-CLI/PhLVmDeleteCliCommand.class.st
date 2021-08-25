@@ -24,16 +24,6 @@ PhLVmDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes VM executable from local computer, including dependencies.'
 ]
 
-{ #category : #'command line' }
-PhLVmDeleteCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingVirtualMachineName)
-		description: 'Local VM name to be deleted.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, need a vm name to be deleted' .  ];
-		yourself)}
-]
-
 { #category : #initialization }
 PhLVmDeleteCliCommand >> executeWithVM: aVm [
    aVm removeFromSystem

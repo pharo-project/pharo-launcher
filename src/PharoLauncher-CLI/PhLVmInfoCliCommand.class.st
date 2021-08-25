@@ -25,16 +25,6 @@ PhLVmInfoCliCommand class >> launcherCmdDescription [
 	^ 'Prints information about VM: name, remote-site URL, last update status, etc.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLVmInfoCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingVirtualMachineName)
-		description: 'Local VM name to be deleted.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, need a vm name to display its informations' .  ];
-		yourself)}
-]
-
 { #category : #accessing }
 PhLVmInfoCliCommand >> displayInfoVm: aVM [
 	self outStream

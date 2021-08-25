@@ -21,17 +21,7 @@ PhLVmUpdateCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLVmUpdateCliCommand class >> launcherCmdDescription [
 
-	^ 'Updates VM executable, including depedent libs to latest version from remote site.'
-]
-
-{ #category : #'command line - arguments' }
-PhLVmUpdateCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingVirtualMachineName)
-		description: 'Local VM name to be deleted.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, need a virtual machine name to update it' .  ];
-		yourself)}
+	^ 'Updates VM executable, including dependent libs to latest version from remote site.'
 ]
 
 { #category : #accessing }

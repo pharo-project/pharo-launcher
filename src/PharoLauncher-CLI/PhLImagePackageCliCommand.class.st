@@ -86,7 +86,7 @@ PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [
 { #category : #'script generation' }
 PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	anImage launchScriptName
-		writeStreamDo: [ :stream | stream nextPutAll: (self launchScriptFor: anImage) ].
+		writeStreamDo: [ :stream | stream nextPutAll: (self launchScriptFor: anImage ) ].
 	
 ]
 
@@ -161,19 +161,25 @@ PhLImagePackageCliCommand >> image: anImage [
 
 { #category : #'script generation' }
 PhLImagePackageCliCommand >> launchScriptFor: anImage [
-	^ String streamContents: [ :stream |
-		stream
-			nextPutAll: '#!/usr/bin/env bash';
-			lf;
-			nextPutAll: '# some magic to find out the real location of this script dealing with symlinks
+	^ self launchScriptTemplate  
+        format: (Dictionary 
+            with: #IMAGE_NAME -> anImage name
+            with: #VM_ID -> self vmId)
+
+]
+
+{ #category : #'script generation' }
+PhLImagePackageCliCommand >> launchScriptTemplate [
+	^ '#!/usr/bin/env bash
+# some magic to find out the real location of this script dealing with symlinks
 DIR=`readlink "$0"` || DIR="$0";
 ROOT=`dirname "$DIR"`;
 
 # DETECT SYSTEM PROPERTIES ======================================================
 TMP_OS=`uname | tr "[:upper:]" "[:lower:]"`
-if [[ "{$TMP_OS}" = *darwin* ]]; then
+if [[ "\{$TMP_OS}" = *darwin* ]]; then
     OS="mac";
-elif [[ "{$TMP_OS}" = *linux* ]]; then
+elif [[ "\{$TMP_OS}" = *linux* ]]; then
     OS="linux";
 else
     echo "Unsupported OS";
@@ -182,11 +188,10 @@ fi
 
 # RUN THE VM and pass along all arguments as is ================================
 if [ "$OS" = "linux" ]; then
-    "$ROOT"/pharo-vm/pharo ...
+    "$ROOT"/{VM_ID}/pharo "$ROOT"/{IMAGE_NAME}.image
 elif [ "$OS" = "mac" ]; then 
-    "$ROOT"/Pharo ...
-fi'
-	]
+    "$ROOT"/{VM_ID}/Pharo.app/Contents/MacOS/Pharo "$ROOT"/{IMAGE_NAME}.image 
+fi' withUnixLineEndings 
 ]
 
 { #category : #accessing }

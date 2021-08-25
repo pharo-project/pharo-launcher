@@ -24,6 +24,11 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all available VMs, with status.'
 ]
 
+{ #category : #'command line - arguments' }
+PhLVmListCliCommand class >> launcherCmdPositionals [
+	^ #()
+]
+
 { #category : #accessing }
 PhLVmListCliCommand >> execute [
 	self list: self vmRepository

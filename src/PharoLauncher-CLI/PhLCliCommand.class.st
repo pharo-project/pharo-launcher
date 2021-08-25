@@ -124,8 +124,8 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #'instance creation' }
-PhLCliCommand >> list: aCollection [ 
+{ #category : #listing }
+PhLCliCommand >> list: aCollection [
 	| counter |
 	counter := 1.
 	aCollection
@@ -133,9 +133,13 @@ PhLCliCommand >> list: aCollection [
 			self outStream
 				nextPutAll: counter asString;
 				nextPutAll: ': '.
-				anItem cliPrintOn: self outStream.
-			self outStream newLine.
-			counter := counter + 1 ]
+			anItem cliPrintOn: self outStream.
+			self outStream newLine ]
+]
+
+{ #category : #listing }
+PhLCliCommand >> listAsSton: aCollection [
+	self outStream nextPutAll: (STON toString: aCollection) 
 ]
 
 { #category : #message }
@@ -149,6 +153,11 @@ PhLCliCommand >> messageErrorCategoryNotFound [
 PhLCliCommand >> outStream [
 	^ outStream
 		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+]
+
+{ #category : #accessing }
+PhLCliCommand >> outputAsSton [
+	^ (arguments at: #ston) value: self
 ]
 
 { #category : #accessing }

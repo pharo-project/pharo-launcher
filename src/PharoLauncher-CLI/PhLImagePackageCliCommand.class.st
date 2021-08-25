@@ -86,7 +86,7 @@ PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [
 { #category : #'script generation' }
 PhLImagePackageCliCommand >> createLaunchScript: anImage [
 	anImage launchScriptName
-		writeStreamDo: [ :stream | stream nextPutAll: (self launchScriptFor: anImage ) ].
+		writeStreamDo: [ :stream | stream nextPutAll: (self launchScriptFor: anImage) ].
 	
 ]
 

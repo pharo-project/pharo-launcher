@@ -26,6 +26,18 @@ PhLVmCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to VM management.'
 ]
 
+{ #category : #'command line - arguments' }
+PhLVmCliCommand class >> launcherCmdPositionals [
+	^ {
+	((ClapPositional id: #existingVirtualMachineId)
+		description: 'Local Virtual Machine id.';
+		meaning: [ :pos | pos asString ];
+		implicitMeaning: [ :arg :app |
+			NotFound signal: 'one argument is missing, need a virtual machine name to update it'. ];
+		yourself)
+	}
+]
+
 { #category : #'command execution' }
 PhLVmCliCommand >> execute [
 	[ self executeWithVM: self findVM ]
@@ -36,7 +48,7 @@ PhLVmCliCommand >> execute [
 { #category : #'find-select' }
 PhLVmCliCommand >> findVM [
 	^ self vmRepository
-		detect: [ :virtualMachine | virtualMachine id = self vmName ]
+		detect: [ :virtualMachine | virtualMachine id = self vmId ]
 ]
 
 { #category : #printing }
@@ -48,7 +60,7 @@ PhLVmCliCommand >> logVMNotFound [
 ]
 
 { #category : #'find-select' }
-PhLVmCliCommand >> vmName [ 
-  ^ (arguments at: #existingVirtualMachineName) word 
+PhLVmCliCommand >> vmId [
+  ^ (arguments at: #existingVirtualMachineId) word 
 	
 ]

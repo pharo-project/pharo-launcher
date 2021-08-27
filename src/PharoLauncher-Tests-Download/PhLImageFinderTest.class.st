@@ -10,25 +10,6 @@ PhLImageFinderTest class >> defaultTimeLimit [
 ]
 
 { #category : #tests }
-PhLImageFinderTest >> testCreateImageFromABuildOfATemplateForPharo8ShouldReturnGoodURL [
-	| finder |
-	finder := PhLImageFinder pharoVersion: '8' build: '210'.
-	self
-		assert: finder findUrl
-		equals:
-			'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
-]
-
-{ #category : #tests }
-PhLImageFinderTest >> testCreateImageFromABuildOfATemplateForPharo9ShouldReturnGoodURL [
-	| finder |
-	
-	finder := PhLImageFinder pharoVersion: '9' build:'300'.
-	self assert: finder findUrl equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
-	
-]
-
-{ #category : #tests }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 	| finder |
 	
@@ -43,6 +24,25 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo7AndValidBuildNumberProvided [
 	finder := PhLImageFinder pharoVersion: '7' build:'510'.
 	self assert: finder findUrl equals: 'https://files.pharo.org/image/70/Pharo-7.0.0-alpha.build.510.sha.fb39ee7.arch.64bit.zip'
 
+]
+
+{ #category : #tests }
+PhLImageFinderTest >> testShouldFindUrlWhenPharo8AndValidBuildNumberProvided [
+	| finder |
+	finder := PhLImageFinder pharoVersion: '8' build: '210'.
+	self
+		assert: finder findUrl
+		equals:
+			'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
+]
+
+{ #category : #tests }
+PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
+	| finder |
+	
+	finder := PhLImageFinder pharoVersion: '9' build:'300'.
+	self assert: finder findUrl equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
+	
 ]
 
 { #category : #tests }

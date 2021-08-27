@@ -8,7 +8,7 @@ Class {
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildOfATemplateOnOwnComputerToImplementTheCommand [
 			self
 				runCommand:
-					{'launcher' . 'image' . 'createFromBuild' . '10' . '21' . 'myNewImage'}
+					{'launcher' . 'image' . 'createFromBuild' . '10' . '21' . 'myNewImage'}.
 ]
 
 { #category : #tests }
@@ -17,7 +17,7 @@ PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildOfATemplateSho
 	self addImageNamed: 'myImage2'.
 	self
 		runCommand:
-			{'launcher' . 'image' . 'createFromBuild' . '10' . '18' . 'myImage3'}.
+			#('launcher' 'image' 'createFromBuild' 'myImage3' '--build' '18' '--pharoVersion' '10' ).
 	self assertSuccess.
 	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet
 ]

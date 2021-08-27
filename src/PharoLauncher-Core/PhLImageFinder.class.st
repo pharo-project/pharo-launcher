@@ -20,6 +20,13 @@ PhLImageFinder class >> pharoVersion: aPharoVersionString build: aPharoImageBuil
 		yourself
 ]
 
+{ #category : #'instance creation' }
+PhLImageFinder class >> pharoVersion: aPharoVersionString sha: aPharoImageSha [
+	^ self new
+		pharoVersion: aPharoVersionString sha: aPharoImageSha;
+		yourself
+]
+
 { #category : #accessing }
 PhLImageFinder >> buildNumber [
 	^ build
@@ -65,6 +72,12 @@ PhLImageFinder >> pharoVersion [
 PhLImageFinder >> pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString [
 	pharoVersion := aPharoVersionString.
 	build := aPharoImageBuildNumberString
+]
+
+{ #category : #initialization }
+PhLImageFinder >> pharoVersion: aPharoVersionString sha: aPharoImageSha [
+	pharoVersion := aPharoVersionString.
+	sha := aPharoImageSha 
 ]
 
 { #category : #accessing }

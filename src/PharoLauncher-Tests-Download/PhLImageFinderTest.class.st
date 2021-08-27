@@ -11,18 +11,20 @@ PhLImageFinderTest class >> defaultTimeLimit [
 
 { #category : #tests }
 PhLImageFinderTest >> testCreateImageFromABuildOfATemplateForPharo8ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOfPharo: '8' build: '210'.
-	self assert: url equals: 'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
+	| finder |
+	finder := PhLImageFinder pharoVersion: '8' build: '210'.
+	self
+		assert: finder findUrl
+		equals:
+			'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
 ]
 
 { #category : #tests }
 PhLImageFinderTest >> testCreateImageFromABuildOfATemplateForPharo9ShouldReturnGoodURL [
-	| url command |
-	command := PhLImageCreateFromBuildCliCommand new.
-	url := command findURLOfPharo: '9' build: '300'.
-	self assert: url equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
+	| finder |
+	
+	finder := PhLImageFinder pharoVersion: '9' build:'300'.
+	self assert: finder findUrl equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
 	
 ]
 

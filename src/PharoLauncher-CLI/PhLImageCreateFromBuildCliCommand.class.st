@@ -20,19 +20,38 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'command line' }
+PhLImageCreateFromBuildCliCommand class >> launcherCmdFlags [
+
+	^ {(ClapFlag id: #build)
+				description: 'Flag to precise the build to download ';
+				meaning: [  :arg :app | (arg at: #buildNumber) word ];
+				implicitMeaning: [  :arg :app | 1 ];
+				add: ((ClapPositional id: #nuildNumber)
+					description: 'Number if build to use';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app | 1 ]).
+		 (ClapFlag id: #sha)
+				description: 'Flag to precise the sha to download';
+				meaning: [  :arg :app | (arg at: #shaString) word ];
+				implicitMeaning: [  :arg :app | 1 ];
+				add: ((ClapPositional id: #shaString)
+					description: 'Sha used to find the image to download.';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app | 1 ]).
+		(ClapFlag id: #pharoVersion)
+				description: 'version of Pharo you want to download';
+				meaning: [ :arg :app | (arg at: #pharoVersion) word ];
+				implicitMeaning: [  :arg :app | NotFound signal: 'you need to specify a Pharo version' ];
+				add: ((ClapPositional id: #pharoVersion)
+					description: 'version of Pharo you want to download.';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app | NotFound signal: 'you need to specify a Pharo version'  ])
+		}
+]
+
+{ #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
 	^ {
-		((ClapPositional id: #pharoVersionNumber)
-				description: 'the number of the Pharo version you want to use';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app | NotFound 
-        signal: 'one argument is missing, there is no Pharo version for the new image' .   ];
-					yourself)	.
-		((ClapPositional id: #build)
-				description: 'build number of the template to download';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app |  ];
-					yourself).
 		((ClapPositional id: #newImageName)
 				description: 'name of the new image';
 					meaning: [ :pos | pos  word ];
@@ -43,17 +62,27 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
 
 { #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
-	^ (arguments at: #build) word
+  ^ (arguments at: #build) value: self
+]
+
+{ #category : #checking }
+PhLImageCreateFromBuildCliCommand >> checkIfDoable [
+	(self shaString + self buildNumber = 2 ) ifTrue: [ false ]
 ]
 
 { #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> pharoVersionNumber [
-	^ (arguments at: #pharoVersionNumber) word
+	^ (arguments at: #pharoVersion) value: self
 ]
 
 { #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> sha [
 	^ (arguments at: #sha) word
+]
+
+{ #category : #accessing }
+PhLImageCreateFromBuildCliCommand >> shaString [ 
+  ^ (arguments at: #sha) value: self
 ]
 
 { #category : #accessing }
@@ -64,8 +93,15 @@ PhLImageCreateFromBuildCliCommand >> targetName [
 { #category : #'command execution' }
 PhLImageCreateFromBuildCliCommand >> template [
 	| url |
-	url := (PhLImageFinder pharoVersion: self pharoVersionNumber build: self buildNumber) findUrl asUrl.
-	^ PhLRemoteTemplate name: self targetName url: url.
-	
-	
+	self checkIfDoable
+		ifFalse: [ NotFound
+				signal:
+					'an Information is missing to proceed. The build number or the sha is needed.' ].
+	url := self buildNumber = 1
+		ifTrue: [ (PhLImageFinder pharoVersion: self pharoVersionNumber sha: self sha)
+				findUrl asUrl ]
+		ifFalse: [ (PhLImageFinder
+				pharoVersion: self pharoVersionNumber
+				build: self buildNumber) findUrl asUrl ].
+	^ PhLRemoteTemplate name: self targetName url: url
 ]

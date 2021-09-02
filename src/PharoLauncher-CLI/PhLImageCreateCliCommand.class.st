@@ -64,8 +64,8 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #newImageName)
 				description: 'New image.';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, there is no name for the new image' .   ];
+					implicitMeaning: [ :arg :app |
+						NotFound signal: 'one argument is missing, there is no name for the new image'. ];
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
@@ -73,6 +73,12 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app | app defaultTemplate ];
 					yourself).
 	}
+]
+
+{ #category : #'command line - subcommands' }
+PhLImageCreateCliCommand class >> launcherCmdSubcommands [
+
+	^ #()
 ]
 
 { #category : #'command execution' }
@@ -92,10 +98,12 @@ PhLImageCreateCliCommand >> defaultTemplate [
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
 	| template |
-	self logCreationOfImageFrom: self templateName.
-	template := [ self template ]
-		on: NotFound
-		do: [ ^ self logCannotFindTemplate ].
+	template := 
+		[ self logCreationOfImageFrom: self templateName. 
+		self template ]
+			on: NotFound
+			do: [ :error | 
+					^ self logCannotFindTemplate: error ].
 	self createImage: self imageName from: template
 ]
 
@@ -105,10 +113,11 @@ PhLImageCreateCliCommand >> imageName [
 ]
 
 { #category : #logging }
-PhLImageCreateCliCommand >> logCannotFindTemplate [
+PhLImageCreateCliCommand >> logCannotFindTemplate: error [
 	self errorStream
-		nextPutAll:
-			'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		nextPutAll: 'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		cr;
+		nextPutAll: error messageText;
 		cr
 ]
 

@@ -13,15 +13,16 @@ Example of utilisation with templateToUse as your template choice and newImageNa
 Open your terminal in the directory containing the pharo executable. You need to know the path of this image.
 
 -  If you want to use the default template which is the last stable pharo version :
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName 
+./pharo-launcher image create newImageName 
 
 - If your template is in the official distributions group:
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse
+./pharo-launcher image create newImageName templateToUse
 
 - If your template is in an other category (here yourTemplateGroup):
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image create newImageName templateToUse --templateCategory yourTemplateGroup
+./pharo-launcher image create newImageName templateToUse --templateCategory yourTemplateGroup
 
-
+./pharo-launcher image create newImageName --build 90-1203
+./pharo-launcher image create newImageName --sha 90-eab34
 
 "
 Class {
@@ -51,7 +52,7 @@ PhLImageCreateCliCommand class >> launcherCmdFlags [
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category variable.';
 					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app | ^ app ])}
+					implicitMeaning: [  :arg :app |  ]).}
 					
 			
 ]
@@ -63,8 +64,8 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 		((ClapPositional id: #newImageName)
 				description: 'New image.';
 					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, there is no name for the new image' .   ];
+					implicitMeaning: [ :arg :app |
+						NotFound signal: 'one argument is missing, there is no name for the new image'. ];
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
@@ -74,14 +75,18 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #accessing }
-PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
-	self logCreationOfImageFrom: aTemplateName.
-	^ [ self imageRepository
-		extractTemplate: self template
-		to: newImageName ]
-		on: NotFound
-		do: [ self logCannotFindTemplate ]
+{ #category : #'command line - subcommands' }
+PhLImageCreateCliCommand class >> launcherCmdSubcommands [
+
+	^ #()
+]
+
+{ #category : #'command execution' }
+PhLImageCreateCliCommand >> createImage: newImageName from: template [
+	^ self imageRepository
+		extractTemplate: template
+		to: newImageName 
+		
 ]
 
 { #category : #default }
@@ -92,7 +97,14 @@ PhLImageCreateCliCommand >> defaultTemplate [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	self createImage: self templateName to: self imageName
+	| template |
+	template := 
+		[ self logCreationOfImageFrom: self templateName. 
+		self template ]
+			on: NotFound
+			do: [ :error | 
+					^ self logCannotFindTemplate: error ].
+	self createImage: self imageName from: template
 ]
 
 { #category : #accessing }
@@ -100,15 +112,16 @@ PhLImageCreateCliCommand >> imageName [
 	^ (arguments at: #newImageName) word
 ]
 
-{ #category : #message }
-PhLImageCreateCliCommand >> logCannotFindTemplate [
+{ #category : #logging }
+PhLImageCreateCliCommand >> logCannotFindTemplate: error [
 	self errorStream
-		nextPutAll:
-			'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		nextPutAll: 'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
+		cr;
+		nextPutAll: error messageText;
 		cr
 ]
 
-{ #category : #message }
+{ #category : #logging }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 	self outStream
 		nextPutAll:
@@ -129,10 +142,11 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 ]
 
 { #category : #querying }
-PhLImageCreateCliCommand >> template [
+PhLImageCreateCliCommand >> template [ 
 	^ self templateRepository
 		templateNamed: self templateName
 		inCategoryNamed: self templateCategory
+		
 ]
 
 { #category : #accessing }

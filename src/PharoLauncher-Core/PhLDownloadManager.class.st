@@ -43,15 +43,18 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 { #category : #private }
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
+	| bar |
+	bar := ConsoleProgressBar on: PhLNotificationCenter default outStream.
 
 	UIManager default
-		informUserDuring: [ :bar | 
+		informUserDuring: [ :job | 
 			workBlock
 				on: HTTPProgress
 				do: [ :progress | 
-					bar label: progress printString.
+					job label: progress printString.
 					progress isEmpty
-						ifFalse: [ bar current: progress percentage ].
+						ifFalse: [ job current: progress percentage.
+									bar updateJob: progress ].
 					progress resume ] ]
 ]
 

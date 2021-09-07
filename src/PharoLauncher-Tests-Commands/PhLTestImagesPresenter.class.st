@@ -126,7 +126,7 @@ PhLTestImagesPresenter >> singleImage [
 		do: [ :error |
 			 selection 
 				ifNil: [ error pass ]
-				ifNotNil: [ selection ] ]
+				ifNotNil: [ selection first ] ]
 ]
 
 { #category : #selection }

@@ -46,6 +46,11 @@ PhLTestRequest >> noop [
 	"do nothing"
 ]
 
+{ #category : #accessing }
+PhLTestRequest >> parentWindow: aWindowPresenter [ 
+	"no need to keep the parent"
+]
+
 { #category : #noop }
 PhLTestRequest >> path: aFileLocator [ 
 	"noop"

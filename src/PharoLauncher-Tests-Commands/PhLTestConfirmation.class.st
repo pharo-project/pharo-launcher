@@ -21,3 +21,8 @@ PhLTestConfirmation >> message: aString [
 PhLTestConfirmation >> noop [
 	"nothing to do"
 ]
+
+{ #category : #accessing }
+PhLTestConfirmation >> parentWindow: aWindowPresenter [ 
+	"no need to keep the parent"
+]

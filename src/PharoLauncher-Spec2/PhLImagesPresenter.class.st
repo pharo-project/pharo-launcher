@@ -147,12 +147,15 @@ PhLImagesPresenter >> buildImageTable [
 		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
 			width: 350;
+			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
 			width: 80;
+			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
 			width: 80;
+			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn
 			title: 'Last modified'

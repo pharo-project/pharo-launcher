@@ -311,7 +311,8 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 				model: each;
 				display: [ :config | config name ];
 				icon: (self application iconNamed: #configuration);
-				yourself ].
+				yourself ]
+		as: OrderedCollection.
 	
 	items addFirst: (SpDropListItem new
 				model: 'Edit configurations ...';

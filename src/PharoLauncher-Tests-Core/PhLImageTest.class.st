@@ -155,12 +155,11 @@ PhLImageTest >> testPhLImageSerialization [
 	stonString := image stonString.
 	
 	"ensure we get a file locator"
-	self assert: (stonString includesSubstring: '#executableRef : FileLocator {
-					#origin : #launcherVMsLocation,
-					#path : RelativePath [ ''80-x64''').
+	self assert: (stonString includesSubstring: '#executableRef : FileLocator {').
+	self assert: (stonString includesSubstring: '#origin : #launcherVMsLocation').
 	self assert: (stonString includesSubstring: '#imageFile : FileLocator {
-			#origin : #launcherImagesLocation,
-			#path : RelativePath [ ''foo.image'' ]
+			#path : RelativePath [ ''foo.image'' ],
+			#origin : #launcherImagesLocation
 		}').
 	"ensure VM manager is a reference"
 	self assert: (stonString includesSubstring: '#manager : @2,').

@@ -43,7 +43,7 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	| tempDirectory |
 
 	PharoLauncherApplication default
-		pushProgress: ('Extracting {1}' format: { zipFile basename }) 
+		pushProgress: ('Extracting {1}' format: { zipFile basename ifNil: [ '' ] }) 
 		with: [ :bar | | zip |	
 			"We have to go through a temporary directory because we don't know where 
 			 the interesting files are in the archive (maybe at the root or maybe in 

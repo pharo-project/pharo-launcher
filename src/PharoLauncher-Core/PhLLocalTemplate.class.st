@@ -64,6 +64,5 @@ PhLLocalTemplate >> url [
 
 { #category : #accessing }
 PhLLocalTemplate >> zipArchive [
-	self halt.
 	^ zipFile
 ]

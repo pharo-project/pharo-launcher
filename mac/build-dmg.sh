@@ -12,7 +12,7 @@ set -ex
 # At some point, I could replace this script with https://github.com/LinusU/node-appdmg
 readonly APP_NAME=${APP_NAME:-"Pharo"}
 readonly VERSION=${VERSION:-"3.0.0"}
-readonly DMG_BACKGROUND_IMG=${DMG_BACKGROUND_IMG:-"background.png"}
+DMG_BACKGROUND_IMG=${DMG_BACKGROUND_IMG:-"background.png"}
 
 # Indicate the vertical pixel where the icons (Pharo and Applications)
 # will be positioned

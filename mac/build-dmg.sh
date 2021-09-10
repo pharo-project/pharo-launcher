@@ -20,7 +20,7 @@ readonly ICON_VPOSITION=${ICON_VPOSITION:-168}
 
 readonly VOL_NAME="${APP_NAME} ${VERSION}"   # volume name will be "SuperCoolApp 1.0.0"
 readonly DMG_TMP="${VOL_NAME}-temp.dmg"
-readonly DMG_FINAL="${VOL_NAME/ /_}.dmg"         # final DMG name will be "SuperCoolApp_1.0.0.dmg"
+readonly DMG_FINAL="${VOL_NAME/ /_}.dmg"     # final DMG name will be "SuperCoolApp_1.0.0.dmg"
 readonly STAGING_DIR="./Install"             # we copy all our stuff into this dir
 
 check_background_image_DPI_and_convert_it_if_not_72_by_72() {
@@ -99,11 +99,13 @@ function sign_mac_app() {
   security set-key-partition-list -S apple-tool:,apple: -s -k ${keychain_password} "${keychain_name}"
   # debug
   echo ${sign_identity} >> "id.txt"
-  # Invoke codesign
+  # Codesign libs
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
     codesign -s "${sign_identity}" --keychain "${keychain_name}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
   fi
-  codesign -s "${sign_identity}"  --keychain "${keychain_name}" --force --deep "${app_dir}"
+  # Codesign the bundle
+  codesign -s "${sign_identity}"  --keychain "${keychain_name}" --force --deep --options=runtime \
+    --entitlements "./mac/entitlements.plist" "${app_dir}"
   # Remove sensitive files again
   rm -rf "${path_cer}" "${path_p12}"
   security delete-keychain "${keychain_name}"

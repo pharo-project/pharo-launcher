@@ -204,7 +204,7 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 			title: 'New Launch configuration name?';
 			validateAnswer: [ :answer | 
 				self image launchConfigurations noneSatisfy: [ :each | each name = answer ] ];
-			openModalWithSpec.
+			request.
 	newName ifNil: [ ^ nil ].
 	
 	configuration := (PhLLaunchConfiguration  withImage: self image)

@@ -67,7 +67,6 @@ PhLTestImagesPresenter >> initialize [
 	super initialize.
 
 	self createImageNamed: self singleImageName.
-	self refresh.
 	request := PhLTestRequest new.
 ]
 

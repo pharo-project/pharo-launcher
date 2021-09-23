@@ -38,6 +38,11 @@ PhLTestApplication >> message: aString [
 ]
 
 { #category : #confirmation }
+PhLTestApplication >> newConfirm [
+	"do nothing"
+]
+
+{ #category : #confirmation }
 PhLTestApplication >> newConfirmation [
 	"do nothing"
 ]

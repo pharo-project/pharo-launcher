@@ -65,6 +65,21 @@ PhLVirtualMachineTest >> testCanGetDownloadUrl [
 ]
 
 { #category : #tests }
+PhLVirtualMachineTest >> testCanGetExecutablePathWhenBeeingSerializedAsString [
+	| vm |
+	vm := STON fromString: 'PhLVirtualMachine {
+				#executableRef : ''/Users/demarey/Documents/Pharo/vms/80-x64/Pharo.app/Contents/MacOS/Pharo'',
+				#vmBinaryRef : ''/Users/demarey/Documents/Pharo/vms/80-x64/Pharo.app/Contents/MacOS/Pharo'',
+				#flavour : '''',
+				#id : ''80-x64'',
+				#blessing : ''stable'',
+				#arch : ''64''
+}'.	
+
+	self assert: vm executablePath equals: '/Users/demarey/Documents/Pharo/vms/80-x64/Pharo.app/Contents/MacOS/Pharo'
+]
+
+{ #category : #tests }
 PhLVirtualMachineTest >> testCanGetPharoVersion [
 	| vm |
 	vm := PhLVirtualMachine new 

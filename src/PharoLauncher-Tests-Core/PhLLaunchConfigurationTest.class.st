@@ -173,7 +173,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasVmArguments [
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	launchConfig := image defaultLaunchConfiguration.
@@ -188,7 +188,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferences
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example32.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '20' ].
 	launchConfig := image defaultLaunchConfiguration.
@@ -204,7 +204,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferenc
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	launchConfig := image defaultLaunchConfiguration.

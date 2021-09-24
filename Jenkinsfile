@@ -9,7 +9,7 @@ try {
   cleanUploadFolderIfNeeded(uploadDirectoryName())
   timeout(time: 60, unit: 'MINUTES') { 
     // buildArchitecture('32', '80')
-    buildArchitecture('64', '80')
+    buildArchitecture('64', '90')
   }
   finalizeUpload(uploadDirectoryName())
 } catch(exception) {

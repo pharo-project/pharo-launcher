@@ -178,7 +178,7 @@ PhLVirtualMachine >> executablePath [
 
 { #category : #accessing }
 PhLVirtualMachine >> executableRef [ 
-	^ executableRef asFileReference
+	^ executableRef ifNotNil: [ executableRef asFileReference ]
 ]
 
 { #category : #accessing }

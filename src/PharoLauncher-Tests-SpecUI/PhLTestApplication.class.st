@@ -44,7 +44,7 @@ PhLTestApplication >> newConfirm [
 
 { #category : #confirmation }
 PhLTestApplication >> newConfirmation [
-	"do nothing"
+	^ PhLTestConfirmation new
 ]
 
 { #category : #confirmation }

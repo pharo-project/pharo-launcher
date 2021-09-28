@@ -92,7 +92,7 @@ PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 PhLScriptPresenter >> newScript [
 	| newName |
 	
-	newName := self newRequest
+	newName := self application newRequest
 			title: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.

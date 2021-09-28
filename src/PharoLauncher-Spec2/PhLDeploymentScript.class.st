@@ -9,7 +9,7 @@ Class {
 	#name : #PhLDeploymentScript,
 	#superclass : #Object,
 	#classVars : [
-		'DefaultDebugger',
+		'DefaultDebuggerRank',
 		'Save'
 	],
 	#category : #'PharoLauncher-Spec2'
@@ -22,8 +22,8 @@ PhLDeploymentScript class >> activateDeprecationWarnings [
 
 { #category : #actions }
 PhLDeploymentScript class >> activateErrorCatching [
-	DefaultDebugger := Smalltalk tools debugger.
-	Smalltalk tools debuggerTool: PhLErrorDialogPresenter.
+	DefaultDebuggerRank := StDebugger rank.
+	StDebugger rank: 9.
 ]
 
 { #category : #actions }
@@ -81,7 +81,7 @@ PhLDeploymentScript class >> deactivateDeprecationWarnings [
 
 { #category : #actions }
 PhLDeploymentScript class >> deactivateErrorCatching [
-	Smalltalk tools debuggerTool: DefaultDebugger
+	StDebugger rank: DefaultDebuggerRank
 ]
 
 { #category : #actions }

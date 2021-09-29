@@ -109,10 +109,13 @@ PhLImageCreationPresenter >> disable [
 	imageName text: ''
 ]
 
-{ #category : #configuring }
-PhLImageCreationPresenter >> enable [
+{ #category : #private }
+PhLImageCreationPresenter >> ifValidTemplate: aBlock [
+	"execute the block if the template isValid "
 
-	"createButton enable."
+	self template ifNil: [ ^ self ].
+	self template isTemplate
+		ifTrue: [ aBlock value ]
 ]
 
 { #category : #accessing }
@@ -176,12 +179,10 @@ PhLImageCreationPresenter >> initializePresenters [
 PhLImageCreationPresenter >> modelChanged [ 
 
 	self template ifNil: [ ^ self ].
+	
 	self template isTemplate
-		ifTrue: [ 
-			self enable.
-			imageName text: self template suggestedImageName ]
-		ifFalse: [ 
-			self disable ]
+		ifTrue: [ imageName text: self template suggestedImageName ]
+		ifFalse: [ self disable ]
 ]
 
 { #category : #initialization }
@@ -216,7 +217,7 @@ PhLImageCreationPresenter >> showNameError [
 { #category : #private }
 PhLImageCreationPresenter >> showNameOk [
 
-	createButton enable.
+	self ifValidTemplate: [ createButton enable ].
 	imageNameCheck 
 		image: (self application iconNamed: #smallOk);
 		help: 'Image name is valid!'

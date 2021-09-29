@@ -168,17 +168,12 @@ PhLVirtualMachine >> executable: aPathOrfileReference [
 
 { #category : #accessing }
 PhLVirtualMachine >> executableFolderPath [
-	^ self executableRef parent fullName
+	^ executableRef parent fullName
 ]
 
 { #category : #accessing }
 PhLVirtualMachine >> executablePath [
-	^ self executableRef fullName
-]
-
-{ #category : #accessing }
-PhLVirtualMachine >> executableRef [ 
-	^ executableRef ifNotNil: [ executableRef asFileReference ]
+	^ executableRef fullName
 ]
 
 { #category : #accessing }
@@ -283,9 +278,9 @@ PhLVirtualMachine >> isPreSpur [
 
 { #category : #testing }
 PhLVirtualMachine >> isValid [
-	^ self executableRef isNotNil
-		and: [ self executableRef isFile
-				and: [ self vmBinaryRef isNotNil ] ]
+	^ executableRef isNotNil
+		and: [ executableRef asFileReference isFile
+				and: [ vmBinaryRef isNotNil ] ]
 ]
 
 { #category : #testing }
@@ -298,7 +293,7 @@ PhLVirtualMachine >> isValidAfterUpdate [
 
 { #category : #querying }
 PhLVirtualMachine >> lastUpdateTime [
-	^ self executableRef modificationTime
+	^ executableRef modificationTime
 ]
 
 { #category : #querying }
@@ -398,13 +393,8 @@ PhLVirtualMachine >> vmBinary: aPathOrFileReference [
 ]
 
 { #category : #accessing }
-PhLVirtualMachine >> vmBinaryRef [ 
-	^ vmBinaryRef asFileReference
-]
-
-{ #category : #accessing }
 PhLVirtualMachine >> vmFolder [
-	^ self vmBinaryRef parent
+	^ vmBinaryRef parent
 ]
 
 { #category : #accessing }

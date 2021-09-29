@@ -35,7 +35,9 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 		writeStreamDo: [ :stream | 
 			SystemVersion current major asString putOn: stream.
 			SystemVersion current minor asString putOn: stream ].
-	presenter selection: image.
+	presenter 
+		unselectAll;
+		selection: { image }.
 	image addLaunchConfiguration: 
 		(image defaultLaunchConfiguration 
 			vmArguments: #('--headless');  "be able to run test without X session"

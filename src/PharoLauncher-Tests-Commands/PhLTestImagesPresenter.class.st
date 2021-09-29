@@ -105,7 +105,7 @@ PhLTestImagesPresenter >> requestAnswer: answer [
 PhLTestImagesPresenter >> selectedLaunchConfiguration [
 	^ launchConfigurationList 
 		ifNil: [ self singleImage defaultLaunchConfiguration ]
-		ifNotNil: [ launchConfigurationList selectedItem ]
+		ifNotNil: [ launchConfigurationList selectedItem  ifNil: [ self singleImage defaultLaunchConfiguration ] ]
 ]
 
 { #category : #configuring }

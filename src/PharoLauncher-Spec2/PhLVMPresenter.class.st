@@ -79,7 +79,6 @@ PhLVMPresenter >> initializePresenters [
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;
 									execute  ];
-		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		addColumn: ((SpImageTableColumn title: '' evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid
@@ -141,9 +140,7 @@ PhLVMPresenter >> refresh [
 	vms := shouldShowPrivateVms
 		ifTrue: [ self datasource privateVirtualMachines ]
 		ifFalse: [ self datasource virtualMachines ].
-	vmTable
-		items: vms";
-		updatePresenter".
+	vmTable items: vms.
 ]
 
 { #category : #initialization }

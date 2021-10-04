@@ -98,6 +98,7 @@ function sign_mac_version() {
   echo ${sign_identity} >> "id.txt"
   # Invoke codesign
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
+    rm -f "${app_dir}/Contents/MacOS/Plugins/pkgconfig" # Should be fixed in VM build
     codesign -s "${sign_identity}" --keychain "${keychain_name}" --force --deep "${app_dir}/Contents/MacOS/Plugins/"*
   fi
   codesign -s "${sign_identity}"  --keychain "${keychain_name}" --force --deep "${app_dir}"

@@ -12,6 +12,11 @@ PhLTestConfirmation >> confirm [
 	^ true
 ]
 
+{ #category : #action }
+PhLTestConfirmation >> inform [
+	self noop 
+]
+
 { #category : #accessing }
 PhLTestConfirmation >> message: aString [ 
 	self noop

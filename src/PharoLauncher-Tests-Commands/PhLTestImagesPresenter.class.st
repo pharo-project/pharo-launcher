@@ -86,6 +86,13 @@ PhLTestImagesPresenter >> newFileRequest [
 ]
 
 { #category : #'user interaction' }
+PhLTestImagesPresenter >> newInformation [
+	self flag: 'TODO: spec should offer a way to open the inform dialog and accept it.'.
+
+	^ PhLTestConfirmation new
+]
+
+{ #category : #'user interaction' }
 PhLTestImagesPresenter >> newRequest [
 	^ request
 ]

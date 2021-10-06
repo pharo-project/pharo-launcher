@@ -136,16 +136,9 @@ PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
-	| applyUpdate |
 	
-	applyUpdate := PharoLauncherApplication default newConfirm
-		title: 'Update';
-		label: 'Update available for Pharo Launcher templates sources!';
-		acceptLabel: 'Update';
-		cancelLabel: 'Remind me later';
-		openModalWithSpec.
-		
-	applyUpdate ifFalse: [ ^ self ].
+	PharoLauncherApplication default shouldUpdateTemplateSources ifFalse: [ ^ self ].
+	
 	self basicUpdateTemplateSources
 ]
 

@@ -46,6 +46,11 @@ PharoLauncherApplication class >> default [
 	^ Default ifNil: [ Default := self new ]
 ]
 
+{ #category : #accessing }
+PharoLauncherApplication class >> default: aPharoLauncherApplication [
+	Default := aPharoLauncherApplication
+]
+
 { #category : #settings }
 PharoLauncherApplication class >> defaultInitializationScriptLocation [
 	^ FileLocator launcherUserFilesLocation / 'scripts' 
@@ -295,6 +300,16 @@ PharoLauncherApplication >> scriptsDirectory [
 { #category : #accessing }
 PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
+]
+
+{ #category : #ui }
+PharoLauncherApplication >> shouldUpdateTemplateSources [
+	^ self newConfirm
+		title: 'Update';
+		label: 'Update available for Pharo Launcher templates sources!';
+		acceptLabel: 'Update';
+		cancelLabel: 'Remind me later';
+		openModalWithSpec
 ]
 
 { #category : #ui }

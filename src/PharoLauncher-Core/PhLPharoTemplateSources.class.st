@@ -23,6 +23,12 @@ PhLPharoTemplateSources class >> announcer [
 	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
 ]
 
+{ #category : #private }
+PhLPharoTemplateSources class >> basicSourcesUrl: aUrl [
+
+	SourcesUrl := aUrl.
+]
+
 { #category : #updating }
 PhLPharoTemplateSources class >> checkForUpdates [
 
@@ -61,7 +67,7 @@ PhLPharoTemplateSources class >> fromFile [
 
 { #category : #reseting }
 PhLPharoTemplateSources class >> resetSourcesUrl [
-	self sourcesUrl: self defaultSourcesUrl
+	self basicSourcesUrl: self defaultSourcesUrl
 ]
 
 { #category : #settings }

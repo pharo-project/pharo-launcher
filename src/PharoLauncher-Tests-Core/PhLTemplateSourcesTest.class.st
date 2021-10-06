@@ -2,7 +2,8 @@ Class {
 	#name : #PhLTemplateSourcesTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'sourcesFile'
+		'sourcesFile',
+		'defaultPharoLauncherApp'
 	],
 	#category : #'PharoLauncher-Tests-Core'
 }
@@ -10,12 +11,16 @@ Class {
 { #category : #running }
 PhLTemplateSourcesTest >> setUp [
 	super setUp.
-	sourcesFile := FileSystem memory / 'templates-sources.test'
+	sourcesFile := FileSystem memory / 'templates-sources.test'.
+	"Avoid blocking modal dialogs when a source update is available"
+	defaultPharoLauncherApp := PharoLauncherApplication default.
+	PharoLauncherApplication default: PhLTestApplication new. 
 ]
 
 { #category : #running }
 PhLTemplateSourcesTest >> tearDown [
 	PhLPharoTemplateSources resetSourcesUrl.
+	PharoLauncherApplication default: defaultPharoLauncherApp.
 	super tearDown
 ]
 

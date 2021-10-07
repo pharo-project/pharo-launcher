@@ -1,7 +1,7 @@
 #!/bin/sh 
 # file: examples/testListRunnning2.sh
 ./ensureShunitIsPresent.sh
-processListCommand="./pharo-launcher.sh image ps"
+processListCommand="./pharo-launcher.sh image processList"
 launchCommand="./pharo-launcher.sh image launch ./../shared/PharoLauncher.image"
 
 testLauncherPsCommandWhenNoPharoImageRunningShouldReturnEmptyList(){

@@ -5,7 +5,7 @@
 
 launchCommand="./pharo-launcher.sh image launch ./../shared/PharoLauncher.image"
 killCommand="./pharo-launcher.sh image kill --all"
-processListCommand="./pharo-launcher.sh image ps"
+processListCommand="./pharo-launcher.sh image processList"
 
 oneTimeSetUp() {
 	$launchCommand >/dev/null

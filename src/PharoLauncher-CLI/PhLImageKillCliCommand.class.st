@@ -45,21 +45,30 @@ PhLImageKillCliCommand class >> launcherCmdPositionals [
 PhLImageKillCliCommand >> execute [
 	(arguments at: #all) value
 		ifTrue: [ ^ (self killAllImages) ].
-	self killSelectedImage 
+	^ self killSelectedImage 
 
 ]
 
 { #category : #commands }
 PhLImageKillCliCommand >> killAllImages [
-	 ^ LibC
-				runCommand:
-					'kill $(ps x | grep  -i Pharo | grep ''.image'' | tr -s '' '' | cut -d '' '' -f1)'
+	
+	^ LibC runCommand: (self killImageCmdStringFrom: nil)
+]
+
+{ #category : #commands }
+PhLImageKillCliCommand >> killImageCmdStringFrom: anImageName [
+	^ String
+		streamContents: [ :aStream | 
+			aStream nextPutAll: 'kill $(ps x | grep  -i Pharo | grep ''.image'''.
+			anImageName isEmptyOrNil
+				ifFalse: [ aStream
+						nextPutAll: ' | grep ';
+						nextPutAll: anImageName ].
+			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)' ]
 ]
 
 { #category : #commands }
 PhLImageKillCliCommand >> killSelectedImage [
-LibC
-		runCommand:
-			'kill $(ps x | grep  -i Pharo | grep ''.image''  | grep '
-				, self imageName , ' | tr -s '' '' | cut -d '' '' -f1)'
+
+	^ LibC runCommand: (self killImageCmdStringFrom: self imageName)
 ]

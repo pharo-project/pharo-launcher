@@ -9,7 +9,7 @@ Class {
 
 { #category : #'command line' }
 PhLImageProcessListCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #ps
+	^ self newLauncherCommand: #processList
 ]
 
 { #category : #'command line' }
@@ -21,8 +21,14 @@ PhLImageProcessListCliCommand class >> launcherCmdDescription [
 PhLImageProcessListCliCommand >> execute [
 	"The brackets between the P of Pharo is to avoid to list the get procress when using ps x."
 	"The grep -v ps is to avoid to list the pharo launcher image."
+	
+	"TODO rewrite use to OSSubProcess since execution can check exit code and result of bash command at once, libc can do just one or another"
+	"TODO rewrite this to more meaningful output with columns like PID, datetime started, vm name, image name"
+	
+	self outStream nextPutAll: ( 
 	LibC
-		runCommand:
-			'ps x | grep -i [P]haro | grep ''.image'' | grep -v "ps$" | tr -s '' '' | cut -d '' '' -f1,5,6-'
-		
+		resultOfCommand:
+			'bash -c "ps x | grep -i [P]haro | grep ''.image'' | grep -v "ps$" | tr -s '' '' | cut -d '' '' -f1,5,6- "'
+		).
+	^ self context exitSuccess 
 ]

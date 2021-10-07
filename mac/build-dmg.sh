@@ -135,6 +135,12 @@ popd
 mkdir -p /Volumes/"${VOL_NAME}"/.background
 cp "${DMG_BACKGROUND_IMG}" /Volumes/"${VOL_NAME}"/.background/
 
+# If the execution of the following script fails with a timeout,
+# ensure Apple TCC mechanism does not ask for a permission like:
+# “sshd-keygen-wrapper“ wants access to control “Finder“. If os,
+# allow the ssh to control Finder and the script will run fine.
+# ps: the script is run through SSH in the CI pipeline.
+
 # tell the Finder to resize the window, set the background,
 #  change the icon size, place the icons in the right position, etc.
 echo '

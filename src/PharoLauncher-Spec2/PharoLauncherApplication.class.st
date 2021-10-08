@@ -219,6 +219,11 @@ PharoLauncherApplication >> beOpenedAsWorld [
 ]
 
 { #category : #accessing }
+PharoLauncherApplication >> defaultTemplateRepository [
+	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
+]
+
+{ #category : #accessing }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
 ]
@@ -286,8 +291,7 @@ PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
 { #category : #initialization }
 PharoLauncherApplication >> resetTemplateRepository [
-	templateRepository := TemplateRepository 
-		ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ] 
+	templateRepository := nil.
 ]
 
 { #category : #accessing }
@@ -341,7 +345,7 @@ PharoLauncherApplication >> startFull [
 
 { #category : #accessing }
 PharoLauncherApplication >> templateRepository [
-	^ templateRepository
+	^ 	templateRepository ifNil: [ templateRepository := self defaultTemplateRepository ] 
 ]
 
 { #category : #accessing }

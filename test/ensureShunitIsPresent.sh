@@ -3,7 +3,7 @@
 #Check if shunit is present
 SHUNIT=./shunit2/shunit2
 if test -f "$SHUNIT" ; then
-    return 1
+    exit $?
 fi
 
 # If shunit is not present we download it. 

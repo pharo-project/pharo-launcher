@@ -25,10 +25,18 @@ PhLImageProcessListCliCommand >> execute [
 	"TODO rewrite use to OSSubProcess since execution can check exit code and result of bash command at once, libc can do just one or another"
 	"TODO rewrite this to more meaningful output with columns like PID, datetime started, vm name, image name"
 	
-	self outStream nextPutAll: ( 
-	LibC
-		resultOfCommand:
-			'bash -c "ps x | grep -i [P]haro | grep ''.image'' | grep -v "ps$" | tr -s '' '' | cut -d '' '' -f1,5,6- "'
-		).
+	self outStream 
+		nextPutAll: (LibC resultOfCommand: self processListCmdString).
 	^ self context exitSuccess 
+]
+
+{ #category : #'command execution' }
+PhLImageProcessListCliCommand >> processListCmdString [
+
+	^ String streamContents: [ :aStream |		
+		aStream 
+			nextPutAll: 'bash -c "ps x | grep -i [P]haro | grep ''.image'' | grep -v ';
+			nextPutAll: self currentVMPid asString;
+			nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1,5,6- "'
+	]
 ]

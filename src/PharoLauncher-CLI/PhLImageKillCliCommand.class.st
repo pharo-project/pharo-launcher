@@ -59,7 +59,8 @@ PhLImageKillCliCommand >> killAllImages [
 PhLImageKillCliCommand >> killImageCmdStringFrom: anImageName [
 	^ String
 		streamContents: [ :aStream | 
-			aStream nextPutAll: 'kill $(ps x | grep  -i Pharo | grep ''.image'''.
+			aStream nextPutAll: 'kill $(ps x | grep  -i Pharo | grep ''.image'' | grep -v ';
+			nextPutAll: self currentVMPid asString.
 			anImageName isEmptyOrNil
 				ifFalse: [ aStream
 						nextPutAll: ' | grep ';

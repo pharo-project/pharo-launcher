@@ -83,6 +83,12 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #accessing }
+PhLCliCommand >> currentVMPid [
+
+	^ OSSVMProcess vmProcess pid
+]
+
 { #category : #default }
 PhLCliCommand >> defaultTemplate [
 	self

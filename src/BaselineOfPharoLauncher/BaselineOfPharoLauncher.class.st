@@ -59,7 +59,7 @@ BaselineOfPharoLauncher >> osSubprocess: spec [
 
 	spec 
 		baseline: #OSSubprocess
-		with: [ spec repository: 'github://pharo-contributions/OSSubprocess:v1.3.0' ]
+		with: [ spec repository: 'github://pharo-contributions/OSSubprocess:master/repository' ]
 ]
 
 { #category : #'external projects' }

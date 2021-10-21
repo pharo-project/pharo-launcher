@@ -45,11 +45,6 @@ PhLLaunchImageTest >> setUp [
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
-	"Starting Pharo 9, working directory resolution handles non ascii characters. It is not the case before.
-	That's why we use a resultDir for test output files."
-	resultDir := FileLocator temp / uuid.
-	self deny: resultDir exists.
-	resultDir ensureCreateDirectory.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
 	tempVmStoreFolder := FileLocator temp / self class name , uuid.
 	PhLVirtualMachineManager vmStore: tempVmStoreFolder
@@ -61,7 +56,6 @@ PhLLaunchImageTest >> tearDown [
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	imageDir ensureDeleteAll.
-	resultDir ensureDeleteAll.
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	super tearDown
 ]
@@ -107,7 +101,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image config commandToEval |
 	image := PhLOsXMojaveTestImage example.
-	commandToEval := '"''' , resultDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
+	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
 	config := image defaultLaunchConfiguration.
 	config
 		vm: self pharo80x86Vm;

@@ -10,7 +10,6 @@ SpMorphicModalWindowAdapter >> open [
 		yourself.
 
 	self widget beSticky.
-	self presenter windowIsOpening.
 	"I am copying here what is defined in SystemWindow>>#openModal (but introducing the centered 
 	 check inbetween because #openInWorld will use the RealEstateAgent to position the window 
 	 and we want to (maybe) center it before showing it."

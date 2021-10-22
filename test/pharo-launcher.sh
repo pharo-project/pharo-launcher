@@ -1,16 +1,26 @@
 #!/usr/bin/env bash
-
-# some magic to find out the real location of this script dealing with symlinks
-DIR=`readlink "$0"` || DIR="$0";
-ROOT=`dirname "$DIR"`;
-DEFAULTLOCATION=$ROOT/..;
-PHAROVM=/pharo-vm/pharo
-PHAROLAUNCHER=PharoLauncher.image
-
-
-if [ -z "$ARCHITECTURE" ] ; then
-    ARCHITECTURE=32;
-fi
+ 
+# Using default VM path and image path of Pharo Launcher, depending on OS
+OSNAME=$(uname -s)
+case $OSNAME in
+  Linux*)
+    LAUNCHERDIR=/home/$USER/pharolauncher
+    $(uname -s)=$LAUNCHERDIR/pharo-vm/pharo
+    IMAGEPATH=$LAUNCHERDIR/shared/PharoLauncher.image
+    ;;
+  Darwin*)
+    LAUNCHERDIR=/Applications/PharoLauncher.app/Contents
+    VMPATH=$LAUNCHERDIR/MacOS/Pharo
+    IMAGEPATH=$LAUNCHERDIR/Resources/PharoLauncher.image
+    ;;
+# TODO Windows
+#  msys*)
+#    ;;
+  *)
+    echo "Unsupported OS for Pharo Launcher: $OSNAME"
+    exit 1
+    ;;
+esac
                                 
-"$DEFAULTLOCATION""$PHAROVM" --nodisplay "$DEFAULTLOCATION"/"$PHAROLAUNCHER" clap launcher "$@"
+$"$VMPATH" --headless "$IMAGEPATH" clap launcher "$@"
 

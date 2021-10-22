@@ -193,7 +193,9 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferenc
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '20' ].
 	launchConfig := image defaultLaunchConfiguration.
 	launchConfig doNotUseSettings.
-	launchConfig vm executable: 'pharo'.
+	[ launchConfig vm executable: 'pharo' ]
+		on: PhLArchitectureMismatchWarning 
+		do: [ :error | error resume. "ignore" ].
 	
 	[ command := launchConfig launchProcess ]
 	on: PhLMissingVirtualMachineError 

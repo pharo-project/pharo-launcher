@@ -12,27 +12,25 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #tests }
+{ #category : #utils }
+PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
+	| vmDirectory imageVersion vmId |
+	
+	vmDirectory := Smalltalk vmDirectory asFileReference.
+	imageVersion := SystemVersion current major asString , SystemVersion current minor asString.
+	vmId := imageVersion, '-x64'.
+	vmDirectory basename = 'pharo-vm'
+		ifTrue: [ vmDirectory renameTo: vmId ].
+	
+	LibC runCommand: 'cp -R ' , vmDirectory fullName , ' ' , aDirectory fullName, '/' , vmId
+]
+
+{ #category : #utils }
 PhLLaunchImageTest >> pharo80x86Vm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x86' ]
 		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
 		ifNone: [ self fail: 'cannot find VM!' ]
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> prepare80imageIn: dir [
-	| imageFile |
-	ZnClient new
-		url: 'https://files.pharo.org/image/80/latest-minimal-64.zip';
-		downloadTo: dir / '80.zip'.
-	ZipArchive new
-		readFrom: dir / '80.zip';
-		extractAllTo: dir / '80'.
-	imageFile := (dir / '80' childrenMatching: '*.image') first.
-	dir / '80' / PhLImage versionFileName
-		writeStreamDo: [ :s | s nextPutAll: '80' ].
-	^ PhLImage location: imageFile.
 ]
 
 { #category : #running }
@@ -47,7 +45,8 @@ PhLLaunchImageTest >> setUp [
 	imageDir ensureCreateDirectory.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
 	tempVmStoreFolder := FileLocator temp / self class name , uuid.
-	PhLVirtualMachineManager vmStore: tempVmStoreFolder
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
+	self copyCurrentVmTo: tempVmStoreFolder.
 ]
 
 { #category : #running }

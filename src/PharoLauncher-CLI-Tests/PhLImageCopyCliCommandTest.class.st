@@ -5,14 +5,14 @@ Class {
 }
 
 { #category : #tests }
-PhLImageCopyCliCommandTest >> testCopyImageNameAlreadyUsed [
+PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 
-	self runCommand: #('launcher' 'image' 'copy' 'myImage1' 'myImage2' ).
+	self runCommand: #( 'launcher' 'image' 'copy' 'myImage1' ).
 	 
-	self assert: (self errorString includesSubstring:'Name already used'). 
-	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1' ) asSet. 
+	self assert: (self errorString includesSubstring:'An argument is missing').  
+	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 
 { #category : #tests }

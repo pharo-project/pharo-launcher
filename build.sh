@@ -32,7 +32,17 @@ function prepare_image() {
 }
 
 function run_tests() {
-	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
+	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"
+	run_shell_cli_tests
+}
+
+#this will run integration tests for CLI interface of Pharo Launcher
+function run_shell_cli_tests() {
+	pushd test
+	for f in test*.sh; do
+  		bash "$f"
+	done
+	popd
 }
 
 function package_user_version() {

@@ -1,13 +1,46 @@
 #!/usr/bin/env bash
 
 ./ensureShunitIsPresent.sh
-processListCommand="./pharo-launcher.sh image processList"
-launchCommand="./pharo-launcher.sh image launch PhLTestImage"
-killAllCommand="./pharo-launcher.sh image kill --all"
-killCommand="./pharo-launcher.sh image kill PhLTestImage"
+
+#setup pharo launcher and image name paths
+PHLSCRIPT=./pharo-launcher.sh
+IMAGE=./shared/PharoLauncher.image
+
+# setup commands for image manipulation
+processListCommand="runLauncherScript image processList"
+launchCommand="runLauncherScript image launch PhLTestImage"
+killAllCommand="runLauncherScript image kill --all"
+killCommand="runLauncherScript image kill PhLTestImage"
 
 oneTimeSetUp() {
 	./createSampleImageCmd.sh
+	prepareLauncherScriptAndImage
+}
+
+runLauncherScript() {
+	pushd ..
+	$PHLSCRIPT $@
+	popd
+}
+
+prepareLauncherScriptAndImage () {
+	# ensure that launcher script and image is in needed directories for test evaluation (before packaging)
+	pushd ..
+	if [ ! -f "$PHLSCRIPT" ] ; then
+	    cp ./script/pharo-launcher.sh $PHLSCRIPT
+	fi
+	if [ ! -f "$IMAGE" ] ; then
+		mkdir -p shared
+	    cp PharoLauncher.image $IMAGE
+	fi
+	popd
+}
+
+cleanupLauncherScriptAndImage () {
+	pushd ..
+	rm -rf ./shared
+	rm -f $PHLSCRIPT
+	popd
 }
 
 testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
@@ -42,6 +75,7 @@ testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
 
 oneTimeTearDown() {
 	./deleteSampleImageCmd.sh
+	cleanupLauncherScriptAndImage
 }
 
 # Load shUnit2.

@@ -59,13 +59,13 @@ PhLImageKillCliCommand >> killAllImages [
 PhLImageKillCliCommand >> killImageCmdStringFrom: anImageName [
 	^ String
 		streamContents: [ :aStream | 
-			aStream nextPutAll: 'kill $(ps x | grep  -i Pharo | grep ''.image'' | grep -v ';
+			aStream nextPutAll: 'kill $(pgrep -a -f Pharo | grep -v ';
 			nextPutAll: self currentVMPid asString.
 			anImageName isEmptyOrNil
 				ifFalse: [ aStream
 						nextPutAll: ' | grep ';
 						nextPutAll: anImageName ].
-			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)' ]
+			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)> /dev/null' ]
 ]
 
 { #category : #commands }

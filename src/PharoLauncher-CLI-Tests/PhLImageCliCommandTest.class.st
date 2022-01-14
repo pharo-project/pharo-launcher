@@ -19,7 +19,7 @@ PhLImageCliCommandTest >> setUp [
 	| model |
 	super setUp.
 	model := PharoLauncherCLIModel new.
-	model imageRepository: PhLImagesMockRepo new.
+	model imageRepository: PhLImagesMockRepo tenRandomImages.
 	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
 	context launcherModel: model
 ]

@@ -26,6 +26,20 @@ PhLCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #launcher 
 ]
 
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> delimiterFlag [
+
+	^ (ClapFlag id: #delimiter)
+			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
+			meaning: [ :arg :app | "this argument is optional "
+				(arg at: #delimiterArg) word ];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #delimiterArg)
+					description: 'Delimiter argument, can be one or more characters (without space).';
+					meaning: [ :pos | pos word asSymbol ];
+					implicitMeaning: [ :arg :app | ]).
+]
+
 { #category : #'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
@@ -140,22 +154,38 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 				and: [ template name includesSubstring: '64bit' ] ]) name
 ]
 
+{ #category : #'private ' }
+PhLCliCommand >> getColumnWidthsFrom: domainObjects [
+	|aLabels|
+	"get max column width either from column label or value in column"
+	aLabels := domainObjects first class listPrintAttributeLabels.
+	^ 	domainObjects first class listPrintAttributeBlocks withIndexCollect: [:attrBlock :idx| 
+			(domainObjects getMaxWithOn: attrBlock) max: (aLabels at: idx) size
+		]
+]
+
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
 { #category : #listing }
-PhLCliCommand >> list: aCollection [
-	| counter |
-	counter := 1.
-	aCollection
-		do: [ :anItem | 
+PhLCliCommand >> list: domainObjects [
+	|colWidths |
+	domainObjects isEmpty ifTrue: [ ^ self ].
+	colWidths := self getColumnWidthsFrom: domainObjects.
+	self printAttributeHeaders: domainObjects first class listPrintAttributeLabels by: colWidths.
+	self printAttributeRows: domainObjects by: colWidths.
+	
+	
+	
+	"aCollection
+		withIndexDo: [ :anItem : index| 
 			self outStream
-				nextPutAll: counter asString;
+				nextPutAll: index asString;
 				nextPutAll: ': '.
 			anItem cliPrintOn: self outStream.
-			self outStream newLine ]
+			self outStream newLine ]"
 ]
 
 { #category : #listing }
@@ -197,6 +227,71 @@ PhLCliCommand >> outputAsSton [
 { #category : #accessing }
 PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
+]
+
+{ #category : #listing }
+PhLCliCommand >> printAttributeHeaders: aLabels by: colWidths [
+
+	"print header labels and header line"
+	self printCell: '#' width: 2.
+	self printDelimiter.
+	self printRowOn: aLabels by: colWidths. 
+	self printHeaderLinesBy: colWidths.
+]
+
+{ #category : #listing }
+PhLCliCommand >> printAttributeRows: domainObjects by: colWidths [
+
+	|blockArray|
+	blockArray := domainObjects first class listPrintAttributeBlocks.
+	domainObjects withIndexDo: [:listedObject :idx|
+		|aValues|
+		self printCell: idx asString width: 2.
+		self printDelimiter.
+		aValues := blockArray collect: [:aBlock | aBlock value: listedObject ].
+		self printRowOn: aValues by: colWidths		
+	]
+]
+
+{ #category : #listing }
+PhLCliCommand >> printCell: aString width: widthSize [
+
+	self outStream nextPutAll: (aString padRightTo: widthSize)
+
+]
+
+{ #category : #listing }
+PhLCliCommand >> printDelimiter [
+
+	self outStream nextPutAll:  ' '
+]
+
+{ #category : #listing }
+PhLCliCommand >> printHeaderLinesBy: colWidths [
+
+	"print header line"
+	self printLineSized: 2.
+	self printDelimiter.
+	colWidths do: [:aWidth | self printLineSized: aWidth.
+		self printDelimiter].
+	self outStream newLine.
+]
+
+{ #category : #listing }
+PhLCliCommand >> printLineSized: aWidth [ 
+
+	self outStream nextPutAll: ('' padLeftTo: aWidth with: $-)
+]
+
+{ #category : #listing }
+PhLCliCommand >> printRowOn: aStringColl by: colWidths [
+
+	"print header labels"
+	aStringColl withIndexDo: [:aLabel :idx |
+		self printCell: aLabel width: (colWidths at: idx).
+		idx = aStringColl size ifFalse: [ self printDelimiter].
+	].
+	self outStream newLine.
 ]
 
 { #category : #initialization }

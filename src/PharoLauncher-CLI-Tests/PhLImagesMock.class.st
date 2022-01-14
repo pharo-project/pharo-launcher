@@ -5,30 +5,62 @@ Class {
 	#name : #PhLImagesMock,
 	#superclass : #Object,
 	#instVars : [
-		'images',
 		'name',
+		'architecture',
 		'isLaunched',
+		'location',
 		'script',
-		'location'
+		'pharoVersion',
+		'lastModification'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
+{ #category : #accessing }
+PhLImagesMock class >> atRandom [ 
+   ^self new 
+		name: #('Image (PharoX.0.0-rc1.build.1436.sha.e281eb4.arch.64bit)' 'Image (Pharo x.0 - xybit -exe)' 'Image (P-test)' 'Image (Pharo Mooc)' 'Image (P1-64b-seaside)' 'Image (Pharo 9.0 (stable))') atRandom;
+		architecture: #('32' '64') atRandom;
+		pharoVersion: #('60' '61' '70' '80' '90' '100') atRandom;
+		lastModification: (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom ) asString;
+yourself 
+]
+
+{ #category : #private }
+PhLImagesMock class >> listPrintAttributeBlocks [
+	
+	^ PhLImage listPrintAttributeBlocks
+]
+
+{ #category : #private }
+PhLImagesMock class >> listPrintAttributeLabels [ 
+	
+	^ PhLImage listPrintAttributeLabels 
+]
+
 { #category : #'instance creation' }
 PhLImagesMock class >> location: aFileReference [
-	^ PhLImagesMock new
+	^ self atRandom
 		setLocation: aFileReference;
 		yourself
 ]
 
 { #category : #accessing }
 PhLImagesMock class >> name: aString [
-   ^self new name: aString.
+	^ self atRandom
+		name: aString;
+		yourself
 ]
 
-{ #category : #mocks }
+{ #category : #accessing }
 PhLImagesMock >> architecture [
 	^ '64'
+]
+
+{ #category : #accessing }
+PhLImagesMock >> architecture: aString [
+
+	architecture := aString
 ]
 
 { #category : #mockup }
@@ -83,7 +115,13 @@ PhLImagesMock >> isLaunched [
 
 { #category : #accessing }
 PhLImagesMock >> lastModification [
-	^ 'some random date'
+	^ lastModification 
+]
+
+{ #category : #accessing }
+PhLImagesMock >> lastModification: aString [
+	
+	lastModification := aString
 ]
 
 { #category : #mock }
@@ -114,6 +152,18 @@ PhLImagesMock >> originTemplateName [
 { #category : #accessing }
 PhLImagesMock >> originTemplateUrl [
 	^ 'https://testurl'
+]
+
+{ #category : #accessing }
+PhLImagesMock >> pharoVersion [
+
+	^ pharoVersion
+]
+
+{ #category : #accessing }
+PhLImagesMock >> pharoVersion: aString [
+
+	pharoVersion := aString
 ]
 
 { #category : #accessing }

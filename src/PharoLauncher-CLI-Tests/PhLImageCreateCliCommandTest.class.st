@@ -65,7 +65,8 @@ PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseErro
 	
 	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'templateName' . 'tooManyArguments'}.
 	 
-	self assertFailure.  
+	self assertFailure.
+	self halt.  
 	self assert: (self errorString includesSubstring: 'tooManyArguments').  
 ]
 

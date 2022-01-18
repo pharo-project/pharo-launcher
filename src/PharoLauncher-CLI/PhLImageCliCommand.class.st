@@ -82,3 +82,8 @@ PhLImageCliCommand >> logImageNotFoundMessage [
 	self errorStream nextPutAll: self class imageNotFoundMessage.
 	self errorStream newLine.
 ]
+
+{ #category : #private }
+PhLImageCliCommand >> modelClass [
+	^ self class environment at: #PhLImage
+]

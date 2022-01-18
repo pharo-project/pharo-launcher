@@ -27,17 +27,26 @@ PhLCliCommand class >> asCliCommand [
 ]
 
 { #category : #'command line - arguments' }
+PhLCliCommand class >> briefFlag [
+
+	^ ((ClapFlag id: #brief)
+		description: 'Prints only name attribute (with leading sequence number).';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
+{ #category : #'command line - arguments' }
 PhLCliCommand class >> delimiterFlag [
 
 	^ (ClapFlag id: #delimiter)
 			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
 			meaning: [ :arg :app | "this argument is optional "
-				(arg at: #delimiterArg) word ];
-			implicitMeaning: [ :arg :app |  ];
+				(arg at: #delimiterArg) value];
+			implicitMeaning: [ :arg :app | app implicitDelimiter ];
 			add: ((ClapPositional id: #delimiterArg)
-					description: 'Delimiter argument, can be one or more characters (without space).';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ]).
+					description: 'Delimiter argument for printing, can be one or more characters (without space).';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage]).
 ]
 
 { #category : #'command line - description' }
@@ -76,6 +85,12 @@ PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
 ]
 
+{ #category : #logging }
+PhLCliCommand class >> missingDelimiterArgMessage [
+
+	^ 'Missing argument value specifying delimiter for printing.'
+]
+
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
@@ -95,6 +110,21 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 						exitSuccess ].
 			(self with: args) execute ];
 		yourself
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> rowModeFlag [
+
+	^ ((ClapFlag id: #rowMode)
+		description: 'Prints one attribute per line only.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> briefPrint [ 
+
+	^ (arguments at: #brief) value
 ]
 
 { #category : #accessing }
@@ -118,6 +148,13 @@ PhLCliCommand >> defaultTemplateCategory [
 { #category : #default }
 PhLCliCommand >> defaultTemplateCategoryName [
 	^ 'Official distributions'
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> delimiter [ 
+	
+	^ (arguments at: #delimiter)
+		value: self
 ]
 
 { #category : #'private ' }
@@ -146,6 +183,13 @@ PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
 		runAndWaitWithStdOutput
 ]
 
+{ #category : #'private ' }
+PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
+
+	self briefPrint ifTrue: [ ^ attrCollection copyFrom: 1 to: 1 ].
+	^ attrCollection
+]
+
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 	^ (aLocation
@@ -158,8 +202,8 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 PhLCliCommand >> getColumnWidthsFrom: domainObjects [
 	|aLabels|
 	"get max column width either from column label or value in column"
-	aLabels := domainObjects first class listPrintAttributeLabels.
-	^ 	domainObjects first class listPrintAttributeBlocks withIndexCollect: [:attrBlock :idx| 
+	aLabels := self listPrintAttributeLabels.
+	^ 	self listPrintAttributeBlocks withIndexCollect: [:attrBlock :idx| 
 			(domainObjects getMaxWithOn: attrBlock) max: (aLabels at: idx) size
 		]
 ]
@@ -169,26 +213,24 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #listing }
-PhLCliCommand >> list: domainObjects [
-	|colWidths |
-	domainObjects isEmpty ifTrue: [ ^ self ].
-	colWidths := self getColumnWidthsFrom: domainObjects.
-	self printAttributeHeaders: domainObjects first class listPrintAttributeLabels by: colWidths.
-	self printAttributeRows: domainObjects by: colWidths.
-	
-	
-	
-	"aCollection
-		withIndexDo: [ :anItem : index| 
-			self outStream
-				nextPutAll: index asString;
-				nextPutAll: ': '.
-			anItem cliPrintOn: self outStream.
-			self outStream newLine ]"
+{ #category : #'private ' }
+PhLCliCommand >> implicitDelimiter [
+
+	^ self rowMode 
+	ifTrue: [ ': ' ]
+	ifFalse: [ ' ' ]
 ]
 
-{ #category : #listing }
+{ #category : #printing }
+PhLCliCommand >> list: domainObjects [
+	
+	domainObjects isEmpty ifTrue: [ ^ self ].
+	self rowMode 
+	ifTrue: [ self printOneAttrPerRow: domainObjects]
+	ifFalse: [self printAttributeTableFrom: domainObjects ]
+]
+
+{ #category : #printing }
 PhLCliCommand >> listAsSton: aCollection [
 	self outStream nextPutAll: (STON toString: aCollection) 
 ]
@@ -198,6 +240,21 @@ PhLCliCommand >> logExceptionMessage: errMessage [
 
 	self errorStream nextPutAll: errMessage.
 	self errorStream newLine.
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeBlocks [
+
+	^self filterPrintAttributesFrom:  self modelClass listPrintAttributeBlocks
+	
+	
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom:  self modelClass listPrintAttributeLabels
+	
 ]
 
 { #category : #message }
@@ -219,7 +276,7 @@ PhLCliCommand >> outStream [
 		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 	^ (arguments at: #ston) value: self
 ]
@@ -229,44 +286,55 @@ PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
 ]
 
-{ #category : #listing }
+{ #category : #printing }
 PhLCliCommand >> printAttributeHeaders: aLabels by: colWidths [
 
 	"print header labels and header line"
 	self printCell: '#' width: 2.
 	self printDelimiter.
-	self printRowOn: aLabels by: colWidths. 
+	self printRowValues: aLabels by: colWidths. 
 	self printHeaderLinesBy: colWidths.
 ]
 
-{ #category : #listing }
+{ #category : #printing }
 PhLCliCommand >> printAttributeRows: domainObjects by: colWidths [
 
 	|blockArray|
-	blockArray := domainObjects first class listPrintAttributeBlocks.
+	blockArray := self listPrintAttributeBlocks.
 	domainObjects withIndexDo: [:listedObject :idx|
 		|aValues|
 		self printCell: idx asString width: 2.
 		self printDelimiter.
 		aValues := blockArray collect: [:aBlock | aBlock value: listedObject ].
-		self printRowOn: aValues by: colWidths		
+		self printRowValues: aValues by: colWidths		
 	]
 ]
 
-{ #category : #listing }
+{ #category : #printing }
+PhLCliCommand >> printAttributeTableFrom: domainObjects [	
+
+		|colWidths |
+		colWidths := self getColumnWidthsFrom: domainObjects.
+		"no header if brief print is enabled"
+		self briefPrint ifFalse: [self printAttributeHeaders: self listPrintAttributeLabels by: colWidths].
+		self printAttributeRows: domainObjects by: colWidths.
+
+]
+
+{ #category : #printing }
 PhLCliCommand >> printCell: aString width: widthSize [
 
 	self outStream nextPutAll: (aString padRightTo: widthSize)
 
 ]
 
-{ #category : #listing }
+{ #category : #printing }
 PhLCliCommand >> printDelimiter [
 
-	self outStream nextPutAll:  ' '
+	self outStream nextPutAll: self delimiter
 ]
 
-{ #category : #listing }
+{ #category : #printing }
 PhLCliCommand >> printHeaderLinesBy: colWidths [
 
 	"print header line"
@@ -277,21 +345,43 @@ PhLCliCommand >> printHeaderLinesBy: colWidths [
 	self outStream newLine.
 ]
 
-{ #category : #listing }
+{ #category : #printing }
 PhLCliCommand >> printLineSized: aWidth [ 
 
 	self outStream nextPutAll: ('' padLeftTo: aWidth with: $-)
 ]
 
-{ #category : #listing }
-PhLCliCommand >> printRowOn: aStringColl by: colWidths [
+{ #category : #printing }
+PhLCliCommand >> printOneAttrPerRow: domainObjects [
 
-	"print header labels"
+	|blockArray aLabels|
+	blockArray := self listPrintAttributeBlocks.
+	aLabels := self listPrintAttributeLabels. 
+	domainObjects withIndexDo: [:listedObject :idx|
+
+		self printRowValues: { 'Nr.'. idx asString. } by: { 0. 2. }.
+		aLabels withIndexDo: [:attrLabel :attrIdx |
+		self printRowValues: { attrLabel. (blockArray at: attrIdx) value: listedObject. } by: { 0. 0. }.
+		].
+		self outStream newLine.
+	]
+]
+
+{ #category : #printing }
+PhLCliCommand >> printRowValues: aStringColl by: colWidths [
+
+	"print string values by column widths"
 	aStringColl withIndexDo: [:aLabel :idx |
 		self printCell: aLabel width: (colWidths at: idx).
 		idx = aStringColl size ifFalse: [ self printDelimiter].
 	].
 	self outStream newLine.
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> rowMode [
+
+	^ (arguments at: #rowMode) value
 ]
 
 { #category : #initialization }
@@ -306,7 +396,7 @@ PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [
 	pharoLauncherModel := aPharoLauncherModel 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLCliCommand >> templateName [ 
 	^ (arguments at: #templateName) value: self.
 	

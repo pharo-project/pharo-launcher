@@ -5,6 +5,53 @@ Class {
 }
 
 { #category : #tests }
+PhLImageListCliCommandTest >> testDelimiter [
+
+
+	| aMatch aCommand |
+
+	aMatch := (context arguments: #('launcher' 'image' 'list' '--delimiter' ' * ')) doMatch.
+	aMatch := (aMatch at: #image) at: #list.
+
+
+	aCommand :=  PhLImageListCliCommand new.
+
+	aCommand setArguments: aMatch.
+	self assert: aCommand delimiter equals: ' * '.
+]
+
+{ #category : #tests }
+PhLImageListCliCommandTest >> testDelimiterImplicit [
+
+
+	| aMatch aCommand |
+
+	aMatch := (context arguments: #('launcher' 'image' 'list')) doMatch.
+	aMatch := (aMatch at: #image) at: #list.
+
+
+	aCommand :=  PhLImageListCliCommand new.
+
+	aCommand setArguments: aMatch.
+	self assert: aCommand delimiter equals: ' '.
+]
+
+{ #category : #tests }
+PhLImageListCliCommandTest >> testDelimiterMissingArg [
+
+
+	| aMatch aCommand |
+
+	aMatch := (context arguments: #('launcher' 'image' 'list' '--delimiter')) doMatch.
+	aMatch := (aMatch at: #image) at: #list.
+
+	aCommand :=  PhLImageListCliCommand new.
+
+	aCommand setArguments: aMatch.
+	self should: [aCommand delimiter] raise: NotFound.
+]
+
+{ #category : #tests }
 PhLImageListCliCommandTest >> testListEmptyListImageShouldSucceed [
 	
 	self runCommand: #('launcher' 'image' 'list').
@@ -18,7 +65,7 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	
-	self runCommand: #('launcher' 'image' 'list').
+	self runCommand: #('launcher' 'image' 'list' '--brief' '--delimiter' '+').
 	 
 	self assertSuccess.  
 	self assert: (self outputString includesSubstring:'myImage1').

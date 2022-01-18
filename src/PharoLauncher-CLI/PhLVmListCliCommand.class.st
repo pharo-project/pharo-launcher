@@ -29,7 +29,11 @@ PhLVmListCliCommand class >> launcherCmdFlags [
 	^ {((ClapFlag id: #ston)
 		description: 'Allows to list images with ston output ';
 		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])}
+		implicitMeaning: [ :arg :app | false ]).	
+		self briefFlag.
+		self rowModeFlag.
+		self delimiterFlag.	
+		}
 ]
 
 { #category : #accessing }

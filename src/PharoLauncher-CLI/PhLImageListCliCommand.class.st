@@ -35,10 +35,16 @@ PhLImageListCliCommand class >> launcherCmdFlags [
 					description: 'the substring to search through the images';
 					meaning: [ :pos | pos word asSymbol ];
 					implicitMeaning: [ :arg :app | ]).
+
 		(ClapFlag id: #ston)
 			description: 'Allows to list images with ston output ';
 			meaning: [ :arg :app | true ];
 			implicitMeaning: [ :arg :app | false  ].
+
+		"add printing flags"
+		self briefFlag.
+		self rowModeFlag.
+		self delimiterFlag.
 			}
 ]
 

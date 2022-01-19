@@ -50,8 +50,7 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 				on: HTTPProgress
 				do: [ :progress | 
 					bar label: progress printString.
-					progress isEmpty
-						ifFalse: [ bar current: progress percentage ].
+					progress ifNotEmpty: [ bar current: progress percentage ].
 					progress resume ] ]
 ]
 

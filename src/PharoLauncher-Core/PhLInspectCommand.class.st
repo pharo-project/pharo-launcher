@@ -17,8 +17,8 @@ PhLInspectCommand >> asSpecCommand [
 ]
 
 { #category : #accessing }
-PhLInspectCommand >> canBeExecuted [ 
-	^ self imagesPresenter selectedImages notEmpty
+PhLInspectCommand >> canBeExecuted [
+	^ self imagesPresenter selectedImages isNotEmpty
 ]
 
 { #category : #executing }

@@ -435,6 +435,13 @@ PhLImage >> summaryInfo [
 				nextPutAll: self description ]
 ]
 
+{ #category : #copying }
+PhLImage >> takeInitializationScriptFrom: anOldImage [
+   "always reset to true, as when recreating an image, it should run the initialization script"
+	self shouldRunInitializationScript: true.
+	self initializationScript: anOldImage initializationScript.
+]
+
 { #category : #accessing }
 PhLImage >> versionFile [
 	^ self file parent / self class versionFileName

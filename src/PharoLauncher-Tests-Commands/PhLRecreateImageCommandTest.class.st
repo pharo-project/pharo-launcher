@@ -54,13 +54,38 @@ PhLRecreateImageCommandTest >> testErrorRaiseWhenImageTemplateNotSet [
 ]
 
 { #category : #tests }
+PhLRecreateImageCommandTest >> testRecreateAnImageShouldCarryOverTheScript [
+	| command images archive zipFile image newImage |
+	command := PhLRecreateImageCommand new.
+	command context: presenter.
+	presenter selectImageAt: 1.
+	images := presenter selectedImages.
+   image := images first.
+   image initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+	archive := ZipArchive new.
+	archive addDeflateString: 'foo' as: 'bar.image'.
+	archive addDeflateString: 'foo' as: 'bar.changes'.
+	zipFile := presenter fileSystem / 'template.zip'. 
+	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	images do: [ :img | img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: zipFile)].
+	presenter selection: images.
+	
+	command execute.
+	
+	presenter selectImageAt: 1.
+	newImage := presenter selectedImages first.
+	self assert: image initializationScript equals: newImage initializationScript 
+]
+
+{ #category : #tests }
 PhLRecreateImageCommandTest >> testRecreateAnImageShouldResetShouldRunInitializationScriptFlag [
 	| command images archive zipFile image |
 	command := PhLRecreateImageCommand new.
 	command context: presenter.
 	presenter selectImageAt: 1.
 	images := presenter selectedImages.
-   image := images first initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+   image := images first.
+   image initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar.image'.
 	archive addDeflateString: 'foo' as: 'bar.changes'.
@@ -87,7 +112,8 @@ PhLRecreateImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExe
 	command context: presenter.
 	presenter selectImageAt: 1.
 	images := presenter selectedImages.
-   image := images first initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+   image := images first.
+   image initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
 	archive := ZipArchive new.
 	archive addDeflateString: 'foo' as: 'bar.image'.
 	archive addDeflateString: 'foo' as: 'bar.changes'.

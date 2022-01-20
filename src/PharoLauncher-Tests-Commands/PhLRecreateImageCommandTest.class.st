@@ -52,3 +52,58 @@ PhLRecreateImageCommandTest >> testErrorRaiseWhenImageTemplateNotSet [
 	
 	
 ]
+
+{ #category : #tests }
+PhLRecreateImageCommandTest >> testRecreateAnImageShouldResetShouldRunInitializationScriptFlag [
+	| command images archive zipFile image |
+	command := PhLRecreateImageCommand new.
+	command context: presenter.
+	presenter selectImageAt: 1.
+	images := presenter selectedImages.
+   image := images first initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+	archive := ZipArchive new.
+	archive addDeflateString: 'foo' as: 'bar.image'.
+	archive addDeflateString: 'foo' as: 'bar.changes'.
+	zipFile := presenter fileSystem / 'template.zip'. 
+	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	images do: [ :img | img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: zipFile)].
+	presenter selection: images.
+	
+	self assert: image shouldRunInitializationScript.
+	
+	command execute.
+	
+	presenter selectImageAt: 1.
+	images := presenter selectedImages.
+   image := images first.
+	self assert: image shouldRunInitializationScript.
+
+]
+
+{ #category : #tests }
+PhLRecreateImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExecuteScript [
+	| command images archive zipFile image |
+	command := PhLRecreateImageCommand new.
+	command context: presenter.
+	presenter selectImageAt: 1.
+	images := presenter selectedImages.
+   image := images first initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+	archive := ZipArchive new.
+	archive addDeflateString: 'foo' as: 'bar.image'.
+	archive addDeflateString: 'foo' as: 'bar.changes'.
+	zipFile := presenter fileSystem / 'template.zip'. 
+	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	images do: [ :img | img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: zipFile)].
+	presenter selection: images.
+	
+   image shouldRunInitializationScript: false.
+	self deny: image shouldRunInitializationScript.
+	
+	command execute.
+	
+	presenter selectImageAt: 1.
+	images := presenter selectedImages.
+   image := images first.
+	self assert: image shouldRunInitializationScript.
+
+]

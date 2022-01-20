@@ -266,13 +266,12 @@ PhLDirectoryBasedImageRepository >> prepareForNewImageNamed: aString [
 
 { #category : #action }
 PhLDirectoryBasedImageRepository >> recreateImage: anImage [
+	| newImage |
 	anImage originTemplate 
 		ifNil: [ PhLCommandError signal ].
-		
-	self 
-		deleteImage: anImage; 
-		extractTemplate: anImage originTemplate to: anImage name.
-
+	self deleteImage: anImage.
+	newImage := self extractTemplate: anImage originTemplate to: anImage name.
+	newImage shouldRunInitializationScript: true.
 ]
 
 { #category : #action }

@@ -231,6 +231,9 @@ PhLCliCommand >> list: domainObjects [
 ]
 
 { #category : #printing }
+]
+
+{ #category : #printing }
 PhLCliCommand >> listAsSton: aCollection [
 	self outStream nextPutAll: (STON toString: aCollection) 
 ]

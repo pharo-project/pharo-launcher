@@ -41,5 +41,13 @@ PhLVmInfoCliCommand >> displayInfoVm: aVM [
 
 { #category : #accessing }
 PhLVmInfoCliCommand >> executeWithVM: aVm [
-   self displayInfoVm: aVm
+  
+	self list: (Array with: aVm)
+]
+
+{ #category : #'accessing arguments' }
+PhLVmInfoCliCommand >> rowMode [
+
+	"image info is printed in one attribute per row"
+	^ true
 ]

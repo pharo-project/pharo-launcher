@@ -10,22 +10,18 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #'instance creation' }
-PhLImagesMockRepo class >> tenRandomImages [
-
-	|repo|
-	repo := self new.
-	10 timesRepeat: [ repo images add: PhLImagesMock atRandom ].
-	^ repo
-		
-]
-
 { #category : #adding }
 PhLImagesMockRepo >> addImageNamed: anImageName [ 
 	| image |
 	image := PhLImagesMock name: anImageName.
 	self images add: image.
 	^ image
+]
+
+{ #category : #adding }
+PhLImagesMockRepo >> addTenRandomImages [
+
+	10 timesRepeat: [ self images add: PhLImagesMock atRandom ]
 ]
 
 { #category : #accessing }

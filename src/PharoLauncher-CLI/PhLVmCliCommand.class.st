@@ -59,7 +59,7 @@ PhLVmCliCommand >> logVMNotFound [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 PhLVmCliCommand >> modelClass [
 	^ self class environment at: #PhLVirtualMachine
 ]

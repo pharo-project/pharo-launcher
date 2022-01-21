@@ -122,10 +122,18 @@ PhLCliCommand class >> rowModeFlag [
 		implicitMeaning: [ :arg :app | false ])
 ]
 
+{ #category : #'private ' }
+PhLCliCommand >> boolValueFor: flagId [
+
+	^ [(arguments at: flagId) value: self]
+		on: NotYetImplemented
+		do: [false]
+]
+
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
-	^ (arguments at: #brief) value
+	^ self boolValueFor:  #brief
 ]
 
 { #category : #accessing }
@@ -165,9 +173,10 @@ PhLCliCommand >> defaultTemplateCategoryName [
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> delimiter [ 
-	
-	^ (arguments at: #delimiter)
-		value: self
+	|delimiter|
+	delimiter := self flagValueFor: #delimiter.
+	delimiter ifNil: [^ self implicitDelimiter  ].
+	^ delimiter
 ]
 
 { #category : #'private ' }
@@ -210,6 +219,14 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 		detect: [ :template | 
 			(template name includesSubstring: 'stable')
 				and: [ template name includesSubstring: '64bit' ] ]) name
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> flagValueFor: flagId [
+
+	^ [(arguments at: flagId) value: self]
+		on: NotYetImplemented
+		do: [nil]
 ]
 
 { #category : #'private ' }
@@ -291,7 +308,8 @@ PhLCliCommand >> outStream [
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
-	^ (arguments at: #ston) value: self
+
+	^ self boolValueFor: #ston
 ]
 
 { #category : #accessing }
@@ -302,7 +320,7 @@ PhLCliCommand >> pharoLauncherModel [
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
-	^ (arguments at: #rowMode) value
+	^ self boolValueFor: #rowMode
 ]
 
 { #category : #initialization }
@@ -320,7 +338,8 @@ PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> templateName [ 
-	^ (arguments at: #templateName) value: self.
+
+	^ self flagValueFor: #templateName
 	
 	
 ]

@@ -23,3 +23,9 @@ PhLTemplateCategoriesCliCommand >> execute [
 	self list: self templateRepository roots
 		
 ]
+
+{ #category : #private }
+PhLTemplateCategoriesCliCommand >> modelClass [ 
+
+	^ self class environment at: #PhLCacheTemplateGroup
+]

@@ -31,3 +31,9 @@ PhLTemplateCliCommand class >> launcherCmdDescription [
 PhLTemplateCliCommand >> logWrongTemplateName [
 	self errorStream nextPutAll: 'please enter a correct template name'
 ]
+
+{ #category : #private }
+PhLTemplateCliCommand >> modelClass [
+
+ ^ self class environment at: #PhLAbstractTemplate 
+]

@@ -11,5 +11,9 @@ PhLVMInfoCliCommandTest >> testInfoVmShouldSucceed [
 	
 	self runCommand: #('launcher' 'vm' 'info' 'myVm1').
 	 
-	self assert: (self outputString includesSubstring:'some random update time'). 
+	self assert: (self outputString includesSubstring:'valid' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'name' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'myVm1' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'url' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'update' caseSensitive: false).
 ]

@@ -6,3 +6,15 @@ PhLCacheTemplateGroup >> = anObject [
 	delegate class = anObject class ifFalse: [ ^ false ].
 	^ delegate = anObject 
 ]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLCacheTemplateGroup class >> listPrintAttributeBlocks [
+	
+	^ {[:templateGroup | templateGroup name]}
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLCacheTemplateGroup class >> listPrintAttributeLabels [
+	
+	^ #('Template category' )
+]

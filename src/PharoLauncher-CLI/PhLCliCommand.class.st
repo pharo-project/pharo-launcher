@@ -16,7 +16,8 @@ Class {
 	#instVars : [
 		'outStream',
 		'pharoLauncherModel',
-		'errorStream'
+		'errorStream',
+		'cliFormatter'
 	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
@@ -128,6 +129,18 @@ PhLCliCommand >> briefPrint [
 ]
 
 { #category : #accessing }
+PhLCliCommand >> cliFormatter [
+
+	^ cliFormatter 
+]
+
+{ #category : #accessing }
+PhLCliCommand >> cliFormatter: aFormatter [
+
+	cliFormatter := aFormatter
+]
+
+{ #category : #accessing }
 PhLCliCommand >> currentVMPid [
 
 	^ OSSVMProcess vmProcess pid
@@ -186,6 +199,7 @@ PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
 { #category : #'private ' }
 PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 
+	"only first (most important) attribute is printed for brief mode by default, can be overriden"
 	self briefPrint ifTrue: [ ^ attrCollection copyFrom: 1 to: 1 ].
 	^ attrCollection
 ]
@@ -224,15 +238,23 @@ PhLCliCommand >> implicitDelimiter [
 { #category : #printing }
 PhLCliCommand >> list: domainObjects [
 	
-	domainObjects isEmpty ifTrue: [ ^ self ].
-	self rowMode 
-	ifTrue: [ self printOneAttrPerRow: domainObjects]
-	ifFalse: [self printAttributeTableFrom: domainObjects ]
+	self cliFormatter domainObjects: domainObjects.
+	self cliFormatter printList.
 ]
 
-{ #category : #printing }
-PhLCliCommand >> listAsSton: aCollection [
-	self outStream nextPutAll: (STON toString: aCollection) 
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeBlocks
+	
+	
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeLabels
+	
 ]
 
 { #category : #printing }
@@ -242,26 +264,17 @@ PhLCliCommand >> logExceptionMessage: errMessage [
 	self errorStream newLine.
 ]
 
-{ #category : #'private ' }
-PhLCliCommand >> listPrintAttributeBlocks [
-
-	^self filterPrintAttributesFrom:  self modelClass listPrintAttributeBlocks
-	
-	
-]
-
-{ #category : #'private ' }
-PhLCliCommand >> listPrintAttributeLabels [
-
-	^ self filterPrintAttributesFrom:  self modelClass listPrintAttributeLabels
-	
-]
-
 { #category : #message }
 PhLCliCommand >> messageErrorCategoryNotFound [
 	self errorStream nextPutAll: 'please enter a correct category '.
 	self errorStream newLine.
 	^ self
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> modelClass [
+
+ ^ self class environment at: #PhLObject
 ]
 
 { #category : #'command execution' }
@@ -286,98 +299,6 @@ PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
 ]
 
-{ #category : #printing }
-PhLCliCommand >> printAttributeHeaders: aLabels by: colWidths [
-
-	"print header labels and header line"
-	self printCell: '#' width: 2.
-	self printDelimiter.
-	self printRowValues: aLabels by: colWidths. 
-	self printHeaderLinesBy: colWidths.
-]
-
-{ #category : #printing }
-PhLCliCommand >> printAttributeRows: domainObjects by: colWidths [
-
-	|blockArray|
-	blockArray := self listPrintAttributeBlocks.
-	domainObjects withIndexDo: [:listedObject :idx|
-		|aValues|
-		self printCell: idx asString width: 2.
-		self printDelimiter.
-		aValues := blockArray collect: [:aBlock | aBlock value: listedObject ].
-		self printRowValues: aValues by: colWidths		
-	]
-]
-
-{ #category : #printing }
-PhLCliCommand >> printAttributeTableFrom: domainObjects [	
-
-		|colWidths |
-		colWidths := self getColumnWidthsFrom: domainObjects.
-		"no header if brief print is enabled"
-		self briefPrint ifFalse: [self printAttributeHeaders: self listPrintAttributeLabels by: colWidths].
-		self printAttributeRows: domainObjects by: colWidths.
-
-]
-
-{ #category : #printing }
-PhLCliCommand >> printCell: aString width: widthSize [
-
-	self outStream nextPutAll: (aString padRightTo: widthSize)
-
-]
-
-{ #category : #printing }
-PhLCliCommand >> printDelimiter [
-
-	self outStream nextPutAll: self delimiter
-]
-
-{ #category : #printing }
-PhLCliCommand >> printHeaderLinesBy: colWidths [
-
-	"print header line"
-	self printLineSized: 2.
-	self printDelimiter.
-	colWidths do: [:aWidth | self printLineSized: aWidth.
-		self printDelimiter].
-	self outStream newLine.
-]
-
-{ #category : #printing }
-PhLCliCommand >> printLineSized: aWidth [ 
-
-	self outStream nextPutAll: ('' padLeftTo: aWidth with: $-)
-]
-
-{ #category : #printing }
-PhLCliCommand >> printOneAttrPerRow: domainObjects [
-
-	|blockArray aLabels|
-	blockArray := self listPrintAttributeBlocks.
-	aLabels := self listPrintAttributeLabels. 
-	domainObjects withIndexDo: [:listedObject :idx|
-
-		self printRowValues: { 'Nr.'. idx asString. } by: { 0. 2. }.
-		aLabels withIndexDo: [:attrLabel :attrIdx |
-		self printRowValues: { attrLabel. (blockArray at: attrIdx) value: listedObject. } by: { 0. 0. }.
-		].
-		self outStream newLine.
-	]
-]
-
-{ #category : #printing }
-PhLCliCommand >> printRowValues: aStringColl by: colWidths [
-
-	"print string values by column widths"
-	aStringColl withIndexDo: [:aLabel :idx |
-		self printCell: aLabel width: (colWidths at: idx).
-		idx = aStringColl size ifFalse: [ self printDelimiter].
-	].
-	self outStream newLine.
-]
-
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
@@ -389,6 +310,7 @@ PhLCliCommand >> setArguments: args [
 	super setArguments: args.
 	PhLNotificationCenter default outStream: self outStream.
 	PhLNotificationCenter default errorStream: self errorStream.
+	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
 { #category : #initialization }

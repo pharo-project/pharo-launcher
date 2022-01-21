@@ -67,9 +67,8 @@ PhLImageListCliCommand >> listImages [
 	images := self name 
 		ifNil: [  self imageRepository images ]
 		ifNotNil:[ self imagesFromName: self name ].
-	self outputAsSton 
-		ifTrue: [ ^ self listAsSton: images ].
-	self list: images.
+
+	self list: images
 ]
 
 { #category : #'accessing arguments' }

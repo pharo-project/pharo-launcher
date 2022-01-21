@@ -38,7 +38,6 @@ PhLVmListCliCommand class >> launcherCmdFlags [
 
 { #category : #accessing }
 PhLVmListCliCommand >> execute [
-	self outputAsSton 
-		ifTrue: [ ^ self listAsSton: self vmRepository ].
+
 	self list: self vmRepository
 ]

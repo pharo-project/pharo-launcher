@@ -28,6 +28,13 @@ ConsoleListFormatterTest >> testAttributeValuesFrom [
 ]
 
 { #category : #test }
+ConsoleListFormatterTest >> testFormatterAccessors [
+
+	formatter attributeLabels: #().
+	
+]
+
+{ #category : #test }
 ConsoleListFormatterTest >> testGetColumnWidthsFrom [
 		formatter attributeLabels: #('1234567890' 'x' 'x').
 		formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a asWords  ]. [:a |a asWords  ] }.
@@ -124,6 +131,31 @@ ConsoleListFormatterTest >> testPrintLineSized [
 ]
 
 { #category : #test }
+ConsoleListFormatterTest >> testPrintList [
+
+	| stonString tableModeString |
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
+	formatter domainObjects: #(1 2 3).
+	
+	"test if table is printed, if ston mode is disabled"
+	formatter printList.
+	tableModeString  := formatter outStream contents.
+	command resetOutStream.
+	formatter printListAttributes.
+	self assert: formatter outStream contents equals: tableModeString.
+
+	"test for ston output flag"
+	command resetOutStream.
+	command outputAsSton: true.
+	formatter printList.
+	stonString  := formatter outStream contents.
+	command resetOutStream.
+	formatter printListAsSton.
+	self assert: formatter outStream contents equals: stonString.
+]
+
+{ #category : #test }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
 	formatter domainObjects: {PhLImagesMock atRandom. PhLImagesMock atRandom. PhLImagesMock atRandom.}.
@@ -135,18 +167,28 @@ ConsoleListFormatterTest >> testPrintListAsSton [
 { #category : #test }
 ConsoleListFormatterTest >> testPrintListAttributes [
 
-		|actualTableString actualRowString expectedString actualString |
+		| rowModeString tableModeString   |
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
 	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
 	formatter domainObjects: #(1 2 3).
-	command rowMode: true.
 	
-	formatter listPrintAttributes.
-	actualString := formatter outStream contents.
-
-	formatter resetOutStream.
+	"test if row mode works when using printListAttributes"
+	command rowMode: true.
+	formatter printListAttributes.
+	rowModeString := formatter outStream contents.
+	command resetOutStream.
+	"in row mode it should be equal to output of printOneAttrPerRow"
+	formatter printOneAttrPerRow.
+	self assert: formatter outStream contents equals: rowModeString.
+	
+	"same for table mode - expected output is equal to printAttributeTable output"
 	command rowMode: false.		
-
+	command resetOutStream.
+	formatter printListAttributes.
+	tableModeString := formatter outStream contents.
+	command resetOutStream.
+	formatter printAttributeTable.
+	self assert: formatter outStream contents equals: tableModeString.
 ]
 
 { #category : #test }

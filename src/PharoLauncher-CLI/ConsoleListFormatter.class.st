@@ -12,7 +12,7 @@ API description:
 - briefMode - flag to print one attribute only (obtained from cliCommand)
 - delimiter - one or more characters that delimits printed attributes of domain object (obtained from cliCommand)
 - outputAsSton - flag to print domain object in STON format (obtained from cliCommand)
-- printSequence - flag to print sequence order number of domain objects
+- printSequence - flag to print sequence order number of domain objects (not implemented yet)
 - on (class): constructor that is instantiated from cli command, sets above attributes from command
 - domainObjects: setter for domain objects that will be printed on output stream
    - each domain object is printed based on 2 methods (can be bypassed and set user specific): 
@@ -29,7 +29,7 @@ Class {
 		'attributeLabels',
 		'attributeValueBlocks'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Utility'
 }
 
 { #category : #'instance creation' }
@@ -234,12 +234,6 @@ ConsoleListFormatter >> printRowValues: aStringColl by: colWidths [
 		idx = aStringColl size ifFalse: [ self printDelimiter].
 	].
 	self outStream newLine.
-]
-
-{ #category : #accessing }
-ConsoleListFormatter >> printSequence [ 
-
-	^ cliCommand printSequence
 ]
 
 { #category : #accessing }

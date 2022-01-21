@@ -6,7 +6,8 @@ Class {
 	#superclass : #PhLCliCommand,
 	#instVars : [
 		'rowMode',
-		'briefPrint'
+		'briefPrint',
+		'outputAsSton'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -36,7 +37,20 @@ PhLCliCommandMock >> initialize [
 	
 	self rowMode: false.
 	self briefPrint: false.
+	self outputAsSton: false.
 	self resetOutStream
+]
+
+{ #category : #accessing }
+PhLCliCommandMock >> outputAsSton [  
+	
+	^ outputAsSton 
+]
+
+{ #category : #accessing }
+PhLCliCommandMock >> outputAsSton: aBool [
+	
+	outputAsSton := aBool
 ]
 
 { #category : #initialization }

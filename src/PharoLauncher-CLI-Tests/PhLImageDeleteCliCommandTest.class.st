@@ -16,7 +16,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageNameWithPathShouldRaiseError [
 	self
 		assert:
 			(self errorString
-				includesSubstring: 'please enter a correct local image').
+				includesSubstring: 'Please enter a correct local image').
 	self assert: imagePath isFile.
 ]
 
@@ -27,7 +27,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageNameWithoutImageNameShouldRaiseEr
 	
 	self runCommand: #('launcher' 'image' 'delete').
  
-	self assert: ( self errorString includesSubstring: 'please enter a correct local image').  
+	self assert: ( self errorString includesSubstring: 'Please enter a correct local image').  
 ]
 
 { #category : #tests }
@@ -48,5 +48,5 @@ PhLImageDeleteCliCommandTest >> testDeleteImageWrongImageNameShouldRaiseError [
 	
 	self runCommand: #('launcher' 'image' 'delete' 'wrongImageName').
 	  
-	self assert: (self errorString includesSubstring: 'please enter a correct local image').  
+	self assert: (self errorString includesSubstring: 'Please enter a correct local image').  
 ]

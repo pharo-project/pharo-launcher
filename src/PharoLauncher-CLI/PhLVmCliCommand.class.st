@@ -12,7 +12,7 @@ I declare:
 Class {
 	#name : #PhLVmCliCommand,
 	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }

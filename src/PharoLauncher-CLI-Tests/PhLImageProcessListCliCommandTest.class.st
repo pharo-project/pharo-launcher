@@ -19,11 +19,14 @@ PhLImageProcessListCliCommandTest >> testExecute [
 ]
 
 { #category : #test }
-PhLImageProcessListCliCommandTest >> testProcessListCmdString [
+PhLImageProcessListCliCommandTest >> testOsShellArgArray [
 
-	|processListCmd|
+	|processListCmd argArray|
 	processListCmd := PhLImageProcessListCliCommand new.
-	"test whether current PID of vm is filtered from list"
-	self assert: (processListCmd processListCmdString includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
+	argArray := processListCmd osShellArgArray.
 	
+	"test whether current PID of vm is filtered from list"
+	
+	self assert: (argArray third includesSubstring: 'pgrep').
+	self assert: (argArray third includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
 ]

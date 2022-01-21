@@ -10,7 +10,7 @@ I execute:
 Class {
 	#name : #PhLTemplateCategoriesCliCommand,
 	#superclass : #PhLTemplateCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }

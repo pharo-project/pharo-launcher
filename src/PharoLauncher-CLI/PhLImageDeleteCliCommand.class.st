@@ -10,7 +10,7 @@ I execute:
 Class {
 	#name : #PhLImageDeleteCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

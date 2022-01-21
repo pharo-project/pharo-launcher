@@ -13,7 +13,7 @@ I execute:
 Class {
 	#name : #PhLTemplateCliCommand,
 	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }

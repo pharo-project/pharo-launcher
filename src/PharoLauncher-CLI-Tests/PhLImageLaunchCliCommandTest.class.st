@@ -112,7 +112,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageWrongImageName [
 	
 	self runCommand: #('launcher' 'image' 'launch' 'wrongImageName').
 	 
-	self assert: (self errorString includesSubstring: 'please enter a correct local image').
+	self assert: (self errorString includesSubstring: 'Please enter a correct local image.').
 	self deny: image isLaunched. 
 
 	

@@ -11,7 +11,7 @@ I execute:
 Class {
 	#name : #PhLImageInfoCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

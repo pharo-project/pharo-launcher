@@ -9,7 +9,7 @@ Class {
 	#instVars : [
 		'template'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

@@ -4,5 +4,5 @@ Error raised when we read the Pharo launcherCLi configuration is present but not
 Class {
 	#name : #PhLInvalidConfiguration,
 	#superclass : #PhLError,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Exceptions'
 }

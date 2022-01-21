@@ -4,7 +4,7 @@ Command to reset an image
 Class {
 	#name : #PhLImageRecreateCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

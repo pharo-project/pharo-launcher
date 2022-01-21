@@ -9,7 +9,7 @@ Class {
 		'value',
 		'outStream'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Utility'
 }
 
 { #category : #'instance creation' }

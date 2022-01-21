@@ -8,7 +8,7 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Utility'
 }
 
 { #category : #accessing }

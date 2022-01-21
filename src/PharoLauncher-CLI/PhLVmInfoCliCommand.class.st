@@ -11,7 +11,7 @@ I execute:
 Class {
 	#name : #PhLVmInfoCliCommand,
 	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }

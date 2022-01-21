@@ -13,7 +13,7 @@ Class {
 	#instVars : [
 		'useScript'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

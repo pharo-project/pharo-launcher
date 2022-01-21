@@ -28,7 +28,7 @@ Open your terminal in the directory containing the pharo executable. You need to
 Class {
 	#name : #PhLImageCreateCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }

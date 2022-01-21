@@ -18,7 +18,7 @@ Class {
 		'pharoLauncherModel',
 		'errorStream'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }
@@ -117,6 +117,21 @@ PhLCliCommand >> execute [
 	^ self context exitSuccess
 ]
 
+{ #category : #'command execution' }
+PhLCliCommand >> executeOSShellCommand [
+
+	^ self executeOSShellCommandWithArgs: self osShellArgArray
+]
+
+{ #category : #'command execution' }
+PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
+
+^ PhLProcessWrapper new 
+		shellCommand;
+		addAllArguments: argArray;
+		runAndWaitWithStdOutput
+]
+
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 	^ (aLocation
@@ -148,11 +163,24 @@ PhLCliCommand >> listAsSton: aCollection [
 	self outStream nextPutAll: (STON toString: aCollection) 
 ]
 
+{ #category : #printing }
+PhLCliCommand >> logExceptionMessage: errMessage [
+
+	self errorStream nextPutAll: errMessage.
+	self errorStream newLine.
+]
+
 { #category : #message }
 PhLCliCommand >> messageErrorCategoryNotFound [
 	self errorStream nextPutAll: 'please enter a correct category '.
 	self errorStream newLine.
 	^ self
+]
+
+{ #category : #'command execution' }
+PhLCliCommand >> osShellArgArray [
+	"No OS shell arguments by default, using array instead of string"
+	^ #()
 ]
 
 { #category : #'private ' }

@@ -4,10 +4,7 @@ Command to kill one image if given in option or all the images if the --all flag
 Class {
 	#name : #PhLImageKillCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'allFlag'
-	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }
@@ -41,35 +38,48 @@ PhLImageKillCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
+{ #category : #accessing }
+PhLImageKillCliCommand >> allFlag [
+
+	^ (arguments at: #all) value
+]
+
 { #category : #'command execution' }
 PhLImageKillCliCommand >> execute [
-	(arguments at: #all) value
-		ifTrue: [ ^ (self killAllImages) ].
-	^ self killSelectedImage 
-
-]
-
-{ #category : #commands }
-PhLImageKillCliCommand >> killAllImages [
 	
-	^ LibC runCommand: (self killImageCmdStringFrom: nil)
+	^ self executeOSShellCommand 
+
 ]
 
 { #category : #commands }
-PhLImageKillCliCommand >> killImageCmdStringFrom: anImageName [
+PhLImageKillCliCommand >> killArgString [
+
 	^ String
 		streamContents: [ :aStream | 
-			aStream nextPutAll: 'kill $(pgrep -a -f Pharo | grep -v ';
+			aStream nextPutAll: '$(pgrep -a -f Pharo | grep -v ';
 			nextPutAll: self currentVMPid asString.
-			anImageName isEmptyOrNil
-				ifFalse: [ aStream
+			self allFlag ifFalse: [ aStream
 						nextPutAll: ' | grep ';
-						nextPutAll: anImageName ].
-			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)> /dev/null' ]
+						nextPutAll:  self imageName ].
+			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)>' ]
+]
+
+{ #category : #'command execution' }
+PhLImageKillCliCommand >> osShellArgArray [
+
+	"provide list of command and its args in array"
+	^ Array with: 'kill' with: self killArgString with: '/dev/null'
 ]
 
 { #category : #commands }
-PhLImageKillCliCommand >> killSelectedImage [
+PhLImageKillCliCommand >> sndKillArgString [
 
-	^ LibC runCommand: (self killImageCmdStringFrom: self imageName)
+	^ String
+		streamContents: [ :aStream | 
+			aStream nextPutAll: '$(pgrep -a -f Pharo | grep -v ';
+			nextPutAll: self currentVMPid asString.
+			self allFlag ifFalse: [ aStream
+						nextPutAll: ' | grep ';
+						nextPutAll:  self imageName ].
+			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)>' ]
 ]

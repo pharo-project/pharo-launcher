@@ -10,7 +10,7 @@ Class {
 		'launchImageFromALoginShell',
 		'initScriptsDirectory'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Model'
 }
 
 { #category : #'error signalling' }

@@ -9,7 +9,7 @@ Class {
 		'templateRepository',
 		'vmManager'
 	],
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Model'
 }
 
 { #category : #accessing }

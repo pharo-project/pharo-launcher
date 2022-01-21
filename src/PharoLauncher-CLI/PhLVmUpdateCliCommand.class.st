@@ -10,7 +10,7 @@ I execute:
 Class {
 	#name : #PhLVmUpdateCliCommand,
 	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - converting' }

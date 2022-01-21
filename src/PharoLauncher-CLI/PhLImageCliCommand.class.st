@@ -13,7 +13,7 @@ I execute:
 Class {
 	#name : #PhLImageCliCommand,
 	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI'
+	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line' }
@@ -23,7 +23,7 @@ PhLImageCliCommand class >> asCliCommand [
 
 { #category : #'as yet unclassified' }
 PhLImageCliCommand class >> imageNotFoundMessage [
-	^ 'please enter a correct local image'
+	^ 'Please enter a correct local image.'
 ]
 
 { #category : #'command line' }
@@ -42,7 +42,7 @@ PhLImageCliCommand class >> launcherCmdSubcommands [
 PhLImageCliCommand >> execute [
 	[ self executeWithImage: self findImage ]
 		on: NotFound
-		do: [ ^ self logImageNotFoundMessage ]
+		do: [:ex | ^ self logExceptionMessage: ex printString ]
 ]
 
 { #category : #'find-select' }

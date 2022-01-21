@@ -5,13 +5,24 @@ Class {
 }
 
 { #category : #tests }
+PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+
+	self runCommand: #( 'launcher' 'image' 'copy').
+	 
+	self assert: (self errorString includesSubstring:'Image to copy argument is missing.').  
+	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
+]
+
+{ #category : #tests }
 PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 
 	self runCommand: #( 'launcher' 'image' 'copy' 'myImage1' ).
 	 
-	self assert: (self errorString includesSubstring:'An argument is missing').  
+	self assert: (self errorString includesSubstring:'New image name argument is missing.').  
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 
@@ -44,6 +55,6 @@ PhLImageCopyCliCommandTest >> testCopyImageWrongName [
 
 	self runCommand: #('launcher' 'image' 'copy' 'myge1' 'myImage3' ).
 	 
-	self assert: (self errorString includesSubstring: 'please enter a correct local image').  
+	self assert: (self errorString includesSubstring: 'Please enter a correct local image').  
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1' ) asSet. 
 ]

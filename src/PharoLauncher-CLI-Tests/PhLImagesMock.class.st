@@ -22,7 +22,7 @@ PhLImagesMock class >> atRandom [
 		name: #('Image (PharoX.0.0-rc1.build.1436.sha.e281eb4.arch.64bit)' 'Image (Pharo x.0 - xybit -exe)' 'Image (P-test)' 'Image (Pharo Mooc)' 'Image (P1-64b-seaside)' 'Image (Pharo 9.0 (stable))') atRandom;
 		architecture: #('32' '64') atRandom;
 		pharoVersion: #('60' '61' '70' '80' '90' '100') atRandom;
-		lastModification: (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom ) asString;
+		lastModification: (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom );
 yourself 
 ]
 
@@ -66,15 +66,6 @@ PhLImagesMock >> architecture: aString [
 { #category : #mockup }
 PhLImagesMock >> checkImageArchitecture [
 	^self 
-]
-
-{ #category : #printing }
-PhLImagesMock >> cliPrintOn: aStream [
-	aStream
-		nextPutAll: self name;
-		tab;
-		nextPutAll: 'architecture: ';
-		nextPutAll: self architecture.
 ]
 
 { #category : #accessing }

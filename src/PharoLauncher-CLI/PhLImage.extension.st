@@ -1,18 +1,9 @@
 Extension { #name : #PhLImage }
 
 { #category : #'*PharoLauncher-CLI' }
-PhLImage >> cliPrintOn: anOutputStream [
-	anOutputStream
-		nextPutAll: self name;
-		tab;
-		nextPutAll: 'architecture: ';
-		nextPutAll: self architecture.
-]
-
-{ #category : #'*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeBlocks [
 	
-	^ {[:image | image name]. [:image | image architecture]. [:image | image pharoVersion]. [:image | image lastModification].}
+	^ {[:image | image name]. [:image | image architecture]. [:image | image pharoVersion]. [:image | image lastModification asLocalStringYMDHMS ].}
 ]
 
 { #category : #'*PharoLauncher-CLI' }

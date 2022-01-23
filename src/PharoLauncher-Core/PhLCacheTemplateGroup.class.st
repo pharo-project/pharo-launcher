@@ -22,11 +22,6 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 		yourself
 ]
 
-{ #category : #printing }
-PhLCacheTemplateGroup >> cliPrintOn: aStream [
-	aStream nextPutAll: self name
-]
-
 { #category : #comparing }
 PhLCacheTemplateGroup >> hash [
 	^ delegate hash

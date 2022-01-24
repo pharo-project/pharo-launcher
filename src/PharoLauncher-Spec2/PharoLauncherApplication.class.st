@@ -283,10 +283,7 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 { #category : #ui }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 	
-	self newProgress 
-		parentWindow: self topWindow;
-		title: (aString contractTo: 60);
-		informUserDuring: aBlock
+	self newProgress pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
 { #category : #initialization }

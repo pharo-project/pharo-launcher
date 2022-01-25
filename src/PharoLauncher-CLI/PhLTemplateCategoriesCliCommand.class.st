@@ -18,6 +18,25 @@ PhLTemplateCategoriesCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #categories 
 ]
 
+{ #category : #'command line - converting' }
+PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
+
+	^ 'Prints list of image template categories.'
+]
+
+{ #category : #'command line - converting' }
+PhLTemplateCategoriesCliCommand class >> launcherCmdFlags [
+	^ {
+		"add printing flags"
+		self briefFlag.
+		self rowModeFlag.
+		self delimiterFlag.
+		self stonFlag 
+			description: 'Prints list of image template categories using STON format. ';
+			yourself.
+			}
+]
+
 { #category : #initialization }
 PhLTemplateCategoriesCliCommand >> execute [
 	self list: self templateRepository roots

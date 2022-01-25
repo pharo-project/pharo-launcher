@@ -44,10 +44,10 @@ PhLImageLaunchCliCommand class >> launcherCmdFlags [
 { #category : #'command line - arguments' }
 PhLImageLaunchCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
-		description: 'Local image name which will be launched.';
+		description: 'Determines local image name to be launched.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, you need to precise which image to launch' .  ];
+        signal: 'An argument is missing, please specify the local image name to launch.'];
 		yourself)}
 ]
 

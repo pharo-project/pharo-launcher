@@ -122,6 +122,15 @@ PhLCliCommand class >> rowModeFlag [
 		implicitMeaning: [ :arg :app | false ])
 ]
 
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> stonFlag [
+
+	^ ((ClapFlag id: #ston)
+		description: 'Prints information in STON format.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
 { #category : #'private ' }
 PhLCliCommand >> boolValueFor: flagId [
 
@@ -229,16 +238,6 @@ PhLCliCommand >> flagValueFor: flagId [
 		do: [nil]
 ]
 
-{ #category : #'private ' }
-PhLCliCommand >> getColumnWidthsFrom: domainObjects [
-	|aLabels|
-	"get max column width either from column label or value in column"
-	aLabels := self listPrintAttributeLabels.
-	^ 	self listPrintAttributeBlocks withIndexCollect: [:attrBlock :idx| 
-			(domainObjects getMaxWithOn: attrBlock) max: (aLabels at: idx) size
-		]
-]
-
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
@@ -279,13 +278,6 @@ PhLCliCommand >> logExceptionMessage: errMessage [
 
 	self errorStream nextPutAll: errMessage.
 	self errorStream newLine.
-]
-
-{ #category : #message }
-PhLCliCommand >> messageErrorCategoryNotFound [
-	self errorStream nextPutAll: 'please enter a correct category '.
-	self errorStream newLine.
-	^ self
 ]
 
 { #category : #'private ' }

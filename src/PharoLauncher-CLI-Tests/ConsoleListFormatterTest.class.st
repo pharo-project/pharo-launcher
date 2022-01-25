@@ -17,6 +17,7 @@ ConsoleListFormatterTest >> setUp [
 	super setUp.
 	command := PhLCliCommandMock new. 
 	formatter := ConsoleListFormatter on: command.
+	command cliFormatter: formatter.
 ]
 
 { #category : #test }
@@ -147,7 +148,7 @@ ConsoleListFormatterTest >> testPrintList [
 
 	"test for ston output flag"
 	command resetOutStream.
-	command outputAsSton: true.
+	formatter outputAsSton: true.
 	formatter printList.
 	stonString  := formatter outStream contents.
 	command resetOutStream.
@@ -173,7 +174,7 @@ ConsoleListFormatterTest >> testPrintListAttributes [
 	formatter domainObjects: #(1 2 3).
 	
 	"test if row mode works when using printListAttributes"
-	command rowMode: true.
+	formatter rowMode: true.
 	formatter printListAttributes.
 	rowModeString := formatter outStream contents.
 	command resetOutStream.
@@ -182,7 +183,7 @@ ConsoleListFormatterTest >> testPrintListAttributes [
 	self assert: formatter outStream contents equals: rowModeString.
 	
 	"same for table mode - expected output is equal to printAttributeTable output"
-	command rowMode: false.		
+	formatter rowMode: false.		
 	command resetOutStream.
 	formatter printListAttributes.
 	tableModeString := formatter outStream contents.
@@ -198,7 +199,6 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
 	formatter domainObjects: #(1 2 3).
 	command rowMode: true.
-
 	formatter printOneAttrPerRow.
 
 	expectedString := String streamContents: [:aStream | 

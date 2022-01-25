@@ -1,6 +1,31 @@
 Extension { #name : #PhLImage }
 
 { #category : #'*PharoLauncher-CLI' }
+PhLImage class >> extendedListPrintAttributeBlocks [
+	"this is used to dump extended image information"
+	|aColl|
+	aColl := OrderedCollection newFrom: self listPrintAttributeBlocks.
+	aColl
+		addAll:
+			{[:image | image description ].
+			[ :image | image originTemplateName ].
+			[ :image | image originTemplateUrl ].
+			[ :image | image location ]}.
+	^ aColl
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImage class >> extendedListPrintAttributeLabels [
+		"this is used to dump extended image information"
+	|aColl|
+	aColl := OrderedCollection newFrom: self listPrintAttributeLabels.
+	aColl
+		addAll:
+			#('Description' 'Origin template' 'Template URL' 'Local path').
+	^ aColl
+]
+
+{ #category : #'*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeBlocks [
 	
 	^ {[:image | image name]. [:image | image architecture]. [:image | image pharoVersion]. [:image | image lastModification asLocalStringYMDHMS ].}

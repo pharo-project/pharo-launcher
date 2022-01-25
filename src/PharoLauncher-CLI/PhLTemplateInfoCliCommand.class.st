@@ -23,11 +23,11 @@ PhLTemplateInfoCliCommand class >> asCliCommand [
 PhLTemplateInfoCliCommand class >> launcherCmdFlags [
 
 	^ {(ClapFlag id: #templateCategory)
-				description: 'Allows to use a template categroy to search the target template ';
+				description: 'Specifies the template category name to list image templates.';
 				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
 				implicitMeaning: [  :arg :app | 'Official distributions'. ];
 				add: ((ClapPositional id: #templateCategoryName)
-					description: 'Name of the template category variable.';
+					description: 'Name of the template category.';
 					meaning: [ :pos | pos word asSymbol . ];
 					implicitMeaning: [  :arg :app | app . ])}
 ]
@@ -37,10 +37,10 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 
 	^ {
 		((ClapPositional id: #templateName)
-				description: 'New image.';
+				description: 'Specifies the template name to print information.';
 					meaning: [ :pos | pos  word ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, needing a template name to display iformations' .  ];
+        signal: 'An argument is missing, please specify the template name to print iformation.'];
 					yourself).	}
 ]
 

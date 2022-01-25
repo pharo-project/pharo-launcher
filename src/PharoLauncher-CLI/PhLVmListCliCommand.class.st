@@ -26,13 +26,14 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line - arguments' }
 PhLVmListCliCommand class >> launcherCmdFlags [
-	^ {((ClapFlag id: #ston)
-		description: 'Allows to list images with ston output ';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ]).	
+	^ {	
+		"add printing flags"
 		self briefFlag.
 		self rowModeFlag.
-		self delimiterFlag.	
+		self delimiterFlag.
+		self stonFlag 
+			description: 'Prints list of VMs using STON format. ';
+			yourself.	
 		}
 ]
 

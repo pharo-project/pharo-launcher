@@ -26,18 +26,43 @@ PhLImageInfoCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> launcherCmdFlags [
+	^ {
+		"add printing flags"
+		self briefFlag.
+		self rowModeFlag.
+		self delimiterFlag.
+		self stonFlag 
+			description: 'Prints information of specified image using STON format. ';
+			yourself.
+			}
+]
+
+{ #category : #'command line - arguments' }
 PhLImageInfoCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
-		description: 'Local image name from which we display the informations.';
+		description: 'Determines the local image name to print detailed information.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, no image name to display informations' .  ];
+        signal: 'An argument is missing, please specify the image name to print information.'];
 		yourself)}
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> executeWithImage: anImage [ 
    self printInformationOf: anImage
+]
+
+{ #category : #'private ' }
+PhLImageInfoCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
+]
+
+{ #category : #'private ' }
+PhLImageInfoCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]
 
 { #category : #printing }

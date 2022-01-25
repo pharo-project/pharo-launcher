@@ -21,7 +21,7 @@ PhLImageDeleteCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageDeleteCliCommand class >> launcherCmdDescription [
 
-	^ 'Deletes image from computer, including local image directory content.'
+	^ 'Deletes the local image, including image directory content.'
 ]
 
 { #category : #'command line' }
@@ -30,7 +30,7 @@ PhLImageDeleteCliCommand class >> launcherCmdPositionals [
 		description: 'Local image name to be deleted.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app | NotFound 
-        signal: 'one argument is missing, no image name to delete' .];
+        signal: 'An argument is missing, please specify the local image name to be deleted.' .];
 		yourself)}
 ]
 

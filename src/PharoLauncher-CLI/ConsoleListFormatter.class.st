@@ -24,43 +24,51 @@ Class {
 	#name : #ConsoleListFormatter,
 	#superclass : #Object,
 	#instVars : [
+		'briefPrint',
 		'cliCommand',
+		'delimiter',
 		'domainObjects',
 		'attributeLabels',
-		'attributeValueBlocks'
+		'attributeValueBlocks',
+		'outStream',
+		'outputAsSton',
+		'rowMode'
 	],
 	#category : #'PharoLauncher-CLI-Utility'
 }
 
 { #category : #'instance creation' }
 ConsoleListFormatter class >> on: aCliCommand [
-
+	
+	"by default - formatter is instantiated from command, 
+	 but can be used as standalone using new, but all parameters has to be set explicitly"
 	^ self new 
 		cliCommand: aCliCommand; 
 		yourself 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> attributeLabels [
 
+	"lazy initialize from command, if not explicitly set before"
 	attributeLabels ifNil: [ attributeLabels := cliCommand listPrintAttributeLabels  ].
 	^ attributeLabels 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> attributeLabels: aLabels [
 
 	attributeLabels := aLabels
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> attributeValueBlocks [
 
-	attributeValueBlocks ifNil: [ attributeValueBlocks := cliCommand listPrintAttributeBlocks].
+	attributeValueBlocks ifNil: [ attributeValueBlocks := cliCommand listPrintAttributeBlocks  ].
 	^ attributeValueBlocks 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> attributeValueBlocks: aBlocks [
 
 	attributeValueBlocks := aBlocks
@@ -73,31 +81,45 @@ ConsoleListFormatter >> attributeValuesFrom: aDomainObject [
 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> briefPrint [ 
 
-	^ cliCommand briefPrint
+	briefPrint ifNil: [briefPrint := cliCommand briefPrint].
+	^ briefPrint 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> briefPrint: aBool [
+
+	briefPrint := aBool
+]
+
+{ #category : #'accessing-public' }
 ConsoleListFormatter >> cliCommand: aCommand [
 
 	cliCommand := aCommand
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> delimiter [ 
 
-	^ cliCommand delimiter 
+	delimiter ifNil: [ delimiter := cliCommand delimiter ].
+	^ delimiter 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> delimiter: aString [ 
+
+	delimiter := aString
+]
+
+{ #category : #'accessing-public' }
 ConsoleListFormatter >> domainObjects [
  
  ^ domainObjects
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing-public' }
 ConsoleListFormatter >> domainObjects: anObjects [ 
 
 	domainObjects := anObjects 
@@ -113,16 +135,30 @@ ConsoleListFormatter >> getColumnWidthsFrom: anObjects [
 		]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> outStream [ 
 
-	^ cliCommand outStream 
+	outStream ifNil: [ outStream := cliCommand outStream ].
+	^ outStream 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> outStream: aWriteStream [
+
+	outStream := aWriteStream
+]
+
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> outputAsSton [ 
 
-	^ cliCommand outputAsSton 
+	outputAsSton ifNil: [outputAsSton := cliCommand outputAsSton].
+	^ outputAsSton
+]
+
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> outputAsSton: aBool [
+
+	outputAsSton := aBool
 ]
 
 { #category : #private }
@@ -236,8 +272,15 @@ ConsoleListFormatter >> printRowValues: aStringColl by: colWidths [
 	self outStream newLine.
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing -command' }
 ConsoleListFormatter >> rowMode [ 
 
-	^ cliCommand rowMode 
+	rowMode ifNil: [ rowMode := cliCommand rowMode ].
+	^ rowMode
+]
+
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> rowMode: aBool [
+
+	rowMode := aBool 
 ]

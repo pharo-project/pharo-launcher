@@ -38,7 +38,7 @@ PhLCliCommandMock >> initialize [
 	self rowMode: false.
 	self briefPrint: false.
 	self outputAsSton: false.
-	self resetOutStream
+	self resetOutStream 
 ]
 
 { #category : #accessing }
@@ -56,7 +56,8 @@ PhLCliCommandMock >> outputAsSton: aBool [
 { #category : #initialization }
 PhLCliCommandMock >> resetOutStream [
 
-	outStream := String new writeStream
+	outStream := String new writeStream.
+	self cliFormatter ifNotNil: [:formatter |formatter outStream: outStream  ]
 ]
 
 { #category : #accessing }

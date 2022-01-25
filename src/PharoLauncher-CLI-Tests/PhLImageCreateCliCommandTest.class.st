@@ -73,10 +73,10 @@ PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseErro
 PhLImageCreateCliCommandTest >> testCreateImageWithWrongTemplateNameShouldGiveErrorMessage [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	
-	self runCommand: #('launcher' 'image' 'create' 'aRandomTemplateName' 'myImage3').
-	 
-	self assert: (self errorString includesSubstring:'cant find the template')
+	self runCommand: #('launcher' 'image' 'create' 'myImage3' 'aRandomTemplateName').
+	self assert: (self errorString includesSubstring: 'aRandomTemplateName not found')
 ]
 
 { #category : #tests }
@@ -101,7 +101,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	
 	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'fakeTemplate' . '--templateCategory' . 'wrong category name'}.
 	 
-	self assert: (self errorString includesSubstring: 'cant find'). 
+	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
 ]
 
 { #category : #tests }

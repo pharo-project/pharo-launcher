@@ -21,18 +21,21 @@ PhLTemplateListCliCommand class >> asCliCommand [
 { #category : #'command line - arguments' }
 PhLTemplateListCliCommand class >> launcherCmdFlags [
 	^ {((ClapFlag id: #templateCategory)
-		description: 'Allows to use a template categroy to list the templates in it ';
+		description: 'Specifies the template category name to list the image templates from given category.';
 		meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
 		implicitMeaning: [ :arg :app | 'Official distributions' ];
 		add:
 			((ClapPositional id: #templateCategoryName)
-				description: 'Name of the template category variable.';
+				description: 'Name of the template category.';
 				meaning: [ :pos | pos word asSymbol ];
 				implicitMeaning: [ :arg :app | app ])).
-	((ClapFlag id: #ston)
-		description: 'Allows to list images with ston output ';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])}
+	"add printing flags"
+		self briefFlag.
+		self rowModeFlag.
+		self delimiterFlag.
+		self stonFlag 
+			description: 'Prints list of image templates using STON format. ';
+			yourself.}
 ]
 
 { #category : #'command execution' }
@@ -44,6 +47,13 @@ PhLTemplateListCliCommand >> execute [
 		do: [ ^ self messageErrorCategoryNotFound ].
 
 	self list: templateCategory templatesAndGroups asOrderedCollection 
+]
+
+{ #category : #message }
+PhLTemplateListCliCommand >> messageErrorCategoryNotFound [
+	self errorStream nextPutAll: 'Image template category not found. Please enter a correct image tamplate category name.'.
+	self errorStream newLine.
+	^ self
 ]
 
 { #category : #'command execution' }

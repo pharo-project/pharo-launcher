@@ -14,7 +14,8 @@ PhLImageProcessListCliCommand class >> asCliCommand [
 
 { #category : #'command line' }
 PhLImageProcessListCliCommand class >> launcherCmdDescription [
-	^ 'Lists all running images on local computer.'
+
+	^ 'Lists all running Pharo image processes.'
 ]
 
 { #category : #'command execution' }

@@ -19,21 +19,21 @@ PhLImagePackageCliCommand class >> asCliCommand [
 
 { #category : #'command line' }
 PhLImagePackageCliCommand class >> launcherCmdDescription [
-	^ 'Creates a package containing everything neeeded to launch easily the image.'
+	^ 'Creates a package containing all necessary artefacts to launch the image.'
 ]
 
 { #category : #'command line - arguments' }
 PhLImagePackageCliCommand class >> launcherCmdFlags [
 	^ {(ClapFlag id: #zip)
-			description: 'The resulting package is zipped';
+			description: 'Creates the package with image as a ZIP file.';
 			meaning: [ :arg :app | true];
 			implicitMeaning: [ :arg :app | false  ].
 		(ClapFlag id: #vm)
-				description: 'Allows to specify the vm to use to launch the image';
+				description: 'Specifies the VM used for launching the image.';
 				meaning: [ :arg :app | (arg at: #vmId) word ];
 				implicitMeaning: [ :arg :app | 'default' ];
 				add: ((ClapPositional id: #vmId)
-					description: 'Id of the vm to use';
+					description: 'VM ID argument.';
 					meaning: [ :pos | pos word asSymbol . ];
 					implicitMeaning: [ :arg :app | 'default' ]).
 			}
@@ -46,12 +46,12 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 				description: 'Local image name to create the launch script.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'need an image to create the script' . ];
+        signal: 'An argument is missing, please specify the image name to create the script.'];
 					yourself).
 		((ClapPositional id: #location)
 				description: 'Local image name to create the launch script.';
 					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |NotFound signal: 'no path to put the package' ];
+					implicitMeaning: [ :arg :app |NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.' ];
 					yourself).
 	}
 ]

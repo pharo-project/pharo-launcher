@@ -56,5 +56,5 @@ PhLTemplateListCliCommandTest >> testListTemplateWithWrongCategoryShouldRaiseErr
 	
 	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'wrongCategoryName').
 	
-	self assert: (self errorString includesSubstring:'please enter a correct category')
+	self assert: (self errorString includesSubstring: 'template category not found')
 ]

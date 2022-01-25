@@ -26,20 +26,6 @@ PhLVmInfoCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #accessing }
-PhLVmInfoCliCommand >> displayInfoVm: aVM [
-	self outStream
-		nextPutAll: 'name: ';
-		nextPutAll: aVM id;
-		newLine;
-		nextPutAll: 'last update: ';
-		nextPutAll: aVM lastUpdateTime asString;
-		newLine;
-		nextPutAll: 'download Url: ';
-		nextPutAll: aVM downloadUrl asString;
-		newLine
-]
-
-{ #category : #accessing }
 PhLVmInfoCliCommand >> executeWithVM: aVm [
   
 	self list: (Array with: aVm)

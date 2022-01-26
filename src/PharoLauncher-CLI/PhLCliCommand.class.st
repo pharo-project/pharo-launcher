@@ -310,6 +310,13 @@ PhLCliCommand >> pharoLauncherModel [
 ]
 
 { #category : #'accessing arguments' }
+PhLCliCommand >> printSequence [
+
+	"by default, print also sequence number for all listing commands"
+	^ true
+]
+
+{ #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
 	^ self boolValueFor: #rowMode

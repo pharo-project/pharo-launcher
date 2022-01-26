@@ -32,6 +32,7 @@ Class {
 		'attributeValueBlocks',
 		'outStream',
 		'outputAsSton',
+		'printSequence',
 		'rowMode'
 	],
 	#category : #'PharoLauncher-CLI-Utility'
@@ -163,10 +164,13 @@ ConsoleListFormatter >> outputAsSton: aBool [
 
 { #category : #private }
 ConsoleListFormatter >> printAttributeHeaders: aLabels by: colWidths [
-
 	"print header labels and header line"
-	self printCell: '#' width: 2.
-	self printDelimiter.
+
+	"print sequence nr. eventually"
+	self printSequence ifTrue: [
+		self printCell: '#' width: 2.
+		self printDelimiter
+	].
 	self printRowValues: aLabels by: colWidths. 
 	self printHeaderLinesBy: colWidths.
 ]
@@ -207,10 +211,12 @@ ConsoleListFormatter >> printDelimiter [
 
 { #category : #private }
 ConsoleListFormatter >> printHeaderLinesBy: colWidths [
-
 	"print header line"
-	self printLineSized: 2.
-	self printDelimiter.
+
+	self printSequence ifTrue: [
+		self printLineSized: 2.
+		self printDelimiter.
+	].
 	colWidths withIndexDo: [:aWidth :idx| self printLineSized: aWidth.
 		idx = colWidths size ifFalse: [ self printDelimiter]].
 	self outStream newLine.
@@ -253,7 +259,7 @@ ConsoleListFormatter >> printOneAttrPerRow [
 	aLabels := self attributeLabels. 
 	self domainObjects withIndexDo: [:listedObject :idx|
 
-		self printRowValues: { 'Nr.'. idx asString. } by: { 0. 2. }.
+		self printSequence ifTrue: [self printRowValues: { 'Nr.'. idx asString. } by: { 0. 2. }].
 		aLabels withIndexDo: [:attrLabel :attrIdx |
 		self printRowValues: { attrLabel. (blockArray at: attrIdx) value: listedObject. } by: { 0. 0. }.
 		].
@@ -270,6 +276,19 @@ ConsoleListFormatter >> printRowValues: aStringColl by: colWidths [
 		idx = aStringColl size ifFalse: [ self printDelimiter].
 	].
 	self outStream newLine.
+]
+
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> printSequence [ 
+
+	printSequence ifNil: [ printSequence := cliCommand printSequence ].
+	^ printSequence
+]
+
+{ #category : #'accessing -command' }
+ConsoleListFormatter >> printSequence: aBool [
+
+	printSequence := aBool 
 ]
 
 { #category : #'accessing -command' }

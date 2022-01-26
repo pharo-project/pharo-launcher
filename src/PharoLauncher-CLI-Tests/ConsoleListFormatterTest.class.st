@@ -60,6 +60,27 @@ ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 ]
 
 { #category : #test }
+ConsoleListFormatterTest >> testPrintAttributeHeadersByNoSequence [
+	"formatted header should not contain sequence column"
+
+	formatter printSequence: false.
+	formatter
+		printAttributeHeaders: #('label1')
+		by: #(6).
+
+	self
+		assert: command outStream contents
+		equals:
+			(String
+				streamContents: [ :aStream | 
+					aStream
+						nextPutAll: 'label1';
+						newLine;
+						nextPutAll: '------';
+						newLine ])
+]
+
+{ #category : #test }
 ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 
 	|expectedString|
@@ -122,6 +143,15 @@ ConsoleListFormatterTest >> testPrintHeaderLinesBy [
 
 	formatter printHeaderLinesBy: #(1 1 2 2).
 	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*-*-*--*--'; newLine]).
+]
+
+{ #category : #test }
+ConsoleListFormatterTest >> testPrintHeaderLinesByNoSequence [
+
+	"formatted header line should not contain sequence column"
+	formatter printSequence: false.
+	formatter printHeaderLinesBy: #(2 2).
+	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*--'; newLine]).
 ]
 
 { #category : #test }
@@ -215,6 +245,25 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 			nextPutAll: 'Value: three'; newLine;
 		 	nextPutAll: 'Squared: nine'; newLine;
 			nextPutAll: 'Raised to 3: twenty-seven'; newLine; newLine].
+		
+	self assert: formatter outStream contents equals: expectedString.
+]
+
+{ #category : #test }
+ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
+	|expectedString|
+	"row output should not contain sequence number"
+	formatter attributeLabels: #('Value' ).
+	formatter attributeValueBlocks: { [:a |a asWords  ]}.
+	formatter domainObjects: #(1).
+	command rowMode: true.
+	formatter printSequence: false.
+	formatter printOneAttrPerRow.
+
+	expectedString := String streamContents: [:aStream | 
+		aStream 
+			nextPutAll: 'Value: one'; newLine; newLine
+	].
 		
 	self assert: formatter outStream contents equals: expectedString.
 ]

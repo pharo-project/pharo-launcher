@@ -32,8 +32,14 @@ PhLVmInfoCliCommand >> executeWithVM: aVm [
 ]
 
 { #category : #'accessing arguments' }
+PhLVmInfoCliCommand >> printSequence [
+
+	^ false
+]
+
+{ #category : #'accessing arguments' }
 PhLVmInfoCliCommand >> rowMode [
 
-	"image info is printed in one attribute per row"
+	"vm info is printed in one attribute per row"
 	^ true
 ]

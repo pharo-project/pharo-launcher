@@ -326,12 +326,12 @@ PharoLauncherApplication >> showError: anError [
 PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
-	
+
 	openAsWorld ifTrue: [ 
 		self startFull.
 		^ self ].
-	
-	imagesPresenter openWithSpec
+
+	imagesPresenter open
 ]
 
 { #category : #running }

@@ -16,11 +16,12 @@ PhLOpenLaunchConfigurationEditorCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLOpenLaunchConfigurationEditorCommand >> execute [
-	^ (PhLLaunchConfigurationPresenter 
-			newApplication: self imagesPresenter application
-			model: self imagesPresenter singleImage)
-		openWithSpec;
-		yourself
+
+	^ (PhLLaunchConfigurationPresenter
+		   newApplication: self imagesPresenter application
+		   model: self imagesPresenter singleImage)
+		  open;
+		  yourself
 ]
 
 { #category : #initialization }

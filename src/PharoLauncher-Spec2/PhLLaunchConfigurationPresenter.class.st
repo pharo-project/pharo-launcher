@@ -64,8 +64,8 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		yourself
 ]
 
-{ #category : #specs }
-PhLLaunchConfigurationPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLLaunchConfigurationPresenter class >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		spacing: 5;
 		add: #configurationTable 

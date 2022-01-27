@@ -17,9 +17,10 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLOpenVmManagerCommand >> execute [
-	(PhLVMPresenter 
-		newApplication: self application
-		model: PhLVirtualMachinesDataSource default) openWithSpec
+
+	(PhLVMPresenter
+		 newApplication: self application
+		 model: PhLVirtualMachinesDataSource default) open
 ]
 
 { #category : #accessing }

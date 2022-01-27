@@ -15,8 +15,8 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #example }
-PhLScriptPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLScriptPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
 		  positionOfSlider: 30 percent;

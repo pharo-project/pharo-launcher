@@ -47,8 +47,8 @@ PhLVMPresenter class >> buildToolbarGroup [
 		yourself
 ]
 
-{ #category : #specs }
-PhLVMPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLVMPresenter class >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add: #vmTable;
 		yourself
@@ -104,20 +104,23 @@ PhLVMPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLVMPresenter >> initializeWindow: aWindowPresenter [
-	
+
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
-		toolbar: (self newLaunchToolbar fillWith: (self rootCommandsGroup / 'Toolbar'));
+		toolbar:
+			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.
-	
+
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
-	
+
 	self privateVmsTogglePresenter
-		whenUnselectedDo: [ self privateVmsTogglePresenter
+		whenDeactivatedDo: [ 
+			self privateVmsTogglePresenter
 				label: 'public';
 				icon: (self iconNamed: #remote) ];
-		whenSelectedDo: [ self privateVmsTogglePresenter
+		whenActivatedDo: [ 
+			self privateVmsTogglePresenter
 				label: 'private';
 				icon: (self iconNamed: #smallLock) ];
 		beUnselected

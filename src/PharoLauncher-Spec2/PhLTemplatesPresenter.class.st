@@ -34,8 +34,8 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 		yourself
 ]
 
-{ #category : #specs }
-PhLTemplatesPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLTemplatesPresenter class >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
 		positionOfSlider: 60 percent;

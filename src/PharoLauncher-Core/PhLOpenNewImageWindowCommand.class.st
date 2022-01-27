@@ -18,11 +18,11 @@ PhLOpenNewImageWindowCommand >> asSpecCommand [
 { #category : #executing }
 PhLOpenNewImageWindowCommand >> execute [
 
-	^ (PhLTemplatesPresenter 
-			newApplication: self application
-			model: PhLTemplateGroupRepository default)
-		openWithSpec;
-		yourself
+	^ (PhLTemplatesPresenter
+		   newApplication: self application
+		   model: PhLTemplateGroupRepository default)
+		  open;
+		  yourself
 ]
 
 { #category : #initialization }

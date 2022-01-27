@@ -25,8 +25,8 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhLImageCreationPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLImageCreationPresenter class >> defaultLayout [
 
 	^ SpBoxLayout newVertical
 		borderWidth: 5;
@@ -192,12 +192,13 @@ PhLImageCreationPresenter >> noInitializationScriptItem [
 
 { #category : #action }
 PhLImageCreationPresenter >> openScriptPresenter [
-	^ (PhLScriptPresenter 
-		newApplication: self application 
-		model: self application scriptsDirectory )
-		whenScriptListChanged: [ self refreshInitializationScriptList ];
-		openWithSpec;
-		yourself
+
+	^ (PhLScriptPresenter
+		   newApplication: self application
+		   model: self application scriptsDirectory)
+		  whenScriptListChanged: [ self refreshInitializationScriptList ];
+		  open;
+		  yourself
 ]
 
 { #category : #refreshing }

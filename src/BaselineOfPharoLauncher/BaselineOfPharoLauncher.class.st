@@ -17,15 +17,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 		spec
 			package: 'PharoLauncher-10Compatibility'; 
-			package: 'PharoLauncher-Pharo9ToRemove-FileLocator'; 
 			package: 'PharoLauncher-Core' with: [
 				spec requires: #(
 					'XMLParser' 
 					'OSSubprocess' 
 					'OSWinSubprocess' 
 					'Ston' 
-					'PharoLauncher-100Compatibility' 
-					'PharoLauncher-Pharo9ToRemove-FileLocator'). ];
+					'PharoLauncher-100Compatibility'). ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-GToolkit' with: [ 

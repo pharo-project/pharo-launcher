@@ -16,7 +16,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self xmlParser: spec.
 
 		spec
-			package: 'PharoLauncher-10Compatibility'; 
+			package: 'PharoLauncher-100Compatibility'; 
 			package: 'PharoLauncher-Core' with: [
 				spec requires: #(
 					'XMLParser' 

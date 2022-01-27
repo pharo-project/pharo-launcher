@@ -16,7 +16,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self xmlParser: spec.
 
 		spec
-			package: 'PharoLauncher-90Compatibility'; 
+			package: 'PharoLauncher-10Compatibility'; 
 			package: 'PharoLauncher-Pharo9ToRemove-FileLocator'; 
 			package: 'PharoLauncher-Core' with: [
 				spec requires: #(
@@ -24,7 +24,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'OSSubprocess' 
 					'OSWinSubprocess' 
 					'Ston' 
-					'PharoLauncher-90Compatibility' 
+					'PharoLauncher-100Compatibility' 
 					'PharoLauncher-Pharo9ToRemove-FileLocator'). ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];

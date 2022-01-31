@@ -45,12 +45,13 @@ PhLTemplatesPresenterTest >> testCannotCreateImageIfNoTemplateSelected [
 
 { #category : #tests }
 PhLTemplatesPresenterTest >> testTemplatesPresenterClosesWhenClickingOnCreateImage [
-	presenter 
+
+	presenter
 		createLocalTemplateNamed: 'Foo';
 		selectCategory: 1;
 		selectTemplateNamed: 'Foo';
-		openWithSpec.
-		
+		open.
+
 	self assert: presenter window isOpen.
 	presenter clickOnCreateButton.
 

@@ -282,8 +282,8 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 
 { #category : #ui }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
-	
-	self newProgress pushJob: (SpJob newTitle: aString block: aBlock)
+
+	self newJobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
 { #category : #initialization }

@@ -80,31 +80,32 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 
 { #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
+
 	| config imagesPresenter |
 	imagesPresenter := PhLTestImagesPresenter new.
 	presenter application imagesPresenter: imagesPresenter.
-	imagesPresenter 
-		openWithSpec;
+	imagesPresenter
+		open;
 		selectImageAt: 1.
 	image := imagesPresenter singleImage.
 	config := (PhLLaunchConfiguration withImage: image)
-				name: 'test config';
-				yourself.
+		          name: 'test config';
+		          yourself.
 	image addLaunchConfiguration: config.
-		
+
 	self setUpPresenterWithApplication: imagesPresenter application.
 	presenter connectPresenters. "Select first config"
-	self 
+	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: 'Default'.
-			
+
 	presenter selectConfiguration: config.
 	presenter saveSelectedConfiguration.
-	
-	self 
+
+	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: config name.
-	imagesPresenter delete.
+	imagesPresenter delete
 ]
 
 { #category : #tests }
@@ -216,29 +217,30 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesN
 
 { #category : #tests }
 PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
+
 	| config imagesPresenter window |
 	imagesPresenter := PhLTestImagesPresenter new.
 	imagesPresenter selectImageAt: 1.
 	image := imagesPresenter singleImage.
 	image launchConfigurations. "generate default configuration"
 	config := (PhLLaunchConfiguration withImage: image)
-				name: 'test config';
-				yourself.
+		          name: 'test config';
+		          yourself.
 	image addLaunchConfiguration: config.
 	presenter application imagesPresenter: imagesPresenter.
-	imagesPresenter 
-		openWithSpec;
+	imagesPresenter
+		open;
 		selectImageAt: 1.
 	self setUpPresenterWithApplication: imagesPresenter application.
-	
-	window := presenter openWithSpec.		
+
+	window := presenter open.
 	presenter selectConfiguration: config.
 	window close.
-	
-	self 
+
+	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: config name.
-	imagesPresenter delete.
+	imagesPresenter delete
 ]
 
 { #category : #tests }

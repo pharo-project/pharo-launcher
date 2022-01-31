@@ -319,7 +319,7 @@ PharoLauncherApplication >> showError: anError [
 	self newInform 
 		title: anError name;
 		label: anError longDescription;
-		openModalWithSpecParent: self topWindow
+		openModalWithParent: self topWindow
 ]
 
 { #category : #running }

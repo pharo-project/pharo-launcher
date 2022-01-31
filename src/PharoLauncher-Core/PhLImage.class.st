@@ -484,7 +484,7 @@ PhLImage >> showWarning: warning [
 			continue := (PharoLauncherApplication default newConfirm 
 				title: warning name ;
 				message: warning longDescription;
-				openModalWithSpecParent: PharoLauncherApplication default topWindow) ].
+				openModalWithParent: PharoLauncherApplication default topWindow) ].
 			
 	^ continue
 ]

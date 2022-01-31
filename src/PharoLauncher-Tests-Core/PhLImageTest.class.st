@@ -10,6 +10,12 @@ Class {
 }
 
 { #category : #running }
+PhLImageTest >> currentImageVersion [ 
+	^  SystemVersion current major asString
+		, SystemVersion current minor asString
+]
+
+{ #category : #running }
 PhLImageTest >> setUp [
 	super setUp.
 	fs := FileSystem memory root.
@@ -147,7 +153,7 @@ PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFil
 PhLImageTest >> testPhLImageSerialization [
 	| stonString |
 	(image file parent / image class versionFileName)
-		writeStreamDo: [ :stream | stream nextPutAll: '80' ].
+		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
 	image launchConfigurations.
 	self assert: image defaultLaunchConfiguration vm isValidAfterUpdate.
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"

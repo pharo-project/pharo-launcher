@@ -155,7 +155,7 @@ PhLImageTest >> testPhLImageSerialization [
 	(image file parent / image class versionFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
 	image launchConfigurations.
-	self assert: image defaultLaunchConfiguration vm isValidAfterUpdate.
+	image defaultLaunchConfiguration vm . "Set the VM"
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.

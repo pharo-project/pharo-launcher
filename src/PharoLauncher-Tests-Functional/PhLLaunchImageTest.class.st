@@ -12,6 +12,25 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
+{ #category : #tests }
+PhLLaunchImageTest >> copyCurrentImageToTestDir [
+	| image |
+	
+	FileLocator image copyTo: imageDir / FileLocator image basename.
+	image := PhLImage location: imageDir / FileLocator image basename.
+	
+	"avoid to download a compatible VM to determine image pharo version"
+	image vmManager imageVersionFile writeStreamDo: [ :stream | 
+		stream
+			nextPutAll: SystemVersion current major asString;
+			nextPutAll: SystemVersion current minor asString ].
+		
+	^ image
+		
+	
+
+]
+
 { #category : #utils }
 PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 	| vmDirectory imageVersion vmId |
@@ -73,18 +92,18 @@ PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64
 
 { #category : #tests }
 PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
+
 	| image |
-	
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	
+	image := self copyCurrentImageToTestDir.
+
 	image launch.
-	
+
 	"ensure image determination succeeded"
 	self
 		assert: (imageDir / PhLImage versionFileName) contents
-		equals: SystemVersion current major asString , SystemVersion current minor asString.
-		
+		equals: SystemVersion current major asString
+			, SystemVersion current minor asString
+
 	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
 	"for now, no simple way to test that the image is actually launched"
 ]
@@ -118,9 +137,7 @@ PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	image initializationScript: '.' asFileReference.
+	image := self copyCurrentImageToTestDir.
 	
 	image launch.
 	

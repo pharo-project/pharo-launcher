@@ -7,6 +7,11 @@ Class {
 	#category : #'PharoLauncher-Core-Exceptions'
 }
 
+{ #category : #testing }
+PhLError >> isResumable [ 
+	^ true
+]
+
 { #category : #accessing }
 PhLError >> longDescription [
 	^ self subclassResponsibility

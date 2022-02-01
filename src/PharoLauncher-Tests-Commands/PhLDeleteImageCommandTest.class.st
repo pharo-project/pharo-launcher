@@ -65,11 +65,12 @@ PhLDeleteImageCommandTest >> testDeleteTheRightImageIfImagesSortingIsNotTheDefau
 
 { #category : #tests }
 PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
+
 	| command images |
 	command := PhLDeleteImageCommand new.
 	command context: presenter.
 	presenter
-		openWithSpec;
+		open;
 		selectImageAt: 1.
 
 	command execute.

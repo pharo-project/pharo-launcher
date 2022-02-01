@@ -57,7 +57,7 @@ PhLVMPresenter class >> defaultLayout [
 { #category : #examples }
 PhLVMPresenter class >> example [
 	<example>
-	(self on: PhLVirtualMachinesDataSource default) openWithSpec
+	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
 { #category : #initialization }

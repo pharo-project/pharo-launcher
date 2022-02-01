@@ -85,7 +85,7 @@ PhLLaunchConfigurationPresenter class >> example [
 		writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	(self 
 		newApplication: PharoLauncherApplication new 
-		model: image) openWithSpec
+		model: image) open
 ]
 
 { #category : #specs }

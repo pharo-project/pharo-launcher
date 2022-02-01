@@ -43,7 +43,7 @@ PhLScriptPresenter class >> example [
 		writeStreamDo: [ :s | s nextPutAll: self icebergLoadExample ].
 	^ (self newApplication: PharoLauncherApplication new 
 		model: fs root) 
-		openWithSpec;
+		open;
 		yourself
 ]
 

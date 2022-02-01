@@ -56,7 +56,7 @@ PhLImageCreationPresenter class >> defaultLayout [
 PhLImageCreationPresenter class >> example [
 	(self 
 		newApplication: PharoLauncherApplication new
-		model: {PhLRemoteTemplate example}) openWithSpec
+		model: {PhLRemoteTemplate example}) open
 ]
 
 { #category : #initialization }

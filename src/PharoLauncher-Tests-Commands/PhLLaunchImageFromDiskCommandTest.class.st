@@ -37,7 +37,7 @@ PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 			SystemVersion current major asString putOn: stream.
 			SystemVersion current minor asString putOn: stream ].
 	presenter requestAnswer: image file.
-	presenter openWithSpec.
+	presenter open.
 	image addLaunchConfiguration: 
 		(image defaultLaunchConfiguration 
 			vmArguments: #('--headless');  "be able to run test without X session"

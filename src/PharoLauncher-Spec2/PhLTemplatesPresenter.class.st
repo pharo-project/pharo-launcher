@@ -66,7 +66,7 @@ PhLTemplatesPresenter class >> example [
 	^ (self 
 			newApplication: app
 			model: PhLTemplateGroupRepository default)
-		openWithSpec;
+		open;
 		yourself
 ]
 

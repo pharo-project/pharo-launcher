@@ -171,10 +171,10 @@ PhLImageTest >> testPhLImageSerialization [
 	"ensure we get a file locator"
 	self assert: (stonString includesSubstring: '#executableRef : FileLocator {') description: 'missing executableRef: ', stonString.
 	self assert: (stonString includesSubstring: '#origin : #launcherVMsLocation') description: 'missing #launcherVMsLocation origin: ', stonString.
-	self assert: (stonString includesSubstring: '#imageFile : FileLocator {
+	self assert: (stonString withInternetLineEndings includesSubstring: '#imageFile : FileLocator {
 			#path : RelativePath [ ''foo.image'' ],
 			#origin : #launcherImagesLocation
-		}') description: 'missing or wrong #imageFile: ', stonString.
+		}' withInternetLineEndings) description: 'missing or wrong #imageFile: ', stonString.
 	"ensure VM manager is a reference"
 	self assert: (stonString includesSubstring: '#manager : @2,') description: 'VM manager is not a reference: ', stonString.
 ]

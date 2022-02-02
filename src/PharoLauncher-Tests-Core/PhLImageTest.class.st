@@ -162,21 +162,21 @@ PhLImageTest >> testPhLImageSerialization [
 	| stonString |
 	(image file parent / image class versionFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
-	image launchConfigurations.
+	image launchConfigurations. "create default configuration"
 	image defaultLaunchConfiguration vm: self createFakeVM. "Avoid to download a VM"
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.
 	
 	"ensure we get a file locator"
-	self assert: (stonString includesSubstring: '#executableRef : FileLocator {').
-	self assert: (stonString includesSubstring: '#origin : #launcherVMsLocation').
+	self assert: (stonString includesSubstring: '#executableRef : FileLocator {') description: 'missing executableRef: ', stonString.
+	self assert: (stonString includesSubstring: '#origin : #launcherVMsLocation') description: 'missing #launcherVMsLocation origin: ', stonString.
 	self assert: (stonString includesSubstring: '#imageFile : FileLocator {
 			#path : RelativePath [ ''foo.image'' ],
 			#origin : #launcherImagesLocation
-		}').
+		}') description: 'missing or wrong #imageFile: ', stonString.
 	"ensure VM manager is a reference"
-	self assert: (stonString includesSubstring: '#manager : @2,').
+	self assert: (stonString includesSubstring: '#manager : @2,') description: 'VM manager is not a reference: ', stonString.
 ]
 
 { #category : #tests }

@@ -15,21 +15,6 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #layout }
-PhLScriptPresenter class >> defaultLayout [
-
-	^ SpPanedLayout newHorizontal
-		  positionOfSlider: 30 percent;
-		  add: #scriptTable withConstraints: [ :constraints | 
-			  constraints spec: #withoutOrderingBar "; 
-					width: 200" ];
-		  add: (SpBoxLayout newVertical
-				   add: #fileEditor;
-				   add: #saveButton expand: false;
-				   yourself);
-		  yourself
-]
-
 { #category : #example }
 PhLScriptPresenter class >> example [
 	| fs |
@@ -53,6 +38,20 @@ PhLScriptPresenter class >> icebergLoadExample [
   baseline: ''Tonel'';
   repository: ''github://pharo-vcs/tonel:v1.0.12'';
   load.'
+]
+
+{ #category : #layout }
+PhLScriptPresenter >> defaultLayout [
+
+	^ SpPanedLayout newHorizontal
+		  positionOfSlider: 30 percent;
+		  add: scriptTable withConstraints: [ :constraints | 
+			  constraints spec: #withoutOrderingBar ];
+		  add: (SpBoxLayout newVertical
+				   add: fileEditor;
+				   add: saveButton expand: false;
+				   yourself);
+		  yourself
 ]
 
 { #category : #initialization }

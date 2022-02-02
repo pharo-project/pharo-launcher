@@ -9,7 +9,15 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
-{ #category : #running }
+{ #category : #utilities }
+PhLImageTest >> createFakeVM [
+	^ PhLVirtualMachine new 
+		basicInitializeOn: FileLocator launcherVMsLocation / '100-x64';
+		executable: FileLocator launcherVMsLocation / '100-x64' / 'Pharo';
+		yourself
+]
+
+{ #category : #accessing }
 PhLImageTest >> currentImageVersion [ 
 	^  SystemVersion current major asString
 		, SystemVersion current minor asString
@@ -155,7 +163,7 @@ PhLImageTest >> testPhLImageSerialization [
 	(image file parent / image class versionFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
 	image launchConfigurations.
-	image defaultLaunchConfiguration vm . "Set the VM"
+	image defaultLaunchConfiguration vm: self createFakeVM. "Avoid to download a VM"
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.

@@ -35,7 +35,7 @@ PhLAboutPresenter class >> example [
 	| text |
 	text := PhLAboutCommand new aboutText.
 	
-	(self text: text iconName: #pharo) openDialogWithSpec
+	(self text: text iconName: #pharo) openDialog
 ]
 
 { #category : #'instance creation' }

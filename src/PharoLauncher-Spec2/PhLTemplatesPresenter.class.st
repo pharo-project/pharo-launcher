@@ -119,7 +119,7 @@ PhLTemplatesPresenter >> childrenOf: aTemplateGroup [
 				explanation: error longDescription;
 				retryBlock: [ children := aTemplateGroup children ];
 				cancelBlock: [ children := #() ];
-				openModalWithSpec.
+				openModal.
 			children ]	
 ]
 

@@ -48,7 +48,7 @@ PhLAboutCommand >> execute [
 		iconName: #pharo.
 	presenter application: self application.
 	
-	presenter openDialogWithSpec.
+	presenter openDialog.
 	^ presenter
 ]
 

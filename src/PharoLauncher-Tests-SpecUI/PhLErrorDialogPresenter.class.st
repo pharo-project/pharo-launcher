@@ -38,7 +38,7 @@ PhLErrorDialogPresenter class >> closeAllDebuggers [
 { #category : #'instance creation' }
 PhLErrorDialogPresenter class >> debugSession: aDebugSession [
 	PharoLauncherApplication isDeployed
-		ifTrue: [ (self on: aDebugSession) openDialogWithSpec ]
+		ifTrue: [ (self on: aDebugSession) openDialog ]
 		ifFalse: [ self openDebuggerOn: aDebugSession ]
 
 ]

@@ -310,7 +310,7 @@ PharoLauncherApplication >> shouldUpdateTemplateSources [
 		label: 'Update available for Pharo Launcher templates sources!';
 		acceptLabel: 'Update';
 		cancelLabel: 'Remind me later';
-		openModalWithSpec
+		openModal
 ]
 
 { #category : #ui }

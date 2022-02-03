@@ -37,6 +37,6 @@ PhLROCheckStartup class >> verifyCanWrite [
 			title: 'Cannot run PharoLauncher!';
 			label: 'PharoLauncher cannot be run from a read-only filesystem. 
 Please move it to a place where you have write permissions!';
-			openModalWithSpec.
+			openModal.
 		Smalltalk exitFailure ]
 ]

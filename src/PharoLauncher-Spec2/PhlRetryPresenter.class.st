@@ -26,7 +26,7 @@ PhlRetryPresenter class >> example [
 		explanation: 'Download error (probably a network error)';
 		retryBlock: [ "nothing" ];
 		cancelBlock: [ #() ]
-	) openModalWithSpec
+	) openModal
 ]
 
 { #category : #accessing }

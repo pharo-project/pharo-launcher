@@ -77,7 +77,7 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 				explanation: error longDescription;
 				retryBlock: [ self download: url toFile: destinationFile ];
 				cancelBlock: [ error pass ];
-				openModalWithSpec. ]
+				openModal. ]
 ]
 
 { #category : #private }

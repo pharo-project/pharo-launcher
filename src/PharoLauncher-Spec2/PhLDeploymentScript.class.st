@@ -125,6 +125,7 @@ PhLDeploymentScript class >> doAll [
 		deactivateLostChangesDetector;
 		activateErrorCatching;
 		makeDeployed;
+		resetImageDescriptionUpdater;
 		addToStartupList;
 		dontAskForConfirmationWhenQuitting;
 		setProgressBarSizeAndPosition
@@ -210,6 +211,12 @@ PhLDeploymentScript class >> removeFromStartupList [
 	[ PhLStartupManager removeFromStartupList: self ]
 		on: NotFound 
 		do: [ :e | "Not there, just ignore!" ]
+]
+
+{ #category : #actions }
+PhLDeploymentScript class >> resetImageDescriptionUpdater [
+	PhLImageDescriptionUpdater default terminateProcess.
+	PhLImageDescriptionUpdater reset.
 ]
 
 { #category : #actions }

@@ -132,7 +132,7 @@ ConsoleListFormatter >> getColumnWidthsFrom: anObjects [
 	"get max column width either from column label or value in column"
 	aLabels := self attributeLabels.
 	^ 	self attributeValueBlocks withIndexCollect: [:attrBlock :idx| 
-			(anObjects getMaxWithOn: attrBlock) max: (aLabels at: idx) size
+			(anObjects getMaxWidthOn: attrBlock) max: (aLabels at: idx) size
 		]
 ]
 

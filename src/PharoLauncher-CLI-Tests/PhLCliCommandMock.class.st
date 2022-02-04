@@ -12,6 +12,13 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
+{ #category : #'private - testing' }
+PhLCliCommandMock class >> isProductionCommandClass [
+
+	"this command class not exposed for user to be visible in CLI"
+	^ false
+]
+
 { #category : #accessing }
 PhLCliCommandMock >> briefPrint [  
 	

@@ -50,6 +50,13 @@ PhLCliCommand class >> delimiterFlag [
 					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage]).
 ]
 
+{ #category : #'private - testing' }
+PhLCliCommand class >> isProductionCommandClass [
+	
+	"use this when command subclass is visible and representable to user, should return false for non-production command classses like abstract classes or mock classes inheriting from this class"
+	^ true
+]
+
 { #category : #'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
@@ -70,7 +77,7 @@ PhLCliCommand class >> launcherCmdPositionals [
 { #category : #'command line - subcommands' }
 PhLCliCommand class >> launcherCmdSubcommands [
 
-	^ self subclasses collect: #asCliCommand
+	^ self productionCommandSubclasses collect: #asCliCommand
 ]
 
 { #category : #'command line - instance creation' }
@@ -111,6 +118,12 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 						exitSuccess ].
 			(self with: args) execute ];
 		yourself
+]
+
+{ #category : #'command line - subcommands' }
+PhLCliCommand class >> productionCommandSubclasses [
+
+	^ self subclasses select: #isProductionCommandClass 
 ]
 
 { #category : #'command line - arguments' }
@@ -161,12 +174,6 @@ PhLCliCommand >> cliFormatter: aFormatter [
 PhLCliCommand >> currentVMPid [
 
 	^ OSSVMProcess vmProcess pid
-]
-
-{ #category : #default }
-PhLCliCommand >> defaultTemplate [
-	self
-		findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #default }
@@ -328,11 +335,6 @@ PhLCliCommand >> setArguments: args [
 	PhLNotificationCenter default outStream: self outStream.
 	PhLNotificationCenter default errorStream: self errorStream.
 	self cliFormatter: (ConsoleListFormatter on: self).
-]
-
-{ #category : #initialization }
-PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [ 
-	pharoLauncherModel := aPharoLauncherModel 
 ]
 
 { #category : #'accessing arguments' }

@@ -40,7 +40,7 @@ PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
 				description: 'Specifies the template name to print information.';
 					meaning: [ :pos | pos  word ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the template name to print iformation.'];
+        signal: 'An argument is missing, please specify the template name to print information.'];
 					yourself).	}
 ]
 

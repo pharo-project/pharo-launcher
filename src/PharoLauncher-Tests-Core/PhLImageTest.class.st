@@ -158,6 +158,21 @@ PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFil
 ]
 
 { #category : #tests }
+PhLImageTest >> testImageNameIsNotValidWhenContainingFileSeparator [
+
+	self deny: (PhLImage isValidName: 'fo/o').
+	self deny: (PhLImage isValidName: '123\4').
+]
+
+{ #category : #tests }
+PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
+
+	self assert: (PhLImage isValidName: 'foo').
+	self assert: (PhLImage isValidName: '1234').
+	self assert: (PhLImage isValidName: 'Fo23')
+]
+
+{ #category : #tests }
 PhLImageTest >> testPhLImageSerialization [
 	| stonString |
 	(image file parent / image class versionFileName)

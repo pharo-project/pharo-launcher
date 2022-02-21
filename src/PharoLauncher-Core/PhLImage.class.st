@@ -118,6 +118,11 @@ PhLImage class >> isSubclassForLocation: imageFileReference [
 	^ versionFile exists and: [ versionFile contents beginsWith: self versionPrefix ]
 ]
 
+{ #category : #validating }
+PhLImage class >> isValidName: anImageName [ 
+	^ anImageName isNotEmpty and: [ (anImageName includesAny: #/\) not ]
+]
+
 { #category : #'instance creation' }
 PhLImage class >> location: imageFileReference [
 	| instance |

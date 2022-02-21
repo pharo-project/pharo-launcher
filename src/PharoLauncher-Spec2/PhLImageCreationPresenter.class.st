@@ -13,14 +13,14 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'reservedImagesNamesCache',
-		'isNameOk',
 		'imageName',
 		'createButton',
 		'initScriptText',
 		'initScript',
 		'editInitScriptButton',
 		'descriptionText',
-		'imageNameCheck'
+		'imageNameCheck',
+		'isNameValid'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -66,12 +66,13 @@ PhLImageCreationPresenter >> checkNewName: name [
 	I use a variable to know the state during the last validation."
 
 	| isValid |
-	isValid := name isEmpty or: [ reservedImagesNamesCache ifNotNil: [ reservedImagesNamesCache includes: name asLowercase ] ].
+	isValid := (PhLImage isValidName: name) 
+						and: [ reservedImagesNamesCache ifNotNil: [ (reservedImagesNamesCache includes: name asLowercase) not ] ].
 
 	"Image already in the right state. We skip."
-	isNameOk = isValid ifTrue: [ ^ self ].
+	isNameValid = isValid ifTrue: [ ^ self ].
 
-	(isNameOk := isValid) ifTrue: [ self showNameError ] ifFalse: [ self showNameOk ]
+	(isNameValid := isValid ) ifTrue: [ self showNameOk ] ifFalse: [ self showNameError ]
 ]
 
 { #category : #closing }
@@ -175,6 +176,11 @@ PhLImageCreationPresenter >> initializePresenters [
 	createButton disable
 ]
 
+{ #category : #testing }
+PhLImageCreationPresenter >> isNameValid [
+	^ isNameValid
+]
+
 { #category : #initialization }
 PhLImageCreationPresenter >> modelChanged [ 
 
@@ -188,6 +194,11 @@ PhLImageCreationPresenter >> modelChanged [
 { #category : #initialization }
 PhLImageCreationPresenter >> noInitializationScriptItem [
 	^ (FileSystem memory root / 'No initialization script') ensureCreateFile
+]
+
+{ #category : #accessing }
+PhLImageCreationPresenter >> okIcon [
+	^ self application iconNamed: #smallOk
 ]
 
 { #category : #action }
@@ -220,7 +231,7 @@ PhLImageCreationPresenter >> showNameOk [
 
 	self ifValidTemplate: [ createButton enable ].
 	imageNameCheck 
-		image: (self application iconNamed: #smallOk);
+		image: self okIcon;
 		help: 'Image name is valid!'
 ]
 

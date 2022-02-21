@@ -305,6 +305,7 @@ PharoLauncherApplication >> scriptsDirectory: aFileReference [
 
 { #category : #ui }
 PharoLauncherApplication >> shouldUpdateTemplateSources [
+
 	^ self newConfirm
 		title: 'Update';
 		label: 'Update available for Pharo Launcher templates sources!';

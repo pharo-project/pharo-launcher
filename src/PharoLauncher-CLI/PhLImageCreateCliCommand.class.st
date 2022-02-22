@@ -102,7 +102,7 @@ PhLImageCreateCliCommand class >> pharoVersionFlag [
 ^ (ClapFlag id: #pharoVersion)
 				description: 'Version of Pharo to be downloaded.';
 				meaning: [ :arg :app | (arg at: #pharoVersionArg) value ];
-				implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ];
+				implicitMeaning: [ :arg :app | app implicitPharoVersion ];
 				add: ((ClapPositional id: #pharoVersionArg)
 					description: 'Specifies the version of Pharo you want to download.';
 					meaning: [ :pos | pos word asString ];
@@ -127,11 +127,8 @@ PhLImageCreateCliCommand >> defaultTemplate [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	| aTemplate |
-	aTemplate := [ self findTemplate ]
-			on: NotFound
-			do: [ :error | ^ self logExceptionMessage: error messageText ].
-	self createImage: self imageName from: aTemplate
+	
+	self printSubCommandsHelp
 ]
 
 { #category : #querying }
@@ -146,7 +143,7 @@ PhLImageCreateCliCommand >> findTemplate [
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 	| aTemplate |
-	aTemplate := [ self findTemplate ]
+	aTemplate := [^  self findTemplate ]
 			on: NotFound
 			do: [ :error | ^ self logExceptionMessage: error messageText ].
 	self createImage: self imageName from: aTemplate
@@ -155,6 +152,18 @@ PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
 	^ (arguments at: #newImageName) word
+]
+
+{ #category : #default }
+PhLImageCreateCliCommand >> implicitImageName [
+
+	^ self defaultTemplate
+]
+
+{ #category : #default }
+PhLImageCreateCliCommand >> implicitPharoVersion [
+
+	^ PhLImageFinder findLatestPharoDevelopmentVersion
 ]
 
 { #category : #logging }
@@ -189,6 +198,14 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 PhLImageCreateCliCommand >> pharoVersionNumber [ 
 
 	^ self flagValueFor: #pharoVersion
+]
+
+{ #category : #'command execution' }
+PhLImageCreateCliCommand >> printSubCommandsHelp [
+
+	arguments positionalValues isEmpty ifTrue:[
+		(ClapDocumenter on: self outStream) explain: arguments parent specification
+	]
 ]
 
 { #category : #querying }

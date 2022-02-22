@@ -8,7 +8,9 @@ Class {
 	#name : #PhLImageCreateFromPullRequestCliCommand,
 	#superclass : #PhLImageCreateCliCommand,
 	#instVars : [
-		'ghResponse'
+		'headRepo',
+		'remoteBranch',
+		'parentSHA'
 	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
@@ -24,6 +26,7 @@ PhLImageCreateFromPullRequestCliCommand class >> launcherCmdFlags [
 	^ 
 	{	self repositoryFlag. 
 		self pharoVersionFlag.
+		self newImageFlag.
 	}
 ]
 
@@ -47,16 +50,6 @@ PhLImageCreateFromPullRequestCliCommand class >> missingRepoArgMessage [
 ]
 
 { #category : #'command line - arguments' }
-PhLImageCreateFromPullRequestCliCommand class >> pharoVersionFlag [ 
-
-"use latest development Pharo version"
-^ super 
-	pharoVersionFlag
-	implicitMeaning: [ :arg :app | app implicitPharoVersion];
-	yourself
-]
-
-{ #category : #'command line - arguments' }
 PhLImageCreateFromPullRequestCliCommand class >> repositoryFlag [
 
 	^ (ClapFlag id: #repository)
@@ -70,6 +63,12 @@ PhLImageCreateFromPullRequestCliCommand class >> repositoryFlag [
 					implicitMeaning: [ :arg :app | NotFound signal: self missingRepoArgMessage]).
 ]
 
+{ #category : #'command execution' }
+PhLImageCreateFromPullRequestCliCommand >> execute [
+	
+	self findTemplateAndCreateImage
+]
+
 { #category : #querying }
 PhLImageCreateFromPullRequestCliCommand >> findTemplate [ 
 	|aClient prResponse headRepo headBranchName|
@@ -77,7 +76,7 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 	self getAndLogPRResponse: [prResponse := aClient get ].
 	headRepo := self headRepoFullNameFrom: prResponse.
 	headBranchName := self headBranchNameFrom: prResponse.
-	self logHeadRepoAndBranchDetails: {headRepo. headBranchName. }
+	self logHeadRepo: headRepo branch: headBranchName.
 	
 		"parentSHA := self parentSHAFrom: prResponse."
 ]
@@ -86,7 +85,7 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 PhLImageCreateFromPullRequestCliCommand >> getAndLogPRResponse: getResponseBlock [
 
 	self logPullRequestDetails.
-	PhLDownloadManager default displayProgressDuring: getResponseBlock value.
+	PhLDownloadManager default displayProgressDuring: getResponseBlock
 ]
 
 { #category : #private }
@@ -107,13 +106,25 @@ PhLImageCreateFromPullRequestCliCommand >> headBranchNameFrom: prResponse [
 	^ ((prResponse at: #head) at: #repo) at: #full_name
 ]
 
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> headRepo [
+
+	^ headRepo
+]
+
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> headRepo: aRepoName [
+
+	headRepo := aRepoName
+]
+
 { #category : #querying }
 PhLImageCreateFromPullRequestCliCommand >> headRepoFullNameFrom: prResponse [
 	
 	^ (prResponse at: #head) at: #ref
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #default }
 PhLImageCreateFromPullRequestCliCommand >> implicitRepository [
 
 	"by default use Pharo project from which will be PR identified"
@@ -121,36 +132,51 @@ PhLImageCreateFromPullRequestCliCommand >> implicitRepository [
 ]
 
 { #category : #querying }
-PhLImageCreateFromPullRequestCliCommand >> logHeadRepoAndBranchDetails: formatArray [
+PhLImageCreateFromPullRequestCliCommand >> logHeadRepo: aRepoName branch: aBranch [.
 
-	self logInfoMessage: ('Identified branch: {1}, head repository: {2} from pull request.' format: formatArray)
+	self logInfoMessage: ('Identified remote branch: {1}.' format: { aRepoName } ).
+	self logInfoMessage: ('Head repository: {1}.' format: {aBranch})
 ]
 
 { #category : #querying }
 PhLImageCreateFromPullRequestCliCommand >> logPullRequestDetails [
 
-	self logInfoMessage: ('Getting Pull request details form GH remote repository: {1}, pull request: {2}.' format: { self repoFullName. self pullRequestNumber.  })
+	self logInfoMessage: ('Getting Pull request details from GH remote repository: {1}, pull request: {2}.' format: { self repoFullName. self pullRequestNumber.  })
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 
-	^ self flagValueFor: #pullRequest
+	^ (arguments at: #pullRequest)
+		value: self;
+		word
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> pullRequestUrl [
 	
-	^ 'api.github.com/repos/{1}/pulls/{2}' format: {self repoFullName. self pullRequestNumber. }
+	^ 'https://api.github.com/repos/{1}/pulls/{2}' format: {self repoFullName. self pullRequestNumber. }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> remoteBranch [
+
+	^ remoteBranch
+]
+
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> remoteBranch: aBranchName [
+
+	remoteBranch := aBranchName
+]
+
+{ #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> remoteBranchUrl [
 	
 	^ 'api.github.com/repos/{1}/branches/{2}' format: {self repoFullName. self headBranchName. }
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> repoFullName [
 
 	^ self flagValueFor: #repository

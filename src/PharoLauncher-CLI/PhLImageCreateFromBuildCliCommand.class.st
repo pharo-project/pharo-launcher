@@ -17,6 +17,20 @@ PhLImageCreateFromBuildCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromBuild
 ]
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromBuildCliCommand class >> buildNumberFlag [
+
+^ (ClapFlag id: #build)
+		description: 'Determines the build to download the image.';
+		meaning: [ :arg :app | (arg at: #buildNumber) word ];
+		implicitMeaning: [ :arg :app | nil ];
+		add: ((ClapPositional id: #buildNumber)
+					description: 'Number of build to use.';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [ :arg :app | nil ])
+		yourself
+]
+
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image on local computer from remote site based on a Pharo version number a build number and a SHA (would be better without but not possible for the moment) .'
@@ -24,43 +38,13 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdFlags [
-
-	^ {(ClapFlag id: #build)
-				description: 'Determines the build to download the image.';
-				meaning: [ :arg :app | (arg at: #buildNumber) word ];
-				implicitMeaning: [ :arg :app | nil ];
-				add: ((ClapPositional id: #buildNumber)
-					description: 'Number of build to use.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [ :arg :app | nil ]).
-		 (ClapFlag id: #sha)
-				description: 'Determines the SHA to download image.';
-				meaning: [ :arg :app | (arg at: #shaString) word ];
-				implicitMeaning: [ :arg :app | nil ];
-				add: ((ClapPositional id: #shaString)
-					description: 'SHA used to find the image to download.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [  :arg :app | nil ]).
-		(ClapFlag id: #pharoVersion)
-				description: 'Version of Pharo to be downloaded.';
-				meaning: [ :arg :app | (arg at: #pharoVersion) word ];
-				implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ];
-				add: ((ClapPositional id: #pharoVersion)
-					description: 'Specifies the version of Pharo you want to download.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ])
+	
+	^	{ 
+			self buildNumberFlag.
+			self shaFlag.
+			self pharoVersionFlag.
+			self newImageFlag.
 		}
-]
-
-{ #category : #'command line' }
-PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
-	^ {
-		((ClapPositional id: #newImageName)
-				description: 'name of the new image';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app |  ];
-					yourself)
-	}
 ]
 
 { #category : #logging }
@@ -68,9 +52,29 @@ PhLImageCreateFromBuildCliCommand class >> missingOrDuplicatedBuildNumberOrShaMe
 	^ 'you need to specify either a Pharo image build number or a Pharo image SHA (only one of them)'
 ]
 
-{ #category : #accessing }
+{ #category : #'command line - arguments' }
+PhLImageCreateFromBuildCliCommand class >> shaFlag [
+
+	^ (ClapFlag id: #sha)
+			description: 'Determines the SHA to download image.';
+			meaning: [ :arg :app | (arg at: #shaString) word ];
+			implicitMeaning: [ :arg :app | nil ];
+			add: ((ClapPositional id: #shaString)
+				description: 'SHA used to find the image to download.';
+				meaning: [ :pos | pos word asSymbol ];
+				implicitMeaning: [  :arg :app | nil ]);
+			yourself
+]
+
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
   ^ (arguments at: #build) value: self
+]
+
+{ #category : #'command execution' }
+PhLImageCreateFromBuildCliCommand >> execute [
+	
+	self findTemplateAndCreateImage
 ]
 
 { #category : #'command execution' }
@@ -95,17 +99,17 @@ PhLImageCreateFromBuildCliCommand >> isCommandValid [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> sha [
 	^ (arguments at: #sha) word
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> shaString [ 
   ^ (arguments at: #sha) value: self
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> targetName [
 	^ (arguments at: #newImageName) word
 ]

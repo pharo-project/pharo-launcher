@@ -44,21 +44,6 @@ PhLImageCreateFromTemplateCliCommand class >> launcherCmdPositionals [
 ]
 
 { #category : #'command line - arguments' }
-PhLImageCreateFromTemplateCliCommand class >> newImageFlag [
-
-	^ (ClapFlag id: #newImageName)
-			description: 'Name of the new Pharo image (template name used by default).';
-			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
-			"this argument is optional "
-			implicitMeaning: [ :arg :app | app implicitImageName];
-			add: ((ClapPositional id: #newImageArg)
-					description: 'New image argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |  app implicitImageName]);
-			yourself
-]
-
-{ #category : #'command line - arguments' }
 PhLImageCreateFromTemplateCliCommand class >> repositoryFlag [
 
 	^ (ClapFlag id: #repository)
@@ -86,4 +71,10 @@ PhLImageCreateFromTemplateCliCommand class >> templateCategoryFlag [
 				yourself 
 					
 			
+]
+
+{ #category : #'command execution' }
+PhLImageCreateFromTemplateCliCommand >> execute [
+	
+	self findTemplateAndCreateImage 
 ]

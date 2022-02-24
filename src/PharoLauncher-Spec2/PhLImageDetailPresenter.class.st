@@ -24,12 +24,6 @@ Class {
 }
 
 { #category : #specs }
-PhLImageDetailPresenter class >> defaultSpec [
-
-	^ nil
-]
-
-{ #category : #specs }
 PhLImageDetailPresenter class >> labelConstraintsBlock [
 	^ [ :constraints | 
 	constraints
@@ -47,6 +41,27 @@ PhLImageDetailPresenter >> connectPresenters [
 	
 	description whenTextChangedDo: [ :text | self updateImageDescription: text ].
 	shouldRunInitializationScript whenChangedDo: [ :state | self updateImageRunScript: state ].
+]
+
+{ #category : #layout }
+PhLImageDetailPresenter >> defaultLayout [ 
+	layout := SpGridLayout build: [ :builder |
+		builder
+			add: imageLabel span: 2@1; nextRow;
+			add: 'Description'; add: description; nextRow;
+			add: 'Origin template'; add: template; nextRow;
+			add: ''; add: templateUrl; nextRow;
+			add: 'Initialization script'; add: (SpBoxLayout newLeftToRight
+																add: initializationScript expand: false; 
+																add: shouldRunInitializationScript expand: false;
+																yourself); nextRow;
+			add: 'Location'; add: location ].
+	^ layout 
+		beRowNotHomogeneous;
+		beColumnNotHomogeneous;
+		"column: 1 withConstraints: [ :c | c beNotExpand ];"
+		column: 2 withConstraints: [ :c | c beExpand ];
+		yourself
 ]
 
 { #category : #accessing }
@@ -84,23 +99,6 @@ PhLImageDetailPresenter >> initializePresenters [
 		disable.
 	location := self newLabel.
 	vm := self newTextInput.
-	
-	self layout: (SpGridLayout new
-		beRowNotHomogeneous;
-		beColumnNotHomogeneous;
-		"column: 1 withConstraints: [ :c | c beNotExpand ];"
-		column: 2 withConstraints: [ :c | c beExpand ];
-		add: imageLabel 					at: 1@1 span: 2@1;
-		add: 'Description' 				at: 1@2; add: description 				at: 2@2;
-		add: 'Origin template'		 	at: 1@3; add: template 					at: 2@3;	
-														   add: templateUrl 				at: 2@4;
-		add: 'Initialization script' 	at: 1@5; add: (SpBoxLayout newLeftToRight
-																add: initializationScript expand: false; 
-																add: shouldRunInitializationScript expand: false;
-																yourself) 
-															at: 2@5;
-		add: 'Location' 					at: 1@6; add: location 					at: 2@6;
-		yourself)
 ]
 
 { #category : #accessing }

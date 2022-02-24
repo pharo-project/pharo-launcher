@@ -12,8 +12,8 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhlRetryPresenter class >> defaultSpec [ 
+{ #category : #layout }
+PhlRetryPresenter class >> defaultLayout [ 
 	^ SpBoxLayout newHorizontal
 		"add: (self iconNamed: #smallUpdate) expand: false;"
 		add:  #explanationText;

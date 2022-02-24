@@ -98,12 +98,6 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 		yourself)
 ]
 
-{ #category : #specs }
-PhLImagesPresenter class >> defaultSpec [
-
-	^ nil
-]
-
 { #category : #'api - actions' }
 PhLImagesPresenter >> actionFilter [
 	^ imageFilter
@@ -208,6 +202,19 @@ PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
 ]
 
+{ #category : #layout }
+PhLImagesPresenter >> defaultLayout [
+	^ SpBoxLayout newTopToBottom
+		add: toolbar expand: false;
+		add: imageFilter expand: false;
+		add: (SpPanedLayout newTopToBottom
+			positionOfSlider: 55 percent;
+			add: imageTable;
+			add: descriptionPanel;
+			yourself);
+		yourself
+]
+
 { #category : #private }
 PhLImagesPresenter >> editLaunchConfigurations [
 	^ (PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
@@ -248,16 +255,6 @@ PhLImagesPresenter >> initializePresenters [
 	imageTable := self buildImageTable.
 	descriptionPanel := self buildDescriptionPanel.
 	
-	self layout: (SpBoxLayout newTopToBottom
-		add: toolbar expand: false;
-		add: imageFilter expand: false;
-		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: 55 percent;
-			add: imageTable;
-			add: descriptionPanel;
-			yourself);
-		yourself).
-
 	self imageRepository whenChangedSend: #refresh to: self
 ]
 

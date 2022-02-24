@@ -259,7 +259,7 @@ PharoLauncherApplication >> initialize [
 	self resetTemplateRepository
 ]
 
-{ #category : #private }
+{ #category : #'initialization - private' }
 PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self

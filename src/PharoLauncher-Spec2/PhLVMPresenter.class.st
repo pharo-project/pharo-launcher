@@ -47,13 +47,6 @@ PhLVMPresenter class >> buildToolbarGroup [
 		yourself
 ]
 
-{ #category : #layout }
-PhLVMPresenter class >> defaultLayout [
-	^ SpBoxLayout newVertical
-		add: #vmTable;
-		yourself
-]
-
 { #category : #examples }
 PhLVMPresenter class >> example [
 	<example>
@@ -71,6 +64,13 @@ PhLVMPresenter >> connectPresenters [
 { #category : #accessing }
 PhLVMPresenter >> datasource [
 	^ self model
+]
+
+{ #category : #layout }
+PhLVMPresenter >> defaultLayout [
+	^ SpBoxLayout newVertical
+		add: vmTable;
+		yourself
 ]
 
 { #category : #initialization }

@@ -34,28 +34,6 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 		yourself
 ]
 
-{ #category : #layout }
-PhLTemplatesPresenter class >> defaultLayout [
-
-	^ SpPanedLayout newHorizontal
-		positionOfSlider: 60 percent;
-		add: (SpPanedLayout newHorizontal
-			positionOfSlider: 40 percent;
-			add: (SpBoxLayout newVertical 
-				add: '1. Choose a template category:' expand: false;
-				add: #categoryTable;
-				yourself);
-			add: (SpBoxLayout newVertical 
-				add: '2. Choose a template:' expand: false;
-				add: #templateTable;
-				yourself);
-			yourself);
-		add: (SpBoxLayout newVertical 
-			add: #descriptionPanel;
-			yourself);
-		yourself		
-]
-
 { #category : #example }
 PhLTemplatesPresenter class >> example [
 	| app |
@@ -140,6 +118,28 @@ PhLTemplatesPresenter >> connectPresenters [
 			selectionArray
 				ifNotEmpty: [ selectionArray last ]
 				ifEmpty: [ nil ] ].
+]
+
+{ #category : #layout }
+PhLTemplatesPresenter >> defaultLayout [
+
+	^ SpPanedLayout newHorizontal
+		positionOfSlider: 60 percent;
+		add: (SpPanedLayout newHorizontal
+			positionOfSlider: 40 percent;
+			add: (SpBoxLayout newVertical 
+				add: '1. Choose a template category:' expand: false;
+				add: categoryTable;
+				yourself);
+			add: (SpBoxLayout newVertical 
+				add: '2. Choose a template:' expand: false;
+				add: templateTable;
+				yourself);
+			yourself);
+		add: (SpBoxLayout newVertical 
+			add: descriptionPanel;
+			yourself);
+		yourself		
 ]
 
 { #category : #accessing }

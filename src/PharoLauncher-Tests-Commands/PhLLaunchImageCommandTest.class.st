@@ -14,22 +14,23 @@ Class {
 
 { #category : #helper }
 PhLLaunchImageCommandTest >> addInitializationScriptToImage [
-	image initializationScript: (FileSystem memory root / 'foo.st') asFileReference.
+	image initializationScript: self initScript
 ]
 
 { #category : #helper }
 PhLLaunchImageCommandTest >> configureImage [
-	| configurationSubClass |
-	configurationSubClass := PhLLaunchConfiguration newAnonymousSubclass.
-	configurationSubClass compile: 'launchProcess ^ PhLProcessWrapper new command: ''ls'' ; yourself'.
 
-	image launchConfigurations: {  configurationSubClass withImage: image } 
+	image launchConfigurations: {  PhLLaunchConfigurationForTests withImage: image } 
 	
 ]
 
 { #category : #helper }
+PhLLaunchImageCommandTest >> initScript [
+	^ FileSystem memory root / 'foo.st'
+]
+
+{ #category : #helper }
 PhLLaunchImageCommandTest >> recreateImage [
-	self selectImage.
 	recreateCommand execute.
 	self selectImage.
 	^ presenter selectedImages anyOne
@@ -37,6 +38,7 @@ PhLLaunchImageCommandTest >> recreateImage [
 
 { #category : #helper }
 PhLLaunchImageCommandTest >> runImage [
+	self selectImage.
 	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
 	process := runCommand execute
 ]
@@ -82,6 +84,14 @@ PhLLaunchImageCommandTest >> tearDown [
 ]
 
 { #category : #tests }
+PhLLaunchImageCommandTest >> testAttachingAnInitializationScriptIsOk [
+	
+	self addInitializationScriptToImage.
+	
+	self assert: image initializationScript isNotNil
+]
+
+{ #category : #tests }
 PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun [
 
 	self addInitializationScriptToImage.
@@ -108,7 +118,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 			imageArguments: #('--no-quit');
 			yourself).
 		
-	self runImage.
+	process := runCommand execute.
 	2 seconds wait. "let time to the image to be opened by the VM"
 	
 	self assert: process isRunning.
@@ -118,7 +128,6 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNotRun [
 
 	self addInitializationScriptToImage.
-	self selectImage.
 	self runImage.
 	
 	self deny: image shouldRunInitializationScript.
@@ -139,9 +148,17 @@ PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 
 	| recreatedImage |
 	self addInitializationScriptToImage.
-	self selectImage.
 	self runImage.
 	recreatedImage := self recreateImage.
 	
 	self assert: recreatedImage shouldRunInitializationScript
+]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> testRunningAnImageRemovesTheInitializationScript [
+	
+	self addInitializationScriptToImage.
+	image := self recreateImage.
+	
+	self assert: image initializationScript equals: self initScript
 ]

@@ -155,12 +155,11 @@ PhLDirectoryBasedImageRepository >> ensureNoImageWithName: anImageName [
 ]
 
 { #category : #action }
-PhLDirectoryBasedImageRepository >> extractTemplate: aTemplate to: anImageName [
+PhLDirectoryBasedImageRepository >> extractTemplate: anImage to: anImageName [
 	| destination image |
-	
 	self ensureNoImageWithName: anImageName.
 	destination := self prepareForNewImageNamed: anImageName.
-	image := aTemplate extractTo: destination named: anImageName.
+	image := anImage originTemplate extractTo: destination named: anImageName.
 	self contentsChanged.
 	^ image
 ]
@@ -267,12 +266,14 @@ PhLDirectoryBasedImageRepository >> prepareForNewImageNamed: aString [
 
 { #category : #action }
 PhLDirectoryBasedImageRepository >> recreateImage: anImage [
+	| image |
 	anImage originTemplate ifNil: [ PhLCommandError signal ].
+	self deleteImage: anImage.
 	
 	anImage shouldRunInitializationScript: true.
-	anImage initializationScript: anImage initializationScript.
-	self deleteImage: anImage.
-	self extractTemplate: anImage originTemplate to: anImage name.
+	image := self extractTemplate: anImage to: anImage name.
+	image extractMetadatasFrom: anImage.
+	self contentsChanged.
 ]
 
 { #category : #action }

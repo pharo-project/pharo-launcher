@@ -156,9 +156,8 @@ PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 
 { #category : #tests }
 PhLLaunchImageCommandTest >> testRunningAnImageRemovesTheInitializationScript [
-	
 	self addInitializationScriptToImage.
 	image := self recreateImage.
 	
-	self assert: image initializationScript equals: self initScript
+	self assert: image initializationScript path equals: self initScript path
 ]

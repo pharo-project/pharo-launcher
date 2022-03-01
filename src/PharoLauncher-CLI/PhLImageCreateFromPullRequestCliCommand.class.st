@@ -64,28 +64,49 @@ PhLImageCreateFromPullRequestCliCommand class >> repositoryFlag [
 ]
 
 { #category : #'command execution' }
+PhLImageCreateFromPullRequestCliCommand >> createImage: newImageName from: template [
+
+	self logCreationOfImageFrom: template name.
+	self logInfoMessage: 'Done!'
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> directoryVersionNumber [
+	
+	^ self pharoVersionNumber, '0'
+]
+
+{ #category : #'command execution' }
 PhLImageCreateFromPullRequestCliCommand >> execute [
 	
 	self findTemplateAndCreateImage
 ]
 
 { #category : #querying }
-PhLImageCreateFromPullRequestCliCommand >> findTemplate [ 
-	|aClient prResponse headRepo headBranchName|
-	aClient := self getClientForUrl: self pullRequestUrl. 
-	self getAndLogPRResponse: [prResponse := aClient get ].
-	headRepo := self headRepoFullNameFrom: prResponse.
-	headBranchName := self headBranchNameFrom: prResponse.
-	self logHeadRepo: headRepo branch: headBranchName.
-	
-		"parentSHA := self parentSHAFrom: prResponse."
+PhLImageCreateFromPullRequestCliCommand >> findLatestDevelopmentTemplate [
+
+	|templateUrl|
+	templateUrl := ('https://files.pharo.org/image/{1}/stable-64.zip' format: { self directoryVersionNumber }) asUrl.
+	self logRemoteTemplateUrl: templateUrl asString. 
+	^ PhLRemoteTemplate name: self defaultTemplate url: templateUrl.
 ]
 
 { #category : #querying }
-PhLImageCreateFromPullRequestCliCommand >> getAndLogPRResponse: getResponseBlock [
+PhLImageCreateFromPullRequestCliCommand >> findTemplate [ 
 
-	self logPullRequestDetails.
-	PhLDownloadManager default displayProgressDuring: getResponseBlock
+	self getHeadRepoAndBranchName.
+	self getParentSHA.
+	^ [ 	|templateUrl imageFinder|
+		imageFinder := PhLImageFinder pharoVersion: self pharoVersionNumber sha: self shortSHA.
+		templateUrl := imageFinder findUrl asUrl.
+		self logRemoteTemplateUrl: templateUrl asString. 
+		PhLRemoteTemplate name: imageFinder findTemplateName url: templateUrl.
+	] 
+	on: Error 
+	do: 
+	[	self logNotFoundDevTemplate.
+		self findLatestDevelopmentTemplate 
+	]
 ]
 
 { #category : #private }
@@ -101,9 +122,32 @@ PhLImageCreateFromPullRequestCliCommand >> getClientForUrl: anUrl [
 ]
 
 { #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> getHeadRepoAndBranchName [
+	|aClient prResponse |
+	aClient := self getClientForUrl: self pullRequestUrl. 
+	self logPullRequestDetails.
+	PhLDownloadManager default displayProgressDuring: [prResponse := aClient get ].
+	self headRepo: (self headRepoFullNameFrom: prResponse).
+	self remoteBranch: (self headBranchNameFrom: prResponse).
+	self logHeadRepoAndRemoteBranch.
+]
+
+{ #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> getParentSHA [
+	|aClient aResponse |
+	aClient := self getClientForUrl: self remoteBranchUrl. 
+	self logParentSHAdetails.
+	PhLDownloadManager default displayProgressDuring: [aResponse := aClient get ].
+	self parentSHA: (self parentSHAFrom: aResponse).
+	self logParentSHA.
+
+]
+
+{ #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> headBranchNameFrom: prResponse [
-	
-	^ ((prResponse at: #head) at: #repo) at: #full_name
+
+	^ (prResponse at: #head) at: #ref
+
 ]
 
 { #category : #accessing }
@@ -118,10 +162,10 @@ PhLImageCreateFromPullRequestCliCommand >> headRepo: aRepoName [
 	headRepo := aRepoName
 ]
 
-{ #category : #querying }
+{ #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> headRepoFullNameFrom: prResponse [
 	
-	^ (prResponse at: #head) at: #ref
+	^ ((prResponse at: #head) at: #repo) at: #full_name
 ]
 
 { #category : #default }
@@ -132,16 +176,67 @@ PhLImageCreateFromPullRequestCliCommand >> implicitRepository [
 ]
 
 { #category : #querying }
-PhLImageCreateFromPullRequestCliCommand >> logHeadRepo: aRepoName branch: aBranch [.
+PhLImageCreateFromPullRequestCliCommand >> logHeadRepoAndRemoteBranch [
 
-	self logInfoMessage: ('Identified remote branch: {1}.' format: { aRepoName } ).
-	self logInfoMessage: ('Head repository: {1}.' format: {aBranch})
+	self logInfoMessage: ('Identified remote branch: {1}.' format: { self remoteBranch } ).
+	self logInfoMessage: ('Head repository: {1}.' format: {self headRepo })
+]
+
+{ #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> logNotFoundDevTemplate [
+
+	self logInfoMessage: 'Could not determine development image template from parent SHA. Using latest development version template.'
+]
+
+{ #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> logParentSHA [
+
+	self logInfoMessage: ('Identified parent commit SHA of remote branch: {1}.' format: { self parentSHA  } )
+
+]
+
+{ #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> logParentSHAdetails [
+
+	self logInfoMessage: 'Getting parent SHA commit from remote branch...'
 ]
 
 { #category : #querying }
 PhLImageCreateFromPullRequestCliCommand >> logPullRequestDetails [
 
-	self logInfoMessage: ('Getting Pull request details from GH remote repository: {1}, pull request: {2}.' format: { self repoFullName. self pullRequestNumber.  })
+	self logInfoMessage: ('Getting Pull request details from GH remote repository: {1}, pull request: {2}...' format: { self repoFullName. self pullRequestNumber.  })
+]
+
+{ #category : #querying }
+PhLImageCreateFromPullRequestCliCommand >> logRemoteTemplateUrl: urlString [
+
+	self logInfoMessage: ('Identified remote template to download: {1}.' format: { urlString  } )
+
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> mcLoadProjectFromPR [
+	^ '"Metacello new baseline: ''PharoLauncher''; repository: ''{1}:{2}''; onConflictUseIncoming; load"'
+
+]
+
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> parentSHA [
+
+	^ parentSHA
+]
+
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> parentSHA: aSHAstring [
+
+	parentSHA := aSHAstring
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> parentSHAFrom: aResponse [
+	|parentCommit|
+	parentCommit := ((aResponse at: #commit) at: #parents) first.
+	^ parentCommit at: #sha
 ]
 
 { #category : #'accessing - arguments' }
@@ -173,13 +268,29 @@ PhLImageCreateFromPullRequestCliCommand >> remoteBranch: aBranchName [
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> remoteBranchUrl [
 	
-	^ 'api.github.com/repos/{1}/branches/{2}' format: {self repoFullName. self headBranchName. }
+	^ 'https://api.github.com/repos/{1}/branches/{2}' format: {self headRepo. self remoteBranch. }
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> remoteRepoProjectLoadArguments [
+
+		^ OrderedCollection 
+			with: 'eval' 
+			with: '--save' 
+			with: self mcLoadProjectFromPR
+			
 ]
 
 { #category : #'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> repoFullName [
 
 	^ self flagValueFor: #repository
+]
+
+{ #category : #accessing }
+PhLImageCreateFromPullRequestCliCommand >> shortSHA [
+
+	^ parentSHA first: 7
 ]
 
 { #category : #private }

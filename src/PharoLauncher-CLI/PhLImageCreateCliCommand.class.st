@@ -143,7 +143,7 @@ PhLImageCreateCliCommand >> findTemplate [
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 	| aTemplate |
-	aTemplate := [^  self findTemplate ]
+	aTemplate := [self findTemplate]
 			on: NotFound
 			do: [ :error | ^ self logExceptionMessage: error messageText ].
 	self createImage: self imageName from: aTemplate
@@ -151,7 +151,8 @@ PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
-	^ (arguments at: #newImageName) word
+
+	^ self flagValueFor: #newImageName
 ]
 
 { #category : #default }
@@ -176,13 +177,9 @@ self errorStream
 
 { #category : #logging }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
-	self outStream
-		nextPutAll:
-			('Creating the local Pharo image based on template: {1}.' format: {aTemplateName});
-		newLine;
-		nextPutAll:
-				'Please wait a moment.';
-		newLine
+	
+	self logInfoMessage:('Creating the local Pharo image based on template: {1}.' format: {aTemplateName}).
+	self logInfoMessage: 'Please wait a moment.'
 ]
 
 { #category : #default }

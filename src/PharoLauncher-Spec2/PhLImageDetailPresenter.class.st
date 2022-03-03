@@ -45,9 +45,28 @@ PhLImageDetailPresenter >> connectPresenters [
 
 { #category : #layout }
 PhLImageDetailPresenter >> defaultLayout [ 
-	layout := SpGridLayout build: [ :builder |
+	
+	^ SpBoxLayout newTopToBottom 
+		borderWidth: 5;
+		add: imageLabel expand: false fill: false padding: 10;
+		add: self descriptionLayout;
+		yourself
+]
+
+{ #category : #accessing }
+PhLImageDetailPresenter >> description [
+	^ description
+]
+
+{ #category : #layout }
+PhLImageDetailPresenter >> descriptionLayout [ 
+	^ SpGridLayout build: [ :builder |
 		builder
-			add: imageLabel span: 2@1; nextRow;
+		beRowNotHomogeneous;
+		beColumnNotHomogeneous;
+		borderWidth: 0;
+		"column: 1 withConstraints: [ :c | c beNotExpand ];"
+		column: 2 withConstraints: [ :c | c beExpand ];
 			add: 'Description'; add: description; nextRow;
 			add: 'Origin template'; add: template; nextRow;
 			add: ''; add: templateUrl; nextRow;
@@ -55,18 +74,7 @@ PhLImageDetailPresenter >> defaultLayout [
 																add: initializationScript expand: false; 
 																add: shouldRunInitializationScript expand: false;
 																yourself); nextRow;
-			add: 'Location'; add: location ].
-	^ layout 
-		beRowNotHomogeneous;
-		beColumnNotHomogeneous;
-		"column: 1 withConstraints: [ :c | c beNotExpand ];"
-		column: 2 withConstraints: [ :c | c beExpand ];
-		yourself
-]
-
-{ #category : #accessing }
-PhLImageDetailPresenter >> description [
-	^ description
+			add: 'Location'; add: location ]
 ]
 
 { #category : #accessing }
@@ -90,6 +98,7 @@ PhLImageDetailPresenter >> initialize [
 PhLImageDetailPresenter >> initializePresenters [
 
 	imageLabel := self newLabel.
+	imageLabel addStyle: 'lightBlue'.
 	description := self newText.
 	template := self newLabel.
 	templateUrl := self newLabel.

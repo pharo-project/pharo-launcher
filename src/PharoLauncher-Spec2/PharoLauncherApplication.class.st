@@ -204,14 +204,6 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 ]
 
 { #category : #accessing }
-PharoLauncherApplication class >> styleSheet [
-	^ (SpStyleVariableSTONReader fromString: '.application [       
- 	   .lightGreen [ Draw { #color: #B3E6B5 } ],          
- 	   .lightBlue [ Draw { #color: #lightGreen} , Draw { #backgroundColor: #gray } ] ]
-	'), SpStyle defaultStyleSheet
-]
-
-{ #category : #accessing }
 PharoLauncherApplication class >> templatesClearedOnStartup [
 	^ TemplatesClearedOnStartup ifNil: [ TemplatesClearedOnStartup := false ].
 ]
@@ -261,7 +253,9 @@ PharoLauncherApplication >> initialize [
 	 This can be use to push progress bars (they stack)."
 	windows := OrderedCollection new. 
 	openAsWorld := false.
-	self styleSheet: self class styleSheet.
+	self
+		useBackend: #Morphic 
+		with: PharoLauncherConfiguration new.
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].

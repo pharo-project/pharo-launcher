@@ -98,7 +98,7 @@ PhLImageDetailPresenter >> initialize [
 PhLImageDetailPresenter >> initializePresenters [
 
 	imageLabel := self newLabel.
-	imageLabel addStyle: 'lightBlue'.
+	imageLabel addStyle: 'greenOnGray'.
 	description := self newText.
 	template := self newLabel.
 	templateUrl := self newLabel.

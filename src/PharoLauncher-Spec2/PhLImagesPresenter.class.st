@@ -175,7 +175,7 @@ PhLImagesPresenter >> buildToolbar [
 				add: self newLaunchConfigurationDropList expand: false;
 				yourself);
 			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;
-			add: self newLabel; "to create an space"
+			add: self newLabel; "to create a space"
 			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
 			yourself);
 		yourself

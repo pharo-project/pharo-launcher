@@ -279,6 +279,13 @@ PhLImage >> ensurePharoVersion [
 	
 ]
 
+{ #category : #configuring }
+PhLImage >> extractMetadatasFrom: anImage [
+	"Currently only extracted metadata.
+	Need to see whether that's all"
+	self initializationScript: anImage initializationScript
+]
+
 { #category : #accessing }
 PhLImage >> file [ 
 	^file

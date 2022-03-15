@@ -115,6 +115,7 @@ PhLDownloadManager >> newHTTPClientForUrl: url [
 		signalProgress: true;
 		url: url;
 		enforceHttpSuccess: true;
+		withOptions: [ :options | options at: #queryKeyValueSafeSet put: (ZnOptions queryKeyValueSafeSet \ '/;') ];
 		ifFail: [ :exception | self downloadFailureForUrl: url ];
 		yourself
 ]

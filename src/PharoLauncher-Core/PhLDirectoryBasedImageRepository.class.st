@@ -272,8 +272,8 @@ PhLDirectoryBasedImageRepository >> recreateImage: anImage [
 	
 	anImage shouldRunInitializationScript: true.
 	image := self extractTemplate: anImage originTemplate to: anImage name.
-	image extractMetadatasFrom: anImage.
-	self contentsChanged.
+	anImage serializeMetadata. "We keep metadata and write it again to the file system since the folder was deleted"
+	self contentsChanged. "Ensure the image repository has its image with up-to-date metadata"
 ]
 
 { #category : #action }

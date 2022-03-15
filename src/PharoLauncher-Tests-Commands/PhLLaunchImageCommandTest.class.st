@@ -18,15 +18,15 @@ PhLLaunchImageCommandTest >> addInitializationScriptToImage [
 ]
 
 { #category : #helper }
-PhLLaunchImageCommandTest >> configureImage [
-
-	image launchConfigurations: {  PhLLaunchConfigurationForTests withImage: image } 
-	
+PhLLaunchImageCommandTest >> initScript [
+	^ FileSystem memory root / 'foo.st'
 ]
 
 { #category : #helper }
-PhLLaunchImageCommandTest >> initScript [
-	^ FileSystem memory root / 'foo.st'
+PhLLaunchImageCommandTest >> launchImage [
+	self selectImage.
+	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
+	process := runCommand execute
 ]
 
 { #category : #helper }
@@ -34,13 +34,6 @@ PhLLaunchImageCommandTest >> recreateImage [
 	recreateCommand execute.
 	self selectImage.
 	^ presenter selectedImages anyOne
-]
-
-{ #category : #helper }
-PhLLaunchImageCommandTest >> runImage [
-	self selectImage.
-	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
-	process := runCommand execute
 ]
 
 { #category : #helper }
@@ -64,22 +57,22 @@ PhLLaunchImageCommandTest >> setUp [
 	recreateCommand context: presenter.
 	
 	image := presenter singleImage.
-	
 	image versionFile 
 		writeStreamDo: [ :stream | 
 			SystemVersion current major asString putOn: stream.
 			SystemVersion current minor asString putOn: stream ].
-	
-	image originTemplate: (PhLTestTemplatesPresenter new createLocalTemplateNamed: 'testTemplate').
+	image 
+		originTemplate: (PhLTestTemplatesPresenter new createLocalTemplateNamed: 'testTemplate');
+		launchConfigurations: { PhLTestLaunchConfiguration withImage: image }.
 
-
-	self configureImage
 ]
 
 { #category : #running }
 PhLLaunchImageCommandTest >> tearDown [
+
 	imageDir ensureDeleteAll.
-	(process isNotNil and: [ process isRunning ]) ifTrue: [ process terminate].
+	(process isNotNil and: [ process isRunning ]) 
+		ifTrue: [ process terminate ].
 	super tearDown
 ]
 
@@ -128,7 +121,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNotRun [
 
 	self addInitializationScriptToImage.
-	self runImage.
+	self launchImage.
 	
 	self deny: image shouldRunInitializationScript.
 ]
@@ -148,7 +141,7 @@ PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 
 	| recreatedImage |
 	self addInitializationScriptToImage.
-	self runImage.
+	self launchImage.
 	recreatedImage := self recreateImage.
 	
 	self assert: recreatedImage shouldRunInitializationScript

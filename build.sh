@@ -105,7 +105,7 @@ function package_mac_version() {
 	rm -f PharoLauncher.app/Contents/Resources/English.lproj/MainMenu.nib
 	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
 	
-	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=$should_sign ./mac/build-dmg.sh
+	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)

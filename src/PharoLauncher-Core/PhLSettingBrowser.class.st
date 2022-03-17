@@ -17,10 +17,11 @@ PhLSettingBrowser class >> initialize [
 PhLSettingBrowser class >> launcherStartUp [
 	PharoLauncherApplication isDeployed ifFalse: [ ^ self ].
 
-	self preferencesFile ifNotNil: [ self new treeHolder updateSettingNodes ].
+	self preferencesFile ifNotNil: [ self new loadSettings ].
 
-	"Allow to have manual settings in the preferences foldor of Pharo Launcher."
-	self preferencesFolder exists ifTrue: [ StartupPreferencesLoader default load: (self preferencesFolder filesMatching: '*.st') ]
+	"Allow to have manual settings in the preferences folder of Pharo Launcher."
+	self preferencesFolder exists 
+		ifTrue: [ StartupPreferencesLoader default load: (self preferencesFolder filesMatching: '*.st') ]
 ]
 
 { #category : #'system startup' }

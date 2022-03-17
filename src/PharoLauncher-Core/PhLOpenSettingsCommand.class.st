@@ -20,12 +20,9 @@ PhLOpenSettingsCommand >> asSpecCommand [
 { #category : #executing }
 PhLOpenSettingsCommand >> execute [
 
-	| window |
-	window := (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings ))
-		          loadSettings;
-		          open.
-	self inform: 'Settings has been updated from the disk.'.
-	^ window
+	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings ))
+			loadSettings;
+			open.
 ]
 
 { #category : #initialization }

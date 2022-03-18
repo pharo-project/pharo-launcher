@@ -45,6 +45,12 @@ PhLSettingBrowser >> exportSettings: aCollection toFileNamed: filename [
 	StartupPreferencesLoader default addAtStartup: aCollection inDirectory: self class preferencesFolder named: filename
 ]
 
+{ #category : #loading }
+PhLSettingBrowser >> loadSettings [
+	self treeHolder updateSettingNodes.
+	"do not inform settings are loaded even if not loaded"
+]
+
 { #category : #'instance creation' }
 PhLSettingBrowser >> newTreeHolder [
 	^ PhLSettingTree new 

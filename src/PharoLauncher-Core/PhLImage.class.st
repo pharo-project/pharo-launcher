@@ -329,7 +329,10 @@ PhLImage >> isImage [
 
 { #category : #accessing }
 PhLImage >> lastModification [
-	^ self file modificationTime
+
+	^ [ self file modificationTime ]
+		  on: FileDoesNotExistException
+		  do: [ nil ]
 ]
 
 { #category : #action }

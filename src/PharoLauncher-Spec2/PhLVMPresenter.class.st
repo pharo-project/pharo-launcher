@@ -95,6 +95,7 @@ PhLVMPresenter >> initializePresenters [
 			evaluated: #lastUpdateTimeDescription) width: 120; yourself);
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
 		showColumnHeaders;
+		alternateRowsColor;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		beMultipleSelection;

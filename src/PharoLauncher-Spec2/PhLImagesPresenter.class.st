@@ -134,11 +134,11 @@ PhLImagesPresenter >> buildImageTable [
 
 	^ self newTable
 		activateOnDoubleClick;
+		alternateRowsColor;
 		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
 		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
-		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
 			width: 350;
 			beSortable;

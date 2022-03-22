@@ -74,11 +74,11 @@ PhLTemplatesPresenter >> buildTemplateTable [
 	
 	^ self newTreeTable
 		hideColumnHeaders;
+		alternateRowsColor;
 		children: [ :aTemplateGroup | self childrenOf: aTemplateGroup ];
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beMultipleSelection; "bulk delete templates for example"
-		"whenBuiltDo: [ :tree | tree widget alternateRowsColor ];"
 		whenRootsChangedDo: [ :roots | 
 			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
 		whenSelectionChangedDo: [ :selection | 

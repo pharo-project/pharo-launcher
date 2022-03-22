@@ -341,7 +341,9 @@ PharoLauncherApplication >> start [
 { #category : #running }
 PharoLauncherApplication >> startFull [
 	
-	imagesPresenter asWorldWindow open
+	imagesPresenter asWorldWindow 
+		title: 'Pharo Launcher';
+		open.
 ]
 
 { #category : #accessing }

@@ -74,7 +74,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 	
 	^ self newTreeTable
 		hideColumnHeaders;
-		alternateRowsColor;
+		"alternateRowsColor;"
 		children: [ :aTemplateGroup | self childrenOf: aTemplateGroup ];
 		addColumn: (SpStringTableColumn evaluated: #name);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];

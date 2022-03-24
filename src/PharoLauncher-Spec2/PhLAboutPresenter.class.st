@@ -38,7 +38,7 @@ PhLAboutPresenter class >> title [
 	^ 'About'
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 PhLAboutPresenter >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		add: icon width: 90;

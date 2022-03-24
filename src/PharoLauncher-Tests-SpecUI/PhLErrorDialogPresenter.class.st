@@ -58,7 +58,7 @@ PhLErrorDialogPresenter >> debugSession [
 	^ debugSession
 ]
 
-{ #category : #specs }
+{ #category : #layout }
 PhLErrorDialogPresenter >> defaultLayout [
 
 	^ SpBoxLayout newVertical

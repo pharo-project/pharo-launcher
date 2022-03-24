@@ -17,19 +17,6 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhLAboutPresenter class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		add: #icon width: 90;
-		add: 
-			(SpBoxLayout newVertical
-				spacing: 15;
-				add: #description;
-				add: #documentationLink expand: false;
-			yourself);
-		yourself
-]
-
 { #category : #'instance creation' }
 PhLAboutPresenter class >> example [
 	| text |
@@ -49,6 +36,19 @@ PhLAboutPresenter class >> text: aText iconName: anIconName [
 { #category : #specs }
 PhLAboutPresenter class >> title [ 
 	^ 'About'
+]
+
+{ #category : #specs }
+PhLAboutPresenter >> defaultLayout [
+	^ SpBoxLayout newHorizontal
+		add: icon width: 90;
+		add: 
+			(SpBoxLayout newVertical
+				spacing: 15;
+				add: description;
+				add: documentationLink expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : #accessing }

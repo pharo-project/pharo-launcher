@@ -43,14 +43,6 @@ PhLErrorDialogPresenter class >> debugSession: aDebugSession [
 
 ]
 
-{ #category : #specs }
-PhLErrorDialogPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		add: #description;
-		yourself
-]
-
 { #category : #'opening api' }
 PhLErrorDialogPresenter class >> openDebuggerOn: aDebugSession [
 	StDebugger debugSession: aDebugSession.
@@ -64,6 +56,14 @@ PhLErrorDialogPresenter class >> rank [
 { #category : #accessing }
 PhLErrorDialogPresenter >> debugSession [ 
 	^ debugSession
+]
+
+{ #category : #specs }
+PhLErrorDialogPresenter >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		add: description;
+		yourself
 ]
 
 { #category : #initialization }

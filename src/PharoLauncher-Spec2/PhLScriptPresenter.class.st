@@ -54,6 +54,11 @@ PhLScriptPresenter >> defaultLayout [
 		  yourself
 ]
 
+{ #category : #'user interaction' }
+PhLScriptPresenter >> defaultSaveShortCut [
+	^ $s command mac | $s ctrl win | $s ctrl unix
+]
+
 { #category : #initialization }
 PhLScriptPresenter >> initializePresenters [ 
 	scriptTable := (self instantiate: SpEditableListPresenter)

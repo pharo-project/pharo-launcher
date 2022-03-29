@@ -89,6 +89,12 @@ function prepare_mac_resources_for_build_platform_script() {
 	cp mac/Info.plist.template pharo-build-scripts/platform/templates/mac/Contents/ 
 }
 
+function copy_mac_icon_files_to() {
+	cp PharoImage.icns $1
+	cp PharoChanges.icns $1
+	cp PharoSources.icns $1
+}
+
 function package_mac_version() {
 	set_env
 	local should_sign=${1:-false} # If no argument given, do not sign
@@ -104,6 +110,7 @@ function package_mac_version() {
 	mv mac-installer-background.png background.png
 	rm -f PharoLauncher.app/Contents/Resources/English.lproj/MainMenu.nib
 	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
+	copy_mac_icon_files_to PharoLauncher.app/Contents/Resources/
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)

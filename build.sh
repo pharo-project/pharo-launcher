@@ -90,9 +90,9 @@ function prepare_mac_resources_for_build_platform_script() {
 }
 
 function copy_mac_icon_files_to() {
-	cp PharoImage.icns $1
-	cp PharoChanges.icns $1
-	cp PharoSources.icns $1
+	cp icons/PharoImage.icns $1
+	cp icons/PharoChanges.icns $1
+	cp icons/PharoSources.icns $1
 }
 
 function package_mac_version() {

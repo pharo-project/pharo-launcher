@@ -56,7 +56,7 @@ PhLScriptPresenter >> defaultLayout [
 
 { #category : #'user interaction' }
 PhLScriptPresenter >> defaultSaveShortCut [
-	^ $s command mac | $s ctrl win | $s ctrl unix
+	^ SpAcceptChangesCommand defaultShortcutKey 
 ]
 
 { #category : #initialization }
@@ -73,12 +73,12 @@ PhLScriptPresenter >> initializePresenters [
 								text: selection selectedItem contents;
 								enable. ] ];
 		addItemBlock: [ self newScript ];
-		removeItemBlock: [ :item | self removeScript: item ]
+		removeItemBlock: [ :item | self removeScript: item ];
 		yourself.
 	fileEditor := self newCode
 		disable;
 		bindKeyCombination: self defaultSaveShortCut
-		toAction: [ self saveSelectedScript ]
+			toAction: [ self saveSelectedScript ];
 		yourself.
 	saveButton := self newButton
 		label: 'Save';

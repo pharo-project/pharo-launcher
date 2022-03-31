@@ -5,7 +5,8 @@ Class {
 		'presenter',
 		'application',
 		'scriptFolder',
-		'file'
+		'file',
+		'window'
 	],
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
@@ -14,6 +15,8 @@ Class {
 PhLScriptPresenterTest >> setUp [
 	super setUp.
 	scriptFolder := FileSystem memory root.
+	file := (scriptFolder / 'foo.st') ensureCreateFile.
+	self setUpPresenter.
 ]
 
 { #category : #running }
@@ -22,30 +25,31 @@ PhLScriptPresenterTest >> setUpPresenter [
 	presenter := PhLScriptPresenter
 		             newApplication: application
 		             model: scriptFolder.
-	presenter fileEditor adapter: (SpMorphicTextAdapter adapt: presenter fileEditor).
+]
+
+{ #category : #running }
+PhLScriptPresenterTest >> tearDown [ 
+	window ifNotNil: [ window delete ].
+	super tearDown
 ]
 
 { #category : #tests }
 PhLScriptPresenterTest >> testCanAddNewScript [
-	self setUpPresenter.
-	application requestAnswer: 'foo.st'.
+	application requestAnswer: 'bar.st'.
 	self
 		assert: scriptFolder files size 
-		equals: 0.
+		equals: 1.
 		
 	presenter clickAddScriptButton.
 		
 	self
 		assert: scriptFolder files size
-		equals: 1.
+		equals: 2.
 	self assert: (scriptFolder / 'foo.st') exists.
 ]
 
 { #category : #tests }
 PhLScriptPresenterTest >> testCanRemoveScript [
-	| file |
-	file := (scriptFolder / 'foo.st') ensureCreateFile.
-	self setUpPresenter.
 	self
 		assert: scriptFolder files size 
 		equals: 1.
@@ -61,9 +65,7 @@ PhLScriptPresenterTest >> testCanRemoveScript [
 
 { #category : #tests }
 PhLScriptPresenterTest >> testCanSaveScript [
-	| file |
-	file := (scriptFolder / 'foo.st') ensureCreateFile.
-	self setUpPresenter.
+
 	presenter selectScript: file.
 	presenter fileEditor text: 'bar'.
 	
@@ -76,8 +78,7 @@ PhLScriptPresenterTest >> testCanSaveScript [
 
 { #category : #tests }
 PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
-	self setUpPresenter.
-	(scriptFolder / 'foo') ensureCreateFile.
+
 	self
 		assert: scriptFolder files size 
 		equals: 1.
@@ -91,26 +92,25 @@ PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 
 { #category : #tests }
 PhLScriptPresenterTest >> testNewScriptEndsWithStExtension [
-	self setUpPresenter.
-	application requestAnswer: 'foo'.
+
+	application requestAnswer: 'bar'.
 	self
 		assert: scriptFolder files size 
-		equals: 0.
+		equals: 1.
 		
 	presenter clickAddScriptButton.
 		
 	self
 		assert: scriptFolder files size
-		equals: 1.
-	self assert: (scriptFolder / 'foo.st') exists.
+		equals: 2.
+	self assert: (scriptFolder / 'bar.st') exists.
 ]
 
 { #category : #tests }
 PhLScriptPresenterTest >> testSaveScriptUsingKeybind [
-	file := (scriptFolder / 'foo.st') ensureCreateFile.
-	self setUpPresenter.
 	presenter selectScript: file.
 	presenter fileEditor text: 'bar'.
+	window := presenter open.
 	
 	presenter fileEditor adapter
 		keyDown: $s

@@ -17,7 +17,7 @@ PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 { #category : #running }
 PhLLaunchConfigurationTest >> setUp [
 	super setUp.
-	(fs / 'pharo.version')
+	(fs / PhLImage versionFileName)
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: '70' ].
 	
 
@@ -47,7 +47,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 	| launchConfig vm |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	(fs / 'pharo.version')
+	(fs / PhLImage versionFileName)
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: '770' ].
 
 	vm := launchConfig vm.

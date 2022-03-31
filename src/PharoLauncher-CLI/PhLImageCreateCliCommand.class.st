@@ -39,7 +39,34 @@ PhLImageCreateCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> launcherCmdDescription [
 
-	^ 'Downloads and creates new Pharo image based on one sub-commands.'
+	^ 'Downloads and creates new image on local computer from remote site based on template name.'
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> launcherCmdFlags [
+
+^ {
+		self templateNameFlag.
+		self templateCategoryFlag.
+	}
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> launcherCmdPositionals [
+
+^ {
+		(ClapPositional id: #newImageName)
+				description: 'Name of the new Pharo image.';
+					meaning: [ :pos | pos  word ];
+					implicitMeaning: [ :arg :app |  self missingImageNameArgMessage];
+					yourself
+	}
+]
+
+{ #category : #logging }
+PhLImageCreateCliCommand class >> missingImageNameArgMessage [
+
+	^ 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
 { #category : #'command line - arguments' }
@@ -81,6 +108,12 @@ PhLImageCreateCliCommand class >> missingPharoVersionFlagMessage [
 	^ 'An argument is missing. Please specify Pharo version.'
 ]
 
+{ #category : #logging }
+PhLImageCreateCliCommand class >> missingTemplateNameArgMessage [
+
+	^ 'An argument is missing. Please specify Pharo template name.'
+]
+
 { #category : #'command line - arguments' }
 PhLImageCreateCliCommand class >> newImageFlag [
 
@@ -110,13 +143,44 @@ PhLImageCreateCliCommand class >> pharoVersionFlag [
 				yourself
 ]
 
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> templateCategoryFlag [
+
+	^  (ClapFlag id: #templateCategory)
+				description: 'Specifies the template category to search the target template.';
+				meaning: [  :arg :app | (arg at: #templateCategoryArg) value ];
+				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName ];
+				add: ((ClapPositional id: #templateCategoryArg)
+					description: 'Template category argument.';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app |  app defaultTemplateCategoryName]);
+				yourself
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> templateNameFlag [
+
+	^ (ClapFlag id: #templateName)
+			description: 'Template which will be used to create the image.';
+			meaning: [  :arg :app | (arg at: #templateNameArg) value ];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #templateNameArg)
+					description: 'Template name argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingTemplateNameArgMessage]);
+			yourself
+
+]
+
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> createImage: newImageName from: template [
-
+	|anImage|
 	self logCreationOfImageFrom: template name.
-	^ self imageRepository
+	anImage := self imageRepository
 		extractTemplate: template
-		to: newImageName
+		to: newImageName.
+	self logInfoMessage: 'Done!'.
+	^ anImage 
 ]
 
 { #category : #default }
@@ -128,7 +192,7 @@ PhLImageCreateCliCommand >> defaultTemplate [
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
 	
-	self printSubCommandsHelp
+	self findTemplateAndCreateImage 
 ]
 
 { #category : #querying }
@@ -146,7 +210,18 @@ PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 	aTemplate := [self findTemplate]
 			on: NotFound
 			do: [ :error | ^ self logExceptionMessage: error messageText ].
-	self createImage: self imageName from: aTemplate
+
+	"return newly created image"
+	^ self createImage: self imageName from: aTemplate
+]
+
+{ #category : #querying }
+PhLImageCreateCliCommand >> findUserTemplate [ 
+
+	^ self templateRepository
+		templateNamed: self templateName
+		inCategoryNamed: self templateCategory
+
 ]
 
 { #category : #accessing }
@@ -158,13 +233,27 @@ PhLImageCreateCliCommand >> imageName [
 { #category : #default }
 PhLImageCreateCliCommand >> implicitImageName [
 
-	^ self defaultTemplate
+	^ self findTemplate name
 ]
 
 { #category : #default }
 PhLImageCreateCliCommand >> implicitPharoVersion [
 
 	^ PhLImageFinder findLatestPharoDevelopmentVersion
+]
+
+{ #category : #default }
+PhLImageCreateCliCommand >> latestDevTemplate [
+	
+	"from default 'Official distributions' obtain latest development template"
+	^ self defaultTemplateCategory latestDevelopmentTemplate
+]
+
+{ #category : #default }
+PhLImageCreateCliCommand >> latestStableTemplate [
+	
+	"from default 'Official distributions' obtain latest Pharo version stable template"
+	^ self defaultTemplateCategory latestStableTemplate
 ]
 
 { #category : #logging }

@@ -179,8 +179,8 @@ function set_env() {
 function copy_current_stable_image() {
 	local IMAGES_PATH="images"
 	mkdir "$IMAGES_PATH"
-	wget -P $IMAGES_PATH https://files.pharo.org/image/stable/latest.zip
-    mv "$IMAGES_PATH/latest.zip" "$IMAGES_PATH/pharo-stable.zip"
+	wget -P $IMAGES_PATH https://files.pharo.org/image/stable/stable-64.zip
+    mv "$IMAGES_PATH/stable-64.zip" "$IMAGES_PATH/pharo-stable.zip"
 }
 
 PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.

@@ -10,6 +10,7 @@ try {
   timeout(time: 60, unit: 'MINUTES') { 
     // buildArchitecture('32', '80')
     buildArchitecture('64', '100')
+    buildArchitecture('arm64', '100')
   }
   finalizeUpload(uploadDirectoryName())
 } catch(exception) {
@@ -50,6 +51,9 @@ def buildArchitecture(architecture, pharoVersion) {
       }
       node('windows') {
         stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
+          when {
+            not { environment(name: "ARCHITECTURE", value: "arm64") }
+          }
           deleteDir()
           unstash "pharo-launcher-one-${architecture}"
           // Disable signing for now because the signing process now requires manual action
@@ -168,7 +172,8 @@ def upload(file, launcherVersion) {
 }
 
 def fileNameArchSuffix(architecture) {
-  return (architecture == '32') ? 'x86' : 'x64'
+  (architecture == '32') ? return 'x86'
+  return  (architecture == '64') ? 'x64' : architecture
 }
 
 def isPullRequest() {

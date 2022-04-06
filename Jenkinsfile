@@ -10,6 +10,7 @@ try {
   timeout(time: 60, unit: 'MINUTES') { 
     // buildArchitecture('32', '80')
     buildArchitecture('64', '100')
+    buildArchitecture('arm64', '100')
   }
   finalizeUpload(uploadDirectoryName())
 } catch(exception) {
@@ -39,29 +40,35 @@ def buildArchitecture(architecture, pharoVersion) {
         stage("Packaging-user Pharo${pharoVersion}-${architecture}-bits") {
           sh "VERSION=$version ./build.sh user"
           stash includes: 'build.sh, mac-installer-background.png, pharo-build-scripts/**, mac/**, windows/**, linux/**, signing/*.p12.enc, icons/**, launcher-version.txt, One/**', name: "pharo-launcher-one-${architecture}"
-          archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+          if (isArm64Architecure()) {
+            archiveArtifacts artifacts: 'PharoLauncher-user-*.zip', fingerprint: true
+          }
         }
         stage("Packaging-Linux Pharo${pharoVersion}-${architecture}-bits") {
-          sh "VERSION=$version ./build.sh linux-package"
-          packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
-          archiveArtifacts artifacts: packageFile, fingerprint: true
-          upload(packageFile, uploadDirectoryName())
+          if (isArm64Architecure()) {
+            sh "VERSION=$version ./build.sh linux-package"
+            packageFile = 'PharoLauncher-linux-*-' + fileNameArchSuffix(architecture) + '.zip'
+            archiveArtifacts artifacts: packageFile, fingerprint: true
+            upload(packageFile, uploadDirectoryName())
+          } 
         }
       }
       node('windows') {
         stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-          deleteDir()
-          unstash "pharo-launcher-one-${architecture}"
-          // Disable signing for now because the signing process now requires manual action
-          /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
-            bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
-          /* } else { 
-            withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
-            }              
-          } */
-          archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
-          stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
+          if (isArm64Architecure()) {
+            deleteDir()
+            unstash "pharo-launcher-one-${architecture}"
+            // Disable signing for now because the signing process now requires manual action
+            /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
+              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
+            /* } else { 
+              withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+                bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
+              }              
+            } */
+            archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
+            stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
+          }
         }
       }
       node('osx') {
@@ -87,8 +94,10 @@ def buildArchitecture(architecture, pharoVersion) {
     node('linux') {
       stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-            unstash "pharo-launcher-win-${architecture}-package"
-            upload('pharo-launcher-*.msi', uploadDirectoryName())
+            if (isArm64Architecure()) {
+              unstash "pharo-launcher-win-${architecture}-package"
+              upload('pharo-launcher-*.msi', uploadDirectoryName())
+            }
             unstash "pharo-launcher-osx-${architecture}-package"
             fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
             upload(fileToUpload, uploadDirectoryName())
@@ -167,8 +176,14 @@ def upload(file, launcherVersion) {
     }
 }
 
+def isArm64Architecure() {
+  return env.ARCHITECTURE != "arm64"
+}
+
 def fileNameArchSuffix(architecture) {
-  return (architecture == '32') ? 'x86' : 'x64'
+  if (architecture == '32') 
+    return 'x86'
+  return (architecture == '64') ? 'x64' : architecture
 }
 
 def isPullRequest() {

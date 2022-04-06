@@ -16,7 +16,7 @@ function prepare_image() {
 	case "$ARCHITECTURE" in
 	        32) ARCH_PATH=
 				;;
-	        64) ARCH_PATH="64/"
+	        64 | arm64) ARCH_PATH="64/"
 				;;
 	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 				exit 1
@@ -168,6 +168,9 @@ function set_env() {
 	        	;;
 	        64) ARCH_SUFFIX="x64"
 				export ARCH=64
+	        	;;
+	        arm64) ARCH_SUFFIX="arm64"
+				export ARCH=arm64
 	        	;;
 	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 				exit 1

@@ -9,16 +9,17 @@ Class {
 
 { #category : #'as yet unclassified' }
 PhLDeleteImageCommandTest >> createMoreImagesAndEnableSorting [
+
 	presenter createImageNamed: 'Zoo'.
 	presenter createImageNamed: 'Abc'.
 	presenter application imageRepositoryChanged.
-	presenter 
-	   openWithSpec;
+	presenter
+		open;
 		selectImageAt: 1.
-		
-	presenter 
+
+	presenter
 		clickOnColumnHeaderAt: 1;
-		selectImageAt: 3. "Zoo"
+		selectImageAt: 3 "Zoo"
 ]
 
 { #category : #running }
@@ -65,11 +66,12 @@ PhLDeleteImageCommandTest >> testDeleteTheRightImageIfImagesSortingIsNotTheDefau
 
 { #category : #tests }
 PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
+
 	| command images |
 	command := PhLDeleteImageCommand new.
 	command context: presenter.
 	presenter
-		openWithSpec;
+		open;
 		selectImageAt: 1.
 
 	command execute.

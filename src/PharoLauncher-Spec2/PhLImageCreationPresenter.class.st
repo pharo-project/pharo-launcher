@@ -13,38 +13,42 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'reservedImagesNamesCache',
-		'isNameOk',
 		'imageName',
 		'createButton',
 		'initScriptText',
 		'initScript',
 		'editInitScriptButton',
 		'descriptionText',
-		'imageNameCheck'
+		'imageNameCheck',
+		'isNameValid'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhLImageCreationPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLImageCreationPresenter class >> defaultLayout [
+
 	^ SpBoxLayout newVertical
+		borderWidth: 5;
 		spacing: 5;
 		add: 'Image name:' expand: false;
 		add: (SpBoxLayout newHorizontal 
-			add: #imageName;
-			add: #imageNameCheck expand: false;
-			yourself)
+				spacing: 5;
+				add: #imageName;
+				add: #imageNameCheck expand: false;
+				yourself)
 			expand: false;
 		add: 'Image description:' expand: false;
 		add: #descriptionText height: 60;
 		add: 'Initialization script:' expand: false;
 		add: (SpBoxLayout newHorizontal 
-			add: #initScript;
-			add: #editInitScriptButton expand: false;
-			yourself)
+				spacing: 5;
+				add: #initScript;
+				add: #editInitScriptButton expand: false;
+				yourself)
 			expand: false;
 		add: #initScriptText height: 100;
-		add: #createButton expand: false;
+		addLast: #createButton expand: false;
 		yourself
 ]
 
@@ -52,7 +56,7 @@ PhLImageCreationPresenter class >> defaultSpec [
 PhLImageCreationPresenter class >> example [
 	(self 
 		newApplication: PharoLauncherApplication new
-		model: {PhLRemoteTemplate example}) openWithSpec
+		model: {PhLRemoteTemplate example}) open
 ]
 
 { #category : #initialization }
@@ -62,22 +66,37 @@ PhLImageCreationPresenter >> checkNewName: name [
 	I use a variable to know the state during the last validation."
 
 	| isValid |
-	isValid := name isEmpty or: [ reservedImagesNamesCache ifNotNil: [ reservedImagesNamesCache includes: name asLowercase ] ].
+	isValid := (PhLImage isValidName: name) 
+						and: [ reservedImagesNamesCache ifNotNil: [ (reservedImagesNamesCache includes: name asLowercase) not ] ].
 
 	"Image already in the right state. We skip."
-	isNameOk = isValid ifTrue: [ ^ self ].
+	isNameValid = isValid ifTrue: [ ^ self ].
 
-	(isNameOk := isValid) ifTrue: [ self showNameError ] ifFalse: [ self showNameOk ]
+	(isNameValid := isValid ) ifTrue: [ self showNameOk ] ifFalse: [ self showNameError ]
 ]
 
 { #category : #closing }
 PhLImageCreationPresenter >> close [ 
-	self window ifNotNil: [ :window | window close ]
+
+	self withWindowDo: [ :window | window close ]
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> connectPresenters [
 	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
+]
+
+{ #category : #action }
+PhLImageCreationPresenter >> createImageWithCommand: createCommand [
+	
+	[ 
+		createCommand execute.
+		self close ] 
+	on: PhLNameNotAvailableError 
+	do: [ 
+		self newInformation 
+			message: 'An image with the same name already exists! Please choose a new one.';
+			alert ] 
 ]
 
 { #category : #accessing }
@@ -91,9 +110,13 @@ PhLImageCreationPresenter >> disable [
 	imageName text: ''
 ]
 
-{ #category : #configuring }
-PhLImageCreationPresenter >> enable [
-	createButton enable.
+{ #category : #private }
+PhLImageCreationPresenter >> ifValidTemplate: aBlock [
+	"execute the block if the template isValid "
+
+	self template ifNil: [ ^ self ].
+	self template isTemplate
+		ifTrue: [ aBlock value ]
 ]
 
 { #category : #accessing }
@@ -119,48 +142,52 @@ PhLImageCreationPresenter >> initializationScripts [
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initialize [
+
 	super initialize.
 	reservedImagesNamesCache := self application imageRepository imageNames collect: #asLowercase
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> initializePresenters [
+	| createCommand |
+	
 	imageName := self newTextInput.
 	imageNameCheck := self newImage.
 	initScriptText := self newText
-								disable;
-								yourself.
+		disable;
+		yourself.
 	initScript := self newDropList
-		              items: self initializationScriptItems;
-		              display: [ :file | file basename ];
-		              whenSelectionChangedDo: [ :selection |
-								selection selectedItem ifNotNil: [ :item |
-									initScriptText text: item model contents ] ];
-		              yourself.
+		items: self initializationScriptItems;
+		display: [ :file | file basename ];
+		whenSelectionChangedDo: [ :selection |
+			selection selectedItem ifNotNil: [ :item |
+				initScriptText text: item model contents ] ];
+		yourself.
 	descriptionText := self newText.
 	editInitScriptButton := self newButton
-		                        addStyle: 'small';
-		                        action: [ self openScriptPresenter ];
-		                        icon: (self iconNamed: #edit);
-		                        yourself.
-	(PhLCreateImageFromTemplateCommand forSpecContext: owner) 
-		in: [ 	:createImageCommand | 
-		createButton := createImageCommand asButtonPresenter.
-		createButton action: [ 
-			[ createImageCommand execute.
-			self close. ]
-				on: PhLNameNotAvailableError 
-				do: [ PhLUIInformation new 
-						message: 'An image with the same name already exists! Please choose a new one.';
-						alert ] ] ]
+		addStyle: 'small';
+		action: [ self openScriptPresenter ];
+		icon: (self iconNamed: #edit);
+		yourself.
+	
+	createCommand := PhLCreateImageFromTemplateCommand forSpecContext: owner.
+	(createButton := createCommand asButtonPresenter)
+		action: [ self createImageWithCommand: createCommand ].
+	createButton disable
+]
+
+{ #category : #testing }
+PhLImageCreationPresenter >> isNameValid [
+	^ isNameValid
 ]
 
 { #category : #initialization }
 PhLImageCreationPresenter >> modelChanged [ 
+
 	self template ifNil: [ ^ self ].
+	
 	self template isTemplate
-		ifTrue: [ self enable.
-			imageName text: self template suggestedImageName ]
+		ifTrue: [ imageName text: self template suggestedImageName ]
 		ifFalse: [ self disable ]
 ]
 
@@ -169,14 +196,20 @@ PhLImageCreationPresenter >> noInitializationScriptItem [
 	^ (FileSystem memory root / 'No initialization script') ensureCreateFile
 ]
 
+{ #category : #accessing }
+PhLImageCreationPresenter >> okIcon [
+	^ self application iconNamed: #smallOk
+]
+
 { #category : #action }
 PhLImageCreationPresenter >> openScriptPresenter [
-	^ (PhLScriptPresenter 
-		newApplication: self application 
-		model: self application scriptsDirectory )
-		whenScriptListChanged: [ self refreshInitializationScriptList ];
-		openWithSpec;
-		yourself
+
+	^ (PhLScriptPresenter
+		   newApplication: self application
+		   model: self application scriptsDirectory)
+		  whenScriptListChanged: [ self refreshInitializationScriptList ];
+		  open;
+		  yourself
 ]
 
 { #category : #refreshing }
@@ -186,15 +219,19 @@ PhLImageCreationPresenter >> refreshInitializationScriptList [
 
 { #category : #private }
 PhLImageCreationPresenter >> showNameError [
+
+	createButton disable.
 	imageNameCheck 
-		image: (self iconNamed: #smallError);
+		image: (self application iconNamed: #smallCancel);
 		help: 'An image with the same name already exists!'
 ]
 
 { #category : #private }
 PhLImageCreationPresenter >> showNameOk [
+
+	self ifValidTemplate: [ createButton enable ].
 	imageNameCheck 
-		image: (self iconNamed: #smallOk);
+		image: self okIcon;
 		help: 'Image name is valid!'
 ]
 
@@ -202,7 +239,5 @@ PhLImageCreationPresenter >> showNameOk [
 PhLImageCreationPresenter >> template [
 	"Multiple selection is allowed in templates pane => we get a list of templates"
 	
-	^ self model isEmptyOrNil 
-		ifTrue: [ nil ]
-		ifFalse: [ self model first ]
+	^ self model
 ]

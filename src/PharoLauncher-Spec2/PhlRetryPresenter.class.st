@@ -12,8 +12,8 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhlRetryPresenter class >> defaultSpec [ 
+{ #category : #layout }
+PhlRetryPresenter class >> defaultLayout [ 
 	^ SpBoxLayout newHorizontal
 		"add: (self iconNamed: #smallUpdate) expand: false;"
 		add:  #explanationText;
@@ -26,7 +26,7 @@ PhlRetryPresenter class >> example [
 		explanation: 'Download error (probably a network error)';
 		retryBlock: [ "nothing" ];
 		cancelBlock: [ #() ]
-	) openModalWithSpec
+	) openModal
 ]
 
 { #category : #accessing }
@@ -41,13 +41,13 @@ PhlRetryPresenter >> explanation: aString [
 
 { #category : #initialization }
 PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Retry?';
 		initialExtent: 400 @ 120;
 		addButton: 'Retry' do: [ :presenter | presenter close. retryBlock value. ];
 		addButton: 'Cancel' do: [ :presenter | presenter beCancel; close. cancelBlock value. ];
-		centered.
-	
+		centeredRelativeToTopWindow	
 ]
 
 { #category : #initialization }

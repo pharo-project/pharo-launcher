@@ -77,7 +77,9 @@ PhLVirtualMachineManagerTest >> testCanGetImageFormatNumber [
 PhLVirtualMachineManagerTest >> testCanGetImageVersionFromFile [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
-	vmManager imageVersionFile writeStreamDo: [ :stream | stream << '60' ].
+	vmManager imageVersionFile 
+		ensureDelete;
+		writeStreamDo: [ :stream | stream << '60' ].
 		
 	self
 		assert: vmManager imageVersionFromFile

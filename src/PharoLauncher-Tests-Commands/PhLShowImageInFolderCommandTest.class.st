@@ -11,6 +11,7 @@ Class {
 PhLShowImageInFolderCommandTest >> testCommandRaisesCommandErrorIfNoImageSelected [
 	| command |
 	presenter := PhLTestImagesPresenter new.
+	presenter unselectAll.
 	command := PhLShowImageInFolderCommand new.
 	command context: presenter.
 

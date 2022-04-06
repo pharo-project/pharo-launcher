@@ -9,7 +9,7 @@ Class {
 	#name : #PhLDeploymentScript,
 	#superclass : #Object,
 	#classVars : [
-		'DefaultDebugger',
+		'DefaultDebuggerRank',
 		'Save'
 	],
 	#category : #'PharoLauncher-Spec2'
@@ -22,8 +22,8 @@ PhLDeploymentScript class >> activateDeprecationWarnings [
 
 { #category : #actions }
 PhLDeploymentScript class >> activateErrorCatching [
-	DefaultDebugger := Smalltalk tools debugger.
-	Smalltalk tools debuggerTool: PhLErrorDialogPresenter.
+	DefaultDebuggerRank := StDebugger rank.
+	StDebugger rank: 9.
 ]
 
 { #category : #actions }
@@ -81,7 +81,7 @@ PhLDeploymentScript class >> deactivateDeprecationWarnings [
 
 { #category : #actions }
 PhLDeploymentScript class >> deactivateErrorCatching [
-	Smalltalk tools debuggerTool: DefaultDebugger
+	StDebugger rank: DefaultDebuggerRank
 ]
 
 { #category : #actions }
@@ -125,6 +125,7 @@ PhLDeploymentScript class >> doAll [
 		deactivateLostChangesDetector;
 		activateErrorCatching;
 		makeDeployed;
+		resetImageDescriptionUpdater;
 		addToStartupList;
 		dontAskForConfirmationWhenQuitting;
 		setProgressBarSizeAndPosition
@@ -210,6 +211,12 @@ PhLDeploymentScript class >> removeFromStartupList [
 	[ PhLStartupManager removeFromStartupList: self ]
 		on: NotFound 
 		do: [ :e | "Not there, just ignore!" ]
+]
+
+{ #category : #actions }
+PhLDeploymentScript class >> resetImageDescriptionUpdater [
+	PhLImageDescriptionUpdater default terminateProcess.
+	PhLImageDescriptionUpdater reset.
 ]
 
 { #category : #actions }

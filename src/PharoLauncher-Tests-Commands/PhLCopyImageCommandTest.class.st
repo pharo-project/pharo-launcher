@@ -23,7 +23,7 @@ PhLCopyImageCommandTest >> testCanCopyImageLaunchCommand [
 		          yourself.
 	image launchConfigurations: { config }.
 	presenter 
-		selection: image;
+		selection: { image };
 		requestAnswer: 'foo'.
 	
 	PhLCopyImageCommand new

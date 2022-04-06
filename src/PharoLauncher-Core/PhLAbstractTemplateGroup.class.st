@@ -16,15 +16,8 @@ Class {
 
 { #category : #accessing }
 PhLAbstractTemplateGroup >> children [
-	^ [ self templatesAndGroups ]
-		on: PhLDownloadError
-		do: [ :error | | children |
-			PhlRetryPresenter new
-				explanation: error longDescription;
-				retryBlock: [ children := self children ];
-				cancelBlock: [ children := #() ];
-				openModalWithSpec.
-			children ]
+
+	^ self templatesAndGroups
 ]
 
 { #category : #accessing }

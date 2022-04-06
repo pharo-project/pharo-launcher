@@ -188,7 +188,7 @@ PhLDirectoryBasedImageRepository >> images [
 
 { #category : #action }
 PhLDirectoryBasedImageRepository >> importImage: sourceImageFileRef to: targetName [
-	| sourceDirectory targetDirectory imageLocalDirectory |
+	| sourceDirectory targetDirectory imageLocalDirectory pharoVersionFile sourcesFiles |
 	self ensureNoImageWithName: targetName.
 	sourceDirectory := sourceImageFileRef parent.
 	targetDirectory := self prepareForNewImageNamed: targetName.
@@ -197,6 +197,11 @@ PhLDirectoryBasedImageRepository >> importImage: sourceImageFileRef to: targetNa
 			| targetFilename |
 			targetFilename := self newNameForFile: file whenRelocatingToImageNamed: targetName.
 			file moveTo: targetDirectory / targetFilename ].
+	pharoVersionFile := sourceDirectory / PhLImage versionFileName.
+	pharoVersionFile exists
+		ifTrue: [ pharoVersionFile moveTo: targetDirectory / PhLImage versionFileName ].
+	sourcesFiles := sourceDirectory filesMatching: '*.sources'.
+	sourcesFiles do: [ :file | file moveTo: targetDirectory / file basename ].
 	imageLocalDirectory := (sourceDirectory / SystemResolver defaultLocalDirectoryName).
 	imageLocalDirectory exists 
 		ifTrue: [ imageLocalDirectory moveTo: targetDirectory / imageLocalDirectory basename ].
@@ -266,13 +271,14 @@ PhLDirectoryBasedImageRepository >> prepareForNewImageNamed: aString [
 
 { #category : #action }
 PhLDirectoryBasedImageRepository >> recreateImage: anImage [
-	anImage originTemplate 
-		ifNil: [ PhLCommandError signal ].
-		
-	self 
-		deleteImage: anImage; 
-		extractTemplate: anImage originTemplate to: anImage name.
-
+	| image |
+	anImage originTemplate ifNil: [ PhLCommandError signal ].
+	self deleteImage: anImage.
+	
+	anImage shouldRunInitializationScript: true.
+	image := self extractTemplate: anImage originTemplate to: anImage name.
+	anImage serializeMetadata. "We keep metadata and write it again to the file system since the folder was deleted"
+	self contentsChanged. "Ensure the image repository has its image with up-to-date metadata"
 ]
 
 { #category : #action }

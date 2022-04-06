@@ -18,7 +18,7 @@ Class {
 	#classVars : [
 		'IsDeployed'
 	],
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #settings }
@@ -140,7 +140,9 @@ PharoLauncherModel >> newRequest [
 ]
 
 { #category : #'user interaction' }
-PharoLauncherModel >> requestNewImageName: aString [ 
+PharoLauncherModel >> requestNewImageName: aString [
+
+	self halt. "should not be used"
 	^ self newRequest
 		title: 'Image name?';
 		initialAnswer: aString;
@@ -150,6 +152,8 @@ PharoLauncherModel >> requestNewImageName: aString [
 
 { #category : #'user interaction' }
 PharoLauncherModel >> requestNewTemplateName: aString [ 
+
+	self halt. "should not be used"
 	^ self newRequest
 		title: 'Template name?';
 		initialAnswer: (self makeUniqueTemplateName: aString);
@@ -202,14 +206,6 @@ PharoLauncherModel >> singleTemplate [
 	self
 		ensure: self hasSingleTemplateSelected.
 	^ selection anyOne
-]
-
-{ #category : #selection }
-PharoLauncherModel >> singleTemplateName [
-	"returns the project name and cuts out text between parentheses"
-	self
-		ensure: self hasSingleTemplateSelected.
-	^ (selection pathes first second splitOn: '-(') first 
 ]
 
 { #category : #accessing }

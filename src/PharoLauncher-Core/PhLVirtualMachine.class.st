@@ -188,6 +188,14 @@ PhLVirtualMachine >> flavour [
 	^ flavour
 ]
 
+{ #category : #'ston persistence' }
+PhLVirtualMachine >> fromSton: stonReader [
+	super fromSton: stonReader.
+	
+	executableRef isString ifTrue: [ executableRef := executableRef asFileLocatorOrReference ].
+	vmBinaryRef isString ifTrue: [ vmBinaryRef := vmBinaryRef asFileLocatorOrReference ].
+]
+
 { #category : #comparing }
 PhLVirtualMachine >> hash [
 
@@ -279,7 +287,7 @@ PhLVirtualMachine >> isPreSpur [
 { #category : #testing }
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
-		and: [ executableRef isFile
+		and: [ executableRef asFileReference isFile
 				and: [ vmBinaryRef isNotNil ] ]
 ]
 

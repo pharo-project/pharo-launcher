@@ -38,8 +38,13 @@ PhLTestApplication >> message: aString [
 ]
 
 { #category : #confirmation }
-PhLTestApplication >> newConfirmation [
+PhLTestApplication >> newConfirm [
 	"do nothing"
+]
+
+{ #category : #confirmation }
+PhLTestApplication >> newConfirmation [
+	^ PhLTestConfirmation new
 ]
 
 { #category : #confirmation }
@@ -52,6 +57,12 @@ PhLTestApplication >> newRequest [
 	"do nothing"
 ]
 
+{ #category : #ui }
+PhLTestApplication >> pushProgress: aString with: aFullBlockClosure [ 
+	"do not display progress, only evaluate the block"
+	aFullBlockClosure value: DummySystemProgressItem new
+]
+
 { #category : #request }
 PhLTestApplication >> request [
 	^ requestAnswer
@@ -60,6 +71,11 @@ PhLTestApplication >> request [
 { #category : #accessing }
 PhLTestApplication >> requestAnswer: aString [
 	requestAnswer := aString
+]
+
+{ #category : #asserting }
+PhLTestApplication >> shouldUpdateTemplateSources [
+	^ false
 ]
 
 { #category : #request }

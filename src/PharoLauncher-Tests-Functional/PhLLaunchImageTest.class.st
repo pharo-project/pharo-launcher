@@ -13,26 +13,43 @@ Class {
 }
 
 { #category : #tests }
+PhLLaunchImageTest >> copyCurrentImageToTestDir [
+	| image |
+	
+	FileLocator image copyTo: imageDir / FileLocator image basename.
+	image := PhLImage location: imageDir / FileLocator image basename.
+	
+	"avoid to download a compatible VM to determine image pharo version"
+	image vmManager imageVersionFile writeStreamDo: [ :stream | 
+		stream
+			nextPutAll: SystemVersion current major asString;
+			nextPutAll: SystemVersion current minor asString ].
+		
+	^ image
+		
+	
+
+]
+
+{ #category : #utils }
+PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
+	| vmDirectory imageVersion vmId |
+	
+	vmDirectory := Smalltalk vmDirectory asFileReference.
+	imageVersion := SystemVersion current major asString , SystemVersion current minor asString.
+	vmId := imageVersion, '-x64'.
+	vmDirectory basename = 'pharo-vm'
+		ifTrue: [ vmDirectory renameTo: vmId ].
+	
+	LibC runCommand: 'cp -R ' , vmDirectory fullName , ' ' , aDirectory fullName, '/' , vmId
+]
+
+{ #category : #utils }
 PhLLaunchImageTest >> pharo80x86Vm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '80-x86' ]
 		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
 		ifNone: [ self fail: 'cannot find VM!' ]
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> prepare80imageIn: dir [
-	| imageFile |
-	ZnClient new
-		url: 'https://files.pharo.org/image/80/latest-minimal-64.zip';
-		downloadTo: dir / '80.zip'.
-	ZipArchive new
-		readFrom: dir / '80.zip';
-		extractAllTo: dir / '80'.
-	imageFile := (dir / '80' childrenMatching: '*.image') first.
-	dir / '80' / PhLImage versionFileName
-		writeStreamDo: [ :s | s nextPutAll: '80' ].
-	^ PhLImage location: imageFile.
 ]
 
 { #category : #running }
@@ -45,14 +62,10 @@ PhLLaunchImageTest >> setUp [
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
-	"Starting Pharo 9, working directory resolution handles non ascii characters. It is not the case before.
-	That's why we use a resultDir for test output files."
-	resultDir := FileLocator temp / uuid.
-	self deny: resultDir exists.
-	resultDir ensureCreateDirectory.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
 	tempVmStoreFolder := FileLocator temp / self class name , uuid.
-	PhLVirtualMachineManager vmStore: tempVmStoreFolder
+	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
+	self copyCurrentVmTo: tempVmStoreFolder.
 ]
 
 { #category : #running }
@@ -61,7 +74,6 @@ PhLLaunchImageTest >> tearDown [
 	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	imageDir ensureDeleteAll.
-	resultDir ensureDeleteAll.
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	super tearDown
 ]
@@ -80,18 +92,18 @@ PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64
 
 { #category : #tests }
 PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
+
 	| image |
-	
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	
+	image := self copyCurrentImageToTestDir.
+
 	image launch.
-	
+
 	"ensure image determination succeeded"
 	self
 		assert: (imageDir / PhLImage versionFileName) contents
-		equals: SystemVersion current major asString , SystemVersion current minor asString.
-		
+		equals: SystemVersion current major asString
+			, SystemVersion current minor asString
+
 	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
 	"for now, no simple way to test that the image is actually launched"
 ]
@@ -107,7 +119,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image config commandToEval |
 	image := PhLOsXMojaveTestImage example.
-	commandToEval := '"''' , resultDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
+	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
 	config := image defaultLaunchConfiguration.
 	config
 		vm: self pharo80x86Vm;
@@ -125,9 +137,7 @@ PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	image initializationScript: '.' asFileReference.
+	image := self copyCurrentImageToTestDir.
 	
 	image launch.
 	

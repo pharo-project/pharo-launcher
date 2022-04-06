@@ -16,22 +16,6 @@ Class {
 }
 
 { #category : #example }
-PhLScriptPresenter class >> defaultSpec [
-	^ SpPanedLayout newHorizontal
-		position: 30 percent;
-		add: #scriptTable
-			withConstraints: [ :constraints | 
-				constraints 
-					spec: #withoutOrderingBar"; 
-					width: 200" ];
-		add: (SpBoxLayout newVertical
-			add: #fileEditor;
-			add: #saveButton expand: false;
-			yourself);
-		yourself
-]
-
-{ #category : #example }
 PhLScriptPresenter class >> example [
 	| fs |
 	fs := FileSystem memory.
@@ -44,7 +28,7 @@ PhLScriptPresenter class >> example [
 		writeStreamDo: [ :s | s nextPutAll: self icebergLoadExample ].
 	^ (self newApplication: PharoLauncherApplication new 
 		model: fs root) 
-		openWithSpec;
+		open;
 		yourself
 ]
 
@@ -54,6 +38,25 @@ PhLScriptPresenter class >> icebergLoadExample [
   baseline: ''Tonel'';
   repository: ''github://pharo-vcs/tonel:v1.0.12'';
   load.'
+]
+
+{ #category : #layout }
+PhLScriptPresenter >> defaultLayout [
+
+	^ SpPanedLayout newHorizontal
+		  positionOfSlider: 30 percent;
+		  add: scriptTable withConstraints: [ :constraints | 
+			  constraints spec: #withoutOrderingBar ];
+		  add: (SpBoxLayout newVertical
+				   add: fileEditor;
+				   add: saveButton expand: false;
+				   yourself);
+		  yourself
+]
+
+{ #category : #'user interaction' }
+PhLScriptPresenter >> defaultSaveShortCut [
+	^ SpAcceptChangesCommand defaultShortcutKey 
 ]
 
 { #category : #initialization }
@@ -70,16 +73,19 @@ PhLScriptPresenter >> initializePresenters [
 								text: selection selectedItem contents;
 								enable. ] ];
 		addItemBlock: [ self newScript ];
-		removeItemBlock: [ :item | self removeScript: item ]
+		removeItemBlock: [ :item | self removeScript: item ];
 		yourself.
 	fileEditor := self newCode
 		disable;
+		bindKeyCombination: self defaultSaveShortCut
+			toAction: [ self saveSelectedScript ];
 		yourself.
 	saveButton := self newButton
 		label: 'Save';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedScript ];
 		yourself.
+		
 ]
 
 { #category : #initialization }
@@ -92,10 +98,12 @@ PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 { #category : #action }
 PhLScriptPresenter >> newScript [
 	| newName |
+	
 	newName := self application newRequest
 			title: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.
+	
 	^ self newScriptNamed: newName
 ]
 
@@ -116,14 +124,15 @@ PhLScriptPresenter >> newScriptNamed: aName [
 PhLScriptPresenter >> removeScript: aFileReference [ 
 	
 	aFileReference ifNil: [ ^ self ].
-	(self application newConfirmation 
+	(self application newConfirmation
+		parentWindow: self window;
 		message: 'Do you want to remove ', aFileReference fullName, ' script?';
-		confirm) ifFalse: [ ^ self ].
+		confirm) 
+		ifFalse: [ ^ self ].
 		
 	aFileReference ensureDelete.
 	scriptTable	removeItem: aFileReference.
-	self scriptListChanged.
-
+	self scriptListChanged
 ]
 
 { #category : #action }

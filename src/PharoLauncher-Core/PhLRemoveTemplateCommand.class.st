@@ -4,7 +4,7 @@ Removes the selected template
 Class {
 	#name : #PhLRemoveTemplateCommand,
 	#superclass : #PhLTemplateCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
@@ -30,6 +30,7 @@ PhLRemoveTemplateCommand >> execute [
 	templateNames := templates collect: #name.
 	confirmMessage := 'Are you sure you want to delete ' , (templateNames joinUsing: ', ' last: ' and ').
 	answer := self templatesPresenter newConfirmation
+		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer ifFalse: [ ^ self "abort" ].

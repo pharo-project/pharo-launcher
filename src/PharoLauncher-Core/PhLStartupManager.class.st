@@ -12,6 +12,7 @@ Class {
 
 { #category : #actions }
 PhLStartupManager class >> addToLauncherStartUpList: aClass [
+
 	(self startUpClasses includes: aClass)
 		ifFalse: [ self startUpClasses add: aClass ]
 
@@ -34,12 +35,17 @@ PhLStartupManager class >> resetStartUpClasses [
 ]
 
 { #category : #'system startup' }
-PhLStartupManager class >> startUp [
+PhLStartupManager class >> startUp: isANewSession [
+
+	isANewSession ifFalse: [ ^ self ].
+	
+	PharoLauncherApplication reset.
 	self startUpClasses do: [ :c | c ifNotNil: [ c launcherStartUp ] ]
 ]
 
 { #category : #accessing }
 PhLStartupManager class >> startUpClasses [
-	^ StartUpClasses
-		ifNil: [ StartUpClasses := SortedCollection sortBlock: [ :c1 :c2 | c1 launcherStartUpPriority < c2 launcherStartUpPriority ] ]
+
+	^ StartUpClasses ifNil: [ 
+		StartUpClasses := SortedCollection sortBlock: #launcherStartUpPriority ascending ]
 ]

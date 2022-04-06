@@ -7,12 +7,15 @@ Class {
 	#instVars : [
 		'message'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #action }
 PhLUIConfirmation >> confirm [
-	^ UIManager default confirm: message
+
+	^ self application newConfirm 
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #accessing }

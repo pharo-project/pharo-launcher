@@ -17,25 +17,12 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
-PhLAboutPresenter class >> defaultSpec [
-	^ SpBoxLayout newHorizontal
-		add: #icon width: 90;
-		add: 
-			(SpBoxLayout newVertical
-				spacing: 15;
-				add: #description;
-				add: #documentationLink expand: false;
-			yourself);
-		yourself
-]
-
 { #category : #'instance creation' }
 PhLAboutPresenter class >> example [
 	| text |
 	text := PhLAboutCommand new aboutText.
 	
-	(self text: text iconName: #pharo) openDialogWithSpec
+	(self text: text iconName: #pharo) openDialog
 ]
 
 { #category : #'instance creation' }
@@ -49,6 +36,19 @@ PhLAboutPresenter class >> text: aText iconName: anIconName [
 { #category : #specs }
 PhLAboutPresenter class >> title [ 
 	^ 'About'
+]
+
+{ #category : #layout }
+PhLAboutPresenter >> defaultLayout [
+	^ SpBoxLayout newHorizontal
+		add: icon width: 90;
+		add: 
+			(SpBoxLayout newVertical
+				spacing: 15;
+				add: description;
+				add: documentationLink expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : #accessing }

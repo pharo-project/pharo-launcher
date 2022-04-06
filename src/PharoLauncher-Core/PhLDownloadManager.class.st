@@ -34,25 +34,38 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 { #category : #action }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	| tmpFile |
+
 	tmpFile := destinationFile , UUIDGenerator  next asString.
-	self displayProgressDuring: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+	self 
+		displayProgress: ('Downloading {1}...' format: { url })
+		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
 	destinationFile ensureDelete. 
 	tmpFile renameTo: destinationFile basename.
+]
+
+{ #category : #private }
+PhLDownloadManager >> displayProgress: aTitle during: workBlock [
+	"Inform user about download progression"
+
+	PharoLauncherApplication default 
+		pushProgress: aTitle
+		with: [ :bar |
+			workBlock
+				on: HTTPProgress
+				do: [ :progress |
+					bar label: progress printString.
+					progress isEmpty
+						ifFalse: [ bar progressPercent: progress percentage ].
+					progress resume ] ]
 ]
 
 { #category : #private }
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
-	UIManager default
-		informUserDuring: [ :bar | 
-			workBlock
-				on: HTTPProgress
-				do: [ :progress | 
-					bar label: progress printString.
-					progress isEmpty
-						ifFalse: [ bar current: progress percentage ].
-					progress resume ] ]
+	self 
+		displayProgress: 'Downloading...' 
+		during: workBlock
 ]
 
 { #category : #action }
@@ -64,7 +77,7 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 				explanation: error longDescription;
 				retryBlock: [ self download: url toFile: destinationFile ];
 				cancelBlock: [ error pass ];
-				openModalWithSpec. ]
+				openModal. ]
 ]
 
 { #category : #private }
@@ -82,7 +95,9 @@ PhLDownloadManager >> downloadToPositionableStream: url mimeType: mimeType [
 		beOneShot;
 		accept: mimeType;
 		enforceAcceptContentType: true.
-	self displayProgressDuring: [ content := client get ].
+	self 
+		displayProgress: ('Downloading {1}...' format: { url }) 
+		during: [ content := client get ].
 	^ content readStream
 ]
 
@@ -100,6 +115,7 @@ PhLDownloadManager >> newHTTPClientForUrl: url [
 		signalProgress: true;
 		url: url;
 		enforceHttpSuccess: true;
+		withOptions: [ :options | options at: #queryKeyValueSafeSet put: (ZnOptions queryKeyValueSafeSet \ '/;') ];
 		ifFail: [ :exception | self downloadFailureForUrl: url ];
 		yourself
 ]

@@ -9,7 +9,7 @@ try {
   cleanUploadFolderIfNeeded(uploadDirectoryName())
   timeout(time: 60, unit: 'MINUTES') { 
     // buildArchitecture('32', '80')
-    buildArchitecture('64', '80')
+    buildArchitecture('64', '100')
   }
   finalizeUpload(uploadDirectoryName())
 } catch(exception) {
@@ -60,7 +60,7 @@ def buildArchitecture(architecture, pharoVersion) {
               bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
             }              
           } */
-          archiveArtifacts artifacts: 'pharo-launcher-*.msi', fingerprint: true
+          archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
           stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
         }
       }

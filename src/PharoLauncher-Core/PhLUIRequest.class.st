@@ -14,23 +14,33 @@ Class {
 
 { #category : #action }
 PhLUIRequest >> chooseFrom: aListOfChoices [
-	^ UIManager default 
-		chooseFrom: aListOfChoices
-		lines: #()
-		title: title
+
+	^ self application newSelect 
+		title: title;
+		items: aListOfChoices;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #accessing }
-PhLUIRequest >> initialAnswer: aString [ 
+PhLUIRequest >> initialAnswer: aString [
+
 	initialAnswer := aString
 ]
 
 { #category : #action }
 PhLUIRequest >> request [
 	| answer |
-	[ answer := UIManager default request: title initialAnswer: initialAnswer ]
-		doWhileTrue: [ answer isNotNil and: [ validationBlock isNotNil and: [ (validationBlock value: answer) not ] ] ].
-		"answer is nil when the user press cancels. That's a possible answer we have to accept."
+	
+	[ 
+		answer := self application newRequest
+			title: title; 
+			text: initialAnswer;
+			openModalWithParent: self relatedWindow ] 
+	doWhileTrue: [ 
+		answer isNotNil 
+			and: [ validationBlock isNotNil 
+			and: [ (validationBlock value: answer) not ] ] ].
+
 	^ answer
 ]
 

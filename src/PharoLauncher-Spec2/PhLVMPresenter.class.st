@@ -47,17 +47,10 @@ PhLVMPresenter class >> buildToolbarGroup [
 		yourself
 ]
 
-{ #category : #specs }
-PhLVMPresenter class >> defaultSpec [
-	^ SpBoxLayout newVertical
-		add: #vmTable;
-		yourself
-]
-
 { #category : #examples }
 PhLVMPresenter class >> example [
 	<example>
-	(self on: PhLVirtualMachinesDataSource default) openWithSpec
+	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
 { #category : #initialization }
@@ -73,13 +66,19 @@ PhLVMPresenter >> datasource [
 	^ self model
 ]
 
+{ #category : #layout }
+PhLVMPresenter >> defaultLayout [
+	^ SpBoxLayout newVertical
+		add: vmTable;
+		yourself
+]
+
 { #category : #initialization }
 PhLVMPresenter >> initializePresenters [
 	vmTable := self newTable
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;
 									execute  ];
-		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
 		addColumn: ((SpImageTableColumn title: '' evaluated: 
 			[ :vm | | icon |
 			icon := vm isValid
@@ -96,6 +95,7 @@ PhLVMPresenter >> initializePresenters [
 			evaluated: #lastUpdateTimeDescription) width: 120; yourself);
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
 		showColumnHeaders;
+		alternateRowsColor;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		beResizable;
 		beMultipleSelection;
@@ -105,17 +105,23 @@ PhLVMPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLVMPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
 		initialExtent: 720 @ 300;
-		toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;
+		toolbar:
+			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.
+
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+
 	self privateVmsTogglePresenter
-		whenUnselectedDo: [ self privateVmsTogglePresenter
+		whenDeactivatedDo: [ 
+			self privateVmsTogglePresenter
 				label: 'public';
 				icon: (self iconNamed: #remote) ];
-		whenSelectedDo: [ self privateVmsTogglePresenter
+		whenActivatedDo: [ 
+			self privateVmsTogglePresenter
 				label: 'private';
 				icon: (self iconNamed: #smallLock) ];
 		beUnselected
@@ -138,9 +144,7 @@ PhLVMPresenter >> refresh [
 	vms := shouldShowPrivateVms
 		ifTrue: [ self datasource privateVirtualMachines ]
 		ifFalse: [ self datasource virtualMachines ].
-	vmTable
-		items: vms";
-		updatePresenter".
+	vmTable items: vms.
 ]
 
 { #category : #initialization }

@@ -22,8 +22,8 @@ PhLCopyImageCommand >> execute [
 	name := self newImageName.
 	name ifNil: [ ^ self ].
 	self imagesPresenter ensure: (self imageRepository isNewImageNameValid: name).
-	UIManager default showWaitCursorWhile:
-		[ self imageRepository
+	self context application showWaitCursorWhile: [ 
+		self imageRepository
 			copyImage: self imagesPresenter singleImage
 			to: name ]
 ]
@@ -48,7 +48,9 @@ PhLCopyImageCommand >> newImageName [
 
 { #category : #'instance creation' }
 PhLCopyImageCommand >> newImageName: aString [ 
+
 	^ self imagesPresenter newRequest 
+		parentWindow: self context window;
 		title: 'Image name?';
 		initialAnswer: aString;
 		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];

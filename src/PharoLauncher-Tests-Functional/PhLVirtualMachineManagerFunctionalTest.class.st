@@ -11,6 +11,12 @@ Class {
 	#category : #'PharoLauncher-Tests-Functional'
 }
 
+{ #category : #accessing }
+PhLVirtualMachineManagerFunctionalTest class >> resources [
+
+	^ Array with: PhLVirtualMachineManagerTestResource 
+]
+
 { #category : #support }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'
@@ -19,16 +25,8 @@ PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 { #category : #running }
 PhLVirtualMachineManagerFunctionalTest >> setUp [
 	super setUp.
-	vmStoreBackup := PhLVirtualMachineManager vmStore.
-	tempVmStoreFolder := FileLocator temp / self class name , UUIDGenerator next asString.
-	PhLVirtualMachineManager vmStore: tempVmStoreFolder
-]
-
-{ #category : #running }
-PhLVirtualMachineManagerFunctionalTest >> tearDown [
-	tempVmStoreFolder ensureDeleteAll.
-	PhLVirtualMachineManager vmStore: vmStoreBackup.
-	super tearDown
+	
+	PhLVirtualMachineManagerTestResource current cleanWorkspace.
 ]
 
 { #category : #tests }
@@ -46,29 +44,29 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
+
 	| version |
 	self timeLimit: 30 seconds.
-	
-	self withCopyOfCurrentImageDo: 
-	[ :imagePath |
-	version := (PhLVirtualMachineManager forImage: imagePath) 
-		imageVersion.
-	self assert: version equals: self currentImageVersion ]
+
+	PhLVirtualMachineManagerTestResource current 
+		withCopyOfPharo90ImageDo: [ :imageRef | 
+			version := (PhLVirtualMachineManager forImage: imageRef)
+				           imageVersion.
+			self assert: version equals: '90' ]
 ]
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWhenRunningExtraVM [
+
 	| vmManager |
 	self timeLimit: 30 seconds.
-	
-	self withCopyOfCurrentImageDo: 
-	[ :imagePath |
-	vmManager := PhLVirtualMachineManager forImage:imagePath.
-	vmManager imageVersionFile ensureDelete.
 
-	self
-		assert: vmManager imageVersion
-		equals: self currentImageVersion ]
+	PhLVirtualMachineManagerTestResource current
+		withCopyOfPharo90ImageDo: [ :imageRef | 
+			vmManager := PhLVirtualMachineManager forImage: imageRef.
+			vmManager imageVersionFile ensureDelete.
+
+			self assert: vmManager imageVersion equals: '90' ]
 ]
 
 { #category : #tests }
@@ -90,45 +88,35 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWithRigh
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image [
-	| vmManager destDir image |
+
+	| vmManager |
 	self skip: 'skip this test for now to allow a release soon'.
 	self timeLimit: 60 seconds.
 
-	destDir := FileLocator temp	/ ('pharo-launcher-testCanGetImageVersionFromPharo14Image-', UUIDGenerator next asString).
-	ZipArchive new 
-		readFrom: (ZnEasy get: 'http://files.pharo.org/image/14/latest.zip') contents readStream;
-		extractAllTo: destDir.
-	destDir allFiles 
-		detect: [ :each | each basename endsWith: '.sources' ]
-		ifFound: #ensureDelete.
-	image := destDir allFiles detect: [ :each | each basename endsWith: '.image' ].
-	vmManager := PhLVirtualMachineManager forImage: image.
-	vmManager imageVersionFile ensureDelete.
+	PhLVirtualMachineManagerTestResource current 
+		withCopyOfPharo14ImageDo: [ :imageRef | 
+			vmManager := PhLVirtualMachineManager forImage: imageRef.
+			vmManager imageVersionFile ensureDelete.
 
-	"self flag: 'Remove the following instruction once we based Pharo Launcher on Pharo 7: sources file comes with the image. It is actually needed so that the launched image can get environment variables from the system at startup.'.	
-	{ vmManager compatibleVm vmFolder . Smalltalk vmBinary parent asFileReference }
-		do: [ :each | vmManager fetchSourcesFilesFor: '61' in: each ]."
-	self
-		assert: vmManager imageVersion
-		equals: '14'
+			self assert: vmManager imageVersion equals: '14' ]
 ]
 
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersionFromFileWithBadCommand [
+
 	| vmManager command |
-	
-	command := PhLProcessWrapper new 
-		shellCommand;
-		addArgument: 'foo'.
-		
-	self withCopyOfCurrentImageDo: 
-	[ :imagePath |
-	vmManager := PhLVirtualMachineManager forImage: imagePath.
-	vmManager imageVersionFile ensureDelete.
-	
-	self
-		should: [ vmManager imageVersionFromFileWith: command ]
-		raise: PhLImageVersionDeterminationError. ]
+	command := PhLProcessWrapper new
+		           shellCommand;
+		           addArgument: 'foo'.
+
+	PhLVirtualMachineManagerTestResource current 
+		withCopyOfPharo90ImageDo: [ :imageRef | 
+			vmManager := PhLVirtualMachineManager forImage: imageRef.
+			vmManager imageVersionFile ensureDelete.
+
+			self
+				should: [ vmManager imageVersionFromFileWith: command ]
+				raise: PhLImageVersionDeterminationError ]
 ]
 
 { #category : #tests }

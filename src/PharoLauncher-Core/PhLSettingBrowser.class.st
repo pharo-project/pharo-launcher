@@ -17,10 +17,11 @@ PhLSettingBrowser class >> initialize [
 PhLSettingBrowser class >> launcherStartUp [
 	PharoLauncherApplication isDeployed ifFalse: [ ^ self ].
 
-	self preferencesFile ifNotNil: [ self new treeHolder updateSettingNodes ].
+	self preferencesFile ifNotNil: [ self new loadSettings ].
 
-	"Allow to have manual settings in the preferences foldor of Pharo Launcher."
-	self preferencesFolder exists ifTrue: [ StartupPreferencesLoader default load: (self preferencesFolder filesMatching: '*.st') ]
+	"Allow to have manual settings in the preferences folder of Pharo Launcher."
+	self preferencesFolder exists 
+		ifTrue: [ StartupPreferencesLoader default load: (self preferencesFolder filesMatching: '*.st') ]
 ]
 
 { #category : #'system startup' }
@@ -42,6 +43,12 @@ PhLSettingBrowser class >> preferencesFolder [
 PhLSettingBrowser >> exportSettings: aCollection toFileNamed: filename [
 	aCollection do: [ :startupAction | startupAction runOnce: false ].
 	StartupPreferencesLoader default addAtStartup: aCollection inDirectory: self class preferencesFolder named: filename
+]
+
+{ #category : #loading }
+PhLSettingBrowser >> loadSettings [
+	self treeHolder updateSettingNodes.
+	"do not inform settings are loaded even if not loaded"
 ]
 
 { #category : #'instance creation' }

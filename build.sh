@@ -89,6 +89,12 @@ function prepare_mac_resources_for_build_platform_script() {
 	cp mac/Info.plist.template pharo-build-scripts/platform/templates/mac/Contents/ 
 }
 
+function copy_mac_icon_files_to() {
+	cp icons/PharoImage.icns $1
+	cp icons/PharoChanges.icns $1
+	cp icons/PharoSources.icns $1
+}
+
 function package_mac_version() {
 	set_env
 	local should_sign=${1:-false} # If no argument given, do not sign
@@ -104,8 +110,9 @@ function package_mac_version() {
 	mv mac-installer-background.png background.png
 	rm -f PharoLauncher.app/Contents/Resources/English.lproj/MainMenu.nib
 	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
+	copy_mac_icon_files_to PharoLauncher.app/Contents/Resources/
 	
-	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=$should_sign ./mac/build-dmg.sh
+	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
@@ -172,8 +179,8 @@ function set_env() {
 function copy_current_stable_image() {
 	local IMAGES_PATH="images"
 	mkdir "$IMAGES_PATH"
-	wget -P $IMAGES_PATH https://files.pharo.org/image/stable/latest.zip
-    mv "$IMAGES_PATH/latest.zip" "$IMAGES_PATH/pharo-stable.zip"
+	wget -P $IMAGES_PATH https://files.pharo.org/image/stable/stable-64.zip
+    mv "$IMAGES_PATH/stable-64.zip" "$IMAGES_PATH/pharo-stable.zip"
 }
 
 PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.

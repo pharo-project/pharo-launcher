@@ -18,6 +18,9 @@ Class {
 
 { #category : #accessing }
 PhLTimeUntilNowStrategy class >> displayStringOf: aDateAndTime [
+
+	aDateAndTime ifNil: [ ^ 'N/A' ].
+
 	^ (DateAndTime now - aDateAndTime) simpleTimeAgo asText
 ]
 

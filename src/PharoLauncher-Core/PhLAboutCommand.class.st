@@ -36,7 +36,7 @@ PhLAboutCommand >> aboutText [
 PhLAboutCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #help;
-		shortcutKey: $? meta;
+		shortcutKey: (KeyboardKey named: 'QUESTION') meta;
 		yourself
 ]
 
@@ -48,7 +48,7 @@ PhLAboutCommand >> execute [
 		iconName: #pharo.
 	presenter application: self application.
 	
-	presenter openDialogWithSpec.
+	presenter openDialog.
 	^ presenter
 ]
 

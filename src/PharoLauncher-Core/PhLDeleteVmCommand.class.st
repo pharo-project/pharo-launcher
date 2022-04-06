@@ -19,17 +19,19 @@ PhLDeleteVmCommand >> asSpecCommand [
 { #category : #executing }
 PhLDeleteVmCommand >> execute [
 	| vms vmNames confirmMessage answer |
+
 	vms := self vmsPresenter selectedVms.
 	vmNames := vms collect: #name.
 	confirmMessage := 'Are you sure you want to delete VM ' , (vmNames joinUsing: ', ' last: ' and ').
 	answer := self vmsPresenter newConfirmation
+		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer ifFalse: [ ^ self ].
 	
-	UIManager default showWaitCursorWhile:
-		[ vms do: #removeFromSystem.
-		self vmsPresenter refresh. ]
+	self context application showWaitCursorWhile: [ 
+		vms do: #removeFromSystem.
+		self vmsPresenter refresh ]
 ]
 
 { #category : #initialization }

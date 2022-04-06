@@ -2,3 +2,5 @@
 site/
 # ignore generated html files
 *.html
+
+*.swp

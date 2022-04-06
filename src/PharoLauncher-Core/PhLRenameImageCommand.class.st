@@ -41,7 +41,9 @@ PhLRenameImageCommand >> newImageName [
 
 { #category : #private }
 PhLRenameImageCommand >> newImageName: aString [ 
+
 	^ self imagesPresenter newRequest 
+		parentWindow: self context window;
 		title: 'Image name?';
 		initialAnswer: aString;
 		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];

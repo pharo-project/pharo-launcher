@@ -67,7 +67,6 @@ PhLTestImagesPresenter >> initialize [
 	super initialize.
 
 	self createImageNamed: self singleImageName.
-	self refresh.
 	request := PhLTestRequest new.
 ]
 
@@ -87,12 +86,20 @@ PhLTestImagesPresenter >> newFileRequest [
 ]
 
 { #category : #'user interaction' }
+PhLTestImagesPresenter >> newInformation [
+	self flag: 'TODO: spec should offer a way to open the inform dialog and accept it.'.
+
+	^ PhLTestConfirmation new
+]
+
+{ #category : #'user interaction' }
 PhLTestImagesPresenter >> newRequest [
 	^ request
 ]
 
 { #category : #updating }
 PhLTestImagesPresenter >> refreshLaunchConfigurationList [
+
 	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
 ]
 
@@ -105,7 +112,7 @@ PhLTestImagesPresenter >> requestAnswer: answer [
 PhLTestImagesPresenter >> selectedLaunchConfiguration [
 	^ launchConfigurationList 
 		ifNil: [ self singleImage defaultLaunchConfiguration ]
-		ifNotNil: [ launchConfigurationList selectedItem ]
+		ifNotNil: [ launchConfigurationList selectedItem  ifNil: [ self singleImage defaultLaunchConfiguration ] ]
 ]
 
 { #category : #configuring }
@@ -125,7 +132,7 @@ PhLTestImagesPresenter >> singleImage [
 		do: [ :error |
 			 selection 
 				ifNil: [ error pass ]
-				ifNotNil: [ selection ] ]
+				ifNotNil: [ selection first ] ]
 ]
 
 { #category : #selection }

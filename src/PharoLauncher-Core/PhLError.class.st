@@ -4,8 +4,13 @@ I represent an error as can be signaled by any code of Pharo Launcher.
 Class {
 	#name : #PhLError,
 	#superclass : #Error,
-	#category : 'PharoLauncher-Core-Exceptions'
+	#category : #'PharoLauncher-Core-Exceptions'
 }
+
+{ #category : #testing }
+PhLError >> isResumable [ 
+	^ true
+]
 
 { #category : #accessing }
 PhLError >> longDescription [
@@ -19,8 +24,6 @@ PhLError >> name [
 
 { #category : #ui }
 PhLError >> uiAlert [
-	UIManager default
-		alert: self longDescription
-		title: self name
-		configure: [ :morph | (morph findDeeplyA: TextMorph) unlock ]
+
+	PharoLauncherApplication default showError: self
 ]

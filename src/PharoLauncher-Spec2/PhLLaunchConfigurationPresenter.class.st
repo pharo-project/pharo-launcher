@@ -64,8 +64,8 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		yourself
 ]
 
-{ #category : #specs }
-PhLLaunchConfigurationPresenter class >> defaultSpec [
+{ #category : #layout }
+PhLLaunchConfigurationPresenter class >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		spacing: 5;
 		add: #configurationTable 
@@ -85,7 +85,7 @@ PhLLaunchConfigurationPresenter class >> example [
 		writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	(self 
 		newApplication: PharoLauncherApplication new 
-		model: image) openWithSpec
+		model: image) open
 ]
 
 { #category : #specs }
@@ -133,6 +133,7 @@ PhLLaunchConfigurationPresenter >> imageArguments [
 
 { #category : #initialization }
 PhLLaunchConfigurationPresenter >> initializePresenters [
+
 	configurationTable := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self newConfiguration ];
 		label: 'Launch configurations';
@@ -156,24 +157,27 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 	"Run in a separate process to do not block UI. Can take some seconds."
 	[ self initializeVmListContent ] fork.
 	vmArgumentList := (self instantiate: SpEditableListPresenter)
-		addItemBlock: [ self application newRequest
+		addItemBlock: [ 
+			self newRequest
 				title: 'New VM argument?';
 				request ];
 		yourself.
 	imageArgumentList := (self instantiate: SpEditableListPresenter)
-		addItemBlock: [ self application newRequest
+		addItemBlock: [ 
+			self newRequest
 				title: 'New image argument?';
 				request ];
 		yourself.
 	applyChangesButton := self newButton
 		label: 'Apply';
-		icon: (self iconNamed: #scriptManager);
+		icon: (self application iconNamed: #scriptManager);
 		action: [ self saveSelectedConfiguration ];
 		yourself.
 	saveAndSelectsButton := self newButton
 		label: 'Save & select';
-		icon: (self iconNamed: #smallSave);
-		action: [ self saveSelectedConfiguration.
+		icon: (self application iconNamed: #smallSave);
+		action: [ 
+			self saveSelectedConfiguration.
 			self delete ];
 		yourself
 ]
@@ -195,6 +199,7 @@ PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 { #category : #action }
 PhLLaunchConfigurationPresenter >> newConfiguration [
 	| newName configuration |
+	
 	newName := self application newRequest
 			title: 'New Launch configuration name?';
 			validateAnswer: [ :answer | 

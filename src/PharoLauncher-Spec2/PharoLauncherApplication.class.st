@@ -6,8 +6,6 @@ PharoLauncherApplication open
 Class {
 	#name : #PharoLauncherApplication,
 	#superclass : #SpApplication,
-	#traits : 'TPhLInteractionTrait',
-	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -27,6 +25,12 @@ Class {
 	#category : #'PharoLauncher-Spec2'
 }
 
+{ #category : #accessing }
+PharoLauncherApplication class >> applicationName [
+
+	^ 'pharo-launcher'
+]
+
 { #category : #testing }
 PharoLauncherApplication class >> beDeployed [
 	IsDeployed := true
@@ -40,6 +44,11 @@ PharoLauncherApplication class >> beUndeployed [
 { #category : #accessing }
 PharoLauncherApplication class >> default [
 	^ Default ifNil: [ Default := self new ]
+]
+
+{ #category : #accessing }
+PharoLauncherApplication class >> default: aPharoLauncherApplication [
+	Default := aPharoLauncherApplication
 ]
 
 { #category : #settings }
@@ -121,7 +130,8 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 { #category : #opening }
 PharoLauncherApplication class >> open [
 	<script>
-	^ self default
+	
+	^ (Default := self new)
 		openAsWorld: false;
 		run
 ]
@@ -129,7 +139,8 @@ PharoLauncherApplication class >> open [
 { #category : #opening }
 PharoLauncherApplication class >> openFull [ 
 	<script>
-	^ self default 
+	
+	^ (Default := self new) 
 		beOpenedAsWorld;
 		run
 ]
@@ -142,14 +153,15 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #opening }
+{ #category : #accessing }
 PharoLauncherApplication class >> reset [
-	<script>
-	^ Default := nil
+
+	Default := nil
 ]
 
 { #category : #initialization }
 PharoLauncherApplication class >> resetTemplateRepository [
+
 	TemplateRepository := nil
 ]
 
@@ -207,6 +219,11 @@ PharoLauncherApplication >> beOpenedAsWorld [
 ]
 
 { #category : #accessing }
+PharoLauncherApplication >> defaultTemplateRepository [
+	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
+]
+
+{ #category : #accessing }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
 ]
@@ -223,21 +240,29 @@ PharoLauncherApplication >> imageRepositoryChanged [
 
 { #category : #announcements }
 PharoLauncherApplication >> imageRepositoryChanged: newImage [
+
 	self imageRepositoryChanged.
 	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
 ]
 
 { #category : #initialization }
-PharoLauncherApplication >> initialize [ 
+PharoLauncherApplication >> initialize [
+
  	super initialize.
+	"I want to register windows in order to be able to know which one is the last opened 
+	 This can be use to push progress bars (they stack)."
+	windows := OrderedCollection new. 
 	openAsWorld := false.
+	self
+		useBackend: #Morphic 
+		with: PharoLauncherConfiguration new.
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository
 ]
 
-{ #category : #private }
+{ #category : #'initialization - private' }
 PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self
@@ -258,23 +283,15 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
-{ #category : #initialization }
-PharoLauncherApplication >> resetTemplateRepository [
-	templateRepository := TemplateRepository 
-		ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ] 
+{ #category : #ui }
+PharoLauncherApplication >> pushProgress: aString with: aBlock [
+
+	self newJobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
-{ #category : #running }
-PharoLauncherApplication >> run [
-	| presenterClass |
-	self initializeImagesPresenter.
-	presenterClass := openAsWorld
-		ifTrue: [ SpWorldPresenter ]
-		ifFalse: [ imagesPresenter defaultWindowPresenterClass ].
-	self
-		open: imagesPresenter
-		withSpecLayout: imagesPresenter defaultSpec
-		using: presenterClass
+{ #category : #initialization }
+PharoLauncherApplication >> resetTemplateRepository [
+	templateRepository := nil.
 ]
 
 { #category : #accessing }
@@ -289,9 +306,49 @@ PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
 ]
 
+{ #category : #ui }
+PharoLauncherApplication >> shouldUpdateTemplateSources [
+
+	^ self newConfirm
+		title: 'Update';
+		label: 'Update available for Pharo Launcher templates sources!';
+		acceptLabel: 'Update';
+		cancelLabel: 'Remind me later';
+		openModal
+]
+
+{ #category : #ui }
+PharoLauncherApplication >> showError: anError [
+
+	self newInform 
+		title: anError name;
+		label: anError longDescription;
+		openModalWithParent: self topWindow
+]
+
+{ #category : #running }
+PharoLauncherApplication >> start [
+
+	self initializeImagesPresenter.
+
+	openAsWorld ifTrue: [ 
+		self startFull.
+		^ self ].
+
+	imagesPresenter open
+]
+
+{ #category : #running }
+PharoLauncherApplication >> startFull [
+	
+	imagesPresenter asWorldWindow 
+		title: 'Pharo Launcher';
+		open.
+]
+
 { #category : #accessing }
 PharoLauncherApplication >> templateRepository [
-	^ templateRepository
+	^ 	templateRepository ifNil: [ templateRepository := self defaultTemplateRepository ] 
 ]
 
 { #category : #accessing }
@@ -302,4 +359,16 @@ PharoLauncherApplication >> templateRepository: aPhLTemplateGroupRepository [
 { #category : #accessing }
 PharoLauncherApplication >> templatesClearedOnStartup [
 	^ self class templatesClearedOnStartup
+]
+
+{ #category : #ui }
+PharoLauncherApplication >> topWindow [
+	"The window that will accept a modal window related to it. 
+	 This is usually the top window, but in case of stacking dialogs, some times this is lost. 
+	 In that case, I want still choose one window"
+	
+	super topWindow ifNotNil: [ :topWindow | ^ topWindow ].
+	^ self windows 
+		ifNotEmpty: [ :aCollection | aCollection last ]
+		ifEmpty: [ nil ]
 ]

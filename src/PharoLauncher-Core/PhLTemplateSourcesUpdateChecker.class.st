@@ -106,6 +106,7 @@ PhLTemplateSourcesUpdateChecker >> priority [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> registerOnTemplateSourcesUpdate [
+
 	PhLPharoTemplateSources announcer weak
 		when: PhLSourcesFileUpdateAvailable
 		send: #updateTemplateSources:
@@ -135,13 +136,8 @@ PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
 
 { #category : #updating }
 PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
-	| applyUpdate |
-	applyUpdate := UIManager default
-		confirm: 'Update available for Pharo Launcher templates sources!'
-		trueChoice: 'Update'
-		falseChoice: 'Remind me later'.
-	applyUpdate ifNil: [ ^ self ].
-	applyUpdate ifFalse: [ ^ self ].
+	
+	PharoLauncherApplication default shouldUpdateTemplateSources ifFalse: [ ^ self ].
 	
 	self basicUpdateTemplateSources
 ]

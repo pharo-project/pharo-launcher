@@ -14,96 +14,88 @@ Class {
 		'descriptionPanel',
 		'launchConfigurationList',
 		'imageFilter',
-		'rootCommandsGroup'
+		'rootCommandsGroup',
+		'toolbar'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
 
 { #category : #commands }
 PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
+
 	rootCommandGroup
-		register: (self buildToolbarGroup);
-		register: (self buildContextualMenuGroup)
+		register: (self buildToolbarGroupContext: anImagesPresenter);
+		register: (self buildContextualMenuGroupContext: anImagesPresenter)
 ]
 
 { #category : #commands }
-PhLImagesPresenter class >> buildContextualMenuGroup [
+PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
+
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		beDisplayedAsGroup;
 		description: 'Images table contextual menu';
 		register: ((CmCommandGroup named: 'launch') asSpecGroup
-			register: PhLLaunchImageCommand forSpec;
-			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
-						name: 'Launch without settings';
-						yourself);
 			beDisplayedAsGroup;
+			register: (PhLLaunchImageCommand forSpecContext: aContext);
+			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
+				context: aContext;
+				name: 'Launch without settings';
+				yourself);
 			yourself);
 		register: ((CmCommandGroup named: 'edition') asSpecGroup
-			register: PhLRenameImageCommand forSpec;
-			register: PhLCopyImageCommand forSpec;
-			register: PhLDeleteImageCommand forSpec;
 			beDisplayedAsGroup;
+			register: (PhLRenameImageCommand forSpecContext: aContext);
+			register: (PhLCopyImageCommand forSpecContext: aContext);
+			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
-		register: PhLRecreateImageCommand forSpec;
-		register: PhLShowImageInFolderCommand forSpec;
-		register: PhLCopyPathname forSpec;
-		register: PhLCopyLaunchCommand forSpec;
-		register: PhLCreateTemplateFromImageCommand forSpec;
-		register: PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval;
+		register: (PhLRecreateImageCommand forSpecContext: aContext);
+		register: (PhLShowImageInFolderCommand forSpecContext: aContext);
+		register: (PhLCopyPathname forSpecContext: aContext);
+		register: (PhLCopyLaunchCommand forSpecContext: aContext);
+		register: (PhLCreateTemplateFromImageCommand forSpecContext: aContext);
+		register: (PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval
+			context: aContext;
+			yourself);
 		register: ((CmCommandGroup named: 'extra') asSpecGroup
-			register: PhLInspectCommand forSpec;
+			register: (PhLInspectCommand forSpecContext: aContext);
 			yourself);
-		beDisplayedAsGroup;
 		yourself
 ]
 
 { #category : #commands }
-PhLImagesPresenter class >> buildToolbarGroup [
+PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
+
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher toolbar';
-		register: PhLOpenNewImageWindowCommand forSpec;
-		register: PhLLaunchImageCommand forSpec;
-		register: PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand;
-		register: PhLLaunchImageFromDiskCommand forSpec;
-		register: PhLImportImageCommand forSpec;
-		register: PhLRefreshImageRepositoryCommand forSpec;
-		register:
-			(PhLShowImageInFolderCommand forSpec
+		register: ((CmCommandGroup named: 'Create') asSpecGroup
+			beDisplayedAsGroup;
+			register: (PhLOpenNewImageWindowCommand forSpecContext: aContext);
+			yourself);
+		register: ((CmCommandGroup named: 'Image') asSpecGroup
+			beDisplayedAsGroup;
+			register: (PhLLaunchImageCommand forSpecContext: aContext);
+			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
+				context: aContext;
+				yourself);
+			register: (PhLLaunchImageFromDiskCommand forSpecContext: aContext);
+			register: (PhLImportImageCommand forSpecContext: aContext);
+			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
+			register: ((PhLShowImageInFolderCommand forSpecContext: aContext)
 				name: 'Show';
 				yourself);
-		register: PhLDeleteImageCommand forSpec;
-		register:
-			(PhLQuitCommand forSpec
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLAboutCommand forSpec
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLOpenSettingsCommand forSpec
-				name: 'Settings';
-				beDisplayedOnRightSide;
-				yourself);
-		register:
-			(PhLOpenVmManagerCommand forSpec
-				name: 'VMs';
-				beDisplayedOnRightSide;
-				yourself);
-		beDisplayedAsGroup;
-		yourself
-]
-
-{ #category : #specs }
-PhLImagesPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		add: #imageFilter expand: false;
-		add: (SpPanedLayout newVertical
-			position: 66 percent;
-			add: #imageTable;
-			add: #descriptionPanel;
+			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
-		yourself
+		register: ((CmCommandGroup named: 'Settings') asSpecGroup
+			register: ((PhLOpenVmManagerCommand forSpecContext: aContext)
+				name: 'VMs';
+				yourself);
+			register: ((PhLOpenSettingsCommand forSpecContext: aContext)
+				name: 'Settings';
+				yourself);
+			register: (PhLAboutCommand forSpecContext: aContext);
+			register: (PhLQuitCommand forSpecContext: aContext);
+			yourself;
+		yourself)
 ]
 
 { #category : #'api - actions' }
@@ -115,16 +107,84 @@ PhLImagesPresenter >> actionFilter [
 { #category : #'api - actions' }
 PhLImagesPresenter >> actionLaunch [
 	| cmd |
-	cmd := self toolbarGroup commandOrGroupNamed: 'Launch'.
+
+	cmd := PhLLaunchImageCommand forContext: self.
 	cmd execute
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildDescriptionPanel [
+
+	^ self
+		instantiate: PhLImageDetailPresenter
+		on: PhLNullImage new
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildImageFilter [
+			
+	^ self newTextInput
+		placeholder: 'Enter image name filter ...';
+		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
+		yourself
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildImageTable [
+
+	^ self newTable
+		activateOnDoubleClick;
+		alternateRowsColor;
+		items: self imageRepository images;
+		sortingBlock: #lastModification descending;
+		whenActivatedDo: [ self actionLaunch ];
+		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
+			width: 350;
+			beSortable;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
+			width: 90;
+			beSortable;
+			yourself);
+		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+			width: 90;
+			beSortable;
+			yourself);
+		addColumn: ((SpStringTableColumn
+			title: 'Last modified'
+			evaluated: [ :image | self readableDateFor: image lastModification ])
+			sortFunction: #lastModification descending;
+			yourself);
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		beResizable;
+		beMultipleSelection;
+		yourself
+]
+
+{ #category : #initialization }
+PhLImagesPresenter >> buildToolbar [
+	| toolbarGroup |
+	
+	toolbarGroup := self toolbarGroup.
+	^ self newPresenter
+		layout: (SpBoxLayout newLeftToRight
+			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Create') expand: false;
+			add: (SpBoxLayout newTopToBottom 
+				vAlignCenter;
+				add: self newLaunchConfigurationDropList expand: false;
+				yourself);
+			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;
+			add: self newLabel; "to create a space"
+			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : #initialization }
 PhLImagesPresenter >> connectPresenters [
 
-	super connectPresenters.
-	
-	imageTable whenSelectionChangedDo: [ :selection |
+	imageTable transmitDo: [ :image |
 		self 
 			refreshLaunchConfigurationList;
 			updateToolbarCommandsAvailability ].
@@ -132,14 +192,27 @@ PhLImagesPresenter >> connectPresenters [
 	imageTable 
 		transmitTo: descriptionPanel
 		transform: [ :images | 		
-						images size = 1
-							ifTrue: [ images first ]
-							ifFalse: [ PhLNullImage new ] ]
+			images size = 1
+				ifTrue: [ images first ]
+				ifFalse: [ PhLNullImage new ] ]
 ]
 
 { #category : #'api - actions' }
 PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
+]
+
+{ #category : #layout }
+PhLImagesPresenter >> defaultLayout [
+	^ SpBoxLayout newTopToBottom
+		add: toolbar expand: false;
+		add: imageFilter expand: false;
+		add: (SpPanedLayout newTopToBottom
+			positionOfSlider: 55 percent;
+			add: imageTable;
+			add: descriptionPanel;
+			yourself);
+		yourself
 ]
 
 { #category : #private }
@@ -176,60 +249,26 @@ PhLImagesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLImagesPresenter >> initializePresenters [
-	imageFilter := self newTextInput
-		placeholder: 'Enter image name filter ...';
-		whenTextChangedDo: [ :filterString | self filter: filterString asLowercase ];
-		yourself.
-	imageTable := self newTable
-		items: self imageRepository images;
-		sortingBlock: #lastModification descending;
-		whenActivatedDo: [ self actionLaunch ];
-		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
-		whenBuiltDo: [ :tree | tree widget alternateRowsColor ];
-		addColumn:
-			((SpStringTableColumn title: 'Name' evaluated: #name)
-				width: 350;
-				yourself);
-		addColumn:
-			((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
-				width: 80;
-				yourself);
-		addColumn:
-			((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
-				width: 80;
-				yourself);
-		addColumn:
-			((SpStringTableColumn
-				title: 'Last modified'
-				evaluated: [ :image | self readableDateFor: image lastModification ])
-				sortFunction: #lastModification descending;
-				yourself);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		beResizable;
-		beMultipleSelection;
-		yourself.
-	descriptionPanel := self
-		instantiate: PhLImageDetailPresenter
-		on: PhLNullImage new.
-	self imageRepository whenChangedSend: #refresh to: self.
-	self whenDisplayDo: 
-		[ self imageRepository hasImages
-				ifTrue: [ self selectImageAt: 1 ] ].
+
+	toolbar := self buildToolbar.
+	imageFilter := self buildImageFilter.
+	imageTable := self buildImageTable.
+	descriptionPanel := self buildDescriptionPanel.
+	
+	self imageRepository whenChangedSend: #refresh to: self
 ]
 
 { #category : #initialization }
 PhLImagesPresenter >> initializeWindow: aWindowPresenter [
+
 	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 700 @ 500;
-		toolBar: self toolbarGroup asToolbarPresenter;
+		initialExtent: 900@550;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
-	aWindowPresenter toolBar 
-		addItemLeft: self newLaunchConfigurationDropList afterIndex: 1.
 	aWindowPresenter 
-		bindKeyCombination: $f command
+		bindKeyCombination: $f meta
 		toAction: [ self actionFilter ]
 ]
 
@@ -248,6 +287,7 @@ PhLImagesPresenter >> readableDateFor: aDateAndTime [
 
 { #category : #updating }
 PhLImagesPresenter >> refresh [ 
+
 	imageTable items: self imageRepository images.
 	self refreshLaunchConfigurationList
 ]
@@ -255,27 +295,35 @@ PhLImagesPresenter >> refresh [
 { #category : #updating }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image items |
+	
 	[ image := self singleImage ]
 	on: PhLCommandError
-	do: [ self resetLaunchConfigurationList.
-			^ self].
+	do: [ 
+		self resetLaunchConfigurationList.
+		^ self ].
 	
-	items := image launchConfigurations collect: [ :each | 
+	items := image launchConfigurations 
+		collect: [ :each | 
 			SpDropListItem new
 				model: each;
 				display: [ :config | config name ];
-				icon: (self iconNamed: #configuration);
-				yourself ].
+				icon: (self application iconNamed: #configuration);
+				yourself ]
+		as: OrderedCollection.
+	
 	items addFirst: (SpDropListItem new
 				model: 'Edit configurations ...';
-				action: [ self 
-					editLaunchConfigurations;
-					refreshLaunchConfigurationList ];
-				icon: (self iconNamed: #edit);
+				action: [ 
+					self 
+						editLaunchConfigurations;
+						refreshLaunchConfigurationList ];
+				icon: (self application iconNamed: #edit);
 				yourself ).
+	
 	launchConfigurationList
 		resetSelection;
 		dropListItems: items.
+	
 	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
 		on: NotFound "Default configuration has been deleted but there are still other configurations"
 		do: [ launchConfigurationList selectIndex: 2 ]
@@ -283,9 +331,10 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 
 { #category : #updating }
 PhLImagesPresenter >> resetLaunchConfigurationList [
+
 	launchConfigurationList
-				resetSelection;
-				items: #() "no image selected".
+		resetSelection;
+		items: #() "no image selected".
 ]
 
 { #category : #initialization }
@@ -295,7 +344,8 @@ PhLImagesPresenter >> rootCommandsGroup [
 
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
-	launchConfigurationList selectItem: aPhLLaunchConfiguration.
+
+	launchConfigurationList selectItem: aPhLLaunchConfiguration
 ]
 
 { #category : #'api - selection' }
@@ -317,6 +367,7 @@ PhLImagesPresenter >> selectedImages [
 
 { #category : #'api - accessing' }
 PhLImagesPresenter >> selectedLaunchConfiguration [
+	
 	^ launchConfigurationList selectedItem
 ]
 
@@ -341,6 +392,14 @@ PhLImagesPresenter >> toolbarGroup [
 	^ self rootCommandsGroup / 'Toolbar'
 ]
 
+{ #category : #initialization }
+PhLImagesPresenter >> updatePresenter [
+
+	self imageRepository hasImages 
+		ifTrue: [ imageTable selectFirst ]
+
+]
+
 { #category : #updating }
 PhLImagesPresenter >> updateToolbarCommandsAvailability [
 	self withToolbarDo: [ :toolbar |
@@ -350,5 +409,6 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 
 { #category : #private }
 PhLImagesPresenter >> withToolbarDo: aBlock [
-	self withWindowDo: [ :window | aBlock value: window toolBar ]
+
+	self withWindowDo: [ :window | aBlock value: window toolbar ]
 ]

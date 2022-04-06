@@ -18,6 +18,8 @@ Smalltalk tools debuggerTool: currentDebugger.
 Class {
 	#name : #PhLErrorDialogPresenter,
 	#superclass : #SpPresenter,
+	#traits : 'TDebugger',
+	#classTraits : 'TDebugger classTrait',
 	#instVars : [
 		'acceptButton',
 		'cancelButton',
@@ -27,32 +29,41 @@ Class {
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #specs }
-PhLErrorDialogPresenter class >> defaultSpec [
-
-	^ SpBoxLayout newVertical
-		add: #description;
-		yourself
+{ #category : #accessing }
+PhLErrorDialogPresenter class >> closeAllDebuggers [
+	<script>
+	self allInstancesDo: [ :dbg | dbg close ]
 ]
 
-{ #category : #'opening api' }
-PhLErrorDialogPresenter class >> openDebuggerOn: debugSession [
-	GTGenericStackDebugger
-		openOn: debugSession
-		withFullView: true
-		andNotification: ''
-]
-
-{ #category : #'opening api' }
-PhLErrorDialogPresenter class >> openOn: debugSession withFullView: bool andNotification: notificationString [
+{ #category : #'instance creation' }
+PhLErrorDialogPresenter class >> debugSession: aDebugSession [
 	PharoLauncherApplication isDeployed
-		ifTrue: [ (self on: debugSession) openDialogWithSpec ]
-		ifFalse: [ self openDebuggerOn: debugSession ]
+		ifTrue: [ (self on: aDebugSession) openDialog ]
+		ifFalse: [ self openDebuggerOn: aDebugSession ]
+
+]
+
+{ #category : #'opening api' }
+PhLErrorDialogPresenter class >> openDebuggerOn: aDebugSession [
+	StDebugger debugSession: aDebugSession.
+]
+
+{ #category : #accessing }
+PhLErrorDialogPresenter class >> rank [
+	^rank ifNil:[rank := 10]
 ]
 
 { #category : #accessing }
 PhLErrorDialogPresenter >> debugSession [ 
 	^ debugSession
+]
+
+{ #category : #layout }
+PhLErrorDialogPresenter >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		add: description;
+		yourself
 ]
 
 { #category : #initialization }

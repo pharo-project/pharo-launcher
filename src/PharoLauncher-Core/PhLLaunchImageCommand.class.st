@@ -128,11 +128,13 @@ PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
 { #category : #executing }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	| process launchConfig |
-	[ launchConfig := self launchConfigurationOfImage: aPhLImage.
-	launchConfig useSettings: useSettings.
-	process := aPhLImage launchWithConfiguration: launchConfig. ]
-		on: PhLError
-		do: [ :error | error uiAlert. ^ process ].
+	
+	[ 
+		launchConfig := self launchConfigurationOfImage: aPhLImage.
+		launchConfig useSettings: useSettings.
+		process := aPhLImage launchWithConfiguration: launchConfig ]
+	on: PhLError
+	do: [ :error | error uiAlert. ^ process ].
 	"Waiting for https://github.com/pharo-contributions/OSSubprocess/issues/58 to be fixed
 	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check."
 	self class quitOnLaunch
@@ -142,6 +144,7 @@ PhLLaunchImageCommand >> launchImage: aPhLImage [
 
 { #category : #executing }
 PhLLaunchImageCommand >> launchSelectedImage [
+
 	^ self launchImage: self imagesPresenter singleImage
 ]
 

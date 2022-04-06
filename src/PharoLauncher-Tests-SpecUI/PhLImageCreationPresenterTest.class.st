@@ -18,6 +18,22 @@ PhLImageCreationPresenterTest >> setUp [
 ]
 
 { #category : #tests }
+PhLImageCreationPresenterTest >> testImageNameIsNotValidWhenContainingFileSeparator [ 
+
+	presenter checkNewName: 'foo/'.
+	
+	self deny: presenter isNameValid.
+]
+
+{ #category : #tests }
+PhLImageCreationPresenterTest >> testImageNameIsValid [
+
+	presenter checkNewName: 'nonExistingImageName'.
+	
+	self assert: presenter isNameValid.
+]
+
+{ #category : #tests }
 PhLImageCreationPresenterTest >> testInitializationScriptListUpdatedWhenScriptPresenterDoChange [
 	| scriptPresenter |
 	self

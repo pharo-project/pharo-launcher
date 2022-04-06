@@ -31,13 +31,16 @@ PhLTestTemplatesPresenter >> createButtonEnabled [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
-	| zipFile |
+	| zipFile template |
+	
 	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
+	template := PhLLocalTemplate name: aName zipFile: zipFile.
 	self localTemplatesGroup
-		register: (PhLLocalTemplate name: aName zipFile: zipFile)
+		register: template
 		withZip: zipFile.
 	self newZipArchive: zipFile.
 	self refresh.
+	^ template
 ]
 
 { #category : #configuring }

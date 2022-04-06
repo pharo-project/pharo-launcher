@@ -166,7 +166,7 @@ PhLLaunchConfiguration >> printOn: aStream [
 { #category : #configuring }
 PhLLaunchConfiguration >> useSettings: aBoolean [
 	"Cannot skip Pharo settings before Pharo 3.0"
-	self image ensurePharoVersion < '30' ifTrue: [ ^ self ].
+	self image ensurePharoVersion asInteger < 30 ifTrue: [ ^ self ].
 
 	usePharoSettings := aBoolean.
 ]

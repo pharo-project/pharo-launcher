@@ -9,6 +9,20 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
+{ #category : #utilities }
+PhLImageTest >> createFakeVM [
+	^ PhLVirtualMachine new 
+		basicInitializeOn: FileLocator launcherVMsLocation / '100-x64';
+		executable: FileLocator launcherVMsLocation / '100-x64' / 'Pharo';
+		yourself
+]
+
+{ #category : #accessing }
+PhLImageTest >> currentImageVersion [ 
+	^  SystemVersion current major asString
+		, SystemVersion current minor asString
+]
+
 { #category : #running }
 PhLImageTest >> setUp [
 	super setUp.
@@ -144,26 +158,40 @@ PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFil
 ]
 
 { #category : #tests }
+PhLImageTest >> testImageNameIsNotValidWhenContainingFileSeparator [
+
+	self deny: (PhLImage isValidName: 'fo/o').
+	self deny: (PhLImage isValidName: '123\4').
+]
+
+{ #category : #tests }
+PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
+
+	self assert: (PhLImage isValidName: 'foo').
+	self assert: (PhLImage isValidName: '1234').
+	self assert: (PhLImage isValidName: 'Fo23')
+]
+
+{ #category : #tests }
 PhLImageTest >> testPhLImageSerialization [
 	| stonString |
 	(image file parent / image class versionFileName)
-		writeStreamDo: [ :stream | stream nextPutAll: '80' ].
-	image launchConfigurations.
-	self assert: image defaultLaunchConfiguration vm isValidAfterUpdate.
+		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
+	image launchConfigurations. "create default configuration"
+	image defaultLaunchConfiguration vm: self createFakeVM. "Avoid to download a VM"
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.
 	
 	"ensure we get a file locator"
-	self assert: (stonString includesSubstring: '#executableRef : FileLocator {
-					#origin : #launcherVMsLocation,
-					#path : RelativePath [ ''80-x64''').
-	self assert: (stonString includesSubstring: '#imageFile : FileLocator {
-			#origin : #launcherImagesLocation,
-			#path : RelativePath [ ''foo.image'' ]
-		}').
+	self assert: (stonString includesSubstring: '#executableRef : FileLocator {') description: 'missing executableRef: ', stonString.
+	self assert: (stonString includesSubstring: '#origin : #launcherVMsLocation') description: 'missing #launcherVMsLocation origin: ', stonString.
+	self assert: (stonString withInternetLineEndings includesSubstring: '#imageFile : FileLocator {
+			#path : RelativePath [ ''foo.image'' ],
+			#origin : #launcherImagesLocation
+		}' withInternetLineEndings) description: 'missing or wrong #imageFile: ', stonString.
 	"ensure VM manager is a reference"
-	self assert: (stonString includesSubstring: '#manager : @2,').
+	self assert: (stonString includesSubstring: '#manager : @2,') description: 'VM manager is not a reference: ', stonString.
 ]
 
 { #category : #tests }

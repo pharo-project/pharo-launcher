@@ -7,32 +7,51 @@ Class {
 	#instVars : [
 		'message'
 	],
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #action }
 PhLUIInformation >> abort [
-	UIManager default abort: message
+
+	self application newInform 
+		title: 'Error';
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #action }
 PhLUIInformation >> alert [
-	UIManager default alert: message
+
+	self application newInform 
+		title: 'Alert';
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #action }
 PhLUIInformation >> deny [
-	UIManager default deny: message
+
+	self application newInform 
+		title: 'Access Denied';
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #action }
 PhLUIInformation >> denyWithTitle: titleString [
-	UIManager default deny: message title: titleString
+
+	self application newInform 
+		title: titleString;
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #action }
 PhLUIInformation >> inform [
-	UIManager inform: message
+
+	self application newInform 
+		label: message;
+		openModalWithParent: self relatedWindow
 ]
 
 { #category : #accessing }

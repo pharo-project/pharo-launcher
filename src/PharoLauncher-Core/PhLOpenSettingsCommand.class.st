@@ -19,7 +19,10 @@ PhLOpenSettingsCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLOpenSettingsCommand >> execute [
-	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings )) open
+
+	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings ))
+			loadSettings;
+			open.
 ]
 
 { #category : #initialization }

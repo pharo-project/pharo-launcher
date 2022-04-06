@@ -17,7 +17,7 @@ PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 { #category : #running }
 PhLLaunchConfigurationTest >> setUp [
 	super setUp.
-	(fs / 'pharo.version')
+	(fs / PhLImage versionFileName)
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: '70' ].
 	
 
@@ -47,7 +47,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 	| launchConfig vm |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	(fs / 'pharo.version')
+	(fs / PhLImage versionFileName)
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: '770' ].
 
 	vm := launchConfig vm.
@@ -173,7 +173,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasVmArguments [
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	launchConfig := image defaultLaunchConfiguration.
@@ -188,12 +188,14 @@ PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferences
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example32.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '20' ].
 	launchConfig := image defaultLaunchConfiguration.
 	launchConfig doNotUseSettings.
-	launchConfig vm executable: 'pharo'.
+	[ launchConfig vm executable: 'pharo' ]
+		on: PhLArchitectureMismatchWarning 
+		do: [ :error | error resume. "ignore" ].
 	
 	[ command := launchConfig launchProcess ]
 	on: PhLMissingVirtualMachineError 
@@ -204,7 +206,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferenc
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
-	| image command launchConfig |
+	| command launchConfig |
 	image := PhLImage example.
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	launchConfig := image defaultLaunchConfiguration.

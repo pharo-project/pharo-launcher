@@ -35,7 +35,9 @@ PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 
 { #category : #accessing }
 PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
+
 	^ self imagesPresenter newConfirmation
+		parentWindow: self context window;
 		message: 'Do you want to override exisiting template?';
 		confirm
 ]
@@ -71,8 +73,10 @@ PhLCreateTemplateFromImageCommand >> newTemplateName [
 { #category : #accessing }
 PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 	| templateRepository |
+	
 	templateRepository := self imagesPresenter templateRepository.
 	^ self imagesPresenter newRequest
+		parentWindow: self context window;
 		title: 'Template name?';
 		initialAnswer: (templateRepository makeUniqueTemplateName: aString);
 		validateAnswer: [ :answer | 

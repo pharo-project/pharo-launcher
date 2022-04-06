@@ -64,7 +64,7 @@ PhLImageCreateFromPullRequestCliCommand class >> repositoryFlag [
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> baselineName [
 
-	^ self headRepo copyAfterLast: $/
+	^ (self headRepo copyAfterLast: $/) capitalized 
 ]
 
 { #category : #private }

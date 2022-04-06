@@ -9,7 +9,7 @@ try {
   cleanUploadFolderIfNeeded(uploadDirectoryName())
   timeout(time: 60, unit: 'MINUTES') { 
     // buildArchitecture('32', '80')
-    // buildArchitecture('64', '100')
+    buildArchitecture('64', '100')
     buildArchitecture('arm64', '100')
   }
   finalizeUpload(uploadDirectoryName())

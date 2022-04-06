@@ -90,8 +90,10 @@ def buildArchitecture(architecture, pharoVersion) {
     node('linux') {
       stage("Deploy Pharo${pharoVersion}-${architecture}-bits") {
           if (currentBuild.result == null || currentBuild.result == 'SUCCESS') {
-            unstash "pharo-launcher-win-${architecture}-package"
-            upload('pharo-launcher-*.msi', uploadDirectoryName())
+            if (env.ARCHITECTURE != "arm64") {
+              unstash "pharo-launcher-win-${architecture}-package"
+              upload('pharo-launcher-*.msi', uploadDirectoryName())
+            }
             unstash "pharo-launcher-osx-${architecture}-package"
             fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
             upload(fileToUpload, uploadDirectoryName())

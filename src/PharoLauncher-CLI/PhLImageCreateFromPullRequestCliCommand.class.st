@@ -202,8 +202,8 @@ PhLImageCreateFromPullRequestCliCommand >> logPullRequestDetails [
 
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> mcLoadProjectFromPR [
-	^ '"Metacello new baseline: ''{1}''; repository: ''{2}:{3}''; onConflictUseIncoming; load"' 
-	format: { self baselineName. self headRepo. self remoteBranch.}
+	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}:{3}''; onConflictUseIncoming; load"' 
+	format: { self baselineName. ('github://', self headRepo). self remoteBranch.}
 
 ]
 

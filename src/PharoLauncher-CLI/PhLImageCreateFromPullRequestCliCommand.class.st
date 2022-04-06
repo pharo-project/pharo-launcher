@@ -166,10 +166,8 @@ PhLImageCreateFromPullRequestCliCommand >> implicitRepository [
 { #category : #'command execution' }
 PhLImageCreateFromPullRequestCliCommand >> launchVmArguments [
 
-	|aString|
-	"use --nodisplay on Linux, otherwise headless".
-	aString := OSPlatform current isUnix ifTrue: [ '--nodisplay' ] ifFalse: [ '--headless' ].
-	^ OrderedCollection with: aString
+	"Use headless argument for now, check availability on platform"
+	^ OrderedCollection with: '--headless'
 	
 ]
 

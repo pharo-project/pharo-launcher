@@ -51,21 +51,20 @@ def buildArchitecture(architecture, pharoVersion) {
       }
       node('windows') {
         stage("Packaging-Windows Pharo${pharoVersion}-${architecture}-bits") {
-          when {
-            not { environment(name: "ARCHITECTURE", value: "arm64") }
+          if (env.ARCHITECTURE != "arm64") {
+            deleteDir()
+            unstash "pharo-launcher-one-${architecture}"
+            // Disable signing for now because the signing process now requires manual action
+            /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
+              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
+            /* } else { 
+              withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
+                bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
+              }              
+            } */
+            archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
+            stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
           }
-          deleteDir()
-          unstash "pharo-launcher-one-${architecture}"
-          // Disable signing for now because the signing process now requires manual action
-          /* if ( isPullRequest() ) { // Do not give access to certificates and do not sign */
-            bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease ./build.sh win-package\""
-          /* } else { 
-            withCredentials([usernamePassword(credentialsId: 'inriasoft-windows-developper', passwordVariable: 'PHARO_CERT_PASSWORD', usernameVariable: 'PHARO_SIGN_IDENTITY')]) {
-              bat "bash -c \"VERSION=$version IS_RELEASE=$isRelease SHOULD_SIGN=true ./build.sh win-package\""
-            }              
-          } */
-          archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
-          stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
         }
       }
       node('osx') {
@@ -172,8 +171,9 @@ def upload(file, launcherVersion) {
 }
 
 def fileNameArchSuffix(architecture) {
-  (architecture == '32') ? return 'x86'
-  return  (architecture == '64') ? 'x64' : architecture
+  if (architecture == '32') 
+    return 'x86'
+  return (architecture == '64') ? 'x64' : architecture
 }
 
 def isPullRequest() {

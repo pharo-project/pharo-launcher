@@ -144,11 +144,11 @@ PhLImagesPresenter >> buildImageTable [
 			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
-			width: 80;
+			width: 90;
 			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
-			width: 80;
+			width: 90;
 			beSortable;
 			yourself);
 		addColumn: ((SpStringTableColumn

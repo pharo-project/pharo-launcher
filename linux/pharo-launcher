@@ -18,8 +18,4 @@ gvfs-set-attribute \
 image="$RESOURCES/PharoLauncher.image"
  
 # execute
-exec "$LINUX/pharo" \
-	--plugins "$LINUX" \
-	--encoding utf8 \
-	-vm-display-X11 \
-	"$image"
+exec "$LINUX/pharo" "$image"

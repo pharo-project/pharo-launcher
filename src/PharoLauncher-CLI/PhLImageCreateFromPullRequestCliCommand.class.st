@@ -177,7 +177,11 @@ PhLImageCreateFromPullRequestCliCommand >> loadPullRequestCodeToImage: anImage [
 	|imageConfig |
 	imageConfig := self getPullRequestLoadConfigFor: anImage.
 	self logLoadingPullRequestUsing: imageConfig commandString.
-	anImage launchWithConfiguration: imageConfig.
+	"anImage launchWithConfiguration: imageConfig."
+	
+	"use handled execution and wait for result"
+	imageConfig launchProcess runAndWaitWithStdOutput.
+	self logLoadingFinished: anImage.
 	
 ]
 
@@ -186,6 +190,12 @@ PhLImageCreateFromPullRequestCliCommand >> logHeadRepoAndRemoteBranch [
 
 	self logInfoMessage: ('Identified remote branch: {1}.' format: { self remoteBranch } ).
 	self logInfoMessage: ('Head repository: {1}.' format: {self headRepo })
+]
+
+{ #category : #'command execution' }
+PhLImageCreateFromPullRequestCliCommand >> logLoadingFinished: anImage [
+
+	self logInfoMessage: ('Loading project and branch: {1}:{2} into image: {3} finished successfully!' format: { self headRepo. self remoteBranch. anImage name} )
 ]
 
 { #category : #'command execution' }

@@ -25,6 +25,7 @@ PhLImageCreateFromPullRequestCliCommand class >> launcherCmdFlags [
 	^ 
 	{	self repositoryFlag. 
 		self newImageFlag.
+		self subfolderFlag 
 	}
 ]
 
@@ -59,6 +60,21 @@ PhLImageCreateFromPullRequestCliCommand class >> repositoryFlag [
 					description: 'Repository argument in owner/project format.';
 					meaning: [ :pos | pos word asString ];
 					implicitMeaning: [ :arg :app | NotFound signal: self missingRepoArgMessage]).
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromPullRequestCliCommand class >> subfolderFlag [
+
+	^ (ClapFlag id: #subfolder)
+			description: 'The sub-folder containing the code. By default ''src'' sub-folder is used. ';
+			meaning: [ :arg :app | "this argument is optional "
+				(arg at: #subfolderArg) value];
+			implicitMeaning: [ :arg :app | app implicitSubfolder ];
+			add: ((ClapPositional id: #subfolderArg)
+					description: 'Subfolder argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingSubfolderArgMessage]);
+			yourself 
 ]
 
 { #category : #private }
@@ -163,6 +179,13 @@ PhLImageCreateFromPullRequestCliCommand >> implicitRepository [
 	^ 'pharo-project/pharo'
 ]
 
+{ #category : #default }
+PhLImageCreateFromPullRequestCliCommand >> implicitSubfolder [
+
+	"by default use 'src' as subfolder for sources"
+	^ 'src'
+]
+
 { #category : #'command execution' }
 PhLImageCreateFromPullRequestCliCommand >> launchVmArguments [
 
@@ -212,8 +235,13 @@ PhLImageCreateFromPullRequestCliCommand >> logPullRequestDetails [
 
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> mcLoadProjectFromPR [
-	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}:{3}''; onConflictUseIncoming; load"' 
-	format: { self baselineName. ('github://', self headRepo). self remoteBranch.}
+	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}:{3}/{4}''; onConflictUseIncoming; load"' 
+	format: { 
+		self baselineName. 
+		('github://', self headRepo). 
+		self remoteBranch. 
+		self sourcesSubFolder.
+	}
 
 ]
 
@@ -263,6 +291,12 @@ PhLImageCreateFromPullRequestCliCommand >> remoteRepoProjectLoadArguments [
 PhLImageCreateFromPullRequestCliCommand >> repoFullName [
 
 	^ self flagValueFor: #repository
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> sourcesSubFolder [
+
+	^ self flagValueFor: #subfolder
 ]
 
 { #category : #private }

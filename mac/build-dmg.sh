@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 set -ex
-# This script creats a .dmg out of an .app file. The resulting .dmg
+# This script creates a .dmg out of an .app file. The resulting .dmg
 # shows a nice pharo background and let the user drag&drop an
 # application in /Applications.
+
+# I can be run independently of the whole Pharo Launcher app building.
+# e.g. DMG_BACKGROUND_IMG=~/dev/rmod/pharo-launcher/mac-installer-background.png VERSION=2b89478 APP_NAME=PharoLauncher SHOULD_SIGN=false ~/dev/rmod/pharo-launcher/mac/build-dmg.sh
 
 # This script is taken from Andy Maloney
 # http://asmaloney.com/2013/07/howto/packaging-a-mac-os-x-application-using-a-dmg/
@@ -31,7 +34,8 @@ check_background_image_DPI_and_convert_it_if_not_72_by_72() {
        echo "WARNING: The background image's DPI is not 72.  This will result in distorted backgrounds on Mac OS X 10.7+."
        echo "         I will convert it to 72 DPI for you."
        
-       local _DMG_BACKGROUND_TMP="${DMG_BACKGROUND_IMG%.*}"_dpifix."${DMG_BACKGROUND_IMG##*.}"
+       local _DMG_BACKGROUND_BASENAME="${DMG_BACKGROUND_IMG##*/}"
+       local _DMG_BACKGROUND_TMP="${_DMG_BACKGROUND_BASENAME%.*}"_dpifix."${DMG_BACKGROUND_IMG##*.}"
 
        sips -s dpiWidth 72 -s dpiHeight 72 ${DMG_BACKGROUND_IMG} --out ${_DMG_BACKGROUND_TMP}
        

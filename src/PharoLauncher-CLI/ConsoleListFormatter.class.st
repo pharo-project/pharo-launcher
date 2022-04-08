@@ -48,28 +48,28 @@ ConsoleListFormatter class >> on: aCliCommand [
 		yourself 
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> attributeLabels [
-
 	"lazy initialize from command, if not explicitly set before"
-	attributeLabels ifNil: [ attributeLabels := cliCommand listPrintAttributeLabels  ].
-	^ attributeLabels 
+
+	^ attributeLabels
+		ifNil: [ attributeLabels := cliCommand listPrintAttributeLabels ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> attributeLabels: aLabels [
 
 	attributeLabels := aLabels
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> attributeValueBlocks [
 
-	attributeValueBlocks ifNil: [ attributeValueBlocks := cliCommand listPrintAttributeBlocks  ].
-	^ attributeValueBlocks 
+	^ attributeValueBlocks
+		ifNil: [ attributeValueBlocks := cliCommand listPrintAttributeBlocks ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> attributeValueBlocks: aBlocks [
 
 	attributeValueBlocks := aBlocks
@@ -82,45 +82,43 @@ ConsoleListFormatter >> attributeValuesFrom: aDomainObject [
 
 ]
 
-{ #category : #'accessing -command' }
-ConsoleListFormatter >> briefPrint [ 
+{ #category : #'accessing - command' }
+ConsoleListFormatter >> briefPrint [
 
-	briefPrint ifNil: [briefPrint := cliCommand briefPrint].
-	^ briefPrint 
+	^ briefPrint ifNil: [ briefPrint := cliCommand briefPrint ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> briefPrint: aBool [
 
 	briefPrint := aBool
 ]
 
-{ #category : #'accessing-public' }
+{ #category : #'accessing - public' }
 ConsoleListFormatter >> cliCommand: aCommand [
 
 	cliCommand := aCommand
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> delimiter [ 
 
-	delimiter ifNil: [ delimiter := cliCommand delimiter ].
-	^ delimiter 
+	^ delimiter ifNil: [ delimiter := cliCommand delimiter ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> delimiter: aString [ 
 
 	delimiter := aString
 ]
 
-{ #category : #'accessing-public' }
+{ #category : #'accessing - public' }
 ConsoleListFormatter >> domainObjects [
  
  ^ domainObjects
 ]
 
-{ #category : #'accessing-public' }
+{ #category : #'accessing - public' }
 ConsoleListFormatter >> domainObjects: anObjects [ 
 
 	domainObjects := anObjects 
@@ -145,27 +143,25 @@ ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: print
 		max
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> outStream [ 
 
-	outStream ifNil: [ outStream := cliCommand outStream ].
-	^ outStream 
+	^ outStream ifNil: [ outStream := cliCommand outStream ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> outStream: aWriteStream [
 
 	outStream := aWriteStream
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> outputAsSton [ 
 
-	outputAsSton ifNil: [outputAsSton := cliCommand outputAsSton].
-	^ outputAsSton
+	^ outputAsSton ifNil: [outputAsSton := cliCommand outputAsSton]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> outputAsSton: aBool [
 
 	outputAsSton := aBool
@@ -239,10 +235,11 @@ ConsoleListFormatter >> printLineSized: aWidth [
 
 { #category : #printing }
 ConsoleListFormatter >> printList [
-	
-	self outputAsSton 
-	ifTrue: [^  self printListAsSton].
-	self printListAttributes 
+
+	self outputAsSton
+		ifTrue: [ ^ self printListAsSton ].
+		
+	self printListAttributes
 ]
 
 { #category : #printing }
@@ -253,11 +250,12 @@ ConsoleListFormatter >> printListAsSton [
 
 { #category : #printing }
 ConsoleListFormatter >> printListAttributes [
-	
-	self domainObjects isEmptyOrNil ifTrue: [ ^ self ].
-	self rowMode 
-	ifTrue: [ self printOneAttrPerRow]
-	ifFalse: [self printAttributeTable]
+	self domainObjects isEmptyOrNil
+		ifTrue: [ ^ self ].
+		
+	self rowMode
+		ifTrue: [ self printOneAttrPerRow ]
+		ifFalse: [ self printAttributeTable ]
 ]
 
 { #category : #private }
@@ -287,27 +285,25 @@ ConsoleListFormatter >> printRowValues: aStringColl by: colWidths [
 	self outStream newLine.
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> printSequence [ 
 
-	printSequence ifNil: [ printSequence := cliCommand printSequence ].
-	^ printSequence
+	^ printSequence ifNil: [ printSequence := cliCommand printSequence ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> printSequence: aBool [
 
 	printSequence := aBool 
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> rowMode [ 
 
-	rowMode ifNil: [ rowMode := cliCommand rowMode ].
-	^ rowMode
+	^ rowMode ifNil: [ rowMode := cliCommand rowMode ]
 ]
 
-{ #category : #'accessing -command' }
+{ #category : #'accessing - command' }
 ConsoleListFormatter >> rowMode: aBool [
 
 	rowMode := aBool 

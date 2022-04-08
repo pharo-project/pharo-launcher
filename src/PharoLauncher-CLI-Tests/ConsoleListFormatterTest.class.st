@@ -189,10 +189,10 @@ ConsoleListFormatterTest >> testPrintList [
 { #category : #test }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
-	formatter domainObjects: {PhLImagesMock atRandom. PhLImagesMock atRandom. PhLImagesMock atRandom.}.
+	formatter domainObjects: {PhLImageMock atRandom. PhLImageMock atRandom. PhLImageMock atRandom.}.
 	formatter printListAsSton.
 
-	self assert: (formatter outStream contents includesSubstring: 'PhLImagesMock').
+	self assert: (formatter outStream contents includesSubstring: #PhLImageMock).
 ]
 
 { #category : #test }

@@ -42,6 +42,16 @@ ConsoleListFormatterTest >> testGetColumnWidthsFrom [
 		self assert: (formatter getColumnWidthsFrom: #(1 2 3)) equals: #(10 5 5).
 ]
 
+{ #category : #tests }
+ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
+
+	| size |
+	size := formatter getMaxPrintStringWidthFor: #(1 2 3) printBlock: [ :aNumber | aNumber asWords ].
+	
+	"three is the longest word and has a size of 5"
+	self assert: size equals: 5.
+]
+
 { #category : #test }
 ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 	formatter

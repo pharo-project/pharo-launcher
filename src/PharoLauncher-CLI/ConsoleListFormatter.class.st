@@ -127,13 +127,22 @@ ConsoleListFormatter >> domainObjects: anObjects [
 ]
 
 { #category : #private }
-ConsoleListFormatter >> getColumnWidthsFrom: anObjects [
-	|aLabels|
+ConsoleListFormatter >> getColumnWidthsFrom: someObjects [
 	"get max column width either from column label or value in column"
-	aLabels := self attributeLabels.
-	^ 	self attributeValueBlocks withIndexCollect: [:attrBlock :idx| 
-			(anObjects getMaxWidthOn: attrBlock) max: (aLabels at: idx) size
-		]
+	| labels |
+	
+	labels := self attributeLabels.
+	^ self attributeValueBlocks
+		withIndexCollect:
+			[ :attrBlock :index | (self getMaxPrintStringWidthFor: someObjects printBlock: attrBlock) max: (labels at: index) size ]
+]
+
+{ #category : #private }
+ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: printBlock [
+	"evaluate print block and obtain string size, return max value from collection"
+
+	^ (someObjects collect: [ :item | (printBlock value: item) size ])
+		max
 ]
 
 { #category : #'accessing -command' }

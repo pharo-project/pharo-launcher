@@ -18,8 +18,9 @@ Class {
 { #category : #accessing }
 PhLVirtualMachinesMock class >> atRandom [
 	|randomTimeBlock attrArray|
-	randomTimeBlock := [  (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom ) asString]. 
-attrArray := 
+	
+	randomTimeBlock := [ (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom ) asString ]. 
+	attrArray := 
 			{{'90	-x86'. true. randomTimeBlock value. 'https://files.pharo.org/get-files/90/pharo-vm-Darwin-x86_64-stable.zip'}.
 			{'90-x64'. true. randomTimeBlock value. 'https://files.pharo.org/get-files/90/pharo-vm-Darwin-x86_64-stable.zip'}.
 			{'80-x86'. true. randomTimeBlock value. 'https://files.pharo.org/get-files/80/pharo-mac-stable.zip'}.
@@ -27,7 +28,7 @@ attrArray :=
 			{'80-x64-headless'. true. randomTimeBlock value. 'https://files.pharo.org/get-files/80/pharo-mac-stable.zip'}.
 			{'100-x64'. false. randomTimeBlock value. 'https://files.pharo.org/get-files/100/pharo-vm-Darwin-x86_64-stable.zip'}.		
 			 } atRandom.
-^ self new 
+	^ self new 
 		id: attrArray first;
 		isValid: attrArray second;
 		lastUpdateTime: attrArray third;

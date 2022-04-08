@@ -172,7 +172,7 @@ ConsoleListFormatter >> outputAsSton: aBool [
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printAttributeHeaders: aLabels by: colWidths [
+ConsoleListFormatter >> printAttributeHeaders: labels by: colWidths [
 	"print header labels and header line"
 
 	"print sequence nr. eventually"
@@ -180,14 +180,14 @@ ConsoleListFormatter >> printAttributeHeaders: aLabels by: colWidths [
 		self printCell: '#' width: 2.
 		self printDelimiter
 	].
-	self printRowValues: aLabels by: colWidths. 
+	self printRowValues: labels by: colWidths. 
 	self printHeaderLinesBy: colWidths.
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printAttributeRows: anObjects by: colWidths [
+ConsoleListFormatter >> printAttributeRows: someObjects by: colWidths [
 
-	anObjects withIndexDo: [:listedObject :idx|
+	someObjects withIndexDo: [:listedObject :idx|
 		self printCell: idx asString width: 2.
 		self printDelimiter.
 		self printRowValues: (self attributeValuesFrom: listedObject) by: colWidths		

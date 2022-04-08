@@ -23,7 +23,10 @@ ConsoleListFormatterTest >> setUp [
 { #category : #test }
 ConsoleListFormatterTest >> testAttributeValuesFrom [
 
-	formatter attributeValueBlocks: { [:a |a asString  ]. [:a |(a ** 2) asString  ]. [:a |(a ** 3) asString  ] }.
+	formatter attributeValueBlocks: { 
+		[:a |a asString  ] . 
+		[:a |(a ** 2) asString ] . 
+		[:a |(a ** 3) asString ] }.
 
 	self assert: (formatter attributeValuesFrom: 2) equals: #('2' '4' '8').
 ]
@@ -37,9 +40,15 @@ ConsoleListFormatterTest >> testFormatterAccessors [
 
 { #category : #test }
 ConsoleListFormatterTest >> testGetColumnWidthsFrom [
-		formatter attributeLabels: #('1234567890' 'x' 'x').
-		formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a asWords  ]. [:a |a asWords  ] }.
-		self assert: (formatter getColumnWidthsFrom: #(1 2 3)) equals: #(10 5 5).
+	formatter attributeLabels: #('1234567890' 'x' 'x').
+	formatter attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a asWords ].
+			[ :a | a asWords ]}.
+		
+	self
+		assert: (formatter getColumnWidthsFrom: #(1 2 3))
+		equals: #(10 5 5)
 ]
 
 { #category : #tests }
@@ -112,7 +121,7 @@ ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 { #category : #test }
 ConsoleListFormatterTest >> testPrintAttributeTable [
 
-		|expectedString|
+	|expectedString|
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
 	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
 	formatter domainObjects: #(1 2 3).

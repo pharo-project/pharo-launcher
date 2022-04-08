@@ -46,7 +46,7 @@ PhLImageCreateCliCommand class >> launcherCmdDescription [
 PhLImageCreateCliCommand class >> launcherCmdFlags [
 
 	^ {(ClapFlag id: #templateCategory)
-				description: 'Allows to use a template categroy to search the target template.';
+				description: 'Allows to use a template category to search the target template.';
 				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
 				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName. ];
 				add: ((ClapPositional id: #templateCategoryName)
@@ -65,7 +65,7 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 				description: 'New image.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |
-						NotFound signal: 'An rgument is missing. Please specify the name for the new image'. ];
+						NotFound signal: 'An argument is missing. Please specify the name for the new image'. ];
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';

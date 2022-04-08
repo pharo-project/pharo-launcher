@@ -98,9 +98,9 @@ PhLVirtualMachineMock >> isValid [
 ]
 
 { #category : #accessing }
-PhLVirtualMachineMock >> isValid: aBool [
+PhLVirtualMachineMock >> isValid: aBoolean [
 
-	isValid := aBool
+	isValid := aBoolean
 	
 ]
 

@@ -260,18 +260,16 @@ ConsoleListFormatter >> printListAttributes [
 
 { #category : #private }
 ConsoleListFormatter >> printOneAttrPerRow [
-
-	|blockArray aLabels|
+	| blockArray aLabels |
+	
 	blockArray := self attributeValueBlocks.
-	aLabels := self attributeLabels. 
-	self domainObjects withIndexDo: [:listedObject :idx|
-
-		self printSequence ifTrue: [self printRowValues: { 'Nr.'. idx asString. } by: { 0. 2. }].
-		aLabels withIndexDo: [:attrLabel :attrIdx |
-		self printRowValues: { attrLabel. (blockArray at: attrIdx) value: listedObject. } by: { 0. 0. }.
-		].
-		self outStream newLine.
-	]
+	aLabels := self attributeLabels.
+	self domainObjects withIndexDo: [ :listedObject :idx | 
+		self printSequence
+			ifTrue: [ self printRowValues: {'Nr.'. idx asString} by: {0 . 2} ].
+		aLabels withIndexDo: [ :attrLabel :attrIdx | 
+			self printRowValues: {attrLabel. ((blockArray at: attrIdx) value: listedObject)} by: {0 . 0} ].
+		self outStream newLine ]
 ]
 
 { #category : #private }

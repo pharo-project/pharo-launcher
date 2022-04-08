@@ -15,7 +15,7 @@ Class {
 { #category : #adding }
 PhLVirtualMachinesMockRepo >> addVmNamed: aVMName at: someDictionaryIndice [
 	| vm |
-	vm := PhLVirtualMachinesMock id: aVMName.
+	vm := PhLVirtualMachineMock id: aVMName.
 	availableVirtualMachines at: someDictionaryIndice put: vm.
 	^ self
 ]

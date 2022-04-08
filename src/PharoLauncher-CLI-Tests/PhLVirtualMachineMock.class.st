@@ -2,7 +2,7 @@
 Only usefull for the tests, is usefull to create ""fake"" virtual machines. 
 "
 Class {
-	#name : #PhLVirtualMachinesMock,
+	#name : #PhLVirtualMachineMock,
 	#superclass : #Object,
 	#instVars : [
 		'id',
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : #accessing }
-PhLVirtualMachinesMock class >> atRandom [
+PhLVirtualMachineMock class >> atRandom [
 	|randomTimeBlock attrArray|
 	
 	randomTimeBlock := [ (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom ) asString ]. 
@@ -38,97 +38,97 @@ PhLVirtualMachinesMock class >> atRandom [
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock class >> id: aString [
+PhLVirtualMachineMock class >> id: aString [
 	^ self atRandom id: aString
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> downloadUrl [
+PhLVirtualMachineMock >> downloadUrl [
 
 	^ downloadUrl 
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> downloadUrl: anUrl [
+PhLVirtualMachineMock >> downloadUrl: anUrl [
 
 	downloadUrl := anUrl
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> id [ 
+PhLVirtualMachineMock >> id [ 
    ^id
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> id: aString [
+PhLVirtualMachineMock >> id: aString [
 	id := aString
 ]
 
 { #category : #instance }
-PhLVirtualMachinesMock >> initialize [ 
+PhLVirtualMachineMock >> initialize [ 
 	super initialize.
 	self isDeleted: false.
 	self isUpdated: false
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isDeleted [
+PhLVirtualMachineMock >> isDeleted [
 	^ isDeleted
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isDeleted: aBoolean [
+PhLVirtualMachineMock >> isDeleted: aBoolean [
 	isDeleted := aBoolean
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isUpdated [
+PhLVirtualMachineMock >> isUpdated [
 	^ isUpdated
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isUpdated: aboolean [
+PhLVirtualMachineMock >> isUpdated: aboolean [
 	isUpdated := aboolean
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isValid [ 
+PhLVirtualMachineMock >> isValid [ 
 
 	^ isValid 
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> isValid: aBool [
+PhLVirtualMachineMock >> isValid: aBool [
 
 	isValid := aBool
 	
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> lastUpdateTime [
+PhLVirtualMachineMock >> lastUpdateTime [
 
 	^ lastUpdateTime 
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> lastUpdateTime: aDateTime [
+PhLVirtualMachineMock >> lastUpdateTime: aDateTime [
 
 	lastUpdateTime := aDateTime 
 ]
 
 { #category : #accessing }
-PhLVirtualMachinesMock >> lastUpdateTimeDescription [
+PhLVirtualMachineMock >> lastUpdateTimeDescription [
 
 	^ lastUpdateTime asString
 ]
 
 { #category : #instance }
-PhLVirtualMachinesMock >> removeFromSystem [
+PhLVirtualMachineMock >> removeFromSystem [
 	self isDeleted: true.
    
 ]
 
 { #category : #instance }
-PhLVirtualMachinesMock >> updateFromUrl [
+PhLVirtualMachineMock >> updateFromUrl [
 	 self isUpdated: true.
 ]

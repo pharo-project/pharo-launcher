@@ -1,5 +1,5 @@
 "
-This is mock object that simulates PhLCommand instances for testing command logic
+This is a mock object that simulates PhLCommand instances for testing command logic
 "
 Class {
 	#name : #PhLCliCommandMock,
@@ -34,9 +34,9 @@ PhLCliCommandMock >> briefPrint: aBool [
 { #category : #initialization }
 PhLCliCommandMock >> delimiter [
 
-	^ self rowMode 
-	ifTrue: [ ': ' ]
-	ifFalse: [ '*' ]
+	^ self rowMode
+		ifTrue: [ ': ' ]
+		ifFalse: [ '*' ]
 ]
 
 { #category : #initialization }

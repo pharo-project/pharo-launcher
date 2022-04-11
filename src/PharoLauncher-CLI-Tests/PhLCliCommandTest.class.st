@@ -48,7 +48,7 @@ PhLCliCommandTest >> setUp [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testBoolValueFor [
+PhLCliCommandTest >> testBooleanValueFor [
 
 	"implicit value of not implemented command bool argument is false"
 	| aCommand aMatch|
@@ -56,12 +56,12 @@ PhLCliCommandTest >> testBoolValueFor [
 	aCommand :=  PhLCliCommand new.
 	aMatch := (context arguments: #('launcher')) doMatch.
 	aCommand setArguments: aMatch.
-	self deny: (aCommand boolValueFor: #someRandomID).
+	self deny: (aCommand booleanValueFor: #someRandomID).
 	
 	"help flag should return true"
 	aMatch := (context arguments: #('launcher' '--help')) doMatch.
 	aCommand setArguments: aMatch.
-	self assert: (aCommand boolValueFor: #helpFlag).
+	self assert: (aCommand booleanValueFor: #helpFlag).
 ]
 
 { #category : #test }

@@ -145,7 +145,7 @@ PhLCliCommand class >> stonFlag [
 ]
 
 { #category : #'private ' }
-PhLCliCommand >> boolValueFor: flagId [
+PhLCliCommand >> booleanValueFor: flagId [
 
 	^ [(arguments at: flagId) value: self]
 		on: NotYetImplemented
@@ -155,7 +155,7 @@ PhLCliCommand >> boolValueFor: flagId [
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
-	^ self boolValueFor:  #brief
+	^ self booleanValueFor:  #brief
 ]
 
 { #category : #accessing }
@@ -308,7 +308,7 @@ PhLCliCommand >> outStream [
 { #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 
-	^ self boolValueFor: #ston
+	^ self booleanValueFor: #ston
 ]
 
 { #category : #accessing }
@@ -326,7 +326,7 @@ PhLCliCommand >> printSequence [
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
-	^ self boolValueFor: #rowMode
+	^ self booleanValueFor: #rowMode
 ]
 
 { #category : #initialization }

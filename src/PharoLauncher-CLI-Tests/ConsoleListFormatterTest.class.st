@@ -183,10 +183,15 @@ ConsoleListFormatterTest >> testPrintLineSized [
 { #category : #test }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
-	formatter domainObjects: {PhLImageMock atRandom. PhLImageMock atRandom. PhLImageMock atRandom.}.
-	formatter printListAsSton.
+	| domainObjects deserialized |
+	domainObjects := { PhLImageMock atRandom. PhLImageMock atRandom. PhLImageMock atRandom }.
+	formatter domainObjects: domainObjects.
 
-	self assert: (formatter outStream contents includesSubstring: #PhLImageMock).
+	formatter printListAsSton.
+	deserialized := STON fromString: formatter outStream contents.
+	
+	self assert: deserialized size equals: 3.
+	self assert: deserialized first class equals: PhLImageMock.
 ]
 
 { #category : #test }

@@ -162,9 +162,9 @@ ConsoleListFormatter >> outputAsSton [
 ]
 
 { #category : #'accessing - command' }
-ConsoleListFormatter >> outputAsSton: aBool [
+ConsoleListFormatter >> outputAsSton: aBoolean [
 
-	outputAsSton := aBool
+	outputAsSton := aBoolean
 ]
 
 { #category : #private }

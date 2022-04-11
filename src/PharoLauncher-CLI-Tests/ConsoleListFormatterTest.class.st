@@ -192,7 +192,7 @@ ConsoleListFormatterTest >> testPrintList [
 	formatter printList.
 	tableModeString  := formatter outStream contents.
 	command resetOutStream.
-	formatter printListAttributes.
+	formatter printAttributeTable.
 	self assert: formatter outStream contents equals: tableModeString.
 
 	"test for ston output flag"
@@ -215,30 +215,44 @@ ConsoleListFormatterTest >> testPrintListAsSton [
 ]
 
 { #category : #test }
-ConsoleListFormatterTest >> testPrintListAttributes [
+ConsoleListFormatterTest >> testPrintListAttributeShouldPrintAttributTableWhenStonDisabledAndRowModeEnabled [
 
-		| rowModeString tableModeString   |
-	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
-	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
-	formatter domainObjects: #(1 2 3).
+	| rowModeString |
 	
-	"test if row mode works when using printListAttributes"
-	formatter rowMode: true.
-	formatter printListAttributes.
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter
+		attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a squared asWords ].
+			[ :a | (a ** 3) asWords ]};
+		domainObjects: #(1 2 3);
+		rowMode: true;
+		printOneAttrPerRow.
 	rowModeString := formatter outStream contents.
 	command resetOutStream.
-	"in row mode it should be equal to output of printOneAttrPerRow"
-	formatter printOneAttrPerRow.
-	self assert: formatter outStream contents equals: rowModeString.
+
+	formatter printList.
 	
-	"same for table mode - expected output is equal to printAttributeTable output"
-	formatter rowMode: false.		
-	command resetOutStream.
-	formatter printListAttributes.
+	self assert: formatter outStream contents equals: rowModeString
+]
+
+{ #category : #test }
+ConsoleListFormatterTest >> testPrintListShouldPrintAttributTableWhenStonAndRowModesDisabled [
+	| tableModeString |
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter
+		attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a squared asWords ].
+			[ :a | (a ** 3) asWords ]};
+		domainObjects: #(1 2 3);
+		printAttributeTable.
 	tableModeString := formatter outStream contents.
 	command resetOutStream.
-	formatter printAttributeTable.
-	self assert: formatter outStream contents equals: tableModeString.
+
+	formatter printList.
+	
+	self assert: formatter outStream contents equals: tableModeString
 ]
 
 { #category : #test }

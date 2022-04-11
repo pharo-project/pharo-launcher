@@ -40,14 +40,3 @@ PhLTestVirtualMachineManager >> createVmNamed: aName private: isPrivateVm [
 	"needed on Linux"
 	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 ]
-
-{ #category : #initialization }
-PhLTestVirtualMachineManager >> initialize [ 
-	super initialize.
-	self createVmNamed: self singleVmName.
-]
-
-{ #category : #accessing }
-PhLTestVirtualMachineManager >> singleVmName [
-	^ 'TestVM'
-]

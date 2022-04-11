@@ -40,7 +40,7 @@ PhLImportImageCommandTest >> testImportImageImportsImageSourcesFile [
 	| command importedImageName tmpDirectory importedImageDirectory sourcesFileName |
 	
 	importedImageName := 'foo'.
-	tmpDirectory := presenter fileSystem / 'tmp'.
+	tmpDirectory := FileSystem memory / 'tmp'.
 	sourcesFileName := 'ae2b.sources'.
 	command := PhLImportImageCommand new.
 	command context: presenter.
@@ -60,7 +60,7 @@ PhLImportImageCommandTest >> testImportImageImportsImageVersionFile [
 	| command importedImageName tmpDirectory importedImageDirectory |
 	
 	importedImageName := 'foo'.
-	tmpDirectory := presenter fileSystem / 'tmp'.
+	tmpDirectory := FileSystem memory / 'tmp'.
 	command := PhLImportImageCommand new.
 	command context: presenter.
 	presenter 
@@ -81,7 +81,7 @@ PhLImportImageCommandTest >> testImportNonExistingImage [
 	command := PhLImportImageCommand new.
 	command context: presenter.
 	presenter := presenter requestAnswer:
-		             presenter fileSystem / 'tmp' / 'does_not_exists.image'.
+		             FileSystem memory / 'tmp' / 'does_not_exists.image'.
 
 	self 
 		should: [ command execute ]

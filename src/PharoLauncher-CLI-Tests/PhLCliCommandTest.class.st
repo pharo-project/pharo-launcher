@@ -81,8 +81,21 @@ PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testFilterPrintAttributesFrom [
+PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenNoBriefFlag [
+	
+	| aCommand aMatch|
+	
+	aCommand :=  PhLCliCommand new.
 
+	context specification add: aCommand class briefFlag.
+	aMatch := (context arguments: #('launcher' '--brief')) doMatch.
+	aCommand setArguments: aMatch.
+	
+	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
+]
+
+{ #category : #test }
+PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnOriginalCollectionWhenNoBriefFlag [
 	
 	| aCommand aMatch|
 	
@@ -91,13 +104,6 @@ PhLCliCommandTest >> testFilterPrintAttributesFrom [
 	aCommand setArguments: aMatch.
 	"filter without brief flag should return original collection"
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1 2 3).
-	
-	"now implement using brief print, it should be just collection with first element"
-	context specification add: aCommand class briefFlag.
-	aMatch := (context arguments: #('launcher' '--brief')) doMatch.
-	aCommand setArguments: aMatch.
-	
-	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
 ]
 
 { #category : #test }

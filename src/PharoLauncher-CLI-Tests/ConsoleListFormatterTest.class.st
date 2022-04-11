@@ -278,7 +278,14 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 
 { #category : #test }
 ConsoleListFormatterTest >> testPrintRowValuesBy [
-
 	formatter printRowValues: #('One' 'Two' 'Three') by: #(5 3 5).
-	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: 'One  *Two*Three'; newLine]).
+	
+	self
+		assert: command outStream contents
+		equals:
+			(String
+				streamContents: [ :aStream | 
+					aStream
+						nextPutAll: 'One  *Two*Three';
+						newLine ])
 ]

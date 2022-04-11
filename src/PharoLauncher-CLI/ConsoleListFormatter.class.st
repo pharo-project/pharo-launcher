@@ -290,9 +290,9 @@ ConsoleListFormatter >> printSequence [
 ]
 
 { #category : #'accessing - command' }
-ConsoleListFormatter >> printSequence: aBool [
+ConsoleListFormatter >> printSequence: aBoolean [
 
-	printSequence := aBool 
+	printSequence := aBoolean 
 ]
 
 { #category : #'accessing - command' }

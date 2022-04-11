@@ -4,7 +4,7 @@ I'm exactly the same as the standard settings browser except I save to a dedicat
 Class {
 	#name : #PhLSettingTree,
 	#superclass : #SettingTree,
-	#category : 'PharoLauncher-Core-Settings'
+	#category : #'PharoLauncher-Core-Settings'
 }
 
 { #category : #accessing }

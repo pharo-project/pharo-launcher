@@ -4,7 +4,7 @@ I represent a run of a job (one configuration) resulting from a matrix job.
 Class {
 	#name : #PhLJenkins2Run,
 	#superclass : #PhLJenkins2WithArtifactsEntity,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #protected }

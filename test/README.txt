@@ -1,0 +1,1 @@
+This directory contains the scripts to tests the list running images and kill images functionalities. TestKillImage and testListRunningImages scripts needs the shunit application to work. If it is absent, it is automatically dowload by the ensureShunitIsPresent script.  

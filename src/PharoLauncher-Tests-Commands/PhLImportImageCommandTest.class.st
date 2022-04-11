@@ -16,12 +16,13 @@ PhLImportImageCommandTest >> setUp [
 
 { #category : #tests }
 PhLImportImageCommandTest >> testCanImportAnImage [
-	| command images |
+	| command images someFolder |
 	command := PhLImportImageCommand new.
 	command context: presenter.
+	someFolder := FileSystem memory / 'tmp'.
 	presenter 
-		createImageNamed: 'foo' in: presenter fileSystem / 'tmp';
-		requestAnswer: presenter fileSystem / 'tmp' / 'foo.image'.
+		createImageNamed: 'foo' in: someFolder;
+		requestAnswer:  someFolder / 'foo.image'.
 	
 	command execute.
 	

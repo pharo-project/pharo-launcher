@@ -294,6 +294,12 @@ PhLImage >> hasChildren [
 	^ false
 ]
 
+{ #category : #configuring }
+PhLImage >> hasConfiguration: aConf [
+
+   ^ launchConfigurations anySatisfy: [ :a | a name = aConf name ]
+]
+
 { #category : #accessing }
 PhLImage >> imageFile [
 	^ self file
@@ -353,13 +359,30 @@ PhLImage >> launchConfigurations: aCollection [
 	launchConfigurations := aCollection
 ]
 
+{ #category : #accessing }
+PhLImage >> launchScript [
+	^ String streamContents: [ :stream |
+		stream
+			nextPutAll: '#!/usr/bin/env bash';
+			lf;
+			nextPutAll: 'pharo-launcher image launch ';
+			nextPutAll: self location;
+			lf.
+	]
+]
+
+{ #category : #accessing }
+PhLImage >> launchScriptName [
+	^ file parent / (self name , '.sh').
+]
+
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	| architectureWarningEnabled continue |
 
 	self canBeLaunched
-		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
-
+		ifFalse: [ PhLArchitectureError signalImage: self.
+			^ self ].
 	architectureWarningEnabled := true.
 	continue := true.
 	[ [ | processWrapper|

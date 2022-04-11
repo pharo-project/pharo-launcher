@@ -22,6 +22,11 @@ PhLCacheTemplateGroup class >> group: aTemplateGroup [
 		yourself
 ]
 
+{ #category : #comparing }
+PhLCacheTemplateGroup >> hash [
+	^ delegate hash
+]
+
 { #category : #accessing }
 PhLCacheTemplateGroup >> icon [
 	^ delegate icon

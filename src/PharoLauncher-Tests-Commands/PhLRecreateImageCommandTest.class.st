@@ -13,30 +13,37 @@ PhLRecreateImageCommandTest >> setUp [
 	presenter := PhLTestImagesPresenter new
 ]
 
+{ #category : #acccessing }
+PhLRecreateImageCommandTest >> templateZipFile [
+	| archive zipFile |
+	archive := ZipArchive new.
+	archive addDeflateString: 'foo' as: 'bar.image'.
+	archive addDeflateString: 'foo' as: 'bar.changes'.
+	
+	zipFile := FileSystem memory root / 'template.zip'.
+	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	^ zipFile
+]
+
 { #category : #tests }
 PhLRecreateImageCommandTest >> testCanRecreateAnImage [
-	| command images archive zipFile image |
+	| command images image |
 	command := PhLRecreateImageCommand new.
 	command context: presenter.
 	presenter selectImageAt: 1.
 	images := presenter selectedImages.
-	archive := ZipArchive new.
-	archive addDeflateString: 'foo' as: 'bar.image'.
-	archive addDeflateString: 'foo' as: 'bar.changes'.
-	zipFile := presenter fileSystem / 'template.zip'. 
-	zipFile binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
-	images do: [ :img | img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: zipFile)].
+	images
+		do: [ :img | 
+			img originTemplate: (PhLLocalTemplate name: 'Foo test template' zipFile: self templateZipFile) ].
 	presenter selection: images.
 	
 	command execute.
 	
 	images := command imagesPresenter imageNames.
-	self
-		assertCollection: images
-		hasSameElements: #('TestImage').
-	image := presenter fileSystem / 'TestImage' /'TestImage.image'.
+	self assertCollection: images hasSameElements: #('TestImage').
+	image := presenter imageRepository hasImageOnFileSystemNamed: 'TestImage'.
 	self assert: image exists.
-	self assert: image contents equals: 'foo'.
+	self assert: image contents equals: 'foo'
 ]
 
 { #category : #tests }

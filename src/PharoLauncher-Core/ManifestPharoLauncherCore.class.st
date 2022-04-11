@@ -4,7 +4,7 @@ I stores metadata on true and false positive critics. These meta data are used b
 Class {
 	#name : #ManifestPharoLauncherCore,
 	#superclass : #Object,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #'meta data' }

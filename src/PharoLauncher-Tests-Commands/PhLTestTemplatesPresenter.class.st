@@ -31,23 +31,20 @@ PhLTestTemplatesPresenter >> createButtonEnabled [
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createLocalTemplateNamed: aName [
-	| zipFile template |
-	
-	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
-	template := PhLLocalTemplate name: aName zipFile: zipFile.
-	self localTemplatesGroup
-		register: template
-		withZip: zipFile.
-	self newZipArchive: zipFile.
+	| template |
+	template := self model createLocalTemplateNamed: aName.
 	self refresh.
 	^ template
 ]
 
 { #category : #configuring }
 PhLTestTemplatesPresenter >> createRemoteTemplateNamed: aName [
-	self remoteTemplatesGroup
-		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+	|template|
+	template := self model createRemoteTemplateNamed: aName.
 	self refresh.
+	^template
+	
+	
 ]
 
 { #category : #'api - accessing' }
@@ -63,7 +60,7 @@ PhLTestTemplatesPresenter >> imageRepository [
 
 { #category : #initialization }
 PhLTestTemplatesPresenter >> initialize [
-	self model: (PhLTemplateGroupTestRepository new).
+	self model: (PhLTemplateTestRepository new).
 	self application: (PharoLauncherApplication new
 		scriptsDirectory: FileSystem memory root;
 		yourself).
@@ -90,13 +87,9 @@ PhLTestTemplatesPresenter >> newRequest [
 
 { #category : #private }
 PhLTestTemplatesPresenter >> newZipArchive: aFileReference [
-	| archive |
-	archive := ZipArchive new.
-	archive
-		addDeflateString: 'foo' as: 'bar.image';
-		addDeflateString: 'foo' as: 'bar.changes'.
-	aFileReference
-		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
+	
+	^ self model newZipArchive: aFileReference.
+	
 
 ]
 

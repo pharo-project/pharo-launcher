@@ -175,6 +175,11 @@ PhLDirectoryBasedImageRepository >> hasImages [
 ]
 
 { #category : #accessing }
+PhLDirectoryBasedImageRepository >> imageNamed: lowercaseImageName [
+	^ self images detect: [ :image | image name asLowercase = lowercaseImageName ]
+]
+
+{ #category : #accessing }
 PhLDirectoryBasedImageRepository >> imageNames [
 	^ self withImagesFilesCollect: #basenameWithoutExtension
 ]

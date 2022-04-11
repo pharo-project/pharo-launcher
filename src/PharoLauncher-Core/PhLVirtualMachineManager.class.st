@@ -214,6 +214,7 @@ PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 		reject: [ :entry | entry basename = 'private' ]
 		thenDo: [ :entry | | vm |
 			vm := PhLVirtualMachine directory: entry private: (aFileReference = self privateVmStore).
+			vm manager: self.
 			vm ifValid: [ vmsOnDisk at: entry basename put: vm ] ].
 	^ vmsOnDisk
 ]

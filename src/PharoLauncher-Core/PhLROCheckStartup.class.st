@@ -5,7 +5,7 @@ Currently needed for Epicea, logs, etc.
 Class {
 	#name : #PhLROCheckStartup,
 	#superclass : #Object,
-	#category : 'PharoLauncher-Core-Model'
+	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #initialization }

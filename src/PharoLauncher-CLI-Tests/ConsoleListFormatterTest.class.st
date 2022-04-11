@@ -181,31 +181,6 @@ ConsoleListFormatterTest >> testPrintLineSized [
 ]
 
 { #category : #test }
-ConsoleListFormatterTest >> testPrintList [
-
-	| stonString tableModeString |
-	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
-	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
-	formatter domainObjects: #(1 2 3).
-	
-	"test if table is printed, if ston mode is disabled"
-	formatter printList.
-	tableModeString  := formatter outStream contents.
-	command resetOutStream.
-	formatter printAttributeTable.
-	self assert: formatter outStream contents equals: tableModeString.
-
-	"test for ston output flag"
-	command resetOutStream.
-	formatter outputAsSton: true.
-	formatter printList.
-	stonString  := formatter outStream contents.
-	command resetOutStream.
-	formatter printListAsSton.
-	self assert: formatter outStream contents equals: stonString.
-]
-
-{ #category : #test }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
 	formatter domainObjects: {PhLImageMock atRandom. PhLImageMock atRandom. PhLImageMock atRandom.}.
@@ -215,7 +190,26 @@ ConsoleListFormatterTest >> testPrintListAsSton [
 ]
 
 { #category : #test }
-ConsoleListFormatterTest >> testPrintListAttributeShouldPrintAttributTableWhenStonDisabledAndRowModeEnabled [
+ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRowModesDisabled [
+	| tableModeString |
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter
+		attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a squared asWords ].
+			[ :a | (a ** 3) asWords ]};
+		domainObjects: #(1 2 3);
+		printAttributeTable.
+	tableModeString := formatter outStream contents.
+	command resetOutStream.
+
+	formatter printList.
+	
+	self assert: formatter outStream contents equals: tableModeString
+]
+
+{ #category : #test }
+ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisabledAndRowModeEnabled [
 
 	| rowModeString |
 	
@@ -234,25 +228,6 @@ ConsoleListFormatterTest >> testPrintListAttributeShouldPrintAttributTableWhenSt
 	formatter printList.
 	
 	self assert: formatter outStream contents equals: rowModeString
-]
-
-{ #category : #test }
-ConsoleListFormatterTest >> testPrintListShouldPrintAttributTableWhenStonAndRowModesDisabled [
-	| tableModeString |
-	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
-	formatter
-		attributeValueBlocks:
-			{[ :a | a asWords ].
-			[ :a | a squared asWords ].
-			[ :a | (a ** 3) asWords ]};
-		domainObjects: #(1 2 3);
-		printAttributeTable.
-	tableModeString := formatter outStream contents.
-	command resetOutStream.
-
-	formatter printList.
-	
-	self assert: formatter outStream contents equals: tableModeString
 ]
 
 { #category : #test }

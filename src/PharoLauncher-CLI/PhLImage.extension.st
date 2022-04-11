@@ -16,13 +16,12 @@ PhLImage class >> extendedListPrintAttributeBlocks [
 
 { #category : #'*PharoLauncher-CLI' }
 PhLImage class >> extendedListPrintAttributeLabels [
-		"this is used to dump extended image information"
-	|aColl|
-	aColl := OrderedCollection newFrom: self listPrintAttributeLabels.
-	aColl
-		addAll:
-			#('Description' 'Origin template' 'Template URL' 'Local path').
-	^ aColl
+	"this is used to dump extended image information"
+
+	| labels |
+	labels := OrderedCollection newFrom: self listPrintAttributeLabels.
+	labels addAll: #('Description' 'Origin template' 'Template URL' 'Local path').
+	^ labels
 ]
 
 { #category : #'*PharoLauncher-CLI' }

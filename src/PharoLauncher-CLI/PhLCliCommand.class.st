@@ -261,8 +261,9 @@ PhLCliCommand >> implicitDelimiter [
 { #category : #printing }
 PhLCliCommand >> list: domainObjects [
 	
-	self cliFormatter domainObjects: domainObjects.
-	self cliFormatter printList.
+	self cliFormatter 
+		domainObjects: domainObjects;
+		printList.
 ]
 
 { #category : #'private ' }

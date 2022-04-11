@@ -26,15 +26,7 @@ PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line - converting' }
 PhLTemplateCategoriesCliCommand class >> launcherCmdFlags [
-	^ {
-		"add printing flags"
-		self briefFlag.
-		self rowModeFlag.
-		self delimiterFlag.
-		self stonFlag 
-			description: 'Prints list of image template categories using STON format. ';
-			yourself.
-			}
+	^ self printFlags
 ]
 
 { #category : #initialization }

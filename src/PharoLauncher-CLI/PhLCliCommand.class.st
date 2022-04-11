@@ -120,6 +120,16 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> printFlags [
+	^ {
+			self briefFlag.
+			self rowModeFlag.
+			self delimiterFlag.
+			self stonFlag
+		}
+]
+
 { #category : #'command line - subcommands' }
 PhLCliCommand class >> productionCommandSubclasses [
 

@@ -27,15 +27,7 @@ PhLImageInfoCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line - arguments' }
 PhLImageInfoCliCommand class >> launcherCmdFlags [
-	^ {
-		"add printing flags"
-		self briefFlag.
-		self rowModeFlag.
-		self delimiterFlag.
-		self stonFlag 
-			description: 'Prints information of specified image using STON format. ';
-			yourself.
-			}
+	^ self printFlags
 ]
 
 { #category : #'command line - arguments' }

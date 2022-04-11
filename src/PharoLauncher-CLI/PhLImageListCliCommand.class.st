@@ -26,7 +26,8 @@ PhLImageListCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line - arguments' }
 PhLImageListCliCommand class >> launcherCmdFlags [
-	^ {(ClapFlag id: #name)
+	^ Array 
+		with: ((ClapFlag id: #name)
 			description: 'Determines the name of image (or its substring) to list local images.';
 			meaning: [ :arg :app | "this argument is optional "
 				(arg at: #nameAsString) word ];
@@ -34,15 +35,9 @@ PhLImageListCliCommand class >> launcherCmdFlags [
 			add: ((ClapPositional id: #nameAsString)
 					description: 'A substring to search from the list of local Pharo images.';
 					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ]).
-		"add printing flags"
-		self briefFlag.
-		self rowModeFlag.
-		self delimiterFlag.
-		self stonFlag 
-			description: 'Prints list of local images using STON format. ';
-			yourself.
-			}
+					implicitMeaning: [ :arg :app | ]);
+			yourself)
+		withAll: self printFlags
 ]
 
 { #category : #'instance creation' }

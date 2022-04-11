@@ -126,7 +126,7 @@ PhLCliCommandTest >> testFlagValueFor [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testImplicitDelimiterIsSemiColomunWhenRowModeActibe [
+PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActibe [
 
 	| aCommand aMatch|
 	

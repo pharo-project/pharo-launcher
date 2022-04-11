@@ -120,7 +120,20 @@ PhLCliCommandTest >> testFlagValueFor [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testImplicitDelimiter [
+PhLCliCommandTest >> testImplicitDelimiterIsSemiColomunWhenRowModeActibe [
+
+	| aCommand aMatch|
+	
+	aCommand :=  PhLCliCommand new.
+	context specification add: aCommand class rowModeFlag.
+	aMatch := (context arguments: #('launcher' '--rowMode')) doMatch.
+	aCommand setArguments: aMatch.
+	
+	self assert: aCommand implicitDelimiter equals: ': '.
+]
+
+{ #category : #test }
+PhLCliCommandTest >> testImplicitDelimiterIsSpace [
 
 	"implicit value of not implemented/missing flag with parameter should return nil"
 	| aCommand aMatch|
@@ -129,13 +142,6 @@ PhLCliCommandTest >> testImplicitDelimiter [
 	aMatch := (context arguments: #('launcher')) doMatch.
 	aCommand setArguments: aMatch.
 	self assert: aCommand implicitDelimiter equals: ' '.
-	
-	"now implement using rowMode, it should be with colon"
-	context specification add: aCommand class rowModeFlag.
-	aMatch := (context arguments: #('launcher' '--rowMode')) doMatch.
-	aCommand setArguments: aMatch.
-	
-	self assert: aCommand implicitDelimiter equals: ': '.
 ]
 
 { #category : #test }

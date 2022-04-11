@@ -252,10 +252,9 @@ PhLCliCommand >> imageRepository [
 
 { #category : #'private ' }
 PhLCliCommand >> implicitDelimiter [
-
-	^ self rowMode 
-	ifTrue: [ ': ' ]
-	ifFalse: [ ' ' ]
+	^ self rowMode
+		ifTrue: [ ': ' ]
+		ifFalse: [ ' ' ]
 ]
 
 { #category : #printing }

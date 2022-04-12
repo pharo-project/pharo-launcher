@@ -16,7 +16,8 @@ Class {
 	#instVars : [
 		'outStream',
 		'pharoLauncherModel',
-		'errorStream'
+		'errorStream',
+		'cliFormatter'
 	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
@@ -24,6 +25,36 @@ Class {
 { #category : #'command line - converting' }
 PhLCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #launcher 
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> briefFlag [
+
+	^ ((ClapFlag id: #brief)
+		description: 'Prints only name attribute (with leading sequence number).';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> delimiterFlag [
+
+	^ (ClapFlag id: #delimiter)
+			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
+			meaning: [ :arg :app | "this argument is optional "
+				(arg at: #delimiterArg) value];
+			implicitMeaning: [ :arg :app | app implicitDelimiter ];
+			add: ((ClapPositional id: #delimiterArg)
+					description: 'Delimiter argument for printing, can be one or more characters (without space).';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage]).
+]
+
+{ #category : #'private - testing' }
+PhLCliCommand class >> isProductionCommandClass [
+	
+	"use this when command subclass is visible and representable to user, should return false for non-production command classses like abstract classes or mock classes inheriting from this class"
+	^ true
 ]
 
 { #category : #'command line - description' }
@@ -46,7 +77,7 @@ PhLCliCommand class >> launcherCmdPositionals [
 { #category : #'command line - subcommands' }
 PhLCliCommand class >> launcherCmdSubcommands [
 
-	^ self subclasses collect: #asCliCommand
+	^ self productionCommandSubclasses collect: #asCliCommand
 ]
 
 { #category : #'command line - instance creation' }
@@ -60,6 +91,12 @@ PhLCliCommand class >> launcherCommand [
 { #category : #'command line - description' }
 PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
+]
+
+{ #category : #logging }
+PhLCliCommand class >> missingDelimiterArgMessage [
+
+	^ 'Missing argument value specifying delimiter for printing.'
 ]
 
 { #category : #'command line - instance creation' }
@@ -83,16 +120,70 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> printFlags [
+	^ {
+			self briefFlag.
+			self rowModeFlag.
+			self delimiterFlag.
+			self stonFlag
+		}
+]
+
+{ #category : #'command line - subcommands' }
+PhLCliCommand class >> productionCommandSubclasses [
+
+	^ self subclasses select: #isProductionCommandClass 
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> rowModeFlag [
+
+	^ ((ClapFlag id: #rowMode)
+		description: 'Prints one attribute per line only.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> stonFlag [
+
+	^ ((ClapFlag id: #ston)
+		description: 'Prints information in STON format.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> booleanValueFor: flagId [
+
+	^ [(arguments at: flagId) value: self]
+		on: NotYetImplemented
+		do: [false]
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> briefPrint [ 
+
+	^ self booleanValueFor:  #brief
+]
+
+{ #category : #accessing }
+PhLCliCommand >> cliFormatter [
+
+	^ cliFormatter 
+]
+
+{ #category : #accessing }
+PhLCliCommand >> cliFormatter: aFormatter [
+
+	cliFormatter := aFormatter
+]
+
 { #category : #accessing }
 PhLCliCommand >> currentVMPid [
 
 	^ OSSVMProcess vmProcess pid
-]
-
-{ #category : #default }
-PhLCliCommand >> defaultTemplate [
-	self
-		findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #default }
@@ -104,6 +195,14 @@ PhLCliCommand >> defaultTemplateCategory [
 { #category : #default }
 PhLCliCommand >> defaultTemplateCategoryName [
 	^ 'Official distributions'
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> delimiter [ 
+	|delimiter|
+	delimiter := self flagValueFor: #delimiter.
+	delimiter ifNil: [^ self implicitDelimiter  ].
+	^ delimiter
 ]
 
 { #category : #'private ' }
@@ -132,6 +231,14 @@ PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
 		runAndWaitWithStdOutput
 ]
 
+{ #category : #'private ' }
+PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
+
+	"only first (most important) attribute is printed for brief mode by default, can be overriden"
+	self briefPrint ifTrue: [ ^ attrCollection copyFrom: 1 to: 1 ].
+	^ attrCollection
+]
+
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 	^ (aLocation
@@ -140,27 +247,47 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 				and: [ template name includesSubstring: '64bit' ] ]) name
 ]
 
+{ #category : #'private ' }
+PhLCliCommand >> flagValueFor: flagId [
+
+	^ [(arguments at: flagId) value: self]
+		on: NotYetImplemented
+		do: [nil]
+]
+
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #listing }
-PhLCliCommand >> list: aCollection [
-	| counter |
-	counter := 1.
-	aCollection
-		do: [ :anItem | 
-			self outStream
-				nextPutAll: counter asString;
-				nextPutAll: ': '.
-			anItem cliPrintOn: self outStream.
-			self outStream newLine ]
+{ #category : #'private ' }
+PhLCliCommand >> implicitDelimiter [
+	^ self rowMode
+		ifTrue: [ ': ' ]
+		ifFalse: [ ' ' ]
 ]
 
-{ #category : #listing }
-PhLCliCommand >> listAsSton: aCollection [
-	self outStream nextPutAll: (STON toString: aCollection) 
+{ #category : #printing }
+PhLCliCommand >> list: domainObjects [
+	
+	self cliFormatter 
+		domainObjects: domainObjects;
+		printList.
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeBlocks
+	
+	
+]
+
+{ #category : #'private ' }
+PhLCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeLabels
+	
 ]
 
 { #category : #printing }
@@ -170,11 +297,10 @@ PhLCliCommand >> logExceptionMessage: errMessage [
 	self errorStream newLine.
 ]
 
-{ #category : #message }
-PhLCliCommand >> messageErrorCategoryNotFound [
-	self errorStream nextPutAll: 'please enter a correct category '.
-	self errorStream newLine.
-	^ self
+{ #category : #'private ' }
+PhLCliCommand >> modelClass [
+
+ ^ self class environment at: #PhLObject
 ]
 
 { #category : #'command execution' }
@@ -189,9 +315,10 @@ PhLCliCommand >> outStream [
 		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
-	^ (arguments at: #ston) value: self
+
+	^ self booleanValueFor: #ston
 ]
 
 { #category : #accessing }
@@ -199,21 +326,31 @@ PhLCliCommand >> pharoLauncherModel [
 	^ self context launcherModel
 ]
 
+{ #category : #'accessing arguments' }
+PhLCliCommand >> printSequence [
+
+	"by default, print also sequence number for all listing commands"
+	^ true
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> rowMode [
+
+	^ self booleanValueFor: #rowMode
+]
+
 { #category : #initialization }
 PhLCliCommand >> setArguments: args [ 
 	super setArguments: args.
 	PhLNotificationCenter default outStream: self outStream.
 	PhLNotificationCenter default errorStream: self errorStream.
+	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
-{ #category : #initialization }
-PhLCliCommand >> setPharoLauncherModel: aPharoLauncherModel [ 
-	pharoLauncherModel := aPharoLauncherModel 
-]
-
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLCliCommand >> templateName [ 
-	^ (arguments at: #templateName) value: self.
+
+	^ self flagValueFor: #templateName
 	
 	
 ]

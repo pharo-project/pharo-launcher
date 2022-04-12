@@ -5,8 +5,8 @@ Class {
 }
 
 { #category : #adding }
-PhLVmCliCommandTest >> addVmNamed: anImageName [ 
-	^ self vmRepository addVmNamed: anImageName at: anImageName
+PhLVmCliCommandTest >> addVmNamed: vmName [ 
+	^ self vmRepository addVmNamed: vmName at: vmName
 ]
 
 { #category : #'process actions' }

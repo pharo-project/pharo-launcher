@@ -14,7 +14,8 @@ PhLImageRecreateCliCommand class >> asCliCommand [
 
 { #category : #'command line' }
 PhLImageRecreateCliCommand class >> launcherCmdDescription [
-	^ 'Recreate an image, the image argument gives the image name to recreate.'
+
+	^ 'Recreates the local image, the image argument determines the image name to recreate.'
 ]
 
 { #category : #'command line - arguments' }
@@ -23,7 +24,7 @@ PhLImageRecreateCliCommand class >> launcherCmdPositionals [
 		description: 'Local image name to recreate.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, no image name to recreate' .  ];
+        signal: 'An argument is missing, please specify the image name to recreate.'];
 		yourself)}
 ]
 

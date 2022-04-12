@@ -20,19 +20,18 @@ PhLTemplateListCliCommand class >> asCliCommand [
 
 { #category : #'command line - arguments' }
 PhLTemplateListCliCommand class >> launcherCmdFlags [
-	^ {((ClapFlag id: #templateCategory)
-		description: 'Allows to use a template categroy to list the templates in it ';
-		meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
-		implicitMeaning: [ :arg :app | 'Official distributions' ];
-		add:
-			((ClapPositional id: #templateCategoryName)
-				description: 'Name of the template category variable.';
-				meaning: [ :pos | pos word asSymbol ];
-				implicitMeaning: [ :arg :app | app ])).
-	((ClapFlag id: #ston)
-		description: 'Allows to list images with ston output ';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])}
+	^ Array 
+		with: ((ClapFlag id: #templateCategory)
+			description: 'Specifies the template category name to list the image templates from given category.';
+			meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
+			implicitMeaning: [ :arg :app | 'Official distributions' ];
+			add:
+				((ClapPositional id: #templateCategoryName)
+					description: 'Name of the template category.';
+					meaning: [ :pos | pos word asSymbol ];
+					implicitMeaning: [ :arg :app | app ]);
+			yourself)
+		withAll: self printFlags
 ]
 
 { #category : #'command execution' }
@@ -42,9 +41,15 @@ PhLTemplateListCliCommand >> execute [
 		categoryNamed: self templateCategory ]
 		on: NotFound
 		do: [ ^ self messageErrorCategoryNotFound ].
-	self outputAsSton 
-		ifTrue: [ ^ self listAsSton: (templateCategory templatesAndGroups) asOrderedCollection  ].
-	self list: templateCategory templatesAndGroups
+
+	self list: templateCategory templatesAndGroups asOrderedCollection 
+]
+
+{ #category : #message }
+PhLTemplateListCliCommand >> messageErrorCategoryNotFound [
+	self errorStream nextPutAll: 'Image template category not found. Please enter a correct image tamplate category name.'.
+	self errorStream newLine.
+	^ self
 ]
 
 { #category : #'command execution' }

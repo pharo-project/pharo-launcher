@@ -16,12 +16,11 @@ PhLImageCliCommandTest >> imageRepository [
 
 { #category : #running }
 PhLImageCliCommandTest >> setUp [
-	| model |
+
 	super setUp.
-	model := PharoLauncherCLIModel new.
-	model imageRepository: PhLImagesMockRepo new.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
+	"set to laucher model necessary image mock repository"
+	context launcherModel imageRepository: PhLImagesMockRepo new.
+
 ]
 
 { #category : #accessing }

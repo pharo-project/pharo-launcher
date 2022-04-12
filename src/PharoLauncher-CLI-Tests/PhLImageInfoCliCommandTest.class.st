@@ -10,7 +10,6 @@ PhLImageInfoCliCommandTest >> testImageInfoShouldSucceed [
 	self addImageNamed: 'myImage2'.
 	
 	self runCommand: #('launcher' 'image' 'info' 'myImage1').
-	
 	self assert: (self outputString includesSubstring:'https://testurl').
 ]
 

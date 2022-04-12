@@ -11,7 +11,6 @@ PhLVMListCliCommandTest >> testListVirtualMachines [
 	self addVmNamed: 'myVm3'.
 	
 	self runCommand: #('launcher' 'vm' 'list').
-	
 	self assert: (self outputString includesSubstring: 'myVm1').
 	self assert: (self outputString includesSubstring: 'myVm2').
 	self assert: (self outputString includesSubstring: 'myVm3')

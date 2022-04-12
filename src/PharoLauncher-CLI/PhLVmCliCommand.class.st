@@ -59,6 +59,11 @@ PhLVmCliCommand >> logVMNotFound [
 	^ self
 ]
 
+{ #category : #private }
+PhLVmCliCommand >> modelClass [
+	^ self class environment at: #PhLVirtualMachine
+]
+
 { #category : #'find-select' }
 PhLVmCliCommand >> vmId [
   ^ (arguments at: #existingVirtualMachineId) word 

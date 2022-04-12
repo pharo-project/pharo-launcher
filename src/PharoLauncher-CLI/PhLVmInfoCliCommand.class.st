@@ -26,20 +26,20 @@ PhLVmInfoCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #accessing }
-PhLVmInfoCliCommand >> displayInfoVm: aVM [
-	self outStream
-		nextPutAll: 'name: ';
-		nextPutAll: aVM id;
-		newLine;
-		nextPutAll: 'last update: ';
-		nextPutAll: aVM lastUpdateTime asString;
-		newLine;
-		nextPutAll: 'download Url: ';
-		nextPutAll: aVM downloadUrl asString;
-		newLine
+PhLVmInfoCliCommand >> executeWithVM: aVm [
+  
+	self list: (Array with: aVm)
 ]
 
-{ #category : #accessing }
-PhLVmInfoCliCommand >> executeWithVM: aVm [
-   self displayInfoVm: aVm
+{ #category : #'accessing arguments' }
+PhLVmInfoCliCommand >> printSequence [
+
+	^ false
+]
+
+{ #category : #'accessing arguments' }
+PhLVmInfoCliCommand >> rowMode [
+
+	"vm info is printed in one attribute per row"
+	^ true
 ]

@@ -21,25 +21,23 @@ PhLImageListCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageListCliCommand class >> launcherCmdDescription [
 
-	^ 'Lists all downloaded images on local computer.'
+	^ 'Lists all local images from Pharo laucher repository.'
 ]
 
 { #category : #'command line - arguments' }
 PhLImageListCliCommand class >> launcherCmdFlags [
-	^ {(ClapFlag id: #name)
-			description: 'Allows to list images including a substring ';
+	^ Array 
+		with: ((ClapFlag id: #name)
+			description: 'Determines the name of image (or its substring) to list local images.';
 			meaning: [ :arg :app | "this argument is optional "
 				(arg at: #nameAsString) word ];
 			implicitMeaning: [ :arg :app |  ];
 			add: ((ClapPositional id: #nameAsString)
-					description: 'the substring to search through the images';
+					description: 'A substring to search from the list of local Pharo images.';
 					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ]).
-		(ClapFlag id: #ston)
-			description: 'Allows to list images with ston output ';
-			meaning: [ :arg :app | true ];
-			implicitMeaning: [ :arg :app | false  ].
-			}
+					implicitMeaning: [ :arg :app | ]);
+			yourself)
+		withAll: self printFlags
 ]
 
 { #category : #'instance creation' }
@@ -61,9 +59,8 @@ PhLImageListCliCommand >> listImages [
 	images := self name 
 		ifNil: [  self imageRepository images ]
 		ifNotNil:[ self imagesFromName: self name ].
-	self outputAsSton 
-		ifTrue: [ ^ self listAsSton: images ].
-	self list: images.
+
+	self list: images
 ]
 
 { #category : #'accessing arguments' }

@@ -46,7 +46,7 @@ PhLImageCreateCliCommand class >> launcherCmdDescription [
 PhLImageCreateCliCommand class >> launcherCmdFlags [
 
 	^ {(ClapFlag id: #templateCategory)
-				description: 'Allows to use a template categroy to search the target template ';
+				description: 'Allows to use a template category to search the target template.';
 				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
 				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName. ];
 				add: ((ClapPositional id: #templateCategoryName)
@@ -65,7 +65,7 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 				description: 'New image.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |
-						NotFound signal: 'one argument is missing, there is no name for the new image'. ];
+						NotFound signal: 'An argument is missing. Please specify the name for the new image'. ];
 					yourself)	.
 		((ClapPositional id: #templateName)
 				description: 'Template which will be used to create the image.';
@@ -83,22 +83,11 @@ PhLImageCreateCliCommand class >> launcherCmdSubcommands [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> createImage: newImageName from: template [
+
+	self logCreationOfImageFrom: template name.
 	^ self imageRepository
 		extractTemplate: template
-		to: newImageName 
-		
-]
-
-{ #category : #accessing }
-PhLImageCreateCliCommand >> createImage: aTemplateName to: newImageName [
-	self logCreationOfImageFrom: aTemplateName.
-	[ ^ [ self imageRepository extractTemplate: self template to: newImageName ]
-		on: NotFound
-		do: [ self logCannotFindTemplate ] ]
-		on: PhLNameNotAvailableError
-		do: [ ^ self outStream
-				nextPutAll: 'Name for the new image is not available, please change it';
-				newLine ]
+		to: newImageName
 ]
 
 { #category : #default }
@@ -109,14 +98,20 @@ PhLImageCreateCliCommand >> defaultTemplate [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	| template |
-	template := 
-		[ self logCreationOfImageFrom: self templateName. 
-		self template ]
+	| aTemplate |
+	aTemplate := [ self findTemplate ]
 			on: NotFound
-			do: [ :error | 
-					^ self logCannotFindTemplate: error ].
-	self createImage: self imageName from: template
+			do: [ :error | ^ self logExceptionMessage: error messageText ].
+	self createImage: self imageName from: aTemplate
+]
+
+{ #category : #querying }
+PhLImageCreateCliCommand >> findTemplate [ 
+
+	^ self templateRepository
+		templateNamed: self templateName
+		inCategoryNamed: self templateCategory
+
 ]
 
 { #category : #accessing }
@@ -125,22 +120,21 @@ PhLImageCreateCliCommand >> imageName [
 ]
 
 { #category : #logging }
-PhLImageCreateCliCommand >> logCannotFindTemplate: error [
-	self errorStream
-		nextPutAll: 'cant find the template, please check the template name or category if you are using the category subcommand. You can check that with the template commands';
-		cr;
-		nextPutAll: error messageText;
-		cr
+PhLImageCreateCliCommand >> logCannotFindTemplate: templateName [
+
+self errorStream
+		nextPutAll: ('Cannot find the image template: {1}, please check the image template name (or template category if you are using the category subcommand).' format: {templateName});
+		newLine
 ]
 
 { #category : #logging }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 	self outStream
 		nextPutAll:
-			' creation of on image based on: ' , aTemplateName;
+			('Creating the local Pharo image based on template: {1}.' format: {aTemplateName});
 		newLine;
 		nextPutAll:
-				'Please wait a moment';
+				'Please wait a moment.';
 		newLine
 ]
 

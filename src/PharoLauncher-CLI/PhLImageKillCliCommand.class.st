@@ -15,13 +15,13 @@ PhLImageKillCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageKillCliCommand class >> launcherCmdDescription [
 
-	^ 'kill the given image or all if the flag --all is given'
+	^ 'Kills the running process(es) of given local image.'
 ]
 
 { #category : #'command line - arguments' }
 PhLImageKillCliCommand class >> launcherCmdFlags [
 	^ {((ClapFlag id: #all)
-		description: 'kill all the running pharo images ';
+		description: 'Determines whether to kill all running Pharo image processes. ';
 		meaning: [ :arg :app | true ];
 		implicitMeaning: [ :arg :app | false ])}.
 ]
@@ -30,10 +30,10 @@ PhLImageKillCliCommand class >> launcherCmdFlags [
 PhLImageKillCliCommand class >> launcherCmdPositionals [
 	^ {
 		((ClapPositional id: #existingImageName)
-				description: 'Selected image to kill.';
+				description: 'Specifies the local image name to kill its process.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, there is no image name to kill' .   ];
+        signal: 'An argument is missing, please specify the local image name to kill it process.'];
 					yourself)	.
 	}
 ]

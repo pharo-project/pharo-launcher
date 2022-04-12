@@ -68,7 +68,7 @@ PhLImagePackageCliCommandTest >> testCreatePackageWhenNoLocationSetShouldReturnE
 		during: [ 
 			self runCommand: {'launcher' . 'image' . 'package' . 'myImage' . '--vm' . vmName}.
 			
-			self assert: (self errorString includesSubstring: 'no path to put the package') ].
+			self assert: (self errorString includesSubstring: 'specify the path') ].
 ]
 
 { #category : #tests }

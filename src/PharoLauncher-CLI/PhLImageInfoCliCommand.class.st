@@ -26,45 +26,48 @@ PhLImageInfoCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> launcherCmdFlags [
+	^ self printFlags
+]
+
+{ #category : #'command line - arguments' }
 PhLImageInfoCliCommand class >> launcherCmdPositionals [
 	^ {((ClapPositional id: #existingImageName)
-		description: 'Local image name from which we display the informations.';
+		description: 'Determines the local image name to print detailed information.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'one argument is missing, no image name to display informations' .  ];
+        signal: 'An argument is missing, please specify the image name to print information.'];
 		yourself)}
 ]
 
 { #category : #accessing }
 PhLImageInfoCliCommand >> executeWithImage: anImage [ 
-   self printInformationOf: anImage
+
+   self list: (Array with: anImage)
 ]
 
-{ #category : #printing }
-PhLImageInfoCliCommand >> printInformationOf: anImage [
-	self outStream
-		nextPutAll: 'image name: ';
-		nextPutAll: anImage name asString;
-		newLine;
-		nextPutAll: ' image description: ';
-		nextPutAll: anImage description asString;
-		newLine;
-		nextPutAll: ' image version: ';
-		nextPutAll: anImage pharoVersionFromFile asString;
-		newLine;
-		nextPutAll: ' image origin template: ';
-		nextPutAll: anImage originTemplateUrl asString;
-		newLine;
-		nextPutAll: ' image template URL: ';
-		nextPutAll: anImage originTemplateName asString;
-		newLine;
-		nextPutAll: ' image path: ';
-		nextPutAll: anImage location asString;
-		newLine;
-		nextPutAll: ' image last modification ';
-		nextPutAll: anImage lastModification asString;
-		newLine;
-		nextPutAll: ' image architecture: ';
-		nextPutAll: anImage architecture asString;
-		newLine.
+{ #category : #'private ' }
+PhLImageInfoCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
+]
+
+{ #category : #'private ' }
+PhLImageInfoCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
+]
+
+{ #category : #accessing }
+PhLImageInfoCliCommand >> printSequence [
+
+	"do not print sequence number for one image"
+	^ false
+]
+
+{ #category : #accessing }
+PhLImageInfoCliCommand >> rowMode [
+
+	"image info is printed in one attribute per row"
+	^ true
 ]

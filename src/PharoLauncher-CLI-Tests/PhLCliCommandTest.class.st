@@ -81,7 +81,7 @@ PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenNoBriefFlag [
+PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenBriefFlagEnabled [
 	
 	| aCommand aMatch|
 	
@@ -141,12 +141,12 @@ PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActibe [
 { #category : #test }
 PhLCliCommandTest >> testImplicitDelimiterIsSpace [
 
-	"implicit value of not implemented/missing flag with parameter should return nil"
 	| aCommand aMatch|
 	
 	aCommand :=  PhLCliCommand new.
 	aMatch := (context arguments: #('launcher')) doMatch.
 	aCommand setArguments: aMatch.
+	
 	self assert: aCommand implicitDelimiter equals: ' '.
 ]
 

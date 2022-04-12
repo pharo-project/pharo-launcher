@@ -120,6 +120,16 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 		yourself
 ]
 
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> printFlags [
+	^ {
+			self briefFlag.
+			self rowModeFlag.
+			self delimiterFlag.
+			self stonFlag
+		}
+]
+
 { #category : #'command line - subcommands' }
 PhLCliCommand class >> productionCommandSubclasses [
 
@@ -145,7 +155,7 @@ PhLCliCommand class >> stonFlag [
 ]
 
 { #category : #'private ' }
-PhLCliCommand >> boolValueFor: flagId [
+PhLCliCommand >> booleanValueFor: flagId [
 
 	^ [(arguments at: flagId) value: self]
 		on: NotYetImplemented
@@ -155,7 +165,7 @@ PhLCliCommand >> boolValueFor: flagId [
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
-	^ self boolValueFor:  #brief
+	^ self booleanValueFor:  #brief
 ]
 
 { #category : #accessing }
@@ -252,17 +262,17 @@ PhLCliCommand >> imageRepository [
 
 { #category : #'private ' }
 PhLCliCommand >> implicitDelimiter [
-
-	^ self rowMode 
-	ifTrue: [ ': ' ]
-	ifFalse: [ ' ' ]
+	^ self rowMode
+		ifTrue: [ ': ' ]
+		ifFalse: [ ' ' ]
 ]
 
 { #category : #printing }
 PhLCliCommand >> list: domainObjects [
 	
-	self cliFormatter domainObjects: domainObjects.
-	self cliFormatter printList.
+	self cliFormatter 
+		domainObjects: domainObjects;
+		printList.
 ]
 
 { #category : #'private ' }
@@ -308,7 +318,7 @@ PhLCliCommand >> outStream [
 { #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 
-	^ self boolValueFor: #ston
+	^ self booleanValueFor: #ston
 ]
 
 { #category : #accessing }
@@ -326,7 +336,7 @@ PhLCliCommand >> printSequence [
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
-	^ self boolValueFor: #rowMode
+	^ self booleanValueFor: #rowMode
 ]
 
 { #category : #initialization }

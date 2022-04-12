@@ -13,7 +13,7 @@ Class {
 { #category : #adding }
 PhLImagesMockRepo >> addImageNamed: anImageName [ 
 	| image |
-	image := PhLImagesMock name: anImageName.
+	image := PhLImageMock name: anImageName.
 	self images add: image.
 	^ image
 ]
@@ -21,7 +21,7 @@ PhLImagesMockRepo >> addImageNamed: anImageName [
 { #category : #adding }
 PhLImagesMockRepo >> addTenRandomImages [
 
-	10 timesRepeat: [ self images add: PhLImagesMock atRandom ]
+	10 timesRepeat: [ self images add: PhLImageMock atRandom ]
 ]
 
 { #category : #accessing }
@@ -38,7 +38,7 @@ PhLImagesMockRepo >> deleteImage: anImageName [
 { #category : #'test methods' }
 PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	| imageTest |
-	imageTest := PhLImagesMock name: anImageName.
+	imageTest := PhLImageMock name: anImageName.
 	images add: imageTest
 ]
 

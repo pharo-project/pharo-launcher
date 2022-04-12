@@ -48,7 +48,7 @@ PhLCliCommandTest >> setUp [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testBoolValueFor [
+PhLCliCommandTest >> testBooleanValueFor [
 
 	"implicit value of not implemented command bool argument is false"
 	| aCommand aMatch|
@@ -56,12 +56,12 @@ PhLCliCommandTest >> testBoolValueFor [
 	aCommand :=  PhLCliCommand new.
 	aMatch := (context arguments: #('launcher')) doMatch.
 	aCommand setArguments: aMatch.
-	self deny: (aCommand boolValueFor: #someRandomID).
+	self deny: (aCommand booleanValueFor: #someRandomID).
 	
 	"help flag should return true"
 	aMatch := (context arguments: #('launcher' '--help')) doMatch.
 	aCommand setArguments: aMatch.
-	self assert: (aCommand boolValueFor: #helpFlag).
+	self assert: (aCommand booleanValueFor: #helpFlag).
 ]
 
 { #category : #test }
@@ -81,8 +81,21 @@ PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testFilterPrintAttributesFrom [
+PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenBriefFlagEnabled [
+	
+	| aCommand aMatch|
+	
+	aCommand :=  PhLCliCommand new.
 
+	context specification add: aCommand class briefFlag.
+	aMatch := (context arguments: #('launcher' '--brief')) doMatch.
+	aCommand setArguments: aMatch.
+	
+	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
+]
+
+{ #category : #test }
+PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnOriginalCollectionWhenNoBriefFlag [
 	
 	| aCommand aMatch|
 	
@@ -91,13 +104,6 @@ PhLCliCommandTest >> testFilterPrintAttributesFrom [
 	aCommand setArguments: aMatch.
 	"filter without brief flag should return original collection"
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1 2 3).
-	
-	"now implement using brief print, it should be just collection with first element"
-	context specification add: aCommand class briefFlag.
-	aMatch := (context arguments: #('launcher' '--brief')) doMatch.
-	aCommand setArguments: aMatch.
-	
-	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
 ]
 
 { #category : #test }
@@ -120,22 +126,28 @@ PhLCliCommandTest >> testFlagValueFor [
 ]
 
 { #category : #test }
-PhLCliCommandTest >> testImplicitDelimiter [
+PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActibe [
 
-	"implicit value of not implemented/missing flag with parameter should return nil"
 	| aCommand aMatch|
 	
 	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
-	self assert: aCommand implicitDelimiter equals: ' '.
-	
-	"now implement using rowMode, it should be with colon"
 	context specification add: aCommand class rowModeFlag.
 	aMatch := (context arguments: #('launcher' '--rowMode')) doMatch.
 	aCommand setArguments: aMatch.
 	
 	self assert: aCommand implicitDelimiter equals: ': '.
+]
+
+{ #category : #test }
+PhLCliCommandTest >> testImplicitDelimiterIsSpace [
+
+	| aCommand aMatch|
+	
+	aCommand :=  PhLCliCommand new.
+	aMatch := (context arguments: #('launcher')) doMatch.
+	aCommand setArguments: aMatch.
+	
+	self assert: aCommand implicitDelimiter equals: ' '.
 ]
 
 { #category : #test }

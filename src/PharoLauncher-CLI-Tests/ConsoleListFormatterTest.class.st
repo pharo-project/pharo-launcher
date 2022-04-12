@@ -23,7 +23,10 @@ ConsoleListFormatterTest >> setUp [
 { #category : #test }
 ConsoleListFormatterTest >> testAttributeValuesFrom [
 
-	formatter attributeValueBlocks: { [:a |a asString  ]. [:a |(a ** 2) asString  ]. [:a |(a ** 3) asString  ] }.
+	formatter attributeValueBlocks: { 
+		[:a |a asString  ] . 
+		[:a |(a ** 2) asString ] . 
+		[:a |(a ** 3) asString ] }.
 
 	self assert: (formatter attributeValuesFrom: 2) equals: #('2' '4' '8').
 ]
@@ -37,9 +40,25 @@ ConsoleListFormatterTest >> testFormatterAccessors [
 
 { #category : #test }
 ConsoleListFormatterTest >> testGetColumnWidthsFrom [
-		formatter attributeLabels: #('1234567890' 'x' 'x').
-		formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a asWords  ]. [:a |a asWords  ] }.
-		self assert: (formatter getColumnWidthsFrom: #(1 2 3)) equals: #(10 5 5).
+	formatter attributeLabels: #('1234567890' 'x' 'x').
+	formatter attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a asWords ].
+			[ :a | a asWords ]}.
+		
+	self
+		assert: (formatter getColumnWidthsFrom: #(1 2 3))
+		equals: #(10 5 5)
+]
+
+{ #category : #tests }
+ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
+
+	| size |
+	size := formatter getMaxPrintStringWidthFor: #(1 2 3) printBlock: [ :aNumber | aNumber asWords ].
+	
+	"three is the longest word and has a size of 5"
+	self assert: size equals: 5.
 ]
 
 { #category : #test }
@@ -102,7 +121,7 @@ ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 { #category : #test }
 ConsoleListFormatterTest >> testPrintAttributeTable [
 
-		|expectedString|
+	|expectedString|
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
 	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
 	formatter domainObjects: #(1 2 3).
@@ -162,64 +181,58 @@ ConsoleListFormatterTest >> testPrintLineSized [
 ]
 
 { #category : #test }
-ConsoleListFormatterTest >> testPrintList [
-
-	| stonString tableModeString |
-	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
-	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
-	formatter domainObjects: #(1 2 3).
-	
-	"test if table is printed, if ston mode is disabled"
-	formatter printList.
-	tableModeString  := formatter outStream contents.
-	command resetOutStream.
-	formatter printListAttributes.
-	self assert: formatter outStream contents equals: tableModeString.
-
-	"test for ston output flag"
-	command resetOutStream.
-	formatter outputAsSton: true.
-	formatter printList.
-	stonString  := formatter outStream contents.
-	command resetOutStream.
-	formatter printListAsSton.
-	self assert: formatter outStream contents equals: stonString.
-]
-
-{ #category : #test }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
-	formatter domainObjects: {PhLImagesMock atRandom. PhLImagesMock atRandom. PhLImagesMock atRandom.}.
-	formatter printListAsSton.
+	| domainObjects deserialized |
+	domainObjects := { PhLImageMock atRandom. PhLImageMock atRandom. PhLImageMock atRandom }.
+	formatter domainObjects: domainObjects.
 
-	self assert: (formatter outStream contents includesSubstring: 'PhLImagesMock').
+	formatter printListAsSton.
+	deserialized := STON fromString: formatter outStream contents.
+	
+	self assert: deserialized size equals: 3.
+	self assert: deserialized first class equals: PhLImageMock.
 ]
 
 { #category : #test }
-ConsoleListFormatterTest >> testPrintListAttributes [
-
-		| rowModeString tableModeString   |
+ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRowModesDisabled [
+	| tableModeString |
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
-	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
-	formatter domainObjects: #(1 2 3).
-	
-	"test if row mode works when using printListAttributes"
-	formatter rowMode: true.
-	formatter printListAttributes.
-	rowModeString := formatter outStream contents.
-	command resetOutStream.
-	"in row mode it should be equal to output of printOneAttrPerRow"
-	formatter printOneAttrPerRow.
-	self assert: formatter outStream contents equals: rowModeString.
-	
-	"same for table mode - expected output is equal to printAttributeTable output"
-	formatter rowMode: false.		
-	command resetOutStream.
-	formatter printListAttributes.
+	formatter
+		attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a squared asWords ].
+			[ :a | (a ** 3) asWords ]};
+		domainObjects: #(1 2 3);
+		printAttributeTable.
 	tableModeString := formatter outStream contents.
 	command resetOutStream.
-	formatter printAttributeTable.
-	self assert: formatter outStream contents equals: tableModeString.
+
+	formatter printList.
+	
+	self assert: formatter outStream contents equals: tableModeString
+]
+
+{ #category : #test }
+ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisabledAndRowModeEnabled [
+
+	| rowModeString |
+	
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter
+		attributeValueBlocks:
+			{[ :a | a asWords ].
+			[ :a | a squared asWords ].
+			[ :a | (a ** 3) asWords ]};
+		domainObjects: #(1 2 3);
+		rowMode: true;
+		printOneAttrPerRow.
+	rowModeString := formatter outStream contents.
+	command resetOutStream.
+
+	formatter printList.
+	
+	self assert: formatter outStream contents equals: rowModeString
 ]
 
 { #category : #test }
@@ -270,7 +283,14 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 
 { #category : #test }
 ConsoleListFormatterTest >> testPrintRowValuesBy [
-
 	formatter printRowValues: #('One' 'Two' 'Three') by: #(5 3 5).
-	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: 'One  *Two*Three'; newLine]).
+	
+	self
+		assert: command outStream contents
+		equals:
+			(String
+				streamContents: [ :aStream | 
+					aStream
+						nextPutAll: 'One  *Two*Three';
+						newLine ])
 ]

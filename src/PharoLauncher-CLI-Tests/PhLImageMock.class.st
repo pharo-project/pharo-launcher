@@ -2,7 +2,7 @@
 Only usefull for the tests, is usefull to create ""fake"" images. 
 "
 Class {
-	#name : #PhLImagesMock,
+	#name : #PhLImageMock,
 	#superclass : #Object,
 	#instVars : [
 		'name',
@@ -17,9 +17,13 @@ Class {
 }
 
 { #category : #accessing }
-PhLImagesMock class >> atRandom [ 
+PhLImageMock class >> atRandom [ 
    ^self new 
-		name: #('Image (PharoX.0.0-rc1.build.1436.sha.e281eb4.arch.64bit)' 'Image (Pharo x.0 - xybit -exe)' 'Image (P-test)' 'Image (Pharo Mooc)' 'Image (P1-64b-seaside)' 'Image (Pharo 9.0 (stable))') atRandom;
+		name: #( 'Image (PharoX.0.0-rc1.build.1436.sha.e281eb4.arch.64bit)'
+					'Image (Pharo x.0 - xybit -exe)' 
+					'Image (P-test)' 'Image (Pharo Mooc)' 
+					'Image (P1-64b-seaside)' 
+					'Image (Pharo 9.0 (stable))') atRandom;
 		architecture: #('32' '64') atRandom;
 		pharoVersion: #('60' '61' '70' '80' '90' '100') atRandom;
 		lastModification: (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom );
@@ -27,152 +31,152 @@ yourself
 ]
 
 { #category : #private }
-PhLImagesMock class >> listPrintAttributeBlocks [
+PhLImageMock class >> listPrintAttributeBlocks [
 	
 	^ PhLImage listPrintAttributeBlocks
 ]
 
 { #category : #private }
-PhLImagesMock class >> listPrintAttributeLabels [ 
+PhLImageMock class >> listPrintAttributeLabels [ 
 	
 	^ PhLImage listPrintAttributeLabels 
 ]
 
 { #category : #'instance creation' }
-PhLImagesMock class >> location: aFileReference [
+PhLImageMock class >> location: aFileReference [
 	^ self atRandom
 		setLocation: aFileReference;
 		yourself
 ]
 
 { #category : #accessing }
-PhLImagesMock class >> name: aString [
+PhLImageMock class >> name: aString [
 	^ self atRandom
 		name: aString;
 		yourself
 ]
 
 { #category : #accessing }
-PhLImagesMock >> architecture [
+PhLImageMock >> architecture [
 	^ '64'
 ]
 
 { #category : #accessing }
-PhLImagesMock >> architecture: aString [
+PhLImageMock >> architecture: aString [
 
 	architecture := aString
 ]
 
-{ #category : #mockup }
-PhLImagesMock >> checkImageArchitecture [
+{ #category : #mocking }
+PhLImageMock >> checkImageArchitecture [
 	^self 
 ]
 
 { #category : #accessing }
-PhLImagesMock >> description [ 
+PhLImageMock >> description [ 
 	^ 'this is the description'
 ]
 
-{ #category : #mock }
-PhLImagesMock >> ensureDefaultConfiguration [
+{ #category : #mocking }
+PhLImageMock >> ensureDefaultConfiguration [
 	^self
 ]
 
 { #category : #testing }
-PhLImagesMock >> hasInitializationScript [
+PhLImageMock >> hasInitializationScript [
 	^ script notNil 
 ]
 
 { #category : #accessing }
-PhLImagesMock >> initializationScript [
+PhLImageMock >> initializationScript [
 	^ script 
 ]
 
 { #category : #preparation }
-PhLImagesMock >> initializationScript: aFileReference [
+PhLImageMock >> initializationScript: aFileReference [
 	 script := aFileReference
 ]
 
-{ #category : #mock }
-PhLImagesMock >> initialize [ 
+{ #category : #mocking }
+PhLImageMock >> initialize [ 
 	super initialize.
 	isLaunched := false.
 ]
 
-{ #category : #mock }
-PhLImagesMock >> isLaunched [
+{ #category : #mocking }
+PhLImageMock >> isLaunched [
 	^ isLaunched
 ]
 
 { #category : #accessing }
-PhLImagesMock >> lastModification [
+PhLImageMock >> lastModification [
 	^ lastModification 
 ]
 
 { #category : #accessing }
-PhLImagesMock >> lastModification: aString [
+PhLImageMock >> lastModification: aString [
 	
 	lastModification := aString
 ]
 
-{ #category : #mock }
-PhLImagesMock >> launch [
+{ #category : #mocking }
+PhLImageMock >> launch [
 	isLaunched := true
 ]
 
 { #category : #accessing }
-PhLImagesMock >> location [
+PhLImageMock >> location [
 	^ 'my current location'
 ]
 
 { #category : #accessing }
-PhLImagesMock >> name [
+PhLImageMock >> name [
    ^name
 ]
 
 { #category : #accessing }
-PhLImagesMock >> name: aString [
+PhLImageMock >> name: aString [
    name := aString
 ]
 
 { #category : #accessing }
-PhLImagesMock >> originTemplateName [
+PhLImageMock >> originTemplateName [
 	^ 'the original template name'
 ]
 
 { #category : #accessing }
-PhLImagesMock >> originTemplateUrl [
+PhLImageMock >> originTemplateUrl [
 	^ 'https://testurl'
 ]
 
 { #category : #accessing }
-PhLImagesMock >> pharoVersion [
+PhLImageMock >> pharoVersion [
 
 	^ pharoVersion
 ]
 
 { #category : #accessing }
-PhLImagesMock >> pharoVersion: aString [
+PhLImageMock >> pharoVersion: aString [
 
 	pharoVersion := aString
 ]
 
 { #category : #accessing }
-PhLImagesMock >> pharoVersionFromFile [
+PhLImageMock >> pharoVersionFromFile [
 	^ 'Pharo 8'
 ]
 
 { #category : #initialization }
-PhLImagesMock >> setLocation: aFileReference [ 
+PhLImageMock >> setLocation: aFileReference [ 
 	location := aFileReference.
 ]
 
 { #category : #mocking }
-PhLImagesMock >> shouldRunInitializationScript: aTrue [ 
+PhLImageMock >> shouldRunInitializationScript: aTrue [ 
 	^ self 
 ]
 
-{ #category : #'mocking world' }
-PhLImagesMock >> vmManager [
+{ #category : #mocking }
+PhLImageMock >> vmManager [
 	^self 
 ]

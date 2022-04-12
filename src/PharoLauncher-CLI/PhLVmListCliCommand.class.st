@@ -26,15 +26,7 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 
 { #category : #'command line - arguments' }
 PhLVmListCliCommand class >> launcherCmdFlags [
-	^ {	
-		"add printing flags"
-		self briefFlag.
-		self rowModeFlag.
-		self delimiterFlag.
-		self stonFlag 
-			description: 'Prints list of VMs using STON format. ';
-			yourself.	
-		}
+	^ self printFlags
 ]
 
 { #category : #accessing }

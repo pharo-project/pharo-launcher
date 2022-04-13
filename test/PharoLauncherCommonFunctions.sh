@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 #setup pharo launcher and image name paths
-PHLSCRIPT="./pharo-launcher.sh"
+PHL_SCRIPT="./pharo-launcher.sh"
 IMAGE=./shared/PharoLauncher.image
 
 ensureShunitIsPresent () {
@@ -22,28 +22,28 @@ ensureShunitIsPresent () {
 
 prepareLauncherScriptAndImage () {
 	# ensure that launcher script and image is in needed directories for test evaluation (before packaging)
-	pushd ..> /dev/null
-	if [ ! -f "$PHLSCRIPT" ] ; then
-	    cp ./script/pharo-launcher.sh $PHLSCRIPT
+	pushd .. > /dev/null
+	if [ ! -f "$PHL_SCRIPT" ] ; then
+	    cp ./script/pharo-launcher.sh $PHL_SCRIPT
 	fi
 	if [ ! -f "$IMAGE" ] ; then
 		mkdir -p shared
 	    cp PharoLauncher.image $IMAGE
 	fi
-	popd> /dev/null
+	popd > /dev/null
 }
 
 cleanupLauncherScriptAndImage () {
-	pushd ..> /dev/null
+	pushd .. > /dev/null
 	rm -rf ./shared
-	rm -f $PHLSCRIPT
-	popd> /dev/null
+	rm -f $PHL_SCRIPT
+	popd > /dev/null
 }
 
 runLauncherScript() {
-	pushd ..> /dev/null
-	$PHLSCRIPT $@
-	popd> /dev/null
+	pushd .. > /dev/null
+	$PHL_SCRIPT $@
+	popd > /dev/null
 }
 
 assertContainsPrinted() {

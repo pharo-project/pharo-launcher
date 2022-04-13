@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 # import functions that are shared across unit tests
 source PharoLauncherCommonFunctions.sh
 

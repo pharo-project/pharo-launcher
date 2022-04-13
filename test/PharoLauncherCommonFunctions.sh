@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 #setup pharo launcher and image name paths
 PHL_SCRIPT="./pharo-launcher.sh"
 IMAGE=./shared/PharoLauncher.image

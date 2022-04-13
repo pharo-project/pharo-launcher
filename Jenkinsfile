@@ -183,6 +183,10 @@ def fileNameArchSuffix(architecture) {
 }
 
 def shouldNotUpload() {
+  if (isRelease) {
+    return false
+  }
+
   if (isPullRequest()) {
     //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
     echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())

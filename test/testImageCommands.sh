@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-set -ex
-
 # import functions that are shared across unit tests
 source PharoLauncherCommonFunctions.sh
 
@@ -10,11 +8,11 @@ ensureShunitIsPresent
 
 #setup sample image name and template name
 SAMPLE_IMAGE="PhLTestImage"
-SAMPLE_TEMPLATE="Pharo 8.0 - 64bit (old stable)"
+SAMPLE_TEMPLATE="Pharo 10.0 - 64bit (stable)"
 
 # setup commands for sample image manipulation
 createSampleImageCommand () {
-    runLauncherScript image create $SAMPLE_IMAGE "`$SAMPLE_TEMPLATE`"
+    runLauncherScript image create $SAMPLE_IMAGE "$SAMPLE_TEMPLATE"
 }
 
 launchSampleImageCommand () {
@@ -83,4 +81,4 @@ oneTimeTearDown() {
 }
 
 # Load shUnit2.
-. ./shunit2/shunit2
+. $SHUNIT

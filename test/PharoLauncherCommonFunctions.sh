@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-set -ex
+# some magic to find out the real location of this script dealing with symlinks
+DIR=`readlink "$0"` || DIR="$0";
+ROOT=`dirname "$DIR"`;
 
 #setup pharo launcher and image name paths
-PHL_SCRIPT="./pharo-launcher.sh"
-IMAGE=./shared/PharoLauncher.image
+PHL_SCRIPT="$ROOT"/pharo-launcher.sh
+SHUNIT="$ROOT"/shunit2/shunit2
 
 ensureShunitIsPresent () {
 	#Check if shunit is present
-	SHUNIT=./shunit2/shunit2
 	if test -f "$SHUNIT" ; then
 		return $?
 	fi
@@ -20,7 +21,23 @@ ensureShunitIsPresent () {
 	rm -rf shunit2/shunit2-*
 }
 
+detectPharoLauncherImagePath() {
+	# pharo-launcher.sh script used for testing is the one packaged in the distributed app
+	# That's why we need to adapt paths to the ones used in production.
 
+	# DETECT SYSTEM PROPERTIES ======================================================
+	OS=`uname | tr "[:upper:]" "[:lower:]"`
+	if [[ "{$OS}" = *darwin* ]]; then
+		mkdir -p "$ROOT"/../Resources
+		IMAGE="$ROOT"/../Resources/PharoLauncher.image
+	elif [[ "{$OS}" = *linux* ]]; then
+		mkdir -p "$ROOT"/shared
+		IMAGE="$ROOT"/shared/PharoLauncher.image
+	else
+		echo "Unsupported OS";
+		exit 1;
+	fi
+}
 
 prepareLauncherScriptAndImage () {
 	# ensure that launcher script and image is in needed directories for test evaluation (before packaging)
@@ -28,8 +45,8 @@ prepareLauncherScriptAndImage () {
 	if [ ! -f "$PHL_SCRIPT" ] ; then
 	    cp ./script/pharo-launcher.sh $PHL_SCRIPT
 	fi
+	detectPharoLauncherImagePath
 	if [ ! -f "$IMAGE" ] ; then
-		mkdir -p shared
 	    cp PharoLauncher.image $IMAGE
 	fi
 	popd > /dev/null
@@ -44,7 +61,7 @@ cleanupLauncherScriptAndImage () {
 
 runLauncherScript() {
 	pushd .. > /dev/null
-	$PHL_SCRIPT $@
+	$PHL_SCRIPT "$@"
 	popd > /dev/null
 }
 

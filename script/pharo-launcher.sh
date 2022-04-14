@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-set -ex
 
 # some magic to find out the real location of this script dealing with symlinks
 DIR=`readlink "$0"` || DIR="$0";

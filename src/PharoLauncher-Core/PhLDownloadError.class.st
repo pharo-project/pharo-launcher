@@ -18,6 +18,14 @@ PhLDownloadError class >> signalUrl: anUrl [
 		signal
 ]
 
+{ #category : #signalling }
+PhLDownloadError class >> signalUrl: anUrl message: errorMessage [
+	^ self new
+		setUrl: anUrl;
+		messageText: errorMessage;
+		signal
+]
+
 { #category : #polymorphism }
 PhLDownloadError >> hasChildren [ 
 	^ false
@@ -30,7 +38,11 @@ PhLDownloadError >> isTemplate [
 
 { #category : #accessing }
 PhLDownloadError >> longDescription [
-	^ 'Error downloading ', (url printStringLimitedTo: 100)
+	^ String streamContents: [ :stream |
+		stream 
+			nextPutAll: 'Error downloading ';
+			nextPutAll: (url printStringLimitedTo: 100).
+		messageText ifNotNil: [ stream cr; nextPutAll: messageText ] ]
 ]
 
 { #category : #accessing }

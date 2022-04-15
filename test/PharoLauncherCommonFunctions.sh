@@ -54,7 +54,7 @@ prepareLauncherScriptAndImage () {
 
 cleanupLauncherScriptAndImage () {
 	pushd .. > /dev/null
-	rm -rf ./shared
+	rm -rf "$ROOT"/shared "$ROOT"/../Resources
 	rm -f $PHL_SCRIPT
 	popd > /dev/null
 }

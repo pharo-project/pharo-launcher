@@ -51,12 +51,12 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 9.0 (development)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose9-development.zip'
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-10.zipii'
   			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 8.0 (stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-stable.zip'
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip'
   			}
 		],
 		#expanded : true

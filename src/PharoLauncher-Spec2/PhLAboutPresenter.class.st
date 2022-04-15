@@ -86,6 +86,7 @@ PhLAboutPresenter >> initializePresenters [
 
 { #category : #initialization }
 PhLAboutPresenter >> initializeWindow: aWindow [
+	aWindow title: 'About Pharo Launcher'.
 	description 
 		text: text;
 		disable.

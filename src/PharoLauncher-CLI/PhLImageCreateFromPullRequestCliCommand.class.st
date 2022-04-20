@@ -20,12 +20,20 @@ PhLImageCreateFromPullRequestCliCommand class >> asCliCommand [
 ]
 
 { #category : #'command line' }
+PhLImageCreateFromPullRequestCliCommand class >> launcherCmdDescription [
+
+	^ 'Downloads and creates new image based on a Github pull request number from remote repository.'
+]
+
+{ #category : #'command line - arguments' }
 PhLImageCreateFromPullRequestCliCommand class >> launcherCmdFlags [
 
 	^ 
 	{	self repositoryFlag. 
+		self subfolderFlag.
 		self newImageFlag.
-		self subfolderFlag 
+		self templateNameFlag.
+		self templateCategoryFlag 	 
 	}
 ]
 

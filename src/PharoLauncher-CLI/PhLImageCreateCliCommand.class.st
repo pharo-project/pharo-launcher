@@ -198,10 +198,11 @@ PhLImageCreateCliCommand >> execute [
 { #category : #querying }
 PhLImageCreateCliCommand >> findTemplate [ 
 
-	^ self templateRepository
-		templateNamed: self templateName
-		inCategoryNamed: self templateCategory
+	"find template defined by user"
+	self templateName ifNotNil: [ ^ self findUserTemplate ].
 
+	"otherwise latest stable Pharo version template"
+	^ self latestStableTemplate
 ]
 
 { #category : #'command execution' }

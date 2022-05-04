@@ -39,6 +39,7 @@ killAllCommand () {
 
 oneTimeSetUp() {
 	prepareLauncherScriptAndImage
+	setupImageTemplateList
 	createSampleImageCommand
 }
 
@@ -78,6 +79,7 @@ oneTimeTearDown() {
 	echo "Calling teardown..."
 	deleteSampleImageCommand
 	cleanupLauncherScriptAndImage
+	restoreOriginalImageTemplateList
 }
 
 # Load shUnit2.

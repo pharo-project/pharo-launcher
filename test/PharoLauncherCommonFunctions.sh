@@ -38,6 +38,18 @@ detectPharoLauncherImagePath() {
 		exit 1;
 	fi
 }
+setupImageTemplateList () {
+    #using own image template list file to have same templates that are used for testing
+    pushd .. > /dev/null
+    cp ~/Pharo/sources.list ~/Pharo/sources.list.original
+    cp -f ./test/sources-for-tests.list ~/Pharo/sources.list
+    popd > /dev/null
+}
+
+restoreOriginalImageTemplateList () {
+    #restore original image template list file that was previously used
+    mv -f ~/Pharo/sources.list.original ~/Pharo/sources.list
+}
 
 prepareLauncherScriptAndImage () {
 	# ensure that launcher script and image is in needed directories for test evaluation (before packaging)

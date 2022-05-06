@@ -12,12 +12,12 @@ PhLProcessWrapperTest >> setupProcessCmdWithArgs: argArray [
 { #category : #'*PharoLauncher-CLI-Tests' }
 PhLProcessWrapperTest >> testAddAllArguments [
 
-	|aWrapper|
+	| aWrapper |
 	aWrapper := PhLProcessWrapper new.
-	aWrapper addAllArguments: #('a' 'b').
+	aWrapper addAllArguments: #( 'a' 'b' ).
 	self assert: aWrapper arguments size equals: 2.
 	self assert: aWrapper arguments first equals: 'a'.
-	self assert: aWrapper arguments second equals: 'b'.
+	self assert: aWrapper arguments second equals: 'b'
 ]
 
 { #category : #'*PharoLauncher-CLI-Tests' }

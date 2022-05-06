@@ -50,12 +50,17 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 9.0 (development)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-10.zipii'
+				#name : 'Moose Suite 10 (development)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose10-development-Pharo64-10.zip'
+				},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 9.0 (stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-9.0.zip'
   			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 8.0 (stable)',
+				#name : 'Moose Suite 8.0 (old stable)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip'
   			}
 		],
@@ -163,7 +168,7 @@ OrderedCollection [
 		#name : 'Pharo 11.0 (development version)',
 		#url : 'https://files.pharo.org/image/110/',
 		#filterPattern : 'href="(Pharo-?11-SNAPSHOT.build.[^"]*.zip)"'
-	},	
+	},
 	PhLTemplateSource {
 		#type : #HttpListing,
 		#name : 'Pharo IoT (PharoThings)',

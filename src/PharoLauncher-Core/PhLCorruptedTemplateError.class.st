@@ -8,6 +8,12 @@ Class {
 }
 
 { #category : #accessing }
+PhLCorruptedTemplateError >> longDescription [
+
+	^ self name
+]
+
+{ #category : #accessing }
 PhLCorruptedTemplateError >> name [
 	^ 'This template appears to be corrupted! Please try again.'
 ]

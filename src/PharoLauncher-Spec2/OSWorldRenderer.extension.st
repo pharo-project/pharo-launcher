@@ -3,14 +3,17 @@ Extension { #name : #OSWorldRenderer }
 { #category : #'*PharoLauncher-Spec2' }
 OSWorldRenderer >> doActivate [
 
-	| attributes initialExtent |
+	| attributes initialExtent title |
 	
 	initialExtent := world worldState realWindowExtent ifNil: [976@665].
 
 	attributes := OSWindowAttributes new.
+	title := PharoLauncherApplication isDeployed 
+		ifTrue: [ 'Pharo Launcher' ]
+		ifFalse: [ Smalltalk image shortImageName ].
 	attributes
 		extent: initialExtent;
-		title: 'Pharo Launcher';
+		title: title;
 		windowCentered:true.
 
 	display := Form extent: initialExtent depth: 32.

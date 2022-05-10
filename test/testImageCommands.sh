@@ -75,6 +75,9 @@ testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
 }
 
 oneTimeTearDown() {
+    #need this to suppress tearDown on script EXIT
+    [[ "${_shunit_name_}" = 'EXIT' ]] && return 0
+
 	echo "Calling teardown..."
 	deleteSampleImageCommand
 	cleanupLauncherScriptAndImage

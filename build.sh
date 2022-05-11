@@ -40,7 +40,7 @@ function run_tests() {
 function run_shell_cli_tests() {
 	pushd test
 	for f in test*.sh; do
-  		bash "$f"
+  		SHUNIT_COLOR=none bash "$f"
 	done
 	popd
 }

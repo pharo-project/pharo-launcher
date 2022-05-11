@@ -40,7 +40,7 @@ detectPharoLauncherImagePath() {
 }
 
 prepareLauncherScriptAndImage () {
-	# ensure that launcher script and image is in needed directories for test evaluation (before packaging)
+	# ensure that launcher script and image are in needed directories for test evaluation (before packaging)
 	pushd .. > /dev/null
 	if [ ! -f "$PHL_SCRIPT" ] ; then
 	    cp ./script/pharo-launcher.sh $PHL_SCRIPT

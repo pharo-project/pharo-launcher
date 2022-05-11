@@ -1,8 +1,16 @@
 Class {
 	#name : #PhLProcessWrapperTest,
 	#superclass : #TestCase,
+	#instVars : [
+		'process'
+	],
 	#category : #'PharoLauncher-Tests-Functional'
 }
+
+{ #category : #running }
+PhLProcessWrapperTest >> tearDown [ 
+	process ifNotNil: [ process terminate ]
+]
 
 { #category : #tests }
 PhLProcessWrapperTest >> testCanDetectAvailableCommandOnLinux [
@@ -22,7 +30,7 @@ PhLProcessWrapperTest >> testCanDetectAvailableCommandOnWindows [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
-	| process fileRef |
+	| fileRef |
 
 	fileRef := (FileLocator temp / 'Yann-Gaël Bérès.bat') asFileReference.
 	fileRef ensureCreateFile.
@@ -41,7 +49,7 @@ PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testLinuxCommandLineString [
-	| process commandString |
+	| commandString |
 	process := PhLProcessWrapper new 
 		command: '/home/me/Pharo/pharo';
 		addArgument: '/tmp/ba r.image' surroundedByDoubleQuotes;
@@ -58,7 +66,7 @@ PhLProcessWrapperTest >> testLinuxCommandLineString [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testLinuxCommandLineStringWhenUsingShell [
-	| process commandString |
+	| commandString |
 	process := PhLProcessWrapper new 
 		shellCommand;
 		addArgument: 'ls';
@@ -77,7 +85,7 @@ PhLProcessWrapperTest >> testLinuxCommandLineStringWhenUsingShell [
 { #category : #tests }
 PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
 	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
-	| process argument |
+	| argument |
 	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
 
 	process := PhLProcessWrapper new 
@@ -93,7 +101,7 @@ PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
 { #category : #tests }
 PhLProcessWrapperTest >> testLinuxShellCommandDoesNotRemoveDoubleQuotesFromArguments [
 	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
-	| process pathArgument |
+	| pathArgument |
 	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
 
 	process := PhLProcessWrapper new 
@@ -110,7 +118,7 @@ PhLProcessWrapperTest >> testLinuxShellCommandDoesNotRemoveDoubleQuotesFromArgum
 
 { #category : #tests }
 PhLProcessWrapperTest >> testRunningInfiniteProcessThrowsTimeout [
-	| process |
+	
 	process := PhLProcessWrapper new 
 		shellCommand;
 		yourself.
@@ -140,7 +148,7 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArguments [
 	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
-	| process argument |
+	| argument |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self ].
 
 	process := PhLProcessWrapper new 
@@ -157,7 +165,7 @@ PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArgument
 
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsCommandLineString [
-	| process commandString osPlatform |
+	| commandString osPlatform |
 	osPlatform := OSPlatform current.
 	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
 	process := PhLProcessWrapper new 
@@ -177,7 +185,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineString [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
-	| process commandString osPlatform |
+	| commandString osPlatform |
 	osPlatform := OSPlatform current.
 	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
 	process := PhLProcessWrapper new 
@@ -199,7 +207,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsShellCommandOnWindowsDoesNotRemoveDoubleQuotesFromArguments [
 	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
-	| process argument |
+	| argument |
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self ].
 
 	process := PhLProcessWrapper new 

@@ -79,7 +79,7 @@ PhLImageLaunchCliCommand >> executeWithImage: anImage [
 						newLine].
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
-	anImage launch
+	anImage launchFrom: FileSystem workingDirectory
 ]
 
 { #category : #accessing }

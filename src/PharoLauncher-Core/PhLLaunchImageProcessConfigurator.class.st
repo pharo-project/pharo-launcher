@@ -76,7 +76,7 @@ PhLLaunchImageProcessConfigurator >> usePharoSettings [
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visit [
 	process := PhLProcessWrapper new.
-	process workingDirectory: self imageFile parent pathString.
+	process workingDirectory: launchConfiguration workingDirectory pathString.
 	self configureVm.
 	process
 		addArgument: self imageFile pathString surroundedByDoubleQuotes.

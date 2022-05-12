@@ -15,7 +15,8 @@ Class {
 		'imageArguments',
 		'usePharoSettings',
 		'vm',
-		'vmArguments'
+		'vmArguments',
+		'workingDirectory'
 	],
 	#classVars : [
 		'LaunchInALoginShell'
@@ -126,6 +127,7 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	name := 'new configuration...'.
 	usePharoSettings := true.
 	imageArguments := anImage defaultArguments.
+	workingDirectory := anImage imageFile parent
 ]
 
 { #category : #testing }
@@ -191,4 +193,14 @@ PhLLaunchConfiguration >> vmArguments [
 { #category : #accessing }
 PhLLaunchConfiguration >> vmArguments: aCollection [ 
 	vmArguments := aCollection
+]
+
+{ #category : #accessing }
+PhLLaunchConfiguration >> workingDirectory [
+	^ workingDirectory
+]
+
+{ #category : #accessing }
+PhLLaunchConfiguration >> workingDirectory: aFileReference [
+	workingDirectory := aFileReference
 ]

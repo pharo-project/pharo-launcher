@@ -49,12 +49,12 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
 }
 
-testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-    launchSampleImageCommand> /dev/null
-    result=$(processListCommand)
-    kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) >/dev/null
-    assertContainsPrinted "$result" "$SAMPLE_IMAGE"
-}
+# testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
+#     launchSampleImageCommand> /dev/null
+#     result=$(processListCommand)
+#     kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) >/dev/null
+#     assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+# }
 
 # testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
 # 	launchSampleImageCommand> /dev/null

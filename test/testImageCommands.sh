@@ -54,26 +54,25 @@ testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
     result=$(processListCommand)
     kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) >/dev/null
     assertContainsPrinted "$result" "$SAMPLE_IMAGE"
-	
 }
 
-testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
-	launchSampleImageCommand> /dev/null
-	result=$(processListCommand)
-	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
-	killAllCommand
-	result=$(processListCommand)
-	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
-}
+# testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
+# 	launchSampleImageCommand> /dev/null
+# 	result=$(processListCommand)
+# 	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+# 	killAllCommand
+# 	result=$(processListCommand)
+# 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
+# }
 
-testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
-	launchSampleImageCommand> /dev/null
-	result=$(processListCommand)
-	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
-	killSampleImageCommand
-	result=$(processListCommand)
-	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
-}
+# testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
+# 	launchSampleImageCommand> /dev/null
+# 	result=$(processListCommand)
+# 	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+# 	killSampleImageCommand
+# 	result=$(processListCommand)
+# 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
+# }
 
 oneTimeTearDown() {
     #need this to suppress tearDown on script EXIT

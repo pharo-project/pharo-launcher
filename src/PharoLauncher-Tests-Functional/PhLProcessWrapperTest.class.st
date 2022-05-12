@@ -8,8 +8,10 @@ Class {
 }
 
 { #category : #running }
-PhLProcessWrapperTest >> tearDown [ 
-	process ifNotNil: [ process terminate ]
+PhLProcessWrapperTest >> tearDown [
+
+	(process isNotNil and: [ process isRunning ]) 
+		ifTrue: [ process terminate ]
 ]
 
 { #category : #tests }

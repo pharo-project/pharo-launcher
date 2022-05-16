@@ -97,7 +97,7 @@ PhLImageLaunchCliCommand >> isUsingScript [
 PhLImageLaunchCliCommand >> logLaunchOfImage: anImage [
 
 	| imgConfig |
-	imgConfig := anImage defaultConfiguration.
+	imgConfig := anImage defaultLaunchConfiguration.
 	self logInfoMessage: ('Launching image with command: "{1}".' format: { imgConfig commandString })
 ]
 

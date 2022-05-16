@@ -58,8 +58,9 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 }
 
  testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-     launchSampleImageCommand> /dev/null
+     launchSampleImageCommand #> /dev/null
      result=$(processListCommand)
+     echo $result
      kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) >/dev/null
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  }

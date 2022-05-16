@@ -75,7 +75,7 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 # }
 
  testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
- 	launchSampleImageCommand> /dev/null
+ 	launchSampleImageCommand #> /dev/null
  	result=$(processListCommand)
  	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  	killSampleImageCommand

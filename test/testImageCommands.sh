@@ -58,12 +58,9 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 }
 
  testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-     launchSampleImageCommand #> /dev/null
+     launchSampleImageCommand> /dev/null
      result=$(processListCommand)
-     echo $result
-     kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) #>/dev/null
-     echo "Process list should not contain sample image process anymore =>"
-     echo $(processListCommand)
+     kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  }
 
@@ -79,20 +76,11 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 # }
 
  testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
- 	launchSampleImageCommand #> /dev/null
+ 	launchSampleImageCommand> /dev/null
  	result=$(processListCommand)
- 	echo $result
  	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
- 	echo "Following number (if any) should list running Sample image PID:"
- 	echo $(pgrep -a -f Pharo | grep PhLTestImage | tr -s ' ' | cut -d ' ' -f1)
- 	echo "end of PID printout"
- 	echo "process list before kill..."
- 	echo $(processListCommand)
- 	echo "running kill command..."
  	killSampleImageCommand
  	result=$(processListCommand)
- 	echo "process list after kill..."
- 	echo $result
  	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
  }
 

@@ -18,7 +18,9 @@ PhLImage {
 		PhLLaunchConfiguration {
 			#image : @1,
 			#name : 'Default',
-			#imageArguments : OrderedCollection [ ],
+			#imageArguments : OrderedCollection [
+				'--no-quit'
+			],
 			#vmArguments : OrderedCollection [
 				'--headless'
 			]

@@ -65,6 +65,8 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  }
 
+# Following unit test is disabled due to the fact that there are running concurrent builds on CI that might be killed accidentally by this test
+
 # testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
 # 	launchSampleImageCommand> /dev/null
 # 	result=$(processListCommand)

@@ -83,6 +83,8 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
  	result=$(processListCommand)
  	echo $result
  	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+ 	echo "Following number (if any) should list running Sample image PID:"
+ 	echo $(pgrep -a -f Pharo | grep PhLTestImage | tr -s ' ' | cut -d ' ' -f1)
  	killSampleImageCommand
  	result=$(processListCommand)
  	echo $result

@@ -62,6 +62,8 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
      result=$(processListCommand)
      echo $result
      kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1) #>/dev/null
+     echo "Process list should not contain sample image process anymore =>"
+     echo $(processListCommand)
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  }
 
@@ -79,9 +81,11 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
  testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
  	launchSampleImageCommand #> /dev/null
  	result=$(processListCommand)
+ 	echo $result
  	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  	killSampleImageCommand
  	result=$(processListCommand)
+ 	echo $result
  	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
  }
 

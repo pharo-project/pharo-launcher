@@ -7,6 +7,8 @@ ROOT=`dirname "$DIR"`;
 #setup pharo launcher and image name paths
 PHL_SCRIPT="$ROOT"/pharo-launcher.sh
 SHUNIT="$ROOT"/shunit2/shunit2
+SOURCES_LIST_PATH="$HOME"/Pharo/sources.list
+SOURCES_LIST_BACKUP_PATH="${SOURCES_LIST_PATH}.original"
 
 ensureShunitIsPresent () {
 	#Check if shunit is present
@@ -36,6 +38,20 @@ detectPharoLauncherImagePath() {
 	else
 		echo "Unsupported OS";
 		exit 1;
+	fi
+}
+setupImageTemplateList () {
+    #using own image template list file to have same templates that are used for testing
+	if [ -f "$SOURCES_LIST_PATH" ] ; then
+    	cp "$SOURCES_LIST_PATH" "$SOURCES_LIST_BACKUP_PATH"
+	fi
+    cp -f "$ROOT"/sources-for-tests.list "$SOURCES_LIST_PATH"
+}
+
+restoreOriginalImageTemplateList () {
+    #restore original image template list file that was previously used
+	if [ -f "$SOURCES_LIST_BACKUP_PATH" ] ; then
+	    mv -f "$SOURCES_LIST_BACKUP_PATH" "$SOURCES_LIST_PATH"
 	fi
 }
 

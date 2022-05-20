@@ -99,9 +99,7 @@ PhLProcessWrapper >> initialize [
 
 { #category : #testing }
 PhLProcessWrapper >> isRunning [
-	^ Smalltalk os isWindows
-		ifTrue: [ process isRunning not ] 
-		ifFalse: [ process isComplete not ]
+	^ process isRunning
 ]
 
 { #category : #testing }

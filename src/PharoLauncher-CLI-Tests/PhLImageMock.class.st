@@ -73,6 +73,12 @@ PhLImageMock >> checkImageArchitecture [
 ]
 
 { #category : #accessing }
+PhLImageMock >> defaultLaunchConfiguration [  
+
+	^ PhLLaunchConfigurationMock new
+]
+
+{ #category : #accessing }
 PhLImageMock >> description [ 
 	^ 'this is the description'
 ]

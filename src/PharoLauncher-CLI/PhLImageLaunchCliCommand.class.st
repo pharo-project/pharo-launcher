@@ -65,10 +65,8 @@ PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> executeWithImage: anImage [
+
 	| script |
-	self outStream
-		nextPutAll: 'Launching image';
-		newLine.
 	script := self script.
 	self isUsingScript
 		ifTrue: [ (self checkScriptValidity: script)
@@ -80,6 +78,7 @@ PhLImageLaunchCliCommand >> executeWithImage: anImage [
 						nextPutAll: 'Architecture mismatch, still running image if possible';
 						newLine].
 	PhLLaunchImageCommand warnOnArchMismatch: false.
+	self logLaunchOfImage: anImage.
 	anImage launch
 ]
 
@@ -92,6 +91,14 @@ PhLImageLaunchCliCommand >> initialize [
 { #category : #accessing }
 PhLImageLaunchCliCommand >> isUsingScript [
 	^ useScript 
+]
+
+{ #category : #logging }
+PhLImageLaunchCliCommand >> logLaunchOfImage: anImage [
+
+	| imgConfig |
+	imgConfig := anImage defaultLaunchConfiguration.
+	self logInfoMessage: ('Launching image with command: "{1}".' format: { imgConfig commandString })
 ]
 
 { #category : #accessing }

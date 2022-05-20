@@ -39,7 +39,7 @@ PhLImageCreateCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> launcherCmdDescription [
 
-	^ 'Downloads and creates new image on local computer from remote site based on template name.'
+	^ 'Downloads and creates new Pharo image based on one sub-commands.'
 ]
 
 { #category : #'command line - arguments' }
@@ -75,10 +75,39 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 	}
 ]
 
-{ #category : #'command line - subcommands' }
-PhLImageCreateCliCommand class >> launcherCmdSubcommands [
+{ #category : #logging }
+PhLImageCreateCliCommand class >> missingPharoVersionFlagMessage [
 
-	^ #()
+	^ 'An argument is missing. Please specify Pharo version.'
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> newImageFlag [
+
+	^ (ClapFlag id: #newImageName)
+			description: 'Name of the new Pharo image (template name used by default).';
+			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
+			"this argument is optional "
+			implicitMeaning: [ :arg :app | app implicitImageName];
+			add: ((ClapPositional id: #newImageArg)
+					description: 'New image argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app |  app implicitImageName]);
+			yourself
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> pharoVersionFlag [
+
+^ (ClapFlag id: #pharoVersion)
+				description: 'Version of Pharo to be downloaded.';
+				meaning: [ :arg :app | (arg at: #pharoVersionArg) value ];
+				implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ];
+				add: ((ClapPositional id: #pharoVersionArg)
+					description: 'Specifies the version of Pharo you want to download.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ]);
+				yourself
 ]
 
 { #category : #'command execution' }
@@ -114,6 +143,15 @@ PhLImageCreateCliCommand >> findTemplate [
 
 ]
 
+{ #category : #'command execution' }
+PhLImageCreateCliCommand >> findTemplateAndCreateImage [
+	| aTemplate |
+	aTemplate := [ self findTemplate ]
+			on: NotFound
+			do: [ :error | ^ self logExceptionMessage: error messageText ].
+	self createImage: self imageName from: aTemplate
+]
+
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
 	^ (arguments at: #newImageName) word
@@ -145,6 +183,12 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	listTemplatesAvailableForDownload := templatesCategories
 		detect: [ :aGroup | aGroup name = self defaultTemplateCategoryName ].
 	^ listTemplatesAvailableForDownload
+]
+
+{ #category : #accessing }
+PhLImageCreateCliCommand >> pharoVersionNumber [ 
+
+	^ self flagValueFor: #pharoVersion
 ]
 
 { #category : #querying }

@@ -14,7 +14,7 @@ Class {
 
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #createFromBuild 
+	^ self newLauncherCommand: #fromBuild
 ]
 
 { #category : #'command line' }
@@ -68,11 +68,6 @@ PhLImageCreateFromBuildCliCommand class >> missingOrDuplicatedBuildNumberOrShaMe
 	^ 'you need to specify either a Pharo image build number or a Pharo image SHA (only one of them)'
 ]
 
-{ #category : #logging }
-PhLImageCreateFromBuildCliCommand class >> missingPharoVersionFlagMessage [
-	^ 'you need to specify a Pharo version'
-]
-
 { #category : #accessing }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
   ^ (arguments at: #build) value: self
@@ -98,11 +93,6 @@ PhLImageCreateFromBuildCliCommand >> isCommandValid [
 	(self shaString isNil and: [ self buildNumber isNil ]) ifTrue: [ ^ false ].
 	(self shaString isNotNil and: [ self buildNumber isNotNil ]) ifTrue: [ ^ false ].
 	^ true
-]
-
-{ #category : #accessing }
-PhLImageCreateFromBuildCliCommand >> pharoVersionNumber [
-	^  (arguments at: #pharoVersion) value: self
 ]
 
 { #category : #accessing }

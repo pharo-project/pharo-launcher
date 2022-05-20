@@ -32,12 +32,6 @@ PhLImageCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
 
-{ #category : #'command line - subcommands' }
-PhLImageCliCommand class >> launcherCmdSubcommands [
-
-	^ (self subclasses copyWith: PhLImageCreateFromBuildCliCommand) collect: #asCliCommand
-]
-
 { #category : #'command execution' }
 PhLImageCliCommand >> execute [
 	[ self executeWithImage: self findImage ]

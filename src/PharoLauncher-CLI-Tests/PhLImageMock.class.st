@@ -72,8 +72,8 @@ PhLImageMock >> checkImageArchitecture [
 	^self 
 ]
 
-{ #category : #mock }
-PhLImagesMock >> defaultArguments [
+{ #category : #mocking }
+PhLImageMock >> defaultArguments [
 
 	^ #()
 ]

@@ -240,7 +240,8 @@ PhLImageCreateFromPullRequestCliCommand >> logLoadingFinished: anImage [
 { #category : #'command execution' }
 PhLImageCreateFromPullRequestCliCommand >> logLoadingPullRequestUsing: cmdString [
 
-	self logInfoMessage: ('Loading code from pull request into image using command:' format: { cmdString } )
+	self logInfoMessage: ('Loading code from pull request into image using command:' format: { cmdString } ).
+	self logInfoMessage: 'This can take several minutes...'
 ]
 
 { #category : #querying }

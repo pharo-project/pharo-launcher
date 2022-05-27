@@ -39,7 +39,7 @@ PhLImageCreateCliCommand class >> asCliCommand [
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> launcherCmdDescription [
 
-	^ 'Downloads and creates new image on local computer from remote site based on template name.'
+	^ 'Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).'
 ]
 
 { #category : #'command line - arguments' }
@@ -58,7 +58,7 @@ PhLImageCreateCliCommand class >> launcherCmdPositionals [
 		(ClapPositional id: #newImageName)
 				description: 'Name of the new Pharo image.';
 					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app |  self missingImageNameArgMessage];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingImageNameArgMessage];
 					yourself
 	}
 ]

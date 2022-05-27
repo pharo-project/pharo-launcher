@@ -69,39 +69,6 @@ PhLImageCreateCliCommand class >> missingImageNameArgMessage [
 	^ 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> launcherCmdFlags [
-
-	^ {(ClapFlag id: #templateCategory)
-				description: 'Allows to use a template category to search the target template.';
-				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
-				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName. ];
-				add: ((ClapPositional id: #templateCategoryName)
-					description: 'Name of the template category variable.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app |  ]).}
-					
-			
-]
-
-{ #category : #'command line' }
-PhLImageCreateCliCommand class >> launcherCmdPositionals [
-
-	^ {
-		((ClapPositional id: #newImageName)
-				description: 'New image.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |
-						NotFound signal: 'An argument is missing. Please specify the name for the new image'. ];
-					yourself)	.
-		((ClapPositional id: #templateName)
-				description: 'Template which will be used to create the image.';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app | app defaultTemplate ];
-					yourself).
-	}
-]
-
 { #category : #logging }
 PhLImageCreateCliCommand class >> missingPharoVersionFlagMessage [
 
@@ -118,7 +85,7 @@ PhLImageCreateCliCommand class >> missingTemplateNameArgMessage [
 PhLImageCreateCliCommand class >> newImageFlag [
 
 	^ (ClapFlag id: #newImageName)
-			description: 'Name of the new Pharo image (template name used by default).';
+			description: 'Name of the new Pharo image (template name is used by default).';
 			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
 			"this argument is optional "
 			implicitMeaning: [ :arg :app | app implicitImageName];

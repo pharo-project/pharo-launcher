@@ -8,7 +8,9 @@ Class {
 	#instVars : [
 		'pharoVersion',
 		'build',
-		'sha'
+		'sha',
+		'pullRequest',
+		'inriaCIArtifactUrl'
 	],
 	#category : #'PharoLauncher-Core-Download'
 }

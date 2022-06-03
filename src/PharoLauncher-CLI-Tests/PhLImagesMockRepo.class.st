@@ -38,7 +38,7 @@ PhLImagesMockRepo >> deleteImage: anImageName [
 { #category : #'test methods' }
 PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	| testImage |
-	testImage := PhLImagesMock name: anImageName.
+	testImage := PhLImageMock name: anImageName.
 	images add: testImage.
 	^ testImage
 ]

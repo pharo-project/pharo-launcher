@@ -49,7 +49,7 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage2'.
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
-	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
 	 
 	self assertSuccess.  
 	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
@@ -75,7 +75,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithWrongTemplateNameShouldGiveEr
 	self addImageNamed: 'myImage2'.
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	
-	self runCommand: #('launcher' 'image' 'create' 'myImage3' 'aRandomTemplateName').
+	self runCommand: #('launcher' 'image' 'create' 'myImage3' '--templateName' 'aRandomTemplateName').
 	self assert: (self errorString includesSubstring: 'aRandomTemplateName not found')
 ]
 
@@ -99,7 +99,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	self addImageNamed: 'myImage2'.
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
-	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . 'fakeTemplate' . '--templateCategory' . 'wrong category name'}.
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' . '--templateCategory' . 'wrong category name'}.
 	 
 	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
 ]

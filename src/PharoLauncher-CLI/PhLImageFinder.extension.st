@@ -1,6 +1,12 @@
 Extension { #name : #PhLImageFinder }
 
 { #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> findInriaCITemplateName [
+	"make sure that PR number is part of image template name"
+	^ (self findTemplateNameFrom: self inriaCIArtifactUrl pathPrintString) copyReplaceAll: '-PR-' with: ('-PR-{1}-' format: { self pullRequest })
+]
+
+{ #category : #'*PharoLauncher-CLI' }
 PhLImageFinder class >> findLatestPharoDevelopmentVersion [
 	|response candidates|
 	"very ugly way to determine latest Pharo dev version - but it works"
@@ -20,5 +26,76 @@ accept: ZnMimeType textHtml;
 { #category : #'*PharoLauncher-CLI' }
 PhLImageFinder >> findTemplateName [
 
-	^ (self findUrl withoutSuffix: '.zip') copyAfterLast: $/
+	^ self findTemplateNameFrom: self findUrl
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> findTemplateNameFrom: aString [
+
+	^ (aString withoutSuffix: '.zip') copyAfterLast: $/
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder class >> fromInriaCIPullRequest: pullRequestString [
+
+	^ self new
+		pullRequest: pullRequestString;
+		yourself
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> getInriaCIBuildArtifactSuffix [
+
+	| response candidates |
+	response := (PhLDownloadManager default newHTTPClientForUrl:
+			             self inriaCIBuildArtifactLinkString)
+		            accept: ZnMimeType textHtml;
+		            get.
+	"find all occurences of html links which starts with 'Pharo' and ends with 'zip'"
+	candidates := response findBetweenSubstrings:
+		              #( '<a href="Pharo' 'zip</a>' ).
+
+	"this is needed, since there are more links that matches previous criteria"
+	candidates := candidates select: [ :str | 
+		              (str includesSubstring: 'zip') and: [ 
+			              str includesSubstring: 'Pharo' ] ].
+
+	"first of candidate links is the right build artifact"
+	^ candidates first copyAfterLast: $>
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> getInriaCIBuildArtifactUrl [
+
+	| suffixString |
+	"get suffix with correct build artifact, containing zip archive"
+	suffixString := self getInriaCIBuildArtifactSuffix.
+
+	"return complete url referencing zip archive"
+	^ ((self inriaCIBuildArtifactLinkString), suffixString, 'zip') asUrl
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> inriaCIArtifactUrl [
+	
+	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self getInriaCIBuildArtifactUrl  ] 
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> inriaCIBuildArtifactLinkString [
+
+	^ 'https://ci.inria.fr/pharo-ci-jenkins2/job/Test%20pending%20pull%20request%20and%20branch%20Pipeline/view/change-requests/job/PR-{1}/lastSuccessfulBuild/artifact/bootstrap-cache/' 
+		  format: { self pullRequest }
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> pullRequest [
+	
+	^ pullRequest 
+]
+
+{ #category : #'*PharoLauncher-CLI' }
+PhLImageFinder >> pullRequest: aString [
+	
+	pullRequest := aString
 ]

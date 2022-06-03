@@ -23,7 +23,7 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on a the build number contained in the Pharo development template.'
 ]
 
-{ #category : #'command line' }
+{ #category : #'command line - arguments' }
 PhLImageCreateFromBuildCliCommand class >> launcherCmdFlags [
 	
 	^	{ 
@@ -51,30 +51,46 @@ PhLImageCreateFromBuildCliCommand class >> missingBuildNrArgMessage [
 	^ 'An argument is missing. Please specify the Pharo build number to find the image template.'
 ]
 
-{ #category : #logging }
-PhLImageCreateFromBuildCliCommand class >> missingOrDuplicatedBuildNumberOrShaMessage [
-	^ 'you need to specify either a Pharo image build number or a Pharo image SHA (only one of them)'
-]
-
 { #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
-  ^ (arguments at: #build) value: self
+  ^ (arguments at: #buildNumber)
+		value: self;
+		word
+]
+
+{ #category : #private }
+PhLImageCreateFromBuildCliCommand >> cantFindImageTemplateMessage [
+
+	^ 'Could not determine remote image template from build number: {1} and version number: {2}.' 
+		  format: { 
+				  self buildNumber.
+				  self pharoVersionNumber }
 ]
 
 { #category : #'command execution' }
 PhLImageCreateFromBuildCliCommand >> execute [
-	
-	self findTemplateAndCreateImage
+	self validateBuildNumber.
+	super execute
 ]
 
-{ #category : #'command execution' }
+{ #category : #querying }
 PhLImageCreateFromBuildCliCommand >> findTemplate [
 	| url imageFinder |
 
 	imageFinder := PhLImageFinder pharoVersion: self pharoVersionNumber build: self buildNumber.
-	url := imageFinder findUrl asUrl.
+	[ 
+		url := imageFinder findUrl asUrl.
+	]
+		on: NotFound, PhLDownloadError  
+		do: [ :ex | 	PhLDownloadError signal: self cantFindImageTemplateMessage].
 
 	^ PhLRemoteTemplate name: imageFinder findTemplateName url: url
+]
+
+{ #category : #private }
+PhLImageCreateFromBuildCliCommand >> notValidBuildNrMessage [
+
+	^ 'Not a valid build number: {1}' format: { self buildNumber }
 ]
 
 { #category : #'accessing - arguments' }
@@ -90,4 +106,10 @@ PhLImageCreateFromBuildCliCommand >> shaString [
 { #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> targetName [
 	^ (arguments at: #newImageName) word
+]
+
+{ #category : #private }
+PhLImageCreateFromBuildCliCommand >> validateBuildNumber [
+
+	self buildNumber isAllDigits ifFalse: [ Error signal: self notValidBuildNrMessage ]
 ]

@@ -131,7 +131,7 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 PharoLauncherApplication class >> open [
 	<script>
 	
-	^ (Default := self new)
+	^ self default
 		openAsWorld: false;
 		run
 ]
@@ -140,7 +140,7 @@ PharoLauncherApplication class >> open [
 PharoLauncherApplication class >> openFull [ 
 	<script>
 	
-	^ (Default := self new) 
+	^ self default
 		beOpenedAsWorld;
 		run
 ]
@@ -153,9 +153,11 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #accessing }
+{ #category : #'class initialization' }
 PharoLauncherApplication class >> reset [
+   Default ifNil: [ ^ self ].
 
+   Default closeAllWindows.
 	Default := nil
 ]
 

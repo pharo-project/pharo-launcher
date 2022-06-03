@@ -32,6 +32,7 @@ function prepare_image() {
 }
 
 function run_tests() {
+	rm -rf ~/Pharo # clean posssible remaining Pharo files
 	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
 }
 

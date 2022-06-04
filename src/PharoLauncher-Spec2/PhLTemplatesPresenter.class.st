@@ -188,7 +188,7 @@ PhLTemplatesPresenter >> initializationScript [
 PhLTemplatesPresenter >> initialize [
 
 	super initialize.
-	self selectCategory: 3
+	self selectCategoryNamed: 'Official distributions'
 
 ]
 
@@ -227,6 +227,16 @@ PhLTemplatesPresenter >> refreshInitializationScriptList [
 { #category : #'api - selection' }
 PhLTemplatesPresenter >> selectCategory: anIndex [
 	categoryTable selectIndex: anIndex
+]
+
+{ #category : #'api - selection' }
+PhLTemplatesPresenter >> selectCategoryNamed: categoryName [
+	
+	|categoryToSelect|
+	"don't select anything, if not found"
+	categoryToSelect := categoryTable items detect: [:cat | cat name includesSubstring: categoryName ] ifNone: [ ^ self ].
+	
+	 categoryTable selectItem: categoryToSelect 
 ]
 
 { #category : #'api - selection' }

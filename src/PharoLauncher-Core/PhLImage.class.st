@@ -479,7 +479,7 @@ PhLImage >> shouldRunInitializationScript: aBoolean [
 
 { #category : #printing }
 PhLImage >> showNativeFolder [
-	PhLFileBrowser openOn: file
+	file asFileReference openInOSFileBrowser 
 ]
 
 { #category : #'private ui' }

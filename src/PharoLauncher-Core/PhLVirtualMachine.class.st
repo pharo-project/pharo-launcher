@@ -356,7 +356,7 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : #actions }
 PhLVirtualMachine >> showInFolder [
-	PhLFileBrowser openOn: self vmStore / self id
+	(self vmStore / self id) asFileReference openInOSFileBrowser 
 ]
 
 { #category : #'ston persistence' }

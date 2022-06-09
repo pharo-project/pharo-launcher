@@ -4,7 +4,7 @@ Open your OS's file browser on the selected image directory.
 Class {
 	#name : #PhLShowImageInFolderCommand,
 	#superclass : #PhLImageCommand,
-	#category : 'PharoLauncher-Core-Commands'
+	#category : #'PharoLauncher-Core-Commands'
 }
 
 { #category : #converting }
@@ -18,6 +18,8 @@ PhLShowImageInFolderCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLShowImageInFolderCommand >> execute [
+ 
+	self imagesPresenter hasSingleImageSelected ifFalse: [ ^self ].
 	self imagesPresenter singleImage showNativeFolder
 ]
 

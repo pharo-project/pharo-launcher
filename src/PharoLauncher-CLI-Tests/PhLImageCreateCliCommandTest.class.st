@@ -103,23 +103,3 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	 
 	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
 ]
-
-{ #category : #tests }
-PhLImageCreateCliCommandTest >> testFindLatestPharoVersionInALocation [
-	| category template1 template2 template3 templateFound |
-	category := OrderedCollection new.
-	template1 := PhLTemplateMock named: 'fakeTemplate1'.
-	template2 := PhLTemplateMock
-		named: 'fakeTemplateWith Pharo 9 64bit stable init'.
-	template3 := PhLTemplateMock named: 'fakeTemplate3'.
-	category
-		add: template1;
-		add: template2;
-		add: template3.
-		
-	templateFound := PhLCliCommand new
-		findLatestPharoStableVersionIn: category.
-		
-	self assert: (templateFound includesSubstring: 'stable').
-	self assert: templateFound equals: template2 name
-]

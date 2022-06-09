@@ -151,11 +151,6 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 	^ anImage
 ]
 
-{ #category : #default }
-PhLImageCreateCliCommand >> defaultTemplate [
-	^ self findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
-]
-
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
 	

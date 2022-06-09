@@ -240,11 +240,8 @@ PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 ]
 
 { #category : #querying }
-PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
-	^ (aLocation
-		detect: [ :template | 
-			(template name includesSubstring: 'stable')
-				and: [ template name includesSubstring: PhLImageFinder defaultArchitectureString ] ]) name
+PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
+	^ aTemplateGroup latestStableTemplate
 ]
 
 { #category : #'private ' }

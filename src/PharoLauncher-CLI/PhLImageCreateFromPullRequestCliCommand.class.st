@@ -61,7 +61,7 @@ PhLImageCreateFromPullRequestCliCommand >> cantFindImageTemplateMessage: imageFi
 	^ 'Could not determine build artifact for pull request: {1} from Inria CI server. Url not reachable: "{2}".' 
 		  format: { 
 				  self pullRequestNumber.
-				  imageFinder inriaCIBuildArtifactLinkString }
+				  imageFinder pullRequestBuildArtifactsUrlString }
 ]
 
 { #category : #'command execution' }
@@ -77,14 +77,15 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 
 	"find template from Inria CI server based on Pull request number"
 
-	| imageFinder |
+	| imageFinder templateUrl |
 	imageFinder := PhLImageFinder fromInriaCIPullRequest: self pullRequestNumber.
-	
-	[ ^ PhLRemoteTemplate
-		  name: imageFinder findInriaCITemplateName
-		  url: imageFinder inriaCIArtifactUrl ]
+	[ templateUrl := imageFinder inriaCIArtifactUrl. ]
 		on: PhLDownloadError
-		do: [ :ex | PhLDownloadError signal:(self cantFindImageTemplateMessage: imageFinder) ]
+		do: [ :ex | PhLDownloadError signal:(self cantFindImageTemplateMessage: imageFinder) ].
+	
+	 ^ PhLRemoteTemplate
+		  name: (self templateNameFrom: templateUrl)
+		  url: templateUrl
 ]
 
 { #category : #'accessing - arguments' }
@@ -93,6 +94,17 @@ PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 	^ (arguments at: #pullRequest)
 		value: self;
 		word
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> templateNameFrom: url [
+	"make sure that PR number is part of image template name"
+	
+	| name |
+	name := super templateNameFrom: url.
+	^ name
+		  copyReplaceAll: '-PR-'
+		  with: ('-PR-{1}-' format: { self pullRequestNumber })
 ]
 
 { #category : #private }

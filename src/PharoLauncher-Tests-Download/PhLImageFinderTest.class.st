@@ -46,6 +46,16 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
 ]
 
 { #category : #tests }
+PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
+	| url |
+	url := (PhLImageFinderStub fromInriaCIPullRequest: 10553) findTemplateUrlFromPROnCI.
+	
+	self 
+		assert: url path
+		equals: 'pharo-ci-jenkins2/job/Test pending pull request and branch Pipeline/view/change-requests/job/PR-10553/lastSuccessfulBuild/artifact/bootstrap-cache/Pharo10.0-PR-64bit-5ce32be.zip'
+]
+
+{ #category : #tests }
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidBuildNumberProvided [
 
 	self

@@ -71,7 +71,7 @@ PhLImageCreateFromSHACliCommand >> findTemplate [
 		on: NotFound , PhLDownloadError
 		do: [ :ex | PhLDownloadError signal: self cantFindImageTemplateMessage ].
 
-	^ PhLRemoteTemplate name: imageFinder findTemplateName url: url
+	^ PhLRemoteTemplate name: (self templateNameFrom: url) url: url
 ]
 
 { #category : #private }

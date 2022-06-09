@@ -41,6 +41,12 @@ PhLImageFinder >> buildNumber [
 ]
 
 { #category : #'finding/searching' }
+PhLImageFinder >> findTemplateUrlFromPROnCI [
+
+	^ (self pullRequestBuildArtifactsUrlString, self templateArtifactName) asUrl
+]
+
+{ #category : #'finding/searching' }
 PhLImageFinder >> findUrl [
 	| imagesListing templates matcher buildOrShaFilter imageListingUrl |
 	
@@ -72,6 +78,12 @@ PhLImageFinder >> imageHtmlListingUrl [
 ]
 
 { #category : #accessing }
+PhLImageFinder >> inriaCIArtifactUrl [
+	
+	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self findTemplateUrlFromPROnCI  ] 
+]
+
+{ #category : #accessing }
 PhLImageFinder >> pharoVersion [
 	^ pharoVersion
 ]
@@ -97,6 +109,45 @@ PhLImageFinder >> pharoVersionForImageListing [
 ]
 
 { #category : #accessing }
+PhLImageFinder >> pullRequest [
+	
+	^ pullRequest 
+]
+
+{ #category : #accessing }
+PhLImageFinder >> pullRequest: aString [
+	
+	pullRequest := aString
+]
+
+{ #category : #private }
+PhLImageFinder >> pullRequestBuildArtifactsUrlString [
+
+	^ 'https://ci.inria.fr/pharo-ci-jenkins2/job/Test%20pending%20pull%20request%20and%20branch%20Pipeline/view/change-requests/job/PR-{1}/lastSuccessfulBuild/artifact/bootstrap-cache/' 
+		  format: { self pullRequest }
+]
+
+{ #category : #accessing }
 PhLImageFinder >> sha [ 
 	^ sha
+]
+
+{ #category : #private }
+PhLImageFinder >> templateArtifactName [
+
+	| pullRequestBuildArtifactsHtml candidates |
+	pullRequestBuildArtifactsHtml := (PhLDownloadManager default newHTTPClientForUrl: self pullRequestBuildArtifactsUrlString)
+		            accept: ZnMimeType textHtml;
+		            get.
+	
+	"find all occurences of html links which starts with 'Pharo' and ends with 'zip'"
+	candidates := pullRequestBuildArtifactsHtml findBetweenSubstrings: #( '<a href="Pharo' 'zip</a>' ).
+
+	"this is needed, since there are more links that matches previous criteria"
+	candidates := candidates select: [ :str | 
+		              (str includesSubstring: 'zip') and: [ 
+			              str includesSubstring: 'Pharo' ] ].
+
+	"first of candidate links is the right build artifact"
+	^ (candidates first copyAfterLast: $>) , 'zip'
 ]

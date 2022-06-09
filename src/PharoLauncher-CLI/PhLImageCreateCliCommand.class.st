@@ -279,3 +279,8 @@ PhLImageCreateCliCommand >> templateCategory [
 PhLImageCreateCliCommand >> templateCategoryName [ 
    ^ (arguments at: #templateCategoryName) word
 ]
+
+{ #category : #private }
+PhLImageCreateCliCommand >> templateNameFrom: url [
+	^ url lastPathSegment copyUpToLast: $.
+]

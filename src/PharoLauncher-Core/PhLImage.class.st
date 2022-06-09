@@ -361,7 +361,7 @@ PhLImage >> launchConfigurations: aCollection [
 
 { #category : #action }
 PhLImage >> launchFrom: aDirectoryReference [
-	^ self launchWithConfiguration: (self defaultLaunchConfiguration
+	^ self launchWithConfiguration: (self defaultLaunchConfiguration copy
 			   workingDirectory: aDirectoryReference;
 			   yourself)
 ]

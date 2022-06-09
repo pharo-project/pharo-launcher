@@ -121,3 +121,8 @@ PhLLaunchImageProcessConfigurator >> vmDirectoryPath [
 PhLLaunchImageProcessConfigurator >> vmPath [
 	^ launchConfiguration vm executablePath
 ]
+
+{ #category : #accessing }
+PhLLaunchImageProcessConfigurator >> workingDirectory [
+	^ launchConfiguration workingDirectory
+]

@@ -64,12 +64,12 @@ PhLImageCreateFromSHACliCommand >> execute [
 PhLImageCreateFromSHACliCommand >> findTemplate [
 
 	| url imageFinder |
-	imageFinder := PhLImageFinder pharoVersion: self pharoVersionNumber sha: self sha.
-	[ 
-		url := imageFinder findUrl asUrl.
-	]
-		on: NotFound, PhLDownloadError  
-		do: [ :ex | 	PhLDownloadError signal: self cantFindImageTemplateMessage].
+	imageFinder := PhLImageFinder
+		               pharoVersion: self pharoVersionNumber
+		               sha: self sha.
+	[ url := imageFinder findUrl asUrl ]
+		on: NotFound , PhLDownloadError
+		do: [ :ex | PhLDownloadError signal: self cantFindImageTemplateMessage ].
 
 	^ PhLRemoteTemplate name: imageFinder findTemplateName url: url
 ]
@@ -90,5 +90,6 @@ PhLImageCreateFromSHACliCommand >> sha [
 { #category : #private }
 PhLImageCreateFromSHACliCommand >> validateSha [
 
-	(self sha isAllAlphaNumerics and: [ self sha size = 7 ]) ifFalse: [ Error signal: self notValidShaMessage ]
+	(self sha isAllAlphaNumerics and: [ self sha size = 7 ]) ifFalse: [ 
+		Error signal: self notValidShaMessage ]
 ]

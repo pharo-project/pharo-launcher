@@ -76,12 +76,10 @@ PhLImageCreateFromRemoteRepoCliCommand >> baselineName [
 { #category : #'command execution' }
 PhLImageCreateFromRemoteRepoCliCommand >> getPullRequestLoadConfigFor: anImage [
 
-	|aConfig|
-	aConfig := PhLLaunchConfiguration defaultWithImage: anImage.
-	aConfig name: 'Lauch configuration for loading project from the pull request.'.
-	aConfig vmArguments: self launchVmArguments.
-	aConfig imageArguments: self remoteRepoProjectLoadArguments.
-	^ aConfig
+	^ (PhLLaunchConfiguration defaultWithImage: anImage)
+		  name: 'Lauch configuration for loading project from the pull request.';
+		  vmArguments: self launchVmArguments;
+		  imageArguments: self remoteRepoProjectLoadArguments
 ]
 
 { #category : #default }
@@ -116,7 +114,9 @@ PhLImageCreateFromRemoteRepoCliCommand >> loadPullRequestCodeToImage: anImage [
 { #category : #'command execution' }
 PhLImageCreateFromRemoteRepoCliCommand >> logLoadingFinished: anImage [
 
-	self logInfoMessage: ('Loading project and branch: {1}:{2} into image: {3} finished successfully!' format: { self headRepo. self remoteBranch. anImage name} )
+	self 
+		logInfoMessage: ('Loading project and branch: {1}:{2} into image: {3} finished successfully!' 
+		format: { self headRepo. self remoteBranch. anImage name} )
 ]
 
 { #category : #'command execution' }
@@ -164,5 +164,9 @@ PhLImageCreateFromRemoteRepoCliCommand >> sourcesSubFolder [
 PhLImageCreateFromRemoteRepoCliCommand >> validateRepoFullName [
 
 	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}"
-	(self repoFullName matchesRegex: '[\w]+-?[\w]+\/[\w]+-?[\w]+') ifFalse: [Error signal:( 'Invalid repository name: {1}. Please specify in {owner/project} format.' format: {self repoFullName } )]
+
+	(self repoFullName matchesRegex: '[\w]+-?[\w]+\/[\w]+-?[\w]+') 
+		ifFalse: [ 
+			Error signal:
+				('Invalid repository name: {1}. Please specify in {owner/project} format.' format: { self repoFullName }) ]
 ]

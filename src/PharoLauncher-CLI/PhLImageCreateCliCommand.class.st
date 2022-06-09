@@ -141,19 +141,19 @@ PhLImageCreateCliCommand class >> templateNameFlag [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> createImage: newImageName from: template [
-	|anImage|
+
+	| anImage |
 	self logCreationOfImageFrom: template name.
 	anImage := self imageRepository
-		extractTemplate: template
-		to: newImageName.
+		           extractTemplate: template
+		           to: newImageName.
 	self logInfoMessage: 'Done!'.
-	^ anImage 
+	^ anImage
 ]
 
 { #category : #default }
 PhLImageCreateCliCommand >> defaultTemplate [
-	^ self
-		findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
+	^ self findLatestPharoStableVersionIn: self defaultTemplateCategory templatesAndGroups
 ]
 
 { #category : #'command execution' }
@@ -227,21 +227,26 @@ PhLImageCreateCliCommand >> latestStableTemplate [
 { #category : #logging }
 PhLImageCreateCliCommand >> logCannotFindTemplate: templateName [
 
-self errorStream
-		nextPutAll: ('Cannot find the image template: {1}, please check the image template name (or template category if you are using the category subcommand).' format: {templateName});
+	self errorStream
+		nextPutAll:
+			('Cannot find the image template: {1}, please check the image template name (or template category if you are using the category subcommand).' 
+				 format: { templateName });
 		newLine
 ]
 
 { #category : #logging }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
-	
-	self logInfoMessage:('Creating the local Pharo image based on template: {1}.' format: {aTemplateName}).
+
+	self logInfoMessage:
+		('Creating the local Pharo image based on template: {1}.' format: { aTemplateName }).
 	self logInfoMessage: 'Please wait a moment.'
 ]
 
 { #category : #default }
 PhLImageCreateCliCommand >> officialTemplateRepository [
+
 	| templatesCategories listTemplatesAvailableForDownload |
+	
 	templatesCategories := PhLTemplateGroupRepository default roots.
 	listTemplatesAvailableForDownload := templatesCategories
 		detect: [ :aGroup | aGroup name = self defaultTemplateCategoryName ].

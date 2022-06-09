@@ -78,17 +78,13 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 	"find template from Inria CI server based on Pull request number"
 
 	| imageFinder |
-	imageFinder := PhLImageFinder fromInriaCIPullRequest:
-		               self pullRequestNumber.
-	[ 
-	^ PhLRemoteTemplate
+	imageFinder := PhLImageFinder fromInriaCIPullRequest: self pullRequestNumber.
+	
+	[ ^ PhLRemoteTemplate
 		  name: imageFinder findInriaCITemplateName
-		  url: imageFinder inriaCIArtifactUrl 
-	]
+		  url: imageFinder inriaCIArtifactUrl ]
 		on: PhLDownloadError
-		do: [ :ex | 
-			PhLDownloadError signal:
-				(self cantFindImageTemplateMessage: imageFinder) ]
+		do: [ :ex | PhLDownloadError signal:(self cantFindImageTemplateMessage: imageFinder) ]
 ]
 
 { #category : #'accessing - arguments' }
@@ -102,6 +98,7 @@ PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> validatePullRequest [
 
-	self pullRequestNumber isAllDigits ifFalse: [ Error signal: ('Not a valid pull request number: {1}' format: { self pullRequestNumber  } )]
+	self pullRequestNumber isAllDigits 
+		ifFalse: [ Error signal: ('Not a valid pull request number: {1}' format: { self pullRequestNumber  } )]
 
 ]

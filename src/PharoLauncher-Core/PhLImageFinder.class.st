@@ -15,6 +15,12 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
+{ #category : #accessing }
+PhLImageFinder class >> defaultArchitectureString [
+	"pattern used to search default templates"
+	^ '64bit'
+]
+
 { #category : #'instance creation' }
 PhLImageFinder class >> pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString [
 	^ self new
@@ -46,7 +52,7 @@ PhLImageFinder >> findUrl [
 	templates := imagesListing lines 
 		select: [ :line | 
 			(line includesSubstring: buildOrShaFilter) 
-				and: [ line includesSubstring: '64bit' ]].
+				and: [ line includesSubstring: self class defaultArchitectureString ]].
 	buildOrShaFilter := self buildNumber 
 		ifNil: [ 'build\..+\.sha\.' , self sha , '\.' ]
 		ifNotNil: [ 'build\.' , self buildNumber, '\.sha\.' ].

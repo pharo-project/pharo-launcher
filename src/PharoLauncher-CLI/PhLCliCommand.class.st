@@ -244,7 +244,7 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aLocation [
 	^ (aLocation
 		detect: [ :template | 
 			(template name includesSubstring: 'stable')
-				and: [ template name includesSubstring: '64bit' ] ]) name
+				and: [ template name includesSubstring: PhLImageFinder defaultArchitectureString ] ]) name
 ]
 
 { #category : #'private ' }

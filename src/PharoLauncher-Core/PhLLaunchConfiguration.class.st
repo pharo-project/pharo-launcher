@@ -146,7 +146,6 @@ PhLLaunchConfiguration >> launchProcess [
 		ifFalse: [ PhLMissingVirtualMachineError signalVm: self vm ].
 	^ PhLLaunchImageProcessConfigurator new 
 		launchConfiguration: self;
-		launchInALoginShell: self class launchInALoginShell;
 		visit.
 ]
 

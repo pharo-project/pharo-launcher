@@ -64,6 +64,11 @@ PhLLaunchImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguratio
 ]
 
 { #category : #accessing }
+PhLLaunchImageProcessConfigurator >> launchInALoginShell [
+	^ launchInALoginShell ifNil: [ launchConfiguration class launchInALoginShell ]
+]
+
+{ #category : #accessing }
 PhLLaunchImageProcessConfigurator >> launchInALoginShell: anObject [
 	launchInALoginShell := anObject
 ]
@@ -90,7 +95,7 @@ PhLLaunchImageProcessConfigurator >> visit [
 
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
-	launchInALoginShell
+	self launchInALoginShell
 		ifTrue: [ process loginShellCommand.
 					process addArgument: self vmPath surroundedByDoubleQuotes ]
 		ifFalse: [process command: self vmPath "surroundedByDoubleQuotes" ].
@@ -98,8 +103,7 @@ PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
 
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visitUnix: aPlatform [
-	
-	launchInALoginShell
+	self launchInALoginShell
 		ifTrue: [ process loginShellCommand ]
 		ifFalse: [ process shellCommand ].
 	process 

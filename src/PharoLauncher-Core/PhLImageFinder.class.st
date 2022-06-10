@@ -21,6 +21,35 @@ PhLImageFinder class >> defaultArchitectureString [
 	^ '64bit'
 ]
 
+{ #category : #'finding/searching' }
+PhLImageFinder class >> findLatestPharoDevelopmentVersion [
+
+	| response candidates |
+	"very ugly way to determine latest Pharo dev version - but it works"
+	response := (PhLDownloadManager default newHTTPClientForUrl:
+			             'https://files.pharo.org/image/')
+		            accept: ZnMimeType textHtml;
+		            get.
+	candidates := response lines
+		              select: [ :l | l includesSubstring: '/</a>' caseSensitive: false ]
+		              thenCollect: [ :line | (line findBetweenSubstrings: #( '<a href="' '/</a>' )) second ].
+	candidates := candidates
+		              collect: [ :str | str copyAfterLast: $> ]
+		              thenSelect: [ :str | str isAllDigits ].
+	candidates
+		ifEmpty: [ self error: 'Could not retrieve latest development version of Pharo from: files.pharo.org.' ].
+		
+	^ (candidates collect: [ :aString | aString allButLast asNumber ]) max asString
+]
+
+{ #category : #'instance creation' }
+PhLImageFinder class >> fromInriaCIPullRequest: pullRequestString [
+
+	^ self new
+		pullRequest: pullRequestString;
+		yourself
+]
+
 { #category : #'instance creation' }
 PhLImageFinder class >> pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString [
 	^ self new

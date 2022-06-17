@@ -52,7 +52,7 @@ PhLImageCreateFromPullRequestCliCommand class >> missingPullRequestArgMessage [
 { #category : #querying }
 PhLImageCreateFromPullRequestCliCommand >> cantFindImageTemplateMessage: imageFinder [
 
-	^ 'Could not determine build artifact for pull request: {1} from Inria CI server. Url not reachable: "{2}".' 
+	^ 'Could not determine build artifact for pull request: {1} from Inria CI server. Either url is not reachable or connection to server was lost: "{2}".' 
 		  format: { 
 				  self pullRequestNumber.
 				  imageFinder pullRequestBuildArtifactsUrlString }

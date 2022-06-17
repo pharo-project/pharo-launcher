@@ -1,16 +1,10 @@
 "
-I'm the command to create image from Github pull request number. I expect the PR number on my input (as command argument).
-If repository full name isn't specified, I use Pharo as my default GH project and I create image based on SHA of PR branch parent. 
-I can also create image from PR based on different GH project than Pharo, but then I use latest stable version of Pharo as template instead. I install project based on identified branch using Metacello command. 
-
+I'm the command to create Pharo project image from Github pull request number. I expect the PR number on my input (as command argument).
+I use PharoProject and InriaCI server to determine proper build artifact (image template) that was built previously by CI based on pull request triggered by author of PR.
 "
 Class {
 	#name : #PhLImageCreateFromPullRequestCliCommand,
 	#superclass : #PhLImageCreateCliCommand,
-	#instVars : [
-		'headRepo',
-		'remoteBranch'
-	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
 

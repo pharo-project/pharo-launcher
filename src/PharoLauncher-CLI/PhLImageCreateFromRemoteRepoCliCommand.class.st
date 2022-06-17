@@ -1,3 +1,6 @@
+"
+I'm the command to create image based on specified template (using latest stable template implicitly). Additionally, I load into created image Github project based on specified CLI repo argument and baseline name.
+"
 Class {
 	#name : #PhLImageCreateFromRemoteRepoCliCommand,
 	#superclass : #PhLImageCreateCliCommand,

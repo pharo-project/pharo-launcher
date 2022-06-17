@@ -9,6 +9,20 @@ PhLImageCreateFromRemoteRepoCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromRepo
 ]
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromRemoteRepoCliCommand class >> baselineFlag [
+
+	^ (ClapFlag id: #baseline)
+			description: 'Specifies the project baseline to be loaded by Metacello command. If not specified, baseline is determined from repository name. ';
+			meaning: [ :arg :app | (arg at: #baselineArg) value];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #baselineArg)
+					description: 'Baseline argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingBaselineArgMessage]);
+			yourself 
+]
+
 { #category : #'command line' }
 PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdDescription [
 
@@ -24,6 +38,7 @@ PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdFlags [
 		self templateNameFlag.
 		self templateCategoryFlag.
 		self subfolderFlag.
+		self baselineFlag.
 	}
 ]
 
@@ -37,6 +52,13 @@ PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdPositionals [
 			implicitMeaning: [ :arg :app | NotFound signal: self missingRepoArgMessage];
 			yourself.
 		}
+]
+
+{ #category : #'command line' }
+PhLImageCreateFromRemoteRepoCliCommand class >> missingBaselineArgMessage [
+
+	^ 'An argument is missing. Please specify the Baseline name to load project into Pharo image.'
+
 ]
 
 { #category : #'command line' }
@@ -67,10 +89,34 @@ PhLImageCreateFromRemoteRepoCliCommand class >> subfolderFlag [
 			yourself 
 ]
 
+{ #category : #'accessing - arguments' }
+PhLImageCreateFromRemoteRepoCliCommand >> baselineFlag [
+
+	^ self flagValueFor: #baseline
+]
+
 { #category : #private }
 PhLImageCreateFromRemoteRepoCliCommand >> baselineName [
+	
+	"use flag, otherwise determine baseline from repo name"
+	^ self baselineFlag ifNil: [ self baselineNameFromRepoName ]
+]
 
-	^ (self headRepo copyAfterLast: $/) capitalized 
+{ #category : #private }
+PhLImageCreateFromRemoteRepoCliCommand >> baselineNameFromRepoName [
+
+	^ ((self repoFullName findBetweenSubstrings: #( '/' ':') ) second copyReplaceAll: '-' with: ' ') asCamelCase 
+]
+
+{ #category : #'command execution' }
+PhLImageCreateFromRemoteRepoCliCommand >> execute [
+
+	|anImage| 
+	self validateRepoFullName.
+	anImage := self findTemplateAndCreateImage.
+	self loadPullRequestCodeToImage: anImage
+	
+
 ]
 
 { #category : #'command execution' }
@@ -89,6 +135,12 @@ PhLImageCreateFromRemoteRepoCliCommand >> implicitSubfolder [
 	^ 'src'
 ]
 
+{ #category : #private }
+PhLImageCreateFromRemoteRepoCliCommand >> isValidRepoFullName [
+
+	^ self repoFullName matchesRegex: self regexForRepoName
+]
+
 { #category : #'command execution' }
 PhLImageCreateFromRemoteRepoCliCommand >> launchVmArguments [
 
@@ -102,7 +154,7 @@ PhLImageCreateFromRemoteRepoCliCommand >> loadPullRequestCodeToImage: anImage [
 
 	|imageConfig |
 	imageConfig := self getPullRequestLoadConfigFor: anImage.
-	self logLoadingPullRequestUsing: imageConfig commandString.
+	self logLoadingPullRequestUsing: self mcLoadProjectFromRepo.
 	"anImage launchWithConfiguration: imageConfig."
 	
 	"use handled execution and wait for result"
@@ -115,27 +167,37 @@ PhLImageCreateFromRemoteRepoCliCommand >> loadPullRequestCodeToImage: anImage [
 PhLImageCreateFromRemoteRepoCliCommand >> logLoadingFinished: anImage [
 
 	self 
-		logInfoMessage: ('Loading project and branch: {1}:{2} into image: {3} finished successfully!' 
-		format: { self headRepo. self remoteBranch. anImage name} )
+		logInfoMessage: ('Loading of project: {1}/{2} into image: {3} finished successfully!' 
+		format: { self repoFullName. self sourcesSubFolder. anImage name} )
 ]
 
 { #category : #'command execution' }
 PhLImageCreateFromRemoteRepoCliCommand >> logLoadingPullRequestUsing: cmdString [
 
-	self logInfoMessage: ('Loading code from pull request into image using command:' format: { cmdString } ).
+	self logInfoMessage: ('Loading code from Github remote repository into image using command: {1}.' format: { cmdString } ).
 	self logInfoMessage: 'This can take several minutes...'
 ]
 
 { #category : #private }
-PhLImageCreateFromRemoteRepoCliCommand >> mcLoadProjectFromPR [
-	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}:{3}/{4}''; onConflictUseIncoming; load"' 
+PhLImageCreateFromRemoteRepoCliCommand >> mcLoadProjectFromRepo [
+	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}/{3}''; onConflictUseIncoming; load"' 
 	format: { 
 		self baselineName. 
-		('github://', self headRepo). 
-		self remoteBranch. 
+		('github://', self repoFullName). 
 		self sourcesSubFolder.
 	}
 
+]
+
+{ #category : #private }
+PhLImageCreateFromRemoteRepoCliCommand >> regexForRepoName [
+	|stringWithDash|
+
+	"e.g. some-project-123"
+	stringWithDash := '[\w]+-?[\w]+'.
+	
+	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}:{feature}/{alphanumeric-chars with dash}"
+	^ stringWithDash, '\/', stringWithDash, '(\:?', stringWithDash, '(\/', stringWithDash, ')?', ')?'
 ]
 
 { #category : #private }
@@ -144,14 +206,17 @@ PhLImageCreateFromRemoteRepoCliCommand >> remoteRepoProjectLoadArguments [
 		^ OrderedCollection 
 			with: 'eval' 
 			with: '--save' 
-			with: self mcLoadProjectFromPR
+			with: self mcLoadProjectFromRepo
 			
 ]
 
 { #category : #'accessing - arguments' }
 PhLImageCreateFromRemoteRepoCliCommand >> repoFullName [
 
-	^ self flagValueFor: #repository
+   ^ (arguments at: #repository)
+		value: self;
+		word 
+
 ]
 
 { #category : #'accessing - arguments' }
@@ -163,10 +228,6 @@ PhLImageCreateFromRemoteRepoCliCommand >> sourcesSubFolder [
 { #category : #private }
 PhLImageCreateFromRemoteRepoCliCommand >> validateRepoFullName [
 
-	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}"
-
-	(self repoFullName matchesRegex: '[\w]+-?[\w]+\/[\w]+-?[\w]+') 
-		ifFalse: [ 
-			Error signal:
-				('Invalid repository name: {1}. Please specify in {owner/project} format.' format: { self repoFullName }) ]
+	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}:{alphanumeric-chars with dash}, which is owner/project:tagOrBranch"
+	self isValidRepoFullName ifFalse: [Error signal:( 'Invalid repository name: {1}. Please specify in \{owner\}/\{project\} or \{owner\}/\{project\}:\{feature\}/\{branch-name\} format.' format: { self repoFullName } )]
 ]

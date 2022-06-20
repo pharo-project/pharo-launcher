@@ -158,7 +158,6 @@ PhLImageCreateFromRemoteRepoCliCommand >> loadPullRequestCodeToImage: anImage [
 	|imageConfig |
 	imageConfig := self getPullRequestLoadConfigFor: anImage.
 	self logLoadingPullRequestUsing: self mcLoadProjectFromRepo.
-	"anImage launchWithConfiguration: imageConfig."
 	
 	"use handled execution and wait for result"
 	imageConfig launchProcess runAndWaitWithStdOutput.

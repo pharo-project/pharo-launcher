@@ -13,7 +13,7 @@ PhLImageFinderTest class >> defaultTimeLimit [
 PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 	| finder |
 	
-	finder := PhLFakeImageFinder pharoVersion: '10' build: '21'.
+	finder := PhLImageFinderStub pharoVersion: '10' build: '21'.
 	self assert: finder findUrl equals: 'https://files.pharo.org/image/100/Pharo10-SNAPSHOT.build.21.sha.f022266.arch.64bit.zip'  
 ]
 
@@ -21,7 +21,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 PhLImageFinderTest >> testShouldFindUrlWhenPharo7AndValidBuildNumberProvided [
 	| finder |
 	
-	finder := PhLFakeImageFinder pharoVersion: '7' build:'510'.
+	finder := PhLImageFinderStub pharoVersion: '7' build:'510'.
 	self assert: finder findUrl equals: 'https://files.pharo.org/image/70/Pharo-7.0.0-alpha.build.510.sha.fb39ee7.arch.64bit.zip'
 
 ]
@@ -29,7 +29,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo7AndValidBuildNumberProvided [
 { #category : #tests }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo8AndValidBuildNumberProvided [
 	| finder |
-	finder := PhLFakeImageFinder pharoVersion: '8' build: '210'.
+	finder := PhLImageFinderStub pharoVersion: '8' build: '210'.
 	self
 		assert: finder findUrl
 		equals:
@@ -40,16 +40,26 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo8AndValidBuildNumberProvided [
 PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
 	| finder |
 	
-	finder := PhLFakeImageFinder pharoVersion: '9' build:'300'.
+	finder := PhLImageFinderStub pharoVersion: '9' build:'300'.
 	self assert: finder findUrl equals: 'https://files.pharo.org/image/90/Pharo9.0-SNAPSHOT.build.300.sha.b315fa8.arch.64bit.zip'
 	
+]
+
+{ #category : #tests }
+PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
+	| url |
+	url := (PhLImageFinderStub fromInriaCIPullRequest: 10553) findTemplateUrlFromPROnCI.
+	
+	self 
+		assert: url path
+		equals: 'pharo-ci-jenkins2/job/Test pending pull request and branch Pipeline/view/change-requests/job/PR-10553/lastSuccessfulBuild/artifact/bootstrap-cache/Pharo10.0-PR-64bit-5ce32be.zip'
 ]
 
 { #category : #tests }
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidBuildNumberProvided [
 
 	self
-		should: [ (PhLFakeImageFinder pharoVersion: '10' build: '-21') findUrl ]	
+		should: [ (PhLImageFinderStub pharoVersion: '10' build: '-21') findUrl ]	
 		raise: NotFound
 
 ]

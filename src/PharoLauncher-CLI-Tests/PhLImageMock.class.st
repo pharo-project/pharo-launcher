@@ -72,6 +72,12 @@ PhLImageMock >> checkImageArchitecture [
 	^self 
 ]
 
+{ #category : #mocking }
+PhLImageMock >> defaultArguments [
+
+	^ #()
+]
+
 { #category : #accessing }
 PhLImageMock >> defaultLaunchConfiguration [  
 

@@ -112,6 +112,17 @@ PhLImageFinder >> inriaCIArtifactUrl [
 	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self findTemplateUrlFromPROnCI  ] 
 ]
 
+{ #category : #private }
+PhLImageFinder >> pharoPRBuildArtifactsHtml [
+
+	"returns html page with build artifacts content for given PR"
+
+	^ (PhLDownloadManager default newHTTPClientForUrl:
+			   self pullRequestBuildArtifactsUrlString)
+		  accept: ZnMimeType textHtml;
+		  get
+]
+
 { #category : #accessing }
 PhLImageFinder >> pharoVersion [
 	^ pharoVersion
@@ -164,13 +175,10 @@ PhLImageFinder >> sha [
 { #category : #private }
 PhLImageFinder >> templateArtifactName [
 
-	| pullRequestBuildArtifactsHtml candidates |
-	pullRequestBuildArtifactsHtml := (PhLDownloadManager default newHTTPClientForUrl: self pullRequestBuildArtifactsUrlString)
-		            accept: ZnMimeType textHtml;
-		            get.
+	| candidates |
 	
 	"find all occurences of html links which starts with 'Pharo' and ends with 'zip'"
-	candidates := pullRequestBuildArtifactsHtml findBetweenSubstrings: #( '<a href="Pharo' 'zip</a>' ).
+	candidates := self pharoPRBuildArtifactsHtml findBetweenSubstrings: #( '<a href="Pharo' 'zip</a>' ).
 
 	"this is needed, since there are more links that matches previous criteria"
 	candidates := candidates select: [ :str | 

@@ -44,9 +44,14 @@ updateVMforSampleImage () {
 
 
 oneTimeSetUp() {
+    echo "Running oneTimeSetup..."
+    echo "Preparing launcher script and image."
 	prepareLauncherScriptAndImage
+	echo "Setting up image template list."
 	setupImageTemplateList
+	echo "Updating VM for running sample image."
 	updateVMforSampleImage
+	echo "Creating sample image."
 	createSampleImageCommand
 }
 
@@ -88,9 +93,14 @@ oneTimeTearDown() {
     #need this to suppress tearDown on script EXIT
     [[ "${_shunit_name_}" = 'EXIT' ]] && return 0
 
-	echo "Calling teardown..."
+	echo "Running teardown..."
+	echo "Killing sample image (if running)."
+	kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
+	echo "Deleting sample image."
 	deleteSampleImageCommand
+	echo "Cleaning launcher script and image."
 	cleanupLauncherScriptAndImage
+	echo "Restoring original image template list."
 	restoreOriginalImageTemplateList
 }
 

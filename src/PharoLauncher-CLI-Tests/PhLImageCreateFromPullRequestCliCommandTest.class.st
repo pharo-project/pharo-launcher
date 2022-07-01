@@ -7,8 +7,11 @@ Class {
 { #category : #tests }
 PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 	
-	self runCommand: #('launcher' 'image' 'create' 'fromPR' '9588').
+	|mockCommand|
+	mockCommand := PhLImageCreateFromPullRequestCliCommandMock new.
+	mockCommand context: context.
+	mockCommand execute.
 	self assert: (self errorString includesSubstring: '').
-	self assert: (self outputString includesSubstring: 'PR-9588').
+	self assert: (self outputString includesSubstring: 'PR-10553').
 	
 ]

@@ -72,7 +72,7 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 	"find template from Inria CI server based on Pull request number"
 
 	| imageFinder templateUrl |
-	imageFinder := PhLImageFinder fromInriaCIPullRequest: self pullRequestNumber.
+	imageFinder := self imageFinderFromPullRequest.
 	[ templateUrl := imageFinder inriaCIArtifactUrl. ]
 		on: PhLDownloadError
 		do: [ :ex | PhLDownloadError signal:(self cantFindImageTemplateMessage: imageFinder) ].
@@ -80,6 +80,13 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 	 ^ PhLRemoteTemplate
 		  name: (self templateNameFrom: templateUrl)
 		  url: templateUrl
+]
+
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> imageFinderFromPullRequest [
+	
+	"get image finder based on PR"
+	^  PhLImageFinder fromInriaCIPullRequest: self pullRequestNumber
 ]
 
 { #category : #'accessing - arguments' }

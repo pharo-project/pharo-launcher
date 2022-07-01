@@ -154,7 +154,7 @@ PhLCliCommand class >> stonFlag [
 		implicitMeaning: [ :arg :app | false ])
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> booleanValueFor: flagId [
 
 	^ [(arguments at: flagId) value: self]
@@ -205,7 +205,7 @@ PhLCliCommand >> delimiter [
 	^ delimiter
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> errorStream [
 	^ errorStream
 		ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
@@ -231,7 +231,7 @@ PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
 		runAndWaitWithStdOutput
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 
 	"only first (most important) attribute is printed for brief mode by default, can be overriden"
@@ -244,7 +244,7 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> flagValueFor: flagId [
 
 	^ [(arguments at: flagId) value: self]
@@ -257,7 +257,7 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> implicitDelimiter [
 	^ self rowMode
 		ifTrue: [ ': ' ]
@@ -272,7 +272,7 @@ PhLCliCommand >> list: domainObjects [
 		printList.
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> listPrintAttributeBlocks [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeBlocks
@@ -280,7 +280,7 @@ PhLCliCommand >> listPrintAttributeBlocks [
 	
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> listPrintAttributeLabels [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeLabels
@@ -301,7 +301,7 @@ PhLCliCommand >> logInfoMessage: aMessage [
 	self outStream newLine.
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> modelClass [
 
  ^ self class environment at: #PhLObject
@@ -313,7 +313,7 @@ PhLCliCommand >> osShellArgArray [
 	^ #()
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> outStream [
 	^ outStream
 		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]

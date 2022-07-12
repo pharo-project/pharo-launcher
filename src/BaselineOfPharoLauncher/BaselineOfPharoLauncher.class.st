@@ -63,7 +63,7 @@ BaselineOfPharoLauncher >> clap: spec [
 
 	spec 
 		baseline: #Clap
-		with: [ spec repository: 'github://pharo-contributions/clap-st/src' ]
+		with: [ spec repository: 'github://demarey/clap-st:refactoring/src' ]
 ]
 
 { #category : #'external projects' }

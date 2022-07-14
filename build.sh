@@ -28,7 +28,7 @@ function prepare_image() {
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
-	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; ignoreImage; load"
+	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; load"
 }
 
 function run_tests() {

@@ -1,0 +1,1 @@
+OmEntry {	#tags : {		#author : 'Unknown',		#time : DateAndTime [ '2022-07-15T10:47:43.666595+02:00' ],		#prior : OmReference [ 'Pharo10-SNAPSHOT-64bit-14f5413.amvtnq47sovro4o18d21bjkat', '8349' ],		#self : OmReference [ '1' ]	},	#content : EpSessionSnapshot {		#imageName : '/home/dbajger/pharo-launcher/PharoLauncher.image'	}}

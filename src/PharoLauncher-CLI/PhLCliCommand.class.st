@@ -102,21 +102,13 @@ PhLCliCommand class >> missingDelimiterArgMessage [
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
-	^ (ClapCommand id: idOfCommand)
+	^ (ClapCommandSpec id: idOfCommand)
 		description: self launcherCmdDescription;
-		add: ClapFlag forHelp;
+		commandClass: self;
+		addHelp;
 		addAll: self launcherCmdSubcommands;
 		addAll: self launcherCmdPositionals;
 		addAll: self launcherCmdFlags;
-		meaning: [ :args | 
-			args validateAll.
-			args
-				at: #helpFlag
-				ifPresent: [ :help | 
-					help
-						value;
-						exitSuccess ].
-			(self with: args) execute ];
 		yourself
 ]
 

@@ -31,7 +31,10 @@ PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 
 { #category : #'private - accessing' }
 PhLVmProviderUntilPharo80 >> imageArchitecture [
-	^ vmManager is64bit ifTrue: [ '64' ] ifFalse: [ '' ]
+	" No 64-bit image before Pharo 6.0"
+	^ (vmManager is64bit and: [ vmManager pharoVersion > '50' ]) 
+		ifTrue: [ '64' ] 
+		ifFalse: [ '' ]
 ]
 
 { #category : #private }

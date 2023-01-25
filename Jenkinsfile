@@ -67,7 +67,7 @@ def buildArchitecture(architecture, pharoVersion) {
               }              
             } */
             archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
-            stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
+            stash includes: 'pharo-launcher-*.msi, Pharo-win.zip', name: "pharo-launcher-win-${architecture}-package"
           }
         }
       }
@@ -97,6 +97,7 @@ def buildArchitecture(architecture, pharoVersion) {
             if (isNotArm64Architecure()) {
               unstash "pharo-launcher-win-${architecture}-package"
               upload('pharo-launcher-*.msi', uploadDirectoryName())
+              upload('Pharo-win.zip', uploadDirectoryName())
             }
             unstash "pharo-launcher-osx-${architecture}-package"
             fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'

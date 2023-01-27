@@ -54,14 +54,16 @@ PhLDeploymentScript class >> closeAllWindows [
 	[ World closeAllWindowsDiscardingChanges ]
 		on: ProvideAnswerNotification
 		do: [ :err | err return: false ].
+	World submorphs do: #delete.
 	PharoLauncherApplication default closeAllWindows.
 ]
 
 { #category : #actions }
 PhLDeploymentScript class >> closeWindowsAndOpenDevelopmentEnvironment [
-	PanelMorph allInstancesDo: [  :pm | pm delete ].
+	PanelMorph allInstancesDo: [ :pm | pm delete ].
 	self closeAllWindows.
 	TaskbarMorph reset.
+	MenubarMorph reset.
 	Smalltalk tools workspace openContents: 'PharoLauncherApplication open.'.
 
 	"PanelMorph comes from use of #openWorldWithSpec"

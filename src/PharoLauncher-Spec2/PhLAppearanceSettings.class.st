@@ -19,7 +19,7 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 			(aBuilder pickOne: #uiThemeClass)
 				label: 'User interface theme';
 				target: self;
-				default: UITheme standardThemeClass;
+				default: PharoLightTheme;
 				order: 1;
 				domainValues: PolymorphSystemSettings uiThemeClassChoices. ]
 ]

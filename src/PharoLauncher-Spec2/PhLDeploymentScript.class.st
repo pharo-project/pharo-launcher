@@ -120,7 +120,6 @@ PhLDeploymentScript class >> doAll [
 	self
 		closeAllWindows;
 		removeAllMorphs;
-		setTheme;
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
@@ -238,12 +237,6 @@ PhLDeploymentScript class >> setProgressBarSizeAndPosition [
 		minHeight: 50;
 		layoutInset: 30 @ 20;
 		position: 150 @ 200	
-]
-
-{ #category : #actions }
-PhLDeploymentScript class >> setTheme [
-	PharoLightTheme beCurrent.
-
 ]
 
 { #category : #settings }

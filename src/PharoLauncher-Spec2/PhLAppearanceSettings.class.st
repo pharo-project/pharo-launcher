@@ -42,9 +42,5 @@ PhLAppearanceSettings class >> uiThemeClass [
 
 { #category : #morphic }
 PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
-	PolymorphSystemSettings uiThemeClass: aUIThemeClass.
-	"force UI re-creation to adopt new theme. Spec is not yet ready to react to theme changes."
-	PharoLauncherApplication 
-		reset;
-		openFull.
+	PolymorphSystemSettings uiThemeClass: aUIThemeClass
 ]

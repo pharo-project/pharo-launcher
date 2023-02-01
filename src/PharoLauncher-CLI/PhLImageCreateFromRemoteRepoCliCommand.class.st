@@ -7,15 +7,15 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line' }
-PhLImageCreateFromRemoteRepoCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #fromRepo
-]
-
 { #category : #'command line - arguments' }
-PhLImageCreateFromRemoteRepoCliCommand class >> baselineFlag [
+PhLImageCreateFromRemoteRepoCliCommand class >> addBaselineFlagTo: aCommandSpec [
 
-	^ (ClapFlag id: #baseline)
+	aCommandSpec 
+		addFlag: #baseline 
+		description: 'Specifies the project baseline to be loaded by Metacello command. If not specified, baseline is determined from repository name.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app baselineNameFromRepoName ] ].
+	
+	"^ (ClapFlag id: #baseline)
 			description: 'Specifies the project baseline to be loaded by Metacello command. If not specified, baseline is determined from repository name. ';
 			meaning: [ :arg :app | (arg at: #baselineArg) value];
 			implicitMeaning: [ :arg :app |  ];
@@ -23,18 +23,19 @@ PhLImageCreateFromRemoteRepoCliCommand class >> baselineFlag [
 					description: 'Baseline argument.';
 					meaning: [ :pos | pos word asString ];
 					implicitMeaning: [ :arg :app | NotFound signal: self missingBaselineArgMessage]);
-			yourself 
-]
-
-{ #category : #'command line' }
-PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdDescription [
-
-	^ 'Downloads and creates new image based on a template and loads user defined project from Github remote repository into image.'
+			yourself "
 ]
 
 { #category : #'command line - arguments' }
-PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdFlags [
+PhLImageCreateFromRemoteRepoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	self addNewImageFlagTo: aCommandSpec.
+	self addTemplateNameFlagTo: aCommandSpec.
+	self addTemplateCategoryFlagTo: aCommandSpec.
+	self addSubfolderFlagTo: aCommandSpec.
+	self addBaselineFlagTo: aCommandSpec.
 
+"
 	^ 
 	{	
 		self newImageFlag.
@@ -42,19 +43,54 @@ PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdFlags [
 		self templateCategoryFlag.
 		self subfolderFlag.
 		self baselineFlag.
-	}
+	}"
 ]
 
 { #category : #'command line - arguments' }
-PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdPositionals [
+PhLImageCreateFromRemoteRepoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
+	aCommandSpec 
+		addPositional: #repository 
+		description: 'Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.'.
+"
 	^ {
 		(ClapPositional id: #repository)
 			description: 'Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.';
 			meaning: [ :pos | pos  asString ];
 			implicitMeaning: [ :arg :app | NotFound signal: self missingRepoArgMessage];
 			yourself.
-		}
+		}"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromRemoteRepoCliCommand class >> addSubfolderFlagTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlag: #subfolder 
+		description: 'The sub-folder containing the code. By default ''''src'''' sub-folder is used.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitSubfolder ] ].
+"
+	^ (ClapFlag id: #subfolder)
+			description: 'The sub-folder containing the code. By default ''src'' sub-folder is used. ';
+			meaning: [ :arg :app | ""this argument is optional ""
+				(arg at: #subfolderArg) value];
+			implicitMeaning: [ :arg :app | app implicitSubfolder ];
+			add: ((ClapPositional id: #subfolderArg)
+					description: 'Subfolder argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingSubfolderArgMessage]);
+			yourself "
+]
+
+{ #category : #'command line' }
+PhLImageCreateFromRemoteRepoCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #fromRepo
+]
+
+{ #category : #'command line' }
+PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdDescription [
+
+	^ 'Downloads and creates new image based on a template and loads user defined project from Github remote repository into image.'
 ]
 
 { #category : #'command line' }
@@ -75,21 +111,6 @@ PhLImageCreateFromRemoteRepoCliCommand class >> missingSubfolderArgMessage [
 
 	^ 'An argument is missing. Please specify the sub-folder (e.g. ''src'') with source code.'
 
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromRemoteRepoCliCommand class >> subfolderFlag [
-
-	^ (ClapFlag id: #subfolder)
-			description: 'The sub-folder containing the code. By default ''src'' sub-folder is used. ';
-			meaning: [ :arg :app | "this argument is optional "
-				(arg at: #subfolderArg) value];
-			implicitMeaning: [ :arg :app | app implicitSubfolder ];
-			add: ((ClapPositional id: #subfolderArg)
-					description: 'Subfolder argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingSubfolderArgMessage]);
-			yourself 
 ]
 
 { #category : #'accessing - arguments' }

@@ -24,16 +24,6 @@ PhLImageDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes the local image, including image directory content.'
 ]
 
-{ #category : #'command line' }
-PhLImageDeleteCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Local image name to be deleted.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app | NotFound 
-        signal: 'An argument is missing, please specify the local image name to be deleted.' .];
-		yourself)}
-]
-
 { #category : #accessing }
 PhLImageDeleteCliCommand >> execute [
 	[ self imageRepository deleteImage: (self findInRepository: self imageName) ]

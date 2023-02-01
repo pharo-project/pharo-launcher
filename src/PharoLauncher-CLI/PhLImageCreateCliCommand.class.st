@@ -31,6 +31,116 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addTemplateNameFlagTo: aCommandSpec.
+	self addTemplateCategoryFlagTo: aCommandSpec.
+
+"
+
+^ {
+		self templateNameFlag.
+		self templateCategoryFlag.
+	}
+"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #newImageName 
+		description: 'Name of the new Pharo image.'.
+	
+
+"
+^ {
+		(ClapPositional id: #newImageName)
+				description: 'Name of the new Pharo image.';
+					meaning: [ :pos | pos  word ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingImageNameArgMessage];
+					yourself
+	}
+"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addNewImageFlagTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlag: #newImageName 
+		description: 'Name of the new Pharo image (template name is used by default).' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitImageName ] ].
+"
+	^ (ClapFlag id: #newImageName)
+			description: 'Name of the new Pharo image (template name is used by default).';
+			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
+			""this argument is optional ""
+			implicitMeaning: [ :arg :app | app implicitImageName];
+			add: ((ClapPositional id: #newImageArg)
+					description: 'New image argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app |  app implicitImageName]);
+			yourself"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addPharoVersionFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #pharoVersion 
+		description: 'Version of Pharo to be downloaded.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitPharoVersion ]]
+"
+^ (ClapFlag id: #pharoVersion)
+				description: 'Version of Pharo to be downloaded.';
+				meaning: [ :arg :app | (arg at: #pharoVersionArg) value ];
+				implicitMeaning: [ :arg :app | app implicitPharoVersion ];
+				add: ((ClapPositional id: #pharoVersionArg)
+					description: 'Specifies the version of Pharo you want to download.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ]);
+				yourself"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addTemplateCategoryFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #templateCategory 
+		description: 'Specifies the template category to search the target template.'
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app defaultTemplateCategoryName ]].
+			
+"^  (ClapFlag id: #templateCategory)
+				description: 'Specifies the template category to search the target template.';
+				meaning: [  :arg :app | (arg at: #templateCategoryArg) value ];
+				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName ];
+				add: ((ClapPositional id: #templateCategoryArg)
+					description: 'Template category argument.';
+					meaning: [ :pos | pos word asSymbol . ];
+					implicitMeaning: [  :arg :app |  app defaultTemplateCategoryName]);
+				yourself"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addTemplateNameFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlagWithPositional: #templateName 
+		description: 'Template which will be used to create the image'.
+"	^ (ClapFlag id: #templateName)
+			description: 'Template which will be used to create the image.';
+			meaning: [  :arg :app | (arg at: #templateNameArg) value ];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #templateNameArg)
+					description: 'Template name argument.';
+					meaning: [ :pos | pos word asString ];
+					implicitMeaning: [ :arg :app | NotFound signal: self missingTemplateNameArgMessage]);
+			yourself
+"
+]
+
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #create 
@@ -40,27 +150,6 @@ PhLImageCreateCliCommand class >> asCliCommand [
 PhLImageCreateCliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> launcherCmdFlags [
-
-^ {
-		self templateNameFlag.
-		self templateCategoryFlag.
-	}
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> launcherCmdPositionals [
-
-^ {
-		(ClapPositional id: #newImageName)
-				description: 'Name of the new Pharo image.';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingImageNameArgMessage];
-					yourself
-	}
 ]
 
 { #category : #logging }
@@ -79,64 +168,6 @@ PhLImageCreateCliCommand class >> missingPharoVersionFlagMessage [
 PhLImageCreateCliCommand class >> missingTemplateNameArgMessage [
 
 	^ 'An argument is missing. Please specify Pharo template name.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> newImageFlag [
-
-	^ (ClapFlag id: #newImageName)
-			description: 'Name of the new Pharo image (template name is used by default).';
-			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
-			"this argument is optional "
-			implicitMeaning: [ :arg :app | app implicitImageName];
-			add: ((ClapPositional id: #newImageArg)
-					description: 'New image argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |  app implicitImageName]);
-			yourself
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> pharoVersionFlag [
-
-^ (ClapFlag id: #pharoVersion)
-				description: 'Version of Pharo to be downloaded.';
-				meaning: [ :arg :app | (arg at: #pharoVersionArg) value ];
-				implicitMeaning: [ :arg :app | app implicitPharoVersion ];
-				add: ((ClapPositional id: #pharoVersionArg)
-					description: 'Specifies the version of Pharo you want to download.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ]);
-				yourself
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> templateCategoryFlag [
-
-	^  (ClapFlag id: #templateCategory)
-				description: 'Specifies the template category to search the target template.';
-				meaning: [  :arg :app | (arg at: #templateCategoryArg) value ];
-				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName ];
-				add: ((ClapPositional id: #templateCategoryArg)
-					description: 'Template category argument.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app |  app defaultTemplateCategoryName]);
-				yourself
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateCliCommand class >> templateNameFlag [
-
-	^ (ClapFlag id: #templateName)
-			description: 'Template which will be used to create the image.';
-			meaning: [  :arg :app | (arg at: #templateNameArg) value ];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #templateNameArg)
-					description: 'Template name argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingTemplateNameArgMessage]);
-			yourself
-
 ]
 
 { #category : #'command execution' }

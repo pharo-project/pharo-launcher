@@ -22,32 +22,109 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line - converting' }
-PhLCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #launcher 
-]
-
 { #category : #'command line - arguments' }
-PhLCliCommand class >> briefFlag [
+PhLCliCommand class >> addBriefFlagTo: aCommandSpec [
 
+	aCommandSpec 
+		addFlag: #brief 
+		description: 'Prints only name attribute (with leading sequence number).'.
+	
+
+"
 	^ ((ClapFlag id: #brief)
 		description: 'Prints only name attribute (with leading sequence number).';
 		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
+		implicitMeaning: [ :arg :app | false ])"
 ]
 
 { #category : #'command line - arguments' }
-PhLCliCommand class >> delimiterFlag [
+PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 
-	^ (ClapFlag id: #delimiter)
+	aCommandSpec 
+		addFlag: #delimiter 
+		description: 'Specifies the table-cell delimiter that delimits listed information attributes.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitDelimiter ] ].
+
+	"^ (ClapFlag id: #delimiter)
 			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
-			meaning: [ :arg :app | "this argument is optional "
+			meaning: [ :arg :app | ""this argument is optional ""
 				(arg at: #delimiterArg) value];
 			implicitMeaning: [ :arg :app | app implicitDelimiter ];
 			add: ((ClapPositional id: #delimiterArg)
 					description: 'Delimiter argument for printing, can be one or more characters (without space).';
 					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage]).
+					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage])."
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	"No positionals on root spec class 
+	 use on subclasses e.g.: aCommandSpec addFlag: #someFlag
+	"
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	"No positionals on root spec class 
+	 use on subclasses e.g.: aCommandSpec addPositional: #somePositonal
+	"
+]
+
+{ #category : #'command line - subcommands' }
+PhLCliCommand class >> addLauncherSubcommandsTo: aCommandSpec [
+
+	aCommandSpec addAll: (self productionCommandSubclasses collect: #asCliCommand)
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addPrintFlagsTo: aCommandSpec [
+	
+	self addBriefFlagTo: aCommandSpec.
+	self addRowModeFlagTo: aCommandSpec.
+	self addDelimiterFlagTo: aCommandSpec.
+	self addStonFlagTo: aCommandSpec.
+	"
+	^ {
+			self briefFlag.
+			self rowModeFlag.
+			self delimiterFlag.
+			self stonFlag
+		}"
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addRowModeFlagTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlag: #rowMode 
+		description: 'Prints one attribute per line only.'.
+
+"
+	^ ((ClapFlag id: #rowMode)
+		description: 'Prints one attribute per line only.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])"
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addStonFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #ston 
+		description: 'Prints information in STON format.'.
+	
+"
+	^ ((ClapFlag id: #ston)
+		description: 'Prints information in STON format.';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])"
+]
+
+{ #category : #'command line - converting' }
+PhLCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #launcher 
 ]
 
 { #category : #'private - testing' }
@@ -60,24 +137,6 @@ PhLCliCommand class >> isProductionCommandClass [
 { #category : #'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> launcherCmdFlags [
-
-	^ #()
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> launcherCmdPositionals [
-
-	^ #()
-]
-
-{ #category : #'command line - subcommands' }
-PhLCliCommand class >> launcherCmdSubcommands [
-
-	^ self productionCommandSubclasses collect: #asCliCommand
 ]
 
 { #category : #'command line - instance creation' }
@@ -102,48 +161,24 @@ PhLCliCommand class >> missingDelimiterArgMessage [
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
-	^ (ClapCommandSpec id: idOfCommand)
+	|commandSpec|
+	commandSpec := (ClapCommandSpec id: idOfCommand)
 		description: self launcherCmdDescription;
 		commandClass: self;
 		addHelp;
-		addAll: self launcherCmdSubcommands;
-		addAll: self launcherCmdPositionals;
-		addAll: self launcherCmdFlags;
-		yourself
-]
+		yourself.
+	"add subcommands, positionals, flags, depending on subclass"
+	self addLauncherSubcommandsTo: commandSpec.
+	self addLauncherPositionalsTo: commandSpec.
+	self addLauncherFlagsTo: commandSpec.
 
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> printFlags [
-	^ {
-			self briefFlag.
-			self rowModeFlag.
-			self delimiterFlag.
-			self stonFlag
-		}
+	^ commandSpec
 ]
 
 { #category : #'command line - subcommands' }
 PhLCliCommand class >> productionCommandSubclasses [
 
 	^ self subclasses select: #isProductionCommandClass 
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> rowModeFlag [
-
-	^ ((ClapFlag id: #rowMode)
-		description: 'Prints one attribute per line only.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> stonFlag [
-
-	^ ((ClapFlag id: #ston)
-		description: 'Prints information in STON format.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
 ]
 
 { #category : #'private ' }

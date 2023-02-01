@@ -12,6 +12,38 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromBuildCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPharoVersionFlagTo: aCommandSpec.
+	self addNewImageFlagTo: aCommandSpec.
+	"
+	^	{ 
+			self pharoVersionFlag.
+			self newImageFlag.
+		}
+	"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromBuildCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #buildNumber 
+		description: 'Pharo build number, from which will be template found and image created.'.
+
+"
+	^ {
+		(ClapPositional id: #buildNumber)
+			description: 'Pharo build number, from which will be template found and image created.';
+			meaning: [ :pos | pos  asString ];
+			implicitMeaning: [ :arg :app | NotFound 
+				signal: self missingBuildNrArgMessage];
+			yourself.
+		}
+"
+]
+
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromBuild
@@ -21,28 +53,6 @@ PhLImageCreateFromBuildCliCommand class >> asCliCommand [
 PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image based on a the build number contained in the Pharo development template.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromBuildCliCommand class >> launcherCmdFlags [
-	
-	^	{ 
-			self pharoVersionFlag.
-			self newImageFlag.
-		}
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromBuildCliCommand class >> launcherCmdPositionals [
-
-	^ {
-		(ClapPositional id: #buildNumber)
-			description: 'Pharo build number, from which will be template found and image created.';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound 
-				signal: self missingBuildNrArgMessage];
-			yourself.
-		}
 ]
 
 { #category : #'command line' }

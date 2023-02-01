@@ -18,20 +18,17 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line' }
-PhLImageCopyCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #copy
-]
-
-{ #category : #'command line' }
-PhLImageCopyCliCommand class >> launcherCmdDescription [
-
-	^ 'Creates copy of given image with new name.'
-]
-
 { #category : #'command line - arguments' }
-PhLImageCopyCliCommand class >> launcherCmdPositionals [
+PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+	
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Local image name to be copied.'.
 
+	aCommandSpec 
+		addPositional: #newImageName 
+		description: 'New image name of a copied image.'.
+	"
 	^ {((ClapPositional id: #existingImageName)
 				description: 'Local image name to be copied.';
 					meaning: [ :pos | pos  asString ];
@@ -44,7 +41,18 @@ PhLImageCopyCliCommand class >> launcherCmdPositionals [
 					implicitMeaning: [ :arg :app |NotFound 
         signal: 'New image name argument is missing.' .   ];
 					yourself)	
-	}
+	}"
+]
+
+{ #category : #'command line' }
+PhLImageCopyCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #copy
+]
+
+{ #category : #'command line' }
+PhLImageCopyCliCommand class >> launcherCmdDescription [
+
+	^ 'Creates copy of given image with new name.'
 ]
 
 { #category : #'command execution' }

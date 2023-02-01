@@ -4,6 +4,35 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromSHACliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	self addPharoVersionFlagTo: aCommandSpec.
+	self addNewImageFlagTo: aCommandSpec.
+	"
+	^	{ 
+			self pharoVersionFlag.
+			self newImageFlag.
+		}"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromSHACliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #sha 
+		description: 'Commit SHA (7 letters) of Pharo image development template, from which will be  image created.'.
+"
+	^ {
+		(ClapPositional id: #sha)
+			description: 'Commit SHA (7 letters) of Pharo image development template, from which will be  image created.';
+			meaning: [ :pos | pos  asString ];
+			implicitMeaning: [ :arg :app | NotFound 
+				signal: self missingShaArgMessage];
+			yourself.
+		}"
+]
+
 { #category : #'command line' }
 PhLImageCreateFromSHACliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromSHA
@@ -13,28 +42,6 @@ PhLImageCreateFromSHACliCommand class >> asCliCommand [
 PhLImageCreateFromSHACliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image based on the commit SHA (7 letter string) of Pharo build process contained in the name of Pharo development template.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromSHACliCommand class >> launcherCmdFlags [
-	
-	^	{ 
-			self pharoVersionFlag.
-			self newImageFlag.
-		}
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromSHACliCommand class >> launcherCmdPositionals [
-
-	^ {
-		(ClapPositional id: #sha)
-			description: 'Commit SHA (7 letters) of Pharo image development template, from which will be  image created.';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound 
-				signal: self missingShaArgMessage];
-			yourself.
-		}
 ]
 
 { #category : #'command line' }

@@ -8,6 +8,39 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromPullRequestCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	self addNewImageFlagTo: aCommandSpec.
+	self addTemplateNameFlagTo: aCommandSpec.
+	self addTemplateCategoryFlagTo: aCommandSpec.
+"
+	^ 
+	{	
+		self newImageFlag.
+		self templateNameFlag.
+		self templateCategoryFlag 	 
+	}"
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromPullRequestCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #pullRequest 
+		description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template.'.
+"
+
+	^ {
+		(ClapPositional id: #pullRequest)
+			description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template. ';
+			meaning: [ :pos | pos  asString ];
+			implicitMeaning: [ :arg :app | NotFound 
+				signal: self missingPullRequestArgMessage ];
+			yourself.
+		}"
+]
+
 { #category : #'command line' }
 PhLImageCreateFromPullRequestCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromPR
@@ -17,30 +50,6 @@ PhLImageCreateFromPullRequestCliCommand class >> asCliCommand [
 PhLImageCreateFromPullRequestCliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image based on a Github pull request number from the successful build of Inria CI server used by Pharo project.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromPullRequestCliCommand class >> launcherCmdFlags [
-
-	^ 
-	{	
-		self newImageFlag.
-		self templateNameFlag.
-		self templateCategoryFlag 	 
-	}
-]
-
-{ #category : #'command line - arguments' }
-PhLImageCreateFromPullRequestCliCommand class >> launcherCmdPositionals [
-
-	^ {
-		(ClapPositional id: #pullRequest)
-			description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template. ';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound 
-				signal: self missingPullRequestArgMessage ];
-			yourself.
-		}
 ]
 
 { #category : #'command line' }

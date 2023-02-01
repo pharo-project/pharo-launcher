@@ -13,6 +13,12 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLTemplateCategoriesCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPrintFlagsTo: aCommandSpec.
+]
+
 { #category : #'command line - converting' }
 PhLTemplateCategoriesCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #categories 

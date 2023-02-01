@@ -14,6 +14,28 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPrintFlagsTo: aCommandSpec
+]
+
+{ #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Determines the local image name to print detailed information.'.
+
+"
+	^ {((ClapPositional id: #existingImageName)
+		description: 'Determines the local image name to print detailed information.';
+		meaning: [ :pos | pos asString ];
+		implicitMeaning: [ :arg :app |NotFound 
+        signal: 'An argument is missing, please specify the image name to print information.'];
+		yourself)}"
+]
+
 { #category : #'command line' }
 PhLImageInfoCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #info 
@@ -23,21 +45,6 @@ PhLImageInfoCliCommand class >> asCliCommand [
 PhLImageInfoCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints information about image: name, description, origin template, etc.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageInfoCliCommand class >> launcherCmdFlags [
-	^ self printFlags
-]
-
-{ #category : #'command line - arguments' }
-PhLImageInfoCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Determines the local image name to print detailed information.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the image name to print information.'];
-		yourself)}
 ]
 
 { #category : #accessing }

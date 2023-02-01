@@ -15,6 +15,22 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #existingVirtualMachineId 
+		description: 'Specifies the local Virtual Machine ID.'.
+	"^ {
+	((ClapPositional id: #existingVirtualMachineId)
+		description: 'Local Virtual Machine id.';
+		meaning: [ :pos | pos asString ];
+		implicitMeaning: [ :arg :app |
+			NotFound signal: 'one argument is missing, need a virtual machine name to update it'. ];
+		yourself)
+	}"
+]
+
 { #category : #'command line - converting' }
 PhLVmCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #vm 
@@ -24,18 +40,6 @@ PhLVmCliCommand class >> asCliCommand [
 PhLVmCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to VM management.'
-]
-
-{ #category : #'command line - arguments' }
-PhLVmCliCommand class >> launcherCmdPositionals [
-	^ {
-	((ClapPositional id: #existingVirtualMachineId)
-		description: 'Local Virtual Machine id.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |
-			NotFound signal: 'one argument is missing, need a virtual machine name to update it'. ];
-		yourself)
-	}
 ]
 
 { #category : #'command execution' }

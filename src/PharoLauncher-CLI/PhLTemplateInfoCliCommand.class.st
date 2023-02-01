@@ -13,35 +13,43 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line - converting' }
-PhLTemplateInfoCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #info 
-	 
-]
-
 { #category : #'command line - arguments' }
-PhLTemplateInfoCliCommand class >> launcherCmdFlags [
+PhLTemplateInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
-	^ {(ClapFlag id: #templateCategory)
+	aCommandSpec  
+		addFlag: #templateCategory
+		description: 'Specifies the template category name to list image templates.'
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | 'Official distributions' ]]
+	"^ {(ClapFlag id: #templateCategory)
 				description: 'Specifies the template category name to list image templates.';
 				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
 				implicitMeaning: [  :arg :app | 'Official distributions'. ];
 				add: ((ClapPositional id: #templateCategoryName)
 					description: 'Name of the template category.';
 					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app | app . ])}
+					implicitMeaning: [  :arg :app | app . ])}"
 ]
 
 { #category : #'command line - arguments' }
-PhLTemplateInfoCliCommand class >> launcherCmdPositionals [
+PhLTemplateInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	^ {
+	aCommandSpec 
+		addPositional: #templateName 
+		description: 'Specifies the template name to print information.'.
+
+	"^ {
 		((ClapPositional id: #templateName)
 				description: 'Specifies the template name to print information.';
 					meaning: [ :pos | pos  word ];
 					implicitMeaning: [ :arg :app |NotFound 
         signal: 'An argument is missing, please specify the template name to print information.'];
-					yourself).	}
+					yourself).	}"
+]
+
+{ #category : #'command line - converting' }
+PhLTemplateInfoCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #info 
+	 
 ]
 
 { #category : #'command execution' }

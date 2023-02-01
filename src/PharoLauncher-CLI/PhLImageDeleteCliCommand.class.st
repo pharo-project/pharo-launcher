@@ -13,6 +13,21 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Local image name to be deleted.'.
+
+"	^ {((ClapPositional id: #existingImageName)
+		description: 'Local image name to be deleted.';
+		meaning: [ :pos | pos asString ];
+		implicitMeaning: [ :arg :app | NotFound 
+        signal: 'An argument is missing, please specify the local image name to be deleted.' .];
+		yourself)}"
+]
+
 { #category : #'command line' }
 PhLImageDeleteCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #delete 

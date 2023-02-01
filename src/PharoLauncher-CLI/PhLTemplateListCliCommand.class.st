@@ -13,14 +13,15 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line - converting' }
-PhLTemplateListCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #list 
-]
-
 { #category : #'command line - arguments' }
-PhLTemplateListCliCommand class >> launcherCmdFlags [
-	^ Array 
+PhLTemplateListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec  
+		addFlag: #templateCategory
+		description: 'Specifies the template category name to list image templates from given category.'
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | 'Official distributions' ]].
+	self addPrintFlagsTo: aCommandSpec.
+	"^ Array 
 		with: ((ClapFlag id: #templateCategory)
 			description: 'Specifies the template category name to list the image templates from given category.';
 			meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
@@ -31,7 +32,12 @@ PhLTemplateListCliCommand class >> launcherCmdFlags [
 					meaning: [ :pos | pos word asSymbol ];
 					implicitMeaning: [ :arg :app | app ]);
 			yourself)
-		withAll: self printFlags
+		withAll: self printFlags"
+]
+
+{ #category : #'command line - converting' }
+PhLTemplateListCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #list 
 ]
 
 { #category : #'command execution' }

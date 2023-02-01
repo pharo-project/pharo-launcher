@@ -12,19 +12,19 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line' }
-PhLImagePackageCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #package
-]
-
-{ #category : #'command line' }
-PhLImagePackageCliCommand class >> launcherCmdDescription [
-	^ 'Creates a package containing all necessary artefacts to launch the image.'
-]
-
 { #category : #'command line - arguments' }
-PhLImagePackageCliCommand class >> launcherCmdFlags [
-	^ {(ClapFlag id: #zip)
+PhLImagePackageCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #zip
+		description: 'Creates the package with image as a ZIP file.'.
+
+	aCommandSpec 
+		addFlag: #vm
+		description: 'Specifies the VM used for launching the image.'.
+
+	
+	"^ {(ClapFlag id: #zip)
 			description: 'Creates the package with image as a ZIP file.';
 			meaning: [ :arg :app | true];
 			implicitMeaning: [ :arg :app | false  ].
@@ -36,13 +36,20 @@ PhLImagePackageCliCommand class >> launcherCmdFlags [
 					description: 'VM ID argument.';
 					meaning: [ :pos | pos word asSymbol . ];
 					implicitMeaning: [ :arg :app | 'default' ]).
-			}
+			}"
 ]
 
 { #category : #'command line - arguments' }
-PhLImagePackageCliCommand class >> launcherCmdPositionals [
+PhLImagePackageCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	^ {((ClapPositional id: #existingImageName)
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Local image name, for which is package created.'.
+	aCommandSpec 
+		addPositional: #location 
+		description: 'Specifies the directory path, where resulting package will be stored.'.
+
+	"^ {((ClapPositional id: #existingImageName)
 				description: 'Local image name to create the launch script.';
 					meaning: [ :pos | pos  asString ];
 					implicitMeaning: [ :arg :app |NotFound 
@@ -53,7 +60,17 @@ PhLImagePackageCliCommand class >> launcherCmdPositionals [
 					meaning: [ :pos | pos word asString ];
 					implicitMeaning: [ :arg :app |NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.' ];
 					yourself).
-	}
+	}"
+]
+
+{ #category : #'command line' }
+PhLImagePackageCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #package
+]
+
+{ #category : #'command line' }
+PhLImagePackageCliCommand class >> launcherCmdDescription [
+	^ 'Creates a package containing all necessary artefacts to launch the image.'
 ]
 
 { #category : #conversion }

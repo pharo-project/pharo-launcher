@@ -16,19 +16,14 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line' }
-PhLImageLaunchCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #launch 
-]
-
-{ #category : #'command line' }
-PhLImageLaunchCliCommand class >> launcherCmdDescription [
-
-	^ 'Launches image with using default (auto-detected) VM.'
-]
-
 { #category : #'command line - arguments' }
-PhLImageLaunchCliCommand class >> launcherCmdFlags [
+PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlagWithPositional: #script 
+		description: 'Determines a path to the script when launching an Image.' 
+
+"
 	^ {(ClapFlag id: #script)
 			description: 'Allows to use a script when launching an Image ';
 			meaning: [ :arg :app | 
@@ -38,17 +33,34 @@ PhLImageLaunchCliCommand class >> launcherCmdFlags [
 			add: ((ClapPositional id: #scriptPath)
 					description: 'Path of the launch script to use.';
 					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ^ app ])}
+					implicitMeaning: [ :arg :app | ^ app ])}"
 ]
 
 { #category : #'command line - arguments' }
-PhLImageLaunchCliCommand class >> launcherCmdPositionals [
+PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Specifies the local image name to be launched.'.
+
+"
 	^ {((ClapPositional id: #existingImageName)
 		description: 'Determines local image name to be launched.';
 		meaning: [ :pos | pos asString ];
 		implicitMeaning: [ :arg :app |NotFound 
         signal: 'An argument is missing, please specify the local image name to launch.'];
-		yourself)}
+		yourself)}"
+]
+
+{ #category : #'command line' }
+PhLImageLaunchCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #launch 
+]
+
+{ #category : #'command line' }
+PhLImageLaunchCliCommand class >> launcherCmdDescription [
+
+	^ 'Launches image with using default (auto-detected) VM.'
 ]
 
 { #category : #checking }

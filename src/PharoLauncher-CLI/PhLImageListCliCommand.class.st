@@ -13,6 +13,29 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlagWithPositional: #name
+		description: 'Determines the name of image (or its sub-part) to list local images.'.
+	self addPrintFlagsTo: aCommandSpec.
+
+"
+	^ Array 
+		with: ((ClapFlag id: #name)
+			description: 'Determines the name of image (or its substring) to list local images.';
+			meaning: [ :arg :app | ""this argument is optional ""
+				(arg at: #nameAsString) word ];
+			implicitMeaning: [ :arg :app |  ];
+			add: ((ClapPositional id: #nameAsString)
+					description: 'A substring to search from the list of local Pharo images.';
+					meaning: [ :pos | pos word asSymbol ];
+					implicitMeaning: [ :arg :app | ]);
+			yourself)
+		withAll: self printFlags"
+]
+
 { #category : #'command line' }
 PhLImageListCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #list 
@@ -22,22 +45,6 @@ PhLImageListCliCommand class >> asCliCommand [
 PhLImageListCliCommand class >> launcherCmdDescription [
 
 	^ 'Lists all local images from Pharo laucher repository.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageListCliCommand class >> launcherCmdFlags [
-	^ Array 
-		with: ((ClapFlag id: #name)
-			description: 'Determines the name of image (or its substring) to list local images.';
-			meaning: [ :arg :app | "this argument is optional "
-				(arg at: #nameAsString) word ];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #nameAsString)
-					description: 'A substring to search from the list of local Pharo images.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ]);
-			yourself)
-		withAll: self printFlags
 ]
 
 { #category : #'instance creation' }

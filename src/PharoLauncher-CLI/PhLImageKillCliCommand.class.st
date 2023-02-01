@@ -7,6 +7,35 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlag: #all 
+		description: 'Determines whether to kill all running Pharo image processes.'.
+	"
+	^ {((ClapFlag id: #all)
+		description: 'Determines whether to kill all running Pharo image processes. ';
+		meaning: [ :arg :app | true ];
+		implicitMeaning: [ :arg :app | false ])}."
+]
+
+{ #category : #'command line - arguments' }
+PhLImageKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Specifies the local image name to kill its process.'.
+	"^ {
+		((ClapPositional id: #existingImageName)
+				description: 'Specifies the local image name to kill its process.';
+					meaning: [ :pos | pos  asString ];
+					implicitMeaning: [ :arg :app |NotFound 
+        signal: 'An argument is missing, please specify the local image name to kill it process.'];
+					yourself)	.
+	}"
+]
+
 { #category : #'command line' }
 PhLImageKillCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #kill 
@@ -16,26 +45,6 @@ PhLImageKillCliCommand class >> asCliCommand [
 PhLImageKillCliCommand class >> launcherCmdDescription [
 
 	^ 'Kills the running process(es) of given local image.'
-]
-
-{ #category : #'command line - arguments' }
-PhLImageKillCliCommand class >> launcherCmdFlags [
-	^ {((ClapFlag id: #all)
-		description: 'Determines whether to kill all running Pharo image processes. ';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])}.
-]
-
-{ #category : #'command line - arguments' }
-PhLImageKillCliCommand class >> launcherCmdPositionals [
-	^ {
-		((ClapPositional id: #existingImageName)
-				description: 'Specifies the local image name to kill its process.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the local image name to kill it process.'];
-					yourself)	.
-	}
 ]
 
 { #category : #accessing }

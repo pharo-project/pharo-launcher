@@ -224,10 +224,11 @@ PhLCliCommand >> delimiter [
 	^ delimiter
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> errorStream [
+	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ errorStream
-		ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
+		ifNil: [ errorStream := VTermOutputDriver on: self context stderr ]
 ]
 
 { #category : #'command execution' }
@@ -338,10 +339,11 @@ PhLCliCommand >> osShellArgArray [
 	^ #()
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> outStream [
+	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ outStream
-		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+		ifNil: [ outStream := VTermOutputDriver on: self context stdout ]
 ]
 
 { #category : #'accessing arguments' }

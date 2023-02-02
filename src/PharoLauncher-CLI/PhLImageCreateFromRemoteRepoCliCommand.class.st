@@ -116,7 +116,7 @@ PhLImageCreateFromRemoteRepoCliCommand class >> missingSubfolderArgMessage [
 { #category : #'accessing - arguments' }
 PhLImageCreateFromRemoteRepoCliCommand >> baselineFlag [
 
-	^ self flagValueFor: #baseline
+	^ self positional: #baseline
 ]
 
 { #category : #private }
@@ -245,7 +245,7 @@ PhLImageCreateFromRemoteRepoCliCommand >> repoFullName [
 { #category : #'accessing - arguments' }
 PhLImageCreateFromRemoteRepoCliCommand >> sourcesSubFolder [
 
-	^ self flagValueFor: #subfolder
+	^ self positional: #subfolder
 ]
 
 { #category : #private }

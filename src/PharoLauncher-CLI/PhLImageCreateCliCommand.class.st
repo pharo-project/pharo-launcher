@@ -221,7 +221,7 @@ PhLImageCreateCliCommand >> findUserTemplate [
 { #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
 
-	^ self flagValueFor: #newImageName
+	^ self positional: #newImageName
 ]
 
 { #category : #default }
@@ -282,7 +282,7 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 { #category : #accessing }
 PhLImageCreateCliCommand >> pharoVersionNumber [ 
 
-	^ self flagValueFor: #pharoVersion
+	^ self positional: #pharoVersion
 ]
 
 { #category : #'command execution' }

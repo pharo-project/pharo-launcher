@@ -181,18 +181,10 @@ PhLCliCommand class >> productionCommandSubclasses [
 	^ self subclasses select: #isProductionCommandClass 
 ]
 
-{ #category : #'private ' }
-PhLCliCommand >> booleanValueFor: flagId [
-
-	^ [(arguments at: flagId) value: self]
-		on: NotYetImplemented
-		do: [false]
-]
-
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
-	^ self booleanValueFor:  #brief
+	^ self hasFlag: #brief
 ]
 
 { #category : #accessing }
@@ -227,7 +219,7 @@ PhLCliCommand >> defaultTemplateCategoryName [
 { #category : #'accessing arguments' }
 PhLCliCommand >> delimiter [ 
 	|delimiter|
-	delimiter := self flagValueFor: #delimiter.
+	delimiter := self positional: #delimiter.
 	delimiter ifNil: [^ self implicitDelimiter  ].
 	^ delimiter
 ]
@@ -271,14 +263,6 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
 ]
 
-{ #category : #'private ' }
-PhLCliCommand >> flagValueFor: flagId [
-
-	^ [(arguments at: flagId) value: self]
-		on: NotYetImplemented
-		do: [nil]
-]
-
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
@@ -289,6 +273,20 @@ PhLCliCommand >> implicitDelimiter [
 	^ self rowMode
 		ifTrue: [ ': ' ]
 		ifFalse: [ ' ' ]
+]
+
+{ #category : #initialization }
+PhLCliCommand >> initialize [
+	super initialize.
+	self cliFormatter: (ConsoleListFormatter on: self).
+]
+
+{ #category : #initialization }
+PhLCliCommand >> initializeWithContext [ 
+	"initialize objects dependent on context"
+	super initializeWithContext.
+	PhLNotificationCenter default outStream: self outStream.
+	PhLNotificationCenter default errorStream: self errorStream.
 ]
 
 { #category : #printing }
@@ -349,7 +347,7 @@ PhLCliCommand >> outStream [
 { #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 
-	^ self booleanValueFor: #ston
+	^ self hasFlag: #ston
 ]
 
 { #category : #accessing }
@@ -367,21 +365,13 @@ PhLCliCommand >> printSequence [
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
-	^ self booleanValueFor: #rowMode
-]
-
-{ #category : #initialization }
-PhLCliCommand >> setArguments: args [ 
-	super setArguments: args.
-	PhLNotificationCenter default outStream: self outStream.
-	PhLNotificationCenter default errorStream: self errorStream.
-	self cliFormatter: (ConsoleListFormatter on: self).
+	^ self hasFlag: #rowMode
 ]
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> templateName [ 
 
-	^ self flagValueFor: #templateName
+	^ self positional: #templateName
 	
 	
 ]

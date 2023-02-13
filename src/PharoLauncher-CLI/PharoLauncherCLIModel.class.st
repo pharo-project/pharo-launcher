@@ -1,5 +1,7 @@
 "
-Model used both for the test and the normal execution. When it is used by a normal user he doesn't need to change it, when it is used for tests the concerned repo is replaced with a Mock.
+Model used both for the test and the normal execution. 
+When it is used by a user, dafault configuration is used.
+When it is used for tests, repositories are replaced by mocks.
 "
 Class {
 	#name : #PharoLauncherCLIModel,
@@ -33,12 +35,12 @@ PharoLauncherCLIModel >> imageRepository: aPhLDirectoryBasedImageRepository [
 PharoLauncherCLIModel >> templateRepository [
 	^ templateRepository
 		ifNil: [ self templateRepository: PhLTemplateGroupRepository default.
-			^ templateRepository ]
+					templateRepository ]
 ]
 
 { #category : #accessing }
 PharoLauncherCLIModel >> templateRepository: aPathString [
-	templateRepository:=aPathString 
+	templateRepository := aPathString 
 ]
 
 { #category : #accessing }
@@ -48,10 +50,10 @@ PharoLauncherCLIModel >> vmManager [
 			configuration := PharoLauncherCLIConfiguration defaultConfiguration.
 			PhLVirtualMachineManager vmStore: configuration vmsDirectory.
 			self vmManager: PhLVirtualMachineManager new.
-			^ vmManager ]
+			vmManager ]
 ]
 
 { #category : #accessing }
 PharoLauncherCLIModel >> vmManager: aPathString [
-	vmManager:=aPathString 
+	vmManager := aPathString 
 ]

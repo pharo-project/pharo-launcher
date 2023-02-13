@@ -18,12 +18,16 @@ PhLImageCliCommandTest >> imageRepository [
 PhLImageCliCommandTest >> setUp [
 
 	super setUp.
-	"set to laucher model necessary image mock repository"
-	context launcherModel imageRepository: PhLImagesMockRepo new.
-
+	self useMockImagesRepository
 ]
 
 { #category : #accessing }
 PhLImageCliCommandTest >> templateRepository [ 
 	^ self launcherModel templateRepository
+]
+
+{ #category : #running }
+PhLImageCliCommandTest >> useMockImagesRepository [
+
+	context launcherModel imageRepository: PhLImagesMockRepo new
 ]

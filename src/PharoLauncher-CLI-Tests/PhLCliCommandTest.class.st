@@ -40,11 +40,9 @@ PhLCliCommandTest >> runCommand: args [
 
 { #category : #running }
 PhLCliCommandTest >> setUp [
-	| model |
+
 	super setUp.
-	model := PharoLauncherCLIModel new.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
+	context := PhLCliCommand launcherCommand activation
 ]
 
 { #category : #tests }
@@ -166,4 +164,14 @@ PhLCliCommandTest >> testPositionalWithValue [
 	"now test - when value is not present"
 	aCommand := (cmdSpec activationWith: #('launcher' '--delimiter')) command.
 	self assert: (aCommand positional: #delimiter) isNil.
+]
+
+{ #category : #'process actions' }
+PhLCliCommandTest >> validateCommandWithArguments: args [
+
+	^ context 
+		arguments: args;
+		match;
+		validateAll;
+		command
 ]

@@ -9,7 +9,7 @@ PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 
-	self runCommand: #( 'launcher' 'image' 'copy').
+	self validateCommandWithArguments: #( 'launcher' 'image' 'copy').
 	 
 	self assert: (self errorString includesSubstring:'Image to copy argument is missing.').  
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 

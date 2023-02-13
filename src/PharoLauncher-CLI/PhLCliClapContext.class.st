@@ -12,7 +12,7 @@ Class {
 
 { #category : #initialization }
 PhLCliClapContext >> launcherModel [
-	^ launcherModel
+	^ launcherModel ifNil: [ launcherModel := PharoLauncherCLIModel new ]
 ]
 
 { #category : #initialization }

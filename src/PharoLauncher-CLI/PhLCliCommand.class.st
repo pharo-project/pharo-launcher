@@ -162,7 +162,7 @@ PhLCliCommand class >> missingDelimiterArgMessage [
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
 	|commandSpec|
-	commandSpec := (ClapCommandSpec id: idOfCommand)
+	commandSpec := (PhLClapCommandSpec id: idOfCommand)
 		description: self launcherCmdDescription;
 		commandClass: self;
 		addHelp;

@@ -377,6 +377,11 @@ PhLImagesPresenter >> selectImageAt: anIndex [
 ]
 
 { #category : #'api - selection' }
+PhLImagesPresenter >> selectImagesAt: aLisOfIndexes [
+	imageTable selectIndexes: aLisOfIndexes
+]
+
+{ #category : #'api - selection' }
 PhLImagesPresenter >> selectedImages [
 	^ imageTable selectedItems
 ]

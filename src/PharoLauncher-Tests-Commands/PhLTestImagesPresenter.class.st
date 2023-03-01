@@ -44,12 +44,12 @@ PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection notNil ]
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> imageLabel [
 	^ descriptionPanel imageLabel label
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> imageNames [
 	^ imageTable items collect: #name
 ]
@@ -70,14 +70,14 @@ PhLTestImagesPresenter >> initialize [
 	request := PhLTestRequest new.
 ]
 
-{ #category : #acccessing }
+{ #category : #accessing }
 PhLTestImagesPresenter >> launchConfigurations [
 	^ launchConfigurationList listItems allButFirst
 ]
 
 { #category : #'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
-	^ PhLTestConfirmation new
+	^ request := PhLTestConfirmation new
 ]
 
 { #category : #'user interaction' }
@@ -101,6 +101,12 @@ PhLTestImagesPresenter >> newRequest [
 PhLTestImagesPresenter >> refreshLaunchConfigurationList [
 
 	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
+]
+
+{ #category : #accessing }
+PhLTestImagesPresenter >> request [
+
+	^ request
 ]
 
 { #category : #configuring }

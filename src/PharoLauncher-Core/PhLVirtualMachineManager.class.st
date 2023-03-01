@@ -230,7 +230,7 @@ PhLVirtualMachineManager >> checkImageArchitecture [
 
 { #category : #private }
 PhLVirtualMachineManager >> compatibleVm [
-	"Do not get the exact VM for the given image but only an image able to run the image to get its version number"
+	"Do not get the exact VM for the given image but only a VM able to run the image to get its version number"
 
 	^ self availableVirtualMachinesByImageFormat
 		at: self imageFormatNumber asString

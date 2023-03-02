@@ -251,7 +251,7 @@ PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
 		runAndWaitWithStdOutput
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 
 	"only first (most important) attribute is printed for brief mode by default, can be overriden"
@@ -269,7 +269,7 @@ PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> implicitDelimiter [
 	^ self rowMode
 		ifTrue: [ ': ' ]
@@ -298,7 +298,7 @@ PhLCliCommand >> list: domainObjects [
 		printList.
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> listPrintAttributeBlocks [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeBlocks
@@ -306,7 +306,7 @@ PhLCliCommand >> listPrintAttributeBlocks [
 	
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> listPrintAttributeLabels [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeLabels
@@ -327,7 +327,7 @@ PhLCliCommand >> logInfoMessage: aMessage [
 	self outStream newLine.
 ]
 
-{ #category : #'private ' }
+{ #category : #private }
 PhLCliCommand >> modelClass [
 
  ^ self class environment at: #PhLObject

@@ -21,15 +21,16 @@ PhLImageCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #image
 ]
 
-{ #category : #'as yet unclassified' }
-PhLImageCliCommand class >> imageNotFoundMessage [
-	^ 'Please enter a correct local image.'
-]
-
 { #category : #'command line' }
 PhLImageCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to management of local Pharo images.'
+]
+
+{ #category : #'error signalling' }
+PhLImageCliCommand class >> raiseImageNotFound: anImageName [
+
+	^ NotFound signal: ('Local image ''{1}'' not found. Please enter a correct local image.' format: { anImageName  })
 ]
 
 { #category : #'command execution' }
@@ -39,11 +40,17 @@ PhLImageCliCommand >> execute [
 		do: [:ex | ^ self logExceptionMessage: ex printString ]
 ]
 
+{ #category : #'command execution' }
+PhLImageCliCommand >> executeWithImage: anImage [
+
+	self subclassResponsibility 
+]
+
 { #category : #'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists
 		and: [ anImageName asFileReference isFile ])
-		ifFalse: [ NotFound signal: self class imageNotFoundMessage ].
+		ifFalse: [ self class raiseImageNotFound: anImageName ].
 	^ PhLImage location: anImageName asFileReference
 ]
 
@@ -66,15 +73,8 @@ PhLImageCliCommand >> findInRepository: anImageName [
 
 { #category : #accessing }
 PhLImageCliCommand >> imageName [
-	^ (arguments at: #existingImageName)
-		value: self;
-		word
-]
 
-{ #category : #printing }
-PhLImageCliCommand >> logImageNotFoundMessage [
-	self errorStream nextPutAll: self class imageNotFoundMessage.
-	self errorStream newLine.
+	^ self positional: #existingImageName
 ]
 
 { #category : #private }

@@ -21,13 +21,15 @@ Class {
 { #category : #'command line - arguments' }
 PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #existingImageName 
-		description: 'Local image name to be copied.'.
+		description: 'Local image name to be copied.')
+	implicitMeaning: [:arg :app | self raiseImageToCopyNotFound].
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #newImageName 
-		description: 'New image name of a copied image.'.
+		description: 'New image name of a copied image.')
+	implicitMeaning: [:arg :app | self raiseNewImageNotFound].
 	"
 	^ {((ClapPositional id: #existingImageName)
 				description: 'Local image name to be copied.';
@@ -55,20 +57,34 @@ PhLImageCopyCliCommand class >> launcherCmdDescription [
 	^ 'Creates copy of given image with new name.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageCopyCliCommand class >> raiseImageToCopyNotFound [
+
+	^ NotFound signal: 'Image to copy argument is missing'
+]
+
+{ #category : #'error signalling' }
+PhLImageCopyCliCommand class >> raiseNewImageAlreadyUsed: targetName [
+
+	^ PhLNameNotAvailableError signal: ('Target image name ''{1}'' already used.' format: { targetName  })
+]
+
+{ #category : #'error signalling' }
+PhLImageCopyCliCommand class >> raiseNewImageNotFound [
+
+	^ NotFound signal: 'New image name argument is missing.'
+]
+
 { #category : #'command execution' }
 PhLImageCopyCliCommand >> executeWithImage: anImage [
 
 	[ self imageRepository copyImage: anImage to: self targetName ]
 		on: PhLNameNotAvailableError
-		do: [ ^ self errorStream
-				nextPutAll: self targetName,'Name already used';
-				newLine ]
+		do: [ ^ self class raiseNewImageAlreadyUsed: self targetName ]
 ]
 
 { #category : #accessing }
 PhLImageCopyCliCommand >> targetName [
 
-^ (arguments at: #newImageName)
-		value: self;
-		word
+	^ self positional: #newImageName
 ]

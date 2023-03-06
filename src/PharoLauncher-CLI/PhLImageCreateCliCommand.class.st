@@ -152,22 +152,23 @@ PhLImageCreateCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).'
 ]
 
-{ #category : #logging }
+{ #category : #'error signalling' }
 PhLImageCreateCliCommand class >> missingImageNameArgMessage [
 
+	self flag: 'should use instead: raiseNewImageNotFound'.
 	^ 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
-{ #category : #logging }
-PhLImageCreateCliCommand class >> missingPharoVersionFlagMessage [
+{ #category : #'error signalling' }
+PhLImageCreateCliCommand class >> raiseMissingPharoVersion [
 
-	^ 'An argument is missing. Please specify Pharo version.'
+	^ NotFound signal: 'An argument is missing. Please specify Pharo version.'
 ]
 
-{ #category : #logging }
-PhLImageCreateCliCommand class >> missingTemplateNameArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 
-	^ 'An argument is missing. Please specify Pharo template name.'
+	^ NotFound signal: 'An argument is missing. Please specify Pharo template name.'
 ]
 
 { #category : #'command execution' }

@@ -24,7 +24,7 @@ PhLTemplateCategoriesCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #categories 
 ]
 
-{ #category : #'command line - converting' }
+{ #category : #'command line - description' }
 PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints list of image template categories.'

@@ -52,10 +52,10 @@ PhLImageCreateFromPullRequestCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on a Github pull request number from the successful build of Inria CI server used by Pharo project.'
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromPullRequestCliCommand class >> missingPullRequestArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromPullRequestCliCommand class >> raiseMissingPullRequest [
 
-	^ 'An argument is missing. Please specify the pull request number to find the image template from Inria CI build.'
+	^ NotFound signal: 'An argument is missing. Please specify the pull request number to find the image template from Inria CI build.'
 ]
 
 { #category : #querying }

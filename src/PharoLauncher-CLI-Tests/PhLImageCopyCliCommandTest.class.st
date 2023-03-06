@@ -22,7 +22,7 @@ PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
 
 	self runCommand: #( 'launcher' 'image' 'copy' 'myImage1' ).
 	 
-	self assert: (self errorString includesSubstring:'New image name argument is missing.').  
+	self assert: (self errorString includesSubstring: 'An argument is missing. Please specify the name for the new Pharo image.').  
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 

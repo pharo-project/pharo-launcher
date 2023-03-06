@@ -39,6 +39,12 @@ PhLImageDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes the local image, including image directory content.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageDeleteCliCommand class >> raiseMissingImageToDelete [
+
+	^ NotFound signal: 'An argument is missing, please specify the local image name to be deleted.'
+]
+
 { #category : #accessing }
 PhLImageDeleteCliCommand >> execute [
 	[ self imageRepository deleteImage: (self findInRepository: self imageName) ]

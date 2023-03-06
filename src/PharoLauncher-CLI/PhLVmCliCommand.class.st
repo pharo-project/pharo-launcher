@@ -42,6 +42,12 @@ PhLVmCliCommand class >> launcherCmdDescription [
 	^ 'All sub-commands related to VM management.'
 ]
 
+{ #category : #'error signalling' }
+PhLVmCliCommand class >> raiseMissingVM [
+
+	^ NotFound  signal: 'An argument is missing, please enter the correct virtual machine name.'
+]
+
 { #category : #'command execution' }
 PhLVmCliCommand >> execute [
 	[ self executeWithVM: self findVM ]

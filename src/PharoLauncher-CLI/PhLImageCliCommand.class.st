@@ -33,6 +33,12 @@ PhLImageCliCommand class >> raiseImageNotFound: anImageName [
 	^ NotFound signal: ('Local image ''{1}'' not found. Please enter a correct local image.' format: { anImageName  })
 ]
 
+{ #category : #private }
+PhLImageCliCommand >> checkOS [
+
+	OSPlatform current isWindows ifTrue: [ self raiseOperationNotSupported ]
+]
+
 { #category : #'command execution' }
 PhLImageCliCommand >> execute [
 	[ self executeWithImage: self findImage ]
@@ -80,4 +86,10 @@ PhLImageCliCommand >> imageName [
 { #category : #private }
 PhLImageCliCommand >> modelClass [
 	^ self class environment at: #PhLImage
+]
+
+{ #category : #'error signalling' }
+PhLImageCliCommand >> raiseOperationNotSupported [
+
+	^ PhLProcessCommandError signal: 'Launcher command currently not supported on OS Windows.'
 ]

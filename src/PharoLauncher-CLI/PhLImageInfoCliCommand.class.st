@@ -47,6 +47,12 @@ PhLImageInfoCliCommand class >> launcherCmdDescription [
 	^ 'Prints information about image: name, description, origin template, etc.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageInfoCliCommand class >> raiseMissingImageToPrintDetails [
+
+	^ NotFound signal: 'An argument is missing, please specify the image name to print information.'
+]
+
 { #category : #accessing }
 PhLImageInfoCliCommand >> executeWithImage: anImage [ 
 

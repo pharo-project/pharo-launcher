@@ -72,7 +72,7 @@ PhLImageCopyCliCommand class >> raiseNewImageAlreadyUsed: targetName [
 { #category : #'error signalling' }
 PhLImageCopyCliCommand class >> raiseNewImageNotFound [
 
-	^ NotFound signal: 'New image name argument is missing.'
+	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
 { #category : #'command execution' }

@@ -61,6 +61,12 @@ PhLImageCreateFromBuildCliCommand class >> missingBuildNrArgMessage [
 	^ 'An argument is missing. Please specify the Pharo build number to find the image template.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageCreateFromBuildCliCommand class >> raiseMissingBuildNumber [
+
+	^ NotFound signal: 'An argument is missing. Please specify the Pharo build number to find the image template.'
+]
+
 { #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
   ^ (arguments at: #buildNumber)

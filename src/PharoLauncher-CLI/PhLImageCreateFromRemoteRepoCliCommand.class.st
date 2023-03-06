@@ -93,24 +93,23 @@ PhLImageCreateFromRemoteRepoCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on a template and loads user defined project from Github remote repository into image.'
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromRemoteRepoCliCommand class >> missingBaselineArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromRemoteRepoCliCommand class >> raiseMissingBaseline [
 
-	^ 'An argument is missing. Please specify the Baseline name to load project into Pharo image.'
+	^ NotFound signal: 'An argument is missing. Please specify the Baseline name to load project into Pharo image.'
 
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromRemoteRepoCliCommand class >> missingRepoArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromRemoteRepoCliCommand class >> raiseMissingRepository [
 	
-	^ 'An argument is missing. Please specify the Github repository full name in {owner}/{project} format.'
+	^ NotFound signal: 'An argument is missing. Please specify the Github repository full name in {owner}/{project} format.'
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromRemoteRepoCliCommand class >> missingSubfolderArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromRemoteRepoCliCommand class >> raiseMissingSubfolder [
 
-	^ 'An argument is missing. Please specify the sub-folder (e.g. ''src'') with source code.'
-
+	^ NotFound signal: 'An argument is missing. Please specify the sub-folder (e.g. ''src'') with source code.'
 ]
 
 { #category : #'accessing - arguments' }

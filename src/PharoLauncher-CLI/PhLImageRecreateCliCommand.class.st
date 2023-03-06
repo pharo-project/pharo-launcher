@@ -33,6 +33,12 @@ PhLImageRecreateCliCommand class >> launcherCmdDescription [
 	^ 'Recreates the local image, the image argument determines the image name to recreate.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageRecreateCliCommand class >> raiseMissingImageToRecreate [
+
+	^ NotFound signal: 'An argument is missing, please specify the image name to recreate.'
+]
+
 { #category : #'command execution' }
 PhLImageRecreateCliCommand >> executeWithImage: anImage [ 
 	self imageRepository recreateImage: anImage

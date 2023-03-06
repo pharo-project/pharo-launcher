@@ -47,6 +47,12 @@ PhLImageKillCliCommand class >> launcherCmdDescription [
 	^ 'Kills the running process(es) of given local image.'
 ]
 
+{ #category : #'error signalling' }
+PhLImageKillCliCommand class >> raiseMissingImageToKill [
+
+	^ NotFound signal: 'An argument is missing, please specify the local image name to kill it process.'
+]
+
 { #category : #accessing }
 PhLImageKillCliCommand >> allFlag [
 
@@ -56,6 +62,7 @@ PhLImageKillCliCommand >> allFlag [
 { #category : #'command execution' }
 PhLImageKillCliCommand >> execute [
 	
+	self checkOS.
 	^ self executeOSShellCommand 
 
 ]

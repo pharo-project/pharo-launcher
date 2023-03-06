@@ -22,7 +22,8 @@ PhLImageProcessListCliCommand class >> launcherCmdDescription [
 PhLImageProcessListCliCommand >> execute [
 	
 	"TODO rewrite this to more meaningful output with columns like PID, datetime started, vm name, image name"
-	
+	"TODO: Win Powershell version should be something like this: Get-Process | Where-Object { $_.Path -like '*Pharo*' -and $_.Path -like '*.image*' -and $_.Id -ne 2232 } | Select-Object Id, Path, StartTime, CommandLine"
+	self checkOS.
 	self outStream 
 		nextPutAll: self executeOSShellCommand.
 	^ self context exitSuccess 

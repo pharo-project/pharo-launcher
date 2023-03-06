@@ -44,10 +44,10 @@ PhLImageCreateFromSHACliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on the commit SHA (7 letter string) of Pharo build process contained in the name of Pharo development template.'
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromSHACliCommand class >> missingShaArgMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromSHACliCommand class >> raiseMissingSha [
 
-	^ 'An argument is missing. Please specify the commit SHA string to find the image template.'
+	^ NotFound signal: 'An argument is missing. Please specify the commit SHA string to find the image template.'
 ]
 
 { #category : #private }

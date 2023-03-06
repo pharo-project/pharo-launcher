@@ -73,6 +73,12 @@ PhLImagePackageCliCommand class >> launcherCmdDescription [
 	^ 'Creates a package containing all necessary artefacts to launch the image.'
 ]
 
+{ #category : #'error signalling' }
+PhLImagePackageCliCommand class >> raiseMissingResultingPackagePath [
+
+	^ NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.'
+]
+
 { #category : #conversion }
 PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [ 
 	| zip |

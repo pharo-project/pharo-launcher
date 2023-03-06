@@ -52,6 +52,12 @@ PhLTemplateInfoCliCommand class >> asCliCommand [
 	 
 ]
 
+{ #category : #'error signalling' }
+PhLTemplateInfoCliCommand class >> raiseMissingTemplateToPrint [
+
+	^ NotFound signal: 'An argument is missing, please specify the template name to print information.'
+]
+
 { #category : #'command execution' }
 PhLTemplateInfoCliCommand >> execute [
 	[ self infoTemplate ]

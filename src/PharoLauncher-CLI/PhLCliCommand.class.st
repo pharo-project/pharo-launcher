@@ -152,12 +152,6 @@ PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
 ]
 
-{ #category : #logging }
-PhLCliCommand class >> missingDelimiterArgMessage [
-
-	^ 'Missing argument value specifying delimiter for printing.'
-]
-
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
@@ -179,6 +173,12 @@ PhLCliCommand class >> newLauncherCommand: idOfCommand [
 PhLCliCommand class >> productionCommandSubclasses [
 
 	^ self subclasses select: #isProductionCommandClass 
+]
+
+{ #category : #'error signalling' }
+PhLCliCommand class >> raiseMissingDelimiter [
+
+	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
 ]
 
 { #category : #'accessing arguments' }

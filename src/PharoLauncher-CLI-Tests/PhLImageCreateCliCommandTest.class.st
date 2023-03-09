@@ -57,6 +57,8 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 
 { #category : #tests }
 PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseError [
+
+	self flag: 'Waiting for validation of args/flags'.
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
@@ -71,6 +73,8 @@ PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseErro
 
 { #category : #tests }
 PhLImageCreateCliCommandTest >> testCreateImageWithWrongTemplateNameShouldGiveErrorMessage [
+
+	self flag: 'Default value evaluation of flag with parameter needs to be fixed'.
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.

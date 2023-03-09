@@ -60,7 +60,7 @@ PhLImageCopyCliCommand class >> launcherCmdDescription [
 { #category : #'error signalling' }
 PhLImageCopyCliCommand class >> raiseImageToCopyNotFound [
 
-	^ NotFound signal: 'Image to copy argument is missing'
+	^ NotFound signal: 'Image to copy argument is missing.'
 ]
 
 { #category : #'error signalling' }
@@ -81,10 +81,4 @@ PhLImageCopyCliCommand >> executeWithImage: anImage [
 	[ self imageRepository copyImage: anImage to: self targetName ]
 		on: PhLNameNotAvailableError
 		do: [ ^ self class raiseNewImageAlreadyUsed: self targetName ]
-]
-
-{ #category : #accessing }
-PhLImageCopyCliCommand >> targetName [
-
-	^ self positional: #newImageName
 ]

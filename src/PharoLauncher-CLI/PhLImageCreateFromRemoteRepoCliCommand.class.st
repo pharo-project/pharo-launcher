@@ -122,7 +122,8 @@ PhLImageCreateFromRemoteRepoCliCommand >> baselineFlag [
 PhLImageCreateFromRemoteRepoCliCommand >> baselineName [
 	
 	"use flag, otherwise determine baseline from repo name"
-	^ self baselineFlag ifNil: [ self baselineNameFromRepoName ]
+	(self hasFlag: #baseline) ifFalse: [^ self baselineNameFromRepoName ].
+	^ self baselineFlag 
 ]
 
 { #category : #private }
@@ -235,10 +236,7 @@ PhLImageCreateFromRemoteRepoCliCommand >> remoteRepoProjectLoadArguments [
 { #category : #'accessing - arguments' }
 PhLImageCreateFromRemoteRepoCliCommand >> repoFullName [
 
-   ^ (arguments at: #repository)
-		value: self;
-		word 
-
+   ^ self positional: #repository
 ]
 
 { #category : #'accessing - arguments' }

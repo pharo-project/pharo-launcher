@@ -6,6 +6,8 @@ Class {
 
 { #category : #tests }
 PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
+
+	self flag: 'TODO: waiting for validation of args/flags'.
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 
@@ -17,6 +19,8 @@ PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
 
 { #category : #tests }
 PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
+
+	self flag: 'Waiting for validation of args/flags'.
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 
@@ -39,6 +43,8 @@ PhLImageCopyCliCommandTest >> testCopyImageShouldSucceed [
 
 { #category : #tests }
 PhLImageCopyCliCommandTest >> testCopyImageToManyArguments [
+
+	self flag: 'Waiting for validation of args/flags'.
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 

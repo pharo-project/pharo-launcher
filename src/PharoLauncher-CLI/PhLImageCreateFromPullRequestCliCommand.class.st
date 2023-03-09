@@ -94,9 +94,13 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 { #category : #'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 
-	^ (arguments at: #pullRequest)
-		value: self;
-		word
+	^ self positional: #pullRequest
+]
+
+{ #category : #'error signalling' }
+PhLImageCreateFromPullRequestCliCommand >> raisePullRequestInvalid: prNumberString [
+
+	^ PhLError signal: ('Not a valid pull request number: {1}' format: { prNumberString } )
 ]
 
 { #category : #private }
@@ -113,7 +117,8 @@ PhLImageCreateFromPullRequestCliCommand >> templateNameFrom: url [
 { #category : #private }
 PhLImageCreateFromPullRequestCliCommand >> validatePullRequest [
 
-	self pullRequestNumber isAllDigits 
-		ifFalse: [ Error signal: ('Not a valid pull request number: {1}' format: { self pullRequestNumber  } )]
-
+	|prNumber|
+	prNumber := self pullRequestNumber.
+	prNumber isAllDigits 
+		ifFalse: [self raisePullRequestInvalid: prNumber]
 ]

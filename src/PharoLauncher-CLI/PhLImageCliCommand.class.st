@@ -93,3 +93,9 @@ PhLImageCliCommand >> raiseOperationNotSupported [
 
 	^ PhLProcessCommandError signal: 'Launcher command currently not supported on OS Windows.'
 ]
+
+{ #category : #accessing }
+PhLImageCliCommand >> targetName [
+
+	^ self positional: #newImageName
+]

@@ -55,12 +55,6 @@ PhLImageCreateFromBuildCliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on a the build number contained in the Pharo development template.'
 ]
 
-{ #category : #'command line' }
-PhLImageCreateFromBuildCliCommand class >> missingBuildNrArgMessage [
-
-	^ 'An argument is missing. Please specify the Pharo build number to find the image template.'
-]
-
 { #category : #'error signalling' }
 PhLImageCreateFromBuildCliCommand class >> raiseMissingBuildNumber [
 
@@ -69,18 +63,8 @@ PhLImageCreateFromBuildCliCommand class >> raiseMissingBuildNumber [
 
 { #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> buildNumber [
-  ^ (arguments at: #buildNumber)
-		value: self;
-		word
-]
 
-{ #category : #private }
-PhLImageCreateFromBuildCliCommand >> cantFindImageTemplateMessage [
-
-	^ 'Could not determine remote image template from build number: {1} and version number: {2}.' 
-		  format: { 
-				  self buildNumber.
-				  self pharoVersionNumber }
+  ^ self positional: #buildNumber
 ]
 
 { #category : #'command execution' }
@@ -96,34 +80,35 @@ PhLImageCreateFromBuildCliCommand >> findTemplate [
 	imageFinder := PhLImageFinder pharoVersion: self pharoVersionNumber build: self buildNumber.
 	[ url := imageFinder findUrl asUrl. ]
 		on: NotFound, PhLDownloadError  
-		do: [ :ex | 	PhLDownloadError signal: self cantFindImageTemplateMessage].
+		do: [ :ex | self raiseImageTemplateFromBuildNrNotFound].
 
 	^ PhLRemoteTemplate name: (self templateNameFrom: url) url: url
 ]
 
-{ #category : #private }
-PhLImageCreateFromBuildCliCommand >> notValidBuildNrMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromBuildCliCommand >> raiseBuildNumberInvalid [
 
-	^ 'Not a valid build number: {1}' format: { self buildNumber }
+	^ PhLError signal: ('Not a valid build number: {1}' format: { self buildNumber })
+]
+
+{ #category : #'error signalling' }
+PhLImageCreateFromBuildCliCommand >> raiseImageTemplateFromBuildNrNotFound [
+
+	^ PhLDownloadError signal:
+		  ('Could not determine remote image template from build number: {1} and version number: {2}.' 
+			   format: { 
+					   self buildNumber.
+					   self pharoVersionNumber })
 ]
 
 { #category : #'accessing - arguments' }
 PhLImageCreateFromBuildCliCommand >> sha [
-	^ (arguments at: #sha) word
-]
 
-{ #category : #'accessing - arguments' }
-PhLImageCreateFromBuildCliCommand >> shaString [ 
-  ^ (arguments at: #sha) value: self
-]
-
-{ #category : #'accessing - arguments' }
-PhLImageCreateFromBuildCliCommand >> targetName [
-	^ (arguments at: #newImageName) word
+	^ self positional: #sha
 ]
 
 { #category : #private }
 PhLImageCreateFromBuildCliCommand >> validateBuildNumber [
 
-	self buildNumber isAllDigits ifFalse: [ Error signal: self notValidBuildNrMessage ]
+	self buildNumber isAllDigits ifFalse: [self raiseBuildNumberInvalid]
 ]

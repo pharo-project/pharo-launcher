@@ -185,16 +185,16 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
-	
-	self findTemplateAndCreateImage 
+
+	self findTemplateAndCreateImage
 ]
 
 { #category : #querying }
 PhLImageCreateCliCommand >> findTemplate [ 
 
 	"find template defined by user"
-	self templateName ifNotNil: [ ^ self findUserTemplate ].
-
+	(self hasFlag: #templateName) ifTrue: [ ^ self findUserTemplate ].
+	
 	"otherwise latest stable Pharo version template"
 	^ self latestStableTemplate
 ]
@@ -304,12 +304,16 @@ PhLImageCreateCliCommand >> template [
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategory [
-  ^ (arguments at: #templateCategory) value: self
+
+	^ self positional: #templateCategory 
+"  ^ (arguments at: #templateCategory) value: self"
 ]
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategoryName [ 
-   ^ (arguments at: #templateCategoryName) word
+
+		^ self positional: #templateCategoryName
+"   ^ (arguments at: #templateCategoryName) word"
 ]
 
 { #category : #private }

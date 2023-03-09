@@ -6,9 +6,11 @@ Class {
 
 { #category : #tests }
 PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
+
+	self flag: 'How to fake PR from Inria CI?'.
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromPR' '9588').
-	self assert: (self errorString includesSubstring: '').
+	self assertSuccess.
 	self assert: (self outputString includesSubstring: 'PR-9588').
 	
 ]

@@ -20,7 +20,7 @@ Class {
 
 { #category : #'command line - arguments' }
 PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
-	
+	"raise errors, when positional args are missing"
 	(aCommandSpec 
 		addPositional: #existingImageName 
 		description: 'Local image name to be copied.')
@@ -30,20 +30,6 @@ PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 		addPositional: #newImageName 
 		description: 'New image name of a copied image.')
 	implicitMeaning: [:arg :app | self raiseNewImageNotFound].
-	"
-	^ {((ClapPositional id: #existingImageName)
-				description: 'Local image name to be copied.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'Image to copy argument is missing.' . ];
-					yourself).
-		((ClapPositional id: #newImageName)
-				description: 'New image name of a copied image.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'New image name argument is missing.' .   ];
-					yourself)	
-	}"
 ]
 
 { #category : #'command line' }

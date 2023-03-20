@@ -41,9 +41,13 @@ PhLImageCliCommand >> checkOS [
 
 { #category : #'command execution' }
 PhLImageCliCommand >> execute [
+	
 	[ self executeWithImage: self findImage ]
-		on: NotFound
-		do: [:ex | ^ self logExceptionMessage: ex printString ]
+	on: NotFound, PhLError
+	do: [:ex | 
+		self logExceptionMessage: ex printString. 
+		self context exitFailure
+	]
 ]
 
 { #category : #'command execution' }

@@ -26,19 +26,10 @@ PhLImageCreateFromPullRequestCliCommand class >> addLauncherFlagsTo: aCommandSpe
 { #category : #'command line - arguments' }
 PhLImageCreateFromPullRequestCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #pullRequest 
-		description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template.'.
-"
-
-	^ {
-		(ClapPositional id: #pullRequest)
-			description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template. ';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound 
-				signal: self missingPullRequestArgMessage ];
-			yourself.
-		}"
+		description: 'Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template.')
+	implicitMeaning: [:arg :app | self raiseMissingPullRequest]
 ]
 
 { #category : #'command line' }
@@ -58,21 +49,11 @@ PhLImageCreateFromPullRequestCliCommand class >> raiseMissingPullRequest [
 	^ NotFound signal: 'An argument is missing. Please specify the pull request number to find the image template from Inria CI build.'
 ]
 
-{ #category : #querying }
-PhLImageCreateFromPullRequestCliCommand >> cantFindImageTemplateMessage: imageFinder [
-
-	^ 'Could not determine build artifact for pull request: {1} from Inria CI server. Either url is not reachable or connection to server was lost: "{2}".' 
-		  format: { 
-				  self pullRequestNumber.
-				  imageFinder pullRequestBuildArtifactsUrlString }
-]
-
 { #category : #'command execution' }
-PhLImageCreateFromPullRequestCliCommand >> execute [
+PhLImageCreateFromPullRequestCliCommand >> basicExecute [ 
 
 	self validatePullRequest.
-	super execute
-
+	super basicExecute
 ]
 
 { #category : #querying }
@@ -82,9 +63,9 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 
 	| imageFinder templateUrl |
 	imageFinder := PhLImageFinder fromInriaCIPullRequest: self pullRequestNumber.
-	[ templateUrl := imageFinder inriaCIArtifactUrl. ]
-		on: PhLDownloadError
-		do: [ :ex | PhLDownloadError signal:(self cantFindImageTemplateMessage: imageFinder) ].
+	[ templateUrl := imageFinder inriaCIArtifactUrl]
+	on: PhLDownloadError
+	do: [ :ex | self raiseBuildArtifactNotFound: imageFinder].
 	
 	 ^ PhLRemoteTemplate
 		  name: (self templateNameFrom: templateUrl)
@@ -95,6 +76,18 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 
 	^ self positional: #pullRequest
+]
+
+{ #category : #'error signalling' }
+PhLImageCreateFromPullRequestCliCommand >> raiseBuildArtifactNotFound: imageFinder [
+
+	| errMessage |
+	errMessage := 'Could not determine build artifact for pull request: {1} from Inria CI server. Either url is not reachable or connection to server was lost: "{2}".' 
+	format: 
+	{	self pullRequestNumber.
+		imageFinder pullRequestBuildArtifactsUrlString
+	}.
+	^ PhLDownloadError signal: errMessage
 ]
 
 { #category : #'error signalling' }

@@ -45,23 +45,6 @@ PhLImageCliCommand >> checkOS [
 	OSPlatform current isWindows ifTrue: [ self raiseOperationNotSupported ]
 ]
 
-{ #category : #'command execution' }
-PhLImageCliCommand >> execute [
-	
-	[ self executeWithImage: self findImage ]
-	on: NotFound, PhLError
-	do: [:ex | 
-		self logExceptionMessage: ex printString. 
-		self context exitFailure
-	]
-]
-
-{ #category : #'command execution' }
-PhLImageCliCommand >> executeWithImage: anImage [
-
-	self subclassResponsibility 
-]
-
 { #category : #'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists

@@ -56,9 +56,9 @@ PhLImageCopyCliCommand class >> raiseNewImageAlreadyUsed: targetName [
 ]
 
 { #category : #'command execution' }
-PhLImageCopyCliCommand >> executeWithImage: anImage [
+PhLImageCopyCliCommand >> basicExecute [
 
-	[ self imageRepository copyImage: anImage to: self targetName ]
+	[ self imageRepository copyImage: self findImage to: self targetName ]
 		on: PhLNameNotAvailableError
 		do: [ ^ self class raiseNewImageAlreadyUsed: self targetName ]
 ]

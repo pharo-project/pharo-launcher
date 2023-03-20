@@ -53,18 +53,7 @@ PhLImageCreateCliCommand class >> addNewImageFlagTo: aCommandSpec [
 	aCommandSpec 
 		addFlag: #newImageName 
 		description: 'Name of the new Pharo image (template name is used by default).' 
-		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitImageName ] ].
-"
-	^ (ClapFlag id: #newImageName)
-			description: 'Name of the new Pharo image (template name is used by default).';
-			meaning: [ :arg :app | 	(arg at: #newImageArg) value];
-			""this argument is optional ""
-			implicitMeaning: [ :arg :app | app implicitImageName];
-			add: ((ClapPositional id: #newImageArg)
-					description: 'New image argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |  app implicitImageName]);
-			yourself"
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitImageName ] ]
 ]
 
 { #category : #'command line - arguments' }
@@ -74,16 +63,6 @@ PhLImageCreateCliCommand class >> addPharoVersionFlagTo: aCommandSpec [
 		addFlag: #pharoVersion 
 		description: 'Version of Pharo to be downloaded.' 
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitPharoVersion ]]
-"
-^ (ClapFlag id: #pharoVersion)
-				description: 'Version of Pharo to be downloaded.';
-				meaning: [ :arg :app | (arg at: #pharoVersionArg) value ];
-				implicitMeaning: [ :arg :app | app implicitPharoVersion ];
-				add: ((ClapPositional id: #pharoVersionArg)
-					description: 'Specifies the version of Pharo you want to download.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingPharoVersionFlagMessage ]);
-				yourself"
 ]
 
 { #category : #'command line - arguments' }
@@ -147,6 +126,12 @@ PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 ]
 
 { #category : #'command execution' }
+PhLImageCreateCliCommand >> basicExecute [
+
+	self findTemplateAndCreateImage
+]
+
+{ #category : #'command execution' }
 PhLImageCreateCliCommand >> createImage: newImageName from: template [
 
 	| anImage |
@@ -156,17 +141,6 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 		           to: newImageName.
 	self logInfoMessage: 'Done!'.
 	^ anImage
-]
-
-{ #category : #'command execution' }
-PhLImageCreateCliCommand >> execute [
-
-	[self findTemplateAndCreateImage]
-	on: NotFound, PhLError 
-	do: [: ex | 
-		self logExceptionMessage: ex printString.
-		self context exitFailure
-	]
 ]
 
 { #category : #querying }

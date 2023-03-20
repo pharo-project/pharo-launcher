@@ -181,6 +181,13 @@ PhLCliCommand class >> raiseMissingDelimiter [
 	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
 ]
 
+{ #category : #'command execution' }
+PhLCliCommand >> basicExecute [
+	
+	"should be implemented on all sub-classed commands that have business logic, otherwise will print just help"
+	self printHelp
+]
+
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
@@ -233,7 +240,13 @@ PhLCliCommand >> errorStream [
 
 { #category : #'command execution' }
 PhLCliCommand >> execute [
-	^ self context exitSuccess
+	
+	[ self basicExecute ]
+	on: NotFound, PhLError
+	do: [:ex | 
+		self logExceptionMessage: ex printString. 
+		self context exitFailure
+	]
 ]
 
 { #category : #'command execution' }

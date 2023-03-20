@@ -55,12 +55,6 @@ PhLImageCopyCliCommand class >> raiseNewImageAlreadyUsed: targetName [
 	^ PhLNameNotAvailableError signal: ('Target image name ''{1}'' already used.' format: { targetName  })
 ]
 
-{ #category : #'error signalling' }
-PhLImageCopyCliCommand class >> raiseNewImageNotFound [
-
-	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
-]
-
 { #category : #'command execution' }
 PhLImageCopyCliCommand >> executeWithImage: anImage [
 

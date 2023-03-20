@@ -33,6 +33,12 @@ PhLImageCliCommand class >> raiseImageNotFound: anImageName [
 	^ NotFound signal: ('Local image ''{1}'' not found. Please enter a correct local image.' format: { anImageName  })
 ]
 
+{ #category : #'error signalling' }
+PhLImageCliCommand class >> raiseNewImageNotFound [
+
+	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
+]
+
 { #category : #private }
 PhLImageCliCommand >> checkOS [
 

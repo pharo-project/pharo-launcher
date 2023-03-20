@@ -36,33 +36,15 @@ PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addTemplateNameFlagTo: aCommandSpec.
 	self addTemplateCategoryFlagTo: aCommandSpec.
-
-"
-
-^ {
-		self templateNameFlag.
-		self templateCategoryFlag.
-	}
-"
 ]
 
 { #category : #'command line - arguments' }
 PhLImageCreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #newImageName 
-		description: 'Name of the new Pharo image.'.
-	
-
-"
-^ {
-		(ClapPositional id: #newImageName)
-				description: 'Name of the new Pharo image.';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingImageNameArgMessage];
-					yourself
-	}
-"
+		description: 'Name of the new Pharo image.')
+	implicitMeaning: [:arg :app | self raiseNewImageNotFound]
 ]
 
 { #category : #'command line - arguments' }
@@ -153,13 +135,6 @@ PhLImageCreateCliCommand class >> launcherCmdDescription [
 ]
 
 { #category : #'error signalling' }
-PhLImageCreateCliCommand class >> missingImageNameArgMessage [
-
-	self flag: 'should use instead: raiseNewImageNotFound'.
-	^ 'An argument is missing. Please specify the name for the new Pharo image.'
-]
-
-{ #category : #'error signalling' }
 PhLImageCreateCliCommand class >> raiseMissingPharoVersion [
 
 	^ NotFound signal: 'An argument is missing. Please specify Pharo version.'
@@ -186,7 +161,12 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> execute [
 
-	self findTemplateAndCreateImage
+	[self findTemplateAndCreateImage]
+	on: NotFound, PhLError 
+	do: [: ex | 
+		self logExceptionMessage: ex printString.
+		self context exitFailure
+	]
 ]
 
 { #category : #querying }
@@ -201,13 +181,9 @@ PhLImageCreateCliCommand >> findTemplate [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> findTemplateAndCreateImage [
-	| aTemplate |
-	aTemplate := [self findTemplate]
-			on: NotFound
-			do: [ :error | ^ self logExceptionMessage: error messageText ].
 
 	"return newly created image"
-	^ self createImage: self imageName from: aTemplate
+	^ self createImage: self imageName from: self findTemplate
 ]
 
 { #category : #querying }

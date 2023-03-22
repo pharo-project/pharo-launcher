@@ -14,13 +14,6 @@ PhLImageCreateFromPullRequestCliCommand class >> addLauncherFlagsTo: aCommandSpe
 	self addNewImageFlagTo: aCommandSpec.
 	self addTemplateNameFlagTo: aCommandSpec.
 	self addTemplateCategoryFlagTo: aCommandSpec.
-"
-	^ 
-	{	
-		self newImageFlag.
-		self templateNameFlag.
-		self templateCategoryFlag 	 
-	}"
 ]
 
 { #category : #'command line - arguments' }

@@ -169,9 +169,12 @@ PhLCliCommandTest >> testPositionalWithValue [
 { #category : #'process actions' }
 PhLCliCommandTest >> validateCommandWithArguments: args [
 
-	^ context 
-		arguments: args;
-		match;
-		validateAll;
-		command
+	[ 
+	^ context
+		  arguments: args;
+		  match;
+		  validateAll;
+		  command ]
+		on: Exit
+		do: [ :ex | ^ Error signal: self errorString]
 ]

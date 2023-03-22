@@ -12,18 +12,17 @@ PhLImageCreateFromRemoteRepoCliCommand class >> addBaselineFlagTo: aCommandSpec 
 
 	aCommandSpec 
 		addFlag: #baseline 
-		description: 'Specifies the project baseline to be loaded by Metacello command. If not specified, baseline is determined from repository name.' 
-		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app baselineNameFromRepoName ] ].
+		description: 'Specifies the project baseline to be loaded by Metacello command (e.g. PharoLaucher) in PascalCase format. If not specified, baseline is determined from repository name.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app baselineNameFromRepoName ] ]
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromRemoteRepoCliCommand class >> addGroupFlagTo: aCommandSpec [
 	
-	"^ (ClapFlag id: #baseline)
-			description: 'Specifies the project baseline to be loaded by Metacello command. If not specified, baseline is determined from repository name. ';
-			meaning: [ :arg :app | (arg at: #baselineArg) value];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #baselineArg)
-					description: 'Baseline argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingBaselineArgMessage]);
-			yourself "
+	aCommandSpec 
+		addFlag: #group 
+		description: 'Defines the group as a loadable spec containing only a sub part of the project. If not specified, group ''default'' is used.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitGroupName ] ]
 ]
 
 { #category : #'command line - arguments' }
@@ -34,32 +33,16 @@ PhLImageCreateFromRemoteRepoCliCommand class >> addLauncherFlagsTo: aCommandSpec
 	self addTemplateCategoryFlagTo: aCommandSpec.
 	self addSubfolderFlagTo: aCommandSpec.
 	self addBaselineFlagTo: aCommandSpec.
-
-"
-	^ 
-	{	
-		self newImageFlag.
-		self templateNameFlag.
-		self templateCategoryFlag.
-		self subfolderFlag.
-		self baselineFlag.
-	}"
+	self addGroupFlagTo: aCommandSpec.
 ]
 
 { #category : #'command line - arguments' }
 PhLImageCreateFromRemoteRepoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #repository 
-		description: 'Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.'.
-"
-	^ {
-		(ClapPositional id: #repository)
-			description: 'Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound signal: self missingRepoArgMessage];
-			yourself.
-		}"
+		description: 'Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.')
+	implicitMeaning: [:arg :app | self raiseMissingRepository]
 ]
 
 { #category : #'command line - arguments' }
@@ -68,18 +51,7 @@ PhLImageCreateFromRemoteRepoCliCommand class >> addSubfolderFlagTo: aCommandSpec
 	aCommandSpec 
 		addFlag: #subfolder 
 		description: 'The sub-folder containing the code. By default ''''src'''' sub-folder is used.' 
-		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitSubfolder ] ].
-"
-	^ (ClapFlag id: #subfolder)
-			description: 'The sub-folder containing the code. By default ''src'' sub-folder is used. ';
-			meaning: [ :arg :app | ""this argument is optional ""
-				(arg at: #subfolderArg) value];
-			implicitMeaning: [ :arg :app | app implicitSubfolder ];
-			add: ((ClapPositional id: #subfolderArg)
-					description: 'Subfolder argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingSubfolderArgMessage]);
-			yourself "
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitSubfolder ] ]
 ]
 
 { #category : #'command line' }
@@ -133,7 +105,7 @@ PhLImageCreateFromRemoteRepoCliCommand >> baselineNameFromRepoName [
 ]
 
 { #category : #'command execution' }
-PhLImageCreateFromRemoteRepoCliCommand >> execute [
+PhLImageCreateFromRemoteRepoCliCommand >> basicExecute [
 
 	|anImage| 
 	self validateRepoFullName.
@@ -150,6 +122,19 @@ PhLImageCreateFromRemoteRepoCliCommand >> getPullRequestLoadConfigFor: anImage [
 		  name: 'Lauch configuration for loading project from the pull request.';
 		  vmArguments: self launchVmArguments;
 		  imageArguments: self remoteRepoProjectLoadArguments
+]
+
+{ #category : #'accessing - arguments' }
+PhLImageCreateFromRemoteRepoCliCommand >> groupName [
+
+	^ self positional: #group
+]
+
+{ #category : #default }
+PhLImageCreateFromRemoteRepoCliCommand >> implicitGroupName [
+
+	"by default use 'default' as project group to load"
+	^ 'default'
 ]
 
 { #category : #default }
@@ -203,13 +188,20 @@ PhLImageCreateFromRemoteRepoCliCommand >> logLoadingPullRequestUsing: cmdString 
 
 { #category : #private }
 PhLImageCreateFromRemoteRepoCliCommand >> mcLoadProjectFromRepo [
-	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}/{3}''; onConflictUseIncoming; load"' 
+	^ '"Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''{1}''; repository: ''{2}/{3}''; onConflictUseIncoming; load: ''{4}''"' 
 	format: { 
 		self baselineName. 
 		('github://', self repoFullName). 
 		self sourcesSubFolder.
+		self groupName.
 	}
 
+]
+
+{ #category : #'error signalling' }
+PhLImageCreateFromRemoteRepoCliCommand >> raiseRepoNameInvalid [
+
+	^ PhLError signal:( 'Invalid repository name: {1}. Please specify in \{owner\}/\{project\} or \{owner\}/\{project\}:\{feature\}/\{branch-name\} format.' format: { self repoFullName } )
 ]
 
 { #category : #private }
@@ -249,5 +241,5 @@ PhLImageCreateFromRemoteRepoCliCommand >> sourcesSubFolder [
 PhLImageCreateFromRemoteRepoCliCommand >> validateRepoFullName [
 
 	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}:{alphanumeric-chars with dash}, which is owner/project:tagOrBranch"
-	self isValidRepoFullName ifFalse: [Error signal:( 'Invalid repository name: {1}. Please specify in \{owner\}/\{project\} or \{owner\}/\{project\}:\{feature\}/\{branch-name\} format.' format: { self repoFullName } )]
+	self isValidRepoFullName ifFalse: [ self raiseRepoNameInvalid ]
 ]

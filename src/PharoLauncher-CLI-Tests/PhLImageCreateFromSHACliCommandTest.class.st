@@ -12,7 +12,7 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromABuildShouldFailWhenSh
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromSHA' '--pharoVersion' '10').
 	self assertFailure.
-	self assert: (self errorString includesSubstring: 'Cannot find sha').
+	self assert: (self errorString includesSubstring: 'Please specify the commit SHA string to find the image template').
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 

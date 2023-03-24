@@ -85,13 +85,7 @@ PhLCliCommand class >> addPrintFlagsTo: aCommandSpec [
 	self addRowModeFlagTo: aCommandSpec.
 	self addDelimiterFlagTo: aCommandSpec.
 	self addStonFlagTo: aCommandSpec.
-	"
-	^ {
-			self briefFlag.
-			self rowModeFlag.
-			self delimiterFlag.
-			self stonFlag
-		}"
+
 ]
 
 { #category : #'command line - arguments' }

@@ -23,17 +23,10 @@ PhLImageInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 { #category : #'command line - arguments' }
 PhLImageInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #existingImageName 
-		description: 'Determines the local image name to print detailed information.'.
-
-"
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Determines the local image name to print detailed information.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the image name to print information.'];
-		yourself)}"
+		description: 'Determines the local image name to print detailed information.')
+	implicitMeaning: [ :arg :app | self raiseMissingImageToPrintDetails]
 ]
 
 { #category : #'command line' }
@@ -53,10 +46,10 @@ PhLImageInfoCliCommand class >> raiseMissingImageToPrintDetails [
 	^ NotFound signal: 'An argument is missing, please specify the image name to print information.'
 ]
 
-{ #category : #accessing }
-PhLImageInfoCliCommand >> executeWithImage: anImage [ 
+{ #category : #'command execution' }
+PhLImageInfoCliCommand >> basicExecute [ 
 
-   self list: (Array with: anImage)
+	self list: (Array with: self findImage)
 ]
 
 { #category : #'private ' }

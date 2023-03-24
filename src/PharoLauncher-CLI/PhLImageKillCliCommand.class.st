@@ -12,28 +12,16 @@ PhLImageKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	aCommandSpec 
 		addFlag: #all 
-		description: 'Determines whether to kill all running Pharo image processes.'.
-	"
-	^ {((ClapFlag id: #all)
-		description: 'Determines whether to kill all running Pharo image processes. ';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])}."
+		description: 'Determines whether to kill all running Pharo image processes.'
 ]
 
 { #category : #'command line - arguments' }
 PhLImageKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #existingImageName 
-		description: 'Specifies the local image name to kill its process.'.
-	"^ {
-		((ClapPositional id: #existingImageName)
-				description: 'Specifies the local image name to kill its process.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the local image name to kill it process.'];
-					yourself)	.
-	}"
+		description: 'Specifies the local image name to kill its process.')
+	implicitMeaning: [ :arg :app | self raiseMissingImageToKill]
 ]
 
 { #category : #'command line' }
@@ -56,12 +44,12 @@ PhLImageKillCliCommand class >> raiseMissingImageToKill [
 { #category : #accessing }
 PhLImageKillCliCommand >> allFlag [
 
-	^ (arguments at: #all) value
+	^ self hasFlag: #all
 ]
 
 { #category : #'command execution' }
-PhLImageKillCliCommand >> execute [
-	
+PhLImageKillCliCommand >> basicExecute [
+	"currently unsupported on Windows"
 	self checkOS.
 	^ self executeOSShellCommand 
 

@@ -283,7 +283,7 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 { #category : #events }
 PharoLauncherApplication >> newImageCreated [
 	"We want to launch the freshly created image"
-	imagesPresenter actionLaunch
+	imagesPresenter ifNotNil: [ imagesPresenter actionLaunch ]
 ]
 
 { #category : #configuring }

@@ -280,6 +280,12 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
 ]
 
+{ #category : #events }
+PharoLauncherApplication >> newImageCreated [
+	"We want to launch the freshly created image"
+	imagesPresenter actionLaunch
+]
+
 { #category : #configuring }
 PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean

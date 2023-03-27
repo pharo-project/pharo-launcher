@@ -23,11 +23,11 @@ PhLImageListCliCommandTest >> testDelimiterImplicit [
 ]
 
 { #category : #tests }
-PhLImageListCliCommandTest >> testListEmptyListImageShouldSucceed [
+PhLImageListCliCommandTest >> testListEmptyImageRepositoryShouldSucceed [
 	
 	self runCommand: #('launcher' 'image' 'list').
 	 
-	self assertSuccess.  
+	self assertSuccess.
 	self assert: self outputString equals:''.
 ]
 

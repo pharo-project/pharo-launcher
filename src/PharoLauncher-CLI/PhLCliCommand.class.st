@@ -43,17 +43,7 @@ PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 	aCommandSpec 
 		addFlag: #delimiter 
 		description: 'Specifies the table-cell delimiter that delimits listed information attributes.' 
-		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitDelimiter ] ].
-
-	"^ (ClapFlag id: #delimiter)
-			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
-			meaning: [ :arg :app | ""this argument is optional ""
-				(arg at: #delimiterArg) value];
-			implicitMeaning: [ :arg :app | app implicitDelimiter ];
-			add: ((ClapPositional id: #delimiterArg)
-					description: 'Delimiter argument for printing, can be one or more characters (without space).';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage])."
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitDelimiter ] ]
 ]
 
 { #category : #'command line - arguments' }
@@ -93,13 +83,7 @@ PhLCliCommand class >> addRowModeFlagTo: aCommandSpec [
 	
 	aCommandSpec 
 		addFlag: #rowMode 
-		description: 'Prints one attribute per line only.'.
-
-"
-	^ ((ClapFlag id: #rowMode)
-		description: 'Prints one attribute per line only.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])"
+		description: 'Prints one attribute per line only.'
 ]
 
 { #category : #'command line - arguments' }
@@ -107,13 +91,7 @@ PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 
 	aCommandSpec 
 		addFlag: #ston 
-		description: 'Prints information in STON format.'.
-	
-"
-	^ ((ClapFlag id: #ston)
-		description: 'Prints information in STON format.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])"
+		description: 'Prints information in STON format.'
 ]
 
 { #category : #'command line - converting' }

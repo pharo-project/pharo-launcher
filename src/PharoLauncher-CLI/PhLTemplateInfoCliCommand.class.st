@@ -37,6 +37,12 @@ PhLTemplateInfoCliCommand class >> asCliCommand [
 	 
 ]
 
+{ #category : #'command line - description' }
+PhLTemplateInfoCliCommand class >> launcherCmdDescription [
+
+	^ 'Prints information about image template name, origin url.'
+]
+
 { #category : #'error signalling' }
 PhLTemplateInfoCliCommand class >> raiseMissingTemplateToPrint [
 

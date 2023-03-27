@@ -26,6 +26,33 @@ PhLImageCliCommandTest >> templateRepository [
 	^ self launcherModel templateRepository
 ]
 
+{ #category : #tests }
+PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
+	| memoryFileSystem command location |
+	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
+	command context: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ location := (memoryFileSystem root / 'non-existing.image') ensureCreateFile.
+			self should: [ command findImage: '/wrong/path' ] raise: NotFound ]
+]
+
+{ #category : #tests }
+PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
+	| memoryFileSystem command location |
+	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
+	command context: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ 
+			location := (memoryFileSystem root / 'existing.image') ensureCreateFile.
+			self
+				shouldnt: [ command findImage: location fullName ]
+				raise: NotFound ]
+]
+
 { #category : #running }
 PhLImageCliCommandTest >> useMockImagesRepository [
 

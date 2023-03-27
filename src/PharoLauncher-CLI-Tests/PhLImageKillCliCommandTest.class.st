@@ -51,6 +51,13 @@ PhLImageKillCliCommandTest >> testKillArgString [
 ]
 
 { #category : #tests }
+PhLImageKillCliCommandTest >> testMissingImageName [
+	self runCommand: #('launcher' 'image' 'kill').
+ 	self assertFailure.
+	self assert: ( self errorString includesSubstring: 'specify the local image name to kill it process')
+]
+
+{ #category : #tests }
 PhLImageKillCliCommandTest >> testOsShellArgArray [
 
 	| killCliCommand  result|

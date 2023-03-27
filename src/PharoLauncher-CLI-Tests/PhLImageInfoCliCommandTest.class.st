@@ -21,5 +21,5 @@ PhLImageInfoCliCommandTest >> testImageInfoWrongImageNameShouldRaiseError [
 	
 	self runCommand: #('launcher' 'image' 'info' 'myImage3').
 	self assertFailure.
-	self assert: (self errorString includesSubstring:'Please enter a correct local image.').
+	self assert: (self errorString includesSubstring: 'Please enter a correct local image.').
 ]

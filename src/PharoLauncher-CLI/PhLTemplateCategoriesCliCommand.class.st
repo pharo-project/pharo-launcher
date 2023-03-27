@@ -30,10 +30,10 @@ PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 	^ 'Prints list of image template categories.'
 ]
 
-{ #category : #initialization }
-PhLTemplateCategoriesCliCommand >> execute [
-	self list: self templateRepository roots
-		
+{ #category : #'command execution' }
+PhLTemplateCategoriesCliCommand >> basicExecute [
+
+	self list: self templateRepository roots	
 ]
 
 { #category : #private }

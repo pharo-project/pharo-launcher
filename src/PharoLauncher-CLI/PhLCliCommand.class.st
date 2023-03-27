@@ -197,10 +197,9 @@ PhLCliCommand >> defaultTemplateCategoryName [
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> delimiter [ 
-	|delimiter|
-	delimiter := self positional: #delimiter.
-	delimiter ifNil: [^ self implicitDelimiter  ].
-	^ delimiter
+
+	(self hasFlag: #delimiter) ifFalse: [ ^ self implicitDelimiter ].
+	^ self positional: #delimiter
 ]
 
 { #category : #private }
@@ -265,14 +264,6 @@ PhLCliCommand >> implicitDelimiter [
 PhLCliCommand >> initialize [
 	super initialize.
 	self cliFormatter: (ConsoleListFormatter on: self).
-]
-
-{ #category : #initialization }
-PhLCliCommand >> initializeWithContext [ 
-	"initialize objects dependent on context"
-	super initializeWithContext.
-	PhLNotificationCenter default outStream: self outStream.
-	PhLNotificationCenter default errorStream: self errorStream.
 ]
 
 { #category : #printing }

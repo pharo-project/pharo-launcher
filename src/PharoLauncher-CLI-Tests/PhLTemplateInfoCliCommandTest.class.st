@@ -9,8 +9,10 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'fakeTemplate').
-	
 	self assertSuccess.
+	self outputString includesSubstring: 'fakeTemplate'.
+	self outputString includesSubstring: 'URL'.
+
 	
 	
 ]
@@ -20,9 +22,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucce
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'info' 'fakeTemplate' '--templateCategory' 'Local test templates').
-	
 	self assertSuccess.
-	
 	
 ]
 
@@ -30,7 +30,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucce
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveErrorMessage [
 	self createOfficialTemplatesCategoryWithSomeTemplates.
 	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
-	
+	self assertFailure.
 	self assert: (self errorString includesSubstring:'tooManyArguments') .
 	
 	
@@ -41,8 +41,8 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGive
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
-	
-	self assert: (self errorString includesSubstring:'please enter a correct template name') .
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'enter a correct template name')
 	
 	
 ]
@@ -52,10 +52,8 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName').
-	
-	self assert: (self errorString includesSubstring:'please enter a correct template name') .
-	
-	
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'enter a correct template name')
 ]
 
 { #category : #tests }
@@ -63,8 +61,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateNameWithCategory [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'info' 'wrongTemplateName' '--templateCategory' 'Local test templates').
-	
-	self assert: (self errorString includesSubstring:'please enter a correct template name') .
-	
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'enter a correct template name')
 	
 ]

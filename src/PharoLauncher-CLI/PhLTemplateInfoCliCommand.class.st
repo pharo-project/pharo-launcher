@@ -20,30 +20,15 @@ PhLTemplateInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 		addFlag: #templateCategory
 		description: 'Specifies the template category name to list image templates.'
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | 'Official distributions' ]]
-	"^ {(ClapFlag id: #templateCategory)
-				description: 'Specifies the template category name to list image templates.';
-				meaning: [  :arg :app | (arg at: #templateCategoryName) word ];
-				implicitMeaning: [  :arg :app | 'Official distributions'. ];
-				add: ((ClapPositional id: #templateCategoryName)
-					description: 'Name of the template category.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app | app . ])}"
 ]
 
 { #category : #'command line - arguments' }
 PhLTemplateInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #templateName 
-		description: 'Specifies the template name to print information.'.
-
-	"^ {
-		((ClapPositional id: #templateName)
-				description: 'Specifies the template name to print information.';
-					meaning: [ :pos | pos  word ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the template name to print information.'];
-					yourself).	}"
+		description: 'Specifies the template name to print information.')
+	implicitMeaning: [:arg :app | app raiseMissingTemplateToPrint]
 ]
 
 { #category : #'command line - converting' }
@@ -59,24 +44,44 @@ PhLTemplateInfoCliCommand class >> raiseMissingTemplateToPrint [
 ]
 
 { #category : #'command execution' }
-PhLTemplateInfoCliCommand >> execute [
-	[ self infoTemplate ]
-		on: NotFound
-		do: [ self logWrongTemplateName ]
-]
+PhLTemplateInfoCliCommand >> basicExecute [ 
 
-{ #category : #initialization }
-PhLTemplateInfoCliCommand >> infoTemplate [
-	| template |
-	template := self templateRepository
-		templateNamed: self templateName
-		inCategoryNamed: self templateCategory.
-	self outStream
-		nextPutAll: template url asString;
-		newLine
+	self list: (Array with: self findTemplate)
 ]
 
 { #category : #accessing }
+PhLTemplateInfoCliCommand >> findTemplate [
+	
+	^	[ self templateRepository
+			templateNamed: self templateName
+			inCategoryNamed: self templateCategory
+		] 
+		on: NotFound 
+		do: [ self raiseTemplateNotFound: self templateName]
+]
+
+{ #category : #'accessing arguments' }
+PhLTemplateInfoCliCommand >> printSequence [
+
+	"do not print sequence number for just one template"
+	^ false
+]
+
+{ #category : #'error signalling' }
+PhLTemplateInfoCliCommand >> raiseTemplateNotFound: aTemplateName [
+
+	^ NotFound signal: ('Local image template: ''{1}'' not found. Please enter a correct template name.' format: { aTemplateName })
+]
+
+{ #category : #'accessing arguments' }
+PhLTemplateInfoCliCommand >> rowMode [
+
+	"template info is printed in one attribute per row"
+	^ true
+]
+
+{ #category : #'accessing arguments' }
 PhLTemplateInfoCliCommand >> templateCategory [
-  ^ (arguments at: #templateCategory) value: self
+	
+	^ self positional: #templateCategory
 ]

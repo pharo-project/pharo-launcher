@@ -38,15 +38,12 @@ PhLTemplatesCliCommandTest >> localTemplatesGroup [
 	^ context templateRepository localTemplatesGroup
 ]
 
-{ #category : #tests }
+{ #category : #running }
 PhLTemplatesCliCommandTest >> setUp [
-	| model |
+
 	super setUp.
-	model := PharoLauncherCLIModel new.
-	model templateRepository: PhLTemplateTestRepository new.
-	model templateRepository createLocalTemplateNamed:'foo'.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
+	context launcherModel templateRepository: PhLTemplateTestRepository new.
+	context launcherModel templateRepository createLocalTemplateNamed:'foo'.
 ]
 
 { #category : #'process actions' }

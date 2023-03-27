@@ -64,14 +64,14 @@ PhLImageInfoCliCommand >> listPrintAttributeLabels [
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImageInfoCliCommand >> printSequence [
 
 	"do not print sequence number for one image"
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImageInfoCliCommand >> rowMode [
 
 	"image info is printed in one attribute per row"

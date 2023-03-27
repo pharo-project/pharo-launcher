@@ -19,21 +19,8 @@ PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	aCommandSpec 
 		addFlagWithPositional: #name
 		description: 'Determines the name of image (or its sub-part) to list local images.'.
-	self addPrintFlagsTo: aCommandSpec.
 
-"
-	^ Array 
-		with: ((ClapFlag id: #name)
-			description: 'Determines the name of image (or its substring) to list local images.';
-			meaning: [ :arg :app | ""this argument is optional ""
-				(arg at: #nameAsString) word ];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #nameAsString)
-					description: 'A substring to search from the list of local Pharo images.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ]);
-			yourself)
-		withAll: self printFlags"
+	self addPrintFlagsTo: aCommandSpec.
 ]
 
 { #category : #'command line' }
@@ -47,9 +34,10 @@ PhLImageListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all local images from Pharo laucher repository.'
 ]
 
-{ #category : #'instance creation' }
-PhLImageListCliCommand >> execute [
-	^ self listImages
+{ #category : #'command execution' }
+PhLImageListCliCommand >> basicExecute [ 
+
+	self listImages
 ]
 
 { #category : #listing }
@@ -60,17 +48,19 @@ PhLImageListCliCommand >> imagesFromName: aSubtring [
 	^ imagesIncludingSubstring
 ]
 
-{ #category : #'instance creation' }
+{ #category : #listing }
 PhLImageListCliCommand >> listImages [
+
 	| images |
-	images := self name 
-		ifNil: [  self imageRepository images ]
-		ifNotNil:[ self imagesFromName: self name ].
+	images := (self hasFlag: #name)
+		ifTrue: [ self imagesFromName: self name ]
+		ifFalse: [ self imageRepository images ].
 
 	self list: images
 ]
 
 { #category : #'accessing arguments' }
 PhLImageListCliCommand >> name [
-	^ (arguments at: #name) value: self
+
+	^ self positional: #name
 ]

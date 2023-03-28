@@ -65,6 +65,12 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 		  url: templateUrl
 ]
 
+{ #category : #private }
+PhLImageCreateFromPullRequestCliCommand >> imageFinderClass [
+
+	^ PhLImageFinder
+]
+
 { #category : #'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 

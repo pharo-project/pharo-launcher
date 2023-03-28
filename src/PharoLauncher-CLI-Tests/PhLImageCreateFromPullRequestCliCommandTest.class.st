@@ -12,7 +12,7 @@ PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 	self runCommand: #('launcher' 'image' 'create' 'fromPR' '9588').
 	self assertSuccess.
 	self assert: (self outputString includesSubstring: 'PR-9588').
-	
+  
 ]
 
 { #category : #tests }

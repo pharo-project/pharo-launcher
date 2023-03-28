@@ -30,8 +30,8 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all available VMs, with status.'
 ]
 
-{ #category : #accessing }
-PhLVmListCliCommand >> execute [
+{ #category : #'command execution' }
+PhLVmListCliCommand >> basicExecute [ 
 
 	self list: self vmRepository
 ]

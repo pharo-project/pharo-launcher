@@ -9,15 +9,11 @@ PhLVmCliCommandTest >> addVmNamed: vmName [
 	^ self vmRepository addVmNamed: vmName at: vmName
 ]
 
-{ #category : #'process actions' }
+{ #category : #running }
 PhLVmCliCommandTest >> setUp [
-	| model |
-	super setUp.
-	model := PharoLauncherCLIModel new.
-	model vmManager: PhLVirtualMachinesMockRepo new.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
 
+	super setUp.
+	context launcherModel vmManager: PhLVirtualMachinesMockRepo new
 ]
 
 { #category : #accessing }

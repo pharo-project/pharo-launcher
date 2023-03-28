@@ -18,17 +18,10 @@ Class {
 { #category : #'command line - arguments' }
 PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	aCommandSpec 
+	(aCommandSpec 
 		addPositional: #existingVirtualMachineId 
-		description: 'Specifies the local Virtual Machine ID.'.
-	"^ {
-	((ClapPositional id: #existingVirtualMachineId)
-		description: 'Local Virtual Machine id.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |
-			NotFound signal: 'one argument is missing, need a virtual machine name to update it'. ];
-		yourself)
-	}"
+		description: 'Specifies the local Virtual Machine ID.')
+	implicitMeaning: [:arg :app | app raiseMissingVM]
 ]
 
 { #category : #'command line - converting' }
@@ -48,25 +41,12 @@ PhLVmCliCommand class >> raiseMissingVM [
 	^ NotFound  signal: 'An argument is missing, please enter the correct virtual machine name.'
 ]
 
-{ #category : #'command execution' }
-PhLVmCliCommand >> execute [
-	[ self executeWithVM: self findVM ]
-		on: NotFound
-		do: [ ^ self logVMNotFound  ]
-]
-
 { #category : #'find-select' }
 PhLVmCliCommand >> findVM [
-	^ self vmRepository
-		detect: [ :virtualMachine | virtualMachine id = self vmId ]
-]
 
-{ #category : #printing }
-PhLVmCliCommand >> logVMNotFound [
-	self errorStream
-		nextPutAll: 'please enter a correct local virtual machine'.
-	self errorStream newLine.
-	^ self
+	^ 	[self vmRepository detect: [:vm | vm id = self vmId ]]
+		on: NotFound
+		do: [ self raiseVMNotFound: self vmId ]
 ]
 
 { #category : #private }
@@ -74,8 +54,14 @@ PhLVmCliCommand >> modelClass [
 	^ self class environment at: #PhLVirtualMachine
 ]
 
+{ #category : #printing }
+PhLVmCliCommand >> raiseVMNotFound: vmID [
+
+	^ NotFound signal: ('Virtual machine with id ''{1}'' not found. Please enter a correct VM id.' format: { vmID })
+]
+
 { #category : #'find-select' }
 PhLVmCliCommand >> vmId [
-  ^ (arguments at: #existingVirtualMachineId) word 
-	
+
+  ^ self positional: #existingVirtualMachineId
 ]

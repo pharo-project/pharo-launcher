@@ -24,7 +24,8 @@ PhLVmUpdateCliCommand class >> launcherCmdDescription [
 	^ 'Updates VM executable, including dependent libs to latest version from remote site.'
 ]
 
-{ #category : #accessing }
-PhLVmUpdateCliCommand >> executeWithVM: aVm [
-   aVm updateFromUrl
+{ #category : #'command execution' }
+PhLVmUpdateCliCommand >> basicExecute [
+
+   self findVM updateFromUrl
 ]

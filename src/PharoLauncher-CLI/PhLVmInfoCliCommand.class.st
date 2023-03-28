@@ -25,10 +25,10 @@ PhLVmInfoCliCommand class >> launcherCmdDescription [
 	^ 'Prints information about VM: name, remote-site URL, last update status, etc.'
 ]
 
-{ #category : #accessing }
-PhLVmInfoCliCommand >> executeWithVM: aVm [
+{ #category : #'command execution' }
+PhLVmInfoCliCommand >> basicExecute [
   
-	self list: (Array with: aVm)
+	self list: (Array with: self findVM)
 ]
 
 { #category : #'accessing arguments' }

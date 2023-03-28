@@ -24,7 +24,8 @@ PhLVmDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes VM executable from local computer, including dependencies.'
 ]
 
-{ #category : #initialization }
-PhLVmDeleteCliCommand >> executeWithVM: aVm [
-   aVm removeFromSystem
+{ #category : #'command execution' }
+PhLVmDeleteCliCommand >> basicExecute [
+
+   self findVM removeFromSystem
 ]

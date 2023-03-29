@@ -38,6 +38,12 @@ PhLCliCommandTest >> launcherModel [
 	^ context launcherModel 
 ]
 
+{ #category : #resetting }
+PhLCliCommandTest >> outputReset [
+	"this is for test purposes only, to have clear output, when asserting contents"
+	context stdio stdout resetContents
+]
+
 { #category : #accessing }
 PhLCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
@@ -53,6 +59,17 @@ PhLCliCommandTest >> setUp [
 
 	super setUp.
 	context := PhLCliCommand launcherCommand activation
+]
+
+{ #category : #tests }
+PhLCliCommandTest >> testExecuteLauncherCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'This is command line interface of Pharo Launcher'.
+	
+	self assertCommand: #('launcher') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' '--help') toPrintHelpWith: expectedPrintout.
+
 ]
 
 { #category : #tests }

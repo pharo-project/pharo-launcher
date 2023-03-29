@@ -16,6 +16,17 @@ PhLVmCliCommandTest >> setUp [
 	context launcherModel vmManager: PhLVirtualMachinesMockRepo new
 ]
 
+{ #category : #tests }
+PhLVmCliCommandTest >> testExecuteLauncherVMCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'Usage: launcher vm'.
+	
+	self assertCommand: #('launcher' 'vm') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'vm' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'vm' '--help') toPrintHelpWith: expectedPrintout.
+
+]
+
 { #category : #accessing }
 PhLVmCliCommandTest >> vmRepository [ 
 	^ self launcherModel vmManager

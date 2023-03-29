@@ -50,3 +50,14 @@ PhLTemplatesCliCommandTest >> setUp [
 PhLTemplatesCliCommandTest >> templateRepository [ 
 	^ self launcherModel templateRepository
 ]
+
+{ #category : #tests }
+PhLTemplatesCliCommandTest >> testExecuteLauncherTemplateCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'Usage: launcher template'.
+	
+	self assertCommand: #('launcher' 'template') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'template' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'template' '--help') toPrintHelpWith: expectedPrintout.
+
+]

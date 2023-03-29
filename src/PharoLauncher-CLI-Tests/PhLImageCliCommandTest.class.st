@@ -27,6 +27,17 @@ PhLImageCliCommandTest >> templateRepository [
 ]
 
 { #category : #tests }
+PhLImageCliCommandTest >> testExecuteLauncherImageCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'Usage: launcher image'.
+	
+	self assertCommand: #('launcher' 'image') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'image' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'image' '--help') toPrintHelpWith: expectedPrintout.
+
+]
+
+{ #category : #tests }
 PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
 	| memoryFileSystem command location |
 	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.

@@ -8,6 +8,16 @@ Class {
 }
 
 { #category : #asserting }
+PhLCliCommandTest >> assertCommand: commandArgsArray toPrintHelpWith: printHelpString [
+
+	"reset output and check that result of command contains expected print help string"
+	self outputReset.
+	self runCommand: commandArgsArray.	 
+	self assertSuccess.
+	self assert: (self outputString includesSubstring: printHelpString).
+]
+
+{ #category : #asserting }
 PhLCliCommandTest >> assertFailure [
 	self deny: context exitStatus equals: 0
 ]

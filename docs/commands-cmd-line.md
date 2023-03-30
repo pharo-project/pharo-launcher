@@ -1,29 +1,89 @@
-# Overview of Pharo Laucher commands available for command-line
-This is list of subject oriented commands of Pharo launcher, where subjects are Pharo VM, image, configuration of launcher.  
+# Pharo Laucher command-line
+This is list of subject oriented CLI commands of Pharo launcher, where subjects are Pharo VM, image or image template of launcher.  
 (launcher parent command is not listed, it is implicit)
 
-| Command | Sub-command | Description | 
-| ------- | ----------- | ------------- |
-| [help](#help-command)  |             | Prints all supported Pharo launcher commands. |
-| [image](#images-commands) |             | All sub-commands related to management of local Pharo images. |
-|         | [list](#list-images-command)      | Lists all downloaded images on local computer. |
-|         | [launch](#image-launch-command)    | Launches image with using default (auto-detected) VM. |
-|         | [create](#image-create-command)    | Downloads and creates new image on local computer from remote site based on template name. |
-|         | [copy](#image-copy-command)      | Creates copy of given image with new name. 
-|         | [delete](#image-delete-command)    | Deletes image from computer, including local image directory content. |
-|         | [info](#image-info-command)      | Prints information about image: name, description, origin template, etc. |
-| [template](#templates-commands) |          | All sub-commands related to templates of Pharo image. | 
-|         | [list](#list-templates-command)      | Lists all image templates. |
-|         | [categories](#template-categories-command)| Lists all image template categories, based on which are image templates categorized. |
-|         | [info](#template-info-command)      | Prints, informations (url) about templates  |
-| [vm](#vms-commands)    |             | All sub-commands related to VM management. |
-|         | [list](#list-vms-command)      | Lists all available VMs. |
-|         | [info](#info-vm-command)      | Prints information about VM: name, remote-site URL, last update status, etc. |
-|         | [update](#update-vm-command)    | Updates VM executable, including depedent libs to latest version from remote site. |
-|         | [delete](#delete-vm-command)    | Deletes VM executable from local computer, including dependencies. |
+| Command | Sub-command |                   | Description | 
+| ------- | ----------- | ----------------- | ----------- |
+| [help](#help-command) |             | | Prints all supported Pharo launcher commands. |
+| [image](#images-commands) |           |  | All sub-commands related to management of local Pharo images. (Prints help only) |
+|         | [copy](#image-copy-command)   |   | Creates copy of given image with new name. 
+|         | [create](#image-create-command)  |  | Downloads and creates new image on local computer from remote site based on template name. |
+|         |            | [fromBuild](#image-create-fromBuild)    | Downloads and creates new image based on a the build number. |
+|         |            | [fromPR](#image-create-fromPR)    | Downloads and creates new image based on a Github pull request number (from Inria CI server). |
+|         |            | [fromRepo](#image-create-fromRepo)    | Downloads and creates new image based on a template and loads user defined project from Github remote repository. |
+|         |            | [fromSHA](#image-create-fromSHA)    | Downloads and creates new image based on the commit SHA (7 letter string contained in the name of Pharo dev template). |
+|         | [delete](#image-delete-command)    | | Deletes the local image, including image directory content. |
+|         | [info](#image-info-command)      | | Prints information about image: name, description, origin template, etc. |
+|         | [kill](#image-kill-command)      | | Kills the running process(es) of given local image. |
+|         | [launch](#image-launch-command)  | | Launches image with using default (auto-detected) VM. |
+|         | [list](#list-images-command)     | | Lists all local images from Pharo laucher repository. |
+|         | [package](#image-package-command)     | | Creates a package containing all necessary artefacts to launch the image. |
+|         | [processList](#image-processList-command)     | | Lists all running Pharo image processes. |
+|         | [recreate](#image-recreate-command)     | | Recreates the local image, the image argument determines the image name to recreate. |
+| [template](#templates-commands) |         | | All sub-commands related to image templates. (Prints help only) | 
+|         | [categories](#template-categories-command) | | Lists all image template categories, based on which are image templates categorized. |
+|         | [info](#template-info-command)      | | Prints information about image template name, origin url. |
+|         | [list](#list-templates-command)    |  | Prints list of image templates. |
+| [vm](#vms-commands)    |            | | All sub-commands related to VM management. (Prints help only) |
+|         | [delete](#delete-vm-command)    | | Deletes VM executable from local computer, including dependencies. |
+|         | [info](#info-vm-command)     | | Prints information about VM: name, remote-site URL, last update status, etc. |
+|         | [list](#list-vms-command)     | | Lists all available VMs, with status. |
+|         | [update](#update-vm-command)   | | Updates VM executable, including depedent libs to latest version from remote site. |
 
 
-# Description of Pharo Launcher commands available for command-line
+# Getting started
+Command line interface of Pharo Launcher is avaliable from directory, where launcher is installed.  
+Pharo Launcher CLI can be executed using: `pharo-launcher.sh <command>` (choosing on of the commands above).
+## 1. List Pharo images
+You can start listing Pharo images deployed by Pharo launcher by: `pharo-launcher.sh image list`
+This will give output like:
+```
+#  Name                                             Architecture Pharo version Last modified      
+-- ------------------------------------------------ ------------ ------------- -------------------
+1  Pharo 9.0 - 64bit (stable)                       64           90            2021-11-13 13:18:02
+2  P8                                               64           80            2022-03-01 17:05:56
+3  Pharo 11.0 - 64bit (development version, latest) 64           110           2022-05-30 15:40:21
+4  Pharo10.0-PR-10553-64bit-5ce32be                 64           100           2022-06-02 16:50:21
+5  Pharo 10.0 - 64bit (stable)                      64           100           2022-06-17 12:26:09
+```
+## 2. Create new Pharo image
+New Pharo image can be created by executing: `pharo-launcher.sh image create myImage`  
+This will efectively create Pharo image based on latest stable Pharo release template.
+Output looks like this:
+```
+Creating the local Pharo image based on template: Pharo 10.0 - 64bit (stable).
+Please wait a moment.
+Done!
+```
+You could check result by listing Pharo images again.  
+> __Note__: There are other ways to create images, check sub-commands. 
+
+## 3. Launching Pharo image
+To launch image, execute following: `pharo-launcher.sh image launch myImage`  
+This will start new Pharo process and window with Pharo should be visible. Check command options, to see how to pass launch configuration.
+
+## 4. Listing running Pharo images
+To see, which Pharo images are running: `pharo-launcher.sh image processList`  
+Output will look similar like this:
+```
+3093 /home/dbajger/Pharo/vms/100-x64/lib/pharo /home/dbajger/Pharo/images/myImage/myImage.image
+```
+## 5. Kill running Pharo image process
+To kill running Pharo process execute:  `pharo-launcher.sh image kill myImage`  
+This will kill all running images with name `myImage`.  
+You can also use specific PID, to precisely specify process to kill instead of name of image.
+
+## 6. Create package with Pharo image
+To pack existing image with VM and all artefacts you can run: `pharo-launcher.sh image package myImage /home/dbajger/fresh`  
+This will create new directory in `/home/dbajger/fresh` with image and all artefacts.
+> __Note__: You can also use `--zip` option to have just zip archive with image artifacts (see details below). 
+
+## 7. Deleting existing image
+To delete image and its directory, run: `pharo-launcher.sh image delete myImage`  
+You can list Pharo images again to check that image is deleted.
+
+# Description of all Pharo Launcher CLI commands
+# TODO
 ### Help command  
 
 This is help for command line interface of Pharo Launcher.

@@ -12,7 +12,7 @@ PhLImageCreateFromRemoteRepoCliCommand class >> addBaselineFlagTo: aCommandSpec 
 
 	aCommandSpec 
 		addFlag: #baseline 
-		description: 'Specifies the project baseline to be loaded by Metacello command (e.g. PharoLaucher) in PascalCase format. If not specified, baseline is determined from repository name.' 
+		description: 'Specifies the project baseline to be loaded by Metacello command (e.g. PharoLauncher) in PascalCase format. If not specified, baseline is determined from repository name.' 
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app baselineNameFromRepoName ] ]
 ]
 

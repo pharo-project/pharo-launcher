@@ -255,15 +255,13 @@ PhLImageCreateCliCommand >> template [
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategory [
 
-	^ self positional: #templateCategory 
-"  ^ (arguments at: #templateCategory) value: self"
+	^ self positional: #templateCategory
 ]
 
 { #category : #accessing }
 PhLImageCreateCliCommand >> templateCategoryName [ 
 
 		^ self positional: #templateCategoryName
-"   ^ (arguments at: #templateCategoryName) word"
 ]
 
 { #category : #private }

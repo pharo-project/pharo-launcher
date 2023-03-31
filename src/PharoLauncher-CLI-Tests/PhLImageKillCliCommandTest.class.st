@@ -8,15 +8,15 @@ Class {
 }
 
 { #category : #tests }
-PhLImageKillCliCommandTest >> testAllFlag [
+PhLImageKillCliCommandTest >> testHasAllFlag [
 
 	| killCliCommand |
 	
 	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' '--all')) command.
-	self assert: killCliCommand allFlag.
+	self assert: killCliCommand hasAllFlag.
 	
 	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' 'someImageName')) command.
-	self deny: killCliCommand allFlag.
+	self deny: killCliCommand hasAllFlag.
 	
 
 ]

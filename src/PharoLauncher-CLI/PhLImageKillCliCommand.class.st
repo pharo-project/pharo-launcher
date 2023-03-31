@@ -41,18 +41,18 @@ PhLImageKillCliCommand class >> raiseMissingImageToKill [
 	^ NotFound signal: 'An argument is missing, please specify the local image name to kill it process.'
 ]
 
-{ #category : #accessing }
-PhLImageKillCliCommand >> allFlag [
-
-	^ self hasFlag: #all
-]
-
 { #category : #'command execution' }
 PhLImageKillCliCommand >> basicExecute [
 	"currently unsupported on Windows"
 	self checkOS.
 	^ self executeOSShellCommand 
 
+]
+
+{ #category : #accessing }
+PhLImageKillCliCommand >> hasAllFlag [
+
+	^ self hasFlag: #all
 ]
 
 { #category : #commands }
@@ -62,7 +62,7 @@ PhLImageKillCliCommand >> killArgString [
 		streamContents: [ :aStream | 
 			aStream nextPutAll: '$(pgrep -a -f Pharo | grep -v ';
 			nextPutAll: self currentVMPid asString.
-			self allFlag ifFalse: [ aStream
+			self hasAllFlag ifFalse: [ aStream
 						nextPutAll: ' | grep ';
 						nextPutAll:  self imageName ].
 			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)>' ]
@@ -82,7 +82,7 @@ PhLImageKillCliCommand >> sndKillArgString [
 		streamContents: [ :aStream | 
 			aStream nextPutAll: '$(pgrep -a -f Pharo | grep -v ';
 			nextPutAll: self currentVMPid asString.
-			self allFlag ifFalse: [ aStream
+			self hasAllFlag  ifFalse: [ aStream
 						nextPutAll: ' | grep ';
 						nextPutAll:  self imageName ].
 			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)>' ]

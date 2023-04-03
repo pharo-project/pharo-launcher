@@ -22,32 +22,81 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
-{ #category : #'command line - converting' }
-PhLCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #launcher 
-]
-
 { #category : #'command line - arguments' }
-PhLCliCommand class >> briefFlag [
+PhLCliCommand class >> addBriefFlagTo: aCommandSpec [
 
+	aCommandSpec 
+		addFlag: #brief 
+		description: 'Prints only name attribute (with leading sequence number).'.
+	
+
+"
 	^ ((ClapFlag id: #brief)
 		description: 'Prints only name attribute (with leading sequence number).';
 		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
+		implicitMeaning: [ :arg :app | false ])"
 ]
 
 { #category : #'command line - arguments' }
-PhLCliCommand class >> delimiterFlag [
+PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 
-	^ (ClapFlag id: #delimiter)
-			description: 'Specifies the table-cell delimiter that delimits listed information attributes.';
-			meaning: [ :arg :app | "this argument is optional "
-				(arg at: #delimiterArg) value];
-			implicitMeaning: [ :arg :app | app implicitDelimiter ];
-			add: ((ClapPositional id: #delimiterArg)
-					description: 'Delimiter argument for printing, can be one or more characters (without space).';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingDelimiterArgMessage]).
+	aCommandSpec 
+		addFlag: #delimiter 
+		description: 'Specifies the table-cell delimiter that delimits listed information attributes.' 
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitDelimiter ] ]
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	"No positionals on root spec class 
+	 use on subclasses e.g.: aCommandSpec addFlag: #someFlag
+	"
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	"No positionals on root spec class 
+	 use on subclasses e.g.: aCommandSpec addPositional: #somePositonal
+	"
+]
+
+{ #category : #'command line - subcommands' }
+PhLCliCommand class >> addLauncherSubcommandsTo: aCommandSpec [
+
+	aCommandSpec addAll: (self productionCommandSubclasses collect: #asCliCommand)
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addPrintFlagsTo: aCommandSpec [
+	
+	self addBriefFlagTo: aCommandSpec.
+	self addRowModeFlagTo: aCommandSpec.
+	self addDelimiterFlagTo: aCommandSpec.
+	self addStonFlagTo: aCommandSpec.
+
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addRowModeFlagTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlag: #rowMode 
+		description: 'Prints one attribute per line only.'
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addStonFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #ston 
+		description: 'Prints information in STON format.'
+]
+
+{ #category : #'command line - converting' }
+PhLCliCommand class >> asCliCommand [
+	^ self newLauncherCommand: #launcher 
 ]
 
 { #category : #'private - testing' }
@@ -60,24 +109,6 @@ PhLCliCommand class >> isProductionCommandClass [
 { #category : #'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> launcherCmdFlags [
-
-	^ #()
-]
-
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> launcherCmdPositionals [
-
-	^ #()
-]
-
-{ #category : #'command line - subcommands' }
-PhLCliCommand class >> launcherCmdSubcommands [
-
-	^ self productionCommandSubclasses collect: #asCliCommand
 ]
 
 { #category : #'command line - instance creation' }
@@ -93,41 +124,21 @@ PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
 ]
 
-{ #category : #logging }
-PhLCliCommand class >> missingDelimiterArgMessage [
-
-	^ 'Missing argument value specifying delimiter for printing.'
-]
-
 { #category : #'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
 	"factory for pharo launcher commands"
-	^ (ClapCommand id: idOfCommand)
+	|commandSpec|
+	commandSpec := (PhLClapCommandSpec id: idOfCommand)
 		description: self launcherCmdDescription;
-		add: ClapFlag forHelp;
-		addAll: self launcherCmdSubcommands;
-		addAll: self launcherCmdPositionals;
-		addAll: self launcherCmdFlags;
-		meaning: [ :args | 
-			args validateAll.
-			args
-				at: #helpFlag
-				ifPresent: [ :help | 
-					help
-						value;
-						exitSuccess ].
-			(self with: args) execute ];
-		yourself
-]
+		commandClass: self;
+		addHelp;
+		yourself.
+	"add subcommands, positionals, flags, depending on subclass"
+	self addLauncherSubcommandsTo: commandSpec.
+	self addLauncherPositionalsTo: commandSpec.
+	self addLauncherFlagsTo: commandSpec.
 
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> printFlags [
-	^ {
-			self briefFlag.
-			self rowModeFlag.
-			self delimiterFlag.
-			self stonFlag
-		}
+	^ commandSpec
 ]
 
 { #category : #'command line - subcommands' }
@@ -136,36 +147,23 @@ PhLCliCommand class >> productionCommandSubclasses [
 	^ self subclasses select: #isProductionCommandClass 
 ]
 
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> rowModeFlag [
+{ #category : #'error signalling' }
+PhLCliCommand class >> raiseMissingDelimiter [
 
-	^ ((ClapFlag id: #rowMode)
-		description: 'Prints one attribute per line only.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
+	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLCliCommand class >> stonFlag [
-
-	^ ((ClapFlag id: #ston)
-		description: 'Prints information in STON format.';
-		meaning: [ :arg :app | true ];
-		implicitMeaning: [ :arg :app | false ])
-]
-
-{ #category : #private }
-PhLCliCommand >> booleanValueFor: flagId [
-
-	^ [(arguments at: flagId) value: self]
-		on: NotYetImplemented
-		do: [false]
+{ #category : #'command execution' }
+PhLCliCommand >> basicExecute [
+	
+	"should be implemented on all sub-classed commands that have business logic, otherwise will print just help"
+	self printHelp
 ]
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
-	^ self booleanValueFor:  #brief
+	^ self hasFlag: #brief
 ]
 
 { #category : #accessing }
@@ -199,21 +197,27 @@ PhLCliCommand >> defaultTemplateCategoryName [
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> delimiter [ 
-	|delimiter|
-	delimiter := self flagValueFor: #delimiter.
-	delimiter ifNil: [^ self implicitDelimiter  ].
-	^ delimiter
+
+	(self hasFlag: #delimiter) ifFalse: [ ^ self implicitDelimiter ].
+	^ self positional: #delimiter
 ]
 
 { #category : #private }
 PhLCliCommand >> errorStream [
+	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ errorStream
-		ifNil: [ errorStream := VTermOutputDriver on: arguments context stderr ]
+		ifNil: [ errorStream := VTermOutputDriver on: self context stderr ]
 ]
 
 { #category : #'command execution' }
 PhLCliCommand >> execute [
-	^ self context exitSuccess
+	
+	[ self basicExecute ]
+	on: NotFound, PhLError
+	do: [:ex | 
+		self logExceptionMessage: ex printString. 
+		self context exitFailure
+	]
 ]
 
 { #category : #'command execution' }
@@ -244,14 +248,6 @@ PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
 ]
 
-{ #category : #private }
-PhLCliCommand >> flagValueFor: flagId [
-
-	^ [(arguments at: flagId) value: self]
-		on: NotYetImplemented
-		do: [nil]
-]
-
 { #category : #accessing }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
@@ -262,6 +258,12 @@ PhLCliCommand >> implicitDelimiter [
 	^ self rowMode
 		ifTrue: [ ': ' ]
 		ifFalse: [ ' ' ]
+]
+
+{ #category : #initialization }
+PhLCliCommand >> initialize [
+	super initialize.
+	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
 { #category : #printing }
@@ -315,14 +317,15 @@ PhLCliCommand >> osShellArgArray [
 
 { #category : #private }
 PhLCliCommand >> outStream [
+	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ outStream
-		ifNil: [ outStream := VTermOutputDriver on: arguments context stdout ]
+		ifNil: [ outStream := VTermOutputDriver on: self context stdout ]
 ]
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 
-	^ self booleanValueFor: #ston
+	^ self hasFlag: #ston
 ]
 
 { #category : #accessing }
@@ -340,21 +343,13 @@ PhLCliCommand >> printSequence [
 { #category : #'accessing arguments' }
 PhLCliCommand >> rowMode [
 
-	^ self booleanValueFor: #rowMode
-]
-
-{ #category : #initialization }
-PhLCliCommand >> setArguments: args [ 
-	super setArguments: args.
-	PhLNotificationCenter default outStream: self outStream.
-	PhLNotificationCenter default errorStream: self errorStream.
-	self cliFormatter: (ConsoleListFormatter on: self).
+	^ self hasFlag: #rowMode
 ]
 
 { #category : #'accessing arguments' }
 PhLCliCommand >> templateName [ 
 
-	^ self flagValueFor: #templateName
+	^ self positional: #templateName
 	
 	
 ]

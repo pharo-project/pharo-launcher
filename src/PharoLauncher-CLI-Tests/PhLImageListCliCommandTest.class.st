@@ -8,55 +8,26 @@ Class {
 PhLImageListCliCommandTest >> testDelimiter [
 
 
-	| aMatch aCommand |
+	| aCommand |
+	aCommand := (PhLImageListCliCommand asCliCommand activationWith: #('list'  '--delimiter' ' * ')) command.
 
-	aMatch := (context arguments: #('launcher' 'image' 'list' '--delimiter' ' * ')) doMatch.
-	aMatch := (aMatch at: #image) at: #list.
-
-
-	aCommand :=  PhLImageListCliCommand new.
-
-	aCommand setArguments: aMatch.
 	self assert: aCommand delimiter equals: ' * '.
 ]
 
 { #category : #tests }
 PhLImageListCliCommandTest >> testDelimiterImplicit [
 
-
-	| aMatch aCommand |
-
-	aMatch := (context arguments: #('launcher' 'image' 'list')) doMatch.
-	aMatch := (aMatch at: #image) at: #list.
-
-
-	aCommand :=  PhLImageListCliCommand new.
-
-	aCommand setArguments: aMatch.
+	| aCommand |
+	aCommand := (PhLImageListCliCommand asCliCommand activationWith: #('list')) command.
 	self assert: aCommand delimiter equals: ' '.
 ]
 
 { #category : #tests }
-PhLImageListCliCommandTest >> testDelimiterMissingArg [
-
-
-	| aMatch aCommand |
-
-	aMatch := (context arguments: #('launcher' 'image' 'list' '--delimiter')) doMatch.
-	aMatch := (aMatch at: #image) at: #list.
-
-	aCommand :=  PhLImageListCliCommand new.
-
-	aCommand setArguments: aMatch.
-	self should: [aCommand delimiter] raise: NotFound.
-]
-
-{ #category : #tests }
-PhLImageListCliCommandTest >> testListEmptyListImageShouldSucceed [
+PhLImageListCliCommandTest >> testListEmptyImageRepositoryShouldSucceed [
 	
 	self runCommand: #('launcher' 'image' 'list').
 	 
-	self assertSuccess.  
+	self assertSuccess.
 	self assert: self outputString equals:''.
 ]
 
@@ -68,8 +39,8 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self runCommand: #('launcher' 'image' 'list' '--brief' '--delimiter' '+').
 	 
 	self assertSuccess.  
-	self assert: (self outputString includesSubstring:'myImage1').
-	self assert: (self outputString includesSubstring:'myImage2').
+	self assert: (self outputString includesSubstring:'1 +myImage1').
+	self assert: (self outputString includesSubstring:'2 +myImage2').
 ]
 
 { #category : #tests }

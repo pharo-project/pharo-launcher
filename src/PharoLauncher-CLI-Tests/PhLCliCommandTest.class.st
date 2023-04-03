@@ -8,6 +8,16 @@ Class {
 }
 
 { #category : #asserting }
+PhLCliCommandTest >> assertCommand: commandArgsArray toPrintHelpWith: printHelpString [
+
+	"reset output and check that result of command contains expected print help string"
+	self outputReset.
+	self runCommand: commandArgsArray.	 
+	self assertSuccess.
+	self assert: (self outputString includesSubstring: printHelpString).
+]
+
+{ #category : #asserting }
 PhLCliCommandTest >> assertFailure [
 	self deny: context exitStatus equals: 0
 ]
@@ -28,6 +38,12 @@ PhLCliCommandTest >> launcherModel [
 	^ context launcherModel 
 ]
 
+{ #category : #resetting }
+PhLCliCommandTest >> outputReset [
+	"this is for test purposes only, to have clear output, when asserting contents"
+	context stdio stdout resetContents
+]
+
 { #category : #accessing }
 PhLCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
@@ -40,31 +56,23 @@ PhLCliCommandTest >> runCommand: args [
 
 { #category : #running }
 PhLCliCommandTest >> setUp [
-	| model |
+
 	super setUp.
-	model := PharoLauncherCLIModel new.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
+	context := PhLCliCommand launcherCommand activation
 ]
 
-{ #category : #test }
-PhLCliCommandTest >> testBooleanValueFor [
+{ #category : #tests }
+PhLCliCommandTest >> testExecuteLauncherCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'This is command line interface of Pharo Launcher'.
+	
+	self assertCommand: #('launcher') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' '--help') toPrintHelpWith: expectedPrintout.
 
-	"implicit value of not implemented command bool argument is false"
-	| aCommand aMatch|
-	
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
-	self deny: (aCommand booleanValueFor: #someRandomID).
-	
-	"help flag should return true"
-	aMatch := (context arguments: #('launcher' '--help')) doMatch.
-	aCommand setArguments: aMatch.
-	self assert: (aCommand booleanValueFor: #helpFlag).
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testExecuteOSShellCommand [
 
 	"nothing is executed"
@@ -72,7 +80,7 @@ PhLCliCommandTest >> testExecuteOSShellCommand [
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
 	|aCmd|
 	aCmd := PhLCliCommand new. 
@@ -80,77 +88,63 @@ PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
 	self should: [aCmd executeOSShellCommandWithArgs: #('bleh')] raise: PhLProcessCommandError description: 'Invoking invalid OS shell command should end up with domain error exception: PHLProcessCommandError'.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenBriefFlagEnabled [
 	
-	| aCommand aMatch|
+	| aCommand cmdSpec|
 	
-	aCommand :=  PhLCliCommand new.
+	cmdSpec := PhLCliCommand asCliCommand.
+	PhLCliCommand addBriefFlagTo: cmdSpec.
+	aCommand := (cmdSpec activationWith: #('launcher' '--brief')) command.
 
-	context specification add: aCommand class briefFlag.
-	aMatch := (context arguments: #('launcher' '--brief')) doMatch.
-	aCommand setArguments: aMatch.
-	
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnOriginalCollectionWhenNoBriefFlag [
 	
-	| aCommand aMatch|
+	| aCommand |
 	
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
+	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
+
 	"filter without brief flag should return original collection"
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1 2 3).
 ]
 
-{ #category : #test }
-PhLCliCommandTest >> testFlagValueFor [
+{ #category : #tests }
+PhLCliCommandTest >> testHasFlag [
 
-	"implicit value of not implemented/missing flag with parameter should return nil"
-	| aCommand aMatch|
+	"implicit value of not implemented command bool argument is false"
+	| aCommand |
+	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' '--help')) command.
+	self deny: (aCommand hasFlag: #someRandomID).
 	
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
-	self assert: (aCommand flagValueFor: #someRandomID) isNil.
-	
-	"now implement delimiter flag and test for value"
-	context specification add: aCommand class delimiterFlag.
-	aMatch := (context arguments: #('launcher' '--delimiter' 'something')) doMatch.
-	
-	aCommand setArguments: aMatch.
-	self assert: (aCommand flagValueFor: #delimiter) equals: 'something'.
+	"help flag should return true"
+	self assert: (aCommand hasFlag: #help).
 ]
 
-{ #category : #test }
-PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActibe [
-
-	| aCommand aMatch|
+{ #category : #tests }
+PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActive [
 	
-	aCommand :=  PhLCliCommand new.
-	context specification add: aCommand class rowModeFlag.
-	aMatch := (context arguments: #('launcher' '--rowMode')) doMatch.
-	aCommand setArguments: aMatch.
+	| aCommand cmdSpec|
 	
+	cmdSpec := PhLCliCommand asCliCommand.
+	PhLCliCommand addRowModeFlagTo: cmdSpec.
+	aCommand := (cmdSpec activationWith: #('launcher' '--rowMode')) command.
+	"when using row mode, implicit delimiter should be colon with space"
 	self assert: aCommand implicitDelimiter equals: ': '.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testImplicitDelimiterIsSpace [
-
-	| aCommand aMatch|
 	
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
-	
+	| aCommand |
+	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
+	"when column mode is used, implicit delimiter is space"
 	self assert: aCommand implicitDelimiter equals: ' '.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testIsProductionCommandClass [
 
 	"test whether production classes are correctly set, mock should return false"
@@ -158,26 +152,50 @@ PhLCliCommandTest >> testIsProductionCommandClass [
 	self deny: PhLCliCommandMock isProductionCommandClass.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testListPrintAttributeBlocks [
 	
-	| aCommand aMatch|
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
+	| aCommand |
+	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
 	
 	"should be empty by on launcher class"
 	self assert: aCommand listPrintAttributeBlocks isEmpty
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLCliCommandTest >> testListPrintAttributeLabels [
 	
-	| aCommand aMatch|
-	aCommand :=  PhLCliCommand new.
-	aMatch := (context arguments: #('launcher')) doMatch.
-	aCommand setArguments: aMatch.
-	
+	| aCommand |	
+	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
+
 	"should be empty by on launcher class"
 	self assert: aCommand listPrintAttributeLabels isEmpty
+]
+
+{ #category : #tests }
+PhLCliCommandTest >> testPositionalWithValue [
+
+	"implicit value of not implemented/missing flag with parameter should return nil"
+	| aCommand cmdSpec |
+
+	cmdSpec := PhLCliCommand asCliCommand.
+	aCommand := (cmdSpec activationWith: #('launcher')) command.
+	
+	self should: [aCommand positional: #someRandomID] raise: NotFound description: 'Exception expected when asking positional for unknown flag'.
+	
+	"now implement delimiter flag and test for value"
+	PhLCliCommand addDelimiterFlagTo: cmdSpec.
+	aCommand := (cmdSpec activationWith: #('launcher' '--delimiter' 'something')) command.
+	self assert: (aCommand positional: #delimiter) equals: 'something'.
+	
+	"now test - when value is not present"
+	aCommand := (cmdSpec activationWith: #('launcher' '--delimiter')) command.
+	self assert: (aCommand positional: #delimiter) isNil.
+]
+
+{ #category : #printing }
+PhLCliCommandTest >> validationReportFor: args [
+
+	context arguments: args; match.
+	^ context allValidations
 ]

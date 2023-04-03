@@ -10,11 +10,25 @@ I execute:
 Class {
 	#name : #PhLImageLaunchCliCommand,
 	#superclass : #PhLImageCliCommand,
-	#instVars : [
-		'useScript'
-	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
+
+{ #category : #'command line - arguments' }
+PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	aCommandSpec 
+		addFlagWithPositional: #script 
+		description: 'Determines a path to the script when launching an Image.' 
+]
+
+{ #category : #'command line - arguments' }
+PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	(aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Specifies the local image name to be launched.')
+	implicitMeaning: [:arg :app | self raiseMissingImageToLaunch]
+]
 
 { #category : #'command line' }
 PhLImageLaunchCliCommand class >> asCliCommand [
@@ -27,70 +41,47 @@ PhLImageLaunchCliCommand class >> launcherCmdDescription [
 	^ 'Launches image with using default (auto-detected) VM.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageLaunchCliCommand class >> launcherCmdFlags [
-	^ {(ClapFlag id: #script)
-			description: 'Allows to use a script when launching an Image ';
-			meaning: [ :arg :app | 
-				app useScript.
-				(arg at: #scriptPath) word ];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #scriptPath)
-					description: 'Path of the launch script to use.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | ^ app ])}
+{ #category : #'error signalling' }
+PhLImageLaunchCliCommand class >> raiseMissingImageToLaunch [
+
+	^ NotFound signal: 'An argument is missing, please specify the local image name to launch.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageLaunchCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Determines local image name to be launched.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the local image name to launch.'];
-		yourself)}
-]
+{ #category : #'command execution' }
+PhLImageLaunchCliCommand >> basicExecute [
 
-{ #category : #checking }
-PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
-	(aScriptPath asFileReference exists
-		and: [ aScriptPath asFileReference isFile ])
-		ifFalse: [ self errorStream nextPutAll: 'script not found'.
-			^ false ].
-	aScriptPath asFileReference extension = 'st'
-		ifFalse: [ self errorStream nextPutAll: 'wrong script extension'.
-			^ false ].
-	^ true
-]
-
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> executeWithImage: anImage [
-
-	| script |
-	script := self script.
-	self isUsingScript
-		ifTrue: [ (self checkScriptValidity: script)
-				ifFalse: [ ^ self ].
-			anImage
-				shouldRunInitializationScript: true;
-				initializationScript: script asFileReference ].
-	[anImage vmManager checkImageArchitecture] on:PhLArchitectureMismatchWarning do:[ self errorStream
-						nextPutAll: 'Architecture mismatch, still running image if possible';
-						newLine].
+	| anImage |
+	anImage := self findImage.
+	self setupScriptForImage: anImage.
+	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
 	anImage launch
 ]
 
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> initialize [ 
-	super initialize.
-	useScript := false
+{ #category : #checking }
+PhLImageLaunchCliCommand >> checkArchitectureForImage: anImage [
+
+	[anImage vmManager checkImageArchitecture] 
+	on: PhLArchitectureMismatchWarning 
+	do:[:warning | self logInfoMessage: warning longDescription]
+]
+
+{ #category : #checking }
+PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
+
+	(aScriptPath asFileReference exists
+		and: [ aScriptPath asFileReference isFile ])
+		ifFalse: [^ self raiseScriptNotFound: aScriptPath].
+
+	aScriptPath asFileReference extension = 'st'
+		ifFalse: [^ self raiseWrongScriptExtension: aScriptPath]
 ]
 
 { #category : #accessing }
 PhLImageLaunchCliCommand >> isUsingScript [
-	^ useScript 
+	
+	^ self hasFlag: #script
 ]
 
 { #category : #logging }
@@ -101,17 +92,32 @@ PhLImageLaunchCliCommand >> logLaunchOfImage: anImage [
 	self logInfoMessage: ('Launching image with command: "{1}".' format: { imgConfig commandString })
 ]
 
+{ #category : #'error signalling' }
+PhLImageLaunchCliCommand >> raiseScriptNotFound: scriptPath [
+
+	^ PhLError signal: ('Launching script for image not found - invalid path to file: {1}.' format: { scriptPath  } )
+]
+
+{ #category : #'error signalling' }
+PhLImageLaunchCliCommand >> raiseWrongScriptExtension: scriptPath [
+
+	^ PhLError signal: ('Launching script has wrong file extension (should be .st): {1}.' format: { scriptPath  } )
+]
+
 { #category : #accessing }
 PhLImageLaunchCliCommand >> script [
-	^ (arguments at: #script) value: self
+
+	^ self positional: #script
 ]
 
 { #category : #accessing }
-PhLImageLaunchCliCommand >> useInitializationScript [
-	useScript := true
-]
+PhLImageLaunchCliCommand >> setupScriptForImage: anImage [
 
-{ #category : #accessing }
-PhLImageLaunchCliCommand >> useScript [
-	useScript := true
+	| script |
+	self isUsingScript ifFalse: [ ^ self ].
+	script := self script.
+	self checkScriptValidity: script.
+	anImage
+		shouldRunInitializationScript: true;
+		initializationScript: script asFileReference
 ]

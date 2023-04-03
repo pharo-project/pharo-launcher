@@ -38,18 +38,26 @@ PhLTemplatesCliCommandTest >> localTemplatesGroup [
 	^ context templateRepository localTemplatesGroup
 ]
 
-{ #category : #tests }
+{ #category : #running }
 PhLTemplatesCliCommandTest >> setUp [
-	| model |
+
 	super setUp.
-	model := PharoLauncherCLIModel new.
-	model templateRepository: PhLTemplateTestRepository new.
-	model templateRepository createLocalTemplateNamed:'foo'.
-	context := PhLCliClapContext specification: PhLCliCommand launcherCommand.
-	context launcherModel: model
+	context launcherModel templateRepository: PhLTemplateTestRepository new.
+	context launcherModel templateRepository createLocalTemplateNamed:'foo'.
 ]
 
 { #category : #'process actions' }
 PhLTemplatesCliCommandTest >> templateRepository [ 
 	^ self launcherModel templateRepository
+]
+
+{ #category : #tests }
+PhLTemplatesCliCommandTest >> testExecuteLauncherTemplateCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'Usage: launcher template'.
+	
+	self assertCommand: #('launcher' 'template') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'template' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'template' '--help') toPrintHelpWith: expectedPrintout.
+
 ]

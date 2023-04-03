@@ -6,9 +6,9 @@ Class {
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
+
 	| templates |
-	self createOfficialTemplatesCategoryWithSomeTemplates. 
-	
+	self createOfficialTemplatesCategoryWithSomeTemplates. 	
 	self runCommand: #('launcher' 'template' 'list' '--ston').
 	
 	self assertSuccess.
@@ -20,8 +20,8 @@ PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
-	self createOfficialTemplatesCategoryWithSomeTemplates. 
-	
+
+	self createOfficialTemplatesCategoryWithSomeTemplates. 	
 	self runCommand: #('launcher' 'template' 'list').
 	
 	self assertSuccess.
@@ -30,9 +30,9 @@ PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed [
+
 	| templateCategory |
-	self addLocalTemplateNamed: 'fakeTemplate'.
-	
+	self addLocalTemplateNamed: 'fakeTemplate'.	
 	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'Local test templates' '--ston').
 	
 	self assertSuccess.
@@ -42,6 +42,7 @@ PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateWithCategoryShouldSucceed [
+
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'Local test templates').
@@ -52,9 +53,10 @@ PhLTemplateListCliCommandTest >> testListTemplateWithCategoryShouldSucceed [
 
 { #category : #tests }
 PhLTemplateListCliCommandTest >> testListTemplateWithWrongCategoryShouldRaiseErrorMessage [
+
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
 	self runCommand: #('launcher' 'template' 'list' '--templateCategory' 'wrongCategoryName').
-	
-	self assert: (self errorString includesSubstring: 'template category not found')
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'enter a correct image tamplate category name')
 ]

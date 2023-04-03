@@ -4,6 +4,22 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageCreateFromSHACliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	
+	self addPharoVersionFlagTo: aCommandSpec.
+	self addNewImageFlagTo: aCommandSpec.
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateFromSHACliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	(aCommandSpec 
+		addPositional: #sha 
+		description: 'Commit SHA (7 letters) of Pharo image development template, from which will be  image created.')
+	implicitMeaning: [:arg :app | self raiseMissingSha]
+]
+
 { #category : #'command line' }
 PhLImageCreateFromSHACliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #fromSHA
@@ -15,49 +31,17 @@ PhLImageCreateFromSHACliCommand class >> launcherCmdDescription [
 	^ 'Downloads and creates new image based on the commit SHA (7 letter string) of Pharo build process contained in the name of Pharo development template.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageCreateFromSHACliCommand class >> launcherCmdFlags [
-	
-	^	{ 
-			self pharoVersionFlag.
-			self newImageFlag.
-		}
-]
+{ #category : #'error signalling' }
+PhLImageCreateFromSHACliCommand class >> raiseMissingSha [
 
-{ #category : #'command line - arguments' }
-PhLImageCreateFromSHACliCommand class >> launcherCmdPositionals [
-
-	^ {
-		(ClapPositional id: #sha)
-			description: 'Commit SHA (7 letters) of Pharo image development template, from which will be  image created.';
-			meaning: [ :pos | pos  asString ];
-			implicitMeaning: [ :arg :app | NotFound 
-				signal: self missingShaArgMessage];
-			yourself.
-		}
-]
-
-{ #category : #'command line' }
-PhLImageCreateFromSHACliCommand class >> missingShaArgMessage [
-
-	^ 'An argument is missing. Please specify the commit SHA string to find the image template.'
-]
-
-{ #category : #private }
-PhLImageCreateFromSHACliCommand >> cantFindImageTemplateMessage [
-
-	^ 'Could not determine remote image template from SHA: {1} and version number: {2}.' 
-		  format: { 
-				  self sha.
-				  self pharoVersionNumber }
+	^ NotFound signal: 'An argument is missing. Please specify the commit SHA string to find the image template.'
 ]
 
 { #category : #'command execution' }
-PhLImageCreateFromSHACliCommand >> execute [
+PhLImageCreateFromSHACliCommand >> basicExecute [ 
 
 	self validateSha.
-	super execute
-
+	super basicExecute
 ]
 
 { #category : #querying }
@@ -69,27 +53,36 @@ PhLImageCreateFromSHACliCommand >> findTemplate [
 		               sha: self sha.
 	[ url := imageFinder findUrl asUrl ]
 		on: NotFound , PhLDownloadError
-		do: [ :ex | PhLDownloadError signal: self cantFindImageTemplateMessage ].
+		do: [ :ex | self raiseCantFindImageTemplate].
 
 	^ PhLRemoteTemplate name: (self templateNameFrom: url) url: url
 ]
 
-{ #category : #private }
-PhLImageCreateFromSHACliCommand >> notValidShaMessage [
+{ #category : #'error signalling' }
+PhLImageCreateFromSHACliCommand >> raiseCantFindImageTemplate [
 
-	^ 'Not a valid sha string: {1}. Must be alphanumeric string of size 7 (e.g.: 5ce32be).' format: { self sha }
+	^ PhLDownloadError signal:
+		  ('Could not determine remote image template from SHA: {1} and version number: {2}.' 
+			   format: { 
+					   self sha.
+					   self pharoVersionNumber })
+]
+
+{ #category : #'error signalling' }
+PhLImageCreateFromSHACliCommand >> raiseShaInvalid [
+
+	^ PhLError signal: ('Not a valid sha string: {1}. Must be alphanumeric string of size 7 (e.g.: 5ce32be).' format: { self sha })
 ]
 
 { #category : #accessing }
 PhLImageCreateFromSHACliCommand >> sha [
-  ^ (arguments at: #sha)
-		value: self;
-		word
+	
+	^ self positional: #sha
 ]
 
 { #category : #private }
 PhLImageCreateFromSHACliCommand >> validateSha [
 
-	(self sha isAllAlphaNumerics and: [ self sha size = 7 ]) ifFalse: [ 
-		Error signal: self notValidShaMessage ]
+	(self sha isAllAlphaNumerics and: [ self sha size = 7 ]) 
+	ifFalse: [self raiseShaInvalid]
 ]

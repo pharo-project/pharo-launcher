@@ -7,39 +7,27 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #test }
-PhLImageKillCliCommandTest >> testAllFlag [
+{ #category : #tests }
+PhLImageKillCliCommandTest >> testHasAllFlag [
 
-	| killCliCommand  aMatch aMatch2|
+	| killCliCommand |
 	
-	aMatch := (context arguments: #('launcher' 'image' 'kill' '--all')) doMatch.
-	aMatch := (aMatch at: #image) at: #kill.
+	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' '--all')) command.
+	self assert: killCliCommand hasAllFlag.
 	
-	aMatch2 := (context arguments: #('launcher' 'image' 'kill' 'someImageName')) doMatch.
-	aMatch2 := (aMatch2 at: #image) at: #kill.
-	
-	killCliCommand :=  PhLImageKillCliCommand new.
-
-	killCliCommand setArguments: aMatch.
-	self assert: killCliCommand allFlag.
-
-	killCliCommand setArguments: aMatch2.
-	self deny: killCliCommand allFlag.
+	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' 'someImageName')) command.
+	self deny: killCliCommand hasAllFlag.
 	
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLImageKillCliCommandTest >> testKillArgString [
 
-	| killCliCommand aResult aMatch|
+	| killCliCommand aResult |
 	
-	killCliCommand :=  PhLImageKillCliCommand new.
-	aMatch := (context arguments: #('launcher' 'image' 'kill' 'someImage.image')) doMatch.
-	aMatch := (aMatch at: #image) at: #kill.
-	killCliCommand setArguments: aMatch.
+	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' 'someImage.image')) command.
 	
-		
 	aResult := killCliCommand killArgString.
 	
 	"test if command includes grep of image name"
@@ -52,12 +40,9 @@ PhLImageKillCliCommandTest >> testKillArgString [
 	self deny: (aResult includesSubstring: '||').
 	
 	"test same method with --all argument present"
-	aMatch := (context arguments: #('launcher' 'image' 'kill' '--all')) doMatch.
-	aMatch := (aMatch at: #image) at: #kill.
-	killCliCommand setArguments: aMatch.
-	
-		
+	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' '--all')) command.
 	aResult := killCliCommand killArgString.
+	
 	"grep of image name shound not be included anymore"
 	self deny: (aResult includesSubstring: 'grep someImage.image').
 
@@ -65,20 +50,22 @@ PhLImageKillCliCommandTest >> testKillArgString [
 	self assert: (aResult includesSubstring: ('grep -v ', (killCliCommand currentVMPid asString))).
 ]
 
-{ #category : #test }
+{ #category : #tests }
+PhLImageKillCliCommandTest >> testMissingImageName [
+	self runCommand: #('launcher' 'image' 'kill').
+ 	self assertFailure.
+	self assert: ( self errorString includesSubstring: 'specify the local image name to kill it process')
+]
+
+{ #category : #tests }
 PhLImageKillCliCommandTest >> testOsShellArgArray [
 
-	| killCliCommand  aMatch result|
+	| killCliCommand  result|
 	
-	aMatch := (context arguments: #('launcher' 'image' 'kill' 'someImageName')) doMatch.
-	aMatch := (aMatch at: #image) at: #kill.
-	
-	killCliCommand :=  PhLImageKillCliCommand new.
 
-	killCliCommand setArguments: aMatch.
+	killCliCommand := (PhLImageKillCliCommand asCliCommand activationWith: #('kill' 'someImageName')) command.
 	result := killCliCommand osShellArgArray.
 	
 	self assert: (result first includesSubstring: 'kill').
-	self assert: (result second includesSubstring: killCliCommand killArgString).
-	
+	self assert: (result second includesSubstring: killCliCommand killArgString)
 ]

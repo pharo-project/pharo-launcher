@@ -13,36 +13,36 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLTemplateListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec  
+		addFlag: #templateCategory
+		description: 'Specifies the template category name to list image templates from given category.'
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | 'Official distributions' ]].
+	self addPrintFlagsTo: aCommandSpec
+]
+
 { #category : #'command line - converting' }
 PhLTemplateListCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #list 
 ]
 
-{ #category : #'command line - arguments' }
-PhLTemplateListCliCommand class >> launcherCmdFlags [
-	^ Array 
-		with: ((ClapFlag id: #templateCategory)
-			description: 'Specifies the template category name to list the image templates from given category.';
-			meaning: [ :arg :app | (arg at: #templateCategoryName) word ];
-			implicitMeaning: [ :arg :app | 'Official distributions' ];
-			add:
-				((ClapPositional id: #templateCategoryName)
-					description: 'Name of the template category.';
-					meaning: [ :pos | pos word asSymbol ];
-					implicitMeaning: [ :arg :app | app ]);
-			yourself)
-		withAll: self printFlags
+{ #category : #'command line - description' }
+PhLTemplateListCliCommand class >> launcherCmdDescription [
+
+	^ 'Prints list of image templates.'
 ]
 
 { #category : #'command execution' }
-PhLTemplateListCliCommand >> execute [
+PhLTemplateListCliCommand >> basicExecute [ 
 	| templateCategory |
 	[ templateCategory := self templateRepository
 		categoryNamed: self templateCategory ]
 		on: NotFound
-		do: [ ^ self messageErrorCategoryNotFound ].
+		do: [ ^ self raiseCategoryNotFound: self templateCategory ].
 
-	self list: templateCategory templatesAndGroups asOrderedCollection 
+	self list: templateCategory templatesAndGroups asOrderedCollection
 ]
 
 { #category : #message }
@@ -52,7 +52,14 @@ PhLTemplateListCliCommand >> messageErrorCategoryNotFound [
 	^ self
 ]
 
+{ #category : #'error signalling' }
+PhLTemplateListCliCommand >> raiseCategoryNotFound: categoryName [
+
+	^ NotFound signal: ('Image template category ''{1}'' not found. Please enter a correct image tamplate category name.' format: { categoryName })
+]
+
 { #category : #'command execution' }
 PhLTemplateListCliCommand >> templateCategory [
-  ^ (arguments at: #templateCategory) value: self
+
+	^ self positional: #templateCategory
 ]

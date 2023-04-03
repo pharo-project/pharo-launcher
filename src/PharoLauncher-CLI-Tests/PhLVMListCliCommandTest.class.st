@@ -11,6 +11,7 @@ PhLVMListCliCommandTest >> testListVirtualMachines [
 	self addVmNamed: 'myVm3'.
 	
 	self runCommand: #('launcher' 'vm' 'list').
+	self assertSuccess.
 	self assert: (self outputString includesSubstring: 'myVm1').
 	self assert: (self outputString includesSubstring: 'myVm2').
 	self assert: (self outputString includesSubstring: 'myVm3')
@@ -24,7 +25,7 @@ PhLVMListCliCommandTest >> testListVirtualMachinesAsSton [
 	self addVmNamed: 'myVm3'.
 	
 	self runCommand: #('launcher' 'vm' 'list' '--ston').
-	
+	self assertSuccess.
 	vm := STON fromString: self outputString.
 	self assert: vm size equals: 3.
 	self assert: vm first id equals: 'myVm3'.

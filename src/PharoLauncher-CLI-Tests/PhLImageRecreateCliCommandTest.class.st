@@ -24,7 +24,7 @@ PhLImageRecreateCliCommandTest >> testCanRecreateAnImageShouldSucceed [
 		during: [
 			self deny: imageFile contents equals: 'foo'.
 			self runCommand: #('launcher' 'image' 'recreate' 'myImage').
-			
+			self assertSuccess.
 			self assert: imageFile exists.
 			self assert: imageFile contents equals: 'foo'].
 

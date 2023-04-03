@@ -21,29 +21,35 @@ PhLImageCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #image
 ]
 
-{ #category : #'as yet unclassified' }
-PhLImageCliCommand class >> imageNotFoundMessage [
-	^ 'Please enter a correct local image.'
-]
-
 { #category : #'command line' }
 PhLImageCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
 
-{ #category : #'command execution' }
-PhLImageCliCommand >> execute [
-	[ self executeWithImage: self findImage ]
-		on: NotFound
-		do: [:ex | ^ self logExceptionMessage: ex printString ]
+{ #category : #'error signalling' }
+PhLImageCliCommand class >> raiseImageNotFound: anImageName [
+
+	^ NotFound signal: ('Local image ''{1}'' not found. Please enter a correct local image.' format: { anImageName  })
+]
+
+{ #category : #'error signalling' }
+PhLImageCliCommand class >> raiseNewImageNotFound [
+
+	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
+]
+
+{ #category : #private }
+PhLImageCliCommand >> checkOS [
+
+	OSPlatform current isWindows ifTrue: [ self raiseOperationNotSupported ]
 ]
 
 { #category : #'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists
 		and: [ anImageName asFileReference isFile ])
-		ifFalse: [ NotFound signal: self class imageNotFoundMessage ].
+		ifFalse: [ self class raiseImageNotFound: anImageName ].
 	^ PhLImage location: anImageName asFileReference
 ]
 
@@ -66,18 +72,23 @@ PhLImageCliCommand >> findInRepository: anImageName [
 
 { #category : #accessing }
 PhLImageCliCommand >> imageName [
-	^ (arguments at: #existingImageName)
-		value: self;
-		word
-]
 
-{ #category : #printing }
-PhLImageCliCommand >> logImageNotFoundMessage [
-	self errorStream nextPutAll: self class imageNotFoundMessage.
-	self errorStream newLine.
+	^ self positional: #existingImageName
 ]
 
 { #category : #private }
 PhLImageCliCommand >> modelClass [
 	^ self class environment at: #PhLImage
+]
+
+{ #category : #'error signalling' }
+PhLImageCliCommand >> raiseOperationNotSupported [
+
+	^ PhLProcessCommandError signal: 'Launcher command currently not supported on OS Windows.'
+]
+
+{ #category : #accessing }
+PhLImageCliCommand >> targetName [
+
+	^ self positional: #newImageName
 ]

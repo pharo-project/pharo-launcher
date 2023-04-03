@@ -13,6 +13,15 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	(aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Local image name to be deleted.')
+	implicitMeaning: [:arg :app | self raiseMissingImageToDelete]
+]
+
 { #category : #'command line' }
 PhLImageDeleteCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #delete 
@@ -24,19 +33,14 @@ PhLImageDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes the local image, including image directory content.'
 ]
 
-{ #category : #'command line' }
-PhLImageDeleteCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Local image name to be deleted.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app | NotFound 
-        signal: 'An argument is missing, please specify the local image name to be deleted.' .];
-		yourself)}
+{ #category : #'error signalling' }
+PhLImageDeleteCliCommand class >> raiseMissingImageToDelete [
+
+	^ NotFound signal: 'An argument is missing, please specify the local image name to be deleted.'
 ]
 
-{ #category : #accessing }
-PhLImageDeleteCliCommand >> execute [
-	[ self imageRepository deleteImage: (self findInRepository: self imageName) ]
-		on: NotFound
-		do: [ ^ self logImageNotFoundMessage ]
+{ #category : #'command execution' }
+PhLImageDeleteCliCommand >> basicExecute [
+
+	 self imageRepository deleteImage: self findImage
 ]

@@ -13,26 +13,27 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLTemplateCategoriesCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPrintFlagsTo: aCommandSpec.
+]
+
 { #category : #'command line - converting' }
 PhLTemplateCategoriesCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #categories 
 ]
 
-{ #category : #'command line - converting' }
+{ #category : #'command line - description' }
 PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints list of image template categories.'
 ]
 
-{ #category : #'command line - converting' }
-PhLTemplateCategoriesCliCommand class >> launcherCmdFlags [
-	^ self printFlags
-]
+{ #category : #'command execution' }
+PhLTemplateCategoriesCliCommand >> basicExecute [
 
-{ #category : #initialization }
-PhLTemplateCategoriesCliCommand >> execute [
-	self list: self templateRepository roots
-		
+	self list: self templateRepository roots	
 ]
 
 { #category : #private }

@@ -18,12 +18,54 @@ PhLImageCliCommandTest >> imageRepository [
 PhLImageCliCommandTest >> setUp [
 
 	super setUp.
-	"set to laucher model necessary image mock repository"
-	context launcherModel imageRepository: PhLImagesMockRepo new.
-
+	self useMockImagesRepository
 ]
 
 { #category : #accessing }
 PhLImageCliCommandTest >> templateRepository [ 
 	^ self launcherModel templateRepository
+]
+
+{ #category : #tests }
+PhLImageCliCommandTest >> testExecuteLauncherImageCommandToPrintHelp [
+	|expectedPrintout|
+	expectedPrintout := 'Usage: launcher image'.
+	
+	self assertCommand: #('launcher' 'image') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'image' 'help') toPrintHelpWith: expectedPrintout.
+	self assertCommand: #('launcher' 'image' '--help') toPrintHelpWith: expectedPrintout.
+
+]
+
+{ #category : #tests }
+PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
+	| memoryFileSystem command location |
+	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
+	command context: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ location := (memoryFileSystem root / 'non-existing.image') ensureCreateFile.
+			self should: [ command findImage: '/wrong/path' ] raise: NotFound ]
+]
+
+{ #category : #tests }
+PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
+	| memoryFileSystem command location |
+	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
+	command context: context.
+	memoryFileSystem := FileSystem memory.
+	DiskStore
+		currentFileSystem: memoryFileSystem
+		during: [ 
+			location := (memoryFileSystem root / 'existing.image') ensureCreateFile.
+			self
+				shouldnt: [ command findImage: location fullName ]
+				raise: NotFound ]
+]
+
+{ #category : #running }
+PhLImageCliCommandTest >> useMockImagesRepository [
+
+	context launcherModel imageRepository: PhLImagesMockRepo new
 ]

@@ -10,6 +10,7 @@ PhLImageInfoCliCommandTest >> testImageInfoShouldSucceed [
 	self addImageNamed: 'myImage2'.
 	
 	self runCommand: #('launcher' 'image' 'info' 'myImage1').
+	self assertSuccess.
 	self assert: (self outputString includesSubstring:'https://testurl').
 ]
 
@@ -19,6 +20,6 @@ PhLImageInfoCliCommandTest >> testImageInfoWrongImageNameShouldRaiseError [
 	self addImageNamed: 'myImage2'.
 	
 	self runCommand: #('launcher' 'image' 'info' 'myImage3').
-
-	self assert: (self errorString includesSubstring:'Please enter a correct local image.').
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Please enter a correct local image.').
 ]

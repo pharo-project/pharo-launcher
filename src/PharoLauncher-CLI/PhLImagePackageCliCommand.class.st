@@ -12,6 +12,32 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImagePackageCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #zip
+		description: 'Creates the package with image as a ZIP file.'.
+
+	aCommandSpec 
+		addFlagWithPositional: #vm
+		description: 'Specifies the VM used for launching the image.'
+
+]
+
+{ #category : #'command line - arguments' }
+PhLImagePackageCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	(aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Local image name, for which is package created.')
+	implicitMeaning: [:arg :app | self raiseMissingImageToPackage].
+	(aCommandSpec 
+		addPositional: #location 
+		description: 'Specifies the directory path, where resulting package will be stored.')
+	implicitMeaning: [:arg :app | self raiseMissingResultingPackagePath].
+]
+
 { #category : #'command line' }
 PhLImagePackageCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #package
@@ -22,41 +48,32 @@ PhLImagePackageCliCommand class >> launcherCmdDescription [
 	^ 'Creates a package containing all necessary artefacts to launch the image.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImagePackageCliCommand class >> launcherCmdFlags [
-	^ {(ClapFlag id: #zip)
-			description: 'Creates the package with image as a ZIP file.';
-			meaning: [ :arg :app | true];
-			implicitMeaning: [ :arg :app | false  ].
-		(ClapFlag id: #vm)
-				description: 'Specifies the VM used for launching the image.';
-				meaning: [ :arg :app | (arg at: #vmId) word ];
-				implicitMeaning: [ :arg :app | 'default' ];
-				add: ((ClapPositional id: #vmId)
-					description: 'VM ID argument.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [ :arg :app | 'default' ]).
-			}
+{ #category : #'error signalling' }
+PhLImagePackageCliCommand class >> raiseMissingImageToPackage [
+
+	^ NotFound signal: 'An argument is missing, please specify the image name to pack.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImagePackageCliCommand class >> launcherCmdPositionals [
+{ #category : #'error signalling' }
+PhLImagePackageCliCommand class >> raiseMissingResultingPackagePath [
 
-	^ {((ClapPositional id: #existingImageName)
-				description: 'Local image name to create the launch script.';
-					meaning: [ :pos | pos  asString ];
-					implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the image name to create the script.'];
-					yourself).
-		((ClapPositional id: #location)
-				description: 'Local image name to create the launch script.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app |NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.' ];
-					yourself).
-	}
+	^ NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.'
 ]
 
-{ #category : #conversion }
+{ #category : #'command execution' }
+PhLImagePackageCliCommand >> basicExecute [ 
+
+	| userNewDirectory |
+	self image: self findImage.
+	userNewDirectory := self createDirectoryForImageToPack.
+	self createLaunchScript.
+	self copyImageFilesTo: userNewDirectory.
+	self ensureExecutionPermissionForImage.
+	self shouldZip
+		ifTrue: [ self convertToZip: userNewDirectory ]
+]
+
+{ #category : #private }
 PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [ 
 	| zip |
 	zip := ZipArchive new.
@@ -64,53 +81,67 @@ PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [
 	zip writeToFile:  ( self location, '/' ,self image name,'.zip' ) asFileReference
 ]
 
-{ #category : #copying }
-PhLImagePackageCliCommand >> copyFilesOf: anImage at: aDirectory [
-	| imageFolder |
+{ #category : #private }
+PhLImagePackageCliCommand >> copyImageFilesTo: targetDirectory [
+
+	| imageFolder anImage|
+	anImage := self image.
 	imageFolder := anImage file parent.
-	(imageFolder / (anImage name,'.image')) 
-		copyTo: (aDirectory , '/' , anImage name , '.image') asFileReference.
-	(imageFolder / (anImage name,'.sh')) 
-		copyTo: (aDirectory , '/' , anImage name , '.sh') asFileReference.
-	(imageFolder / (anImage name,'.changes')) 
-		copyTo: (aDirectory , '/' , anImage name , '.changes') asFileReference.
+
+	"copy image, launch script and changes"
+	#('.image' '.sh' '.changes') do: [:artefactExtension | 
+		| artefactName |
+		artefactName := String streamContents: [:s |  
+			s nextPutAll: anImage name; 
+			  nextPutAll: artefactExtension].
+		(imageFolder / artefactName ) copyTo: (targetDirectory / artefactName) asFileReference.	
+	].
+
+	"copy vm directory content to target image directory"
 	(PhLVirtualMachineManager vmStore / self vmId)
-		copyAllTo: (aDirectory , '/', self vmId) asFileReference
+		copyAllTo: (targetDirectory / self vmId) asFileReference.
 ]
 
-{ #category : #creation }
-PhLImagePackageCliCommand >> createDirectoryAccordingToPath: aPath [ 
-	aPath asFileReference ensureCreateDirectory 
+{ #category : #private }
+PhLImagePackageCliCommand >> createDirectoryForImageToPack [
+	|aPath| 
+	aPath := self location , '/' , self image name.
+	(self directoryAlreadyExists: aPath) ifTrue: [self raiseDirectoryAlreadyExists: aPath].
+	^ aPath asFileReference ensureCreateDirectory
 ]
 
-{ #category : #'script generation' }
-PhLImagePackageCliCommand >> createLaunchScript: anImage [
-	anImage launchScriptName
-		writeStreamDo: [ :stream | stream nextPutAll: (self launchScriptFor: anImage) ].
-	
+{ #category : #private }
+PhLImagePackageCliCommand >> createLaunchScript [
+
+	self image launchScriptName
+	writeStreamDo: [ :stream | 
+		stream nextPutAll: (self launchScriptFor: self image)
+	]
 ]
 
 { #category : #accessing }
 PhLImagePackageCliCommand >> defaultVmId [
-	^ self image vmManager vmId
 
+	^ self image vmManager vmId
 ]
 
 { #category : #testing }
 PhLImagePackageCliCommand >> directoryAlreadyExists: aDirectory [ 
+
 	^ ((self imageRepository baseDirectory fileSystem
 			exists: aDirectory)
 			and: [ self imageRepository baseDirectory fileSystem
 					isDirectory: aDirectory ])
 ]
 
-{ #category : #copying }
-PhLImagePackageCliCommand >> ensureExecutionPermissionFor: anImage [
-	self ensureVmFileIsExecutable: anImage.
-	self ensureLaunchScriptIsExecutable: anImage.
+{ #category : #private }
+PhLImagePackageCliCommand >> ensureExecutionPermissionForImage [
+	
+	self ensureVmFileIsExecutable: self image.
+	self ensureLaunchScriptIsExecutable: self image.
 ]
 
-{ #category : #copying }
+{ #category : #private }
 PhLImagePackageCliCommand >> ensureLaunchScriptIsExecutable: anImage [
 	LibC
 		runCommand:
@@ -118,35 +149,12 @@ PhLImagePackageCliCommand >> ensureLaunchScriptIsExecutable: anImage [
 				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
 ]
 
-{ #category : #copying }
+{ #category : #private }
 PhLImagePackageCliCommand >> ensureVmFileIsExecutable: anImage [
 	LibC
 		runCommand:
 			'find ' , self location , '/"' , anImage name , '"/' , self vmId
 				, ' -type f -exec chmod +x {} \;'.
-]
-
-{ #category : #accessing }
-PhLImagePackageCliCommand >> executeWithImage: anImage [
-	| userNewDirectory |
-	self image: anImage.
-	userNewDirectory := [ self location , '/' , anImage name ]
-		on: NotFound
-		do: [ :error | 
-			^ self errorStream
-				nextPutAll: error messageText;
-				lf ].
-	self createLaunchScript: anImage.
-	(self directoryAlreadyExists: userNewDirectory)
-		ifTrue: [ ^ self errorStream
-				nextPutAll:
-					'a Directory with the image name already exists at that location, please select another location';
-				newLine ].
-	self createDirectoryAccordingToPath: userNewDirectory.
-	self copyFilesOf: anImage at: userNewDirectory.
-	self ensureExecutionPermissionFor: anImage .
-	self shouldZip
-		ifTrue: [ self convertToZip: userNewDirectory asFileReference ]
 ]
 
 { #category : #accessing }
@@ -159,7 +167,7 @@ PhLImagePackageCliCommand >> image: anImage [
 	image := anImage
 ]
 
-{ #category : #'script generation' }
+{ #category : #private }
 PhLImagePackageCliCommand >> launchScriptFor: anImage [
 	^ self launchScriptTemplate  
         format: (Dictionary 
@@ -168,7 +176,7 @@ PhLImagePackageCliCommand >> launchScriptFor: anImage [
 
 ]
 
-{ #category : #'script generation' }
+{ #category : #private }
 PhLImagePackageCliCommand >> launchScriptTemplate [
 	^ '#!/usr/bin/env bash
 # some magic to find out the real location of this script dealing with symlinks
@@ -194,20 +202,27 @@ elif [ "$OS" = "mac" ]; then
 fi' withUnixLineEndings 
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImagePackageCliCommand >> location [
-	^ (arguments at: #location) value: self
+
+	^ self positional: #location
 ]
 
-{ #category : #testing }
+{ #category : #'error signalling' }
+PhLImagePackageCliCommand >> raiseDirectoryAlreadyExists: aPath [
+
+	^PhLCommandError signal: ('Directory with the image name already exists at the location: ''{1}'', please select another location to pack image.' format: { aPath })
+]
+
+{ #category : #'accessing arguments' }
 PhLImagePackageCliCommand >> shouldZip [
-	^ (arguments at: #zip) value: self
+
+	^ self hasFlag: #zip
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImagePackageCliCommand >> vmId [
-	| argAtVmName |
-	argAtVmName := (arguments at: #vm) value: self.
-	argAtVmName = 'default' ifTrue: [ argAtVmName := self defaultVmId ].
-	^ argAtVmName
+
+	(self hasFlag: #vm) ifFalse: [ ^ self defaultVmId].
+	^ self positional: #vm
 ]

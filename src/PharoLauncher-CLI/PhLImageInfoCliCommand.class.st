@@ -14,6 +14,21 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPrintFlagsTo: aCommandSpec
+]
+
+{ #category : #'command line - arguments' }
+PhLImageInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+
+	(aCommandSpec 
+		addPositional: #existingImageName 
+		description: 'Determines the local image name to print detailed information.')
+	implicitMeaning: [ :arg :app | self raiseMissingImageToPrintDetails]
+]
+
 { #category : #'command line' }
 PhLImageInfoCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #info 
@@ -25,25 +40,16 @@ PhLImageInfoCliCommand class >> launcherCmdDescription [
 	^ 'Prints information about image: name, description, origin template, etc.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageInfoCliCommand class >> launcherCmdFlags [
-	^ self printFlags
+{ #category : #'error signalling' }
+PhLImageInfoCliCommand class >> raiseMissingImageToPrintDetails [
+
+	^ NotFound signal: 'An argument is missing, please specify the image name to print information.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLImageInfoCliCommand class >> launcherCmdPositionals [
-	^ {((ClapPositional id: #existingImageName)
-		description: 'Determines the local image name to print detailed information.';
-		meaning: [ :pos | pos asString ];
-		implicitMeaning: [ :arg :app |NotFound 
-        signal: 'An argument is missing, please specify the image name to print information.'];
-		yourself)}
-]
+{ #category : #'command execution' }
+PhLImageInfoCliCommand >> basicExecute [ 
 
-{ #category : #accessing }
-PhLImageInfoCliCommand >> executeWithImage: anImage [ 
-
-   self list: (Array with: anImage)
+	self list: (Array with: self findImage)
 ]
 
 { #category : #'private ' }
@@ -58,14 +64,14 @@ PhLImageInfoCliCommand >> listPrintAttributeLabels [
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImageInfoCliCommand >> printSequence [
 
 	"do not print sequence number for one image"
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : #'accessing arguments' }
 PhLImageInfoCliCommand >> rowMode [
 
 	"image info is printed in one attribute per row"

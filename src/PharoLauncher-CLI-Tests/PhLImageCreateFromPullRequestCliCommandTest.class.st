@@ -6,18 +6,38 @@ Class {
 
 { #category : #tests }
 PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
+
+	self flag: 'How to fake PR from Inria CI?'.
 	
-	|mockCommand aMatch|
+	self runCommand: #('launcher' 'image' 'create' 'fromPR' '9588').
+	self assertSuccess.
+	self assert: (self outputString includesSubstring: 'PR-9588').
+  
+]
+
+{ #category : #tests }
+PhLImageCreateFromPullRequestCliCommandTest >> testInvalidPRShouldGiveError [
+
+	self runCommand: #('launcher' 'image' 'create' 'fromPR' 'someNoise123' ).
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Not a valid pull request number').
 	
-	aMatch := (context arguments: #('launcher' 'image' 'create' 'fromPR' '10553')) doMatch.
-	aMatch := ((aMatch at: #image) at: #create) at: #fromPR.
+]
 
-	mockCommand := PhLImageCreateFromPullRequestCliCommandMock new.
-	mockCommand setArguments: aMatch.
+{ #category : #tests }
+PhLImageCreateFromPullRequestCliCommandTest >> testMissingPRShouldGiveError [
 
-	mockCommand execute.
+	self runCommand: #('launcher' 'image' 'create' 'fromPR').
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'specify the pull request number').
+	
+]
 
-	self assert: (self errorString includesSubstring: '').
-	self assert: (self outputString includesSubstring: 'PR-10553').
+{ #category : #tests }
+PhLImageCreateFromPullRequestCliCommandTest >> testUnreachablePRShouldGiveError [
+
+	self runCommand: #('launcher' 'image' 'create' 'fromPR' '99999999999999' ).
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Could not determine build artifact for pull request').
 	
 ]

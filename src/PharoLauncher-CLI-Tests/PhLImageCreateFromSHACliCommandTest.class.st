@@ -10,35 +10,27 @@ Class {
 { #category : #tests }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromABuildShouldFailWhenShaIsMissing [
 	
-	self should:
-	[	self runCommand: #('launcher' 'image' 'create' 'fromSHA' '--pharoVersion' '10').
-	] raise: NotFound.
-	"TODO - test for error message occurence, when exception is handled in execute"
-	"self assert: (self errorString includesSubstring: PhLImageCreateFromBuildCliCommand missingShaArgMessage)."
+	self runCommand: #('launcher' 'image' 'create' 'fromSHA' '--pharoVersion' '10').
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Please specify the commit SHA string to find the image template').
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
 { #category : #tests }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaDoesNotExist [
 	
-	self should:
-	[ 
-		self runCommand: #('launcher' 'image' 'create' 'fromSHA' 'NotASha' '--pharoVersion' '10').
-	] raise: PhLDownloadError.
-	"TODO - test for error string occurence in error output once Exceptions are handled"
-	"self assert: (self errorString includesSubstring: PhLImageCreateFromShaCliCommand cantFindImageTemplateMessage)."
+	self runCommand: #('launcher' 'image' 'create' 'fromSHA' 'NotASha' '--pharoVersion' '10').
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Could not determine remote image template from SHA').
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
 { #category : #tests }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaIsInvalid [
 	
-	self should:
-	[ 
-		self runCommand: #('launcher' 'image' 'create' 'fromSHA' 'NotAValidSha' '--pharoVersion' '10').
-	] raise: Error.
-	"TODO - test for error string occurence in error output once Exceptions are handled"
-	"self assert: (self errorString includesSubstring: PhLImageCreateFromShaCliCommand missingShaMessage)."
+	self runCommand: #('launcher' 'image' 'create' 'fromSHA' 'NotAValidSha' '--pharoVersion' '10').
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Not a valid sha string').
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 

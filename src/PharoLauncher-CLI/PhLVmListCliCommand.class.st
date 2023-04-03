@@ -13,6 +13,12 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLVmListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	self addPrintFlagsTo: aCommandSpec.
+]
+
 { #category : #'command line - converting' }
 PhLVmListCliCommand class >> asCliCommand [
 	^ self newLauncherCommand: #list 
@@ -24,13 +30,8 @@ PhLVmListCliCommand class >> launcherCmdDescription [
 	^ 'Lists all available VMs, with status.'
 ]
 
-{ #category : #'command line - arguments' }
-PhLVmListCliCommand class >> launcherCmdFlags [
-	^ self printFlags
-]
-
-{ #category : #accessing }
-PhLVmListCliCommand >> execute [
+{ #category : #'command execution' }
+PhLVmListCliCommand >> basicExecute [ 
 
 	self list: self vmRepository
 ]

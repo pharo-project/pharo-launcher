@@ -49,17 +49,6 @@ PhLCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
 ]
 
-{ #category : #printing }
-PhLCliCommandTest >> printValidationReportFor: args [
-
-	|report|
-	context arguments: args; match.
-	report := context allValidations.
-	context allValidations isSuccess ifTrue: [ ^ '' ].
-	^ String streamContents: [:aStream | 
-		(ClapValidationErrorPrinter on: report) printOn: aStream].
-]
-
 { #category : #'process actions' }
 PhLCliCommandTest >> runCommand: args [
 	^ (context arguments: args) execute.
@@ -202,4 +191,11 @@ PhLCliCommandTest >> testPositionalWithValue [
 	"now test - when value is not present"
 	aCommand := (cmdSpec activationWith: #('launcher' '--delimiter')) command.
 	self assert: (aCommand positional: #delimiter) isNil.
+]
+
+{ #category : #printing }
+PhLCliCommandTest >> validationReportFor: args [
+
+	context arguments: args; match.
+	^ context allValidations
 ]

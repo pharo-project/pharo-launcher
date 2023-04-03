@@ -59,13 +59,17 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testMcLoadProjectFromRepo [
 { #category : #tests }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepo [
 
-	self assert: (self printValidationReportFor: #('launcher' 'image' 'create' 'fromRepo' 'pharo/pharo-launcher')) equals: ''.
+	|aReport|
+	aReport := self validationReportFor: #('launcher' 'image' 'create' 'fromRepo' 'pharo/pharo-launcher').
+	self assert: aReport isSuccess description: aReport printString.
 ]
 
 { #category : #tests }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepoWithAllArgs [
 
-	self assert: (self printValidationReportFor:  #('launcher' 'image' 'create' 'fromRepo' 'pharo/pharo-launcher' '--newImageName' 'MyTestImage' '--templateName' 'Mooc' '--templateCategory' 'Offcial' '--subfolder' 'dev/src' '--baseline' 'myBaseline')) equals: ''.
+	|aReport|
+	aReport := self validationReportFor:  #('launcher' 'image' 'create' 'fromRepo' 'pharo/pharo-launcher' '--newImageName' 'MyTestImage' '--templateName' 'Mooc' '--templateCategory' 'Offcial' '--subfolder' 'dev/src' '--baseline' 'myBaseline').
+	self assert: aReport isSuccess description: aReport printString.
 ]
 
 { #category : #tests }

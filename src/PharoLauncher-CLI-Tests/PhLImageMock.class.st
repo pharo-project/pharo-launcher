@@ -136,6 +136,11 @@ PhLImageMock >> launch [
 	isLaunched := true
 ]
 
+{ #category : #mocking }
+PhLImageMock >> launchFrom: aDirectoryReference [
+	self launch
+]
+
 { #category : #accessing }
 PhLImageMock >> location [
 	^ 'my current location'

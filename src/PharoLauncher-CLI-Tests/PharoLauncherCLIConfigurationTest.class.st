@@ -104,6 +104,19 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfiguratio
 ]
 
 { #category : #tests }
+PharoLauncherCLIConfigurationTest >> testProcessWithExplicitWorkingDirectory [
+	| dir config configurator |
+	dir := root / 'foo' / 'bar'.
+	config := PhLLaunchConfiguration new
+		workingDirectory: dir.
+	configurator := PhLLaunchImageProcessConfigurator new 
+		launchConfiguration: config;
+		yourself.
+	
+	self assert: configurator workingDirectory equals: dir
+]
+
+{ #category : #tests }
 PharoLauncherCLIConfigurationTest >> testReadOfSerializedConfigurationShouldGiveBackSameConfiguration [
 	| config preferencesFile serializedConfig |
 	config := PharoLauncherCLIConfiguration new.

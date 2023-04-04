@@ -56,7 +56,7 @@ PhLImageLaunchCliCommand >> basicExecute [
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
-	anImage launch
+	anImage launchFrom: FileSystem workingDirectory
 ]
 
 { #category : #checking }

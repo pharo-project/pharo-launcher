@@ -64,6 +64,11 @@ PhLLaunchImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguratio
 ]
 
 { #category : #accessing }
+PhLLaunchImageProcessConfigurator >> launchInALoginShell [
+	^ launchInALoginShell ifNil: [ launchConfiguration class launchInALoginShell ]
+]
+
+{ #category : #accessing }
 PhLLaunchImageProcessConfigurator >> launchInALoginShell: anObject [
 	launchInALoginShell := anObject
 ]
@@ -76,7 +81,7 @@ PhLLaunchImageProcessConfigurator >> usePharoSettings [
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visit [
 	process := PhLProcessWrapper new.
-	process workingDirectory: self imageFile parent pathString.
+	process workingDirectory: launchConfiguration workingDirectory pathString.
 	self configureVm.
 	process
 		addArgument: self imageFile pathString surroundedByDoubleQuotes.
@@ -90,7 +95,7 @@ PhLLaunchImageProcessConfigurator >> visit [
 
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
-	launchInALoginShell
+	self launchInALoginShell
 		ifTrue: [ process loginShellCommand.
 					process addArgument: self vmPath surroundedByDoubleQuotes ]
 		ifFalse: [process command: self vmPath "surroundedByDoubleQuotes" ].
@@ -98,8 +103,7 @@ PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
 
 { #category : #visiting }
 PhLLaunchImageProcessConfigurator >> visitUnix: aPlatform [
-	
-	launchInALoginShell
+	self launchInALoginShell
 		ifTrue: [ process loginShellCommand ]
 		ifFalse: [ process shellCommand ].
 	process 
@@ -116,4 +120,9 @@ PhLLaunchImageProcessConfigurator >> vmDirectoryPath [
 { #category : #private }
 PhLLaunchImageProcessConfigurator >> vmPath [
 	^ launchConfiguration vm executablePath
+]
+
+{ #category : #accessing }
+PhLLaunchImageProcessConfigurator >> workingDirectory [
+	^ launchConfiguration workingDirectory
 ]

@@ -359,6 +359,13 @@ PhLImage >> launchConfigurations: aCollection [
 	launchConfigurations := aCollection
 ]
 
+{ #category : #action }
+PhLImage >> launchFrom: aDirectoryReference [
+	^ self launchWithConfiguration: (self defaultLaunchConfiguration copy
+			   workingDirectory: aDirectoryReference;
+			   yourself)
+]
+
 { #category : #accessing }
 PhLImage >> launchScript [
 	^ String streamContents: [ :stream |

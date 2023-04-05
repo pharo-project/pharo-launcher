@@ -14,6 +14,6 @@ PhLTestLaunchConfiguration >> launchProcess [
 	"dummy call, only requirement is that the command is available on supported Operating Systems."
 
 	^ PhLProcessWrapper new
-		  command: 'cd';
+		  command: 'echo';
 		  yourself
 ]

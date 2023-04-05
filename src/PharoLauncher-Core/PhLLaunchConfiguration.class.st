@@ -198,9 +198,7 @@ PhLLaunchConfiguration >> vmArguments: aCollection [
 { #category : #accessing }
 PhLLaunchConfiguration >> workingDirectory [
 
-	^ self workingDirectory ifNil: [ 
-		  self workingDirectory: image imageFile parent.
-		  self workingDirectory ]
+	^ workingDirectory ifNil: [ image imageFile parent ]
 ]
 
 { #category : #accessing }

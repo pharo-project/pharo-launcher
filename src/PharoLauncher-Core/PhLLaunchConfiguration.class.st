@@ -61,7 +61,9 @@ PhLLaunchConfiguration class >> settingsOn: aBuilder [
 
 { #category : #serialization }
 PhLLaunchConfiguration class >> stonAllInstVarNames [
-	^ super stonAllInstVarNames reject: [ :varName | varName = #usePharoSettings ]
+
+	^ super stonAllInstVarNames reject: [ :varName | 
+		  #( #usePharoSettings #workingDirectory ) includes: varName ]
 ]
 
 { #category : #'instance creation' }
@@ -126,8 +128,7 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	image := anImage.
 	name := 'new configuration...'.
 	usePharoSettings := true.
-	imageArguments := anImage defaultArguments.
-	workingDirectory := anImage imageFile parent
+	imageArguments := anImage defaultArguments
 ]
 
 { #category : #testing }
@@ -196,7 +197,10 @@ PhLLaunchConfiguration >> vmArguments: aCollection [
 
 { #category : #accessing }
 PhLLaunchConfiguration >> workingDirectory [
-	^ workingDirectory
+
+	^ self workingDirectory ifNil: [ 
+		  self workingDirectory: image imageFile parent.
+		  self workingDirectory ]
 ]
 
 { #category : #accessing }

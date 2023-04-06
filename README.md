@@ -80,7 +80,7 @@ Once done, you can load the project through Metacello integration (uses Baseline
 ```Smalltalk
 Metacello new
 	baseline: 'PharoLauncher';
-	repository: 'github://pharo-project/pharo-launcher:development/src';
+	repository: 'github://pharo-project/pharo-launcher:dev/src';
 	load
  ```
 

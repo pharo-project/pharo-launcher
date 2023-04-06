@@ -11,6 +11,16 @@ Class {
 }
 
 { #category : #initialization }
+PhLCliClapContext >> initialize [
+
+	super initialize.
+
+	"initialize default notification center with proper streams available on context object"
+	PhLNotificationCenter default outStream: self stdout.
+	PhLNotificationCenter default errorStream: self stderr.
+]
+
+{ #category : #initialization }
 PhLCliClapContext >> launcherModel [
 	^ launcherModel ifNil: [ launcherModel := PharoLauncherCLIModel new ]
 ]

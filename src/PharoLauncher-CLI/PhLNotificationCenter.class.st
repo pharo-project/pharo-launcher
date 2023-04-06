@@ -1,3 +1,6 @@
+"
+This represents singleton object for accessing errorStream, outStream in methods used by CLI, that do not have any reference to streams of CLI command (or CLI context) object.
+"
 Class {
 	#name : #PhLNotificationCenter,
 	#superclass : #Object,

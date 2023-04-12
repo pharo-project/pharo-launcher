@@ -67,5 +67,5 @@ PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
 { #category : #running }
 PhLImageCliCommandTest >> useMockImagesRepository [
 
-	context launcherModel imageRepository: PhLImagesMockRepo new
+	self launcherModel imageRepository: PhLImagesMockRepo new
 ]

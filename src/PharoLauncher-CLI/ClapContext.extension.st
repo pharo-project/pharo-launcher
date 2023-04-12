@@ -1,6 +1,6 @@
 Extension { #name : #ClapContext }
 
 { #category : #'*PharoLauncher-CLI' }
-ClapContext >> launcherModel [
+ClapContext >> pharoLauncherModel [
 	^ PharoLauncherCLIModel new
 ]

@@ -6,14 +6,14 @@ Class {
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addLocalTemplateNamed: aName [ 
-	^ context launcherModel templateRepository createLocalTemplateNamed: aName
+	^ self launcherModel templateRepository createLocalTemplateNamed: aName
 ]
 
 { #category : #adding }
 PhLTemplatesCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [  
 	| templateCategory |
-	templateCategory := context launcherModel templateRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
-	context launcherModel templateRepository setGroups:{ templateCategory }.
+	templateCategory := self launcherModel templateRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
+	context pharoLauncherModel templateRepository setGroups:{ templateCategory }.
 ]
 
 { #category : #adding }
@@ -42,8 +42,8 @@ PhLTemplatesCliCommandTest >> localTemplatesGroup [
 PhLTemplatesCliCommandTest >> setUp [
 
 	super setUp.
-	context launcherModel templateRepository: PhLTemplateTestRepository new.
-	context launcherModel templateRepository createLocalTemplateNamed:'foo'.
+	self launcherModel templateRepository: PhLTemplateTestRepository new.
+	self templateRepository createLocalTemplateNamed:'foo'.
 ]
 
 { #category : #'process actions' }

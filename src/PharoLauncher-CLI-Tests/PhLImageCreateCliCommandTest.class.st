@@ -6,22 +6,22 @@ Class {
 
 { #category : #utility }
 PhLImageCreateCliCommandTest >> addLocalTemplateNamed: aName [ 
-	^ context launcherModel templateRepository createLocalTemplateNamed: aName
+	^ self launcherModel templateRepository createLocalTemplateNamed: aName
 	
 ]
 
 { #category : #creation }
 PhLImageCreateCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [
 	| templateCategory |
-	templateCategory := context launcherModel templateRepository
+	templateCategory := self launcherModel templateRepository
 		newRemoteTemplatesGroupNamed: aTemplateCategoryName.
-	context launcherModel templateRepository
+	self launcherModel templateRepository
 		setGroups: {templateCategory}
 ]
 
 { #category : #'instance creation' }
 PhLImageCreateCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName [
-	^ context launcherModel templateRepository
+	^ self launcherModel templateRepository
 		createTemplateNamed: aName
 		inCategory: aCategoryName
 ]
@@ -39,7 +39,7 @@ PhLImageCreateCliCommandTest >> localTemplatesGroup [
 { #category : #running }
 PhLImageCreateCliCommandTest >> setUp [
 	super setUp.
-	context launcherModel
+	self launcherModel
 		templateRepository: PhLTemplateTestRepository new
 ]
 

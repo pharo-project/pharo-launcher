@@ -13,7 +13,7 @@ PhLVmCliCommandTest >> addVmNamed: vmName [
 PhLVmCliCommandTest >> setUp [
 
 	super setUp.
-	context launcherModel vmManager: PhLVirtualMachinesMockRepo new
+	self launcherModel vmManager: PhLVirtualMachinesMockRepo new
 ]
 
 { #category : #tests }

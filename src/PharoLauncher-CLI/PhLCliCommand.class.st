@@ -330,7 +330,12 @@ PhLCliCommand >> outputAsSton [
 
 { #category : #accessing }
 PhLCliCommand >> pharoLauncherModel [
-	^ self context launcherModel
+	^ pharoLauncherModel ifNil: [ pharoLauncherModel := self context pharoLauncherModel ]
+]
+
+{ #category : #accessing }
+PhLCliCommand >> pharoLauncherModel: aModel [
+	pharoLauncherModel := aModel
 ]
 
 { #category : #'accessing arguments' }

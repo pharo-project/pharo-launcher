@@ -35,7 +35,7 @@ PhLCliCommandTest >> errorString [
 
 { #category : #accessing }
 PhLCliCommandTest >> launcherModel [
-	^ context launcherModel 
+	^ context pharoLauncherModel
 ]
 
 { #category : #resetting }
@@ -58,7 +58,7 @@ PhLCliCommandTest >> runCommand: args [
 PhLCliCommandTest >> setUp [
 
 	super setUp.
-	context := PhLCliCommand launcherCommand activation
+	context := PhLCliTestClapContext specification: PhLCliCommand launcherCommand.
 ]
 
 { #category : #tests }

@@ -56,7 +56,7 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 ]
 
 { #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageWithToManyArgumentShouldRaiseError [
+PhLImageCreateCliCommandTest >> testCreateImageWithTooManyArgumentShouldRaiseError [
 
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

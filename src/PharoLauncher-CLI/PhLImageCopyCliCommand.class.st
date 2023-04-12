@@ -34,7 +34,7 @@ PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageCopyCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #copy
+	^ self newLauncherCommandSpec: #copy
 ]
 
 { #category : #'command line' }

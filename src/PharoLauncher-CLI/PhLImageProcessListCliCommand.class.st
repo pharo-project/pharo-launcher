@@ -9,7 +9,7 @@ Class {
 
 { #category : #'command line' }
 PhLImageProcessListCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #processList
+	^ self newLauncherCommandSpec: #processList
 ]
 
 { #category : #'command line' }

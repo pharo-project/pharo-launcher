@@ -27,7 +27,7 @@ PhLImageCreateFromPullRequestCliCommand class >> addLauncherPositionalsTo: aComm
 
 { #category : #'command line' }
 PhLImageCreateFromPullRequestCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #fromPR
+	^ self newLauncherCommandSpec: #fromPR
 ]
 
 { #category : #'command line' }

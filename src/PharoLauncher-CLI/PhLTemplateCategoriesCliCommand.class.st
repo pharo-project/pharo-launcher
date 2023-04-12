@@ -21,7 +21,7 @@ PhLTemplateCategoriesCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 { #category : #'command line - converting' }
 PhLTemplateCategoriesCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #categories 
+	^ self newLauncherCommandSpec: #categories 
 ]
 
 { #category : #'command line - description' }

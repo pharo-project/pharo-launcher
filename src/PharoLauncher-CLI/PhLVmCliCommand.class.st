@@ -26,7 +26,7 @@ PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line - converting' }
 PhLVmCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #vm 
+	^ self newLauncherCommandSpec: #vm 
 ]
 
 { #category : #'command line' }

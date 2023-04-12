@@ -18,7 +18,7 @@ Class {
 
 { #category : #'command line' }
 PhLImageCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #image
+	^ self newLauncherCommandSpec: #image
 ]
 
 { #category : #'command line' }

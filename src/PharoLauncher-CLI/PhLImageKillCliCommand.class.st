@@ -26,7 +26,7 @@ PhLImageKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageKillCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #kill 
+	^ self newLauncherCommandSpec: #kill 
 ]
 
 { #category : #'command line' }

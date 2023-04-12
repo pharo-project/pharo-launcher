@@ -56,7 +56,7 @@ PhLImageCreateFromRemoteRepoCliCommand class >> addSubfolderFlagTo: aCommandSpec
 
 { #category : #'command line' }
 PhLImageCreateFromRemoteRepoCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #fromRepo
+	^ self newLauncherCommandSpec: #fromRepo
 ]
 
 { #category : #'command line' }

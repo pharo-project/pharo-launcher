@@ -25,7 +25,7 @@ PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageListCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #list 
+	^ self newLauncherCommandSpec: #list 
 ]
 
 { #category : #'command line' }

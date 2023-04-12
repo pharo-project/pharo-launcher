@@ -22,7 +22,7 @@ PhLImageCreateFromSHACliCommand class >> addLauncherPositionalsTo: aCommandSpec 
 
 { #category : #'command line' }
 PhLImageCreateFromSHACliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #fromSHA
+	^ self newLauncherCommandSpec: #fromSHA
 ]
 
 { #category : #'command line' }

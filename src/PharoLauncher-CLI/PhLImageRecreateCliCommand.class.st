@@ -18,7 +18,7 @@ PhLImageRecreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageRecreateCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #recreate 
+	^ self newLauncherCommandSpec: #recreate 
 ]
 
 { #category : #'command line' }

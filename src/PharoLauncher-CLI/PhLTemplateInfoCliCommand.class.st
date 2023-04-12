@@ -33,7 +33,7 @@ PhLTemplateInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line - converting' }
 PhLTemplateInfoCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #info 
+	^ self newLauncherCommandSpec: #info 
 	 
 ]
 

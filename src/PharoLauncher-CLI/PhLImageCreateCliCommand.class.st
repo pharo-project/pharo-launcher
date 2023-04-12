@@ -104,7 +104,7 @@ PhLImageCreateCliCommand class >> addTemplateNameFlagTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageCreateCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #create 
+	^ self newLauncherCommandSpec: #create 
 ]
 
 { #category : #'command line' }

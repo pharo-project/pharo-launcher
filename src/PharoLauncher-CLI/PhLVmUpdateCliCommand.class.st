@@ -15,7 +15,7 @@ Class {
 
 { #category : #'command line - converting' }
 PhLVmUpdateCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #update 
+	^ self newLauncherCommandSpec: #update 
 ]
 
 { #category : #'command line' }

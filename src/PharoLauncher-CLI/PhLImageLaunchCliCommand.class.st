@@ -32,7 +32,7 @@ PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageLaunchCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #launch 
+	^ self newLauncherCommandSpec: #launch 
 ]
 
 { #category : #'command line' }

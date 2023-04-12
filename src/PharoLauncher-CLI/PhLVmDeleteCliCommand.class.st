@@ -15,7 +15,7 @@ Class {
 
 { #category : #'command line - converting' }
 PhLVmDeleteCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #delete 
+	^ self newLauncherCommandSpec: #delete 
 ]
 
 { #category : #'command line' }

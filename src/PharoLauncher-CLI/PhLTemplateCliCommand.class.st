@@ -18,7 +18,7 @@ Class {
 
 { #category : #'command line - converting' }
 PhLTemplateCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #template 
+	^ self newLauncherCommandSpec: #template 
 ]
 
 { #category : #'command line - description' }

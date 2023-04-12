@@ -96,7 +96,7 @@ PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 
 { #category : #'command line - converting' }
 PhLCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #launcher 
+	^ self newLauncherCommandSpec: #launcher 
 ]
 
 { #category : #'private - testing' }
@@ -116,7 +116,7 @@ PhLCliCommand class >> launcherCommand [
 	"Root command for Pharo Launcher"
 	<commandline>
 	
-	^ self newLauncherCommand: #launcher
+	^ self newLauncherCommandSpec: #launcher
 ]
 
 { #category : #'command line - description' }
@@ -125,10 +125,10 @@ PhLCliCommand class >> launcherDescription [
 ]
 
 { #category : #'command line - instance creation' }
-PhLCliCommand class >> newLauncherCommand: idOfCommand [ 
+PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [ 
 	"factory for pharo launcher commands"
 	|commandSpec|
-	commandSpec := (PhLClapCommandSpec id: idOfCommand)
+	commandSpec := (ClapCommandSpec id: idOfCommand)
 		description: self launcherCmdDescription;
 		commandClass: self;
 		addHelp;

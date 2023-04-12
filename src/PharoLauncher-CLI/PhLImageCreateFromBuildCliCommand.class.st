@@ -30,7 +30,7 @@ PhLImageCreateFromBuildCliCommand class >> addLauncherPositionalsTo: aCommandSpe
 
 { #category : #'command line' }
 PhLImageCreateFromBuildCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #fromBuild
+	^ self newLauncherCommandSpec: #fromBuild
 ]
 
 { #category : #'command line' }

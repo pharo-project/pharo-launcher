@@ -24,7 +24,7 @@ PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 { #category : #'command line' }
 PhLImageDeleteCliCommand class >> asCliCommand [
-	^ self newLauncherCommand: #delete 
+	^ self newLauncherCommandSpec: #delete 
 ]
 
 { #category : #'command line' }

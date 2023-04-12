@@ -11,7 +11,8 @@ Class {
 		'templateRepository',
 		'imagesPresenter',
 		'scriptsDirectory',
-		'openAsWorld'
+		'openAsWorld',
+		'jobList'
 	],
 	#classVars : [
 		'Default',
@@ -271,6 +272,12 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : #accessing }
+PharoLauncherApplication >> jobList [
+
+	^ jobList ifNil: [ jobList := self newJobList  ]
+]
+
 { #category : #events }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
@@ -294,7 +301,7 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 { #category : #ui }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
-	self newJobList pushJob: (SpJob newTitle: aString block: aBlock)
+	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
 { #category : #initialization }

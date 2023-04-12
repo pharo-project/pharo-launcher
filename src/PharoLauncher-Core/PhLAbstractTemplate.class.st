@@ -27,11 +27,18 @@ PhLAbstractTemplate >> extractTo: aDirectory [
 PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	"Extract myself to aDirectory. Name the resulting image aString"
 	| extractionDirectory archive |
-	
-	archive := self zipArchive.
-	extractionDirectory := self extractZipArchive: archive to: aDirectory.
-	self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
-	extractionDirectory deleteAll.
+	PharoLauncherApplication default 
+		pushProgress: 'Extract template'
+		with: [ :bar | 
+			bar label: 'Downloading zip archive';
+			current: 25.
+			archive := self zipArchive.
+			bar label: 'Extracting archive to target directory';
+			current: 75.
+			extractionDirectory := self extractZipArchive: archive to: aDirectory.
+			self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
+			extractionDirectory deleteAll
+	].
 	"Will serialize image metadata with the template information"
 	^ (PhLImage location: aDirectory / aString , 'image') 
 		originTemplate: self.

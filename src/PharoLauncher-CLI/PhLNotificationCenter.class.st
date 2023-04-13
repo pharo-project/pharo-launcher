@@ -14,9 +14,25 @@ Class {
 	#category : #'PharoLauncher-CLI-Utility'
 }
 
+{ #category : #'class initialization' }
+PhLNotificationCenter class >> beInitializedByClapContextStreams [
+
+	<script>
+	(ClapContext >> #initialize) ast link: (MetaLink new
+			 metaObject: #receiver;
+			 selector: #initializeLauncherNotificationCenter;
+			 control: #after)
+]
+
 { #category : #accessing }
 PhLNotificationCenter class >> default [ 
 	^ Default ifNil: [ Default := self new ]
+]
+
+{ #category : #'class initialization' }
+PhLNotificationCenter class >> initialize [
+
+	self beInitializedByClapContextStreams
 ]
 
 { #category : #accessing }

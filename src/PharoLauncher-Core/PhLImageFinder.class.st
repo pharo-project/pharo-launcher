@@ -70,7 +70,7 @@ PhLImageFinder >> buildNumber [
 ]
 
 { #category : #'finding/searching' }
-PhLImageFinder >> findTemplateUrlFromPROnCI [
+PhLImageFinder >> findTemplateUrlForRemoteArtifact [
 
 	^ (self pullRequestBuildArtifactsUrlString, self templateArtifactName) asUrl
 ]
@@ -109,7 +109,7 @@ PhLImageFinder >> imageHtmlListingUrl [
 { #category : #accessing }
 PhLImageFinder >> inriaCIArtifactUrl [
 	
-	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self findTemplateUrlFromPROnCI  ] 
+	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self findTemplateUrlForRemoteArtifact  ] 
 ]
 
 { #category : #private }

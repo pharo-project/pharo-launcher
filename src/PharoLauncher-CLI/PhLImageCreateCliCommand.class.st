@@ -28,6 +28,9 @@ Open your terminal in the directory containing the pharo executable. You need to
 Class {
 	#name : #PhLImageCreateCliCommand,
 	#superclass : #PhLImageCliCommand,
+	#instVars : [
+		'imageFinderClass'
+	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
@@ -170,6 +173,18 @@ PhLImageCreateCliCommand >> findUserTemplate [
 ]
 
 { #category : #accessing }
+PhLImageCreateCliCommand >> imageFinderClass [
+
+	^ imageFinderClass ifNil: [ PhLImageFinder ]
+]
+
+{ #category : #accessing }
+PhLImageCreateCliCommand >> imageFinderClass: aClass [
+	
+	imageFinderClass := aClass
+]
+
+{ #category : #accessing }
 PhLImageCreateCliCommand >> imageName [
 
 	^ self positional: #newImageName
@@ -184,7 +199,7 @@ PhLImageCreateCliCommand >> implicitImageName [
 { #category : #default }
 PhLImageCreateCliCommand >> implicitPharoVersion [
 
-	^ PhLImageFinder findLatestPharoDevelopmentVersion
+	^ self imageFinderClass findLatestPharoDevelopmentVersion
 ]
 
 { #category : #default }

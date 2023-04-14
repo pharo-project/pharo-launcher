@@ -48,7 +48,7 @@ PhLImageCreateFromSHACliCommand >> basicExecute [
 PhLImageCreateFromSHACliCommand >> findTemplate [
 
 	| url imageFinder |
-	imageFinder := PhLImageFinder
+	imageFinder := self imageFinderClass
 		               pharoVersion: self pharoVersionNumber
 		               sha: self sha.
 	[ url := imageFinder findUrl asUrl ]

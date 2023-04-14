@@ -62,7 +62,7 @@ PhLImageCreateFromBuildCliCommand >> buildNumber [
 PhLImageCreateFromBuildCliCommand >> findTemplate [
 	| url imageFinder |
 
-	imageFinder := PhLImageFinder pharoVersion: self pharoVersionNumber build: self buildNumber.
+	imageFinder := self imageFinderClass pharoVersion: self pharoVersionNumber build: self buildNumber.
 	[ url := imageFinder findUrl asUrl. ]
 		on: NotFound, PhLDownloadError  
 		do: [ :ex | self raiseImageTemplateFromBuildNrNotFound].

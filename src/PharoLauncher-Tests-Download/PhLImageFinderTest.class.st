@@ -68,7 +68,7 @@ PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidBuildNumberProvided [
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidPharoVersionProvided [
 
 	self
-		should: [ (PhLImageFinder pharoVersion: '900' build: '21') findUrl ]	
+		should: [ (PhLImageFinderStub pharoVersion: '900' build: '21') findUrl ]	
 		raise: NotFound
 
 ]
@@ -77,7 +77,7 @@ PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidPharoVersionProvided [
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidShaProvided [
 
 	self
-		should: [ (PhLImageFinder pharoVersion: '10' sha: 'abcde') findUrl ]	
+		should: [ (PhLImageFinderStub pharoVersion: '10' sha: 'abcde') findUrl ]	
 		raise: NotFound
 
 ]

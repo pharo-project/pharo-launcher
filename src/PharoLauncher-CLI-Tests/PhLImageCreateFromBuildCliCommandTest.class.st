@@ -6,12 +6,15 @@ Class {
 
 { #category : #tests }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
+	| command |
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
-	
-	self runCommand: #('launcher' 'image' 'create' 'fromBuild' '18' '--newImageName' 'myImage3'  '--pharoVersion' '10').
-	
-	self assertSuccess.
+
+	command := (context arguments: #('launcher' 'image' 'create' 'fromBuild' '18' '--newImageName' 'myImage3'  '--pharoVersion' '10')) command.
+	command imageFinderClass: PhLImageFinderStub.
+	command execute.
+	self assert: self errorString isEmpty.
+	self assert: (self outputString includesSubstring: 'Pharo10-SNAPSHOT.build.18').
 	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet
 ]
 
@@ -28,11 +31,12 @@ PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhen
 
 { #category : #tests }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhenBuildNrDoesNotExist [
-	
-	self runCommand: #('launcher' 'image' 'create' 'fromBuild' '157865156' '--pharoVersion' '10').
-	self assertFailure.
-		
-	self assert: (self errorString includesSubstring: 'Could not determine remote image template from build number').
+
+	| command |
+	command := (context arguments: #('launcher' 'image' 'create' 'fromBuild' '157865156' '--pharoVersion' '10')) command.
+	command imageFinderClass: PhLImageFinderStub.
+	self should: [command basicExecute] raise: PhLDownloadError whoseDescriptionIncludes: 'Could not determine remote image template from build number' description: 'Error is expected when trying to get non-existent build artifact'.
+
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 

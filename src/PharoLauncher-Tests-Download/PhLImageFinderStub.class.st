@@ -15,7 +15,8 @@ PhLImageFinderStub >> htmlListingFor: url [
 	self pharoVersion = '8' ifTrue: [ ^ self pharo80HtmlListing ].
 	self pharoVersion = '7' ifTrue: [ ^ self pharo70HtmlListing ].
 	
-	^ super htmlListingFor: url
+	"for undefined/unknown versions just raise NotFound"
+	NotFound signal
 ]
 
 { #category : #stubing }

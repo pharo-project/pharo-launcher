@@ -48,7 +48,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
 { #category : #tests }
 PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
 	| url |
-	url := (PhLImageFinderStub fromInriaCIPullRequest: 10553) findTemplateUrlFromPROnCI.
+	url := (PhLImageFinderStub fromInriaCIPullRequest: 10553) findTemplateUrlForRemoteArtifact.
 	
 	self 
 		assert: url path

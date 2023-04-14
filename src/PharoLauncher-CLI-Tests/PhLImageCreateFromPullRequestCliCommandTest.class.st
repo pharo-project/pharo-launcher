@@ -8,13 +8,11 @@ Class {
 PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 
 	| command |
-	self flag: 'How to fake PR from Inria CI?'.
 
 	command := (context arguments: #('launcher' 'image' 'create' 'fromPR' '9588')) command.
-	"self runCommand: #('launcher' 'image' 'create' 'fromPR' '9588')."
 	command imageFinderClass: PhLImageFinderStub.
 	command execute.
-	self assertSuccess.
+	self assert: self errorString isEmpty.
 	self assert: (self outputString includesSubstring: 'PR-9588').
   
 ]

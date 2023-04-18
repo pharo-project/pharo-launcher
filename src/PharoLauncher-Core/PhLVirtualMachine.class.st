@@ -299,6 +299,12 @@ PhLVirtualMachine >> isValidAfterUpdate [
 	^ self isValid
 ]
 
+{ #category : #testing }
+PhLVirtualMachine >> isValidForArchitecture [
+	
+	^ OSPlatform current isValid: self
+]
+
 { #category : #querying }
 PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime

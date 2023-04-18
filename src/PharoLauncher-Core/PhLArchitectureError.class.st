@@ -4,6 +4,9 @@ Error raised when trying to run a 32-bit image whereas the underlying Operating 
 Class {
 	#name : #PhLArchitectureError,
 	#superclass : #PhLLaunchError,
+	#instVars : [
+		'description'
+	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
@@ -14,14 +17,26 @@ PhLArchitectureError class >> signalImage: anImage [
 		signal
 ]
 
+{ #category : #signalling }
+PhLArchitectureError class >> signalImageOsNon32bitCompliant: anImage [
+	^ self new 
+		process: nil image: anImage;
+		signal
+]
+
 { #category : #accessing }
 PhLArchitectureError >> longDescription [
-	^ ('Cannot run {1} image!' format: { image name }), 
-		String cr, 
-		'This image requires a 32-bit VM to run and 32-bit applications are not supported on this Operating System!'
+	^ description ifNil: [ 'Cannot run this VM on this system!' ]
 ]
 
 { #category : #accessing }
 PhLArchitectureError >> name [
 	^ 'Architecture error'
+]
+
+{ #category : #accessing }
+PhLArchitectureError >> osNon32bitCompliantDescription [
+	description := ('Cannot run {1} image!' format: { image name }), 
+		String cr, 
+		'This image requires a 32-bit VM to run and 32-bit applications are not supported on this Operating System!'
 ]

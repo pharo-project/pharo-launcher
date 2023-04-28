@@ -61,12 +61,12 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 11 (development) - Pharo 11',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-10.zip'
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip'
 				},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 11 (development) - Pharo 10',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip'
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-10.zip'
 				},
 			PhLTemplateSource {
 				#type : #URL,

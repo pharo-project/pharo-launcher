@@ -20,22 +20,22 @@ OrderedCollection [
 		#templates : [
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 12.0 - 64bit (next development version, latest)',
+				#name : 'Pharo 12.0 - 64bit (development version, latest)',
 				#url : 'https://files.pharo.org/image/120/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 12.0 - 32bit (next development version, latest)',
+				#name : 'Pharo 12.0 - 32bit (development version, latest)',
 				#url : 'https://files.pharo.org/image/120/latest-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 11.0 - 64bit (development version, latest)',
+				#name : 'Pharo 11.0 - 64bit (stable)',
 				#url : 'https://files.pharo.org/image/110/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 11.0 - 32bit (development version, latest)',
+				#name : 'Pharo 11.0 - 32bit (stable)',
 				#url : 'https://files.pharo.org/image/110/latest-32.zip'
 			},
 			PhLTemplateSource {
@@ -47,16 +47,6 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Pharo 10.0 - 32bit (old stable)',
 				#url : 'https://files.pharo.org/image/100/latest-32.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Pharo 9.0 - 64bit (old stable)',
-				#url : 'https://files.pharo.org/image/90/stable-64.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Pharo 9.0 - 32bit (old stable)',
-				#url : 'https://files.pharo.org/image/90/stable-32.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
@@ -178,26 +168,16 @@ OrderedCollection [
 		]
 	},
 	PhLTemplateSource {
-		#type : #JenkinsServer,
-		#name : 'Pharo Contribution Jenkins',
-		#url : 'https://ci.inria.fr/pharo-contribution'
-	},
-	PhLTemplateSource {
-		#type : #JenkinsServer,
-		#name : 'Moose Jenkins',
-		#url : 'https://ci.inria.fr/moose'
-	},
-	PhLTemplateSource {
 		#type : #HttpListing,
-		#name : 'Pharo 10.0 (stable)',
-		#url : 'https://files.pharo.org/image/100/',
-                #filterPattern : 'href="(Pharo-?10-SNAPSHOT.build.[^"]*.zip)"'
-	},
-	PhLTemplateSource {
-		#type : #HttpListing,
-		#name : 'Pharo 11.0 (development version)',
+		#name : 'Pharo 11.0 (stable)',
 		#url : 'https://files.pharo.org/image/110/',
-		#filterPattern : 'href="(Pharo-?11-SNAPSHOT.build.[^"]*.zip)"'
+                #filterPattern : 'href="(Pharo-?11-SNAPSHOT.build.[^"]*.zip)"'
+	},
+	PhLTemplateSource {
+		#type : #HttpListing,
+		#name : 'Pharo 12.0 (development version)',
+		#url : 'https://files.pharo.org/image/120/',
+		#filterPattern : 'href="(Pharo-?12-SNAPSHOT.build.[^"]*.zip)"'
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,

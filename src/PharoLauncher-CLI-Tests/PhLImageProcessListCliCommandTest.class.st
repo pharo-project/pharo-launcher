@@ -18,7 +18,7 @@ PhLImageProcessListCliCommandTest >> testExecute [
 	self assert: (self outputString isEmpty or: [ self outputString includesSubstring: 'Pharo'])
 ]
 
-{ #category : #test }
+{ #category : #tests }
 PhLImageProcessListCliCommandTest >> testOsShellArgArray [
 
 	|processListCmd argArray|
@@ -27,6 +27,6 @@ PhLImageProcessListCliCommandTest >> testOsShellArgArray [
 	
 	"test whether current PID of vm is filtered from list"
 	
-	self assert: (argArray third includesSubstring: 'pgrep').
-	self assert: (argArray third includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
+	self assert: (argArray first includesSubstring: 'pgrep').
+	self assert: (argArray first includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
 ]

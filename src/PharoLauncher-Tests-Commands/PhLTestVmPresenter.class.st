@@ -4,35 +4,15 @@ A presenter for Pharo Launcher VMs used for test purposes
 Class {
 	#name : #PhLTestVmPresenter,
 	#superclass : #PhLVMPresenter,
+	#traits : 'TPhLVirtualMachineTestUtil',
+	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
 	#instVars : [
-		'request',
 		'selection',
 		'vmManager',
 		'vmStoreRoot'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
-
-{ #category : #adding }
-PhLTestVmPresenter >> createVmNamed: aName [
-	self createVmNamed: aName private: false
-]
-
-{ #category : #adding }
-PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
-	| vmDirectory appDir root |
-	root := isPrivateVm 
-		ifTrue: [ vmStoreRoot / 'private' ] 
-		ifFalse: [ vmStoreRoot ].
-	vmDirectory := root / aName.
-	vmDirectory ensureCreateDirectory.
-	"needed on OS X"
-	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.
-	(appDir / 'Pharo') ensureCreateFile.
-	"needed on Linux"
-	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
-	 
-]
 
 { #category : #initialization }
 PhLTestVmPresenter >> initialize [
@@ -89,4 +69,10 @@ PhLTestVmPresenter >> vmNames [
 	^ shouldShowPrivateVms 
 		ifTrue:[ self datasource privateVirtualMachines ]
 		ifFalse: [ self datasource virtualMachines ]
+]
+
+{ #category : #private }
+PhLTestVmPresenter >> vmStoreRoot [
+
+	^ vmStoreRoot
 ]

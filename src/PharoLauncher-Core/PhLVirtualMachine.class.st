@@ -249,15 +249,15 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 		ifTrue: [ "On linux, either the VM exe is at the top level or a bash script at the top level has to be used"
 			executableRef := executables
 				detect: [ :fileRef | fileRef parent = vmFolder ]
-				ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: vmFolder fullName ].
+				ifNone: [ nil ].
 			vmBinaryRef := executables
 				detect: [ :fileRef | fileRef binaryReadStreamDo: [ :stream | (stream next: 4) = self class elfMagicNumber ] ]
-				ifNone: [ PhLExecutableNotFoundError signalKind: 'VM binary' inPath: vmFolder fullName ] ]
+				ifNone: [ nil ] ]
 		ifFalse: [ executableRef := vmBinaryRef := executables 
 			detect: #isFile 
-			ifNone: [ PhLExecutableNotFoundError signalKind: 'executable' inPath: vmFolder fullName ] ].
-	executableRef := executableRef asFileLocatorOrReference.
-	vmBinaryRef := vmBinaryRef asFileLocatorOrReference.
+			ifNone: [ nil ] ].
+	executableRef := executableRef ifNotNil: [ :exe | exe asFileLocatorOrReference ].
+	vmBinaryRef := vmBinaryRef  ifNotNil: [ :bin | bin asFileLocatorOrReference ].
 ]
 
 { #category : #initialization }

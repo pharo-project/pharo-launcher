@@ -170,6 +170,15 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 ]
 
 { #category : #accessing }
+PhLVirtualMachineManager class >> useVmStore: aDirectory during: aBlock [
+	| vmStoreBackup |
+	vmStoreBackup := vmStore.
+	self vmStore: aDirectory asFileReference.
+	[ aBlock value ]
+	ensure: [ vmStore := vmStoreBackup ]
+]
+
+{ #category : #accessing }
 PhLVirtualMachineManager class >> vmStore [
 	^ vmStore ifNil: [ vmStore := (FileLocator launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
 ]
@@ -261,19 +270,11 @@ PhLVirtualMachineManager >> compatibleVmUrls [
 { #category : #querying }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 
-	^ { 
-		(PhLVirtualMachine id: '100-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '90-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '80-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '80-x86')
-			yourself.
-	}
+	^ #('110-x64' '100-x64' '90-x64')
+		collect: [ :id | 
+			(PhLVirtualMachine id: id)
+				be64bits;
+				yourself ]
 ]
 
 { #category : #private }

@@ -360,7 +360,7 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	self canBeLaunched
 		ifFalse: [ PhLArchitectureError signalImageOsNon32bitCompliant: self. ^ self ].
 	aPhLLaunchConfiguration canBeLaunched 
-		ifFalse: [ PhLArchitectureError signalImage: self. ^ self ].
+		ifFalse: [ PhLArchitectureError signalConfiguration: aPhLLaunchConfiguration. ^ self ].
 
 	architectureWarningEnabled := true.
 	continue := true.

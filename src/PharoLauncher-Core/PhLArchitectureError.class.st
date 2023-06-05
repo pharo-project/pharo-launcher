@@ -5,15 +5,16 @@ Class {
 	#name : #PhLArchitectureError,
 	#superclass : #PhLLaunchError,
 	#instVars : [
-		'description'
+		'description',
+		'configuration'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #signalling }
-PhLArchitectureError class >> signalImage: anImage [
+PhLArchitectureError class >> signalConfiguration: aPhLConfiguration [
 	^ self new 
-		process: nil image: anImage;
+		configuration: aPhLConfiguration;
 		signal
 ]
 
@@ -21,12 +22,20 @@ PhLArchitectureError class >> signalImage: anImage [
 PhLArchitectureError class >> signalImageOsNon32bitCompliant: anImage [
 	^ self new 
 		process: nil image: anImage;
+		osNon32bitCompliantDescription;
 		signal
+]
+
+{ #category : #initialization }
+PhLArchitectureError >> configuration: aPhLLaunchConfiguration [
+
+	configuration := aPhLLaunchConfiguration
 ]
 
 { #category : #accessing }
 PhLArchitectureError >> longDescription [
-	^ description ifNil: [ 'Cannot run this VM on this system!' ]
+	^ description 
+		ifNil: [ 'Cannot run VM ''{1}'' on this system!' format: { configuration vm id } ]
 ]
 
 { #category : #accessing }

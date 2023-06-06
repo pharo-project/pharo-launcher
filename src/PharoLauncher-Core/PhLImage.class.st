@@ -79,7 +79,9 @@ PhLImage class >> example [
 	imageFile := fsRoot / 'foo64.image'.
 	imageFile binaryWriteStreamDo: 
 		[ :stream | 
-		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat64bits ].
+		(ZnEndianessReadWriteStream on: stream ) 
+			nextLittleEndianNumber: 4 
+			put: PhLVirtualMachineManager imageFormat64bits ].
 	^ self location: imageFile
 ]
 
@@ -90,7 +92,9 @@ PhLImage class >> example32 [
 	imageFile := fsRoot / 'foo32.image'.
 	imageFile binaryWriteStreamDo: 
 		[ :stream | 
-		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat32bits ].
+		(ZnEndianessReadWriteStream on: stream ) 
+			nextLittleEndianNumber: 4 
+			put: PhLVirtualMachineManager imageFormat32bits ].
 	^ self location: imageFile
 ]
 

@@ -30,7 +30,9 @@ PhLTestImagesPresenter >> createImageNamed: aName in: aFolder [
 	aFolder ensureCreateDirectory.
 	imageFile binaryWriteStreamDo: 
 		[ :stream | 
-		(ZnEndianessReadWriteStream on: stream ) nextLittleEndianNumber: 4 put: PhLVirtualMachineManager imageFormat64bits ].
+		(ZnEndianessReadWriteStream on: stream ) 
+			nextLittleEndianNumber: 4 
+			put: PhLVirtualMachineManager imageFormat32bits "supportedImageFormat" ].
 	(aFolder / (aName , '.changes')) ensureCreateFile.
 	(aFolder / PhLImage versionFileName) writeStreamDo: [ :stream | stream nextPutAll: '70' ].
 	^ imageFile

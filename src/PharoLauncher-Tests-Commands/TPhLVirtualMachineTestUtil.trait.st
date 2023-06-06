@@ -1,6 +1,6 @@
 Trait {
 	#name : #TPhLVirtualMachineTestUtil,
-	#category : #'PharoLauncher-Tests-Download'
+	#category : #'PharoLauncher-Tests-Commands'
 }
 
 { #category : #adding }

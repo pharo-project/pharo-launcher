@@ -146,6 +146,18 @@ PhLVirtualMachineManager class >> settingsOn: aBuilder [
 				, 'NOTE: This path might need to escape some whitespace characters e.g. "/Pharo\ 3.0/Pharo".' translated
 ]
 
+{ #category : #accessing }
+PhLVirtualMachineManager class >> supportedImageFormat [
+	"returns an image format corresponding to the current host OS"
+	
+	| os |
+	os := OSPlatform current.
+	
+	^ (os isUnix32 or: [ os isWin32 ])
+		ifTrue: [ self imageFormat32bits ]
+		ifFalse: [ self imageFormat64bits ]
+]
+
 { #category : #unzipping }
 PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirectory [
 	PhLProcessWrapper new 

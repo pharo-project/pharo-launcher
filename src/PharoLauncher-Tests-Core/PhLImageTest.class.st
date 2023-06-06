@@ -28,7 +28,10 @@ PhLImageTest >> setUp [
 	super setUp.
 	fs := FileSystem memory root.
 	imageFileRef := fs / 'foo.image'.
-	imageFileRef binaryWriteStreamDo: [ :stream | (ZnEndianessReadWriteStream on: stream) nextLittleEndianNumber: 4 put: 68021 ].
+	imageFileRef binaryWriteStreamDo: [ :stream | 
+		(ZnEndianessReadWriteStream on: stream) 
+			nextLittleEndianNumber: 4 
+			put: PhLVirtualMachineManager supportedImageFormat ].
 	image := PhLImage location: imageFileRef
 ]
 

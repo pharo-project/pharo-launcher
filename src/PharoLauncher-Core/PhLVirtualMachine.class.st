@@ -406,6 +406,11 @@ PhLVirtualMachine >> vmBinary: aPathOrFileReference [
 	vmBinaryRef := aPathOrFileReference asFileReference
 ]
 
+{ #category : #setting }
+PhLVirtualMachine >> vmBinaryFullName [
+	^ vmBinaryRef fullName
+]
+
 { #category : #accessing }
 PhLVirtualMachine >> vmFolder [
 	^ vmBinaryRef parent

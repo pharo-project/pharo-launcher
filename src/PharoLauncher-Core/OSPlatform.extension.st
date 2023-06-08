@@ -26,11 +26,11 @@ OSPlatform >> hostArchitecture [
 OSPlatform >> isValid: aPhLVirtualMachine [
 	
 	| architecture |
-	architecture := self architectureOf: aPhLVirtualMachine executablePath.
-	(architecture includes: #executable) ifFalse: [ ^ false ].
+	architecture := $, split: (self architectureOf: aPhLVirtualMachine vmBinaryFullName ).
+	architecture := architecture collect: [ :each | each trimBoth ].
+	architecture detect: [ :each | each includesSubstring: #executable] ifNone: [ ^ false ].
 	
 	"64 bits exe and 32-bit PhLVirtualMachine or vice-versa"
-	architecture := $, split: architecture.
 	((architecture includes: 'x86-64') xor: [ aPhLVirtualMachine is64bit ]) ifTrue: [ ^ false ].
 	
 	^ true

@@ -9,11 +9,19 @@ Class {
 }
 
 { #category : #querying }
-PhLTestLaunchConfiguration >> launchProcess [
-
+PhLTestLaunchConfiguration >> command [
+	
 	"dummy call, only requirement is that the command is available on supported Operating Systems."
 
+	^ OSPlatform current isWindows 
+		ifTrue: [ 'cd' ] 
+		ifFalse: [ 'true' ]
+]
+
+{ #category : #querying }
+PhLTestLaunchConfiguration >> launchProcess [
+
 	^ PhLProcessWrapper new
-		  command: 'cd';
+		  command: self command;
 		  yourself
 ]

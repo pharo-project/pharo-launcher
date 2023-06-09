@@ -14,6 +14,18 @@ PhLLaunchConfigurationTest >> newVMWith: bytes [
 ]
 
 { #category : #helper }
+PhLLaunchConfigurationTest >> newVm: id exeHeader: bytes [
+
+	| vmFile |
+	vmFile := self newVMWith: bytes.
+
+	^ (PhLVirtualMachine id: id)
+		executable: vmFile;
+		vmBinary: vmFile;
+		yourself
+]
+
+{ #category : #helper }
 PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 	^ (PhLVirtualMachine id: '80-x64-headless')
 			beHeadless;
@@ -107,9 +119,8 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectu
 	| launchConfig vm |
 	
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	vm := PhLVirtualMachine id: '110-x64'.
+	vm := self newVm: '110-x64' exeHeader: self vmMac32bitHeader.
 	vm be64bits.
-	vm executable: (self newVMWith: self vmMac32bitHeader).
 	launchConfig vm: vm.
 	
 	self deny: launchConfig vm isValidForArchitecture.
@@ -121,8 +132,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectu
 	| launchConfig vm |
 	
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	vm := PhLVirtualMachine id: '110-x86'.
-	vm executable: (self newVMWith: self vmMac64bitHeader).
+	vm := self newVm: '110-x86' exeHeader: self vmMac64bitHeader.
 	launchConfig vm: vm.
 	
 	self deny: launchConfig vm isValidForArchitecture.
@@ -134,9 +144,8 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectu
 	| launchConfig vm |
 	
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	vm := PhLVirtualMachine id: '110-x64'.
+	vm := self newVm: '110-x64' exeHeader: self vmMacArm64bitHeader.
 	vm be64bits.
-	vm executable: (self newVMWith: self vmMacArm64bitHeader).
 	launchConfig vm: vm.
 	
 	self useIntel64OsArchitectureDuring: [ 
@@ -149,8 +158,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenVmFoundNotExecutable [
 	| launchConfig vm |
 	
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	vm := PhLVirtualMachine id: '110-x86'.
-	vm executable: (self newVMWith: #[0 1 2 3]).
+	vm := self newVm: '110-x86' exeHeader: #[0 1 2 3].
 	launchConfig vm: vm.
 	
 	self deny: launchConfig vm isValidForArchitecture.
@@ -321,9 +329,8 @@ PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitect
 	| launchConfig vm |
 	
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	vm := PhLVirtualMachine id: '110-x64'.
+	vm := self newVm: '110-x64' exeHeader: self vmMac64bitHeader.
 	vm be64bits.
-	vm executable: (self newVMWith: self vmMac64bitHeader).
 	launchConfig vm: vm.
 	
 	self useArmOsArchitectureDuring: [ 

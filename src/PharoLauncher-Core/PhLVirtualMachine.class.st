@@ -301,7 +301,7 @@ PhLVirtualMachine >> isValidAfterUpdate [
 
 { #category : #testing }
 PhLVirtualMachine >> isValidForArchitecture [
-	
+	vmBinaryRef ifNil: [ ^ false ].
 	^ OSPlatform current isValid: self
 ]
 

@@ -31,7 +31,8 @@ OSPlatform >> isValid: aPhLVirtualMachine [
 	architecture detect: [ :each | each includesSubstring: #executable] ifNone: [ ^ false ].
 	
 	"64 bits exe and 32-bit PhLVirtualMachine or vice-versa"
-	((architecture includes: 'x86-64') xor: [ aPhLVirtualMachine is64bit ]) ifTrue: [ ^ false ].
+	((architecture detect: [ :each | (each includesSubstring: 'x86-64') or: [each includesSubstring: 'x86_64'] ] ) 
+		xor: [ aPhLVirtualMachine is64bit ]) ifTrue: [ ^ false ].
 	
 	^ true
 

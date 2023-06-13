@@ -342,7 +342,10 @@ PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitect
 { #category : #helper }
 PhLLaunchConfigurationTest >> useArmOsArchitectureDuring: aBlock [
 	
-	self useOsArchitecture: 'arm64' during: aBlock.
+	self 
+		useOsPlatform: MacOSXPlatform new
+		architecture: 'arm64'
+		during: aBlock
 ]
 
 { #category : #helper }
@@ -353,15 +356,21 @@ PhLLaunchConfigurationTest >> useIntel64OsArchitectureDuring: aBlock [
 
 { #category : #helper }
 PhLLaunchConfigurationTest >> useOsArchitecture: architectureId during: aBlock [
+
+	self
+		useOsPlatform: OSPlatform current
+		architecture: architectureId
+		during: aBlock
+]
+
+{ #category : #helper }
+PhLLaunchConfigurationTest >> useOsPlatform: osPlatform architecture: architectureId during: aBlock [
 	
-	| currentOsPlatform newOsPlatform |
+	| newOsPlatform |
 	
-	currentOsPlatform := OSPlatform current.
-	newOsPlatform := OSPlatform current class newAnonymousSubclass.
+	newOsPlatform := osPlatform class newAnonymousSubclass.
 	newOsPlatform compile: 'processorArchitecture ^ ''' , architectureId , ''''.
-	[ OSPlatform current: newOsPlatform new.
-	aBlock value ]
-		ensure: [ OSPlatform current: currentOsPlatform ]
+	OSPlatform usePlatform: newOsPlatform during: aBlock
 ]
 
 { #category : #'tests - data' }

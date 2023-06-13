@@ -157,10 +157,10 @@ PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArgument
 
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsCommandLineString [
-	| process commandString osPlatform |
-	osPlatform := OSPlatform current.
-	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
-	process := PhLProcessWrapper new 
+	| process commandString |
+	
+	OSPlatform usePlatform: Win64Platform new during: 
+	[ process := PhLProcessWrapper new 
 		command: 'C:\Users\me\pharo\Pharo.exe';
 		addArgument: '"D:\foo\ba r\ba r.image"';
 		prepareProcess;
@@ -168,8 +168,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineString [
 	
 	commandString := PhLProcessWrapperCommandStringGenerator new 
 		processWrapper: process;
-		visit. ]
-	ensure: [ OSPlatform classVarNamed: 'Current' put: osPlatform ].
+		visit. ].
 	
 	self assert: commandString equals: '"C:\Users\me\pharo\Pharo.exe" "D:\foo\ba r\ba r.image"'
 	
@@ -177,10 +176,10 @@ PhLProcessWrapperTest >> testWindowsCommandLineString [
 
 { #category : #tests }
 PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
-	| process commandString osPlatform |
-	osPlatform := OSPlatform current.
-	[ OSPlatform classVarNamed: 'Current' put: Win64Platform new.
-	process := PhLProcessWrapper new 
+	| process commandString |
+	
+	OSPlatform usePlatform: Win64Platform new during: 
+	[ process := PhLProcessWrapper new 
 		shellCommand;
 		addArgument: 'dir';
 		addArgument: '/foo/ba r';
@@ -189,8 +188,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
 	
 	commandString := PhLProcessWrapperCommandStringGenerator new 
 		processWrapper: process;
-		visit. ]
-	ensure: [ OSPlatform classVarNamed: 'Current' put: osPlatform ].
+		visit. ].
 	
 	self assert: commandString equals: 'C:\Windows\System32\cmd.exe /C "dir /foo/ba r"'
 	

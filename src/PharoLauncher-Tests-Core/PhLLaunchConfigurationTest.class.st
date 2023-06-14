@@ -370,7 +370,7 @@ PhLLaunchConfigurationTest >> useOsPlatform: osPlatform architecture: architectu
 	
 	newOsPlatform := osPlatform class newAnonymousSubclass.
 	newOsPlatform compile: 'processorArchitecture ^ ''' , architectureId , ''''.
-	OSPlatform usePlatform: newOsPlatform during: aBlock
+	OSPlatform usePlatform: newOsPlatform new during: aBlock
 ]
 
 { #category : #'tests - data' }

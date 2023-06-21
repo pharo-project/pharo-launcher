@@ -139,7 +139,7 @@ ConsoleListFormatter >> getColumnWidthsFrom: someObjects [
 ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: printBlock [
 	"evaluate print block and obtain string size, return max value from collection"
 
-	^ (someObjects collect: [ :item | (printBlock value: item) size ])
+	^ (someObjects collect: [ :item | (printBlock value: item) size min: self tableColumnWidthLimit ])
 		max
 ]
 
@@ -203,8 +203,12 @@ ConsoleListFormatter >> printAttributeTable [
 
 { #category : #private }
 ConsoleListFormatter >> printCell: aString width: widthSize [
-
-	self outStream nextPutAll: (aString padRightTo: widthSize)
+	
+	|shortened|
+	shortened := widthSize isZero 
+	ifTrue: [ aString ] 
+	ifFalse: [ aString shortenTo: widthSize ].
+	self outStream nextPutAll: (shortened padRightTo: widthSize)
 
 ]
 
@@ -305,4 +309,11 @@ ConsoleListFormatter >> rowMode [
 ConsoleListFormatter >> rowMode: aBool [
 
 	rowMode := aBool 
+]
+
+{ #category : #private }
+ConsoleListFormatter >> tableColumnWidthLimit [
+
+	"this is max size of table column, in case value in cell is exceeded, it will be shortened to this limit"
+	^ 35
 ]

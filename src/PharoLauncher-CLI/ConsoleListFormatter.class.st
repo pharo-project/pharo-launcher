@@ -315,5 +315,5 @@ ConsoleListFormatter >> rowMode: aBool [
 ConsoleListFormatter >> tableColumnWidthLimit [
 
 	"this is max size of table column, in case value in cell is exceeded, it will be shortened to this limit"
-	^ 35
+	^ 50
 ]

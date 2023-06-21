@@ -19,6 +19,27 @@ PhLImageProcessListCliCommandTest >> testExecute [
 ]
 
 { #category : #tests }
+PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
+
+	|processListCmd aString resultArray|
+	processListCmd := PhLImageProcessListCliCommand new.
+	aString := String streamContents: [: aStream | 
+		aStream 
+			nextPutAll: '1111-|-path/to/vm-|-path/to/1st.image-|-May 1 2023'; 
+			nextPutAll: OSPlatform current lineEnding; 
+			nextPutAll: '2222-|-path/to/2nd-vm-|-path/to/2nd.image-|-Jun 2 2023';
+			nextPutAll: OSPlatform current lineEnding; 
+			nextPutAll: '3333-|-path/to/3rd-vm-|-path/to/3rd.image-|-Jul 3 2023';
+			nextPutAll: OSPlatform current lineEnding
+		].
+	resultArray := processListCmd imageProcesListFrom: aString.
+	self assert: resultArray size equals: 3.
+	 
+
+
+]
+
+{ #category : #tests }
 PhLImageProcessListCliCommandTest >> testOsShellArgArray [
 
 	|processListCmd argArray|

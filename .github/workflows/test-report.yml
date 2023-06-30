@@ -1,0 +1,28 @@
+# This is a basic workflow to help you get started with Actions
+
+name: 'Test Report'
+
+# Controls when the action will run. 
+on:
+    workflow_run:
+      workflows: ['CI']                     # runs after CI workflow
+      types:
+        - completed
+    # Allows you to run this workflow manually from the Actions tab
+    workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: dorny/test-reporter@v1
+        with:
+          artifact: test-results            # artifact name
+          name: Pharo Launcher Tests        # Name of the check run which will be created
+          path: '*.xml'                     # Path to test results (inside artifact .zip)
+          reporter: java-junit              # Format of test results

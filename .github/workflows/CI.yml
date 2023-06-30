@@ -1,0 +1,43 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events
+  push:
+  pull_request:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set environment
+        run: | 
+          echo GITHUB_REF_NAME = ${GITHUB_REF_NAME}
+          echo GITHUB_SHA = ${GITHUB_SHA}
+          echo GITHUB_WORKSPACE = $GITHUB_WORKSPACE
+      - name: Build and test
+        run: |
+          export PHARO=110
+          export ARCHITECTURE=64
+          export VM=vm
+          VERSION=${GITHUB_SHA} ./build.sh prepare
+          VERSION=${GITHUB_SHA} ./build.sh test
+
+      - uses: actions/upload-artifact@v2  # upload test results
+        if: success() || failure()        # run this step even if previous step failed
+        with:
+            name: test-results
+            path: ./*.xml

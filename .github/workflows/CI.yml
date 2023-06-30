@@ -49,3 +49,24 @@ jobs:
           name: Pharo Launcher Tests        # Name of the check run which will be created
           path: ./*.xml                     # Path to test results
           reporter: java-junit              # Format of test results
+          fail-on-error: 'false'            # need to go further in the pipeline setup
+          
+      - name: Make Pharo Launcher deployed
+        run: |
+          ./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
+          # Set the launcher version on Pharo 
+          LAUNCHER_VERSION=$(eval 'git describe --tags --always')
+          ./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
+          # Avoid to have PL core dir set to the slave location and having an outdated list of templates
+          ./pharo PharoLauncher.image eval --save \
+              "PhLTemplateSources resetLauncherCoreDir.
+              PharoLauncherApplication resetTemplateRepository.
+              PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
+
+      - uses: actions/upload-artifact@v2  # upload test results
+        with:
+            name: packaging-user
+            path: |
+              PharoLauncher.image
+              PharoLauncher.changes
+              Pharo*.sources

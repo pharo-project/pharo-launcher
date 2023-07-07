@@ -10,6 +10,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
+env:
+  PHARO: 100
+  ARCHITECTURE: 64
+  VM: vm
+
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build:
@@ -28,13 +33,14 @@ jobs:
           echo GITHUB_REF_NAME = ${GITHUB_REF_NAME}
           echo GITHUB_SHA = ${GITHUB_SHA}
           echo GITHUB_WORKSPACE = $GITHUB_WORKSPACE
+          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+          echo SHORT_SHA = ${SHORT_SHA}
+          echo "LAUNCHER_VERSION=$(eval 'git describe --tags --always')" >> $GITHUB_ENV
+          echo LAUNCHER_VERSION = $LAUNCHER_VERSION
       - name: Build and test
         run: |
-          export PHARO=110
-          export ARCHITECTURE=64
-          export VM=vm
-          VERSION=${GITHUB_SHA} ./build.sh prepare
-          VERSION=${GITHUB_SHA} ./build.sh test
+          VERSION=${SHORT_SHA} ./build.sh prepare
+          VERSION=${SHORT_SHA} ./build.sh test
 
       - uses: actions/upload-artifact@v2  # upload test results
         if: success() || failure()        # run this step even if previous step failed
@@ -50,12 +56,11 @@ jobs:
           path: ./*.xml                     # Path to test results
           reporter: java-junit              # Format of test results
           fail-on-error: 'false'            # need to go further in the pipeline setup
-          
+
       - name: Make Pharo Launcher deployed
+        if: success() || failure()    # run this step even if previous step failed
         run: |
           ./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
-          # Set the launcher version on Pharo 
-          LAUNCHER_VERSION=$(eval 'git describe --tags --always')
           ./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
           # Avoid to have PL core dir set to the slave location and having an outdated list of templates
           ./pharo PharoLauncher.image eval --save \
@@ -63,10 +68,22 @@ jobs:
               PharoLauncherApplication resetTemplateRepository.
               PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
 
-      - uses: actions/upload-artifact@v2  # upload test results
+      - uses: actions/upload-artifact@v2
+        if: success() || failure()    # run this step even if previous step failed
         with:
             name: packaging-user
             path: |
               PharoLauncher.image
               PharoLauncher.changes
               Pharo*.sources
+
+      - name: Linux packaging
+        if: success() || failure()    # run this step even if previous step failed
+        run: VERSION=${SHORT_SHA} ./build.sh linux-package
+
+      - uses: actions/upload-artifact@v2
+        if: success() || failure()    # run this step even if previous step failed
+        with:
+            name: PharoLauncher-linux-${{ env.SHORT_SHA }}
+            path: |
+              build/

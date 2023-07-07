@@ -63,7 +63,7 @@ function package_user_version() {
 	zip -9r PharoLauncher-user-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
 }
 
-function package_linux_version() {
+function package_linux_version_with_pharo_build_scripts() {
 	set_env
 	rm -f pharo-build-scripts/platform/icons/*
 	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
@@ -78,6 +78,23 @@ function package_linux_version() {
 		 -p linux
 	
 	mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
+}
+
+function package_linux_version() {
+	set_env
+	OUTPUT_PATH=build
+	RESOURCES_PATH=$OUTPUT_PATH/shared
+	rm -f $OUTPUT_PATH; mkdir $OUTPUT_PATH
+	mkdir $OUTPUT_PATH/icons; cp icons/pharo-launcher.png $OUTPUT_PATH/
+	cp linux/pharo-launcher $OUTPUT_PATH/
+	mkdir $RESOURCES_PATH
+	copy_current_stable_image_to $RESOURCES_PATH
+	expand_all_templates $OUTPUT_PATH
+	cp PharoLauncher.image $RESOURCES_PATH
+    cp PharoLauncher.changes $RESOURCES_PATH
+    cp Pharo*.sources $RESOURCES_PATH
+	fetch_current_vm_to $RESOURCES_PATH
+	# mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
 
 function prepare_mac_resources_for_build_platform_script() {
@@ -180,11 +197,55 @@ function set_env() {
 	VERSION_NUMBER="$VERSION-$ARCH_SUFFIX"
 }
 
-function copy_current_stable_image() {
-	local IMAGES_PATH="images"
+function copy_current_stable_image_to() {
+	local DEST_PATH=${1:-.} # If no argument given, use current working dir
+	local IMAGES_PATH=$DEST_PATH/images
 	mkdir "$IMAGES_PATH"
-	wget -P $IMAGES_PATH https://files.pharo.org/image/stable/stable-64.zip
+	wget --progress=dot:mega -P $IMAGES_PATH https://files.pharo.org/image/stable/stable-64.zip
     mv "$IMAGES_PATH/stable-64.zip" "$IMAGES_PATH/pharo-stable.zip"
+}
+
+function fetch_current_vm_to() {
+	local DEST_PATH=${1:-.} # If no argument given, use current working dir
+	set_arch_path
+	local LINUX_VM_PATH="pharo-vm-Linux-$VM_ARCH_PATH-stable.zip"
+	test -f $LINUX_VM_PATH || wget --progress=dot:mega http://files.pharo.org/get-files/$PHARO/$LINUX_VM_PATH
+  
+	if [ -f "$LINUX_VM_PATH" ] ; then
+	    unzip -q "$LINUX_VM_PATH" -d "$DEST_PATH/tmp"
+		mkdir "$DEST_PATH/pharo-vm/"
+	    mv "$DEST_PATH"/tmp/* "$DEST_PATH/pharo-vm/"
+	else
+	    echo "Warning: Cannot find Linux VM!"
+	fi
+}
+
+function set_arch_path() {
+	case "$ARCHITECTURE" in
+	    64) export VM_ARCH_PATH="x86_64"
+	        ;;
+		arm64) export VM_ARCH_PATH="arm64"
+	        ;;
+	    *) 	echo "Error! Architecture $ARCH is not supported!"
+			export VM_ARCH_PATH=
+			exit 1
+			;;
+	esac
+}
+
+function expand_all_templates() {
+	local OUTPUT_PATH=$1
+	local OPTION_WHEN=`date +"%B %d, %Y"`
+	set_env
+	find "$OUTPUT_PATH" -name "*.template" | while read FILE ; do
+		sed \
+			-e "s/%{NAME}/PharoLauncher/g" \
+			-e "s/%{TITLE}/PharoLauncher/g" \
+			-e "s/%{VERSION}/$VERSION-$DATE/g" \
+			-e "s/%{WHEN}/$OPTION_WHEN/g" \
+				"$FILE" > "${FILE%.*}"
+		rm -f "$FILE"
+	done
 }
 
 PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.

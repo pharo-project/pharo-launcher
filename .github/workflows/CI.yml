@@ -87,3 +87,41 @@ jobs:
             name: PharoLauncher-linux-${{ env.SHORT_SHA }}
             path: |
               build/
+
+  win-package:
+    name: Windows packaging
+    needs: build
+    runs-on: windows-latest
+    if: success() || failure()    # run this step even if previous step failed
+
+    steps:
+      - name: Set environment
+        run: | 
+
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      #- name: Prepare files
+      #  run: VERSION=${SHORT_SHA} ./build.sh win-package
+
+      - name: Build Advanced Installer Project
+        uses: caphyon/advinst-github-action@v1.0
+        with:
+          advinst-version: '19.1'
+          advinst-enable-automation: 'true'
+          aip-path: ${{ github.workspace }}\windows\pharo-launcher.aip
+          aip-build-name: DefaultBuild
+          aip-package-name: pharo-launcher.msi
+          aip-output-dir:  ${{ github.workspace }}\build
+          aip-commands: |
+            SetProperty FOO="foo"
+            SetVersion 1.2.0
+
+      - uses: actions/upload-artifact@v2
+        with:
+            name: PharoLauncher-windows-${{ env.SHORT_SHA }}
+            path: |
+              pharo-launcher-*.msi
+              Pharo-win.zip
+              **/*

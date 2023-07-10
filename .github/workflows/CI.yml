@@ -7,6 +7,8 @@ on:
   # Triggers the workflow on push or pull request events
   push:
   pull_request:
+  release:
+    types: [published]
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -14,9 +16,11 @@ env:
   PHARO: 100
   ARCHITECTURE: 64
   VM: vm
+  isRelease: ${{ startsWith(github.ref, 'refs/tags/v') }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
@@ -32,13 +36,16 @@ jobs:
         run: | 
           echo GITHUB_REF_NAME = ${GITHUB_REF_NAME}
           echo GITHUB_SHA = ${GITHUB_SHA}
+          echo isRelease = ${{ env.isRelease }}
           echo GITHUB_WORKSPACE = $GITHUB_WORKSPACE
+          git rev-parse --short HEAD
           echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo SHORT_SHA = ${SHORT_SHA}
           echo "LAUNCHER_VERSION=$(eval 'git describe --tags --always')" >> $GITHUB_ENV
-          echo LAUNCHER_VERSION = $LAUNCHER_VERSION
+
       - name: Build and test
         run: |
+          echo SHORT_SHA = ${SHORT_SHA}
+          echo LAUNCHER_VERSION = $LAUNCHER_VERSION
           VERSION=${SHORT_SHA} ./build.sh prepare
           VERSION=${SHORT_SHA} ./build.sh test
 
@@ -79,28 +86,66 @@ jobs:
 
       - name: Linux packaging
         if: success() || failure()    # run this step even if previous step failed
-        run: VERSION=${SHORT_SHA} ./build.sh linux-package
+        run: VERSION=${LAUNCHER_VERSION} ./build.sh linux-package
 
       - uses: actions/upload-artifact@v2
         if: success() || failure()    # run this step even if previous step failed
         with:
-            name: PharoLauncher-linux-${{ env.SHORT_SHA }}
+            name: PharoLauncher-linux-${{ env.LAUNCHER_VERSION }}
             path: |
               build/
 
+    outputs:
+      launcherVersion: ${{ env.LAUNCHER_VERSION }}
+      
   win-package:
     name: Windows packaging
     needs: build
     runs-on: windows-latest
+    env:
+      PACKAGE_DIR: windows\pharo-launcher-win
     if: success() || failure()    # run this step even if previous step failed
 
     steps:
-      - name: Set environment
+      - name: Compute Installer version
+        shell: bash
         run: | 
+          # VERSION cannot be a string in Advanced Installer. Let's use 0.0.0 for bleeding edge versions
+          installerVersion=0.0.0
+          if [ "${{ env.isRelease }}" = true ] ; then
+            # only get version number, not arch
+            # uses bash parameter expansion using a pattern. 
+            #   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
+            installerVersion=${${{ needs.build.outputs.launcherVersion }}%-*}
+          fi
+          echo installerVersion = $installerVersion
+          echo "INSTALLER_VERSION=$installerVersion" >> $GITHUB_ENV             
 
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+
+      - name: Prepare files
+        shell: pwsh
+        run: |
+          Invoke-WebRequest -OutFile pharo-win-stable-signed.zip -Uri http://files.pharo.org/get-files/110/pharo-win-stable-signed.zip
+          Expand-Archive -LiteralPath .\pharo-win-stable-signed.zip -DestinationPath $Env:PACKAGE_DIR
+          $Env:IMAGES_DIR = "${Env:PACKAGE_DIR}\images"
+          mkdir "$Env:IMAGES_DIR"
+          Invoke-WebRequest -OutFile ${Env:IMAGES_DIR}\pharo-stable.zip -Uri https://files.pharo.org/image/stable/stable-64.zip
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: packaging-user
+          path: ${{ env.PACKAGE_DIR }}
+
+      - name: Display structure of files to package
+        run: Get-ChildItem -Recurse ${{ env.PACKAGE_DIR }}
+
+      - uses: actions/upload-artifact@v2
+        with:
+            name: PharoLauncher-windows-${{ needs.build.outputs.launcherVersion }}
+            path: ${{ env.PACKAGE_DIR }}
 
       #- name: Prepare files
       #  run: VERSION=${SHORT_SHA} ./build.sh win-package
@@ -110,18 +155,44 @@ jobs:
         with:
           advinst-version: '19.1'
           advinst-enable-automation: 'true'
-          aip-path: ${{ github.workspace }}\windows\pharo-launcher.aip
-          aip-build-name: DefaultBuild
-          aip-package-name: pharo-launcher.msi
-          aip-output-dir:  ${{ github.workspace }}\build
-          aip-commands: |
-            SetProperty FOO="foo"
-            SetVersion 1.2.0
 
+      # See https://www.advancedinstaller.com/user-guide/tutorial-powershell-commands-installation.html for more details
+      - name: Build setup using Advinst Powershell Automation
+        shell: pwsh
+        run: |
+          $advinst = New-Object -ComObject AdvancedInstaller
+          $project = $advinst.CreateProjects("simple")
+          $project.ProductDetails.Name = “Pharo Launcher”
+          $project.ProductDetails.Publisher= “Pharo project”
+          $project.ProductDetails.Version= “${{ env.INSTALLER_VERSION }}”
+          $Env:PHARO_LAUNCHER_ICON = "${{ github.workspace }}\icons\pharo-launcher.ico"
+          $project.ProductDetails.SetIcon($Env:PHARO_LAUNCHER_ICON)
+          $project.InstallParameters.ApplicationFolder = "[LocalAppDataFolder]\[ProductName]"
+
+          $project.FilesComponent.AddFolderContents(“appdir”, “${{ github.workspace }}\${{ env.PACKAGE_DIR }}”)
+          $project.FilesComponent.Files
+
+          $project.ShortcutsComponent.CreateFileShortcutS("desktopfolder", "appdir\Pharo.exe")
+          $project.ShortcutsComponent.CreateFileShortcutS("programmenufolder", "appdir\Pharo.exe")
+          $project.ShortcutsComponent.CreateFileShortcutS($project.PredefinedFolders.ShortcutFolder.FullPath, "appdir\Pharo.exe")
+          for ($index = 0 ; $index -le 2 ; $index++) {
+            $shortcut = $project.ShortcutsComponent.Shortcuts[$index]
+            $shortcut.Icon($Env:PHARO_LAUNCHER_ICON)
+            $shortcut.Name = 'Pharo Launcher'
+            $shortcut.Arguments = 'Pharo.image'
+          }
+
+          $outputFolder = "${{ github.workspace }}\setup";
+          $defaultBuild = $project.BuildComponent.Builds[0];
+          $defaultBuild.OutputFolder = $outputFolder
+          
+          $projectFile = "${{ github.workspace }}\pharo-launcher-${{ needs.build.outputs.launcherVersion }}.aip"
+          $project.SaveAs($projectFile)
+          get-content $projectFile
+          $project.Build()
+  
       - uses: actions/upload-artifact@v2
         with:
-            name: PharoLauncher-windows-${{ env.SHORT_SHA }}
-            path: |
-              pharo-launcher-*.msi
-              Pharo-win.zip
-              **/*
+            name: PharoLauncher-windows-installer-${{ needs.build.outputs.launcherVersion }}
+            path: setup/pharo-launcher*.msi
+

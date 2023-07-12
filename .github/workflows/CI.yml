@@ -38,14 +38,19 @@ jobs:
           echo GITHUB_SHA = ${GITHUB_SHA}
           echo isRelease = ${{ env.isRelease }}
           echo GITHUB_WORKSPACE = $GITHUB_WORKSPACE
-          git rev-parse --short HEAD
-          echo "SHORT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
-          echo "LAUNCHER_VERSION=$(eval 'git describe --tags --always')" >> $GITHUB_ENV
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          echo SHORT_SHA = $SHORT_SHA
+          echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_ENV
+          case ${{ env.isRelease }} in
+            (true)    export LAUNCHER_VERSION="$(git describe --tags --always)";;
+            (false)   export LAUNCHER_VERSION=$SHORT_SHA;;
+            *)        echo "${{ env.isRelease }}";;
+          esac
+          echo "LAUNCHER_VERSION=$LAUNCHER_VERSION" >> $GITHUB_ENV
+          echo LAUNCHER_VERSION = $LAUNCHER_VERSION
 
       - name: Build and test
         run: |
-          echo SHORT_SHA = ${SHORT_SHA}
-          echo LAUNCHER_VERSION = $LAUNCHER_VERSION
           VERSION=${SHORT_SHA} ./build.sh prepare
           VERSION=${SHORT_SHA} ./build.sh test
 
@@ -66,14 +71,7 @@ jobs:
 
       - name: Make Pharo Launcher deployed
         if: success() || failure()    # run this step even if previous step failed
-        run: |
-          ./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
-          ./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
-          # Avoid to have PL core dir set to the slave location and having an outdated list of templates
-          ./pharo PharoLauncher.image eval --save \
-              "PhLTemplateSources resetLauncherCoreDir.
-              PharoLauncherApplication resetTemplateRepository.
-              PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
+        run: ./build.sh make-deployed
 
       - uses: actions/upload-artifact@v2
         if: success() || failure()    # run this step even if previous step failed
@@ -196,3 +194,30 @@ jobs:
             name: PharoLauncher-windows-installer-${{ needs.build.outputs.launcherVersion }}
             path: setup/pharo-launcher*.msi
 
+  mac-package:
+    name: Mac OS packaging
+    needs: build
+    runs-on: macos-latest
+    env:
+      RESOURCES_DIR: PharoLauncher.app/Contents/Resources
+    if: success() || failure()    # run this step even if previous step failed
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v3
+        with:
+          name: packaging-user
+          path: ${{ env.RESOURCES_DIR }}
+
+      - name: Build DMG
+        run: VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
+
+      # TODO: Build ARM DMG
+
+      - uses: actions/upload-artifact@v2
+        with:
+            name: PharoLauncher-mac-installer-${{ needs.build.outputs.launcherVersion }}
+            path: PharoLauncher-*.dmg

@@ -36,7 +36,7 @@ function run_tests() {
 	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
 }
 
-function package_user_version() {
+function make_pharo_launcher_deloyed() {
 	./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
 
 	# Set the launcher version on Pharo 
@@ -48,36 +48,6 @@ function package_user_version() {
 		"PhLTemplateSources resetLauncherCoreDir.
 		PharoLauncherApplication resetTemplateRepository.
 		PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
-
-	# Create the platform-specific archives
-	mkdir One
-	cp PharoLauncher.image   One/Pharo.image
-	cp PharoLauncher.changes One/Pharo.changes
-	cp Pharo*.sources        One/
-	cd One
-	copy_current_stable_image
-	cd ..
-
-	set_env
-
-	zip -9r PharoLauncher-user-$VERSION_NUMBER.zip PharoLauncher.image PharoLauncher.changes launcher-version.txt
-}
-
-function package_linux_version_with_pharo_build_scripts() {
-	set_env
-	rm -f pharo-build-scripts/platform/icons/*
-	cp icons/pharo-launcher.png pharo-build-scripts/platform/icons/
-	rm pharo-build-scripts/platform/templates/linux/%\{NAME\}.template
-	cp linux/pharo-launcher pharo-build-scripts/platform/templates/linux/pharo-launcher.template
-	EXECUTABLE_NAME=pharo-launcher WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
-		 -i Pharo \
-		 -o PharoLauncher \
-		 -r $PHARO \
-		 -v $VERSION-$DATE \
-		 -t PharoLauncher \
-		 -p linux
-	
-	mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
 }
 
 function package_linux_version() {
@@ -93,21 +63,16 @@ function package_linux_version() {
 	cp PharoLauncher.image $RESOURCES_PATH
     cp PharoLauncher.changes $RESOURCES_PATH
     cp Pharo*.sources $RESOURCES_PATH
-	fetch_current_vm_to $RESOURCES_PATH
-	# mv PharoLauncher-linux.zip PharoLauncher-linux-$VERSION_NUMBER.zip
-}
-
-function prepare_mac_resources_for_build_platform_script() {
-	rm -f pharo-build-scripts/platform/icons/*
-	cd icons
-	./build-icns.sh pharo-launcher.png PharoLauncher.iconset
-	cd ..
-	cp icons/PharoLauncher.icns pharo-build-scripts/platform/icons/
-	rm -f pharo-build-scripts/platform/templates/mac/Contents/*
-	cp mac/Info.plist.template pharo-build-scripts/platform/templates/mac/Contents/ 
+	fetch_current_vm_to $(pwd)/$RESOURCES_PATH
+	# ensure the linux script is executable
+	chmod +x "$OUTPUT_PATH/pharo-launcher" || true
 }
 
 function copy_mac_icon_files_to() {
+	cd icons
+	./build-icns.sh pharo-launcher.png PharoLauncher.iconset
+	cd ..
+	cp icons/PharoLauncher.icns $1
 	cp icons/PharoImage.icns $1
 	cp icons/PharoChanges.icns $1
 	cp icons/PharoSources.icns $1
@@ -115,68 +80,22 @@ function copy_mac_icon_files_to() {
 
 function package_mac_version() {
 	set_env
-	local should_sign=${1:-false} # If no argument given, do not sign
-	prepare_mac_resources_for_build_platform_script
-	WORKSPACE=$(pwd) IMAGES_PATH=$(pwd)/One INPUT_SOURCES=$(ls $IMAGES_PATH/Pharo*.sources) ./pharo-build-scripts/build-platform.sh \
-		-i Pharo \
-		-o PharoLauncher \
-		-r $PHARO \
-		-v $VERSION-$DATE \
-		-t PharoLauncher \
-		-p mac
-	unzip PharoLauncher-mac.zip -d .
+	OUTPUT_PATH=PharoLauncher.app/Contents
+	RESOURCES_PATH=$OUTPUT_PATH/Resources
+	BIN_PATH=$OUTPUT_PATH/MacOS
+	cp mac/Info.plist.template $OUTPUT_PATH/
+	cp -R mac/MainMenu.nib $RESOURCES_PATH/English.lproj/
+	expand_all_templates $OUTPUT_PATH
+	copy_current_stable_image_to $RESOURCES_PATH
+	copy_mac_icon_files_to $RESOURCES_PATH/
 	mv mac-installer-background.png background.png
-	rm -f PharoLauncher.app/Contents/Resources/English.lproj/MainMenu.nib
-	cp -R mac/MainMenu.nib PharoLauncher.app/Contents/Resources/English.lproj/
-	copy_mac_icon_files_to PharoLauncher.app/Contents/Resources/
+	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
-}
-
-function package_windows_version() {
-	local should_sign=false # For now do not sign, we do not have anymore a valid certificate file  ${1:-false} # If no argument given, do not sign
-	set_env
-	WIN_VM_PATH=pharo-win-stable-signed.zip INPUT_SOURCES=One/$(basename $(ls One/Pharo*.sources)) bash ./pharo-build-scripts/build-platform.sh \
-		-i Pharo \
-		-o Pharo \
-		-r $PHARO \
-		-v $VERSION-$DATE \
-		-t Pharo \
-		-p win
-	unzip Pharo-win.zip -d .
-	
-	if [ "$should_sign" = true ] ; then
-		openssl aes-256-cbc -k "${PHARO_CERT_PASSWORD}" -in signing/pharo-windows-certificate.p12.enc -out pharo-windows-certificate.p12 -d
-		local signtool='C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\signtool.exe'
-		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/Pharo.exe
-		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} Pharo/PharoConsole.exe
-	fi
-
-	local installerVerion=bleedingEdge
-	if [ "$IS_RELEASE" = true ] ; then
-		# only get version number, not arch
-		# uses bash parameter expansion using a pattern. 
-		#   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
-		installerVerion=${VERSION_NUMBER%-*}
-	fi
-	OS_NAME=$(uname -s)
-	OS_NAME=${OS_NAME:0:6}
-	if [[ "$OS_NAME" = "CYGWIN" ]]
-	then
-   		# Cygwin specific stuff
-   		CMD="cygstart --wait cmd"
-	else
-   		CMD=cmd
-	fi
-	INSTALLER_VERSION=$installerVerion $CMD /c windows\\build-launcher-installer.bat
-	if [ "$should_sign" = true ] ; then
-		"$signtool" sign //f pharo-windows-certificate.p12 //p ${PHARO_CERT_PASSWORD} pharo-launcher-${VERSION}.msi
-		rm pharo-windows-certificate.p12
-	fi
 }
 
 function set_env() {
@@ -217,6 +136,30 @@ function fetch_current_vm_to() {
 	    mv "$DEST_PATH"/tmp/* "$DEST_PATH/pharo-vm/"
 	else
 	    echo "Warning: Cannot find Linux VM!"
+	fi
+}
+
+function fetch_current_mac_vm_to() {
+	# Only works for VM >= 90. If you need a VM < 90, you need to 
+	# udpate this method to use either the old or new VM URL format (see zeroconf).
+	local DEST_PATH=${1:-.} # If no argument given, use current working dir
+	set_arch_path
+	local VM_URL="http://files.pharo.org/get-files/$PHARO/pharo-vm-Darwin-${VM_ARCH_PATH}-stable.zip"
+	local VM_TMP_PATH="$DEST_PATH/tmp"
+	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
+	VM_ZIP="${VM_TMP_PATH}/vm.zip"
+	curl --silent --location --compressed --output "${VM_ZIP}" ${VM_URL}
+	if [ -f "${VM_ZIP}" ] ; then
+		unzip -q "${VM_ZIP}" -d "$VM_TMP_PATH"
+	    # Ensuring bin and plugins
+	    mv "$VM_TMP_PATH/Pharo.app/Contents/MacOS" "$DEST_PATH"
+	    # Need to add this ugly '*' outside double-quotes to be able to copy the content of the folder (and not the folder itself) on linux
+	    cp -R "$VM_TMP_PATH/Pharo.app/Contents/Resources/"* "$DEST_PATH/Resources"
+
+	    cd -
+	    rm -rf "$VM_TMP_PATH"
+	else
+	    echo "Warning: Cannot find Mac OS VM!"
 	fi
 }
 
@@ -264,8 +207,8 @@ prepare)
 test)
   run_tests
   ;;
-user)
-  package_user_version
+make-deployed)
+  make_pharo_launcher_deloyed
   ;;
 win-package)
   package_windows_version $SHOULD_SIGN

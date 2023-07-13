@@ -200,6 +200,9 @@ jobs:
     runs-on: macos-latest
     env:
       RESOURCES_DIR: PharoLauncher.app/Contents/Resources
+    strategy:
+      matrix:
+        arch: [64, arm64]
     if: success() || failure()    # run this step even if previous step failed
 
     steps:
@@ -212,12 +215,10 @@ jobs:
           name: packaging-user
           path: ${{ env.RESOURCES_DIR }}
 
-      - name: Build DMG
-        run: VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
-
-      # TODO: Build ARM DMG
+      - name: Build ${{ matrix.arch }} mac os package
+        run: ARCHITECTURE=${{ matrix.arch }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
 
       - uses: actions/upload-artifact@v2
         with:
-            name: PharoLauncher-mac-installer-${{ needs.build.outputs.launcherVersion }}
+            name: PharoLauncher-mac-installer-${{ matrix.arch }}-${{ needs.build.outputs.launcherVersion }}
             path: PharoLauncher-*.dmg

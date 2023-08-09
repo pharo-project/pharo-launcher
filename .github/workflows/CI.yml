@@ -77,7 +77,6 @@ jobs:
           name: Pharo Launcher Tests        # Name of the check run which will be created
           path: ./*.xml                     # Path to test results
           reporter: java-junit              # Format of test results
-          fail-on-error: 'false'            # need to go further in the pipeline setup
 
       - name: Make Pharo Launcher deployed
         run: ./build.sh make-deployed

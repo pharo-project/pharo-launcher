@@ -104,10 +104,8 @@ function set_env() {
 	        32) ARCH_SUFFIX="x86"
 	        	;;
 	        64) ARCH_SUFFIX="x64"
-				export ARCH=64
 	        	;;
 	        arm64) ARCH_SUFFIX="arm64"
-				export ARCH=arm64
 	        	;;
 	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 				exit 1
@@ -169,7 +167,7 @@ function set_arch_path() {
 	        ;;
 		arm64) export VM_ARCH_PATH="arm64"
 	        ;;
-	    *) 	echo "Error! Architecture $ARCH is not supported!"
+	    *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
 			export VM_ARCH_PATH=
 			exit 1
 			;;
@@ -191,9 +189,9 @@ function expand_all_templates() {
 	done
 }
 
-PHARO=${PHARO:=70}  	# If PHARO not set, set it to 70.
+PHARO=${PHARO:=70}  # If PHARO not set, set it to 70.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
-ARCHITECTURE=${ARCHITECTURE:-'32'}		# If ARCH not set, set it to 32 bits
+ARCHITECTURE=${ARCHITECTURE:-'32'}	# If ARCHITECTURE not set, set it to 32 bits
 
 SCRIPT_TARGET=${1:-all}
 SHOULD_SIGN=${SHOULD_SIGN:-false}
@@ -210,18 +208,11 @@ test)
 make-deployed)
   make_pharo_launcher_deloyed
   ;;
-win-package)
-  package_windows_version $SHOULD_SIGN
-  ;;
-mac-package)
-  package_mac_version $SHOULD_SIGN
-  ;;
 linux-package)
   package_linux_version
   ;;
-all)
-  prepare_image && run_tests && package_user_version \
-  	&& package_linux_version
+mac-package)
+  package_mac_version $SHOULD_SIGN
   ;;
 *)
   echo "No valid target specified! Exiting"

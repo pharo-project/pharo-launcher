@@ -80,11 +80,9 @@ jobs:
           fail-on-error: 'false'            # need to go further in the pipeline setup
 
       - name: Make Pharo Launcher deployed
-        if: success() || failure()    # run this step even if previous step failed
         run: ./build.sh make-deployed
 
       - uses: actions/upload-artifact@v3
-        if: success() || failure()    # run this step even if previous step failed
         with:
             name: packaging-user
             path: |
@@ -93,11 +91,9 @@ jobs:
               Pharo*.sources
 
       - name: Linux packaging
-        if: success() || failure()    # run this step even if previous step failed
         run: VERSION=${LAUNCHER_VERSION} ./build.sh linux-package
 
       - uses: actions/upload-artifact@v3
-        if: success() || failure()    # run this step even if previous step failed
         with:
             name: PharoLauncher-linux-${{ env.LAUNCHER_VERSION }}-${{ env.FILE_NAME_ARCH_SUFFIX }}
             path: |
@@ -112,7 +108,6 @@ jobs:
     runs-on: windows-latest
     env:
       PACKAGE_DIR: windows\pharo-launcher-win
-    if: success() || failure()    # run this step even if previous step failed
 
     steps:
       - name: Compute Installer version
@@ -157,13 +152,10 @@ jobs:
             name: PharoLauncher-windows-${{ needs.build.outputs.launcherVersion }}
             path: ${{ env.PACKAGE_DIR }}
 
-      #- name: Prepare files
-      #  run: VERSION=${SHORT_SHA} ./build.sh win-package
-
       - name: Build Advanced Installer Project
         uses: caphyon/advinst-github-action@v1.0
         with:
-          advinst-version: '19.1'
+          advinst-version: '20.9.1'
           advinst-enable-automation: 'true'
 
       # See https://www.advancedinstaller.com/user-guide/tutorial-powershell-commands-installation.html for more details
@@ -215,7 +207,6 @@ jobs:
     strategy:
       matrix:
         arch: [64, arm64]
-    if: success() || failure()    # run this step even if previous step failed
 
     steps:
       - uses: actions/checkout@v3
@@ -262,3 +253,6 @@ jobs:
             **/*.msi
             **/*.dmg
             *.zip
+          body: |
+            Warning: Release artefacts below are not signed nor notarized and by consequence, are not recognized as safe by Operating Systems.
+            You can still use them but the prefered way is to download signed and notarized installers from https://pharo.org/download

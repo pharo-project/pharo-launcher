@@ -1,4 +1,4 @@
-# Pharo Launcher [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/)
+# Pharo Launcher [![CI](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml/badge.svg)](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml)
 The Pharo Launcher is a cross-platform application that
 - lets you manage your Pharo images (launch, rename, copy and delete);
 - lets you download image templates (i.e., zip archives) from many
@@ -16,7 +16,7 @@ Please report bugs on the 'Launcher' project at [https://github.com/pharo-projec
 You can contribute to this project. All classes and most methods are commented. There are unit tests. Please contribute!
 
 - **Source code:** [https://github.com/pharo-project/pharo-launcher](https://github.com/pharo-project/pharo-launcher)
-- **CI:** [https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/](https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/) [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/)
+- **CI:** [https://github.com/pharo-project/pharo-launcher/actions](https://github.com/pharo-project/pharo-launcher/actions) [![CI](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml/badge.svg)](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml)
 
 ## Motivations
 In the past, I had several folders with images everywhere on my HD. Sometimes with the VM, sometimes without. Lots of image searching as you can imagine.

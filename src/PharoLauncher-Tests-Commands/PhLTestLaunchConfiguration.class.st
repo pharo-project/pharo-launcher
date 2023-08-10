@@ -9,8 +9,7 @@ Class {
 }
 
 { #category : #querying }
-PhLTestLaunchConfiguration >> command [
-	
+PhLTestLaunchConfiguration >> command [	
 	"dummy call, only requirement is that the command is available on supported Operating Systems."
 
 	^ OSPlatform current isWindows 

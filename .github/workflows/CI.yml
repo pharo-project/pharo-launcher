@@ -251,7 +251,7 @@ jobs:
           files: |
             **/*.msi
             **/*.dmg
-            *.zip
+            artifacts/*.zip
           body: |
             Warning: Release artefacts below are not signed nor notarized and by consequence, are not recognized as safe by Operating Systems.
             You can still use them but the prefered way is to download signed and notarized installers from https://pharo.org/download

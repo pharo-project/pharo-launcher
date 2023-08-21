@@ -32,7 +32,8 @@ MacOSXPlatform class >> intelArchitecture [
 MacOSXPlatform >> isValid: aPhLVirtualMachine [
 	
 	| executableArchitecture |
-	executableArchitecture := Character space split: (self architectureOf: aPhLVirtualMachine executablePath).
+	executableArchitecture := (self architectureOf: aPhLVirtualMachine executablePath) 
+		substrings: { Character space . $, }.
 	executableArchitecture := executableArchitecture collect: [ :each | each trimBoth ].
 	(executableArchitecture includes: #executable) ifFalse: [ ^ false ].
 	

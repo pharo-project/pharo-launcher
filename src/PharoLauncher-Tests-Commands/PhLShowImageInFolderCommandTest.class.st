@@ -8,7 +8,7 @@ Class {
 }
 
 { #category : #tests }
-PhLShowImageInFolderCommandTest >> testCommandRaisesCommandErrorIfNoImageSelected [
+PhLShowImageInFolderCommandTest >> testCommandShouldNotRaiseCommandErrorIfNoImageSelected [
 	| command |
 	presenter := PhLTestImagesPresenter new.
 	presenter unselectAll.
@@ -16,6 +16,6 @@ PhLShowImageInFolderCommandTest >> testCommandRaisesCommandErrorIfNoImageSelecte
 	command context: presenter.
 
 	self
-		should: [ command execute ]
+		shouldnt: [ command execute ]
 		raise: PhLCommandError
 ]

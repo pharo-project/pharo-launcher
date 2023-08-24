@@ -1,4 +1,4 @@
-# Pharo Launcher [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/)
+# Pharo Launcher [![CI](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml/badge.svg)](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml)
 The Pharo Launcher is a cross-platform application that
 - lets you manage your Pharo images (launch, rename, copy and delete);
 - lets you download image templates (i.e., zip archives) from many
@@ -6,7 +6,7 @@ The Pharo Launcher is a cross-platform application that
 - lets you create new images from any template,
 - automatically find and download the appropriate VM to launch your images.
 
-<img src="./pharo-launcher-main-window.png" height="450" alt="A Pharo Launcher screenshot">
+<img src="./docs/images/pharo-launcher-main-window.png" height="450" alt="A Pharo Launcher screenshot">
 
 The idea behind the Pharo Launcher is that you should be able to access it very rapidly from your OS application launcher. As a result,
 launching any image is never more than 3 clicks away.
@@ -16,7 +16,8 @@ Please report bugs on the 'Launcher' project at [https://github.com/pharo-projec
 You can contribute to this project. All classes and most methods are commented. There are unit tests. Please contribute!
 
 - **Source code:** [https://github.com/pharo-project/pharo-launcher](https://github.com/pharo-project/pharo-launcher)
-- **CI:** [https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/](https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/) [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/development/)
+- **CI:** [https://github.com/pharo-project/pharo-launcher/actions](https://github.com/pharo-project/pharo-launcher/actions) [![CI](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml/badge.svg)](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml)
+
 ## Motivations
 In the past, I had several folders with images everywhere on my HD. Sometimes with the VM, sometimes without. Lots of image searching as you can imagine.
 Now, my HD is now much cleaner - all images are in a central place and I need only one icon/starter on the desktop to open. PharoLauncher is also a convenient tool to download specific image update versions if you want to reproduce or fix Pharo bugs. I also associated one of the unused laptop keys with PharoLauncher - so the world of Smalltalk is just one click away...
@@ -79,7 +80,7 @@ Once done, you can load the project through Metacello integration (uses Baseline
 ```Smalltalk
 Metacello new
 	baseline: 'PharoLauncher';
-	repository: 'github://pharo-project/pharo-launcher:development/src';
+	repository: 'github://pharo-project/pharo-launcher:dev/src';
 	load
  ```
 

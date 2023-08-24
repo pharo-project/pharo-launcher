@@ -54,14 +54,16 @@ PhLDeploymentScript class >> closeAllWindows [
 	[ World closeAllWindowsDiscardingChanges ]
 		on: ProvideAnswerNotification
 		do: [ :err | err return: false ].
+	World submorphs do: #delete.
 	PharoLauncherApplication default closeAllWindows.
 ]
 
 { #category : #actions }
 PhLDeploymentScript class >> closeWindowsAndOpenDevelopmentEnvironment [
-	PanelMorph allInstancesDo: [  :pm | pm delete ].
+	PanelMorph allInstancesDo: [ :pm | pm delete ].
 	self closeAllWindows.
 	TaskbarMorph reset.
+	MenubarMorph reset.
 	Smalltalk tools workspace openContents: 'PharoLauncherApplication open.'.
 
 	"PanelMorph comes from use of #openWorldWithSpec"
@@ -118,7 +120,6 @@ PhLDeploymentScript class >> doAll [
 	self
 		closeAllWindows;
 		removeAllMorphs;
-		setTheme;
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
@@ -236,12 +237,6 @@ PhLDeploymentScript class >> setProgressBarSizeAndPosition [
 		minHeight: 50;
 		layoutInset: 30 @ 20;
 		position: 150 @ 200	
-]
-
-{ #category : #actions }
-PhLDeploymentScript class >> setTheme [
-	PharoLightTheme beCurrent.
-
 ]
 
 { #category : #settings }

@@ -156,7 +156,8 @@ PhLImagesPresenter >> buildImageTable [
 			evaluated: [ :image | self readableDateFor: image lastModification ])
 			sortFunction: #lastModification descending;
 			yourself);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / self contextMenuCommandGroupName ];
+		contextKeyBindings: self keyBindingsCommandsGroup asKMCategory;
 		beResizable;
 		beMultipleSelection;
 		yourself
@@ -195,6 +196,12 @@ PhLImagesPresenter >> connectPresenters [
 			images size = 1
 				ifTrue: [ images first ]
 				ifFalse: [ PhLNullImage new ] ]
+]
+
+{ #category : #'api - accessing' }
+PhLImagesPresenter >> contextMenuCommandGroupName [
+
+	^ 'Context Menu'
 ]
 
 { #category : #'api - actions' }
@@ -270,6 +277,15 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		bindKeyCombination: $f meta
 		toAction: [ self actionFilter ]
+]
+
+{ #category : #private }
+PhLImagesPresenter >> keyBindingsCommandsGroup [
+
+	^ self rootCommandsGroup
+		commandOrGroupNamed: self contextMenuCommandGroupName
+		ifNone: [ nil ]
+		
 ]
 
 { #category : #initialization }
@@ -358,6 +374,11 @@ PhLImagesPresenter >> selectImage: aPhLImage [
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectImageAt: anIndex [
 	imageTable selectIndex: anIndex
+]
+
+{ #category : #'api - selection' }
+PhLImagesPresenter >> selectImagesAt: aLisOfIndexes [
+	imageTable selectIndexes: aLisOfIndexes
 ]
 
 { #category : #'api - selection' }

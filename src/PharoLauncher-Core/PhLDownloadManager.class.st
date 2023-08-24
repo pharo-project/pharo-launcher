@@ -83,9 +83,10 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 ]
 
 { #category : #private }
-PhLDownloadManager >> downloadFailureForUrl: url [
+PhLDownloadManager >> downloadFailureForUrl: url message: errorMessage [
+
 	semaphore critical: [ errors add: url ].
-	PhLDownloadError signalUrl: url
+	PhLDownloadError signalUrl: url message: errorMessage.
 ]
 
 { #category : #action }
@@ -118,7 +119,7 @@ PhLDownloadManager >> newHTTPClientForUrl: url [
 		url: url;
 		enforceHttpSuccess: true;
 		withOptions: [ :options | options at: #queryKeyValueSafeSet put: (ZnOptions queryKeyValueSafeSet \ '/;') ];
-		ifFail: [ :exception | self downloadFailureForUrl: url ];
+		ifFail: [ :exception | self downloadFailureForUrl: url message: exception messageText ];
 		yourself
 ]
 

@@ -67,7 +67,7 @@ def buildArchitecture(architecture, pharoVersion) {
               }              
             } */
             archiveArtifacts artifacts: 'pharo-launcher-*.msi, Pharo-win.zip', fingerprint: true
-            stash includes: 'pharo-launcher-*.msi', name: "pharo-launcher-win-${architecture}-package"
+            stash includes: 'pharo-launcher-*.msi, Pharo-win.zip', name: "pharo-launcher-win-${architecture}-package"
           }
         }
       }
@@ -96,6 +96,7 @@ def buildArchitecture(architecture, pharoVersion) {
             if (isNotArm64Architecure()) {
               unstash "pharo-launcher-win-${architecture}-package"
               upload('pharo-launcher-*.msi', uploadDirectoryName())
+              upload('Pharo-win.zip', uploadDirectoryName())
             }
             unstash "pharo-launcher-osx-${architecture}-package"
             fileToUpload = 'PharoLauncher*-' + fileNameArchSuffix(architecture) + '.dmg'
@@ -123,9 +124,7 @@ def notifyBuild() {
 }
 
 def cleanUploadFolderIfNeeded(launcherVersion) {
-  if (isPullRequest()) {
-    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+  if (shouldNotUpload()) {
     return;
   }
   
@@ -159,9 +158,7 @@ def finalizeUpload(launcherVersion) {
 }
 
 def upload(file, launcherVersion) {
-  if (isPullRequest()) {
-    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
-    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+  if (shouldNotUpload()) {
     return;
   }
     
@@ -183,6 +180,30 @@ def fileNameArchSuffix(architecture) {
   if (architecture == '32') 
     return 'x86'
   return (architecture == '64') ? 'x64' : architecture
+}
+
+def shouldNotUpload() {
+  if (isRelease) {
+    return false
+  }
+
+  if (isPullRequest()) {
+    //Only upload files if not in a PR (i.e., CHANGE_ID not empty)
+    echo "[DO NO UPLOAD] In PR " + (env.CHANGE_ID?.trim())
+    return true
+  }
+
+  if (isNotDevBranch()) {
+    echo "[DO NO UPLOAD] In branch " + (env.BRANCH_NAME?.trim())
+    return true
+  }
+
+  // Do upload
+  return false
+}
+
+def isNotDevBranch() {
+  return env.BRANCH_NAME != "dev"
 }
 
 def isPullRequest() {

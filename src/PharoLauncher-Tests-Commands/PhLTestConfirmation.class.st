@@ -4,6 +4,9 @@ Mock for a user confirmation interaction
 Class {
 	#name : #PhLTestConfirmation,
 	#superclass : #Object,
+	#instVars : [
+		'message'
+	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
@@ -18,8 +21,13 @@ PhLTestConfirmation >> inform [
 ]
 
 { #category : #accessing }
+PhLTestConfirmation >> message [
+	^ message
+]
+
+{ #category : #accessing }
 PhLTestConfirmation >> message: aString [ 
-	self noop
+	message := aString
 ]
 
 { #category : #private }

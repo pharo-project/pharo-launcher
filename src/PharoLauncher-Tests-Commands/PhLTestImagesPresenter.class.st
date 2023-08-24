@@ -65,7 +65,7 @@ PhLTestImagesPresenter >> launchConfigurations [
 
 { #category : #'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
-	^ PhLTestConfirmation new
+	^ request := PhLTestConfirmation new
 ]
 
 { #category : #'user interaction' }
@@ -89,6 +89,12 @@ PhLTestImagesPresenter >> newRequest [
 PhLTestImagesPresenter >> refreshLaunchConfigurationList [
 
 	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
+]
+
+{ #category : #accessing }
+PhLTestImagesPresenter >> request [
+
+	^ request
 ]
 
 { #category : #configuring }

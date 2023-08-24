@@ -190,7 +190,7 @@ PhLCliCommandTest >> testPositionalWithValue [
 	
 	"now test - when value is not present"
 	aCommand := (cmdSpec activationWith: #('launcher' '--delimiter')) command.
-	self assert: (aCommand positional: #delimiter) isNil.
+	self assert: (aCommand positional: #delimiter) equals: aCommand implicitDelimiter.
 ]
 
 { #category : #printing }

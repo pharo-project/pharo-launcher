@@ -41,7 +41,7 @@ PhLImageCliCommandTest >> testExecuteLauncherImageCommandToPrintHelp [
 PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
 	| memoryFileSystem command location |
 	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
-	command context: context.
+	command setContext: context.
 	memoryFileSystem := FileSystem memory.
 	DiskStore
 		currentFileSystem: memoryFileSystem
@@ -53,7 +53,7 @@ PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
 PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
 	| memoryFileSystem command location |
 	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
-	command context: context.
+	command setContext: context.
 	memoryFileSystem := FileSystem memory.
 	DiskStore
 		currentFileSystem: memoryFileSystem

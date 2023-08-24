@@ -10,7 +10,7 @@ set -ex
 # $ARCHITECTURE : 	targeted architecture 32 or 64 bits. Default will be 32.
 
 # Script parameters
-# $1: the target to run between prepare | test | user
+# $1: the target to run
 
 function prepare_image() {
 	case "$ARCHITECTURE" in
@@ -66,7 +66,8 @@ function package_linux_version() {
 	RESOURCES_PATH=$OUTPUT_PATH/shared
 	rm -f $OUTPUT_PATH; mkdir $OUTPUT_PATH
 	mkdir $OUTPUT_PATH/icons; cp icons/pharo-launcher.png $OUTPUT_PATH/
-	cp linux/pharo-launcher $OUTPUT_PATH/
+	cp linux/pharo-launcher-ui $OUTPUT_PATH/
+	cp scripts/pharo-launcher.sh $OUTPUT_PATH/pharo-launcher
 	mkdir $RESOURCES_PATH
 	copy_current_stable_image_to $RESOURCES_PATH
 	expand_all_templates $OUTPUT_PATH
@@ -74,8 +75,8 @@ function package_linux_version() {
     cp PharoLauncher.changes $RESOURCES_PATH
     cp Pharo*.sources $RESOURCES_PATH
 	fetch_current_vm_to $(pwd)/$RESOURCES_PATH
-	# ensure the linux script is executable
-	chmod +x "$OUTPUT_PATH/pharo-launcher" || true
+	# ensure the linux scripts are executable
+	chmod +x "$OUTPUT_PATH/pharo-launcher" "$OUTPUT_PATH/pharo-launcher-ui" || true
 }
 
 function copy_mac_icon_files_to() {
@@ -100,6 +101,7 @@ function package_mac_version() {
 	copy_mac_icon_files_to $RESOURCES_PATH/
 	mv mac-installer-background.png background.png
 	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
+	cp scripts/pharo-launcher.sh $BIN_PATH/pharo-launcher && chmod +x $BIN_PATH/pharo-launcher
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg=$(echo *.dmg)

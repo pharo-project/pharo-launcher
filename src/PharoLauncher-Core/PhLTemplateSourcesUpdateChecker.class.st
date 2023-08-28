@@ -47,12 +47,14 @@ PhLTemplateSourcesUpdateChecker class >> run [
 PhLTemplateSourcesUpdateChecker class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
-	(aBuilder setting: #shouldRun)
-		label: 'Check for template sources update?' translated;
+	(aBuilder setting: #shouldCheckTemplateSourcesUpdate)
+		label: 'Check for template sources update?';
 		parent: #pharoLauncher;
 		target: self;
+		getSelector: #shouldRun;
+		setSelector: #shouldRun:;
 		order: 55;
-		description: 'Check if Pharo Launcher Template sources has an update available (needs internet access)' translated
+		description: 'Check if Pharo Launcher Template sources has an update available (needs internet access)'
 ]
 
 { #category : #settings }

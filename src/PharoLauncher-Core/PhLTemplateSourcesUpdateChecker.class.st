@@ -38,6 +38,9 @@ PhLTemplateSourcesUpdateChecker class >> launcherStartUpPriority [
 PhLTemplateSourcesUpdateChecker class >> run [
 	self shouldRun ifFalse: [ ^ self ].
 	
+	"need to manage it for command-line. Not available for now"
+	Smalltalk isInteractive ifFalse: [ ^ self ].
+	
 	self uniqueInstance run
 	
 	

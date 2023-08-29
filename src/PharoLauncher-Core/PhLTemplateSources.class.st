@@ -128,13 +128,13 @@ PhLTemplateSources >> initializeWith: aSourcesFile [
 
 { #category : #accessing }
 PhLTemplateSources >> sources [
+
 	| sources |
-	file exists 
-		ifFalse: [ ^ #() ].
-	
-	[ file readStreamDo: [ :stream |
-		 sources := STON fromStream: stream] ]
-	on: STONReaderError, InstanceVariableNotFound  
-	do: [ sources := #() ].
+	file exists ifFalse: [ ^ #(  ) ].
+
+	[ file readStreamDo: [ :stream | sources := STON fromStream: stream ] ]
+		on: STONReaderError , InstanceVariableNotFound
+		do: [ sources := #(  ) ].
+		
 	^ sources
 ]

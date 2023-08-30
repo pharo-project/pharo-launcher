@@ -166,7 +166,7 @@ PhLDeploymentScript class >> isDeployed [
 
 { #category : #'system startup' }
 PhLDeploymentScript class >> launcherStartUp [
-	self isDeployed
+	(self isDeployed and: [ Smalltalk isInteractive not ])
 		ifTrue: [ self closeWindowsAndOpenLauncher ]
 ]
 

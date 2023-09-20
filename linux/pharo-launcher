@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
 # path
-DIR=`readlink -f $0` #resolve symlink
-ROOT=`dirname "$DIR"` #obtain dir of the resolved path
+DIR=$(readlink -f "$0") #resolve symlink
+ROOT=$(dirname "$DIR") #obtain dir of the resolved path
 LINUX="$ROOT/pharo-vm"
 RESOURCES="$ROOT/shared"
 ICONS="$ROOT/icons"

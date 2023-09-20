@@ -27,8 +27,8 @@ readonly DMG_FINAL="${VOL_NAME/ /_}.dmg"         # final DMG name will be "Super
 readonly STAGING_DIR="./Install"             # we copy all our stuff into this dir
 
 check_background_image_DPI_and_convert_it_if_not_72_by_72() {
-    local _BACKGROUND_IMAGE_DPI_H=`sips -g dpiHeight ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+'`
-    local _BACKGROUND_IMAGE_DPI_W=`sips -g dpiWidth ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+'`
+    local _BACKGROUND_IMAGE_DPI_H=$(sips -g dpiHeight ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+')
+    local _BACKGROUND_IMAGE_DPI_W=$(sips -g dpiWidth ${DMG_BACKGROUND_IMG} | grep -Eo '[0-9]+\.[0-9]+')
 
     if [ $(echo " $_BACKGROUND_IMAGE_DPI_H != 72.0 " | bc) -eq 1 -o $(echo " $_BACKGROUND_IMAGE_DPI_W != 72.0 " | bc) -eq 1 ]; then
        echo "WARNING: The background image's DPI is not 72.  This will result in distorted backgrounds on Mac OS X 10.7+."
@@ -102,7 +102,7 @@ function sign_mac_app() {
   # See https://code-examples.net/en/q/1344e6a
   security set-key-partition-list -S apple-tool:,apple: -s -k ${keychain_password} "${keychain_name}"
   # debug
-  echo ${sign_identity} >> "id.txt"
+  echo "${sign_identity}" >> "id.txt"
   # Invoke codesign
   if [[ -d "${app_dir}/Contents/MacOS/Plugins" ]]; then # Pharo.app does not (yet) have its plugins in Resources dir
     rm -rf "${app_dir}/Contents/MacOS/Plugins/pkgconfig" # Should be fixed in VM build

@@ -37,7 +37,7 @@ PhLImageProcessListCliCommand >> basicExecute [
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	
 	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |
-			PhLImageProcess newFrom: (line splitOn: '-|-')
+			PhLImageProcess newFrom: (line splitOn: self processListDelimiter)
 	]
 ]
 
@@ -56,6 +56,8 @@ PhLImageProcessListCliCommand >> osShellArgArray [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> processListCmdArgs [
 
+	|separator|
+	separator := self processListDelimiter.	
 	^ String streamContents: [:aStream |
 		aStream 
 			nextPutAll: 'pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v ';
@@ -65,7 +67,14 @@ PhLImageProcessListCliCommand >> processListCmdArgs [
 			nextPutAll: '	vmPath=$(echo "$line" | awk ''{print $2}'')'; lf;
 			nextPutAll: '	imgPath=$(echo "$line" | awk ''{print $3}'')'; lf;
 			nextPutAll: '	start_time=$(ps -o lstart= -p "$pid")'; lf;
-			nextPutAll: '	echo "$pid-|-$vmPath-|-$imgPath-|-$start_time"'; lf;
+			nextPutAll: '	echo "$pid'; << separator; << '$vmPath'; << separator; << '$imgPath'; << separator; << '$start_time"'; lf;
 			nextPutAll: 'done'
 		]
+]
+
+{ #category : #'command execution' }
+PhLImageProcessListCliCommand >> processListDelimiter [
+	
+	"this delimiter is used when using OS process output to obtain Pharo process information"
+	^ '-|-'
 ]

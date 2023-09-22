@@ -32,9 +32,9 @@ PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
 			nextPutAll: '3333-|-path/to/3rd-vm-|-path/to/3rd.image-|-Jul 3 2023';
 			nextPutAll: OSPlatform current lineEnding
 		].
+	"each of string lines above represents information about one Pharo process, so there should be 3 processes (PhLImageProcess instances) determined from these lines"
 	resultArray := processListCmd imageProcesListFrom: aString.
 	self assert: resultArray size equals: 3.
-	 
 
 
 ]

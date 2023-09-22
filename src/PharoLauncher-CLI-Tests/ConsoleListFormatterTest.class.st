@@ -57,7 +57,7 @@ ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
 	| size |
 	size := formatter getMaxPrintStringWidthFor: #(1 2 3) printBlock: [ :aNumber | aNumber asWords ].
 	
-	"three is the longest word and has a size of 5"
+	"Array of 1,2,3 are converted to #('one 'two' 'three') so the longest word is 'three' has a size of 5"
 	self assert: size equals: 5.
 ]
 
@@ -306,9 +306,9 @@ ConsoleListFormatterTest >> testTableColumnWidthLimit [
 	| size short longer longest|
 	short := 'short'.
 	longer := 'more long text'.
-	longest := 'some long string exceeding column width limit'.
+	longest := 'some very very long string exceeding column width limit'.
 	size := formatter getMaxPrintStringWidthFor: {longer. longest. short.} printBlock: [ :aStr | aStr asString ].
 	
-	"three is the longest word and has a size of 5"
+	"longest string exceeds the table column width limit, so the maximum column size should be equal to that limit"
 	self assert: size equals: formatter tableColumnWidthLimit.
 ]

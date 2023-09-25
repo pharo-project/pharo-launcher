@@ -20,8 +20,8 @@ PhLImageDescriptionUpdaterTest >> setUp [
 		reset;
 		default.
 	rootFs := FileSystem memory root.
-	image := PhLImage location: rootFs / 'one'.
-	image2 := PhLImage location: rootFs / 'two'
+	image := PhLImage location: (((rootFs / 'one') ensureCreateDirectory) / 'one.image') ensureCreateFile.
+	image2 := PhLImage location: (((rootFs / 'two') ensureCreateDirectory) / 'two.image') ensureCreateFile.
 ]
 
 { #category : #tests }
@@ -54,7 +54,8 @@ PhLImageDescriptionUpdaterTest >> testSaveBothImagesWhenUpdatingDescriptionOfTwo
 	updater image: image2 description: 'desc imag2'.
 	self waitUpdate.
 	
-	self assert: updater nbSave equals: 2
+	self assert: updater nbSave equals: 2.
+	self assert: updater nbProcessKilled equals: 1.
 ]
 
 { #category : #tests }
@@ -67,12 +68,15 @@ PhLImageDescriptionUpdaterTest >> testSaveOnceWhenDescriptionChangeOnce [
 
 { #category : #tests }
 PhLImageDescriptionUpdaterTest >> testSaveOnceWhenDescriptionChangesManyTimesWithDelayShorterThanWaitDelay [
+	self assert: updater nbProcessKilled equals: 0.
+	
 	3 timesRepeat: 
 		[ updater image: image description: 'desc'.
 		 (updater waitDelay / 5) wait ].
 	self waitUpdate.
 	
-	self assert: updater nbSave equals: 1
+	self assert: updater nbSave equals: 1.
+	self assert: updater nbProcessKilled equals: 2
 ]
 
 { #category : #tests }

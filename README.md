@@ -84,4 +84,4 @@ Metacello new
 	load
  ```
 
-Then evaluate  "PharoLauncher open". You can also launch it from the World menu.
+Then evaluate  "PharoLauncherApplication open". You can also launch it from the World menu.

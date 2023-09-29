@@ -50,7 +50,7 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 11 (development) - Pharo 11',
+				#name : 'Moose Suite 11 (development)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-11.zip'
 				},
 			PhLTemplateSource {

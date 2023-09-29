@@ -55,11 +55,6 @@ OrderedCollection [
 				},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 11 (development) - Pharo 10',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose11-development-Pharo64-10.zip'
-				},
-			PhLTemplateSource {
-				#type : #URL,
 				#name : 'Moose Suite 10 (stable)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
   			},
@@ -139,32 +134,7 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Moose Suite 8.0 (old stable)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v8.x.x/Moose8-old-stable-Pharo64-8.0.zip'
-  			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 7.0 (old stable)',
-				#url : 'https://ci.inria.fr/moose/job/moose-7.0-64bit/lastSuccessfulBuild/artifact/moose-7.0-64bit.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 6.1',
-				#url : 'https://ci.inria.fr/moose/job/moose-6.1/lastSuccessfulBuild/artifact/moose-6.1.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 6.0',
-				#url : 'https://ci.inria.fr/moose/job/moose-6.0/lastSuccessfulBuild/artifact/moose-6.0.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 5.1',
-				#url : 'https://ci.inria.fr/moose/job/moose-5.1/lastSuccessfulBuild/artifact/moose-5.1.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 5.0',
-				#url : 'https://moosetechnology.org/res/download/moose_image_5_0.zip'
-			}
+  			}
 		]
 	},
 	PhLTemplateSource {

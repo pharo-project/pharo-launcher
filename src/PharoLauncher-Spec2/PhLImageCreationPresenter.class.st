@@ -22,6 +22,9 @@ Class {
 		'imageNameCheck',
 		'isNameValid'
 	],
+	#classVars : [
+		'LAST_SELECTED_INDEX'
+	],
 	#category : #'PharoLauncher-Spec2'
 }
 
@@ -57,6 +60,16 @@ PhLImageCreationPresenter class >> example [
 	(self 
 		newApplication: PharoLauncherApplication new
 		model: {PhLRemoteTemplate example}) open
+]
+
+{ #category : #accessing }
+PhLImageCreationPresenter class >> lastSelectedIndex [
+	^ LAST_SELECTED_INDEX
+]
+
+{ #category : #accessing }
+PhLImageCreationPresenter class >> lastSelectedIndex: aNumber [
+	LAST_SELECTED_INDEX := aNumber
 ]
 
 { #category : #initialization }
@@ -161,8 +174,12 @@ PhLImageCreationPresenter >> initializePresenters [
 		display: [ :file | file basename ];
 		whenSelectionChangedDo: [ :selection |
 			selection selectedItem ifNotNil: [ :item |
+				self class lastSelectedIndex: selection selectedIndex.
 				initScriptText text: item model contents ] ];
 		yourself.
+
+	self initializeSelectedItem.
+	
 	descriptionText := self newText.
 	editInitScriptButton := self newButton
 		addStyle: 'small';
@@ -174,6 +191,16 @@ PhLImageCreationPresenter >> initializePresenters [
 	(createButton := createCommand asButtonPresenter)
 		action: [ self createImageWithCommand: createCommand ].
 	createButton disable
+]
+
+{ #category : #initialization }
+PhLImageCreationPresenter >> initializeSelectedItem [
+	| index |
+	index := self class lastSelectedIndex.
+	index ifNil: [ ^ self ].
+	(index between: 1 and: initScript items size) 
+		ifTrue: [ ^ self class lastSelectedIndex: 1 ].
+	initScript selectIndex: index
 ]
 
 { #category : #testing }

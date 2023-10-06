@@ -23,7 +23,7 @@ Class {
 		'isNameValid'
 	],
 	#classVars : [
-		'LAST_SELECTED_INDEX'
+		'LastSelectedIndex'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
@@ -64,12 +64,12 @@ PhLImageCreationPresenter class >> example [
 
 { #category : #accessing }
 PhLImageCreationPresenter class >> lastSelectedIndex [
-	^ LAST_SELECTED_INDEX
+	^ LastSelectedIndex
 ]
 
 { #category : #accessing }
 PhLImageCreationPresenter class >> lastSelectedIndex: aNumber [
-	LAST_SELECTED_INDEX := aNumber
+	LastSelectedIndex := aNumber
 ]
 
 { #category : #initialization }

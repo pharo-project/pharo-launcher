@@ -20,8 +20,6 @@ PhLTestLaunchConfiguration >> command [
 { #category : #querying }
 PhLTestLaunchConfiguration >> launchProcess [
 
-	"dummy call, only requirement is that the command is available on supported Operating Systems."
-
 	^ PhLProcessWrapper new
 		  command: self command;
 		  yourself

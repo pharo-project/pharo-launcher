@@ -45,9 +45,9 @@ PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 ]
 
 { #category : #utils }
-PhLLaunchImageTest >> pharo80x86Vm [
+PhLLaunchImageTest >> pharo110x64Vm [
 	^ PhLVirtualMachineManager new virtualMachines
-		detect: [ :each | each id = '80-x86' ]
+		detect: [ :each | each id = '110-x64' ]
 		ifFound: [ :vm | vm isValidAfterUpdate. vm ]
 		ifNone: [ self fail: 'cannot find VM!' ]
 ]
@@ -117,16 +117,16 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 
 { #category : #tests }
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
-	| image config commandToEval |
-	image := PhLOsXMojaveTestImage example.
+	| image64 config commandToEval |
+	image64 := PhLOsXMojaveTestImage example.
 	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
-	config := image defaultLaunchConfiguration.
+	config := image64 defaultLaunchConfiguration.
 	config
-		vm: self pharo80x86Vm;
+		vm: self pharo110x64Vm;
 		imageArguments: {'eval' . commandToEval}.
 	
 	self 
-		shouldnt: [ process := image launchWithConfiguration: config ]
+		shouldnt: [ process := image64 launchWithConfiguration: config ]
 		raise: PhLArchitectureError
 	
 	

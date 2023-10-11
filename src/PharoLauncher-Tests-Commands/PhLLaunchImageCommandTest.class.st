@@ -7,7 +7,8 @@ Class {
 		'process',
 		'runCommand',
 		'image',
-		'recreateCommand'
+		'recreateCommand',
+		'application'
 	],
 	#category : #'PharoLauncher-Tests-Commands'
 }
@@ -15,6 +16,13 @@ Class {
 { #category : #helper }
 PhLLaunchImageCommandTest >> addInitializationScriptToImage [
 	image initializationScript: self initScript
+]
+
+{ #category : #helper }
+PhLLaunchImageCommandTest >> denyApplicationHasError [
+
+	application hasError 
+		ifTrue: [ self fail: application error longDescription ]
 ]
 
 { #category : #helper }
@@ -27,6 +35,12 @@ PhLLaunchImageCommandTest >> launchImage [
 	self selectImage.
 	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
 	process := runCommand execute
+]
+
+{ #category : #private }
+PhLLaunchImageCommandTest >> performTest [ 
+
+	PharoLauncherApplication useDefault: application during: [ super performTest ]
 ]
 
 { #category : #helper }
@@ -47,6 +61,7 @@ PhLLaunchImageCommandTest >> selectImage [
 PhLLaunchImageCommandTest >> setUp [
 	super setUp.
 
+	application := PhLTestApplication new.
 	presenter := PhLTestImagesPresenter new.
 	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command' , UUIDGenerator next asString.
 	imageDir ensureCreateDirectory.
@@ -125,6 +140,7 @@ PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNo
 	self addInitializationScriptToImage.
 	self launchImage.
 	
+	self denyApplicationHasError.
 	self deny: image shouldRunInitializationScript.
 ]
 

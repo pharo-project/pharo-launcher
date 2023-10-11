@@ -7,7 +7,8 @@ Class {
 	#superclass : #SpApplication,
 	#instVars : [
 		'requestAnswer',
-		'imagesPresenter'
+		'imagesPresenter',
+		'requestAttributes'
 	],
 	#category : #'PharoLauncher-Tests-SpecUI'
 }
@@ -15,6 +16,16 @@ Class {
 { #category : #confirmation }
 PhLTestApplication >> confirm [
 	^ true
+]
+
+{ #category : #accessing }
+PhLTestApplication >> error [
+	^ requestAttributes at: #error
+]
+
+{ #category : #testing }
+PhLTestApplication >> hasError [
+	^ requestAttributes includesKey: #error
 ]
 
 { #category : #'*PharoLauncher-Tests-SpecUI' }
@@ -27,6 +38,19 @@ PhLTestApplication >> inform [
 	"do nothing"
 ]
 
+{ #category : #initialization }
+PhLTestApplication >> initialize [ 
+
+	super initialize.
+	requestAttributes := OrderedDictionary new.
+]
+
+{ #category : #confirmation }
+PhLTestApplication >> label: aString [
+
+	requestAttributes at: #label put: aString
+]
+
 { #category : #events }
 PhLTestApplication >> launchConfigurationEdited: aPhLLaunchConfiguration [ 
 	"do nothing"
@@ -34,7 +58,8 @@ PhLTestApplication >> launchConfigurationEdited: aPhLLaunchConfiguration [
 
 { #category : #confirmation }
 PhLTestApplication >> message: aString [ 
-	"do nothing"
+	
+	requestAttributes at: #message put: aString
 ]
 
 { #category : #confirmation }
@@ -48,12 +73,25 @@ PhLTestApplication >> newConfirmation [
 ]
 
 { #category : #confirmation }
+PhLTestApplication >> newInform [
+	"polymorphism with spec app"
+	
+	self newInformation 
+]
+
+{ #category : #confirmation }
 PhLTestApplication >> newInformation [
 	"do nothing"
 ]
 
 { #category : #request }
 PhLTestApplication >> newRequest [
+	"do nothing"
+]
+
+{ #category : #ui }
+PhLTestApplication >> openModalWithParent: aWindow [
+
 	"do nothing"
 ]
 
@@ -78,9 +116,16 @@ PhLTestApplication >> shouldUpdateTemplateSources [
 	^ false
 ]
 
+{ #category : #ui }
+PhLTestApplication >> showError: anError [
+
+	requestAttributes at: #error put: anError
+]
+
 { #category : #request }
 PhLTestApplication >> title: aString [ 
-	"do nothing"
+	
+	requestAttributes at: #title put: aString
 ]
 
 { #category : #request }

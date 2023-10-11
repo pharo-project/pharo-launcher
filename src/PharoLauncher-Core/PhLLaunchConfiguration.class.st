@@ -82,6 +82,14 @@ PhLLaunchConfiguration >> = anObject [
 	^ self name = anObject name
 ]
 
+{ #category : #testing }
+PhLLaunchConfiguration >> canBeLaunched [
+	
+	self vm isValidAfterUpdate ifFalse: [ ^ false ].
+	self vm isValidForArchitecture ifFalse: [ ^ false ].
+	^ true
+]
+
 { #category : #querying }
 PhLLaunchConfiguration >> commandString [
 	^ self launchProcess commandLineString

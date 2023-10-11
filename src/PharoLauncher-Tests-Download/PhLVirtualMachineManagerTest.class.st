@@ -3,6 +3,9 @@ Class {
 	#superclass : #TestCase,
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
+	#instVars : [
+		'vmStoreRoot'
+	],
 	#category : #'PharoLauncher-Tests-Download'
 }
 
@@ -34,6 +37,13 @@ PhLVirtualMachineManagerTest >> getImageHeader: anImageUrl [
 
 ]
 
+{ #category : #running }
+PhLVirtualMachineManagerTest >> setUp [
+
+	super setUp.
+	vmStoreRoot := FileSystem memory root.
+]
+
 { #category : #'input data' }
 PhLVirtualMachineManagerTest >> sixtyFourBitsHeader [
 	" too long to process this request
@@ -63,6 +73,23 @@ PhLVirtualMachineManagerTest >> testCanDetect64BitsImage [
 ]
 
 { #category : #tests }
+PhLVirtualMachineManagerTest >> testCanGetAvailableVirtualMachinesEvenIfVMExecutableNotFound [
+	| vmManager vms |
+	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	
+	PhLVirtualMachineManager 
+		useVmStore: vmStoreRoot 
+		during: [self 
+		createVmNamed: '400-x86';
+		createVmNamed: '500-x64'.
+	(vmStoreRoot / '900-x64') ensureCreateDirectory. "invalid VM. Correct folder with no exe"	
+	
+	 vms := vmManager availableVirtualMachines ].
+	
+	self assert: vms size equals: 2.
+]
+
+{ #category : #tests }
 PhLVirtualMachineManagerTest >> testCanGetImageFormatNumber [
 	| version |
 	version := PhLVirtualMachineManager imageFormatNumberFromFile: Smalltalk image lastImagePath.
@@ -87,7 +114,7 @@ PhLVirtualMachineManagerTest >> testCanGetImageVersionFromFile [
 ]
 
 { #category : #tests }
-PhLVirtualMachineManagerTest >> testGetExceptionWhenRunningImageVersionFromFileWhenFileIsAbsent [
+PhLVirtualMachineManagerTest >> testGetExceptionWhenRunningImageVersionFromFileAndFileIsAbsent [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
 	vmManager imageVersionFile ensureDelete.
@@ -180,4 +207,10 @@ PhLVirtualMachineManagerTest >> thirtyTwoBitsHeader [
 		'pharo.image' asFileReference binaryReadStream next: 20
 	"
 	^ #[121 25 0 0 64 0 0 0 8 84 50 2 112 76 76 10 216 156 254 11] readStream "truncated image file"
+]
+
+{ #category : #accessing }
+PhLVirtualMachineManagerTest >> vmStoreRoot [
+
+	^ vmStoreRoot
 ]

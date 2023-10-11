@@ -216,6 +216,17 @@ PharoLauncherApplication class >> templatesClearedOnStartup: aBoolean [
 	TemplatesClearedOnStartup := aBoolean
 ]
 
+{ #category : #testing }
+PharoLauncherApplication class >> useDefault: aPharoLauncherApplication during: aBlock [
+	"Used to set a different app for testing purposes"
+	| oldDefault |
+	
+	oldDefault := self default.
+	[ self default: aPharoLauncherApplication.
+	aBlock value ]
+		ensure: [ self default: oldDefault ]	
+]
+
 { #category : #configuring }
 PharoLauncherApplication >> beOpenedAsWorld [
 	self openAsWorld: true

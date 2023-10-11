@@ -146,6 +146,18 @@ PhLVirtualMachineManager class >> settingsOn: aBuilder [
 				, 'NOTE: This path might need to escape some whitespace characters e.g. "/Pharo\ 3.0/Pharo".' translated
 ]
 
+{ #category : #accessing }
+PhLVirtualMachineManager class >> supportedImageFormat [
+	"returns an image format corresponding to the current host OS"
+	
+	| os |
+	os := OSPlatform current.
+	
+	^ (os isUnix32 or: [ os isWin32 ])
+		ifTrue: [ self imageFormat32bits ]
+		ifFalse: [ self imageFormat64bits ]
+]
+
 { #category : #unzipping }
 PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirectory [
 	PhLProcessWrapper new 
@@ -167,6 +179,15 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 	self canUseSytemZip
 		ifTrue: [ self systemUnzip: aZipFileReference to: outputDirectory ]
 		ifFalse: [ self pharoUnzip: aZipFileReference to: outputDirectory ]
+]
+
+{ #category : #accessing }
+PhLVirtualMachineManager class >> useVmStore: aDirectory during: aBlock [
+	| vmStoreBackup |
+	vmStoreBackup := vmStore.
+	self vmStore: aDirectory asFileReference.
+	[ aBlock value ]
+	ensure: [ vmStore := vmStoreBackup ]
 ]
 
 { #category : #accessing }
@@ -261,19 +282,11 @@ PhLVirtualMachineManager >> compatibleVmUrls [
 { #category : #querying }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 
-	^ { 
-		(PhLVirtualMachine id: '100-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '90-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '80-x64')
-			be64bits;
-			yourself.
-		(PhLVirtualMachine id: '80-x86')
-			yourself.
-	}
+	^ #('110-x64' '100-x64' '90-x64')
+		collect: [ :id | 
+			(PhLVirtualMachine id: id)
+				be64bits;
+				yourself ]
 ]
 
 { #category : #private }

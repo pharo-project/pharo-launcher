@@ -29,6 +29,35 @@ MacOSXPlatform class >> intelArchitecture [
 ]
 
 { #category : #'*PharoLauncher-Core' }
+MacOSXPlatform >> isValid: aPhLVirtualMachine [
+	
+	| executableArchitecture |
+	executableArchitecture := (self architectureOf: aPhLVirtualMachine executablePath) 
+		substrings: { Character space . $, }.
+	executableArchitecture := executableArchitecture collect: [ :each | each trimBoth ].
+	(executableArchitecture includes: #executable) ifFalse: [ ^ false ].
+	
+	"64 bits exe and 32-bit PhLVirtualMachine or vice-versa"
+	((executableArchitecture includes: '64-bit') xor: [ aPhLVirtualMachine is64bit ]) 
+		ifTrue: [ ^ false ].
+	
+	(executableArchitecture includes: 'arm64') 
+		ifTrue: [ ^ self processorArchitecture = 'arm64' ]
+		ifFalse: [ self processorArchitecture = 'arm64' 
+						ifTrue: [ self warnWhenWillLaunchInTranslatedMode ] ].
+	
+	^ true
+]
+
+{ #category : #'*PharoLauncher-Core' }
 MacOSXPlatform >> uname [
 	^ PhLVmProvider osDarwin 
+]
+
+{ #category : #'*PharoLauncher-Core' }
+MacOSXPlatform >> warnWhenWillLaunchInTranslatedMode [	
+	
+	PhLTranslatedModeWarning signal
+	
+	
 ]

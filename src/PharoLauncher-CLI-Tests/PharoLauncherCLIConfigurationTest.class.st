@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'root',
-		'errorStream'
+		'errorStream',
+		'outStream'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -22,8 +23,11 @@ PharoLauncherCLIConfigurationTest >> createPreferencesFileWith: aConfiguration [
 PharoLauncherCLIConfigurationTest >> setUp [
 	super setUp.
 	root := FileSystem memory root.
+	outStream := WriteStream on: (String new).
 	errorStream := WriteStream on: (String new).
-	PhLNotificationCenter default errorStream: errorStream
+	PhLNotificationCenter default 
+		errorStream: errorStream;
+		outStream: outStream.
 
 ]
 
@@ -74,7 +78,7 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileAb
 	config := PharoLauncherCLIConfiguration configurationFromFile: (root / 'launcherSettings.ston') asFileReference .
 	
 	self assert: (config isKindOf: PharoLauncherCLIConfiguration).
-	self assert: ( PhLNotificationCenter default errorStream contents includesSubstring: 'Config' ) 
+	self assert: (PhLNotificationCenter default outStream contents includesSubstring: 'Config') 
 	
 	
 ]

@@ -15,7 +15,7 @@ Class {
 
 { #category : #'error signalling' }
 PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
-	PhLNotificationCenter default errorStream
+	PhLNotificationCenter default outStream
 		nextPutAll:
 			'Config file not found, creating a new one at ';
 		nextPutAll: self preferencesFile fullName;

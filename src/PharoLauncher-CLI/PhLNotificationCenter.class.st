@@ -1,5 +1,8 @@
 "
-This represents singleton object for accessing errorStream, outStream in methods used by CLI, that do not have any reference to streams of CLI command (or CLI context) object.
+I represent an object to manage notifications to user when ran in CLI mode.
+
+I can act as the PharoLauncher default application (see PharoLauncherApplication class>>#default).
+I only have a minimal set of methods to provide some polymorphism with an SpApplication and avoid UI interactions.
 "
 Class {
 	#name : #PhLNotificationCenter,
@@ -53,4 +56,21 @@ PhLNotificationCenter >> outStream [
 { #category : #accessing }
 PhLNotificationCenter >> outStream: anOutStream [
 	outStream := anOutStream 
+]
+
+{ #category : #ui }
+PhLNotificationCenter >> pushProgress: aString with: aFullBlockClosure [ 
+	"do not display progress, only evaluate the block"
+	aFullBlockClosure value: DummySystemProgressItem new
+]
+
+{ #category : #ui }
+PhLNotificationCenter >> showError: anError [
+
+	self errorStream
+		nextPutAll: 'Error: ';
+		nextPutAll: anError name;
+		nextPutAll: ' - ';
+		nextPutAll: anError longDescription;
+		cr
 ]

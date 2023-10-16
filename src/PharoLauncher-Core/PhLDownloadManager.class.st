@@ -46,8 +46,6 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 { #category : #private }
 PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 	"Inform user about download progression"
-	| bar |
-	bar := ConsoleProgressBar on: PhLNotificationCenter default outStream.
 
 	PharoLauncherApplication default 
 		pushProgress: aTitle

@@ -17,8 +17,8 @@ Class {
 PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
 	PhLNotificationCenter default errorStream
 		nextPutAll:
-			'Config file not found, creating a new one at '
-				, self preferencesFile fullName;
+			'Config file not found, creating a new one at ';
+		nextPutAll: self preferencesFile fullName;
 		newLine.
 	^ self createConfigurationFile: aFile
 ]
@@ -119,12 +119,10 @@ PharoLauncherCLIConfiguration >> initScriptsDirectory: aFileReference [
 PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
 	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation asFileReference .
-	vmsDirectory := FileLocator launcherUserFilesLocation / 'vms'.
-	vmsDirectory := vmsDirectory asFileReference.
-	initScriptsDirectory := PharoLauncherApplication
+	vmsDirectory := (FileLocator launcherUserFilesLocation / 'vms') asFileReference.
+	initScriptsDirectory := PharoLauncherApplication 
 		defaultInitializationScriptLocation asFileReference.
-	launchImageFromALoginShell := PhLLaunchConfiguration
-		launchInALoginShell
+	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell
 ]
 
 { #category : #accessing }

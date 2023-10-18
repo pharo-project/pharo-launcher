@@ -158,7 +158,7 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 PharoLauncherApplication class >> reset [
    Default ifNil: [ ^ self ].
 
-   Default closeAllWindows.
+   Default reset.
 	Default := nil
 ]
 

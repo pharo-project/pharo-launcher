@@ -64,6 +64,14 @@ PhLNotificationCenter >> pushProgress: aString with: aFullBlockClosure [
 	aFullBlockClosure value: DummySystemProgressItem new
 ]
 
+{ #category : #polymorphism }
+PhLNotificationCenter >> reset [
+
+	"This method is not a 'real' reset but is there for polymorphism with `PharoLauncherApplication`.
+	It is called by `PhLStartupManager class>>#startUp:`.
+	One should not reset my streams as they are initialized by clap at image startup."
+]
+
 { #category : #ui }
 PhLNotificationCenter >> showError: anError [
 

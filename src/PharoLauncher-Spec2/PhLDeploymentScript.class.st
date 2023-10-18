@@ -169,8 +169,8 @@ PhLDeploymentScript class >> launcherStartUp [
 	self isDeployed ifFalse: [ ^ self ].
 	
 	Smalltalk isInteractive
-		ifTrue: [ PharoLauncherApplication default: PhLNotificationCenter default ]
-		ifFalse: [ self closeWindowsAndOpenLauncher ]
+		ifTrue: [ self closeWindowsAndOpenLauncher ]
+		ifFalse: [ PharoLauncherApplication default: PhLNotificationCenter default ]
 ]
 
 { #category : #'system startup' }

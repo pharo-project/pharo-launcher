@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 env:
-  PHARO: 100
+  PHARO: 110
   ARCHITECTURE: 64
   VM: vm
   isRelease: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -132,7 +132,7 @@ jobs:
       - name: Prepare files
         shell: pwsh
         run: |
-          Invoke-WebRequest -OutFile pharo-win-stable-signed.zip -Uri http://files.pharo.org/get-files/110/pharo-win-stable-signed.zip
+          Invoke-WebRequest -OutFile pharo-win-stable-signed.zip -Uri http://files.pharo.org/get-files/${{ env.PHARO }}/pharo-win-stable-signed.zip
           Expand-Archive -LiteralPath .\pharo-win-stable-signed.zip -DestinationPath $Env:PACKAGE_DIR
           $Env:IMAGES_DIR = "${Env:PACKAGE_DIR}\images"
           mkdir "$Env:IMAGES_DIR"

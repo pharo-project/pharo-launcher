@@ -64,8 +64,10 @@ PhLImageProcessListCliCommand >> processListCmdArgs [
 			nextPutAll: self currentVMPid asString;
 			nextPutAll: ' | while read -r line; do'; lf;
 			nextPutAll: '	pid=$(echo "$line" | awk ''{print $1}'')'; lf;
-			nextPutAll: '	vmPath=$(echo "$line" | awk ''{print $2}'')'; lf;
-			nextPutAll: '	imgPath=$(echo "$line" | awk ''{print $3}'')'; lf;
+
+			"These sed commands are more permissive and should handle cases where vmPath or imgPath contains arbitrary arguments or flags."
+			nextPutAll: '	vmPath=$(echo "$line" | sed -E ''s/^[0-9]+ (.+\.image)/\1/'' | awk ''{print $1}'')'; lf;
+			nextPutAll: '	imgPath=$(echo "$line" | sed -E ''s/^[0-9]+.+\.image (.+)/\1/'' | awk ''{print $1}'')'; lf;
 			nextPutAll: '	start_time=$(ps -o lstart= -p "$pid")'; lf;
 			nextPutAll: '	echo "$pid'; << separator; << '$vmPath'; << separator; << '$imgPath'; << separator; << '$start_time"'; lf;
 			nextPutAll: 'done'

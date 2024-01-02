@@ -35,8 +35,12 @@ PhLImageProcessListCliCommand >> basicExecute [
 
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
-	
-	self logInfoMessage: '*** Printing information from OS output:'.
+	|debugArgs processListUnformatted|
+	debugArgs  := 'pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v {1}' format: {self currentVMPid asString}.
+	processListUnformatted := self executeOSShellCommandWithArgs: debugArgs.
+	self logInfoMessage: '*** Printing unformatted Pharo process data:'.
+	self logInfoMessage: processListUnformatted.
+	self logInfoMessage: '*** Printing information from formatted OS output:'.
 	self logInfoMessage: shellOutput.
 	self logInfoMessage: '*** End of debug printing.'.
 	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |

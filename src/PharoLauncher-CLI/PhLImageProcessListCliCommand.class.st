@@ -36,6 +36,9 @@ PhLImageProcessListCliCommand >> basicExecute [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	
+	self logInfoMessage: '*** Printing information from OS output:'.
+	self logInfoMessage: shellOutput.
+	self logInfoMessage: '*** End of debug printing.'.
 	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |
 			PhLImageProcess newFrom: (line splitOn: self processListDelimiter)
 	]

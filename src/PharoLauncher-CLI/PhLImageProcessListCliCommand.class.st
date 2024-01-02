@@ -36,7 +36,7 @@ PhLImageProcessListCliCommand >> basicExecute [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	|debugArgs processListUnformatted|
-	debugArgs  := 'pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v {1}' format: {self currentVMPid asString}.
+	debugArgs  := Array with: ('pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v {1}' format: {self currentVMPid asString}).
 	processListUnformatted := self executeOSShellCommandWithArgs: debugArgs.
 	self logInfoMessage: '*** Printing unformatted Pharo process data:'.
 	self logInfoMessage: processListUnformatted.

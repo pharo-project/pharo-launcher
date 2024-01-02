@@ -58,6 +58,7 @@ oneTimeSetUp() {
 
 testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 	result=$(processListCommand)
+	echo $result
 	#since VM prints some warnings, we need to check presence of image name from process list
 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
 }
@@ -65,6 +66,7 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
  testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
      launchSampleImageCommand> /dev/null
      result=$(processListCommand)
+	 echo $result
      kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  }

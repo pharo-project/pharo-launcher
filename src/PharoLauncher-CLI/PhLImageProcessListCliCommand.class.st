@@ -36,7 +36,7 @@ PhLImageProcessListCliCommand >> basicExecute [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	|debugArgs processListUnformatted|
-	debugArgs  := Array with: ('pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v {1}' format: {self currentVMPid asString}).
+	debugArgs  := Array with: ('pgrep -ai -f ''pharo.*\.image'' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v {1}' format: {self currentVMPid asString}).
 	processListUnformatted := self executeOSShellCommandWithArgs: debugArgs.
 	self logInfoMessage: '*** Printing unformatted Pharo process data:'.
 	self logInfoMessage: processListUnformatted.
@@ -67,7 +67,7 @@ PhLImageProcessListCliCommand >> processListCmdArgs [
 	separator := self processListDelimiter.	
 	^ String streamContents: [:aStream |
 		aStream 
-			nextPutAll: 'pgrep -a -f Pharo | grep ''.image'' | grep -v ''.bash'' | grep -v ';
+			nextPutAll: 'pgrep -ai -f ''pharo.*\.image'' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v ';
 			nextPutAll: self currentVMPid asString;
 			nextPutAll: ' | while read -r line; do'; lf;
 			nextPutAll: '	pid=$(echo "$line" | awk ''{print $1}'')'; lf;

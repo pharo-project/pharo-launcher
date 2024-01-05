@@ -392,12 +392,10 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 			^ self ].
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | processWrapper|
+	[ | processWrapper|
 		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
 		self doNotRunInitializationScript. "Just run, image already initialized"
 		^ processWrapper ]
-	on: PhLImageVersionDeterminationError
-	do: [ :error | error uiAlert ] ]
 	on: PhLArchitectureMismatchWarning
 	do: [ :warning |
 		architectureWarningEnabled ifTrue: [ 	

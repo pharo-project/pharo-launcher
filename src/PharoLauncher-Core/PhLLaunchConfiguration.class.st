@@ -92,7 +92,7 @@ PhLLaunchConfiguration >> commandString [
 
 { #category : #querying }
 PhLLaunchConfiguration >> defaultVm [
-	self image ensurePharoVersion.
+	self image pharoVersion.
 	^ self image vmManager virtualMachine
 ]
 
@@ -128,7 +128,8 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	image := anImage.
 	name := 'new configuration...'.
 	usePharoSettings := true.
-	imageArguments := anImage defaultArguments
+	imageArguments := anImage defaultArguments.
+	image ensurePharoVersion
 ]
 
 { #category : #testing }
@@ -168,7 +169,7 @@ PhLLaunchConfiguration >> printOn: aStream [
 { #category : #configuring }
 PhLLaunchConfiguration >> useSettings: aBoolean [
 	"Cannot skip Pharo settings before Pharo 3.0"
-	self image ensurePharoVersion asInteger < 30 ifTrue: [ ^ self ].
+	self image pharoVersion asInteger < 30 ifTrue: [ ^ self ].
 
 	usePharoSettings := aBoolean.
 ]

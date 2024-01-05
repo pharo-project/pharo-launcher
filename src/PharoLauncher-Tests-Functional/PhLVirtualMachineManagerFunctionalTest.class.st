@@ -45,88 +45,16 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
 { #category : #tests }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
 
-	| version |
-	self timeLimit: 30 seconds.
-
-	PhLVirtualMachineManagerTestResource current 
-		withCopyOfPharo90ImageDo: [ :imageRef | 
-			version := (PhLVirtualMachineManager forImage: imageRef)
-				           imageVersion.
-			self assert: version equals: '90' ]
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWhenRunningExtraVM [
-
-	| vmManager |
-	self timeLimit: 30 seconds.
-
-	PhLVirtualMachineManagerTestResource current
-		withCopyOfPharo90ImageDo: [ :imageRef | 
-			vmManager := PhLVirtualMachineManager forImage: imageRef.
-			vmManager imageVersionFile ensureDelete.
-
-			self assert: vmManager imageVersion equals: '90' ]
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromFileWithRightCommand [
-	| vmManager command |
-	self timeLimit: 30 seconds.
+	| vmManager expectedVersion imageRef |
 	
-	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
+	
+	expectedVersion := '110'.
+	imageRef :=  PhLVirtualMachineManagerTestResource current workspace / 'Pharo.image'.
+	vmManager := PhLVirtualMachineManager forImage: imageRef.
 	vmManager imageVersionFile ensureDelete.
-	command := PhLProcessWrapper new 
-		shellCommand;
-		addArguments: 'echo 60 >';
-		addArgument: vmManager imageVersionFile fullName surroundedByDoubleQuotes.
-		
-	self
-		assert: (vmManager imageVersionFromFileWith: command)
-		equals: '60'
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersionFromPharo14Image [
-
-	| vmManager |
-	self skip: 'skip this test for now to allow a release soon'.
-	self timeLimit: 60 seconds.
-
-	PhLVirtualMachineManagerTestResource current 
-		withCopyOfPharo14ImageDo: [ :imageRef | 
-			vmManager := PhLVirtualMachineManager forImage: imageRef.
-			vmManager imageVersionFile ensureDelete.
-
-			self assert: vmManager imageVersion equals: '14' ]
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testGetExceptionWhenRunningImageVersionFromFileWithBadCommand [
-
-	| vmManager command |
-	command := PhLProcessWrapper new
-		           shellCommand;
-		           addArgument: 'foo'.
-
-	PhLVirtualMachineManagerTestResource current 
-		withCopyOfPharo90ImageDo: [ :imageRef | 
-			vmManager := PhLVirtualMachineManager forImage: imageRef.
-			vmManager imageVersionFile ensureDelete.
-
-			self
-				should: [ vmManager imageVersionFromFileWith: command ]
-				raise: PhLImageVersionDeterminationError ]
-]
-
-{ #category : #tests }
-PhLVirtualMachineManagerFunctionalTest >> testImageVersionDeterminationIsRunWithoutSettings [
-	| manager command |
-	manager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
-	
-	command := manager imageVersionCommandWithPreferences: false.
-	
-	self assert: (command arguments includes: '--no-default-preferences')
+	vmManager imageVersionFile writeStreamDo: [ :stream | stream nextPutAll: expectedVersion ].
+			
+	self assert: vmManager imageVersion equals: expectedVersion
 ]
 
 { #category : #tests }

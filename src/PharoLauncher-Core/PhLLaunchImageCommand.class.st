@@ -129,8 +129,7 @@ PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	| process launchConfig |
 	
-	[ 
-		launchConfig := self launchConfigurationOfImage: aPhLImage.
+	[  launchConfig := self launchConfigurationOfImage: aPhLImage.
 		launchConfig useSettings: useSettings.
 		process := aPhLImage launchWithConfiguration: launchConfig ]
 	on: PhLError

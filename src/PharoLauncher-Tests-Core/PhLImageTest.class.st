@@ -29,7 +29,8 @@ PhLImageTest >> setUp [
 	fs := FileSystem memory root.
 	imageFileRef := fs / 'foo.image'.
 	imageFileRef binaryWriteStreamDo: [ :stream | (ZnEndianessReadWriteStream on: stream) nextLittleEndianNumber: 4 put: 68021 ].
-	image := PhLImage location: imageFileRef
+	image := PhLImage location: imageFileRef.
+	image pharoVersion: '110'
 ]
 
 { #category : #tests }
@@ -199,6 +200,7 @@ PhLImageTest >> testPharoVersionIsSetWhenNoVersionInMetadataButPharoVersionFileE
 	| version |
 	
 	version := '60'.
+	image pharoVersion: nil.
 	image versionFile 
 		writeStreamDo: [ :stream | stream nextPutAll: version ].
 

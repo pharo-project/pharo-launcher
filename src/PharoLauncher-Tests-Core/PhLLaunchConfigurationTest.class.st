@@ -14,15 +14,6 @@ PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 			yourself
 ]
 
-{ #category : #running }
-PhLLaunchConfigurationTest >> setUp [
-	super setUp.
-	(fs / PhLImage versionFileName)
-		binaryWriteStreamDo: [ :stream | stream nextPutAll: '70' ].
-	
-
-]
-
 { #category : #helper }
 PhLLaunchConfigurationTest >> stripExportFrom: arguments [ 
 	^ arguments first = 'export'
@@ -40,15 +31,14 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 	self assert: (vm isKindOf: PhLVirtualMachine).
 	self 
 		assert: vm id
-		equals: '70-x64'.
+		equals: image pharoVersion, '-x64'.
 ]
 
 { #category : #tests }
 PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 	| launchConfig vm |
+	image pharoVersion: '770'.
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
-	(fs / PhLImage versionFileName)
-		binaryWriteStreamDo: [ :stream | stream nextPutAll: '770' ].
 
 	vm := launchConfig vm.
 	

@@ -41,18 +41,14 @@ Class {
 
 { #category : #'instance creation' }
 PhLVirtualMachine class >> directory: aFileReference [
-	^ self 
-		directory: aFileReference
-		private: false
-]
 
-{ #category : #'instance creation' }
-PhLVirtualMachine class >> directory: aFileReference private: isPrivateVm [
 	| targetClass |
-	targetClass := self allSubclasses detect: [ :cls | cls isSubclassForDirectory: aFileReference private: isPrivateVm ] ifNone: [ self ].
-	^ targetClass new 
-		initializeOn: aFileReference;
-		yourself 
+	targetClass := self allSubclasses
+		               detect: [ :cls | cls isSubclassForDirectory: aFileReference ]
+		               ifNone: [ self ].
+	^ targetClass new
+		  initializeOn: aFileReference;
+		  yourself
 ]
 
 { #category : #accessing }
@@ -80,9 +76,9 @@ PhLVirtualMachine class >> id: aString [
 ]
 
 { #category : #testing }
-PhLVirtualMachine class >> isSubclassForDirectory: aFileReference private: isPrivateVm [
+PhLVirtualMachine class >> isSubclassForDirectory: aFileReference [
 
-	^ isPrivateVm not and: [ aFileReference basename beginsWith: self versionPrefix ]
+	^ aFileReference basename beginsWith: self versionPrefix
 ]
 
 { #category : #accessing }

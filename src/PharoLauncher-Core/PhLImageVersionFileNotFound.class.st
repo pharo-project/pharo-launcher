@@ -17,6 +17,12 @@ Please, contact us at http://pharo.org/community'
 ]
 
 { #category : #accessing }
+PhLImageVersionFileNotFound >> messageText [ 
+
+	^ self longDescription
+]
+
+{ #category : #accessing }
 PhLImageVersionFileNotFound >> name [
 	^ 'Image version file ', PhLImage versionFileName , ' not found!'
 ]

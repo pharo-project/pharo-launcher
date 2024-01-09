@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 PhLImagesPresenterTest >> tearDown [
-	presenter window ifNotNil: #close.
+	presenter window ifNotNil: [ :window | window close].
 	super tearDown
 ]
 

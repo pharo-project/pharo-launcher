@@ -233,6 +233,20 @@ PhLImagesPresenter >> ensure: aBoolean [
 		ifFalse: [ PhLCommandError signal ]
 ]
 
+{ #category : #computing }
+PhLImagesPresenter >> ensurePharoVersion [
+	| image |
+	image := self singleImage.
+	[ image ensurePharoVersion ]
+	on: PhLImageVersionFileNotFound 
+	do: [ :error | | presenter |
+		presenter := PhLPharoVersionChooserPresenter new.
+		presenter openModal.
+		presenter version ifNil: [ error pass ].
+		image versionFile 
+			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
+]
+
 { #category : #private }
 PhLImagesPresenter >> filter: regexMatcher [
 

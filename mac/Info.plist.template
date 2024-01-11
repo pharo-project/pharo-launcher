@@ -29,7 +29,7 @@
 	<key>PharoImageFile</key>
 	<string>PharoLauncher.image</string>
 	<key>PharoLogLevel</key>
-	<integer>4</integer>
+	<integer>1</integer>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

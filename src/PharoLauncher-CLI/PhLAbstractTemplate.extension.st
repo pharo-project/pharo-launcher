@@ -4,7 +4,7 @@ Extension { #name : #PhLAbstractTemplate }
 PhLAbstractTemplate class >> listPrintAttributeBlocks [
 	
 	^ {[:template | template name].
-		[:template | template url]}
+		[:template | template url asString]}
 ]
 
 { #category : #'*PharoLauncher-CLI' }

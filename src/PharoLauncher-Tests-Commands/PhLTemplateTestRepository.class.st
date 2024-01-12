@@ -38,7 +38,7 @@ PhLTemplateTestRepository >> createTemplateInDefaultGroupNamed: aName [
 { #category : #instance }
 PhLTemplateTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
 	(self categoryNamed: aCategoryName) templatesAndGroups 
-		add: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
+		add: (PhLRemoteTemplate name: aName url: ('http://', aName, '.foo') asZnUrl).
 ]
 
 { #category : #initialization }

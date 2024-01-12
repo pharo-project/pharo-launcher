@@ -24,7 +24,7 @@ function prepare_image() {
 	esac
 	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO | bash
 	wget --quiet -O - get.pharo.org/$ARCH_PATH$VM$PHARO | bash
-	echo $PHARO > 'pharo.version'
+	echo "$PHARO" > 'pharo.version'
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
@@ -104,7 +104,8 @@ function package_mac_version() {
 	cp scripts/pharo-launcher.sh $BIN_PATH/pharo-launcher && chmod +x $BIN_PATH/pharo-launcher
 	
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
-	local generated_dmg=$(echo *.dmg)
+	local generated_dmg
+	generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
@@ -130,7 +131,7 @@ function copy_current_stable_image_to() {
 	local DEST_PATH=${1:-.} # If no argument given, use current working dir
 	local IMAGES_PATH=$DEST_PATH/images
 	mkdir "$IMAGES_PATH"
-	wget --progress=dot:mega -P $IMAGES_PATH https://files.pharo.org/image/stable/stable-64.zip
+	wget --progress=dot:mega -P "$IMAGES_PATH" https://files.pharo.org/image/stable/stable-64.zip
     mv "$IMAGES_PATH/stable-64.zip" "$IMAGES_PATH/pharo-stable.zip"
 }
 
@@ -224,7 +225,7 @@ linux-package)
   package_linux_version
   ;;
 mac-package)
-  package_mac_version $SHOULD_SIGN
+  package_mac_version "$SHOULD_SIGN"
   ;;
 *)
   echo "No valid target specified! Exiting"

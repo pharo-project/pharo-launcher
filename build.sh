@@ -65,7 +65,7 @@ function package_linux_version() {
 	OUTPUT_PATH=build
 	RESOURCES_PATH=$OUTPUT_PATH/shared
 	rm -f $OUTPUT_PATH; mkdir $OUTPUT_PATH
-	mkdir $OUTPUT_PATH/icons; cp icons/pharo-launcher.png $OUTPUT_PATH/
+	mkdir $OUTPUT_PATH/icons; cp icons/pharo-launcher.png $OUTPUT_PATH/icons/
 	cp linux/pharo-launcher-ui $OUTPUT_PATH/
 	cp scripts/pharo-launcher.sh $OUTPUT_PATH/pharo-launcher
 	mkdir $RESOURCES_PATH
@@ -74,7 +74,7 @@ function package_linux_version() {
 	cp PharoLauncher.image $RESOURCES_PATH
     cp PharoLauncher.changes $RESOURCES_PATH
     cp Pharo*.sources $RESOURCES_PATH
-	fetch_current_vm_to $(pwd)/$RESOURCES_PATH
+	fetch_current_vm_to $OUTPUT_PATH
 	# ensure the linux scripts are executable
 	chmod +x "$OUTPUT_PATH/pharo-launcher" "$OUTPUT_PATH/pharo-launcher-ui" || true
 }

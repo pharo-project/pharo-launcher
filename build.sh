@@ -77,6 +77,8 @@ function package_linux_version() {
 	fetch_current_vm_to $OUTPUT_PATH
 	# ensure the linux scripts are executable
 	chmod +x "$OUTPUT_PATH/pharo-launcher" "$OUTPUT_PATH/pharo-launcher-ui" || true
+	mv build pharo-launcher
+	tar -cvf pharo-launcher-linux.tar pharo-launcher
 }
 
 function copy_mac_icon_files_to() {

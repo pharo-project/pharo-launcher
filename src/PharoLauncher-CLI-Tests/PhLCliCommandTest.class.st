@@ -73,6 +73,15 @@ PhLCliCommandTest >> testExecuteLauncherCommandToPrintHelp [
 ]
 
 { #category : #tests }
+PhLCliCommandTest >> testExecuteLauncherCommandToPrintVersion [
+	|expectedPrintout|
+	expectedPrintout := PhLAboutCommand new launcherVersion.
+	
+	self assertCommand: #('launcher' '--version') toPrintHelpWith: expectedPrintout.
+
+]
+
+{ #category : #tests }
 PhLCliCommandTest >> testExecuteOSShellCommand [
 
 	"nothing is executed"

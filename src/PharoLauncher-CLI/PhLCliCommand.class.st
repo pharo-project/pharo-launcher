@@ -49,9 +49,10 @@ PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 { #category : #'command line - arguments' }
 PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
-	"No positionals on root spec class 
-	 use on subclasses e.g.: aCommandSpec addFlag: #someFlag
+	"Only version flag to launcher commmand.
+	 Use on subclasses e.g.: aCommandSpec addFlag: #someFlag
 	"
+	self addVersionFlagTo: aCommandSpec 
 ]
 
 { #category : #'command line - arguments' }
@@ -92,6 +93,14 @@ PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 	aCommandSpec 
 		addFlag: #ston 
 		description: 'Prints information in STON format.'
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addVersionFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #version 
+		description: 'Prints version of the Pharo Launcher.'
 ]
 
 { #category : #'command line - converting' }
@@ -157,6 +166,7 @@ PhLCliCommand class >> raiseMissingDelimiter [
 PhLCliCommand >> basicExecute [
 	
 	"should be implemented on all sub-classed commands that have business logic, otherwise will print just help"
+	self hasVersionFlag ifTrue: [ ^ self printVersion ].
 	self printHelp
 ]
 
@@ -246,6 +256,12 @@ PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> hasVersionFlag [
+
+	^ self hasFlag: #version
 ]
 
 { #category : #accessing }
@@ -343,6 +359,12 @@ PhLCliCommand >> printSequence [
 
 	"by default, print also sequence number for all listing commands"
 	^ true
+]
+
+{ #category : #printing }
+PhLCliCommand >> printVersion [ 
+
+	self logInfoMessage: PhLAboutCommand new launcherVersion 
 ]
 
 { #category : #'accessing arguments' }

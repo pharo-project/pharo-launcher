@@ -74,17 +74,7 @@ PhLImageCreateCliCommand class >> addTemplateCategoryFlagTo: aCommandSpec [
 	aCommandSpec 
 		addFlag: #templateCategory 
 		description: 'Specifies the template category to search the target template.'
-		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app defaultTemplateCategoryName ]].
-			
-"^  (ClapFlag id: #templateCategory)
-				description: 'Specifies the template category to search the target template.';
-				meaning: [  :arg :app | (arg at: #templateCategoryArg) value ];
-				implicitMeaning: [  :arg :app | app defaultTemplateCategoryName ];
-				add: ((ClapPositional id: #templateCategoryArg)
-					description: 'Template category argument.';
-					meaning: [ :pos | pos word asSymbol . ];
-					implicitMeaning: [  :arg :app |  app defaultTemplateCategoryName]);
-				yourself"
+		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app defaultTemplateCategoryName ]]
 ]
 
 { #category : #'command line - arguments' }
@@ -92,17 +82,7 @@ PhLImageCreateCliCommand class >> addTemplateNameFlagTo: aCommandSpec [
 
 	aCommandSpec 
 		addFlagWithPositional: #templateName 
-		description: 'Template which will be used to create the image'.
-"	^ (ClapFlag id: #templateName)
-			description: 'Template which will be used to create the image.';
-			meaning: [  :arg :app | (arg at: #templateNameArg) value ];
-			implicitMeaning: [ :arg :app |  ];
-			add: ((ClapPositional id: #templateNameArg)
-					description: 'Template name argument.';
-					meaning: [ :pos | pos word asString ];
-					implicitMeaning: [ :arg :app | NotFound signal: self missingTemplateNameArgMessage]);
-			yourself
-"
+		description: 'Template which will be used to create the image'
 ]
 
 { #category : #'command line' }

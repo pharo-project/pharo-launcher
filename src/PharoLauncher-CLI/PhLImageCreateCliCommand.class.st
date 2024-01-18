@@ -130,8 +130,10 @@ PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> basicExecute [
-
-	self findTemplateAndCreateImage
+	| image |
+	
+	image := self findTemplateAndCreateImage.
+	image launch.
 ]
 
 { #category : #'command execution' }

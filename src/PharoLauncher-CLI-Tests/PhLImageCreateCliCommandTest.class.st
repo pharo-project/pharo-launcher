@@ -53,6 +53,17 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	 
 	self assertSuccess.  
 	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
+	self assert: (self imageRepository imageNamed: 'myimage3') isLaunched
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWithNoLaunchFlagShouldNotLaunchImage [
+	self addLocalTemplateNamed: 'fakeTemplate'.
+	
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage' . '--no-launch' . '--templateName'. 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
+	 
+	self assertSuccess.  
+	self deny: (self imageRepository imageNamed: 'myimage') isLaunched
 ]
 
 { #category : #tests }

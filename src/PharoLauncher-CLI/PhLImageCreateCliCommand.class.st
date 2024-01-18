@@ -37,6 +37,7 @@ Class {
 { #category : #'command line - arguments' }
 PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
+	self addNoLaunchFlagTo: aCommandSpec.
 	self addTemplateNameFlagTo: aCommandSpec.
 	self addTemplateCategoryFlagTo: aCommandSpec.
 ]
@@ -57,6 +58,14 @@ PhLImageCreateCliCommand class >> addNewImageFlagTo: aCommandSpec [
 		addFlag: #newImageName 
 		description: 'Name of the new Pharo image (template name is used by default).' 
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitImageName ] ]
+]
+
+{ #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addNoLaunchFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #'no-launch' 
+		description: 'When flag is present, the just created image will not be launched after its creation.'
 ]
 
 { #category : #'command line - arguments' }
@@ -113,7 +122,8 @@ PhLImageCreateCliCommand >> basicExecute [
 	| image |
 	
 	image := self findTemplateAndCreateImage.
-	image launch.
+	self shouldLaunchImage
+		ifTrue: [ image launch ]
 ]
 
 { #category : #'command execution' }
@@ -231,6 +241,11 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 PhLImageCreateCliCommand >> pharoVersionNumber [ 
 
 	^ self positional: #pharoVersion
+]
+
+{ #category : #asserting }
+PhLImageCreateCliCommand >> shouldLaunchImage [
+	^ (self hasFlag: #'no-launch') not
 ]
 
 { #category : #querying }

@@ -206,13 +206,16 @@ PhLImageCreateFromRemoteRepoCliCommand >> raiseRepoNameInvalid [
 
 { #category : #private }
 PhLImageCreateFromRemoteRepoCliCommand >> regexForRepoName [
-	|stringWithDash|
-
+	|stringWithDash versionRegex|
+	
 	"e.g. some-project-123"
 	stringWithDash := '[\w]+-?[\w]+'.
 	
-	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}:{feature}/{alphanumeric-chars with dash}"
-	^ stringWithDash, '\/', stringWithDash, '(\:?', stringWithDash, '(\/', stringWithDash, ')?', ')?'
+	"e.g. v1.2.3b"
+	versionRegex := '(v|V)\d+(\.\d+)*[a-zA-Z]?$'.
+		
+	"should match {alphanumeric-chars with dash}/{alphanumeric-chars with dash}:{version} | ({feature}/{alphanumeric-chars with dash})"
+	^ '{dashString}\\/{dashString}(\\:?(({versionString})|({dashString}(\\/{dashString})?)))?' format: { 'dashString' -> stringWithDash. 'versionString' -> versionRegex. } asDictionary.
 ]
 
 { #category : #private }

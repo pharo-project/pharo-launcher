@@ -14,7 +14,7 @@ SAMPLE_IMAGE_PATH="$HOME"/Pharo/images/$SAMPLE_IMAGE
 
 # setup commands for sample image manipulation
 createSampleImageCommand () {
-    runLauncherScript image create $SAMPLE_IMAGE --templateName "$SAMPLE_TEMPLATE"
+    runLauncherScript image create $SAMPLE_IMAGE --no-launch --templateName "$SAMPLE_TEMPLATE"
     cp -f "$ROOT"/$IMAGE_METADATA_FILE $SAMPLE_IMAGE_PATH/$IMAGE_METADATA_FILE
 }
 

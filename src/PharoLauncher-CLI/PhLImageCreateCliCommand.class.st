@@ -251,14 +251,6 @@ PhLImageCreateCliCommand >> pharoVersionNumber [
 	^ self positional: #pharoVersion
 ]
 
-{ #category : #'command execution' }
-PhLImageCreateCliCommand >> printSubCommandsHelp [
-
-	arguments positionalValues isEmpty ifTrue:[
-		(ClapDocumenter on: self outStream) explain: arguments parent specification
-	]
-]
-
 { #category : #querying }
 PhLImageCreateCliCommand >> template [ 
 	^ self templateRepository

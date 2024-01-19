@@ -78,7 +78,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testValidateRepoFullName [
 	| commandSpec validRepoNames |
 	
 	commandSpec := PhLImageCreateFromRemoteRepoCliCommand asCliCommand.
-	validRepoNames := #('owner/project' 'owner/project:branch' 'owner/some-project:feature/branch-name' 'owner/project:v1' 'owner/project:v1.1' 'owner/project:v1.1a' 'owner/project:V1.1.1a').
+	validRepoNames := #('owner/project' 'owner/project:branch' 'owner/some-project:feature/branch-name' 'owner/project:v1' 'owner/project:v1.1' 'owner/project:v1.1a' 'owner/project:V1.1.1a' 'owner/project:1.0-RC-somecomment').
 
 	validRepoNames do: [:repoName | 
 		|createCommand|

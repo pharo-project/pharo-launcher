@@ -8,7 +8,8 @@ Class {
 	#name : #PhLAbstractTemplate,
 	#superclass : #PhLObject,
 	#instVars : [
-		'name'
+		'name',
+		'shortName'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
@@ -112,6 +113,16 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 { #category : #actions }
 PhLAbstractTemplate >> renameTo: aString [
 	name := aString
+]
+
+{ #category : #accessing }
+PhLAbstractTemplate >> shortName [
+	^ shortName
+]
+
+{ #category : #accessing }
+PhLAbstractTemplate >> shortName: aString [ 
+	shortName := aString
 ]
 
 { #category : #testing }

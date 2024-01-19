@@ -26,6 +26,14 @@ PhLImageCreateCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryNam
 		inCategory: aCategoryName
 ]
 
+{ #category : #adding }
+PhLImageCreateCliCommandTest >> addTemplateNamed: aName shortName: aShortName inCategory: aCategoryName [ 
+	^ self launcherModel templateRepository
+		createTemplateNamed: aName
+		shortName: aShortName
+		inCategory: aCategoryName
+]
+
 { #category : #instance }
 PhLImageCreateCliCommandTest >> defaultTemplateCategoryName [
 	^ 'Official distributions'
@@ -131,4 +139,35 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	self assertFailure.
 	 
 	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testTemplateCanBeFoundByShortName [
+
+	| createdTemplate foundTemplate |
+
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	createdTemplate := self addTemplateNamed: 'fakeTemplate' shortName: 'foo' inCategory: self defaultTemplateCategoryName.
+	context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'foo' }.
+	context match.
+	
+	foundTemplate := context command findUserTemplate.
+	
+	self assert: foundTemplate equals: createdTemplate
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testTemplateIsFirstSearchByName [
+
+	| createdTemplate foundTemplate |
+
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	createdTemplate := self addTemplateNamed: 'fakeTemplate' shortName: 'foo' inCategory: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'foo' inCategory: self defaultTemplateCategoryName.
+	context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' }.
+	context match.
+	
+	foundTemplate := context command findUserTemplate.
+	
+	self assert: foundTemplate equals: createdTemplate
 ]

@@ -35,10 +35,19 @@ PhLTemplateTestRepository >> createTemplateInDefaultGroupNamed: aName [
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
-{ #category : #instance }
+{ #category : #initialization }
 PhLTemplateTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
-	(self categoryNamed: aCategoryName) templatesAndGroups 
-		add: (PhLRemoteTemplate name: aName url: ('http://', aName, '.foo') asZnUrl).
+	^ self createTemplateNamed: aName shortName: nil inCategory: aCategoryName 
+]
+
+{ #category : #initialization }
+PhLTemplateTestRepository >> createTemplateNamed: aName shortName: aShortName inCategory: aCategoryName [ 
+
+	| template |
+	template := PhLRemoteTemplate name: aName url: ('http://', aName, '.foo') asZnUrl.
+	template shortName: aShortName.
+	(self categoryNamed: aCategoryName) templatesAndGroups add: template.
+	^ template
 ]
 
 { #category : #initialization }

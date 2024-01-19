@@ -16,6 +16,15 @@ PhLRemoteTemplate class >> example [
 ]
 
 { #category : #'instance creation' }
+PhLRemoteTemplate class >> name: aString shortName: shortNameString url: anUrl username: anotherString password: yetAnotherString [
+	^ (self name: aString url: anUrl)
+		  shortName: shortNameString;
+		  username: anotherString;
+		  password: yetAnotherString;
+		  yourself
+]
+
+{ #category : #'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
@@ -24,10 +33,7 @@ PhLRemoteTemplate class >> name: aString url: anUrl [
 
 { #category : #'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
-	^ (self name: aString url: anUrl)
-		  username: anotherString;
-		  password: yetAnotherString;
-		  yourself
+	^ self name: aString shortName: nil url: anUrl username: anotherString password: yetAnotherString
 ]
 
 { #category : #comparing }

@@ -163,3 +163,10 @@ PhLTemplateGroupRepository >> templateNamed: aTemplateName inCategoryNamed: aCat
 	category := self categoryNamed: aCategoryName.
 	^ category templateNamed: aTemplateName
 ]
+
+{ #category : #querying }
+PhLTemplateGroupRepository >> templateShortNamed: aTemplateName inCategoryNamed: aCategoryName [
+	| category |
+	category := self categoryNamed: aCategoryName.
+	^ category templateShortNamed: aTemplateName
+]

@@ -156,10 +156,27 @@ PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 ]
 
 { #category : #querying }
-PhLImageCreateCliCommand >> findUserTemplate [ 
+PhLImageCreateCliCommand >> findUserTemplate [
+
+	^ [ self findUserTemplateFromName ]
+		on: NotFound 
+		do: [ self findUserTemplateFromShortName ]
+]
+
+{ #category : #querying }
+PhLImageCreateCliCommand >> findUserTemplateFromName [
 
 	^ self templateRepository
 		templateNamed: self templateName
+		inCategoryNamed: self templateCategory
+
+]
+
+{ #category : #querying }
+PhLImageCreateCliCommand >> findUserTemplateFromShortName [
+
+	^ self templateRepository
+		templateShortNamed: self templateName
 		inCategoryNamed: self templateCategory
 
 ]

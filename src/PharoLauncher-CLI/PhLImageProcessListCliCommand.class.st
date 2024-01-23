@@ -34,6 +34,35 @@ PhLImageProcessListCliCommand >> basicExecute [
 ]
 
 { #category : #'command execution' }
+PhLImageProcessListCliCommand >> getImageAttributesFrom: lineString [
+	|lineWords pid imagePath vmPath startDate|
+	lineWords := lineString substrings.
+	pid := self pidStringFrom: lineWords.
+	vmPath := self vmPathFrom: lineWords. 
+	imagePath := self imagePathFrom: lineWords.
+	startDate := self startDateOfPid: pid. 
+	^ {pid. vmPath. imagePath. startDate}
+]
+
+{ #category : #'command execution' }
+PhLImageProcessListCliCommand >> imagePathFrom: lineWords [
+
+	|pharoVMIndex pharoImgIndex resultImgString|
+	"find index of word containing pharo VM name"
+	pharoVMIndex := lineWords detectIndex: [:word | word includesSubstring: 'pharo'] ifNone: [^ ''].
+	"find index of word containing pharo image file"
+	pharoImgIndex := lineWords detectIndex: [:word | word includesSubstring: '.image'] ifNone: [0].
+	resultImgString := String streamContents: [:aStream | 
+		lineWords from: pharoVMIndex + 1 to: lineWords size do: [:word | aStream nextPutAll: word; nextPut: Character space].
+		lineWords from: pharoVMIndex to: pharoImgIndex do: [:word | 
+			(word beginsWith: '--') ifTrue: [ aStream nextPutAll: word; nextPut: Character space ].
+			  ]
+	].
+
+	^ resultImgString trim
+]
+
+{ #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	|debugArgs processListUnformatted|
 	debugArgs  := Array with: ('pgrep -ai -f ''pharo.*\.image'' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v {1}' format: {self currentVMPid asString}).
@@ -44,7 +73,7 @@ PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
 	self logInfoMessage: shellOutput.
 	self logInfoMessage: '*** End of debug printing.'.
 	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |
-			PhLImageProcess newFrom: (line splitOn: self processListDelimiter)
+			PhLImageProcess newFrom: (self getImageAttributesFrom: line)
 	]
 ]
 
@@ -60,36 +89,47 @@ PhLImageProcessListCliCommand >> osShellArgArray [
 	^ Array with: self processListCmdArgs
 ]
 
+{ #category : #private }
+PhLImageProcessListCliCommand >> pidStringFrom: lineWords [
+
+	"pid is the first word of line"
+	^ lineWords first
+]
+
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> processListCmdArgs [
 
-	|separator|
-	separator := self processListDelimiter.	
+	"process grep of all processes with 'pharo' (case-insensitive), where launcher process is ommited as well as export commands for path env. variables"
 	^ String streamContents: [:aStream |
 		aStream 
 			nextPutAll: 'pgrep -ai -f ''pharo.*\.image'' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v ';
-			nextPutAll: self currentVMPid asString;
-			nextPutAll: ' | while read -r line; do'; lf;
-			nextPutAll: '	pid=$(echo "$line" | awk ''{print $1}'')'; lf;
+			nextPutAll: self currentVMPid asString
 			
-			"This captures the entire cmd line (excluding the PID) and stores it in the cmd variable"
-			nextPutAll: '  cmd=$(echo "$line" | cut -d'' '' -f2-)'; lf;
-			
-			"This extracts the vmPath by capturing everything up to the first occurrence of .image."
-			nextPutAll: '  vmPath=$(echo "$cmd" | sed -E ''s/([^ ]+\.image).*/\1/'')'; lf;
-			
-			"This extracts the imgPath by capturing everything after .image."
-			nextPutAll: '  imgPath=$(echo "$cmd" | sed -E ''s/[^ ]+\.image (.*)/\1/'')'; lf;
-			
-			nextPutAll: '	start_time=$(ps -o lstart= -p "$pid")'; lf;
-			nextPutAll: '	echo "$pid'; << separator; << '$vmPath'; << separator; << '$imgPath'; << separator; << '$start_time"'; lf;
-			nextPutAll: 'done'
 		]
 ]
 
 { #category : #'command execution' }
-PhLImageProcessListCliCommand >> processListDelimiter [
-	
-	"this delimiter is used when using OS process output to obtain Pharo process information"
-	^ '-|-'
+PhLImageProcessListCliCommand >> startDateOfPid: pidString [
+
+	|pidDateCmd |
+	pidDateCmd := 'ps -o lstart= -p "{1}" | xargs -I{} date -d "{}" ''+%Y-%m-%d %H:%M:%S''' format: {pidString}.
+	^ self executeOSShellCommandWithArgs: (Array with: pidDateCmd)
+]
+
+{ #category : #'command execution' }
+PhLImageProcessListCliCommand >> vmPathFrom: lineWords [
+
+	|pharoVMIndex pharoImgIndex resultVmString|
+	"find index of word containing pharo VM name"
+	pharoVMIndex := lineWords detectIndex: [:word | word includesSubstring: 'pharo'] ifNone: [^ ''].
+	"find index of word containing pharo image file"
+	pharoImgIndex := lineWords detectIndex: [:word | word includesSubstring: '.image'] ifNone: [0].
+	resultVmString := String streamContents: [:aStream | 
+		lineWords from: 2 to: pharoVMIndex do: [:word | aStream nextPutAll: word; nextPut: Character space].
+		lineWords from: pharoVMIndex to: pharoImgIndex do: [:word | 
+			(word beginsWith: '--') ifTrue: [ aStream nextPutAll: word; nextPut: Character space ].
+			  ]
+	].
+
+	^ resultVmString trim
 ]

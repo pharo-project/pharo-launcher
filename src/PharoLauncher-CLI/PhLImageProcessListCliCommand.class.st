@@ -112,7 +112,12 @@ PhLImageProcessListCliCommand >> processListCmdArgs [
 PhLImageProcessListCliCommand >> startDateOfPid: pidString [
 
 	|pidDateCmd |
-	pidDateCmd := 'ps -o lstart= -p "{1}" | xargs -I{} date -d "{}" ''+%Y-%m-%d %H:%M:%S''' format: {pidString}.
+	pidDateCmd := String streamContents: [: aStream |
+		aStream 
+			nextPutAll:  'ps -o lstart= -p "';
+			nextPutAll: pidString;
+			nextPutAll: '" | xargs -I{} date -d "{}" ''+%Y-%m-%d %H:%M:%S'''
+	].
 	^ self executeOSShellCommandWithArgs: (Array with: pidDateCmd)
 ]
 

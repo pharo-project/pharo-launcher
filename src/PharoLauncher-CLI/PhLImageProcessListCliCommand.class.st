@@ -53,8 +53,13 @@ PhLImageProcessListCliCommand >> imagePathFrom: lineWords [
 	"find index of word containing pharo image file"
 	pharoImgIndex := lineWords detectIndex: [:word | word includesSubstring: '.image'] ifNone: [0].
 	resultImgString := String streamContents: [:aStream | 
-		lineWords from: pharoVMIndex + 1 to: lineWords size do: [:word | aStream nextPutAll: word; nextPut: Character space].
-		lineWords from: pharoVMIndex to: pharoImgIndex do: [:word | 
+		lineWords from: pharoVMIndex + 1 to: pharoImgIndex do: [:word |
+			(word beginsWith: '--') ifFalse: [
+			 aStream 
+					nextPutAll: word; 
+					nextPut: Character space]
+		].
+		lineWords from: pharoImgIndex + 1 to: lineWords size do: [:word | 
 			(word beginsWith: '--') ifTrue: [ aStream nextPutAll: word; nextPut: Character space ].
 			  ]
 	].
@@ -64,14 +69,7 @@ PhLImageProcessListCliCommand >> imagePathFrom: lineWords [
 
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> imageProcesListFrom: shellOutput [
-	|debugArgs processListUnformatted|
-	debugArgs  := Array with: ('pgrep -ai -f ''pharo.*\.image'' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v {1}' format: {self currentVMPid asString}).
-	processListUnformatted := self executeOSShellCommandWithArgs: debugArgs.
-	self logInfoMessage: '*** Printing unformatted Pharo process data:'.
-	self logInfoMessage: processListUnformatted.
-	self logInfoMessage: '*** Printing information from formatted OS output:'.
-	self logInfoMessage: shellOutput.
-	self logInfoMessage: '*** End of debug printing.'.
+
 	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |
 			PhLImageProcess newFrom: (self getImageAttributesFrom: line)
 	]

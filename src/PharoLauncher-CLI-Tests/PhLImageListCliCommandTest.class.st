@@ -53,8 +53,9 @@ PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
 	 
 	self assertSuccess.  
 	images := STON fromString: self outputString.
-	self assert: images size equals: 2.
-	self assert: images first name equals: 'myImage1'.
+	self 
+		assertCollection: (images collect: #name)
+		hasSameElements: #('myImage1' 'myImage2').
 	
 ]
 

@@ -56,7 +56,7 @@ PhLImageListCliCommand >> listImages [
 		ifTrue: [ self imagesFromName: self nameFilter ]
 		ifFalse: [ self imageRepository images ].
 
-	self list: images
+	self list: (images sorted: [:a :b | b lastModification <= a lastModification])
 ]
 
 { #category : #'accessing arguments' }

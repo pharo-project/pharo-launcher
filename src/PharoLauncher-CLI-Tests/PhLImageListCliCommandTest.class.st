@@ -59,13 +59,13 @@ PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
 ]
 
 { #category : #tests }
-PhLImageListCliCommandTest >> testListImageWithImageNameShouldSucceed [
+PhLImageListCliCommandTest >> testListImageWithImageNameFilterShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	self addImageNamed: 'shouldNotBeListed'.
 	self addImageNamed: 'myImage3'.
 	
-	self runCommand: #('launcher' 'image' 'list' '--name' 'myImage').
+	self runCommand: #('launcher' 'image' 'list' '--nameFilter' 'myImage').
 	 
 	self assertSuccess.  
 	self assert: (self outputString includesSubstring:'myImage1').

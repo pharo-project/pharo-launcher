@@ -65,6 +65,32 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 ]
 
 { #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWithDevFlagUsesDevImage [
+	| template devTemplate |
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
+	devTemplate := self addTemplateNamed: 'Pharo 10 64bit (development version, latest)' inCategory: self defaultTemplateCategoryName.
+	context arguments: #('launcher' 'image' 'create' '--dev' 'myImage').
+	
+	template := context command findTemplate.
+	 
+	self assert: template equals: devTemplate
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesStableImage [
+	| template stableTemplate |
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	stableTemplate := self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'Pharo 10 64bit (development version)' inCategory: self defaultTemplateCategoryName.
+	context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
+	
+	template := context command findTemplate.
+	 
+	self assert: template equals: stableTemplate
+]
+
+{ #category : #tests }
 PhLImageCreateCliCommandTest >> testCreateImageWithNoLaunchFlagShouldNotLaunchImage [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	

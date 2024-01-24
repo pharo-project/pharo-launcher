@@ -35,8 +35,17 @@ Class {
 }
 
 { #category : #'command line - arguments' }
+PhLImageCreateCliCommand class >> addDevFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #'dev' 
+		description: 'When flag is present, the last development image will be used as template. Will take precedence if templateName is specified.'
+]
+
+{ #category : #'command line - arguments' }
 PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
+	self addDevFlagTo: aCommandSpec.
 	self addNoLaunchFlagTo: aCommandSpec.
 	self addTemplateNameFlagTo: aCommandSpec.
 	self addTemplateCategoryFlagTo: aCommandSpec.
@@ -140,6 +149,7 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 
 { #category : #querying }
 PhLImageCreateCliCommand >> findTemplate [ 
+	(self hasFlag: #dev) ifTrue: [ ^ self latestDevTemplate ].
 
 	"find template defined by user"
 	(self hasFlag: #templateName) ifTrue: [ ^ self findUserTemplate ].

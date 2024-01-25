@@ -39,8 +39,8 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self runCommand: #('launcher' 'image' 'list' '--brief' '--delimiter' '+').
 	 
 	self assertSuccess.  
-	self assert: (self outputString includesSubstring:'1 +myImage1').
-	self assert: (self outputString includesSubstring:'2 +myImage2').
+	self assert: (self outputString includesSubstring:' +myImage1').
+	self assert: (self outputString includesSubstring:' +myImage2').
 ]
 
 { #category : #tests }

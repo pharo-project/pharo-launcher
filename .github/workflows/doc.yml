@@ -16,9 +16,14 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs
+
       - run: mkdocs build
+        if: github.event.inputs.deploy-to-gh-pages == 'false'
       - uses: actions/upload-artifact@v3
         with:
           name: pharo-launcher-documentation
           path: site
         if: github.event.inputs.deploy-to-gh-pages == 'false'
+
+      - run: mkdocs gh-deploy
+        if: github.event.inputs.deploy-to-gh-pages == 'true'

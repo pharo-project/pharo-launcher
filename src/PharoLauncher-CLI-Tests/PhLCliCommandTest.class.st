@@ -82,22 +82,6 @@ PhLCliCommandTest >> testExecuteLauncherCommandToPrintVersion [
 ]
 
 { #category : #tests }
-PhLCliCommandTest >> testExecuteOSShellCommand [
-
-	"nothing is executed"
-	self assert: PhLCliCommand new executeOSShellCommand isEmptyOrNil.
-	
-]
-
-{ #category : #tests }
-PhLCliCommandTest >> testExecuteOSShellCommandWithArgs [
-	|aCmd|
-	aCmd := PhLCliCommand new. 
-	self deny: (aCmd executeOSShellCommandWithArgs: #('ls')) isEmptyOrNil.
-	self should: [aCmd executeOSShellCommandWithArgs: #('bleh')] raise: PhLProcessCommandError description: 'Invoking invalid OS shell command should end up with domain error exception: PHLProcessCommandError'.
-]
-
-{ #category : #tests }
 PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenBriefFlagEnabled [
 	
 	| aCommand cmdSpec|

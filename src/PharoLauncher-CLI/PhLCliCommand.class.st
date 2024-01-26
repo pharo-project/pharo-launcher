@@ -188,12 +188,6 @@ PhLCliCommand >> cliFormatter: aFormatter [
 	cliFormatter := aFormatter
 ]
 
-{ #category : #accessing }
-PhLCliCommand >> currentVMPid [
-
-	^ OSSVMProcess vmProcess pid
-]
-
 { #category : #default }
 PhLCliCommand >> defaultTemplateCategory [
 	^ self templateRepository
@@ -228,21 +222,6 @@ PhLCliCommand >> execute [
 		self logExceptionMessage: ex printString. 
 		self context exitFailure
 	]
-]
-
-{ #category : #'command execution' }
-PhLCliCommand >> executeOSShellCommand [
-
-	^ self executeOSShellCommandWithArgs: self osShellArgArray
-]
-
-{ #category : #'command execution' }
-PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
-
-^ PhLProcessWrapper new 
-		shellCommand;
-		addAllArguments: argArray;
-		runAndWaitWithStdOutput
 ]
 
 { #category : #private }

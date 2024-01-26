@@ -23,7 +23,7 @@ launchSampleImageCommand () {
 }
 
 killSampleImageCommand () {
-    runLauncherScript image kill $SAMPLE_IMAGE
+    runLauncherScript process kill $SAMPLE_IMAGE
 }
 
 deleteSampleImageCommand () { 
@@ -31,7 +31,7 @@ deleteSampleImageCommand () {
 }
 
 processListCommand () {
-    runLauncherScript image processList
+    runLauncherScript process list
 }
 
 killAllCommand () {

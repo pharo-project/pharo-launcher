@@ -13,7 +13,7 @@ PhLImageRecreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	(aCommandSpec 
 		addPositional: #existingImageName 
 		description: 'Local image name to recreate.')
-	implicitMeaning: [:arg :app | app raiseMissingImageToRecreate]
+	implicitMeaning: [:arg :app | self raiseMissingImageToRecreate]
 ]
 
 { #category : #'command line' }

@@ -28,7 +28,7 @@ PhLTemplateInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	(aCommandSpec 
 		addPositional: #templateName 
 		description: 'Specifies the template name to print information.')
-	implicitMeaning: [:arg :app | app raiseMissingTemplateToPrint]
+	implicitMeaning: [:arg :app | self raiseMissingTemplateToPrint]
 ]
 
 { #category : #'command line - converting' }

@@ -78,7 +78,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithDevFlagUsesDevImage [
 ]
 
 { #category : #tests }
-PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesStableImage [
+PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesDefaultImage [
 	| template stableTemplate |
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	stableTemplate := self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
@@ -88,6 +88,24 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesStableImage [
 	template := context command findTemplate.
 	 
 	self assert: template equals: stableTemplate
+]
+
+{ #category : #tests }
+PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesUserDefaultImageWhenSpecified [
+	| template devTemplate |
+
+	context pharoLauncherModel configuration: 
+		(context pharoLauncherModel configuration
+			defaultTemplate: #dev;
+			yourself).
+	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
+	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
+	devTemplate := self addTemplateNamed: 'Pharo 10 64bit (development version, latest)' inCategory: self defaultTemplateCategoryName.
+	context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
+	
+	template := context command findTemplate.
+	 
+	self assert: template equals: devTemplate
 ]
 
 { #category : #tests }

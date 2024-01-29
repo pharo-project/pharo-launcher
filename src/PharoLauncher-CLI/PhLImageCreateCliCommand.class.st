@@ -147,6 +147,14 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 	^ anImage
 ]
 
+{ #category : #default }
+PhLImageCreateCliCommand >> defaultTemplate [
+	
+	^ self pharoLauncherModel defaultTemplate = #dev
+		ifTrue: [ self latestDevTemplate ]
+		ifFalse: [ self latestStableTemplate ]
+]
+
 { #category : #querying }
 PhLImageCreateCliCommand >> findTemplate [ 
 	(self hasFlag: #dev) ifTrue: [ ^ self latestDevTemplate ].
@@ -155,7 +163,7 @@ PhLImageCreateCliCommand >> findTemplate [
 	(self hasFlag: #templateName) ifTrue: [ ^ self findUserTemplate ].
 	
 	"otherwise latest stable Pharo version template"
-	^ self latestStableTemplate
+	^ self defaultTemplate
 ]
 
 { #category : #'command execution' }

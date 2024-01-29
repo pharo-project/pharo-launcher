@@ -14,12 +14,13 @@ Use: `pharo-launcher <command>`
 |         |            | [fromSHA](#Image-create-from-SHA-commit)    | Downloads and creates new image based on the commit SHA (7 letter string contained in the name of Pharo dev template). |
 |         | [delete](#image-delete)    | | Deletes the local image, including image directory content. |
 |         | [info](#image-info)      | | Prints information about image: name, description, origin template, etc. |
-|         | [kill](#image-kill)      | | Kills the running process(es) of given local image. |
 |         | [launch](#image-launch)  | | Launches image with using default (auto-detected) VM. |
 |         | [list](#image-list)     | | Lists all local images from Pharo laucher repository. |
 |         | [package](#image-package)     | | Creates a package containing all necessary artefacts to launch the image. |
-|         | [processList](#image-process-list)     | | Lists all running Pharo image processes. |
 |         | [recreate](#image-recreate)     | | Recreates the local image, the image argument determines the image name to recreate. |
+| [process](#process) |         | | All sub-commands related to Pharo processes. (Prints help only) | 
+|         | [kill](#process-kill)      | | Kills the running Pharo process(es) of given image. |
+|         | [list](#process-list)     | | Lists all running Pharo image processes. |
 | [template](#template) |         | | All sub-commands related to image templates. (Prints help only) | 
 |         | [categories](#template-categories) | | Lists all image template categories, based on which are image templates categorized. |
 |         | [info](#template-info)      | | Prints information about image template name, origin url. |
@@ -63,13 +64,13 @@ To launch image, execute following: `pharo-launcher image launch myImage`
 This will start new Pharo process and window with Pharo should be visible. Check command options, to see how to pass launch configuration.
 
 ## 4. Listing running Pharo images
-To see, which Pharo images are running: `pharo-launcher image processList`  
+To see, which Pharo images are running: `pharo-launcher process list`  
 Output will look similar like this:
 ```
 3093 /home/dbajger/Pharo/vms/100-x64/lib/pharo /home/dbajger/Pharo/images/myImage/myImage.image
 ```
 ## 5. Kill running Pharo image process
-To kill running Pharo process execute:  `pharo-launcher image kill myImage`  
+To kill running Pharo process execute:  `pharo-launcher process kill myImage`  
 This will kill all running images with name `myImage`.  
 You can also use specific PID, to precisely specify process to kill instead of name of image.
 
@@ -277,25 +278,6 @@ pharo-launcher image info [--help] [--brief] [--rowMode] [--delimiter <delimiter
 ### Examples
 No examples yet.
 
-## Image kill
-Kills the running process(es) of given local image.
-
-### Usage
-```bash
-pharo-launcher image kill [--help] [--all] [<existingImageName>]
-```
-
-### Parameters
-    <existingImageName>
-                Specifies the local image name to kill its process.
-
-### Options
-    --help      Prints this documentation
-    --all       Determines whether to kill all running Pharo image processes.
-
-### Examples
-No examples yet.
-
 ## Image launch
 Launches image with using default (auto-detected) VM.
 
@@ -364,19 +346,6 @@ pharo-launcher image package [--help] [--zip] [--vm <vm-value>] [<existingImageN
 ### Examples
 No examples yet.
 
-## Image process list
-Lists all running Pharo image processes.
-
-### Usage
-```bash
-pharo-launcher image processList [--help]
-```
-### Options
-    --help      Prints this documentation
-
-### Examples
-No examples yet.
-
 ## Image recreate
 Recreates the local image, the image argument determines the image name to recreate.
 
@@ -390,7 +359,49 @@ pharo-launcher image recreate [--help] [<existingImageName>]
 
 ### Options
     --help      Prints this documentation
+
+
+# Process commands
+
+## Process
+Root command of all process commands, prints help only.  
+Run: `pharo-launcher process` to see help.
+
+## Process kill
+Kills the running Pharo process(es) of given local image.
+
+### Usage
+```bash
+pharo-launcher process kill [--help] [--all] [<existingImageName>]
+```
+
+### Parameters
+    <existingImageName>
+                Specifies the local image name to kill its process.
+
+### Options
+    --help      Prints this documentation
+    --all       Determines whether to kill all running Pharo image processes.
+
+### Examples
+No examples yet.
+
+## Process list
+Lists all running Pharo image processes.
+
+### Usage
+```bash
+pharo-launcher process list [--help]
+```
+### Options
+    --help      Prints this documentation
+
+### Examples
+No examples yet.
+
+
 # Template commands
+
 ## Template
 Root command of all template commands, prints help only.  
 Run: `pharo-launcher template` to see help.
@@ -452,6 +463,7 @@ pharo-launcher template list [--help] [--templateCategory <templateCategory-valu
 
 ### Examples
 No examples yet. 
+
 
 # Virtual machine commands
 

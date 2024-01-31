@@ -86,7 +86,7 @@ PhLImageProcessListCliCommand >> modelClass [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> osShellArgArray [
 
-	^ Array with: self processListCmdArgs 
+	^ Array with: self processListCmdArgs
 ]
 
 { #category : #private }

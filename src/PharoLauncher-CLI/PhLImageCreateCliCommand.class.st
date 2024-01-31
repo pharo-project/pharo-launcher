@@ -147,14 +147,6 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 	^ anImage
 ]
 
-{ #category : #default }
-PhLImageCreateCliCommand >> defaultTemplate [
-	
-	^ self pharoLauncherModel defaultTemplate = #dev
-		ifTrue: [ self latestDevTemplate ]
-		ifFalse: [ self latestStableTemplate ]
-]
-
 { #category : #querying }
 PhLImageCreateCliCommand >> findTemplate [ 
 	(self hasFlag: #dev) ifTrue: [ ^ self latestDevTemplate ].
@@ -227,20 +219,6 @@ PhLImageCreateCliCommand >> implicitImageName [
 PhLImageCreateCliCommand >> implicitPharoVersion [
 
 	^ self imageFinderClass findLatestPharoDevelopmentVersion
-]
-
-{ #category : #default }
-PhLImageCreateCliCommand >> latestDevTemplate [
-	
-	"from default 'Official distributions' obtain latest development template"
-	^ self defaultTemplateCategory latestDevelopmentTemplate
-]
-
-{ #category : #default }
-PhLImageCreateCliCommand >> latestStableTemplate [
-	
-	"from default 'Official distributions' obtain latest Pharo version stable template"
-	^ self defaultTemplateCategory latestStableTemplate
 ]
 
 { #category : #logging }

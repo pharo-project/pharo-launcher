@@ -189,6 +189,14 @@ PhLCliCommand >> cliFormatter: aFormatter [
 ]
 
 { #category : #default }
+PhLCliCommand >> defaultTemplate [
+	
+	^ self pharoLauncherModel defaultTemplate = #dev
+		ifTrue: [ self latestDevTemplate ]
+		ifFalse: [ self latestStableTemplate ]
+]
+
+{ #category : #default }
 PhLCliCommand >> defaultTemplateCategory [
 	^ self templateRepository
 		categoryNamed: self defaultTemplateCategoryName
@@ -261,11 +269,42 @@ PhLCliCommand >> initialize [
 	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
+{ #category : #default }
+PhLCliCommand >> isDefaultTemplateCategory: aCategory ifTrue: trueBlock ifFalse: falseBlock [
+
+	[ aCategory == self defaultTemplateCategory 
+		ifTrue: trueBlock
+		ifFalse: falseBlock ]
+	on: NotFound "default template category not found"
+	do: falseBlock
+]
+
+{ #category : #default }
+PhLCliCommand >> latestDevTemplate [
+	
+	"from default 'Official distributions' obtain latest development template"
+	^ self defaultTemplateCategory latestDevelopmentTemplate
+]
+
+{ #category : #default }
+PhLCliCommand >> latestStableTemplate [
+	
+	"from default 'Official distributions' obtain latest Pharo version stable template"
+	^ self defaultTemplateCategory latestStableTemplate
+]
+
 { #category : #printing }
 PhLCliCommand >> list: domainObjects [
 	
 	self cliFormatter 
 		domainObjects: domainObjects;
+		printList.
+]
+
+{ #category : #printing }
+PhLCliCommand >> list: domainObjects default: defaultValue [ 
+		self cliFormatter 
+		domainObjects: domainObjects defaultValue: defaultValue;
 		printList.
 ]
 

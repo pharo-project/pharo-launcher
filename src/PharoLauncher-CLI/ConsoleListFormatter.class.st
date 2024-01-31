@@ -122,7 +122,15 @@ ConsoleListFormatter >> domainObjects [
 { #category : #'accessing - public' }
 ConsoleListFormatter >> domainObjects: anObjects [ 
 
-	domainObjects := anObjects 
+	domainObjects := anObjects.
+	defaultValue := nil.
+]
+
+{ #category : #'accessing - public' }
+ConsoleListFormatter >> domainObjects: someObjects defaultValue: anObject [
+
+	domainObjects := someObjects.
+	defaultValue := anObject.
 ]
 
 { #category : #private }
@@ -142,6 +150,24 @@ ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: print
 
 	^ (someObjects collect: [ :item | (printBlock value: item) size ])
 		max
+]
+
+{ #category : #testing }
+ConsoleListFormatter >> hasDefaultValue [
+
+	^ defaultValue notNil
+]
+
+{ #category : #private }
+ConsoleListFormatter >> indexColumnDefaultSize [
+	^ 2
+]
+
+{ #category : #private }
+ConsoleListFormatter >> indexColumnSize [
+	^ self hasDefaultValue 
+		ifTrue: [ self indexColumnDefaultSize + 1 ]
+		ifFalse: [ self indexColumnDefaultSize ]
 ]
 
 { #category : #'accessing - command' }
@@ -174,7 +200,7 @@ ConsoleListFormatter >> printAttributeHeaders: labels by: columnWidths [
 
 	"print sequence nr. eventually"
 	self printSequence ifTrue: [
-		self printCell: '#' width: 2.
+		self printCell: '#' width: self indexColumnSize.
 		self printDelimiter
 	].
 	self printRowValues: labels by: columnWidths. 
@@ -185,7 +211,8 @@ ConsoleListFormatter >> printAttributeHeaders: labels by: columnWidths [
 ConsoleListFormatter >> printAttributeRows: someObjects by: columnWidths [
 
 	someObjects withIndexDo: [:listedObject :idx|
-		self printCell: idx asString width: 2.
+		self hasDefaultValue ifTrue: [ self printDefaultValueMark: listedObject ].
+		self printCell: idx asString width: self indexColumnDefaultSize.
 		self printDelimiter.
 		self printRowValues: (self attributeValuesFrom: listedObject) by: columnWidths		
 	]
@@ -210,6 +237,14 @@ ConsoleListFormatter >> printCell: aString width: widthSize [
 ]
 
 { #category : #private }
+ConsoleListFormatter >> printDefaultValueMark: listedObject [
+
+	self outStream nextPut: (listedObject == defaultValue
+			 ifTrue: [ $* ]
+			 ifFalse: [ Character space ])
+]
+
+{ #category : #private }
 ConsoleListFormatter >> printDelimiter [
 
 	self outStream nextPutAll: self delimiter
@@ -220,7 +255,7 @@ ConsoleListFormatter >> printHeaderLinesBy: columnWidths [
 	"print header line"
 
 	self printSequence ifTrue: [
-		self printLineSized: 2.
+		self printLineSized: self indexColumnSize.
 		self printDelimiter.
 	].
 	columnWidths withIndexDo: [:aWidth :idx| self printLineSized: aWidth.

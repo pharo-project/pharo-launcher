@@ -33,7 +33,8 @@ Class {
 		'outStream',
 		'outputAsSton',
 		'printSequence',
-		'rowMode'
+		'rowMode',
+		'defaultValue'
 	],
 	#category : #'PharoLauncher-CLI-Utility'
 }
@@ -168,7 +169,7 @@ ConsoleListFormatter >> outputAsSton: aBoolean [
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printAttributeHeaders: labels by: colWidths [
+ConsoleListFormatter >> printAttributeHeaders: labels by: columnWidths [
 	"print header labels and header line"
 
 	"print sequence nr. eventually"
@@ -176,29 +177,29 @@ ConsoleListFormatter >> printAttributeHeaders: labels by: colWidths [
 		self printCell: '#' width: 2.
 		self printDelimiter
 	].
-	self printRowValues: labels by: colWidths. 
-	self printHeaderLinesBy: colWidths.
+	self printRowValues: labels by: columnWidths. 
+	self printHeaderLinesBy: columnWidths.
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printAttributeRows: someObjects by: colWidths [
+ConsoleListFormatter >> printAttributeRows: someObjects by: columnWidths [
 
 	someObjects withIndexDo: [:listedObject :idx|
 		self printCell: idx asString width: 2.
 		self printDelimiter.
-		self printRowValues: (self attributeValuesFrom: listedObject) by: colWidths		
+		self printRowValues: (self attributeValuesFrom: listedObject) by: columnWidths		
 	]
 ]
 
 { #category : #private }
 ConsoleListFormatter >> printAttributeTable [
 
-		|colWidths |
-		colWidths := self getColumnWidthsFrom: self domainObjects.
-		"no header if brief print is enabled"
-		self briefPrint ifFalse: [self printAttributeHeaders: self attributeLabels by: colWidths].
-		self printAttributeRows: self domainObjects by: colWidths.
-
+	| columnWidths |
+	columnWidths := self getColumnWidthsFrom: self domainObjects.
+	"no header if brief print is enabled"
+	self briefPrint 
+		ifFalse: [ self printAttributeHeaders: self attributeLabels by: columnWidths ].
+	self printAttributeRows: self domainObjects by: columnWidths
 ]
 
 { #category : #private }
@@ -215,15 +216,15 @@ ConsoleListFormatter >> printDelimiter [
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printHeaderLinesBy: colWidths [
+ConsoleListFormatter >> printHeaderLinesBy: columnWidths [
 	"print header line"
 
 	self printSequence ifTrue: [
 		self printLineSized: 2.
 		self printDelimiter.
 	].
-	colWidths withIndexDo: [:aWidth :idx| self printLineSized: aWidth.
-		idx = colWidths size ifFalse: [ self printDelimiter]].
+	columnWidths withIndexDo: [:aWidth :idx| self printLineSized: aWidth.
+		idx = columnWidths size ifFalse: [ self printDelimiter]].
 	self outStream newLine.
 ]
 
@@ -273,12 +274,11 @@ ConsoleListFormatter >> printOneAttrPerRow [
 ]
 
 { #category : #private }
-ConsoleListFormatter >> printRowValues: aStringColl by: colWidths [
+ConsoleListFormatter >> printRowValues: values by: columnWidths [
 
-	"print string values by column widths"
-	aStringColl withIndexDo: [:aLabel :idx |
-		self printCell: aLabel width: (colWidths at: idx).
-		idx = aStringColl size ifFalse: [ self printDelimiter].
+	values withIndexDo: [:aLabel :idx |
+		self printCell: aLabel width: (columnWidths at: idx).
+		idx = values size ifFalse: [ self printDelimiter].
 	].
 	self outStream newLine.
 ]

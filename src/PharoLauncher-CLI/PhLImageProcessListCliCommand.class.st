@@ -29,7 +29,9 @@ PhLImageProcessListCliCommand >> basicExecute [
 	|processList|
 	"TODO: Win Powershell version should be something like this: Get-Process | Where-Object { $_.Path -like '*Pharo*' -and $_.Path -like '*.image*' -and $_.Id -ne 2232 } | Select-Object Id, Path, StartTime, CommandLine"
 	self checkOS.
-	processList := self imageProcesListFrom: self executeOSShellCommand.
+	
+	"trim trailing newlines"
+	processList := self imageProcesListFrom: self executeOSShellCommand trim.
 	self list: processList
 ]
 
@@ -84,7 +86,7 @@ PhLImageProcessListCliCommand >> modelClass [
 { #category : #'command execution' }
 PhLImageProcessListCliCommand >> osShellArgArray [
 
-	^ Array with: self processListCmdArgs
+	^ Array with: self processListCmdArgs 
 ]
 
 { #category : #private }
@@ -118,7 +120,7 @@ PhLImageProcessListCliCommand >> startDateOfPid: pidString [
 			nextPutAll: '" | ';
 			nextPutAll: OSPlatform current processStartDateArgs.
 	].
-	^ self executeOSShellCommandWithArgs: (Array with: pidDateCmd)
+	^ (self executeOSShellCommandWithArgs: (Array with: pidDateCmd)) trim
 ]
 
 { #category : #'command execution' }

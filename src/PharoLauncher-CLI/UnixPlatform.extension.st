@@ -3,7 +3,7 @@ Extension { #name : #UnixPlatform }
 { #category : #'*PharoLauncher-CLI' }
 UnixPlatform >> processListArgs [
 
-	^ 'pgrep -ai -f ''pharo.*\.image'''
+	^ 'pgrep -ai -f "pharo.*\.image"'
 
 ]
 

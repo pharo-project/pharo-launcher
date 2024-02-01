@@ -103,9 +103,10 @@ PhLImageProcessListCliCommand >> processListCmdArgs [
 	^ String streamContents: [:aStream |
 		aStream 
 			nextPutAll: OSPlatform current processListArgs;
-			nextPutAll: ' | grep -v ''.bash''| grep -v ''export LD_LIBRARY_PATH'' | grep -v ';
-			nextPutAll: self currentVMPid asString
-			
+			nextPutAll: ' | grep -v ".bash"| grep -v "export LD_LIBRARY_PATH" | grep -v ';
+			nextPutAll: self currentVMPid asString;
+			"return 0 exit code also for cases, when no process is found. (default for no match is 1)"
+			nextPutAll: '; pgrep_exit_code=$?; if [ "$pgrep_exit_code" -eq 1 ]; then exit 0; else exit "$pgrep_exit_code"; fi'			
 		]
 ]
 

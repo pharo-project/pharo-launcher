@@ -116,7 +116,7 @@ PhLImageProcessListCliCommand >> startDateOfPid: pidString [
 	|pidDateCmd |
 	pidDateCmd := String streamContents: [: aStream |
 		aStream 
-			nextPutAll:  'ps -o lstart= -p "';
+			nextPutAll:  'LANG=C ps -o lstart= -p "';
 			nextPutAll: pidString;
 			nextPutAll: '" | ';
 			nextPutAll: OSPlatform current processStartDateArgs.

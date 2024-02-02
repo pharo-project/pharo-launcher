@@ -46,10 +46,9 @@ PhLImageProcessTest >> testImageName [
 PhLImageProcessTest >> testNewFrom [
 
 	|imgProcess|
-	imgProcess := PhLImageProcess newFrom: ('1111-|-path/to/vm-|-path/to/1st.image-|-May 1 2023' splitOn: '-|-').
+	imgProcess := PhLImageProcess newFrom: '1111 path/to/vm/pharo path/to/1st.image May 1 2023'.
 	self assert: imgProcess pid equals: '1111'.
 	self assert: imgProcess imageName equals: '1st'.
-	self assert: imgProcess vmPath equals: 'path/to/vm'.
+	self assert: imgProcess vmPath equals: 'path/to/vm/pharo'.
 	self assert: imgProcess imagePath equals: 'path/to/1st.image'.
-	self assert: imgProcess startDateTime equals: 'May 1 2023'.
 ]

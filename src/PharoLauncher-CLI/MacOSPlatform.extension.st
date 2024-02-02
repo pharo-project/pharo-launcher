@@ -10,5 +10,5 @@ MacOSPlatform >> processListArgs [
 { #category : #'*PharoLauncher-CLI' }
 MacOSPlatform >> processStartDateArgs [
 	
-	^ 'xargs -I{} date -jf "%a %b %e %T %Y" "{}" ''+%Y-%m-%d %H:%M:%S'''
+	^ 'LANG=C xargs -I{} date -jf "%a %b %d  %H:%M:%S %Y" "{}" ''+%Y-%m-%d %H:%M:%S'''
 ]

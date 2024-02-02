@@ -4,6 +4,9 @@ Command to list all the Pharo processes, i.e. all running Pharo images.
 Class {
 	#name : #PhLProcessListCliCommand,
 	#superclass : #PhLProcessCliCommand,
+	#instVars : [
+		'shellOutput'
+	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
@@ -31,62 +34,26 @@ PhLProcessListCliCommand >> basicExecute [
 	self checkOS.
 	
 	"trim trailing newlines"
-	processList := self imageProcesListFrom: self executeOSShellCommand trim.
+	shellOutput := self executeOSShellCommand trim.
+	processList := self imageProcesList.
 	self list: processList
 ]
 
-{ #category : #'command execution' }
-PhLProcessListCliCommand >> getImageAttributesFrom: lineString [
+{ #category : #private }
+PhLProcessListCliCommand >> getImageProcessFrom: lineString [
 
-	| lineWords pid imagePath vmPath startDate |
+	| imageProcess |
 	
-	lineWords := lineString substrings.
-	pid := self pidStringFrom: lineWords.
-	vmPath := self vmPathFrom: lineWords.
-	imagePath := self imagePathFrom: lineWords.
-	startDate := self startDateOfPid: pid.
-	^ {pid. vmPath. imagePath. startDate}
+	imageProcess :=  PhLImageProcess newFrom: lineString.
+	imageProcess startDateTime: (self startDateOfPid: imageProcess pid).
+	^ imageProcess
 ]
 
 { #category : #'command execution' }
-PhLProcessListCliCommand >> imagePathFrom: lineWords [
+PhLProcessListCliCommand >> imageProcesList [
 
-	| pharoVMIndex pharoImgIndex resultImgString |
-	"find index of word containing pharo VM name"
-	pharoVMIndex := lineWords
-		                detectIndex: [ :word | word includesSubstring: 'pharo' caseSensitive: false ]
-		                ifNone: [ ^ '' ].
-	"find index of word containing pharo image file"
-	pharoImgIndex := lineWords
-		                 detectIndex: [ :word | word includesSubstring: '.image' caseSensitive: false ]
-		                 ifNone: [ 0 ].
-	resultImgString := String streamContents: [ :aStream |
-		                   lineWords
-			                   from: pharoVMIndex + 1
-			                   to: pharoImgIndex
-			                   do: [ :word |
-				                   (word beginsWith: '--') ifFalse: [
-					                   aStream
-						                   nextPutAll: word;
-						                   nextPut: Character space ] ].
-		                   lineWords
-			                   from: pharoImgIndex + 1
-			                   to: lineWords size
-			                   do: [ :word |
-				                   (word beginsWith: '--') ifTrue: [
-					                   aStream
-						                   nextPutAll: word;
-						                   nextPut: Character space ] ] ].
-
-	^ resultImgString trim
-]
-
-{ #category : #'command execution' }
-PhLProcessListCliCommand >> imageProcesListFrom: shellOutput [
-
-	^ (shellOutput substrings: OSPlatform current lineEnding)  collect: [:line |
-			PhLImageProcess newFrom: (self getImageAttributesFrom: line)
-	]
+	^ (shellOutput substrings: OSPlatform current lineEnding)
+		collect: [:line | self getImageProcessFrom: line ]
 ]
 
 { #category : #private }
@@ -99,13 +66,6 @@ PhLProcessListCliCommand >> modelClass [
 PhLProcessListCliCommand >> osShellArgArray [
 
 	^ Array with: self processListCmdArgs
-]
-
-{ #category : #private }
-PhLProcessListCliCommand >> pidStringFrom: lineWords [
-
-	"pid is the first word of line"
-	^ lineWords first
 ]
 
 { #category : #'command execution' }
@@ -122,34 +82,16 @@ PhLProcessListCliCommand >> processListCmdArgs [
 		]
 ]
 
-{ #category : #'command execution' }
+{ #category : #private }
 PhLProcessListCliCommand >> startDateOfPid: pidString [
 
-	|pidDateCmd |
+	| pidDateCmd |
 	pidDateCmd := String streamContents: [: aStream |
 		aStream 
-			nextPutAll:  'ps -o lstart= -p "';
+			nextPutAll:  'LANG=C ps -o lstart= -p "';
 			nextPutAll: pidString;
 			nextPutAll: '" | ';
 			nextPutAll: OSPlatform current processStartDateArgs.
 	].
 	^ (self executeOSShellCommandWithArgs: (Array with: pidDateCmd)) trim
-]
-
-{ #category : #'command execution' }
-PhLProcessListCliCommand >> vmPathFrom: lineWords [
-
-	|pharoVMIndex pharoImgIndex resultVmString|
-	"find index of word containing pharo VM name"
-	pharoVMIndex := lineWords detectIndex: [:word | word includesSubstring: 'pharo' caseSensitive: false] ifNone: [^ ''].
-	"find index of word containing pharo image file"
-	pharoImgIndex := lineWords detectIndex: [:word | word includesSubstring: '.image' caseSensitive: false] ifNone: [0].
-	resultVmString := String streamContents: [:aStream | 
-		lineWords from: 2 to: pharoVMIndex do: [:word | aStream nextPutAll: word; nextPut: Character space].
-		lineWords from: pharoVMIndex to: pharoImgIndex do: [:word | 
-			(word beginsWith: '--') ifTrue: [ aStream nextPutAll: word; nextPut: Character space ].
-			  ]
-	].
-
-	^ resultVmString trim
 ]

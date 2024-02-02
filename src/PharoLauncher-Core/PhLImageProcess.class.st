@@ -15,23 +15,19 @@ Class {
 
 { #category : #private }
 PhLImageProcess class >> listPrintAttributeBlocks [
-	
-	^ {[:imgProcess | imgProcess pid asString]. [:imgProcess | imgProcess imageName]. [:imgProcess | imgProcess vmPath]. [:imgProcess | imgProcess imagePath]. [:imgProcess | imgProcess startDateTime ].}
 
+	^ {
+		  [ :imgProcess | imgProcess pid asString ].
+		  [ :imgProcess | imgProcess imageName ].
+		  [ :imgProcess | imgProcess vmPath ].
+		  [ :imgProcess | imgProcess imagePath ].
+		  [ :imgProcess | imgProcess startDateTime ] }
 ]
 
 { #category : #private }
 PhLImageProcess class >> listPrintAttributeLabels [
-	
-	^ #('PID' 'Image name' 'VM path' 'Image path' 'Date/Time started')
-]
 
-{ #category : #'instance creation' }
-PhLImageProcess class >> newFrom: osOutputLine [
-
-	"initialize image process instance from line represented by OS command output line"
-	^ self new initializeFrom: osOutputLine; yourself
-	
+	^ #( 'PID' 'Image name' 'VM path' 'Image path' 'Date/Time started' )
 ]
 
 { #category : #accessing }

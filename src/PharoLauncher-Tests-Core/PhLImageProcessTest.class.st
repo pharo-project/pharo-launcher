@@ -7,6 +7,41 @@ Class {
 	#category : #'PharoLauncher-Tests-Core'
 }
 
+{ #category : #private }
+PhLImageProcessTest >> imagePathNameCandidates [
+
+	|paths delimiter| 
+	paths := OrderedCollection new.
+	delimiter := FileSystem disk delimiter.
+	
+	paths add: (String streamContents: [:aStream | 
+		aStream nextPutAll:  'some';
+			nextPut: delimiter;
+			nextPutAll: 'very';
+			nextPut: delimiter;
+			nextPutAll: 'long';
+			nextPut: delimiter;
+			nextPutAll: 'path';
+			nextPut: delimiter;
+			nextPutAll: 'myImage1.image'
+		]
+	).
+	paths add: 'myImage2.image'.
+	^ paths
+]
+
+{ #category : #tests }
+PhLImageProcessTest >> testImageName [
+
+	| imageNames |
+	imageNames := self imagePathNameCandidates collect: [:aPath |
+		PhLImageProcess new
+			imagePath: aPath;
+			imageName 
+	].
+	self assert: (imageNames includesAll: #('myImage1' 'myImage2')).
+]
+
 { #category : #tests }
 PhLImageProcessTest >> testNewFrom [
 

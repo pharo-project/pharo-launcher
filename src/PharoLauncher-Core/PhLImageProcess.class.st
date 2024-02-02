@@ -37,9 +37,11 @@ PhLImageProcess class >> newFrom: osOutputLine [
 { #category : #accessing }
 PhLImageProcess >> imageName [
 
-	
+	|fileName|
 	self imagePath ifEmpty: [ ^ '' ].
-	^ (self imagePath copyAfterLast: FileSystem disk delimiter) copyUpTo: $.
+	fileName := self imagePath copyAfterLast: FileSystem disk delimiter.
+	fileName ifEmpty: [ fileName := self imagePath  ].
+	^ fileName  copyUpTo: $.
 ]
 
 { #category : #accessing }

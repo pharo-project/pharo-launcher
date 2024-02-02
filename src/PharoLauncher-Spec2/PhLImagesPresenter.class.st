@@ -156,7 +156,8 @@ PhLImagesPresenter >> buildImageTable [
 			evaluated: [ :image | self readableDateFor: image lastModification ])
 			sortFunction: #lastModification descending;
 			yourself);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		contextMenuFromCommandsGroup: [ self rootCommandsGroup / self contextMenuCommandGroupName ];
+		contextKeyBindings: self keyBindingsCommandsGroup asKMCategory;
 		beResizable;
 		beMultipleSelection;
 		yourself
@@ -197,6 +198,12 @@ PhLImagesPresenter >> connectPresenters [
 				ifFalse: [ PhLNullImage new ] ]
 ]
 
+{ #category : #'api - accessing' }
+PhLImagesPresenter >> contextMenuCommandGroupName [
+
+	^ 'Context Menu'
+]
+
 { #category : #'api - actions' }
 PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
@@ -224,6 +231,20 @@ PhLImagesPresenter >> editLaunchConfigurations [
 PhLImagesPresenter >> ensure: aBoolean [
 	aBoolean
 		ifFalse: [ PhLCommandError signal ]
+]
+
+{ #category : #computing }
+PhLImagesPresenter >> ensurePharoVersion [
+	| image |
+	image := self singleImage.
+	[ image ensurePharoVersion ]
+	on: PhLImageVersionFileNotFound 
+	do: [ :error | | presenter |
+		presenter := PhLPharoVersionChooserPresenter new.
+		presenter openModal.
+		presenter version ifNil: [ error pass ].
+		image versionFile 
+			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
 ]
 
 { #category : #private }
@@ -270,6 +291,15 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter 
 		bindKeyCombination: $f meta
 		toAction: [ self actionFilter ]
+]
+
+{ #category : #private }
+PhLImagesPresenter >> keyBindingsCommandsGroup [
+
+	^ self rootCommandsGroup
+		commandOrGroupNamed: self contextMenuCommandGroupName
+		ifNone: [ nil ]
+		
 ]
 
 { #category : #initialization }
@@ -358,6 +388,11 @@ PhLImagesPresenter >> selectImage: aPhLImage [
 { #category : #'api - selection' }
 PhLImagesPresenter >> selectImageAt: anIndex [
 	imageTable selectIndex: anIndex
+]
+
+{ #category : #'api - selection' }
+PhLImagesPresenter >> selectImagesAt: aLisOfIndexes [
+	imageTable selectIndexes: aLisOfIndexes
 ]
 
 { #category : #'api - selection' }

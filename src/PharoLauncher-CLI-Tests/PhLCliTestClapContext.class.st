@@ -24,7 +24,7 @@ PhLCliTestClapContext >> command [
 PhLCliTestClapContext >> initialize [ 
 
 	super initialize.
-	launcherModel := PharoLauncherCLIModel new.
+	launcherModel := PharoLauncherCLIModel fromDefaultConfiguration.
 ]
 
 { #category : #accessing }

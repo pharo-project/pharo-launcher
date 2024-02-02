@@ -89,8 +89,8 @@ PhLImageCreationPresenter >> connectPresenters [
 { #category : #action }
 PhLImageCreationPresenter >> createImageWithCommand: createCommand [
 	
-	[ 
-		createCommand execute.
+	[ createCommand execute.
+		self application newImageCreated.
 		self close ] 
 	on: PhLNameNotAvailableError 
 	do: [ 

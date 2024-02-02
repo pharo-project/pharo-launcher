@@ -1,6 +1,6 @@
 # Pharo Laucher command-line
 This is list of subject oriented CLI commands of Pharo launcher, where subjects are Pharo VM, image or image template of launcher.  
-Use: `pharo-launcher.sh <command>`
+Use: `pharo-launcher <command>`
 
 | Command | Sub-command |                   | Description | 
 | ------- | ----------- | ----------------- | ----------- |
@@ -14,12 +14,13 @@ Use: `pharo-launcher.sh <command>`
 |         |            | [fromSHA](#Image-create-from-SHA-commit)    | Downloads and creates new image based on the commit SHA (7 letter string contained in the name of Pharo dev template). |
 |         | [delete](#image-delete)    | | Deletes the local image, including image directory content. |
 |         | [info](#image-info)      | | Prints information about image: name, description, origin template, etc. |
-|         | [kill](#image-kill)      | | Kills the running process(es) of given local image. |
 |         | [launch](#image-launch)  | | Launches image with using default (auto-detected) VM. |
 |         | [list](#image-list)     | | Lists all local images from Pharo laucher repository. |
 |         | [package](#image-package)     | | Creates a package containing all necessary artefacts to launch the image. |
-|         | [processList](#image-process-list)     | | Lists all running Pharo image processes. |
 |         | [recreate](#image-recreate)     | | Recreates the local image, the image argument determines the image name to recreate. |
+| [process](#process) |         | | All sub-commands related to Pharo processes. (Prints help only) | 
+|         | [kill](#process-kill)      | | Kills the running Pharo process(es) of given image. |
+|         | [list](#process-list)     | | Lists all running Pharo image processes. |
 | [template](#template) |         | | All sub-commands related to image templates. (Prints help only) | 
 |         | [categories](#template-categories) | | Lists all image template categories, based on which are image templates categorized. |
 |         | [info](#template-info)      | | Prints information about image template name, origin url. |
@@ -33,9 +34,9 @@ Use: `pharo-launcher.sh <command>`
 
 # Getting started
 Command line interface of Pharo Launcher is avaliable from directory, where launcher is installed.  
-Pharo Launcher CLI can be executed using: `pharo-launcher.sh <command>` (choosing on of the commands above).
+Pharo Launcher CLI can be executed using: `pharo-launcher <command>` (choosing on of the commands above).
 ## 1. List Pharo images
-You can start listing Pharo images deployed by Pharo launcher by: `pharo-launcher.sh image list`
+You can start listing Pharo images deployed by Pharo launcher by: `pharo-launcher image list`
 This will give output like:
 ```
 #  Name                                             Architecture Pharo version Last modified      
@@ -47,7 +48,7 @@ This will give output like:
 5  Pharo 10.0 - 64bit (stable)                      64           100           2022-06-17 12:26:09
 ```
 ## 2. Create new Pharo image
-New Pharo image can be created by executing: `pharo-launcher.sh image create myImage`  
+New Pharo image can be created by executing: `pharo-launcher image create myImage`  
 This will efectively create Pharo image based on latest stable Pharo release template.
 Output looks like this:
 ```
@@ -59,27 +60,27 @@ You could check result by listing Pharo images again.
 > __Note__: There are other ways to create images, check sub-commands. 
 
 ## 3. Launching Pharo image
-To launch image, execute following: `pharo-launcher.sh image launch myImage`  
+To launch image, execute following: `pharo-launcher image launch myImage`  
 This will start new Pharo process and window with Pharo should be visible. Check command options, to see how to pass launch configuration.
 
 ## 4. Listing running Pharo images
-To see, which Pharo images are running: `pharo-launcher.sh image processList`  
+To see, which Pharo images are running: `pharo-launcher process list`  
 Output will look similar like this:
 ```
 3093 /home/dbajger/Pharo/vms/100-x64/lib/pharo /home/dbajger/Pharo/images/myImage/myImage.image
 ```
 ## 5. Kill running Pharo image process
-To kill running Pharo process execute:  `pharo-launcher.sh image kill myImage`  
+To kill running Pharo process execute:  `pharo-launcher process kill myImage`  
 This will kill all running images with name `myImage`.  
 You can also use specific PID, to precisely specify process to kill instead of name of image.
 
 ## 6. Create package with Pharo image
-To pack existing image with VM and all artefacts you can run: `pharo-launcher.sh image package myImage /home/dbajger/fresh`  
+To pack existing image with VM and all artefacts you can run: `pharo-launcher image package myImage /home/dbajger/fresh`  
 This will create new directory in `/home/dbajger/fresh` with image and all artefacts.
 > __Note__: You can also use `--zip` option to have just zip archive with image artifacts (see details below). 
 
 ## 7. Deleting existing image
-To delete image and its directory, run: `pharo-launcher.sh image delete myImage`  
+To delete image and its directory, run: `pharo-launcher image delete myImage`  
 You can list Pharo images again to check that image is deleted.
 
 # Description of all Pharo Launcher CLI commands
@@ -88,19 +89,19 @@ You can list Pharo images again to check that image is deleted.
 
 This is help for command line interface of Pharo Launcher.
 Common purpose of laucher is to create Pharo image locally from remote site template, launch Pharo, eventually delete an image, update VMs, etc.  
-Run: `pharo-launcher.sh help`
+Run: `pharo-launcher help`
 
 # Image commands
 ## Image 
 Root command of all image commands, prints help only.  
-Run: `pharo-launcher.sh image` to see help.
+Run: `pharo-launcher image` to see help.
 
 ## Image copy
 Creates copy of given image with new name.
 
 ### Usage
 ```bash
-pharo-launcher.sh image copy [--help] [<existingImageName>] [<newImageName>]
+pharo-launcher image copy [--help] [<existingImageName>] [<newImageName>]
 ```
 ### Parameters
     <existingImageName>
@@ -114,13 +115,13 @@ pharo-launcher.sh image copy [--help] [<existingImageName>] [<newImageName>]
 ### Examples
 **#1:** To copy existing image `myImage` and create new copy `newImage` from it, run: 
 ```
-pharo-launcher.sh image copy myImage newImage
+pharo-launcher image copy myImage newImage
 ``` 
 ## Image create
 Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).
 ### Usage
 ```bash
-pharo-launcher.sh image create [--help] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [<newImageName>]
+pharo-launcher image create [--help] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [<newImageName>]
 ```
 ### Parameters
     <newImageName>
@@ -139,15 +140,15 @@ pharo-launcher.sh image create [--help] [--templateName <templateName-value>] [-
 ### Examples
 **#1:** Creates an image (passing new image name as argument) based on the last pharo stable 64bits version:
 ```
-pharo-launcher.sh image create myNewImageName
+pharo-launcher image create myNewImageName
 ```
 **#2:** Creates an image based on the template `Pharo 7.0 - 64bit (old stable)` listed in `Official distributions` (default) template category:
 ```
-pharo-launcher.sh image create myNewImageName "Pharo 7.0 - 64bit (old stable)"
+pharo-launcher image create myNewImageName "Pharo 7.0 - 64bit (old stable)"
 ```
 **#3:** Creates an image based on the template `Pharo Mooc` from template category `Pharo Mooc`:
 ```
-pharo-launcher.sh image create myNewImageName "Pharo Mooc" --templateCategory "Pharo Mooc"
+pharo-launcher image create myNewImageName "Pharo Mooc" --templateCategory "Pharo Mooc"
 ```
 
 ## Image create from build number
@@ -155,7 +156,7 @@ Downloads and creates new image based on a the build number contained in the Pha
 
 ### Usage
 ```bash
-pharo-launcher.sh image create fromBuild [--help] [--pharoVersion <pharoVersion-value>] [--newImageName <newImageName-value>] [<buildNumber>]
+pharo-launcher image create fromBuild [--help] [--pharoVersion <pharoVersion-value>] [--newImageName <newImageName-value>] [<buildNumber>]
 ```
 ### Parameters
     <buildNumber>
@@ -175,7 +176,7 @@ Downloads and creates new image based on a Github pull request number from the s
 
 ### Usage
 ```bash
-pharo-launcher.sh image create fromPR [--help] [--newImageName <newImageName-value>] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [<pullRequest>]
+pharo-launcher image create fromPR [--help] [--newImageName <newImageName-value>] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [<pullRequest>]
 ```
 ### Parameters
     <pullRequest>
@@ -196,7 +197,7 @@ Downloads and creates new image based on a template and loads user defined proje
 
 ### Usage
 ```bash
-pharo-launcher.sh image create fromRepo [--help] [--newImageName <newImageName-value>] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [--subfolder <subfolder-value>] [--baseline <baseline-value>] [--group <group-value>] [<repository>]
+pharo-launcher image create fromRepo [--help] [--newImageName <newImageName-value>] [--templateName <templateName-value>] [--templateCategory <templateCategory-value>] [--subfolder <subfolder-value>] [--baseline <baseline-value>] [--group <group-value>] [<repository>]
 ```
 
 ### Parameters
@@ -225,7 +226,7 @@ Downloads and creates new image based on the commit SHA (7 letter string) of Pha
 
 ### Usage
 ```bash
-pharo-launcher.sh image create fromSHA [--help] [--pharoVersion <pharoVersion-value>] [--newImageName <newImageName-value>] [<sha>]
+pharo-launcher image create fromSHA [--help] [--pharoVersion <pharoVersion-value>] [--newImageName <newImageName-value>] [<sha>]
 ```
 ### Parameters
     <sha>       Commit SHA (7 letters) of Pharo image development template, from which will be  image created.
@@ -244,7 +245,7 @@ Deletes the local image, including image directory content.
 
 ### Usage
 ```bash
-pharo-launcher.sh image delete [--help] [<existingImageName>]
+pharo-launcher image delete [--help] [<existingImageName>]
 ```
 ### Parameters
     <existingImageName>
@@ -261,7 +262,7 @@ Prints information about image: name, description, origin template, etc.
 
 ### Usage
 ```bash
-pharo-launcher.sh image info [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston] [<existingImageName>]
+pharo-launcher image info [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston] [<existingImageName>]
 ```
 ### Parameters
     <existingImageName>
@@ -277,31 +278,12 @@ pharo-launcher.sh image info [--help] [--brief] [--rowMode] [--delimiter <delimi
 ### Examples
 No examples yet.
 
-## Image kill
-Kills the running process(es) of given local image.
-
-### Usage
-```bash
-pharo-launcher.sh image kill [--help] [--all] [<existingImageName>]
-```
-
-### Parameters
-    <existingImageName>
-                Specifies the local image name to kill its process.
-
-### Options
-    --help      Prints this documentation
-    --all       Determines whether to kill all running Pharo image processes.
-
-### Examples
-No examples yet.
-
 ## Image launch
 Launches image with using default (auto-detected) VM.
 
 ### Usage
 ```bash
-pharo-launcher.sh image launch [--help] [--script <script-value>] [<existingImageName>]
+pharo-launcher image launch [--help] [--script <script-value>] [<existingImageName>]
 ```
 
 ### Parameters
@@ -315,11 +297,11 @@ pharo-launcher.sh image launch [--help] [--script <script-value>] [<existingImag
 ### Examples
 **#1:** To launch image (passing image name argument) with default VM use:
 ```
-pharo-launcher.sh image launch "Pharo 7.0 - 32bit (new 23)"
+pharo-launcher image launch "Pharo 7.0 - 32bit (new 23)"
 ```
 **#2:** To launch image with launch script:
 ```
-pharo-launcher.sh image launch "Pharo 7.0 - 32bit (new 23)" --script /script/path/myScript.st
+pharo-launcher image launch "Pharo 7.0 - 32bit (new 23)" --script /script/path/myScript.st
 ```
 
 ## Image list
@@ -327,13 +309,13 @@ Lists all local images from Pharo laucher repository.
 
 ### Usage
 ```bash
-pharo-launcher.sh image list [--help] [--name <name-value>] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
+pharo-launcher image list [--help] [--nameFilter <nameFilter-value>] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
 ```
 
 ### Options
     --help      Prints this documentation
-    --name <name-value>
-                Determines the name of image (or its sub-part) to list local images.
+    --nameFilter <nameFilter-value>
+                Images listing will be filtered by the provided name filter.
     --brief     Prints only name attribute (with leading sequence number).
     --rowMode   Prints one attribute per line only.
     --delimiter <delimiter-value>
@@ -347,7 +329,7 @@ Creates a package containing all necessary artefacts to launch the image.
 
 ### Usage
 ```bash
-pharo-launcher.sh image package [--help] [--zip] [--vm <vm-value>] [<existingImageName>] [<location>]
+pharo-launcher image package [--help] [--zip] [--vm <vm-value>] [<existingImageName>] [<location>]
 ```
 ### Parameters
     <existingImageName>
@@ -364,25 +346,12 @@ pharo-launcher.sh image package [--help] [--zip] [--vm <vm-value>] [<existingIma
 ### Examples
 No examples yet.
 
-## Image process list
-Lists all running Pharo image processes.
-
-### Usage
-```bash
-pharo-launcher.sh image processList [--help]
-```
-### Options
-    --help      Prints this documentation
-
-### Examples
-No examples yet.
-
 ## Image recreate
 Recreates the local image, the image argument determines the image name to recreate.
 
 ### Usage
 ```bash
-pharo-launcher.sh image recreate [--help] [<existingImageName>]
+pharo-launcher image recreate [--help] [<existingImageName>]
 ```
 ### Parameters
     <existingImageName>
@@ -390,17 +359,59 @@ pharo-launcher.sh image recreate [--help] [<existingImageName>]
 
 ### Options
     --help      Prints this documentation
+
+
+# Process commands
+
+## Process
+Root command of all process commands, prints help only.  
+Run: `pharo-launcher process` to see help.
+
+## Process kill
+Kills the running Pharo process(es) of given local image.
+
+### Usage
+```bash
+pharo-launcher process kill [--help] [--all] [<existingImageName>]
+```
+
+### Parameters
+    <existingImageName>
+                Specifies the local image name to kill its process.
+
+### Options
+    --help      Prints this documentation
+    --all       Determines whether to kill all running Pharo image processes.
+
+### Examples
+No examples yet.
+
+## Process list
+Lists all running Pharo image processes.
+
+### Usage
+```bash
+pharo-launcher process list [--help]
+```
+### Options
+    --help      Prints this documentation
+
+### Examples
+No examples yet.
+
+
 # Template commands
+
 ## Template
 Root command of all template commands, prints help only.  
-Run: `pharo-launcher.sh template` to see help.
+Run: `pharo-launcher template` to see help.
 
 ## Template categories
 Prints list of image template categories.
 
 ### Usage
 ```bash
-pharo-launcher.sh template categories [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
+pharo-launcher template categories [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
 ```
 
 ### Options
@@ -418,7 +429,7 @@ Prints information about image template name, origin url.
 
 ### Usage
 ```bash
-pharo-launcher.sh template info [--help] [--templateCategory <templateCategory-value>] [<templateName>]
+pharo-launcher template info [--help] [--templateCategory <templateCategory-value>] [<templateName>]
 ```
 
 ### Parameters
@@ -437,7 +448,7 @@ Prints list of image templates.
 
 ### Usage
 ```bash
-pharo-launcher.sh template list [--help] [--templateCategory <templateCategory-value>] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
+pharo-launcher template list [--help] [--templateCategory <templateCategory-value>] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston]
 ```
 
 ### Options
@@ -453,18 +464,19 @@ pharo-launcher.sh template list [--help] [--templateCategory <templateCategory-v
 ### Examples
 No examples yet. 
 
+
 # Virtual machine commands
 
 ## VM 
 Root command of all VM commands, prints help only.  
-Run: `pharo-launcher.sh vm` to see help.
+Run: `pharo-launcher vm` to see help.
 
 ## VM delete
 Deletes VM executable from local computer, including dependencies.
 
 ### Usage
 ```bash
-pharo-launcher.sh vm delete [--help] [<existingVirtualMachineId>]
+pharo-launcher vm delete [--help] [<existingVirtualMachineId>]
 ```
 
 ### Parameters
@@ -482,7 +494,7 @@ Prints information about VM: name, remote-site URL, last update status, etc.
 
 ### Usage
 ```bash
-pharo-launcher.sh vm info [--help] [<existingVirtualMachineId>]
+pharo-launcher vm info [--help] [<existingVirtualMachineId>]
 ```
 
 ### Parameters
@@ -499,7 +511,7 @@ Lists all available VMs, with status.
 
 ### Usage
 ```bash
-pharo-launcher.sh vm list [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston] [<existingVirtualMachineId>]
+pharo-launcher vm list [--help] [--brief] [--rowMode] [--delimiter <delimiter-value>] [--ston] [<existingVirtualMachineId>]
 ```
 
 ### Parameters
@@ -521,7 +533,7 @@ Updates VM executable, including dependent libs to latest version from remote si
 
 ### Usage
 ```bash
-pharo-launcher.sh vm update [--help] [<existingVirtualMachineId>]
+pharo-launcher vm update [--help] [<existingVirtualMachineId>]
 ```
 
 ### Parameters

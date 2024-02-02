@@ -18,6 +18,8 @@ PhLShowImageInFolderCommand >> asSpecCommand [
 
 { #category : #executing }
 PhLShowImageInFolderCommand >> execute [
+ 
+	self imagesPresenter hasSingleImageSelected ifFalse: [ ^self ].
 	self imagesPresenter singleImage showNativeFolder
 ]
 

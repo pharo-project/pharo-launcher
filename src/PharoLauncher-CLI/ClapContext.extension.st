@@ -13,5 +13,5 @@ ClapContext >> initializeLauncherNotificationCenter [
 
 { #category : #'*PharoLauncher-CLI' }
 ClapContext >> pharoLauncherModel [
-	^ PharoLauncherCLIModel new
+	^ PharoLauncherCLIModel fromDefaultConfiguration
 ]

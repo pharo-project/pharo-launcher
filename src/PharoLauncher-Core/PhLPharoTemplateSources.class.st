@@ -26,7 +26,11 @@ PhLPharoTemplateSources class >> announcer [
 { #category : #private }
 PhLPharoTemplateSources class >> basicSourcesUrl: aUrl [
 
+	| oldUrl |
+	oldUrl := SourcesUrl.
 	SourcesUrl := aUrl.
+	
+	^ oldUrl
 ]
 
 { #category : #updating }
@@ -100,10 +104,9 @@ PhLPharoTemplateSources class >> sourcesUrl [
 PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 
 	| oldUrl |
-	oldUrl := SourcesUrl.
-	SourcesUrl := aUrl.
-	
+	oldUrl := self basicSourcesUrl: aUrl.
 	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
+	
 	self checkForUpdates
 ]
 

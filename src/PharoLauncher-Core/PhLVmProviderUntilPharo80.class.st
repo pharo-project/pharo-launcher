@@ -8,17 +8,6 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
-{ #category : #accessing }
-PhLVmProviderUntilPharo80 >> compatibleUrlForPharo: pharoVersion arch64: is64bit [  
-	^ self urlTemplate 
-		format: (Dictionary 
-			with: #IMAGE_VERSION -> pharoVersion
-			with: #IMAGE_ARCH -> (is64bit ifTrue: [ '64' ] ifFalse: [ '' ])
-			with: #OS_PATH_SEGMENT -> self downloadPathOSTypeSegment
-			with: #VM_FLAVOUR -> ''
-			with: #VM_STATUS -> 'stable')
-]
-
 { #category : #'private - accessing' }
 PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 	| os |
@@ -31,7 +20,10 @@ PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 
 { #category : #'private - accessing' }
 PhLVmProviderUntilPharo80 >> imageArchitecture [
-	^ vmManager is64bit ifTrue: [ '64' ] ifFalse: [ '' ]
+	" No 64-bit image before Pharo 6.0"
+	^ (vmManager is64bit and: [ vmManager pharoVersion > '50' ]) 
+		ifTrue: [ '64' ] 
+		ifFalse: [ '' ]
 ]
 
 { #category : #private }

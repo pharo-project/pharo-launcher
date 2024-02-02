@@ -117,12 +117,6 @@ PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirect
 					overwrite: true ]
 ]
 
-{ #category : #private }
-PhLVirtualMachineManager class >> privateVmStore [
-	"The private store is used to fetch one VM per image format and open image to determine their pharo version number (e.g. 6.0, 7.0, etc.). Then we download the latest stable VM for the given Pharo image version."
-	^ (self vmStore / 'private') ensureCreateDirectory
-]
-
 { #category : #initialization }
 PhLVirtualMachineManager class >> reset [
 	<script>
@@ -198,13 +192,6 @@ PhLVirtualMachineManager >> availableVirtualMachines [
 	^ self availableVirtualMachinesIn: self vmStore
 ]
 
-{ #category : #querying }
-PhLVirtualMachineManager >> availableVirtualMachinesByImageFormat [
-	^ [ self availableVirtualMachinesIn: self privateVmStore] 
-		on: PhLExecutableNotFoundError 
-		do: [ :ex | ex path asFileReference ensureDeleteAll. ex retry ]
-]
-
 { #category : #private }
 PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	| vmsOnDisk |
@@ -213,7 +200,7 @@ PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	aFileReference directories
 		reject: [ :entry | entry basename = 'private' ]
 		thenDo: [ :entry | | vm |
-			vm := PhLVirtualMachine directory: entry private: (aFileReference = self privateVmStore).
+			vm := PhLVirtualMachine directory: entry.
 			vm manager: self.
 			vm ifValid: [ vmsOnDisk at: entry basename put: vm ] ].
 	^ vmsOnDisk
@@ -229,71 +216,22 @@ PhLVirtualMachineManager >> checkImageArchitecture [
 		ifTrue: [ PhLArchitectureMismatchWarning signalLauncherArch: '64-bit' imageArch: '32-bit' ]
 ]
 
-{ #category : #private }
-PhLVirtualMachineManager >> compatibleVm [
-	"Do not get the exact VM for the given image but only an image able to run the image to get its version number"
-
-	^ self availableVirtualMachinesByImageFormat
-		at: self imageFormatNumber asString
-		ifAbsent: [ self fetchCompatibleVm.
-			self fetchSourcesFileForCompatibleVm.
-			self availableVirtualMachinesByImageFormat at: self imageFormatNumber asString ]
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> compatibleVmUrl [
-	^ self compatibleVmUrls at: self imageFormatNumber
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> compatibleVmUrls [
-	| vmProvider |
-	vmProvider := PhLVmProviderUntilPharo80 new.
-	"50-preSpur stable is not the latest stable pre-Spur VM. 40 vm is the latest stable pre-Spur"
-	^ Dictionary newFromPairs: { 
-		self class imageFormat6504 . vmProvider compatibleUrlForPharo: '13' arch64: false .
-		self class imageFormatPreSpur . vmProvider compatibleUrlForPharo: '40' arch64: false .
-		self class imageFormat32bits . vmProvider compatibleUrlForPharo: '70' arch64: false .
-		self class imageFormat64bits . vmProvider compatibleUrlForPharo: '70' arch64: true
-	}
-	
-]
-
 { #category : #querying }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 
 	^ { 
+		(PhLVirtualMachine id: '110-x64')
+			be64bits;
+			yourself.
 		(PhLVirtualMachine id: '100-x64')
 			be64bits;
 			yourself.
 		(PhLVirtualMachine id: '90-x64')
 			be64bits;
 			yourself.
-		(PhLVirtualMachine id: '80-x64')
-			be64bits;
-			yourself.
 		(PhLVirtualMachine id: '80-x86')
 			yourself.
 	}
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> fetchCompatibleVm [
-	[ self class 
-		fetch: self compatibleVmUrl
-		to: self privateVmStore / (self imageFormatNumber asString , '.zip') ]
-	on: KeyNotFound
-	do: [ self error: 'No Virtual Machine available for ' , self imageFormatNumber asString, ' image format. Maybe you need to update known formats?' ]
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> fetchSourcesFileForCompatibleVm [
-	" We need to fetch the sources file to be able to determine the Pharo version of an image for Pharo versions < 2.0.
-	Indeed, a blocking warning (about missing sources file) prevents the execution of any command line evaluation ..."
-	(self imageFormatNumber = self class imageFormatPreSpur or: [ self imageFormatNumber = self class imageFormat6504 ])
-		ifTrue: [ self 
-			fetchSourcesFilesFor: '14' 
-			in: self privateVmStore / self imageFormatNumber asString ]
 ]
 
 { #category : #private }
@@ -377,99 +315,12 @@ PhLVirtualMachineManager >> imageFormatNumber: anInteger [
 PhLVirtualMachineManager >> imageVersion [
 	"get the Pharo version of the image"
 
-	^ imageVersion ifNil: 
-		[ [ self imageVersionFromFile ]
-			on: PhLImageVersionDeterminationError
-			do: [ "no version file, generate it"
-					[ self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: false) ]
-						on: PhLImageVersionDeterminationError, PhLProcessTimeOut
-						do: [ "Command probably failed, try to run without --no-default-preferences option (only available since Pharo 3.0)"
-								self imageVersionFromFileWith: (self imageVersionCommandWithPreferences: true) ] ] ]
+	^ imageVersion ifNil: [ self imageVersionFromFile ]
 ]
 
 { #category : #accessing }
 PhLVirtualMachineManager >> imageVersion: aString [ 
 	imageVersion := aString
-]
-
-{ #category : #accessing }
-PhLVirtualMachineManager >> imageVersionCommandWithPreferences: shouldUsePreferences [
-	| process |
-	process := PhLProcessWrapper new.
-	process workingDirectory: self compatibleVm executableFolderPath.
-	Smalltalk os isUnix
-			ifTrue: [ process 
-							shellCommand;
-							addArguments: 'export SQUEAK_PLUGINS="" && ';
-							addArgument: self compatibleVm executablePath surroundedByDoubleQuotes. ]
-			ifFalse: [ process command: self compatibleVm executablePath ].
-	process 
-		addArgument: (Smalltalk os isUnix
-			ifTrue: [ '--nodisplay' ]
-			ifFalse: [ '--headless' ]);
-		addArgument: imageFile fullName surroundedByDoubleQuotes.
-	shouldUsePreferences ifFalse: [ process addArgument: '--no-default-preferences' ].
-	process addArgument: self imageVersionDeterminationScriptPath surroundedByDoubleQuotes.
-	^ process
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionDeterminationScript [
-	| imageFolder |
-
-	SystemVersion current major isNil "Pharo 1.1"
-		ifTrue: [ SystemVersion current major: 1. 
-					SystemVersion current minor: 1 ]. 
-
-	(SystemVersion current major = 1 and: [ SystemVersion current minor < 4 ])
-		ifTrue: [ imageFolder := (Smalltalk at: #FileDirectory) on: Smalltalk imagePath.
-			imageFolder forceNewFileNamed: 'pharo.version' do: [ :stream |
-				stream 
-					<< SystemVersion current major;
-					<< SystemVersion current minor ] ]
-		ifFalse: [ imageFolder := Smalltalk imagePath asFileReference. 
-			SystemVersion current major = 1
-				ifFalse: [ imageFolder := imageFolder parent ].
-			imageFolder / 'pharo.version' 
-				writeStreamDo: [ :stream | |major minor|
-					major := SystemVersion current major.
-					minor := SystemVersion current minor.
-					"Pharo 6 images >= 60509 need 61 VM, even though the image states 60"
-					(major = 6 and: [ SystemVersion current highestUpdate >= 60509 ])
-						ifTrue: [ minor := 1 ].
-					stream 
-						<< major asString;
-						<< minor asString ] ].
-	Smalltalk snapshot: false andQuit: true
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionDeterminationScriptFile [
-	^ self vmStore parent / 'pharo-version.st'
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionDeterminationScriptFileNeedsUpdate [
-	| file |
-	file := self imageVersionDeterminationScriptFile.
-	^ (file exists and: [ file contents = self imageVersionDeterminationScriptSourceCode ]) not
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionDeterminationScriptPath [
-	| file |
-	file := self imageVersionDeterminationScriptFile.
-	self imageVersionDeterminationScriptFileNeedsUpdate
-		ifTrue: [ file 
-						ensureDelete;
-						writeStreamDo: [ :stream | stream << self imageVersionDeterminationScriptSourceCode ] ].
-	^ file fullName
-]
-
-{ #category : #private }
-PhLVirtualMachineManager >> imageVersionDeterminationScriptSourceCode [
-	^ (self class >> #imageVersionDeterminationScript) sourceCode
-		allButFirst: #imageVersionDeterminationScript size	"remove method name"
 ]
 
 { #category : #private }
@@ -481,17 +332,8 @@ PhLVirtualMachineManager >> imageVersionFile [
 PhLVirtualMachineManager >> imageVersionFromFile [
 	self imageVersionFile 
 			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
-			ifAbsent: [ PhLImageVersionDeterminationError signal: 
+			ifAbsent: [ PhLImageVersionFileNotFound signal: 
 				('Cannot determine image version: image version file "{1}" not found!' format: { self imageVersionFile pathString }) ].
-	^ imageVersion
-]
-
-{ #category : #accessing }
-PhLVirtualMachineManager >> imageVersionFromFileWith: aPhLProcessWrapperCommand [
-	aPhLProcessWrapperCommand runAndWaitTimeOut: 10 seconds.
-	self imageVersionFile 
-			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
-			ifAbsent: [ PhLImageVersionDeterminationError signalCommand: aPhLProcessWrapperCommand printString ].
 	^ imageVersion
 ]
 
@@ -508,11 +350,6 @@ PhLVirtualMachineManager >> isPreSpur [
 { #category : #accessing }
 PhLVirtualMachineManager >> pharoVersion [
 	^ self imageVersion
-]
-
-{ #category : #accessing }
-PhLVirtualMachineManager >> privateVmStore [
-	^ self class privateVmStore
 ]
 
 { #category : #accessing }

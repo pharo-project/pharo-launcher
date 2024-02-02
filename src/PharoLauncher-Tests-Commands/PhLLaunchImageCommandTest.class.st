@@ -94,6 +94,8 @@ PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun
 
 { #category : #tests }
 PhLLaunchImageCommandTest >> testCanLaunchImage [
+	self timeLimit: 30 seconds.
+	
 	FileLocator image copyTo: imageDir / FileLocator image basename.
 	image := PhLImage location: imageDir / FileLocator image basename.
 	image versionFile 
@@ -124,6 +126,19 @@ PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNo
 	self launchImage.
 	
 	self deny: image shouldRunInitializationScript.
+]
+
+{ #category : #tests }
+PhLLaunchImageCommandTest >> testLaunchImageShouldRaiseExceptionWhenNoPharoVersionFile [
+	
+	image versionFile ensureDelete.
+	presenter 
+		unselectAll;
+		selection: { image }.
+
+	self 
+		should: [ image launch ]
+		raise: PhLImageVersionFileNotFound
 ]
 
 { #category : #tests }

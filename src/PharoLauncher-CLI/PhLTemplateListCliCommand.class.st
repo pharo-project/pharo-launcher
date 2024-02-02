@@ -41,8 +41,11 @@ PhLTemplateListCliCommand >> basicExecute [
 		categoryNamed: self templateCategory ]
 		on: NotFound
 		do: [ ^ self raiseCategoryNotFound: self templateCategory ].
-
-	self list: templateCategory templatesAndGroups asOrderedCollection
+	
+	self
+		isDefaultTemplateCategory: templateCategory
+		ifTrue: [ self list: templateCategory templatesAndGroups asOrderedCollection default: self defaultTemplate ]
+		ifFalse: [ self list: templateCategory templatesAndGroups asOrderedCollection ]
 ]
 
 { #category : #message }

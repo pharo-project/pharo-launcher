@@ -2,15 +2,15 @@
 A PhLImageProcessListCliCommandTest is a test class for testing the behavior of PhLImageProcessListCliCommand
 "
 Class {
-	#name : #PhLImageProcessListCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
+	#name : #PhLProcessListCliCommandTest,
+	#superclass : #PhLProcessCliCommandTest,
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testExecute [ 
+PhLProcessListCliCommandTest >> testExecute [ 
 
-	self runCommand: #('launcher' 'image' 'processList').
+	self runCommand: #('launcher' 'process' 'list').
 	
 	self assertSuccess.
 	
@@ -47,7 +47,7 @@ PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
 PhLImageProcessListCliCommandTest >> testOsShellArgArray [
 
 	|processListCmd argArray|
-	processListCmd := PhLImageProcessListCliCommand new.
+	processListCmd := PhLProcessListCliCommand new.
 	argArray := processListCmd osShellArgArray.
 	
 	"test whether current PID of vm is filtered from list"

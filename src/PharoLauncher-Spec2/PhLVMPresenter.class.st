@@ -8,8 +8,6 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
-		'dataSource',
-		'shouldShowPrivateVms',
 		'rootCommandsGroup'
 	],
 	#category : #'PharoLauncher-Spec2'
@@ -42,7 +40,6 @@ PhLVMPresenter class >> buildToolbarGroup [
 				name: 'Show';
 				yourself);
 		register: PhLDeleteVmCommand forSpec;
-		register: PhLToggleVmPrivateVmCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
 ]
@@ -51,14 +48,6 @@ PhLVMPresenter class >> buildToolbarGroup [
 PhLVMPresenter class >> example [
 	<example>
 	(self on: PhLVirtualMachinesDataSource default) open
-]
-
-{ #category : #initialization }
-PhLVMPresenter >> connectPresenters [
-	super connectPresenters.
-	shouldShowPrivateVms := false.
-	
-
 ]
 
 { #category : #accessing }
@@ -114,22 +103,6 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 		centered.
 
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
-
-	self privateVmsTogglePresenter
-		whenDeactivatedDo: [ 
-			self privateVmsTogglePresenter
-				label: 'public';
-				icon: (self iconNamed: #remote) ];
-		whenActivatedDo: [ 
-			self privateVmsTogglePresenter
-				label: 'private';
-				icon: (self iconNamed: #smallLock) ];
-		beUnselected
-]
-
-{ #category : #initialization }
-PhLVMPresenter >> privateVmsTogglePresenter [
-	^ (self rootCommandsGroup / 'Toolbar') allCommands last presenter
 ]
 
 { #category : #private }
@@ -138,13 +111,9 @@ PhLVMPresenter >> readableDateFor: aTimestamp [
 
 ]
 
-{ #category : #accessing }
+{ #category : #refreshing }
 PhLVMPresenter >> refresh [ 
-	| vms |
-	vms := shouldShowPrivateVms
-		ifTrue: [ self datasource privateVirtualMachines ]
-		ifFalse: [ self datasource virtualMachines ].
-	vmTable items: vms.
+	vmTable items: self datasource virtualMachines
 ]
 
 { #category : #initialization }
@@ -155,22 +124,4 @@ PhLVMPresenter >> rootCommandsGroup [
 { #category : #accessing }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
-]
-
-{ #category : #configuring }
-PhLVMPresenter >> showPrivateVms [
-	shouldShowPrivateVms := true.
-	self refresh.
-]
-
-{ #category : #configuring }
-PhLVMPresenter >> showVms [
-	shouldShowPrivateVms := false.
-	self refresh.
-]
-
-{ #category : #configuring }
-PhLVMPresenter >> toggleShowVmPrivateVm [
-	shouldShowPrivateVms := shouldShowPrivateVms not.
-	self refresh
 ]

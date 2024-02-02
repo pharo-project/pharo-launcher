@@ -7,18 +7,11 @@ Class {
 	#instVars : [
 		'retryBlock',
 		'cancelBlock',
-		'explanationText'
+		'explanationText',
+		'iconPresenter'
 	],
 	#category : #'PharoLauncher-Spec2'
 }
-
-{ #category : #layout }
-PhlRetryPresenter class >> defaultLayout [ 
-	^ SpBoxLayout newHorizontal
-		"add: (self iconNamed: #smallUpdate) expand: false;"
-		add:  #explanationText;
-		yourself
-]
 
 { #category : #example }
 PhlRetryPresenter class >> example [
@@ -34,9 +27,18 @@ PhlRetryPresenter >> cancelBlock: aBlock [
 	cancelBlock := aBlock
 ]
 
+{ #category : #layout }
+PhlRetryPresenter >> defaultLayout [ 
+	^ SpBoxLayout newLeftToRight 
+		spacing: 10;
+		add: iconPresenter expand: false;
+		add:  explanationText;
+		yourself
+]
+
 { #category : #accessing }
 PhlRetryPresenter >> explanation: aString [ 
-	explanationText label: aString
+	explanationText text: aString
 ]
 
 { #category : #initialization }
@@ -44,7 +46,7 @@ PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Retry?';
-		initialExtent: 400 @ 120;
+		initialExtent: 400 @ 200;
 		addButton: 'Retry' do: [ :presenter | presenter close. retryBlock value. ];
 		addButton: 'Cancel' do: [ :presenter | presenter beCancel; close. cancelBlock value. ];
 		centeredRelativeToTopWindow	
@@ -52,7 +54,13 @@ PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 
 { #category : #initialization }
 PhlRetryPresenter >> initializePresenters [
-	explanationText := self newLabel.
+	explanationText := self newText
+		beNotEditable;
+		yourself.
+		
+	iconPresenter := self newImage 
+		image: (self iconNamed: #smallUpdate);
+		yourself
 ]
 
 { #category : #accessing }

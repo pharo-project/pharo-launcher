@@ -25,3 +25,15 @@ PhLVmProviderUntilPharo80Test >> testUrlIsValidAndAvailable [
 	self assert: (url asString includesSubstring: '64').
 	self assert: (ZnEasy head: url) isSuccess
 ]
+
+{ #category : #tests }
+PhLVmProviderUntilPharo80Test >> testUrlIsValidAndAvailableWhenOs64BitAndImageAvailableOnlyIn32Bits [
+	| url vm |
+	vm := (PhLVirtualMachine id: '40-x86').
+	vmProvider := PhLVmProvider for: vm.
+	url := vmProvider url.
+	
+	self assert: (url asString includesSubstring: '40').
+	self deny: (url asString includesSubstring: '64').
+	self assert: (ZnEasy head: url) isSuccess
+]

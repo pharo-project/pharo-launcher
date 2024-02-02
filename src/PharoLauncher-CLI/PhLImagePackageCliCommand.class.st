@@ -107,7 +107,9 @@ PhLImagePackageCliCommand >> createDirectoryForImageToPack [
 	|aPath| 
 	aPath := self location , '/' , self image name.
 	(self directoryAlreadyExists: aPath) ifTrue: [self raiseDirectoryAlreadyExists: aPath].
-	^ aPath asFileReference ensureCreateDirectory
+	^ [aPath asFileReference ensureCreateDirectory]
+		on: PrimitiveFailed 
+		do: [ self raiseCannotCreateDirectory:  self location]
 ]
 
 { #category : #private }
@@ -206,6 +208,12 @@ fi' withUnixLineEndings
 PhLImagePackageCliCommand >> location [
 
 	^ self positional: #location
+]
+
+{ #category : #'error signalling' }
+PhLImagePackageCliCommand >> raiseCannotCreateDirectory: aPath [
+
+	^PhLCommandError signal: ('Cannot write to target directory: ''{1}'', please check write permissions.' format: { aPath })
 ]
 
 { #category : #'error signalling' }

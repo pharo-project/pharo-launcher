@@ -163,7 +163,7 @@ PhLImageFinder >> pullRequest: aString [
 { #category : #private }
 PhLImageFinder >> pullRequestBuildArtifactsUrlString [
 
-	^ 'https://ci.inria.fr/pharo-ci-jenkins2/job/Test%20pending%20pull%20request%20and%20branch%20Pipeline/view/change-requests/job/PR-{1}/lastSuccessfulBuild/artifact/bootstrap-cache/' 
+	^ 'https://ci.inria.fr/pharo-ci-jenkins2/job/Test%20pending%20pull%20request%20and%20branch%20Pipeline/view/change-requests/job/PR-{1}/lastSuccessfulBuild/artifact/build/bootstrap-cache/' 
 		  format: { self pullRequest }
 ]
 

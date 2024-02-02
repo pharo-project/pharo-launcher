@@ -11,7 +11,8 @@ Class {
 		'templateRepository',
 		'imagesPresenter',
 		'scriptsDirectory',
-		'openAsWorld'
+		'openAsWorld',
+		'jobList'
 	],
 	#classVars : [
 		'Default',
@@ -131,7 +132,7 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 PharoLauncherApplication class >> open [
 	<script>
 	
-	^ (Default := self new)
+	^ self default
 		openAsWorld: false;
 		run
 ]
@@ -140,7 +141,7 @@ PharoLauncherApplication class >> open [
 PharoLauncherApplication class >> openFull [ 
 	<script>
 	
-	^ (Default := self new) 
+	^ self default
 		beOpenedAsWorld;
 		run
 ]
@@ -153,9 +154,11 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #accessing }
+{ #category : #'class initialization' }
 PharoLauncherApplication class >> reset [
+   Default ifNil: [ ^ self ].
 
+   Default reset.
 	Default := nil
 ]
 
@@ -269,6 +272,12 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : #accessing }
+PharoLauncherApplication >> jobList [
+
+	^ jobList ifNil: [ jobList := self newJobList  ]
+]
+
 { #category : #events }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
@@ -276,6 +285,12 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	imagesPresenter refreshLaunchConfigurationList.
 	aLaunchConfiguration isNullConfiguration 
 		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
+]
+
+{ #category : #events }
+PharoLauncherApplication >> newImageCreated [
+	"We want to launch the freshly created image"
+	imagesPresenter ifNotNil: [ imagesPresenter actionLaunch ]
 ]
 
 { #category : #configuring }
@@ -286,7 +301,7 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 { #category : #ui }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
-	self newJobList pushJob: (SpJob newTitle: aString block: aBlock)
+	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
 { #category : #initialization }

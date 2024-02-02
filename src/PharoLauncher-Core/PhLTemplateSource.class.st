@@ -10,6 +10,7 @@ Class {
 	#instVars : [
 		'type',
 		'name',
+		'shortName',
 		'url',
 		'filterPattern',
 		'templates',
@@ -293,6 +294,7 @@ PhLTemplateSource >> asTemplate [
 	type == self class urlType ifTrue: [ 
 		^ PhLRemoteTemplate
 			  name: name
+			  shortName: shortName
 			  url: url asUrl
 			  username: username
 			  password: password ].
@@ -354,6 +356,11 @@ PhLTemplateSource >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: name;
 		nextPut: $)
+]
+
+{ #category : #accessing }
+PhLTemplateSource >> shortName [
+	^ shortName
 ]
 
 { #category : #accessing }

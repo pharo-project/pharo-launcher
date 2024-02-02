@@ -21,15 +21,13 @@ Class {
 	#traits : 'TDebugger',
 	#classTraits : 'TDebugger classTrait',
 	#instVars : [
-		'acceptButton',
-		'cancelButton',
 		'debugSession',
 		'description'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : #'PharoLauncher-Spec2'
 }
 
-{ #category : #accessing }
+{ #category : #closing }
 PhLErrorDialogPresenter class >> closeAllDebuggers [
 	<script>
 	self allInstancesDo: [ :dbg | dbg close ]

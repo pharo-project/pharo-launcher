@@ -20,31 +20,6 @@ PhLUpdateVmCommandTest >> tearDown [
 ]
 
 { #category : #tests }
-PhLUpdateVmCommandTest >> testCanUpdateManyPrivateVms [
-	| command vms vmFolderEntries |
-	command := PhLUpdateVmCommand new.
-	command context: presenter.
-	presenter 
-		showPrivateVms;
-		createVmNamed: '6504' private: true;
-		createVmNamed: '68021' private: true;
-		selection: { 
-			presenter vmFor: '6504' private: true .
-			presenter vmFor: '68021' private: true }.
-	
-	command execute.
-	
-	vms := presenter vmNames.
-	self
-		assertCollection: vms
-		hasSameElements: #('68021' '6504').
-	vmFolderEntries := (presenter selectedVms first vmStore / '68021') entries.
-	self 
-		assertCollection: (vmFolderEntries collect: #name)
-		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').
-]
-
-{ #category : #tests }
 PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 	| command fooVmName vms vmFolderEntries |
 	command := PhLUpdateVmCommand new.
@@ -52,7 +27,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 	fooVmName := '90-Foo'.
 	presenter createVmNamed: fooVmName.
 	vms := {fooVmName . presenter singleVmName}
-		collect: [:each | presenter vmFor: each private: false ].
+		collect: [:each | presenter vmFor: each ].
 	presenter selection: vms.
 	
 	command execute.

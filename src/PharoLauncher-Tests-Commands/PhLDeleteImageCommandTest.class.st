@@ -7,7 +7,7 @@ Class {
 	#category : #'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #helper }
 PhLDeleteImageCommandTest >> createMoreImagesAndEnableSorting [
 
 	presenter createImageNamed: 'Zoo'.
@@ -80,4 +80,27 @@ PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
 	self
 		assertEmpty: images;
 		assert: (presenter imageLabel beginsWith: 'No image selected')
+]
+
+{ #category : #tests }
+PhLDeleteImageCommandTest >> testWarningMessageWhenDeletingManyImages [
+	| command images |
+	command := PhLDeleteImageCommand new.
+	command context: presenter.
+	presenter 
+		createImageNamed: 'Foo';
+		createImageNamed: 'Bar';
+		createImageNamed: 'baz';
+		refresh;
+		selectImagesAt: #(1 3).
+		
+	command execute.
+	
+	images := command imagesPresenter imageNames.
+	self
+		assertCollection: images
+		hasSameElements: #('Bar' 'TestImage').
+	self
+		assert: presenter request message
+		equals: 'Are you sure you want to delete 2 images: baz and Foo?'
 ]

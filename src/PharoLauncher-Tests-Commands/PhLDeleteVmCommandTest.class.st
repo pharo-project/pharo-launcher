@@ -20,24 +20,6 @@ PhLDeleteVmCommandTest >> tearDown [
 ]
 
 { #category : #tests }
-PhLDeleteVmCommandTest >> testCanDeleteAPrivateVM [
-	| command vms |		
-	command := PhLDeleteVmCommand new.
-	command context: presenter.
-	presenter 
-		showPrivateVms;
-		createVmNamed: 'Bar' private: true;
-		selection: { presenter vmFor: 'Bar' private: true }.
-	
-	command execute.
-	
-	vms := command vmsPresenter vmNames.
-	self
-		assertCollection: vms
-		hasSameElements: #().
-]
-
-{ #category : #tests }
 PhLDeleteVmCommandTest >> testCanDeleteAVM [
 	| command vms |
 	command := PhLDeleteVmCommand new.
@@ -53,34 +35,13 @@ PhLDeleteVmCommandTest >> testCanDeleteAVM [
 ]
 
 { #category : #tests }
-PhLDeleteVmCommandTest >> testCanDeleteManyPrivateVms [
-	| command vms |		
-	command := PhLDeleteVmCommand new.
-	command context: presenter.
-	presenter 
-		showPrivateVms;
-		createVmNamed: 'Foo' private: true;
-		createVmNamed: 'Bar' private: true;
-		createVmNamed: 'Zee' private: true;
-		selection: { presenter vmFor: 'Foo' private: true .
-						presenter vmFor: 'Bar' private: true }.
-	
-	command execute.
-	
-	vms := command vmsPresenter vmNames.
-	self
-		assertCollection: vms
-		hasSameElements: #('Zee').
-]
-
-{ #category : #tests }
 PhLDeleteVmCommandTest >> testCanDeleteManyVms [
 	| command vms |		
 	command := PhLDeleteVmCommand new.
 	command context: presenter.
 	presenter createVmNamed: 'Foo'.
 	vms := {presenter singleVmName . 'Foo'}
-		collect: [:each | presenter vmFor: each private: false ].
+		collect: [:each | presenter vmFor: each ].
 	presenter selection: vms.
 	
 	command execute.

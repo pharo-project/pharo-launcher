@@ -11,7 +11,9 @@ PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 
 	command := (context arguments: #('launcher' 'image' 'create' 'fromPR' '9588')) command.
 	command imageFinderClass: PhLImageFinderStub.
+	
 	command execute.
+	
 	self assert: self errorString isEmpty.
 	self assert: (self outputString includesSubstring: 'PR-9588').
   

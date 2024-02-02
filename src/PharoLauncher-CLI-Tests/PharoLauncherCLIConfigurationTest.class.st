@@ -3,7 +3,8 @@ Class {
 	#superclass : #TestCase,
 	#instVars : [
 		'root',
-		'errorStream'
+		'errorStream',
+		'outStream'
 	],
 	#category : #'PharoLauncher-CLI-Tests'
 }
@@ -22,8 +23,11 @@ PharoLauncherCLIConfigurationTest >> createPreferencesFileWith: aConfiguration [
 PharoLauncherCLIConfigurationTest >> setUp [
 	super setUp.
 	root := FileSystem memory root.
+	outStream := WriteStream on: (String new).
 	errorStream := WriteStream on: (String new).
-	PhLNotificationCenter default errorStream: errorStream
+	PhLNotificationCenter default 
+		errorStream: errorStream;
+		outStream: outStream.
 
 ]
 
@@ -74,7 +78,7 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileAb
 	config := PharoLauncherCLIConfiguration configurationFromFile: (root / 'launcherSettings.ston') asFileReference .
 	
 	self assert: (config isKindOf: PharoLauncherCLIConfiguration).
-	self assert: ( PhLNotificationCenter default errorStream contents includesSubstring: 'Config' ) 
+	self assert: (PhLNotificationCenter default outStream contents includesSubstring: 'Config') 
 	
 	
 ]
@@ -104,16 +108,16 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfiguratio
 ]
 
 { #category : #tests }
-PharoLauncherCLIConfigurationTest >> testProcessWithExplicitWorkingDirectory [
-	| dir config configurator |
-	dir := root / 'foo' / 'bar'.
-	config := PhLLaunchConfiguration new
-		workingDirectory: dir.
-	configurator := PhLLaunchImageProcessConfigurator new 
-		launchConfiguration: config;
-		yourself.
+PharoLauncherCLIConfigurationTest >> testGetStableTemplateWhenGivingWrongDefaultTemplateValue [
+
+	| config deserializeConfig |
+	config := PharoLauncherCLIConfiguration new.
+	self assert: config defaultTemplate equals: #stable.
 	
-	self assert: configurator workingDirectory equals: dir
+	config defaultTemplate: #foo.
+	deserializeConfig := STON fromString: (STON toString: config).
+	self assert: deserializeConfig defaultTemplate equals: #stable.
+
 ]
 
 { #category : #tests }

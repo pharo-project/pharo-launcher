@@ -6,20 +6,16 @@ Class {
 	#name : #PhLVirtualMachinesDataSource,
 	#superclass : #Object,
 	#instVars : [
-		'vmsBlock',
-		'privateVmsBlock'
+		'vmsBlock'
 	],
 	#category : #'PharoLauncher-Core-Model'
 }
 
 { #category : #accessing }
-PhLVirtualMachinesDataSource class >> default [ 
-	| vmsBlock privateVmsBlock |
-	vmsBlock := [ PhLVirtualMachineManager new virtualMachines 
-		asSortedCollection: [ :vm1 :vm2 | vm1 > vm2 ] ].
-	privateVmsBlock := [ PhLVirtualMachineManager new availableVirtualMachinesByImageFormat 
-		asSortedCollection: [ :vm1 :vm2 | vm1 > vm2 ] ].
-	^ self vmsBlock: vmsBlock privateVmsBlock: privateVmsBlock 
+PhLVirtualMachinesDataSource class >> default [
+
+	^ self vmsBlock: [ PhLVirtualMachineManager new virtualMachines 
+								asSortedCollection: [ :vm1 :vm2 | vm1 > vm2 ] ]
 ]
 
 { #category : #'instance creation' }
@@ -27,25 +23,6 @@ PhLVirtualMachinesDataSource class >> vmsBlock: aBlock [
 	^ self new 
 		vmsBlock: aBlock;
 		yourself
-]
-
-{ #category : #'instance creation' }
-PhLVirtualMachinesDataSource class >> vmsBlock: vmsBlock privateVmsBlock: privateVmsBlock [
-	^ (self vmsBlock: vmsBlock)
-		privateVmsBlock: privateVmsBlock;
-		yourself
-]
-
-{ #category : #querying }
-PhLVirtualMachinesDataSource >> privateVirtualMachines [ 
-	^ privateVmsBlock 
-		ifNil: [ #() ]
-		ifNotNil: [ privateVmsBlock value ]
-]
-
-{ #category : #accessing }
-PhLVirtualMachinesDataSource >> privateVmsBlock: aBlock [
-	privateVmsBlock := aBlock
 ]
 
 { #category : #querying }

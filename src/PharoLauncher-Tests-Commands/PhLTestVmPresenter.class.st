@@ -15,16 +15,8 @@ Class {
 
 { #category : #adding }
 PhLTestVmPresenter >> createVmNamed: aName [
-	self createVmNamed: aName private: false
-]
-
-{ #category : #adding }
-PhLTestVmPresenter >> createVmNamed: aName private: isPrivateVm [
-	| vmDirectory appDir root |
-	root := isPrivateVm 
-		ifTrue: [ vmStoreRoot / 'private' ] 
-		ifFalse: [ vmStoreRoot ].
-	vmDirectory := root / aName.
+	| vmDirectory appDir |
+	vmDirectory := vmStoreRoot / aName.
 	vmDirectory ensureCreateDirectory.
 	"needed on OS X"
 	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.
@@ -42,8 +34,7 @@ PhLTestVmPresenter >> initialize [
 	(vmStoreRoot / 'private') ensureCreateDirectory.
 	datasource := PhLVirtualMachinesDataSource
 		vmsBlock:
-			[ vmStoreRoot directoryNames reject: [ :name | name = 'private' ] ]
-		privateVmsBlock: [ (vmStoreRoot / 'private') directoryNames ].
+			[ vmStoreRoot directoryNames reject: [ :name | name = 'private' ] ].
 	self model: datasource.
 	self createVmNamed: self singleVmName.
 	super initialize
@@ -58,7 +49,7 @@ PhLTestVmPresenter >> newConfirmation [
 PhLTestVmPresenter >> selectedVms [
 	^ selection 
 		ifNotNil: [ selection ]
-		ifNil: [ { self vmFor: self singleVmName private: false } ]
+		ifNil: [ { self vmFor: self singleVmName } ]
 ]
 
 { #category : #configuring }
@@ -72,21 +63,15 @@ PhLTestVmPresenter >> singleVmName [
 ]
 
 { #category : #private }
-PhLTestVmPresenter >> vmFor: aName private: isPrivateVm [
-	| root vm |
-	root := isPrivateVm 
-		ifTrue: [ vmStoreRoot / 'private' ] 
-		ifFalse: [ vmStoreRoot ].
-	vm := PhLVirtualMachine
-		directory: root / aName
-		private: isPrivateVm.
+PhLTestVmPresenter >> vmFor: aName [
+
+	| vm |
+	vm := PhLVirtualMachine directory: vmStoreRoot / aName.
 	vm manager: PhLTestVirtualMachineManager new.
 	^ vm
 ]
 
 { #category : #querying }
 PhLTestVmPresenter >> vmNames [
-	^ shouldShowPrivateVms 
-		ifTrue:[ self datasource privateVirtualMachines ]
-		ifFalse: [ self datasource virtualMachines ]
+	^ self datasource virtualMachines
 ]

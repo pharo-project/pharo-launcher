@@ -8,17 +8,18 @@ Class {
 		'imagesDirectory',
 		'vmsDirectory',
 		'launchImageFromALoginShell',
-		'initScriptsDirectory'
+		'initScriptsDirectory',
+		'defaultTemplate'
 	],
 	#category : #'PharoLauncher-CLI-Model'
 }
 
 { #category : #'error signalling' }
 PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
-	PhLNotificationCenter default errorStream
+	PhLNotificationCenter default outStream
 		nextPutAll:
-			'Config file not found, creating a new one at '
-				, self preferencesFile fullName;
+			'Config file not found, creating a new one at ';
+		nextPutAll: self preferencesFile fullName;
 		newLine.
 	^ self createConfigurationFile: aFile
 ]
@@ -87,6 +88,19 @@ PharoLauncherCLIConfiguration >> = anObject [
 						and: [ vmsDirectory = anObject vmsDirectory ] ] ]
 ]
 
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> defaultTemplate [
+	^ defaultTemplate ifNil: [ #stable ]
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> defaultTemplate: aString [ 
+	"default template can only be the stable Pharo version or the dev Pharo version"
+	
+	(#(dev stable) includes: aString)
+		ifTrue: [ defaultTemplate := aString asSymbol ]
+]
+
 { #category : #comparing }
 PharoLauncherCLIConfiguration >> hash [
 	^ imagesDirectory hash
@@ -119,12 +133,10 @@ PharoLauncherCLIConfiguration >> initScriptsDirectory: aFileReference [
 PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
 	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation asFileReference .
-	vmsDirectory := FileLocator launcherUserFilesLocation / 'vms'.
-	vmsDirectory := vmsDirectory asFileReference.
-	initScriptsDirectory := PharoLauncherApplication
+	vmsDirectory := (FileLocator launcherUserFilesLocation / 'vms') asFileReference.
+	initScriptsDirectory := PharoLauncherApplication 
 		defaultInitializationScriptLocation asFileReference.
-	launchImageFromALoginShell := PhLLaunchConfiguration
-		launchInALoginShell
+	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell
 ]
 
 { #category : #accessing }

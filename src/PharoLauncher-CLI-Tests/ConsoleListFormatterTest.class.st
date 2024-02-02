@@ -141,6 +141,28 @@ ConsoleListFormatterTest >> testPrintAttributeTable [
 ]
 
 { #category : #tests }
+ConsoleListFormatterTest >> testPrintAttributeTableWithDefaultValue [
+
+	|expectedString|
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
+	formatter domainObjects: #(1 2 3) defaultValue: 2.
+	formatter printAttributeTable.
+	
+	expectedString := String streamContents: [:aStream | 
+		aStream 
+			nextPutAll: '#  *Value*Squared*Raised to 3 '; newLine;
+			nextPutAll: '---*-----*-------*------------'; newLine;
+			nextPutAll: ' 1 *one  *one    *one         '; newLine;
+			nextPutAll: '*2 *two  *four   *eight       '; newLine;
+			nextPutAll: ' 3 *three*nine   *twenty-seven'; newLine
+	].
+
+	self assert: formatter outStream contents equals: expectedString.
+
+]
+
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintCellWidth [
 
 	formatter printCell: 'value' width: 10.

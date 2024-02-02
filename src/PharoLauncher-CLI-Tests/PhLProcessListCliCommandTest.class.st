@@ -19,11 +19,11 @@ PhLProcessListCliCommandTest >> testExecute [
 ]
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
+PhLProcessListCliCommandTest >> testImageProcesListFrom [
 
-	|processListCmd aString resultArray|
-	processListCmd := PhLImageProcessListCliCommand new.
-	aString := String streamContents: [: aStream | 
+	|processListCmd processListString resultArray|
+	processListCmd := PhLProcessListCliCommand new.
+	processListString := String streamContents: [: aStream | 
 		aStream 
 			nextPutAll: '933 /tmp/PhLLaunchImageTest.61d1f200-02cc-0d00-88d2-05d60e98deae/110-x64/pharo /tmp/Yann-GaÃÂ«l BÃÂ©rÃÂ¨s.61d1f200-02cc-0d00-88d2-05d60e98deae/PharoLauncher.image';
 			nextPutAll: OSPlatform current lineEnding; 
@@ -37,21 +37,23 @@ PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
 			nextPutAll: OSPlatform current lineEnding;
 			nextPutAll: '57499 /Users/dbajger/Documents/Pharo/vms/110-x64/Pharo.app/Contents/MacOS/Pharo /Users/dbajger/Documents/Pharo/images/P11-launcher-dev/P11-launcher-dev.image'
 		].
+	
 	"each of string lines above represents information about one Pharo process, so there should be 6 processes (PhLImageProcess instances) determined from these lines"
-	resultArray := processListCmd imageProcesListFrom: aString.
+	resultArray := processListCmd imageProcesListFrom: processListString.
+	
 	self assert: resultArray size equals: 6.
 
 ]
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testOsShellArgArray [
+PhLProcessListCliCommandTest >> testOsShellArgArray [
 
-	|processListCmd argArray|
+	| processListCmd argArray |
 	processListCmd := PhLProcessListCliCommand new.
 	argArray := processListCmd osShellArgArray.
-	
+
 	"test whether current PID of vm is filtered from list"
-	
+
 	self assert: (argArray first includesSubstring: 'pgrep').
-	self assert: (argArray first includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
+	self assert: (argArray first includesSubstring: 'grep -v ' , processListCmd currentVMPid asString)
 ]

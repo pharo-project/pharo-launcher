@@ -306,7 +306,7 @@ ConsoleListFormatterTest >> testTableColumnWidthLimit [
 	| size short longer longest|
 	short := 'short'.
 	longer := 'more long text'.
-	longest := 'some very very long string exceeding column width limit'.
+	longest := 'some very very very very very very very long string exceeding column width limit'.
 	size := formatter getMaxPrintStringWidthFor: {longer. longest. short.} printBlock: [ :aStr | aStr asString ].
 	
 	"longest string exceeds the table column width limit, so the maximum column size should be equal to that limit"

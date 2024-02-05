@@ -75,14 +75,21 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepoWithA
 { #category : #tests }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidateRepoFullName [
 
-	| commandSpec validRepoNames |
+	| commandSpec validRepoNames invalidRepoName createCommand |
 	
 	commandSpec := PhLImageCreateFromRemoteRepoCliCommand asCliCommand.
-	validRepoNames := #('owner/project' 'owner/project:branch' 'owner/some-project:feature/branch-name').
+	validRepoNames := #('owner/project' 'owner/project:branch' 'owner/some-project:feature/branch-name' 'owner/project:v1' 'owner/project:v1.1' 'owner/project:v1.1a' 'owner/project:V1.1.1a' 'owner/project:1.0-RC-somecomment').
 
 	validRepoNames do: [:repoName | 
-		|createCommand|
- 		createCommand := (commandSpec activationWith: { 'fromRepo'. repoName. } asArray) command.
-		createCommand validateRepoFullName
-	]
+		createCommand := (commandSpec activationWith: { 'fromRepo'. repoName }) command.
+		self 
+			assert: createCommand isValidRepoFullName 
+			description: 'Valid repository name not validated: ', repoName.
+	].
+
+	invalidRepoName := 'owner/project:'.
+	createCommand := (commandSpec activationWith: { 'fromRepo'. invalidRepoName }) command.
+	self 
+		deny: createCommand isValidRepoFullName 
+		description: 'Invalid repository name validated: ', invalidRepoName.
 ]

@@ -81,7 +81,7 @@ PhLLaunchImageTest >> tearDown [
 { #category : #tests }
 PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64BitOnlyOS [
 	| image |
-	image := PhLOsXMojaveTestImage example32.
+	image := PhLOsXCatalinaTestImage example32.
 	
 	self 
 		should: [ process := image launchWithConfiguration: nil ]
@@ -118,12 +118,11 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 { #category : #tests }
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image config commandToEval |
-	image := PhLOsXMojaveTestImage example.
+	image := PhLOsXCatalinaTestImage example.
+	image pharoVersion: '80'.
 	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
 	config := image defaultLaunchConfiguration.
-	config
-		vm: self pharo80x86Vm;
-		imageArguments: {'eval' . commandToEval}.
+	config	 imageArguments: {'eval' . commandToEval}.
 	
 	self 
 		shouldnt: [ process := image launchWithConfiguration: config ]

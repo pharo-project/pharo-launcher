@@ -66,7 +66,10 @@ PhLImageDescriptionUpdater >> newProcess [
 
 { #category : #private }
 PhLImageDescriptionUpdater >> terminateProcess [ 
-	process ifNotNil: [ process terminate ]
+	(process isNil or: [ process isTerminated ])
+		ifTrue: [ ^ self ]. 
+	
+	process terminate.
 ]
 
 { #category : #accessing }

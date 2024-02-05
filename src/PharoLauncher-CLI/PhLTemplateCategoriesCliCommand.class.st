@@ -33,7 +33,9 @@ PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 { #category : #'command execution' }
 PhLTemplateCategoriesCliCommand >> basicExecute [
 
-	self list: self templateRepository roots	
+	[ self list: self templateRepository roots default: self defaultTemplateCategory ]
+	on: NotFound 
+	do: [ self list: self templateRepository roots ]
 ]
 
 { #category : #private }

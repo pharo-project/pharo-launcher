@@ -39,8 +39,8 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self runCommand: #('launcher' 'image' 'list' '--brief' '--delimiter' '+').
 	 
 	self assertSuccess.  
-	self assert: (self outputString includesSubstring:'1 +myImage1').
-	self assert: (self outputString includesSubstring:'2 +myImage2').
+	self assert: (self outputString includesSubstring:' +myImage1').
+	self assert: (self outputString includesSubstring:' +myImage2').
 ]
 
 { #category : #tests }
@@ -53,19 +53,20 @@ PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
 	 
 	self assertSuccess.  
 	images := STON fromString: self outputString.
-	self assert: images size equals: 2.
-	self assert: images first name equals: 'myImage1'.
+	self 
+		assertCollection: (images collect: #name)
+		hasSameElements: #('myImage1' 'myImage2').
 	
 ]
 
 { #category : #tests }
-PhLImageListCliCommandTest >> testListImageWithImageNameShouldSucceed [
+PhLImageListCliCommandTest >> testListImageWithImageNameFilterShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
 	self addImageNamed: 'shouldNotBeListed'.
 	self addImageNamed: 'myImage3'.
 	
-	self runCommand: #('launcher' 'image' 'list' '--name' 'myImage').
+	self runCommand: #('launcher' 'image' 'list' '--nameFilter' 'myImage').
 	 
 	self assertSuccess.  
 	self assert: (self outputString includesSubstring:'myImage1').

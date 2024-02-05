@@ -1,14 +1,14 @@
 "
-Command to kill one image if given in option or all the images if the --all flag is set 
+Command to kill one image if given in option or all the images if the --all flag is set
 "
 Class {
-	#name : #PhLImageKillCliCommand,
-	#superclass : #PhLImageCliCommand,
+	#name : #PhLProcessKillCliCommand,
+	#superclass : #PhLProcessCliCommand,
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
 { #category : #'command line - arguments' }
-PhLImageKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+PhLProcessKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	aCommandSpec 
 		addFlag: #all 
@@ -16,7 +16,7 @@ PhLImageKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 ]
 
 { #category : #'command line - arguments' }
-PhLImageKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
+PhLProcessKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
 		addPositional: #existingImageName 
@@ -24,39 +24,46 @@ PhLImageKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [ :arg :app | self raiseMissingImageToKill]
 ]
 
-{ #category : #'command line' }
-PhLImageKillCliCommand class >> asCliCommand [
+{ #category : #'command line - converting' }
+PhLProcessKillCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #kill 
 ]
 
-{ #category : #'command line' }
-PhLImageKillCliCommand class >> launcherCmdDescription [
+{ #category : #'command line - description' }
+PhLProcessKillCliCommand class >> launcherCmdDescription [
 
 	^ 'Kills the running process(es) of given local image.'
 ]
 
 { #category : #'error signalling' }
-PhLImageKillCliCommand class >> raiseMissingImageToKill [
+PhLProcessKillCliCommand class >> raiseMissingImageToKill [
 
 	^ NotFound signal: 'An argument is missing, please specify the local image name to kill it process.'
 ]
 
 { #category : #'command execution' }
-PhLImageKillCliCommand >> basicExecute [
+PhLProcessKillCliCommand >> basicExecute [
 	"currently unsupported on Windows"
 	self checkOS.
+	
 	^ self executeOSShellCommand 
 
 ]
 
-{ #category : #accessing }
-PhLImageKillCliCommand >> hasAllFlag [
+{ #category : #testing }
+PhLProcessKillCliCommand >> hasAllFlag [
 
 	^ self hasFlag: #all
 ]
 
+{ #category : #accessing }
+PhLProcessKillCliCommand >> imageName [
+
+	^ self positional: #existingImageName
+]
+
 { #category : #commands }
-PhLImageKillCliCommand >> killArgString [
+PhLProcessKillCliCommand >> killArgString [
 
 	^ String
 		streamContents: [ :aStream | 
@@ -69,8 +76,11 @@ PhLImageKillCliCommand >> killArgString [
 ]
 
 { #category : #'command execution' }
-PhLImageKillCliCommand >> osShellArgArray [
+PhLProcessKillCliCommand >> osShellArgArray [
+	"provide the command and its args in array"
 
-	"provide list of command and its args in array"
-	^ Array with: 'kill' with: self killArgString with: '/dev/null'
+	^ Array 
+		with: 'kill' 
+		with: self killArgString
+		with: '/dev/null'
 ]

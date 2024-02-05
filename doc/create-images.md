@@ -27,7 +27,7 @@ In Pharo, an image is the object space containing ALL the objects of the system:
 
 Initially on a new computer the image list is empty. When creating a new image, you can see the image templates that are available on the web (there is also a local cache). Select the template image you want to use and download it. For instance you can download "Official distributions" -> "Pharo 8.0 (stable)" which is the latest stable image as of today. The launcher will download the image into a specific directory somewhere in your users home directory (you can configure where by clicking the Settings button). Each image gets its own folder. Use the "Show in folder" menu item if you want to open this location.
 
-## Where are stored my images?
+## Where are my images stored?
 Launcher files are considered as user documents and so, they are stored in the user document folder, i.e.:
 
 - *$HOME/Documents/Pharo* on OS X,
@@ -37,7 +37,7 @@ Launcher files are considered as user documents and so, they are stored in the u
 In this folder, you will find your images and virtual machines needed to run images. The default location can be customized in Pharo Launcher settings.
 
 ## Image initialization script
-When working with Pharo, you often need to load your project code and its dependencies. You could also want to execute some actions once to configure your image. This the purpose of the image initialization script: it is a Smalltalk script that will be **executed at the first launch of the image and will then be disabled**.
+When working with Pharo, you often need to load your project code and its dependencies. You could also want to execute some actions once to configure your image. This is the purpose of the image initialization script: it is a Smalltalk script that will be **executed at the first launch of the image and will then be disabled**.
 When creating an image, you can select an already existing script or create a new one. For your conveniance, there is a script editor included in Pharo Launcher. Just click on the edit button ![New image command](images/edit-script-button.png){: style="width:30px"} at the right of the initialization script dropbox. ![Initialization script dropbox](images/initialization-script-dropbox.png){: style="width:250px"}
 
 ![Initialization script editor](images/init-script-editor.png)
@@ -62,5 +62,5 @@ Metacello new
 	load
 ```
 
-If you need to execute again the initialization script at image launch, select the image in the list of images and then click on the checkbox **Initialization script**. The script will be executed at next image launch and then disabled.
+If you need to execute the initialization script again at image launch, select the image in the list of images and then click on the checkbox **Initialization script**. The script will be executed at next image launch and then disabled.
 ![Initialization script editor](images/image-description.png){: style="border:1px solid black;"}

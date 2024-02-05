@@ -21,13 +21,13 @@ PhLDeleteImageCommand >> canBeExecuted [
 	^ self imagesPresenter selectedImages notEmpty
 ]
 
-{ #category : #accessing }
+{ #category : #executing }
 PhLDeleteImageCommand >> execute [
 	| images imageNames confirmMessage answer |
 	
 	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
-	confirmMessage := 'Are you sure you want to delete ', (imageNames joinUsing: ', ' last: ' and ').
+	confirmMessage := 'Are you sure you want to delete {1} images: {2}' format: {images size . (imageNames joinUsing: ', ' last: ' and ')}.
 	answer := self imagesPresenter newConfirmation
 		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';

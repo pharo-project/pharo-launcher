@@ -392,12 +392,10 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 			^ self ].
 	architectureWarningEnabled := true.
 	continue := true.
-	[ [ | processWrapper|
+	[ | processWrapper|
 		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
 		self doNotRunInitializationScript. "Just run, image already initialized"
 		^ processWrapper ]
-	on: PhLImageVersionDeterminationError
-	do: [ :error | error uiAlert ] ]
 	on: PhLArchitectureMismatchWarning
 	do: [ :warning |
 		architectureWarningEnabled ifTrue: [ 	
@@ -509,7 +507,7 @@ PhLImage >> shouldRunInitializationScript: aBoolean [
 
 { #category : #printing }
 PhLImage >> showNativeFolder [
-	PhLFileBrowser openOn: file
+	file asFileReference openInOSFileBrowser 
 ]
 
 { #category : #'private ui' }
@@ -521,7 +519,7 @@ PhLImage >> showWarning: warning [
 		ifTrue: [ 
 			continue := (PharoLauncherApplication default newConfirm 
 				title: warning name ;
-				message: warning longDescription;
+				label: warning longDescription;
 				openModalWithParent: PharoLauncherApplication default topWindow) ].
 			
 	^ continue

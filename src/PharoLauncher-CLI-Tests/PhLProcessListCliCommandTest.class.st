@@ -2,15 +2,15 @@
 A PhLImageProcessListCliCommandTest is a test class for testing the behavior of PhLImageProcessListCliCommand
 "
 Class {
-	#name : #PhLImageProcessListCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
+	#name : #PhLProcessListCliCommandTest,
+	#superclass : #PhLProcessCliCommandTest,
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testExecute [ 
+PhLProcessListCliCommandTest >> testExecute [ 
 
-	self runCommand: #('launcher' 'image' 'processList').
+	self runCommand: #('launcher' 'process' 'list').
 	
 	self assertSuccess.
 	
@@ -19,11 +19,11 @@ PhLImageProcessListCliCommandTest >> testExecute [
 ]
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
+PhLProcessListCliCommandTest >> testImageProcesListFrom [
 
-	|processListCmd aString resultArray|
-	processListCmd := PhLImageProcessListCliCommand new.
-	aString := String streamContents: [: aStream | 
+	| processListCmd  resultArray |
+	processListCmd := PhLProcessListCliCommand new.
+	processListCmd shellOutput: (String streamContents: [: aStream | 
 		aStream 
 			nextPutAll: '933 /tmp/PhLLaunchImageTest.61d1f200-02cc-0d00-88d2-05d60e98deae/110-x64/pharo /tmp/Yann-GaÃÂ«l BÃÂ©rÃÂ¨s.61d1f200-02cc-0d00-88d2-05d60e98deae/PharoLauncher.image';
 			nextPutAll: OSPlatform current lineEnding; 
@@ -35,23 +35,24 @@ PhLImageProcessListCliCommandTest >> testImageProcesListFrom [
 			nextPutAll: OSPlatform current lineEnding;
 			nextPutAll: '2304 /home/runner/Pharo/vms/100-x64/lib/pharo --headless /home/runner/Pharo/images/PhLTestImage/PhLTestImage.image --no-quit '; 
 			nextPutAll: OSPlatform current lineEnding;
-			nextPutAll: '57499 /Users/dbajger/Documents/Pharo/vms/110-x64/Pharo.app/Contents/MacOS/Pharo /Users/dbajger/Documents/Pharo/images/P11-launcher-dev/P11-launcher-dev.image'
-		].
+			nextPutAll: '57499 /Users/dbajger/Documents/Pharo/vms/110-x64/Pharo.app/Contents/MacOS/Pharo /Users/dbajger/Documents/Pharo/images/P11-launcher-dev/P11-launcher-dev.image' ]).
+	
 	"each of string lines above represents information about one Pharo process, so there should be 6 processes (PhLImageProcess instances) determined from these lines"
-	resultArray := processListCmd imageProcesListFrom: aString.
+	resultArray := processListCmd imageProcesList.
+	
 	self assert: resultArray size equals: 6.
 
 ]
 
 { #category : #tests }
-PhLImageProcessListCliCommandTest >> testOsShellArgArray [
+PhLProcessListCliCommandTest >> testOsShellArgArray [
 
-	|processListCmd argArray|
-	processListCmd := PhLImageProcessListCliCommand new.
+	| processListCmd argArray |
+	processListCmd := PhLProcessListCliCommand new.
 	argArray := processListCmd osShellArgArray.
-	
+
 	"test whether current PID of vm is filtered from list"
-	
+
 	self assert: (argArray first includesSubstring: 'pgrep').
-	self assert: (argArray first includesSubstring: ('grep -v ', (processListCmd currentVMPid asString))).
+	self assert: (argArray first includesSubstring: 'grep -v ' , processListCmd currentVMPid asString)
 ]

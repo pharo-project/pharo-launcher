@@ -32,15 +32,6 @@ PhLVirtualMachineManagerTestResource >> cleanWorkspace [
 ]
 
 { #category : #downloading }
-PhLVirtualMachineManagerTestResource >> downloadCompatibleVm64Bit [
-	| vmManager |
-	vmManager := PhLVirtualMachineManager forImage: self pharo90image.
-	vmManager availableVirtualMachinesByImageFormat
-		at: vmManager imageFormatNumber asString
-		ifAbsent: [ vmManager fetchCompatibleVm ]  
-]
-
-{ #category : #downloading }
 PhLVirtualMachineManagerTestResource >> downloadPharo14Image [
 
 	ZipArchive new 

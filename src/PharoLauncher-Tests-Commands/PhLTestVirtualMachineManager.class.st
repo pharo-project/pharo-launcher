@@ -23,16 +23,8 @@ PhLTestVirtualMachineManager class >> vmStore [
 
 { #category : #adding }
 PhLTestVirtualMachineManager >> createVmNamed: aName [
-	self createVmNamed: aName private: false
-]
-
-{ #category : #initialization }
-PhLTestVirtualMachineManager >> createVmNamed: aName private: isPrivateVm [
-	| vmDirectory appDir root |
-	root := isPrivateVm 
-		ifTrue: [ self vmStore / 'private' ] 
-		ifFalse: [ self vmStore ].
-	vmDirectory := root / aName.
+	| vmDirectory appDir  |
+	vmDirectory := self vmStore / aName.
 	vmDirectory ensureCreateDirectory.
 	"needed on OS X"
 	appDir := (vmDirectory / 'Pharo.app') ensureCreateDirectory.

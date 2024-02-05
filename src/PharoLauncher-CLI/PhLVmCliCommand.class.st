@@ -21,7 +21,7 @@ PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	(aCommandSpec 
 		addPositional: #existingVirtualMachineId 
 		description: 'Specifies the local Virtual Machine ID.')
-	implicitMeaning: [:arg :app | app raiseMissingVM]
+	implicitMeaning: [:arg :app | self raiseMissingVM]
 ]
 
 { #category : #'command line - converting' }

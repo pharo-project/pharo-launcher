@@ -39,12 +39,6 @@ PhLImageCliCommand class >> raiseNewImageNotFound [
 	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
-{ #category : #private }
-PhLImageCliCommand >> checkOS [
-
-	OSPlatform current isWindows ifTrue: [ self raiseOperationNotSupported ]
-]
-
 { #category : #'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists
@@ -79,12 +73,6 @@ PhLImageCliCommand >> imageName [
 { #category : #private }
 PhLImageCliCommand >> modelClass [
 	^ self class environment at: #PhLImage
-]
-
-{ #category : #'error signalling' }
-PhLImageCliCommand >> raiseOperationNotSupported [
-
-	^ PhLProcessCommandError signal: 'Launcher command currently not supported on OS Windows.'
 ]
 
 { #category : #accessing }

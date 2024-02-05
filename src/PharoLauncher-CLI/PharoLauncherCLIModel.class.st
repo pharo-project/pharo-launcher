@@ -30,9 +30,20 @@ PharoLauncherCLIModel class >> fromDefaultConfiguration [
 ]
 
 { #category : #accessing }
+PharoLauncherCLIModel >> configuration [
+
+	^ configuration
+]
+
+{ #category : #accessing }
 PharoLauncherCLIModel >> configuration: aPharoLauncherConfiguration [
 
 	configuration := aPharoLauncherConfiguration
+]
+
+{ #category : #accessing }
+PharoLauncherCLIModel >> defaultTemplate [
+	^ configuration defaultTemplate
 ]
 
 { #category : #accessing }

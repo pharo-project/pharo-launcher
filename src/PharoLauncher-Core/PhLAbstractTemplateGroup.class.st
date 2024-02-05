@@ -85,6 +85,16 @@ PhLAbstractTemplateGroup >> templateNamed: aTemplateName [
 						, ' not found, please enter a correct template name' ]
 ]
 
+{ #category : #querying }
+PhLAbstractTemplateGroup >> templateShortNamed: aTemplateShortName [
+	^ self templatesAndGroups
+		detect: [ :aTemplate | aTemplate shortName = aTemplateShortName ]
+		ifNone: [ NotFound
+				signal:
+					aTemplateShortName asString
+						, ' not found, please enter a correct short template name' ]
+]
+
 { #category : #accessing }
 PhLAbstractTemplateGroup >> templatesAndGroups [
 	"Return a collection of all the templates and subgroups I contain"

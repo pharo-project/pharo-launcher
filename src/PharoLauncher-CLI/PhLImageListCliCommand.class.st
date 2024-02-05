@@ -17,8 +17,8 @@ Class {
 PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	aCommandSpec 
-		addFlagWithPositional: #name
-		description: 'Determines the name of image (or its sub-part) to list local images.'.
+		addFlagWithPositional: #nameFilter
+		description: 'Images listing will be filtered by the provided name filter'.
 
 	self addPrintFlagsTo: aCommandSpec.
 ]
@@ -52,15 +52,15 @@ PhLImageListCliCommand >> imagesFromName: aSubtring [
 PhLImageListCliCommand >> listImages [
 
 	| images |
-	images := (self hasFlag: #name)
-		ifTrue: [ self imagesFromName: self name ]
+	images := (self hasFlag: #nameFilter)
+		ifTrue: [ self imagesFromName: self nameFilter ]
 		ifFalse: [ self imageRepository images ].
 
-	self list: images
+	self list: (images sorted: [:a :b | b lastModification <= a lastModification])
 ]
 
 { #category : #'accessing arguments' }
-PhLImageListCliCommand >> name [
+PhLImageListCliCommand >> nameFilter [
 
-	^ self positional: #name
+	^ self positional: #nameFilter
 ]

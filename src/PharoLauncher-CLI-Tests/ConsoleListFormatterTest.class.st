@@ -20,7 +20,7 @@ ConsoleListFormatterTest >> setUp [
 	command cliFormatter: formatter.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testAttributeValuesFrom [
 
 	formatter attributeValueBlocks: { 
@@ -31,14 +31,14 @@ ConsoleListFormatterTest >> testAttributeValuesFrom [
 	self assert: (formatter attributeValuesFrom: 2) equals: #('2' '4' '8').
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testFormatterAccessors [
 
 	formatter attributeLabels: #().
 	
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testGetColumnWidthsFrom [
 	formatter attributeLabels: #('1234567890' 'x' 'x').
 	formatter attributeValueBlocks:
@@ -57,11 +57,11 @@ ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
 	| size |
 	size := formatter getMaxPrintStringWidthFor: #(1 2 3) printBlock: [ :aNumber | aNumber asWords ].
 	
-	"three is the longest word and has a size of 5"
+	"Array of 1,2,3 are converted to #('one 'two' 'three') so the longest word is 'three' has a size of 5"
 	self assert: size equals: 5.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 	formatter
 		printAttributeHeaders: #('label1' 'label2' 'label3')
@@ -78,7 +78,7 @@ ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 						newLine ])
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintAttributeHeadersByNoSequence [
 	"formatted header should not contain sequence column"
 
@@ -99,7 +99,7 @@ ConsoleListFormatterTest >> testPrintAttributeHeadersByNoSequence [
 						newLine ])
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 
 	|expectedString|
@@ -118,7 +118,7 @@ ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintAttributeTable [
 
 	|expectedString|
@@ -140,31 +140,58 @@ ConsoleListFormatterTest >> testPrintAttributeTable [
 
 ]
 
-{ #category : #test }
+{ #category : #tests }
+ConsoleListFormatterTest >> testPrintAttributeTableWithDefaultValue [
+
+	|expectedString|
+	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
+	formatter attributeValueBlocks: { [:a |a asWords  ]. [:a |a squared asWords  ]. [:a |(a **3) asWords  ] }.
+	formatter domainObjects: #(1 2 3) defaultValue: 2.
+	formatter printAttributeTable.
+	
+	expectedString := String streamContents: [:aStream | 
+		aStream 
+			nextPutAll: '#  *Value*Squared*Raised to 3 '; newLine;
+			nextPutAll: '---*-----*-------*------------'; newLine;
+			nextPutAll: ' 1 *one  *one    *one         '; newLine;
+			nextPutAll: '*2 *two  *four   *eight       '; newLine;
+			nextPutAll: ' 3 *three*nine   *twenty-seven'; newLine
+	].
+
+	self assert: formatter outStream contents equals: expectedString.
+
+]
+
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintCellWidth [
 
 	formatter printCell: 'value' width: 10.
 	self assert: command outStream contents equals: 'value     '.
 	command resetOutStream.
+	
 	formatter printCell: 'value' width: 0.
 	self assert: command outStream contents equals: 'value'.
+	
+	command resetOutStream.
+	formatter printCell: 'some very long string' width: 15.
+	self assert: command outStream contents equals: 'some ... string'.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintDelimiter [
 
 	formatter printDelimiter.
 	self assert: command outStream contents equals: command delimiter.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintHeaderLinesBy [
 
 	formatter printHeaderLinesBy: #(1 1 2 2).
 	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*-*-*--*--'; newLine]).
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintHeaderLinesByNoSequence [
 
 	"formatted header line should not contain sequence column"
@@ -173,14 +200,14 @@ ConsoleListFormatterTest >> testPrintHeaderLinesByNoSequence [
 	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*--'; newLine]).
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintLineSized [
 
 	formatter printLineSized: 5.
 	self assert: command outStream contents equals: '-----'.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
 	| domainObjects deserialized |
@@ -194,7 +221,7 @@ ConsoleListFormatterTest >> testPrintListAsSton [
 	self assert: deserialized first class equals: PhLImageMock.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRowModesDisabled [
 	| tableModeString |
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
@@ -213,7 +240,7 @@ ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRo
 	self assert: formatter outStream contents equals: tableModeString
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisabledAndRowModeEnabled [
 
 	| rowModeString |
@@ -235,7 +262,7 @@ ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisab
 	self assert: formatter outStream contents equals: rowModeString
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 	|expectedString|
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
@@ -262,7 +289,7 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 	|expectedString|
 	"row output should not contain sequence number"
@@ -281,7 +308,7 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #test }
+{ #category : #tests }
 ConsoleListFormatterTest >> testPrintRowValuesBy [
 	formatter printRowValues: #('One' 'Two' 'Three') by: #(5 3 5).
 	
@@ -293,4 +320,17 @@ ConsoleListFormatterTest >> testPrintRowValuesBy [
 					aStream
 						nextPutAll: 'One  *Two*Three';
 						newLine ])
+]
+
+{ #category : #tests }
+ConsoleListFormatterTest >> testTableColumnWidthLimit [
+
+	| size short longer longest|
+	short := 'short'.
+	longer := 'more long text'.
+	longest := 'some very very very very very very very long string exceeding column width limit'.
+	size := formatter getMaxPrintStringWidthFor: {longer. longest. short.} printBlock: [ :aStr | aStr asString ].
+	
+	"longest string exceeds the table column width limit, so the maximum column size should be equal to that limit"
+	self assert: size equals: formatter tableColumnWidthLimit.
 ]

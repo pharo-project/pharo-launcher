@@ -95,8 +95,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
             name: PharoLauncher-linux-${{ env.LAUNCHER_VERSION }}-${{ env.FILE_NAME_ARCH_SUFFIX }}
-            path: |
-              build/
+            path: pharo-launcher-linux.tar
 
     outputs:
       launcherVersion: ${{ env.LAUNCHER_VERSION }}

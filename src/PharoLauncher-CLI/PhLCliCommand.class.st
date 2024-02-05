@@ -49,9 +49,10 @@ PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 { #category : #'command line - arguments' }
 PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
-	"No positionals on root spec class 
-	 use on subclasses e.g.: aCommandSpec addFlag: #someFlag
+	"Only version flag to launcher commmand.
+	 Use on subclasses e.g.: aCommandSpec addFlag: #someFlag
 	"
+	self addVersionFlagTo: aCommandSpec 
 ]
 
 { #category : #'command line - arguments' }
@@ -92,6 +93,14 @@ PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 	aCommandSpec 
 		addFlag: #ston 
 		description: 'Prints information in STON format.'
+]
+
+{ #category : #'command line - arguments' }
+PhLCliCommand class >> addVersionFlagTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #version 
+		description: 'Prints version of the Pharo Launcher.'
 ]
 
 { #category : #'command line - converting' }
@@ -157,6 +166,7 @@ PhLCliCommand class >> raiseMissingDelimiter [
 PhLCliCommand >> basicExecute [
 	
 	"should be implemented on all sub-classed commands that have business logic, otherwise will print just help"
+	self hasVersionFlag ifTrue: [ ^ self printVersion ].
 	self printHelp
 ]
 
@@ -178,10 +188,12 @@ PhLCliCommand >> cliFormatter: aFormatter [
 	cliFormatter := aFormatter
 ]
 
-{ #category : #accessing }
-PhLCliCommand >> currentVMPid [
-
-	^ OSSVMProcess vmProcess pid
+{ #category : #default }
+PhLCliCommand >> defaultTemplate [
+	
+	^ self pharoLauncherModel defaultTemplate = #dev
+		ifTrue: [ self latestDevTemplate ]
+		ifFalse: [ self latestStableTemplate ]
 ]
 
 { #category : #default }
@@ -220,21 +232,6 @@ PhLCliCommand >> execute [
 	]
 ]
 
-{ #category : #'command execution' }
-PhLCliCommand >> executeOSShellCommand [
-
-	^ self executeOSShellCommandWithArgs: self osShellArgArray
-]
-
-{ #category : #'command execution' }
-PhLCliCommand >> executeOSShellCommandWithArgs: argArray [
-
-^ PhLProcessWrapper new 
-		shellCommand;
-		addAllArguments: argArray;
-		runAndWaitWithStdOutput
-]
-
 { #category : #private }
 PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 
@@ -246,6 +243,12 @@ PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 { #category : #querying }
 PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
+]
+
+{ #category : #'accessing arguments' }
+PhLCliCommand >> hasVersionFlag [
+
+	^ self hasFlag: #version
 ]
 
 { #category : #accessing }
@@ -266,11 +269,42 @@ PhLCliCommand >> initialize [
 	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
+{ #category : #default }
+PhLCliCommand >> isDefaultTemplateCategory: aCategory ifTrue: trueBlock ifFalse: falseBlock [
+
+	[ aCategory == self defaultTemplateCategory 
+		ifTrue: trueBlock
+		ifFalse: falseBlock ]
+	on: NotFound "default template category not found"
+	do: falseBlock
+]
+
+{ #category : #default }
+PhLCliCommand >> latestDevTemplate [
+	
+	"from default 'Official distributions' obtain latest development template"
+	^ self defaultTemplateCategory latestDevelopmentTemplate
+]
+
+{ #category : #default }
+PhLCliCommand >> latestStableTemplate [
+	
+	"from default 'Official distributions' obtain latest Pharo version stable template"
+	^ self defaultTemplateCategory latestStableTemplate
+]
+
 { #category : #printing }
 PhLCliCommand >> list: domainObjects [
 	
 	self cliFormatter 
 		domainObjects: domainObjects;
+		printList.
+]
+
+{ #category : #printing }
+PhLCliCommand >> list: domainObjects default: defaultValue [ 
+		self cliFormatter 
+		domainObjects: domainObjects defaultValue: defaultValue;
 		printList.
 ]
 
@@ -343,6 +377,12 @@ PhLCliCommand >> printSequence [
 
 	"by default, print also sequence number for all listing commands"
 	^ true
+]
+
+{ #category : #printing }
+PhLCliCommand >> printVersion [ 
+
+	self logInfoMessage: PhLAboutCommand new launcherVersion 
 ]
 
 { #category : #'accessing arguments' }

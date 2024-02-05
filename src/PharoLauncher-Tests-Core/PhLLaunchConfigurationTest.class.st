@@ -211,6 +211,19 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag
 ]
 
 { #category : #tests }
+PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
+	| dir config configurator |
+	dir := fs / 'foo' / 'bar'.
+	config := PhLLaunchConfiguration new
+		workingDirectory: dir.
+	configurator := PhLLaunchImageProcessConfigurator new 
+		launchConfiguration: config;
+		yourself.
+	
+	self assert: configurator workingDirectory equals: dir
+]
+
+{ #category : #tests }
 PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 	| launchConfig |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.

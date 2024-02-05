@@ -108,16 +108,16 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfiguratio
 ]
 
 { #category : #tests }
-PharoLauncherCLIConfigurationTest >> testProcessWithExplicitWorkingDirectory [
-	| dir config configurator |
-	dir := root / 'foo' / 'bar'.
-	config := PhLLaunchConfiguration new
-		workingDirectory: dir.
-	configurator := PhLLaunchImageProcessConfigurator new 
-		launchConfiguration: config;
-		yourself.
+PharoLauncherCLIConfigurationTest >> testGetStableTemplateWhenGivingWrongDefaultTemplateValue [
+
+	| config deserializeConfig |
+	config := PharoLauncherCLIConfiguration new.
+	self assert: config defaultTemplate equals: #stable.
 	
-	self assert: configurator workingDirectory equals: dir
+	config defaultTemplate: #foo.
+	deserializeConfig := STON fromString: (STON toString: config).
+	self assert: deserializeConfig defaultTemplate equals: #stable.
+
 ]
 
 { #category : #tests }

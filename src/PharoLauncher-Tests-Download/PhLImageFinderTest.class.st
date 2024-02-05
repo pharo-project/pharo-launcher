@@ -52,7 +52,7 @@ PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
 	
 	self 
 		assert: url path
-		equals: 'pharo-ci-jenkins2/job/Test pending pull request and branch Pipeline/view/change-requests/job/PR-10553/lastSuccessfulBuild/artifact/bootstrap-cache/Pharo10.0-PR-64bit-5ce32be.zip'
+		equals: 'pharo-ci-jenkins2/job/Test pending pull request and branch Pipeline/view/change-requests/job/PR-10553/lastSuccessfulBuild/artifact/build/bootstrap-cache/Pharo10.0-PR-64bit-5ce32be.zip'
 ]
 
 { #category : #tests }

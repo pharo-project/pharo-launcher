@@ -8,7 +8,8 @@ Class {
 		'imagesDirectory',
 		'vmsDirectory',
 		'launchImageFromALoginShell',
-		'initScriptsDirectory'
+		'initScriptsDirectory',
+		'defaultTemplate'
 	],
 	#category : #'PharoLauncher-CLI-Model'
 }
@@ -85,6 +86,19 @@ PharoLauncherCLIConfiguration >> = anObject [
 		and: [ initScriptsDirectory = anObject initScriptsDirectory
 				and: [ launchImageFromALoginShell = anObject launchImageFromALoginShell
 						and: [ vmsDirectory = anObject vmsDirectory ] ] ]
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> defaultTemplate [
+	^ defaultTemplate ifNil: [ #stable ]
+]
+
+{ #category : #accessing }
+PharoLauncherCLIConfiguration >> defaultTemplate: aString [ 
+	"default template can only be the stable Pharo version or the dev Pharo version"
+	
+	(#(dev stable) includes: aString)
+		ifTrue: [ defaultTemplate := aString asSymbol ]
 ]
 
 { #category : #comparing }

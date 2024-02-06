@@ -1,5 +1,5 @@
 # Pharo Laucher command-line
-This is list of subject oriented CLI commands of Pharo launcher, where subjects are Pharo VM, image or image template of launcher.  
+This is list of subject oriented CLI commands of Pharo launcher, where subjects are Pharo VM, image, image process, or image template of launcher.  
 Use: `pharo-launcher <command>`
 
 | Command | Sub-command |                   | Description | 

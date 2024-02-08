@@ -37,7 +37,7 @@ PhLImageListCliCommand class >> launcherCmdDescription [
 { #category : #'command execution' }
 PhLImageListCliCommand >> basicExecute [ 
 
-	self listImages
+	self list: self imagesToList 
 ]
 
 { #category : #listing }
@@ -49,14 +49,14 @@ PhLImageListCliCommand >> imagesFromName: aSubtring [
 ]
 
 { #category : #listing }
-PhLImageListCliCommand >> listImages [
+PhLImageListCliCommand >> imagesToList [
 
 	| images |
 	images := (self hasFlag: #nameFilter)
 		ifTrue: [ self imagesFromName: self nameFilter ]
 		ifFalse: [ self imageRepository images ].
 
-	self list: (images sorted: [:a :b | b lastModification <= a lastModification])
+	^ images sorted: [:a :b | b lastModification <= a lastModification]
 ]
 
 { #category : #'accessing arguments' }

@@ -17,7 +17,8 @@ Class {
 		'outStream',
 		'pharoLauncherModel',
 		'errorStream',
-		'cliFormatter'
+		'cliFormatter',
+		'cliInputRequest'
 	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
@@ -186,6 +187,15 @@ PhLCliCommand >> cliFormatter [
 PhLCliCommand >> cliFormatter: aFormatter [
 
 	cliFormatter := aFormatter
+]
+
+{ #category : #accessing }
+PhLCliCommand >> cliInputRequest [
+
+	^ cliInputRequest ifNil: [
+		  cliInputRequest := self pharoLauncherModel consoleInputRequest
+			                     inputStream: Stdio stdin
+			                     outputStream: self outStream ]
 ]
 
 { #category : #default }

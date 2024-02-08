@@ -24,10 +24,9 @@ PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 { #category : #'command line - arguments' }
 PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
-	(aCommandSpec 
+	aCommandSpec 
 		addPositional: #existingImageName 
-		description: 'Specifies the local image name to be launched.')
-	implicitMeaning: [:arg :app | self raiseMissingImageToLaunch]
+		description: 'Specifies the local image name to be launched.'
 ]
 
 { #category : #'command line' }
@@ -47,16 +46,40 @@ PhLImageLaunchCliCommand class >> raiseMissingImageToLaunch [
 	^ NotFound signal: 'An argument is missing, please specify the local image name to launch.'
 ]
 
+{ #category : #private }
+PhLImageLaunchCliCommand >> askForImageNumber [
+	
+	| imageNumber imagesToList |
+	
+	imagesToList := self imageRepository images sorted: [:a :b | b lastModification <= a lastModification].
+	self list: imagesToList.
+	
+	imageNumber := self cliInputRequest
+		question: 'Select the image number to launch: ';
+		transform: [ :aString | Integer readFrom: aString  ];
+		validation: [ :aNumber | aNumber between: 1 and: imagesToList size ];
+		validationErrorMessage: 'Please provide a valid value: image sequence number from the above list!';
+		answer.
+		
+	^ imagesToList at: imageNumber.
+]
+
 { #category : #'command execution' }
 PhLImageLaunchCliCommand >> basicExecute [
 
 	| anImage |
-	anImage := self findImage.
+	anImage:= self imageToLaunch.
 	self setupScriptForImage: anImage.
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
 	anImage launchFrom: FileSystem workingDirectory
+]
+
+{ #category : #'accessing arguments' }
+PhLImageLaunchCliCommand >> briefPrint [ 
+	"Use a simple list of images when launching"
+	^ true
 ]
 
 { #category : #checking }
@@ -76,6 +99,16 @@ PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
 
 	aScriptPath asFileReference extension = 'st'
 		ifFalse: [^ self raiseWrongScriptExtension: aScriptPath]
+]
+
+{ #category : #private }
+PhLImageLaunchCliCommand >> imageToLaunch [
+
+	[ self imageName ]
+		on: NotFound "no image name specified"
+		do: [ ^ self askForImageNumber ].
+	
+	^ self findImage
 ]
 
 { #category : #accessing }

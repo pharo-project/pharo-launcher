@@ -4,6 +4,32 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
+{ #category : #adding }
+PhLImageLaunchCliCommandTest >> addInputAnswer: anObject [
+
+	context pharoLauncherModel consoleInputRequest
+		addAnswer: anObject
+]
+
+{ #category : #tests }
+PhLImageLaunchCliCommandTest >> testLaunchImageNoImageNameAllowsLaunchBySelectingImageInteractively [
+	| image1 image2 |
+	image1 := self addImageNamed: 'myImage1'. "#2"
+	image2 := self addImageNamed: 'myImage2'. "#1"
+	image2 lastModification: image1 lastModification + 1 day.
+	self addInputAnswer: 'foo'. "Not a Number, will ask again"
+	self addInputAnswer: '33'. "Number out of range, will ask again"
+	self addInputAnswer: '1'.
+	
+	self runCommand: #('launcher' 'image' 'launch').
+	 
+	self assertSuccess. 
+	"Assert image " 
+	self assert: (self outputString includesSubstring:' myImage1').
+	self assert: (self outputString includesSubstring:' myImage2').
+	self assert: image2 isLaunched. 
+]
+
 { #category : #tests }
 PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	| image |

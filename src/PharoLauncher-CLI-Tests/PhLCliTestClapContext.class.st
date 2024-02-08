@@ -25,6 +25,7 @@ PhLCliTestClapContext >> initialize [
 
 	super initialize.
 	launcherModel := PharoLauncherCLIModel fromDefaultConfiguration.
+	launcherModel consoleInputRequest: (ConsoleInputRequestMock inputStream: nil outputStream: self stdout)
 ]
 
 { #category : #accessing }

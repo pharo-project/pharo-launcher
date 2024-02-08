@@ -10,7 +10,8 @@ Class {
 		'imageRepository',
 		'templateRepository',
 		'vmManager',
-		'configuration'
+		'configuration',
+		'consoleInputRequest'
 	],
 	#category : #'PharoLauncher-CLI-Model'
 }
@@ -39,6 +40,19 @@ PharoLauncherCLIModel >> configuration [
 PharoLauncherCLIModel >> configuration: aPharoLauncherConfiguration [
 
 	configuration := aPharoLauncherConfiguration
+]
+
+{ #category : #accessing }
+PharoLauncherCLIModel >> consoleInputRequest [
+
+	^ consoleInputRequest
+		ifNil: [ consoleInputRequest := ConsoleInputRequest new ]
+]
+
+{ #category : #accessing }
+PharoLauncherCLIModel >> consoleInputRequest: aConsoleInputRequest [
+
+	consoleInputRequest := aConsoleInputRequest
 ]
 
 { #category : #accessing }

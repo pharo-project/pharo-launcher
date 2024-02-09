@@ -27,7 +27,7 @@ killSampleImageCommand () {
 }
 
 deleteSampleImageCommand () { 
-    runLauncherScript image delete $SAMPLE_IMAGE
+    runLauncherScript image delete --force $SAMPLE_IMAGE
 }
 
 processListCommand () {

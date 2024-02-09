@@ -70,3 +70,14 @@ PhLImageDeleteCliCommandTest >> testDeleteImageWrongImageNameShouldRaiseError [
 	self assertFailure.  
 	self assert: (self errorString includesSubstring: 'Please enter a correct local image')
 ]
+
+{ #category : #tests }
+PhLImageDeleteCliCommandTest >> testForceDeleteImageShouldSucceed [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	
+	self runCommand: #('launcher' 'image' 'delete' '--force' 'myImage1').
+	 
+	self assertSuccess.  
+	self assert: self imageRepository imagesName equals: #( 'myImage2' ) asSet. 
+]

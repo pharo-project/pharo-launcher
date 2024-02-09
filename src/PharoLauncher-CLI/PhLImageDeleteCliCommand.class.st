@@ -14,6 +14,14 @@ Class {
 }
 
 { #category : #'command line - arguments' }
+PhLImageDeleteCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+
+	aCommandSpec 
+		addFlag: #force
+		description: 'Force the image deletion without asking confirmation'
+]
+
+{ #category : #'command line - arguments' }
 PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -56,5 +64,12 @@ PhLImageDeleteCliCommand >> basicExecute [
 { #category : #testing }
 PhLImageDeleteCliCommand >> isDeletionConfirmed: anImage [
 
+	self isForceDelete ifTrue: [ ^ true ].
 	^ (self askConfirmation: anImage) first asLowercase = $y
+]
+
+{ #category : #testing }
+PhLImageDeleteCliCommand >> isForceDelete [
+
+	^ self hasFlag: #force
 ]

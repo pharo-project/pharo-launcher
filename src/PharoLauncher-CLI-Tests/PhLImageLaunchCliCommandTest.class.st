@@ -4,13 +4,6 @@ Class {
 	#category : #'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
-PhLImageLaunchCliCommandTest >> addInputAnswer: anObject [
-
-	context pharoLauncherModel consoleInputRequest
-		addAnswer: anObject
-]
-
 { #category : #tests }
 PhLImageLaunchCliCommandTest >> testLaunchImageNoImageNameAllowsLaunchBySelectingImageInteractively [
 	| image1 image2 |

@@ -22,22 +22,43 @@ PhLImageDeleteCliCommandTest >> testDeleteImageNameWithPathShouldRaiseError [
 ]
 
 { #category : #tests }
-PhLImageDeleteCliCommandTest >> testDeleteImageNameWithoutImageNameShouldRaiseError [
-		
-	self runCommand: #('launcher' 'image' 'delete').
- 	self assertFailure.
-	self assert: ( self errorString includesSubstring: 'specify the local image name to be deleted')
+PhLImageDeleteCliCommandTest >> testDeleteImageShouldAbortIfNotConfirmed [
+	self addImageNamed: 'myImage1'.
+	self addImageNamed: 'myImage2'.
+	self addInputAnswer: 'n'. "cancel deletion"
+	
+	self runCommand: #('launcher' 'image' 'delete' 'myImage1').
+	 
+	self assertSuccess.  
+	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage2') asSet. 
 ]
 
 { #category : #tests }
 PhLImageDeleteCliCommandTest >> testDeleteImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
+	self addInputAnswer: 'y'. "confirm deletion"
 	
 	self runCommand: #('launcher' 'image' 'delete' 'myImage1').
 	 
 	self assertSuccess.  
 	self assert: self imageRepository imagesName equals: #( 'myImage2' ) asSet. 
+]
+
+{ #category : #tests }
+PhLImageDeleteCliCommandTest >> testDeleteImageWhenNoImageNameProvidedAllowsDeletionByInteractiveImageSelection [
+
+	| image1 image2 |
+	image1 := self addImageNamed: 'myImageA'. "#1"
+	image2 := self addImageNamed: 'myImageB'. "#2"
+	image1 lastModification: image2 lastModification + 1 day.
+	self addInputAnswer: '1'.
+	self addInputAnswer: 'y'. "confirm deletion"
+	
+	self runCommand: #('launcher' 'image' 'delete').
+	 
+	self assertSuccess.  
+	self assert: self imageRepository imagesName equals: #( 'myImageB' ) asSet
 ]
 
 { #category : #tests }

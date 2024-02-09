@@ -39,6 +39,17 @@ PhLImageCliCommand class >> raiseNewImageNotFound [
 	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
+{ #category : #private }
+PhLImageCliCommand >> askForImageNumberIn: imagesToList [
+	
+	^ self cliInputRequest
+		question: 'Select the image number: ';
+		transform: [ :aString | Integer readFrom: aString  ];
+		validation: [ :aNumber | aNumber between: 1 and: imagesToList size ];
+		validationErrorMessage: 'Please provide a valid value: image sequence number from the above list!';
+		answer
+]
+
 { #category : #'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists
@@ -71,8 +82,30 @@ PhLImageCliCommand >> imageName [
 ]
 
 { #category : #private }
+PhLImageCliCommand >> listImagesAndAskForImageNumber [
+	
+	| imageNumber imagesToList |
+	
+	imagesToList := self imageRepository images sorted: [:a :b | b lastModification <= a lastModification].
+	self list: imagesToList.
+	
+	imageNumber := self askForImageNumberIn: imagesToList.		
+	^ imagesToList at: imageNumber.
+]
+
+{ #category : #private }
 PhLImageCliCommand >> modelClass [
 	^ self class environment at: #PhLImage
+]
+
+{ #category : #private }
+PhLImageCliCommand >> selectedimage [
+
+	[ self imageName ]
+		on: NotFound "no image name specified"
+		do: [ ^ self listImagesAndAskForImageNumber ].
+	
+	^ self findImage
 ]
 
 { #category : #accessing }

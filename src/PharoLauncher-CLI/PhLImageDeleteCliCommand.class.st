@@ -19,7 +19,6 @@ PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	(aCommandSpec 
 		addPositional: #existingImageName 
 		description: 'Local image name to be deleted.')
-	implicitMeaning: [:arg :app | self raiseMissingImageToDelete]
 ]
 
 { #category : #'command line' }
@@ -33,14 +32,29 @@ PhLImageDeleteCliCommand class >> launcherCmdDescription [
 	^ 'Deletes the local image, including image directory content.'
 ]
 
-{ #category : #'error signalling' }
-PhLImageDeleteCliCommand class >> raiseMissingImageToDelete [
+{ #category : #private }
+PhLImageDeleteCliCommand >> askConfirmation: anImage [
 
-	^ NotFound signal: 'An argument is missing, please specify the local image name to be deleted.'
+	^ self cliInputRequest
+		question: ('Are your sure you want to delete ''{1}''? [y|n]' format: { anImage name });
+		validation: [ :aString | 
+				aString size = 1 and: [ aString first asLowercase = $y or: [ aString first asLowercase = $n ] ] ];
+		validationErrorMessage: 'Please provide a valid answer: y or n';
+		answer
 ]
 
 { #category : #'command execution' }
 PhLImageDeleteCliCommand >> basicExecute [
 
-	 self imageRepository deleteImage: self findImage
+	| anImage |
+	anImage := self selectedimage.
+	
+	(self isDeletionConfirmed: anImage) ifFalse: [ ^ self ].
+	self imageRepository deleteImage: anImage
+]
+
+{ #category : #testing }
+PhLImageDeleteCliCommand >> isDeletionConfirmed: anImage [
+
+	^ (self askConfirmation: anImage) first asLowercase = $y
 ]

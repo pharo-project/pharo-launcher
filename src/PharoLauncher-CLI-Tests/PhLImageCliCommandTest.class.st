@@ -9,6 +9,13 @@ PhLImageCliCommandTest >> addImageNamed: anImageName [
 	^ self imageRepository addImageNamed: anImageName
 ]
 
+{ #category : #adding }
+PhLImageCliCommandTest >> addInputAnswer: anObject [
+
+	context pharoLauncherModel consoleInputRequest
+		addAnswer: anObject
+]
+
 { #category : #accessing }
 PhLImageCliCommandTest >> imageRepository [ 
 	^ self launcherModel imageRepository

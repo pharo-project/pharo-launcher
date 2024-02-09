@@ -40,35 +40,11 @@ PhLImageLaunchCliCommand class >> launcherCmdDescription [
 	^ 'Launches image with using default (auto-detected) VM.'
 ]
 
-{ #category : #'error signalling' }
-PhLImageLaunchCliCommand class >> raiseMissingImageToLaunch [
-
-	^ NotFound signal: 'An argument is missing, please specify the local image name to launch.'
-]
-
-{ #category : #private }
-PhLImageLaunchCliCommand >> askForImageNumber [
-	
-	| imageNumber imagesToList |
-	
-	imagesToList := self imageRepository images sorted: [:a :b | b lastModification <= a lastModification].
-	self list: imagesToList.
-	
-	imageNumber := self cliInputRequest
-		question: 'Select the image number to launch: ';
-		transform: [ :aString | Integer readFrom: aString  ];
-		validation: [ :aNumber | aNumber between: 1 and: imagesToList size ];
-		validationErrorMessage: 'Please provide a valid value: image sequence number from the above list!';
-		answer.
-		
-	^ imagesToList at: imageNumber.
-]
-
 { #category : #'command execution' }
 PhLImageLaunchCliCommand >> basicExecute [
 
 	| anImage |
-	anImage:= self imageToLaunch.
+	anImage:= self selectedimage.
 	self setupScriptForImage: anImage.
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
@@ -99,16 +75,6 @@ PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
 
 	aScriptPath asFileReference extension = 'st'
 		ifFalse: [^ self raiseWrongScriptExtension: aScriptPath]
-]
-
-{ #category : #private }
-PhLImageLaunchCliCommand >> imageToLaunch [
-
-	[ self imageName ]
-		on: NotFound "no image name specified"
-		do: [ ^ self askForImageNumber ].
-	
-	^ self findImage
 ]
 
 { #category : #accessing }

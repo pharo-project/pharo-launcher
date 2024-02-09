@@ -47,7 +47,7 @@ PhLImageDeleteCliCommand >> askConfirmation: anImage [
 PhLImageDeleteCliCommand >> basicExecute [
 
 	| anImage |
-	anImage := self selectedimage.
+	anImage := self selectedImage.
 	
 	(self isDeletionConfirmed: anImage) ifFalse: [ ^ self ].
 	self imageRepository deleteImage: anImage

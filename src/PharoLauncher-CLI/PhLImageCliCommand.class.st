@@ -99,7 +99,7 @@ PhLImageCliCommand >> modelClass [
 ]
 
 { #category : #private }
-PhLImageCliCommand >> selectedimage [
+PhLImageCliCommand >> selectedImage [
 
 	[ self imageName ]
 		on: NotFound "no image name specified"

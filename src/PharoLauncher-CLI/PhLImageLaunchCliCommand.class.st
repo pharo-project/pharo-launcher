@@ -44,7 +44,7 @@ PhLImageLaunchCliCommand class >> launcherCmdDescription [
 PhLImageLaunchCliCommand >> basicExecute [
 
 	| anImage |
-	anImage:= self selectedimage.
+	anImage:= self selectedImage.
 	self setupScriptForImage: anImage.
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.

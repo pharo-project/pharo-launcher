@@ -36,5 +36,5 @@ PhLImageRecreateCliCommand class >> raiseMissingImageToRecreate [
 { #category : #'command execution' }
 PhLImageRecreateCliCommand >> basicExecute [ 
 	
-	self imageRepository recreateImage: self findImage
+	self imageRepository recreateImage: self selectedimage
 ]

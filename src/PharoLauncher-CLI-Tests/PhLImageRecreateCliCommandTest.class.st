@@ -29,3 +29,24 @@ PhLImageRecreateCliCommandTest >> testCanRecreateAnImageShouldSucceed [
 			self assert: imageFile contents equals: 'foo'].
 
 ]
+
+{ #category : #tests }
+PhLImageRecreateCliCommandTest >> testCanRecreateAnImageWhenNoImageNameProvidedByInteractiveImageSelection [
+	| image imageFile |
+	imageFile := self imageRepository createImageNamed: 'myImage'.
+	image := PhLImage location: imageFile.
+	image originTemplate: (self templateRepository createLocalTemplateNamed: 'Foo test template').
+	self addInputAnswer: '1'.
+		
+	DiskStore
+		currentFileSystem: self imageRepository baseDirectory fileSystem
+		during: [
+			self deny: imageFile contents equals: 'foo'.
+			
+			self runCommand: #('launcher' 'image' 'recreate').
+			
+			self assertSuccess.
+			self assert: imageFile exists.
+			self assert: imageFile contents equals: 'foo'].
+
+]

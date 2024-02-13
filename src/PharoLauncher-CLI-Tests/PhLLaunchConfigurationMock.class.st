@@ -12,3 +12,9 @@ PhLLaunchConfigurationMock >> commandString [
 
 	^ 'Mock image sample command'
 ]
+
+{ #category : #settings }
+PhLLaunchConfigurationMock >> workingDirectory: aFileReference [ 
+	
+	"ignore"
+]

@@ -43,13 +43,15 @@ PhLImageLaunchCliCommand class >> launcherCmdDescription [
 { #category : #'command execution' }
 PhLImageLaunchCliCommand >> basicExecute [
 
-	| anImage |
+	| anImage config |
 	anImage:= self selectedImage.
 	self setupScriptForImage: anImage.
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
-	anImage launchFrom: FileSystem workingDirectory
+	config := anImage defaultLaunchConfiguration copy.
+	config workingDirectory: FileSystem workingDirectory.
+	anImage launchWithConfiguration: config detached: false
 ]
 
 { #category : #'accessing arguments' }

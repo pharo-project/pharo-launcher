@@ -137,7 +137,8 @@ PhLImageMock >> launch [
 ]
 
 { #category : #mocking }
-PhLImageMock >> launchFrom: aDirectoryReference [
+PhLImageMock >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
+
 	self launch
 ]
 

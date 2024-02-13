@@ -189,6 +189,18 @@ PhLImage >> asPhLImage [
 	^ self
 ]
 
+{ #category : #private }
+PhLImage >> basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
+
+	| processWrapper |
+	processWrapper := aPhLLaunchConfiguration launchProcess.
+	shouldBeDetached
+		ifTrue: [ processWrapper runUnwatch ]
+		ifFalse: [ processWrapper runAndWait ].
+	self doNotRunInitializationScript. "Image just initialized with previous run, disable init"
+	^ processWrapper
+]
+
 { #category : #testing }
 PhLImage >> canBeLaunched [
 	^ self architecture = '32' 
@@ -359,13 +371,6 @@ PhLImage >> launchConfigurations: aCollection [
 	launchConfigurations := aCollection
 ]
 
-{ #category : #action }
-PhLImage >> launchFrom: aDirectoryReference [
-	^ self launchWithConfiguration: (self defaultLaunchConfiguration copy
-			   workingDirectory: aDirectoryReference;
-			   yourself)
-]
-
 { #category : #accessing }
 PhLImage >> launchScript [
 	^ String streamContents: [ :stream |
@@ -385,6 +390,12 @@ PhLImage >> launchScriptName [
 
 { #category : #action }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
+	
+	^ self launchWithConfiguration: aPhLLaunchConfiguration detached: true
+]
+
+{ #category : #action }
+PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
 	| architectureWarningEnabled continue |
 
 	self canBeLaunched
@@ -392,10 +403,7 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 			^ self ].
 	architectureWarningEnabled := true.
 	continue := true.
-	[ | processWrapper|
-		processWrapper := (aPhLLaunchConfiguration launchProcess) runUnwatch.
-		self doNotRunInitializationScript. "Just run, image already initialized"
-		^ processWrapper ]
+	[ ^ self basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached ]
 	on: PhLArchitectureMismatchWarning
 	do: [ :warning |
 		architectureWarningEnabled ifTrue: [ 	

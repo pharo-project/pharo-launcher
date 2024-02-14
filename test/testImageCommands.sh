@@ -19,7 +19,7 @@ createSampleImageCommand () {
 }
 
 launchSampleImageCommand () {
-    runLauncherScript image launch $SAMPLE_IMAGE
+    runLauncherScript image launch --detached $SAMPLE_IMAGE
 }
 
 killSampleImageCommand () {

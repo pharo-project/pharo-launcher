@@ -18,7 +18,11 @@ PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	aCommandSpec 
 		addFlagWithPositional: #script 
-		description: 'Determines a path to the script when launching an Image.' 
+		description: 'Determines a path to the script when launching an Image.'.
+		
+	aCommandSpec 
+		addFlag: #detached
+		description: 'Will launch the image in detached mode. The command will exit while the launched image will still be running.'
 ]
 
 { #category : #'command line - arguments' }
@@ -51,7 +55,7 @@ PhLImageLaunchCliCommand >> basicExecute [
 	self logLaunchOfImage: anImage.
 	config := anImage defaultLaunchConfiguration copy.
 	config workingDirectory: FileSystem workingDirectory.
-	anImage launchWithConfiguration: config detached: false
+	anImage launchWithConfiguration: config detached: self shouldLaunchInDetachedMode
 ]
 
 { #category : #'accessing arguments' }
@@ -121,4 +125,10 @@ PhLImageLaunchCliCommand >> setupScriptForImage: anImage [
 	anImage
 		shouldRunInitializationScript: true;
 		initializationScript: script asFileReference
+]
+
+{ #category : #accessing }
+PhLImageLaunchCliCommand >> shouldLaunchInDetachedMode [
+	
+	^ self hasFlag: #detached
 ]

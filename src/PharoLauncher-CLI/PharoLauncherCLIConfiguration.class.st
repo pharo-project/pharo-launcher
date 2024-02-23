@@ -43,6 +43,7 @@ PharoLauncherCLIConfiguration class >> createConfigurationFile: aFileReference [
 
 { #category : #accessing }
 PharoLauncherCLIConfiguration class >> defaultConfiguration [
+
 	^ self configurationFromFile: self preferencesFile 
 ]
 

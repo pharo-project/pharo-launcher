@@ -119,6 +119,16 @@ ConsoleInputRequest >> transform: aBlock [
 	transformBlock := aBlock
 ]
 
+{ #category : #configuring }
+ConsoleInputRequest >> useShortYesNoValidation [
+	" [y|n] "
+
+	self validation: [ :aString |
+		aString size = 1 and: [
+			aString first asLowercase = $y or: [ aString first asLowercase = $n ] ] ].
+	self validationErrorMessage: 'Please provide a valid answer: y or n'
+]
+
 { #category : #accessing }
 ConsoleInputRequest >> validation: aBlock [
 	

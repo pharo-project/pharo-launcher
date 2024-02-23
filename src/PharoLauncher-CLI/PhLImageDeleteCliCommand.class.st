@@ -45,9 +45,7 @@ PhLImageDeleteCliCommand >> askConfirmation: anImage [
 
 	^ self cliInputRequest
 		question: ('Are your sure you want to delete ''{1}''? [y|n]' format: { anImage name });
-		validation: [ :aString | 
-				aString size = 1 and: [ aString first asLowercase = $y or: [ aString first asLowercase = $n ] ] ];
-		validationErrorMessage: 'Please provide a valid answer: y or n';
+		useShortYesNoValidation;
 		answer
 ]
 

@@ -15,6 +15,12 @@ Class {
 	#category : #'PharoLauncher-Core-Download'
 }
 
+{ #category : #'finding/searching' }
+PhLImageFinder class >> buildsForPharoVersion: pharoVersion [
+
+	^ (self pharoVersion: pharoVersion build: '1') buildNumbers
+]
+
 { #category : #accessing }
 PhLImageFinder class >> defaultArchitectureString [
 	"pattern used to search default templates"
@@ -70,6 +76,18 @@ PhLImageFinder >> buildNumber [
 ]
 
 { #category : #'finding/searching' }
+PhLImageFinder >> buildNumbers [
+
+	| matcher imagesListing builds |
+	imagesListing := self htmlListingFor: self imageHtmlListingUrl.
+	matcher := self imageMatcherWithImageRegex: 'build\.([0-9]+)\.sha\.'.
+	builds := imagesListing lines 
+		select: [ :line | matcher matchesPrefix: line ]
+		thenCollect: [ :line | (matcher subexpression: 4) asInteger "build number"].
+	^ builds sorted
+]
+
+{ #category : #'finding/searching' }
 PhLImageFinder >> findTemplateUrlForRemoteArtifact [
 
 	^ (self pullRequestBuildArtifactsUrlString, self templateArtifactName) asUrl
@@ -91,7 +109,7 @@ PhLImageFinder >> findUrl [
 	buildOrShaFilter := self buildNumber 
 		ifNil: [ 'build\..+\.sha\.' , self sha , '\.' ]
 		ifNotNil: [ 'build\.' , self buildNumber, '\.sha\.' ].
-	matcher := ('.*href="(Pharo-?[0-9]+[.0]*-(SNAPSHOT|alpha)\.', buildOrShaFilter , '[^"]*64bit\.zip)"') asRegex.
+	matcher := self imageMatcherWithImageRegex: buildOrShaFilter.
 	templates detect: [ :template | matcher matchesPrefix: template ].
 	^ imageListingUrl , (matcher subexpression: 2)
 ]
@@ -104,6 +122,13 @@ PhLImageFinder >> htmlListingFor: url [
 { #category : #accessing }
 PhLImageFinder >> imageHtmlListingUrl [
 	^ 'https://files.pharo.org/image/', self pharoVersion , '0/'
+]
+
+{ #category : #private }
+PhLImageFinder >> imageMatcherWithImageRegex: imageRegex [
+	
+	^ ('.*href="(Pharo-?[0-9]+[.0]*-(SNAPSHOT|alpha)\.', imageRegex , '[^"]*64bit\.zip)"') asRegex.
+
 ]
 
 { #category : #accessing }

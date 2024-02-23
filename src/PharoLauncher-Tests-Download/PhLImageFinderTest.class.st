@@ -10,6 +10,20 @@ PhLImageFinderTest class >> defaultTimeLimit [
 ]
 
 { #category : #tests }
+PhLImageFinderTest >> testCanGetBuildNumbersForAGivePharoVersion [
+	| builds |
+	
+	builds := PhLImageFinderStub buildsForPharoVersion: '10'.
+	
+	self assert: builds size equals: 87.
+	self deny: (builds includes: 1).
+	self assert: (builds includes: 12).
+	self deny: (builds includes: 13).
+	self assert: (builds includes: 14).
+	self assert: (builds includes: 15).
+]
+
+{ #category : #tests }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 	| finder |
 	

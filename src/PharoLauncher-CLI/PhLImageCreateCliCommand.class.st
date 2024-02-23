@@ -128,11 +128,14 @@ PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 
 { #category : #'command execution' }
 PhLImageCreateCliCommand >> basicExecute [
-	| image |
+	| image config |
 	
 	image := self findTemplateAndCreateImage.
-	self shouldLaunchImage
-		ifTrue: [ image launch ]
+	self shouldLaunchImage ifFalse: [ ^ self ].
+		
+	config := image defaultLaunchConfiguration copy.
+	config workingDirectory: FileSystem workingDirectory.
+	image launchWithConfiguration: config detached: false
 ]
 
 { #category : #'command execution' }

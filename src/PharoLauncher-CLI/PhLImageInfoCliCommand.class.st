@@ -49,7 +49,7 @@ PhLImageInfoCliCommand class >> raiseMissingImageToPrintDetails [
 { #category : #'command execution' }
 PhLImageInfoCliCommand >> basicExecute [ 
 
-	self list: (Array with: self findImage)
+	self list: (Array with: self selectedImage)
 ]
 
 { #category : #'private ' }

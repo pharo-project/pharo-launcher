@@ -12,6 +12,13 @@ Class {
 	#category : #'PharoLauncher-CLI-Commands'
 }
 
+{ #category : #'command line - arguments' }
+PhLImageBisectCliCommand class >> addLauncherFlagsTo: aCommandSpec [
+	aCommandSpec 
+		addFlagWithPositional: #pharoVersion 
+		description: 'Pharo version number to use for bisection (default is the current development Pharo version)'
+]
+
 { #category : #'command line' }
 PhLImageBisectCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #bisect
@@ -86,6 +93,14 @@ PhLImageBisectCliCommand >> builds [
 	^ builds
 ]
 
+{ #category : #accessing }
+PhLImageBisectCliCommand >> computePharoVersion [
+
+	^ (self hasFlag: #pharoVersion)
+		  ifTrue: [ (self positional: #pharoVersion) asInteger ]
+		  ifFalse: [ self pharoDevelopmentVersion allButLast "remove 0 of minor version" ]
+]
+
 { #category : #'command execution' }
 PhLImageBisectCliCommand >> createAndLaunchImageAndGetEvaluationFromUser: buildNumber [
 
@@ -135,7 +150,7 @@ PhLImageBisectCliCommand >> pharoVersion [
 
 	"The pharo version containing image builds to bisect"
 	
-	^ pharoVersion ifNil: [ pharoVersion := self pharoDevelopmentVersion allButLast "remove 0 of minor version" ]
+	^ pharoVersion ifNil: [ pharoVersion := self computePharoVersion ]
 ]
 
 { #category : #configuring }

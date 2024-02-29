@@ -11,7 +11,6 @@ Class {
 PhLImageBisectCliCommandTest >> setUp [
 
 	super setUp.
-	self useMockImagesRepository.
 	outputStream := ZnBufferedWriteStream on:
 		                (ZnCharacterWriteStream on: ByteArray new writeStream).
 	context pharoLauncherModel consoleInputRequest outputStream: outputStream.
@@ -41,6 +40,15 @@ PhLImageBisectCliCommandTest >> testCanAskfLastKnownCorrectImage [
 	answer := command askForLastKnownCorrectImage.
 	
 	self assert: answer equals: 1
+]
+
+{ #category : #tests }
+PhLImageBisectCliCommandTest >> testCanSpecifyPharoVersion [
+	| command |
+	context arguments: #( 'launcher' 'image' 'bisect' '--pharoVersion' '11').
+	command := context command.
+	
+	self assert: command pharoVersion equals: 11
 ]
 
 { #category : #tests }

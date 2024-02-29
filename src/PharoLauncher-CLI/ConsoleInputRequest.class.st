@@ -63,9 +63,7 @@ ConsoleInputRequest >> askQuestion [
 ConsoleInputRequest >> inputStream: inStream outputStream: outStream [
 
 	inputStream := inStream.
-
-	outputStream := ZnBufferedWriteStream on:
-		                (ZnCharacterWriteStream on: outStream)
+	outputStream := outStream
 ]
 
 { #category : #private }

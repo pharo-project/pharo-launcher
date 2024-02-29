@@ -34,6 +34,17 @@ ConsoleInputRequestMock >> initialize [
 	answerIndex := 0
 ]
 
+{ #category : #adding }
+ConsoleInputRequestMock >> nbInputAnswerRead [
+	^ answerIndex
+]
+
+{ #category : #accessing }
+ConsoleInputRequestMock >> outputStream: aWriteStream [
+
+	outputStream := aWriteStream
+]
+
 { #category : #accessing }
 ConsoleInputRequestMock >> readAnswer [
 

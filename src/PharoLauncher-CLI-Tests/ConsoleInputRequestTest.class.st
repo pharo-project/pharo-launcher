@@ -17,7 +17,8 @@ ConsoleInputRequestTest >> outputString [
 { #category : #running }
 ConsoleInputRequestTest >> setUp [
 	super setUp.
-	outputStream := ByteArray new writeStream.
+	outputStream := ZnBufferedWriteStream on:
+		                (ZnCharacterWriteStream on: ByteArray new writeStream).
 	consoleInputRequest := ConsoleInputRequestMock inputStream: nil outputStream: outputStream.
 ]
 

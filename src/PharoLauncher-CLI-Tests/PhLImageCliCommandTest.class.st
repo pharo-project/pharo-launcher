@@ -21,6 +21,12 @@ PhLImageCliCommandTest >> imageRepository [
 	^ self launcherModel imageRepository
 ]
 
+{ #category : #adding }
+PhLImageCliCommandTest >> nbInputAnswerRead [
+
+	^ context pharoLauncherModel consoleInputRequest nbInputAnswerRead
+]
+
 { #category : #running }
 PhLImageCliCommandTest >> setUp [
 

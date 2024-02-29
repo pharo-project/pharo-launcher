@@ -6,7 +6,8 @@ Class {
 	#superclass : #PhLImageCliCommand,
 	#instVars : [
 		'workingDirectory',
-		'pharoVersion'
+		'pharoVersion',
+		'builds'
 	],
 	#category : #'PharoLauncher-CLI-Commands'
 }
@@ -32,18 +33,57 @@ PhLImageBisectCliCommand >> askEvaluationResultToUser: buildNumber [
 ]
 
 { #category : #'command execution' }
+PhLImageBisectCliCommand >> askForFirstKnownFaultyImage [
+
+	^ self cliInputRequest
+		  question:
+			  ('What is the first known faulty image (build number)? [{1}]'
+				   format: { self builds last });
+		  transform: [ :answer |
+			  answer trim
+				  ifEmpty: [ self builds last ]
+				  ifNotEmpty: [ Integer readFrom: answer ] ];
+		  validation: [ :aNumber | self builds includes: aNumber ];
+		  validationErrorMessage: self inputBuildNumberValidationMessage;
+		  answer
+]
+
+{ #category : #'command execution' }
+PhLImageBisectCliCommand >> askForLastKnownCorrectImage [
+
+	^ self cliInputRequest
+		  question:
+			  ('What is the last known correct image (build number)? [{1}]'
+				   format: { self builds first });
+		  transform: [ :answer |
+			  answer trim
+				  ifEmpty: [ self builds first ]
+				  ifNotEmpty: [ Integer readFrom: answer ] ];
+		  validation: [ :aNumber | self builds includes: aNumber ];
+		  validationErrorMessage: self inputBuildNumberValidationMessage;
+		  answer
+]
+
+{ #category : #'command execution' }
 PhLImageBisectCliCommand >> basicExecute [
 
-	| bisection builds faultyBuild |
+	| bisection faultyBuild knownFaultybuild correctBuild |
+	self logInfoMessage: 'Collecting Pharo images build numbers ...'.
 	builds := PhLImageFinder buildsForPharoVersion: self pharoVersion.
-	"self askfForLastKnownFaultyImage"
-	"self askForLastKnownCorrectImage"
-	bisection := PhLImageBisection on: builds from: 4"1376" to: 1397"1390".
+	knownFaultybuild := self askForFirstKnownFaultyImage.
+	correctBuild := self askForLastKnownCorrectImage.
+	bisection := PhLImageBisection on: builds from: correctBuild to: knownFaultybuild.
 	bisection evaluationBlock: [ :buildNumber | self createAndLaunchImageAndGetEvaluationFromUser: buildNumber ].
 	"remove working directory?"
 	faultyBuild := bisection result.
 	self logInfoMessage: ('Found faulty image! Image build #{1} is the culprit!' format: { faultyBuild }).
 	^ faultyBuild
+]
+
+{ #category : #accessing }
+PhLImageBisectCliCommand >> builds [
+	
+	^ builds
 ]
 
 { #category : #'command execution' }
@@ -58,10 +98,11 @@ PhLImageBisectCliCommand >> createImage: buildNumber [
 
 	| createImagecontext command |
 	createImagecontext := ClapContext specification: PhLCliCommand launcherCommand.
-	createImagecontext setStdio: Stdio"self context stdio".
+	createImagecontext setStdio: self context stdio.
 	command := (createImagecontext arguments:
 		            { 'launcher'. 'image'. 'create'. 'fromBuild'. buildNumber asString . '--pharoVersion'. self pharoVersion }) command.
 	command pharoLauncherModel imageRepository: (PhLDirectoryBasedImageRepository forDirectory: self workingDirectory).
+	command pharoLauncherModel consoleInputRequest: self pharoLauncherModel consoleInputRequest.
 	command execute
 ]
 
@@ -70,6 +111,15 @@ PhLImageBisectCliCommand >> initialize [
 	
 	super initialize.
 	workingDirectory := self workingDirectory
+]
+
+{ #category : #accessing }
+PhLImageBisectCliCommand >> inputBuildNumberValidationMessage [
+
+	^ 'Please provide a valid build number: image build number must be between {1 and {2}!'
+		  format: {
+				  self builds first.
+				  self builds last }
 ]
 
 { #category : #accessing }

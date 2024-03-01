@@ -75,6 +75,11 @@ PharoLauncherCLIModel >> imageRepository: aPhLDirectoryBasedImageRepository [
 	imageRepository := aPhLDirectoryBasedImageRepository
 ]
 
+{ #category : #initialization }
+PharoLauncherCLIModel >> resetTemplateRepository [
+	templateRepository := nil
+]
+
 { #category : #accessing }
 PharoLauncherCLIModel >> templateRepository [
 	^ templateRepository

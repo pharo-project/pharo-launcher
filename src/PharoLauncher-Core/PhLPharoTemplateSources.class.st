@@ -90,7 +90,7 @@ PhLPharoTemplateSources class >> settingsOn: aBuilder [
 { #category : #accessing }
 PhLPharoTemplateSources class >> sourcesFile [
 	"File with the list of default templates sources for Pharo Launcher"
-	^ self launcherCoreDir / 'sources.list'
+	^ self launcherCoreDir / self sourcesFileName
 ]
 
 { #category : #accessing }

@@ -101,6 +101,22 @@ PhLTemplateSources class >> settingsOn: aBuilder [
 				, 'NOTE: This path might need to escape some whitespace characters.' translated.
 ]
 
+{ #category : #accessing }
+PhLTemplateSources class >> sourcesFileName [
+	"Name of the file with the list of default templates sources for Pharo Launcher"
+	^ 'sources.list'
+]
+
+{ #category : #accessing }
+PhLTemplateSources class >> useLauncherCoreDir: aDirectory during: aBlock [
+
+	| oldLauncherCoreDir |
+	oldLauncherCoreDir := LauncherCoreDir.
+	[ LauncherCoreDir := aDirectory.
+	aBlock value ] 
+		ensure: [ LauncherCoreDir := oldLauncherCoreDir ]
+]
+
 { #category : #'instance creation' }
 PhLTemplateSources class >> withFile: aSourcesFile [
 	^ self new 
@@ -111,7 +127,7 @@ PhLTemplateSources class >> withFile: aSourcesFile [
 { #category : #'instance creation' }
 PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 	| file |
-	file := FileSystem memory / 'sources.list'.
+	file := FileSystem memory / self sourcesFileName.
 	self flush: aListOfPhLTemplateSource in: file.
 	^ self withFile: file
 ]

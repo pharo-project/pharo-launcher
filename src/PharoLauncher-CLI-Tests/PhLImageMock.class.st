@@ -94,6 +94,11 @@ PhLImageMock >> ensureDefaultConfiguration [
 	^self
 ]
 
+{ #category : #accessing }
+PhLImageMock >> file [
+	^ (FileSystem memory root / name) ensureCreateFile
+]
+
 { #category : #testing }
 PhLImageMock >> hasInitializationScript [
 	^ script notNil 

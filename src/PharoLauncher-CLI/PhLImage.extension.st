@@ -10,7 +10,8 @@ PhLImage class >> extendedListPrintAttributeBlocks [
 			{[:image | image description ].
 			[ :image | image originTemplateName ].
 			[ :image | image originTemplateUrl ].
-			[ :image | image location ]}.
+			[ :image | image location ].
+			[ :image | image file size asString ]}.
 	^ aColl
 ]
 
@@ -20,20 +21,24 @@ PhLImage class >> extendedListPrintAttributeLabels [
 
 	| labels |
 	labels := OrderedCollection newFrom: self listPrintAttributeLabels.
-	labels addAll: #('Description' 'Origin template' 'Template URL' 'Local path').
+	labels addAll: #('Description' 'Origin template' 'Template URL' 'Local path' 'Size in bytes').
 	^ labels
 ]
 
 { #category : #'*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeBlocks [
-	
-	^ {[:image | image name]. [:image | image architecture]. [:image | image pharoVersion]. [:image | image lastModification asLocalStringYMDHMS ].}
+
+	^ {
+		  [ :image | image name ].
+		  [ :image | image architecture ].
+		  [ :image | image pharoVersion ].
+		  [ :image | image lastModification asLocalStringYMDHMS ] }
 ]
 
 { #category : #'*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeLabels [
-	
-	^ #('Name' 'Architecture' 'Pharo version' 'Last modified')
+
+	^ #( 'Name' 'Architecture' 'Pharo version' 'Last modified' )
 ]
 
 { #category : #'*PharoLauncher-CLI' }

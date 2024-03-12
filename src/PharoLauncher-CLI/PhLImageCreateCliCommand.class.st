@@ -130,6 +130,7 @@ PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 PhLImageCreateCliCommand >> basicExecute [
 	| image config |
 	
+	self checkForUpdates.
 	image := self findTemplateAndCreateImage.
 	self shouldLaunchImage ifFalse: [ ^ self ].
 		

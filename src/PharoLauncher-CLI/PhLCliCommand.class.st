@@ -177,6 +177,16 @@ PhLCliCommand >> briefPrint [
 	^ self hasFlag: #brief
 ]
 
+{ #category : #updating }
+PhLCliCommand >> checkForUpdates [
+	"Should only be used by commands requiring network for a better Ux"
+	PhLPharoTemplateSources announcer weak
+		when: PhLSourcesFileUpdateAvailable
+		send: #notifyTemplateSourcesUpdateAvailable
+		to: self.
+	PhLPharoTemplateSources checkForUpdates.
+]
+
 { #category : #accessing }
 PhLCliCommand >> cliFormatter [
 
@@ -351,6 +361,20 @@ PhLCliCommand >> logInfoMessage: aMessage [
 PhLCliCommand >> modelClass [
 
  ^ self class environment at: #PhLObject
+]
+
+{ #category : #updating }
+PhLCliCommand >> notifyTemplateSourcesUpdateAvailable [
+	| message |
+	message := String streamContents: [ :stream |
+		stream 
+			nextPutAll: 'Update available for Pharo Launcher templates sources!'; newLine;
+			nextPutAll: 'Please run the following command to update:'; newLine;
+			nextPutAll: '*********************************'; newLine;
+			nextPutAll: '  pharo-launcher template update'; newLine;
+			nextPutAll: '*********************************'; newLine ].
+		
+	self logInfoMessage: message
 ]
 
 { #category : #'command execution' }

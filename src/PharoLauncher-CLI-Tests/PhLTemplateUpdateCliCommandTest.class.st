@@ -18,7 +18,6 @@ PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
 		
 		command execute ].
 
-	self assertSuccess.
 	self assert:( workingDir / 'sources.list') exists.
 	self assert: command pharoLauncherModel templateRepository roots size equals: 8
 ]

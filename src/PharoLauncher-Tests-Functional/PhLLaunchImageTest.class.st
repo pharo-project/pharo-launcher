@@ -19,11 +19,7 @@ PhLLaunchImageTest >> copyCurrentImageToTestDir [
 	FileLocator image copyTo: imageDir / FileLocator image basename.
 	image := PhLImage location: imageDir / FileLocator image basename.
 	
-	"avoid to download a compatible VM to determine image pharo version"
-	image vmManager imageVersionFile writeStreamDo: [ :stream | 
-		stream
-			nextPutAll: SystemVersion current major asString;
-			nextPutAll: SystemVersion current minor asString ].
+	self createPharoVersionFileForCurrentPharoVersion: image vmManager imageVersionFile.
 		
 	^ image
 		
@@ -42,6 +38,17 @@ PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 		ifTrue: [ vmDirectory renameTo: vmId ].
 	
 	LibC runCommand: 'cp -R ' , vmDirectory fullName , ' ' , aDirectory fullName, '/' , vmId
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> createPharoVersionFileForCurrentPharoVersion: imageVersionFile [
+	"avoid to download a compatible VM to determine image pharo version"
+	imageVersionFile writeStreamDo: [ :stream | 
+		stream
+			nextPutAll: SystemVersion current major asString;
+			nextPutAll: SystemVersion current minor asString ]
+	
+
 ]
 
 { #category : #utils }
@@ -119,7 +126,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image config commandToEval |
 	image := PhLOsXCatalinaTestImage example.
-	image pharoVersion: '80'.
+	self createPharoVersionFileForCurrentPharoVersion: image vmManager imageVersionFile.
 	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
 	config := image defaultLaunchConfiguration.
 	config	 imageArguments: {'eval' . commandToEval}.

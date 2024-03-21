@@ -40,7 +40,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Tests-Download' with: [
 				spec requires: #('PharoLauncher-Tests-Core' ). ];
 			package: 'PharoLauncher-Tests-Functional' with: [
-				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Tests-Download'). ];
+				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Tests-Download' 'PharoLauncher-Tests-Debug'). ];
 			package: 'PharoLauncher-CLI' with: [ 
 				spec requires: #('Clap') ];
 			package: 'PharoLauncher-CLI-Tests' with: [ 

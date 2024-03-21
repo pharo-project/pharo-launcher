@@ -51,6 +51,42 @@ PhLLaunchImageTest >> createPharoVersionFileForCurrentPharoVersion: imageVersion
 
 ]
 
+{ #category : #tests }
+PhLLaunchImageTest >> estArchitectureErrorSignaledWhenTryingToRun32BitImageOn64BitOnlyOS [
+	| image |
+	image := PhLOsXCatalinaTestImage example32.
+	
+	self 
+		should: [ process := image launchWithConfiguration: nil ]
+		raise: PhLArchitectureError
+	
+
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> estCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
+	
+	PhLLaunchConfiguration launchInALoginShell: true.
+	self testCanLaunchImageWithNonAsciiCharacters.
+]
+
+{ #category : #tests }
+PhLLaunchImageTest >> estCanRun64bitImageOn64BitOnlyOS [
+	| image config commandToEval |
+	image := PhLOsXCatalinaTestImage example.
+	self createPharoVersionFileForCurrentPharoVersion: image vmManager imageVersionFile.
+	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
+	config := image defaultLaunchConfiguration.
+	config	 imageArguments: {'eval' . commandToEval}.
+	
+	self 
+		shouldnt: [ process := image launchWithConfiguration: config ]
+		raise: PhLArchitectureError
+	
+	
+
+]
+
 { #category : #utils }
 PhLLaunchImageTest >> pharo80x86Vm [
 	^ PhLVirtualMachineManager new virtualMachines
@@ -86,18 +122,6 @@ PhLLaunchImageTest >> tearDown [
 ]
 
 { #category : #tests }
-PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64BitOnlyOS [
-	| image |
-	image := PhLOsXCatalinaTestImage example32.
-	
-	self 
-		should: [ process := image launchWithConfiguration: nil ]
-		raise: PhLArchitectureError
-	
-
-]
-
-{ #category : #tests }
 PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 
 	| image |
@@ -113,30 +137,6 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 
 	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
 	"for now, no simple way to test that the image is actually launched"
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
-	
-	PhLLaunchConfiguration launchInALoginShell: true.
-	self testCanLaunchImageWithNonAsciiCharacters.
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
-	| image config commandToEval |
-	image := PhLOsXCatalinaTestImage example.
-	self createPharoVersionFileForCurrentPharoVersion: image vmManager imageVersionFile.
-	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
-	config := image defaultLaunchConfiguration.
-	config	 imageArguments: {'eval' . commandToEval}.
-	
-	self 
-		shouldnt: [ process := image launchWithConfiguration: config ]
-		raise: PhLArchitectureError
-	
-	
-
 ]
 
 { #category : #tests }

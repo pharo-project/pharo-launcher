@@ -1,7 +1,7 @@
 Class {
 	#name : #PhLHTTPListingTemplateGroupTest,
 	#superclass : #PhLAbstractTemplateGroupTest,
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #coverage }

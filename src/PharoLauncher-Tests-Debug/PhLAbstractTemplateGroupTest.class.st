@@ -4,7 +4,7 @@ Give me unit tests and I will make sure they are run for all subclasses of PhLAb
 Class {
 	#name : #PhLAbstractTemplateGroupTest,
 	#superclass : #ClassTestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #testing }

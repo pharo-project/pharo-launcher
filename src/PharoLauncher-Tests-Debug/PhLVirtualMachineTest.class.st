@@ -3,7 +3,7 @@ Class {
 	#superclass : #TestCase,
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #tests }

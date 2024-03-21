@@ -6,7 +6,7 @@ It is used to test support of 32-bit app as  Mac Os Catalina is the first Mac Os
 Class {
 	#name : #PhLOsXCatalinaTestImage,
 	#superclass : #PhLImage,
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #testing }

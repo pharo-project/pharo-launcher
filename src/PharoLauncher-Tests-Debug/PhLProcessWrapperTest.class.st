@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'process'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #running }

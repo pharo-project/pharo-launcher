@@ -15,7 +15,7 @@ Class {
 		'imagesFolder',
 		'workspace'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #configuring }

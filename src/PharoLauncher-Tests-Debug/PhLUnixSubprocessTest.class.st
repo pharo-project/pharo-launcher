@@ -4,7 +4,7 @@ This class contains tests to ensure we can expected behaviour from the library u
 Class {
 	#name : #PhLUnixSubprocessTest,
 	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #tests }

@@ -1,7 +1,7 @@
 Class {
 	#name : #PhLLaunchedImagesWatcherTest,
 	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : #'PharoLauncher-Tests-Debug'
 }
 
 { #category : #tests }

@@ -62,11 +62,11 @@ jobs:
       - name: Build
         run: VERSION=${SHORT_SHA} ./build.sh prepare
 
-      # - name: Setup tmate session
-      #   uses: mxschmitt/action-tmate@v3
-  
       - name: test
         run: VERSION=${SHORT_SHA} ./build.sh test
+  
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
   
       - uses: actions/upload-artifact@v3  # upload test results
         if: success() || failure()        # run this step even if previous step failed

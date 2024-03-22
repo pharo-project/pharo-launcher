@@ -134,10 +134,10 @@ PhLLaunchImageTest >> setUp [
 { #category : #running }
 PhLLaunchImageTest >> tearDown [ 
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
-	"tempVmStoreFolder ensureDeleteAll."
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
-	"imageDir ensureDeleteAll."
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
+	tempVmStoreFolder ensureDeleteAll.
+	imageDir ensureDeleteAll.
 	super tearDown
 ]
 

@@ -35,7 +35,7 @@ function run_tests() {
 	rm -rf ~/Pharo # clean posssible remaining Pharo files
 	./pharo --version
 	ls -R pharo-vm
-	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher-Tests-Functional.PhLLaunchImageTest"	
+	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher-Tests-Functional.*"	
 	run_shell_cli_tests
 }
 

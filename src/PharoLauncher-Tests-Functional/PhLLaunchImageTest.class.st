@@ -146,7 +146,7 @@ PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	
 	image := self copyCurrentImageToTestDir.
-	self traceCr: 'Image copied to ', imageDir fullName
+	self traceCr: 'Image copied to ', imageDir fullName.
 	
 	image launch.
 	

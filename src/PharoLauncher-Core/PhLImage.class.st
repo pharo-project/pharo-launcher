@@ -194,6 +194,7 @@ PhLImage >> basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shou
 
 	| processWrapper |
 	processWrapper := aPhLLaunchConfiguration launchProcess.
+	self traceCr: 'Running: ', processWrapper commandLineString.
 	shouldBeDetached
 		ifTrue: [ processWrapper runUnwatch ]
 		ifFalse: [ processWrapper runAndWait ].

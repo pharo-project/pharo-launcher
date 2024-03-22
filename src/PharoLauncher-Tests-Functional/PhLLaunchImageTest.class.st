@@ -13,6 +13,24 @@ Class {
 }
 
 { #category : #tests }
+PhLLaunchImageTest >> _testCanLaunchImageWithNonAsciiCharacters [
+
+	| image |
+	image := self copyCurrentImageToTestDir.
+
+	image launch.
+
+	"ensure image determination succeeded"
+	self
+		assert: (imageDir / PhLImage versionFileName) contents
+		equals: SystemVersion current major asString
+			, SystemVersion current minor asString
+
+	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
+	"for now, no simple way to test that the image is actually launched"
+]
+
+{ #category : #tests }
 PhLLaunchImageTest >> copyCurrentImageToTestDir [
 	| image |
 	
@@ -67,7 +85,7 @@ PhLLaunchImageTest >> estArchitectureErrorSignaledWhenTryingToRun32BitImageOn64B
 PhLLaunchImageTest >> estCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 	
 	PhLLaunchConfiguration launchInALoginShell: true.
-	self testCanLaunchImageWithNonAsciiCharacters.
+	self _testCanLaunchImageWithNonAsciiCharacters.
 ]
 
 { #category : #tests }
@@ -109,34 +127,18 @@ PhLLaunchImageTest >> setUp [
 	tempVmStoreFolder := FileLocator temp / self class name , uuid.
 	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
 	self copyCurrentVmTo: tempVmStoreFolder.
+	self traceCr: 'VM copied to ', tempVmStoreFolder fullName
+
 ]
 
 { #category : #running }
 PhLLaunchImageTest >> tearDown [ 
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
-	tempVmStoreFolder ensureDeleteAll.
+	"tempVmStoreFolder ensureDeleteAll."
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
-	imageDir ensureDeleteAll.
+	"imageDir ensureDeleteAll."
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	super tearDown
-]
-
-{ #category : #tests }
-PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
-
-	| image |
-	image := self copyCurrentImageToTestDir.
-
-	image launch.
-
-	"ensure image determination succeeded"
-	self
-		assert: (imageDir / PhLImage versionFileName) contents
-		equals: SystemVersion current major asString
-			, SystemVersion current minor asString
-
-	"image is run but tearDown could delete the image before it is run leading to the dialog to choose the image"
-	"for now, no simple way to test that the image is actually launched"
 ]
 
 { #category : #tests }
@@ -144,6 +146,7 @@ PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	
 	image := self copyCurrentImageToTestDir.
+	self traceCr: 'Image copied to ', imageDir fullName
 	
 	image launch.
 	

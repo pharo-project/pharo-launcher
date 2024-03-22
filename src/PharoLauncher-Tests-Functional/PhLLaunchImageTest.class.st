@@ -71,10 +71,10 @@ PhLLaunchImageTest >> setUp [
 { #category : #running }
 PhLLaunchImageTest >> tearDown [ 
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
-	tempVmStoreFolder ensureDeleteAll.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
-	imageDir ensureDeleteAll.
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
+	tempVmStoreFolder ensureDeleteAll.
+	imageDir ensureDeleteAll.
 	super tearDown
 ]
 
@@ -97,6 +97,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 	image := self copyCurrentImageToTestDir.
 
 	image launch.
+	2 seconds wait.
 
 	"ensure image determination succeeded"
 	self
@@ -139,6 +140,7 @@ PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	image := self copyCurrentImageToTestDir.
 	
 	image launch.
+	2 seconds wait.
 	
 	image := PhLImage location: imageDir / FileLocator image basename. "read image metadata from disk"
 	self deny: image shouldRunInitializationScript.

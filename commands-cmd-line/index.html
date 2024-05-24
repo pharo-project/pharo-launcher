@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Commands (cmd line) - Pharo Launcher documentation</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Commands (cmd line)";
+        var mkdocs_page_input_path = "commands-cmd-line.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".." class="icon icon-home"> Pharo Launcher documentation
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../installation/">Installation</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../create-images/">Create images</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../commands/">Commands (UI)</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Commands (cmd line)</a>
+    <ul class="current">
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../launch-configurations/">Launch configurations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../templates/">Templates</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../manage-vms/">Manage vms</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../settings/">Settings</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../contribute/">Contribute</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">Pharo Launcher documentation</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Commands (cmd line)</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/pharo-project/pharo-launcher/edit/dev/doc/commands-cmd-line.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="pharo-laucher-command-line">Pharo Laucher command-line</h1>
+<p>This is list of subject oriented CLI commands of Pharo launcher, where subjects are Pharo VM, image, image process, or image template of launcher.<br />
+Use: <code>pharo-launcher &lt;command&gt;</code></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Sub-command</th>
+<th></th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#help">help</a></td>
+<td></td>
+<td></td>
+<td>Prints all supported Pharo launcher commands.</td>
+</tr>
+<tr>
+<td><a href="#image">image</a></td>
+<td></td>
+<td></td>
+<td>All sub-commands related to management of local Pharo images. (Prints help only)</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-bisect">bisect</a></td>
+<td></td>
+<td>Do a dichotomic search to find the first image where the evaluation of a script will be true.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-copy">copy</a></td>
+<td></td>
+<td>Creates copy of given image with new name.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-create">create</a></td>
+<td></td>
+<td>Downloads and creates new image on local computer from remote site based on template name.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><a href="#image-create-from-build-number">fromBuild</a></td>
+<td>Downloads and creates new image based on a the build number.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><a href="#image-create-from-pull-request">fromPR</a></td>
+<td>Downloads and creates new image based on a Github pull request number (from Inria CI server).</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><a href="#image-create-from-remote-repository">fromRepo</a></td>
+<td>Downloads and creates new image based on a template and loads user defined project from Github remote repository.</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><a href="#image-create-from-SHA-commit">fromSHA</a></td>
+<td>Downloads and creates new image based on the commit SHA (7 letter string contained in the name of Pharo dev template).</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-delete">delete</a></td>
+<td></td>
+<td>Deletes the local image, including image directory content.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-info">info</a></td>
+<td></td>
+<td>Prints information about image: name, description, origin template, etc.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-launch">launch</a></td>
+<td></td>
+<td>Launches image with using default (auto-detected) VM.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-list">list</a></td>
+<td></td>
+<td>Lists all local images from Pharo laucher repository.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-package">package</a></td>
+<td></td>
+<td>Creates a package containing all necessary artefacts to launch the image.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#image-recreate">recreate</a></td>
+<td></td>
+<td>Recreates the local image, the image argument determines the image name to recreate.</td>
+</tr>
+<tr>
+<td><a href="#process">process</a></td>
+<td></td>
+<td></td>
+<td>All sub-commands related to Pharo processes. (Prints help only)</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#process-kill">kill</a></td>
+<td></td>
+<td>Kills the running Pharo process(es) of given image.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#process-list">list</a></td>
+<td></td>
+<td>Lists all running Pharo image processes.</td>
+</tr>
+<tr>
+<td><a href="#template">template</a></td>
+<td></td>
+<td></td>
+<td>All sub-commands related to image templates. (Prints help only)</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#template-categories">categories</a></td>
+<td></td>
+<td>Lists all image template categories, based on which are image templates categorized.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#template-info">info</a></td>
+<td></td>
+<td>Prints information about image template name, origin url.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#template-list">list</a></td>
+<td></td>
+<td>Prints list of image templates.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#template-update">update</a></td>
+<td></td>
+<td>Update the sources.list file used by Pharo Launcher to list available templates.</td>
+</tr>
+<tr>
+<td><a href="#vm">vm</a></td>
+<td></td>
+<td></td>
+<td>All sub-commands related to VM management. (Prints help only)</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#vm-delete">delete</a></td>
+<td></td>
+<td>Deletes VM executable from local computer, including dependencies.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#vm-info">info</a></td>
+<td></td>
+<td>Prints information about VM: name, remote-site URL, last update status, etc.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#vm-list">list</a></td>
+<td></td>
+<td>Lists all available VMs, with status.</td>
+</tr>
+<tr>
+<td></td>
+<td><a href="#vm-update">update</a></td>
+<td></td>
+<td>Updates VM executable, including depedent libs to latest version from remote site.</td>
+</tr>
+</tbody>
+</table>
+<h1 id="getting-started">Getting started</h1>
+<p>Command line interface of Pharo Launcher is avaliable from directory, where launcher is installed.<br />
+Pharo Launcher CLI can be executed using: <code>pharo-launcher &lt;command&gt;</code> (choosing on of the commands above).</p>
+<h2 id="1-list-pharo-images">1. List Pharo images</h2>
+<p>You can start listing Pharo images deployed by Pharo launcher by: <code>pharo-launcher image list</code>
+This will give output like:</p>
+<pre><code>#  Name                                             Architecture Pharo version Last modified      
+-- ------------------------------------------------ ------------ ------------- -------------------
+1  Pharo 9.0 - 64bit (stable)                       64           90            2021-11-13 13:18:02
+2  P8                                               64           80            2022-03-01 17:05:56
+3  Pharo 11.0 - 64bit (development version, latest) 64           110           2022-05-30 15:40:21
+4  Pharo10.0-PR-10553-64bit-5ce32be                 64           100           2022-06-02 16:50:21
+5  Pharo 10.0 - 64bit (stable)                      64           100           2022-06-17 12:26:09
+</code></pre>
+<h2 id="2-create-new-pharo-image">2. Create new Pharo image</h2>
+<p>New Pharo image can be created by executing: <code>pharo-launcher image create myImage</code><br />
+This will efectively create Pharo image based on latest stable Pharo release template.
+Output looks like this:</p>
+<pre><code>Creating the local Pharo image based on template: Pharo 10.0 - 64bit (stable).
+Please wait a moment.
+Done!
+</code></pre>
+<p>You could check result by listing Pharo images again.  </p>
+<blockquote>
+<p><strong>Note</strong>: There are other ways to create images, check sub-commands. </p>
+</blockquote>
+<h2 id="3-launching-pharo-image">3. Launching Pharo image</h2>
+<p>To launch image, execute following: <code>pharo-launcher image launch myImage</code><br />
+This will start new Pharo process and window with Pharo should be visible. Check command options, to see how to pass launch configuration.</p>
+<h2 id="4-listing-running-pharo-images">4. Listing running Pharo images</h2>
+<p>To see, which Pharo images are running: <code>pharo-launcher process list</code><br />
+Output will look similar like this:</p>
+<pre><code>3093 /home/dbajger/Pharo/vms/100-x64/lib/pharo /home/dbajger/Pharo/images/myImage/myImage.image
+</code></pre>
+<h2 id="5-kill-running-pharo-image-process">5. Kill running Pharo image process</h2>
+<p>To kill running Pharo process execute:  <code>pharo-launcher process kill myImage</code><br />
+This will kill all running images with name <code>myImage</code>.<br />
+You can also use specific PID, to precisely specify process to kill instead of name of image.</p>
+<h2 id="6-create-package-with-pharo-image">6. Create package with Pharo image</h2>
+<p>To pack existing image with VM and all artefacts you can run: <code>pharo-launcher image package myImage /home/dbajger/fresh</code><br />
+This will create new directory in <code>/home/dbajger/fresh</code> with image and all artefacts.</p>
+<blockquote>
+<p><strong>Note</strong>: You can also use <code>--zip</code> option to have just zip archive with image artifacts (see details below). </p>
+</blockquote>
+<h2 id="7-deleting-existing-image">7. Deleting existing image</h2>
+<p>To delete image and its directory, run: <code>pharo-launcher image delete myImage</code><br />
+You can list Pharo images again to check that image is deleted.</p>
+<h1 id="description-of-all-pharo-launcher-cli-commands">Description of all Pharo Launcher CLI commands</h1>
+<h2 id="help">Help</h2>
+<p>This is help for command line interface of Pharo Launcher.
+Common purpose of laucher is to create Pharo image locally from remote site template, launch Pharo, eventually delete an image, update VMs, etc.<br />
+Run: <code>pharo-launcher help</code></p>
+<h1 id="image-commands">Image commands</h1>
+<h2 id="image">Image</h2>
+<p>Root command of all image commands, prints help only.<br />
+Run: <code>pharo-launcher image</code> to see help.</p>
+<h2 id="image-bisect">Image bisect</h2>
+<p>Do a dichotomic search to find the first image where the evaluation of a script will be true.</p>
+<h3 id="usage">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image bisect  [--help] [--pharoVersion &lt;pharoVersion-value&gt;]
+</code></pre>
+<h3 id="parameters">Parameters</h3>
+<pre><code>&lt;pharoVersion-value&gt;
+             Pharo version number to use for bisection (default is the current development Pharo version).
+</code></pre>
+<h3 id="options">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="usage_1">Usage</h3>
+<p>This command is useful to find in which Pharo image a problem started to appear.
+Once ran, the command will ask you the first known faulty image, i.e. the first image you know that the problem is present, and then the last known correct image, i.e. the image you know the problem is absent.
+Then it will perform a dichotomic search between these 2 versions and download images in a special folder (Temporary directory / 'pl-bisect' + timestamp) and run them. You will be asked to answer if the problem
+is present or not in the image. The process will continue until the faulty image is found.</p>
+<h2 id="image-copy">Image copy</h2>
+<p>Creates copy of given image with new name.</p>
+<h3 id="usage_2">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image copy [--help] [&lt;existingImageName&gt;] [&lt;newImageName&gt;]
+</code></pre>
+<h3 id="parameters_1">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Local image name to be copied.
+&lt;newImageName&gt;
+            New image name of a copied image.
+</code></pre>
+<h3 id="options_1">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples">Examples</h3>
+<p><strong>#1:</strong> To copy existing image <code>myImage</code> and create new copy <code>newImage</code> from it, run: </p>
+<pre><code>pharo-launcher image copy myImage newImage
+</code></pre>
+<h2 id="image-create">Image create</h2>
+<p>Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).</p>
+<h3 id="usage_3">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image create [--help] [--templateName &lt;templateName-value&gt;] [--templateCategory &lt;templateCategory-value&gt;] [&lt;newImageName&gt;]
+</code></pre>
+<h3 id="parameters_2">Parameters</h3>
+<pre><code>&lt;newImageName&gt;
+            Name of the new Pharo image.
+</code></pre>
+<h3 id="options_2">Options</h3>
+<pre><code>--help      Prints this documentation
+--templateName &lt;templateName-value&gt;
+            Template which will be used to create the image
+--templateCategory &lt;templateCategory-value&gt;
+            Specifies the template category to search the target template.
+</code></pre>
+<h3 id="commands">Commands</h3>
+<pre><code>fromBuild, fromPR, fromRepo, fromSHA
+</code></pre>
+<h3 id="examples_1">Examples</h3>
+<p><strong>#1:</strong> Creates an image (passing new image name as argument) based on the last pharo stable 64bits version:</p>
+<pre><code>pharo-launcher image create myNewImageName
+</code></pre>
+<p><strong>#2:</strong> Creates an image based on the template <code>Pharo 7.0 - 64bit (old stable)</code> listed in <code>Official distributions</code> (default) template category:</p>
+<pre><code>pharo-launcher image create myNewImageName &quot;Pharo 7.0 - 64bit (old stable)&quot;
+</code></pre>
+<p><strong>#3:</strong> Creates an image based on the template <code>Pharo Mooc</code> from template category <code>Pharo Mooc</code>:</p>
+<pre><code>pharo-launcher image create myNewImageName &quot;Pharo Mooc&quot; --templateCategory &quot;Pharo Mooc&quot;
+</code></pre>
+<h2 id="image-create-from-build-number">Image create from build number</h2>
+<p>Downloads and creates new image based on a the build number contained in the Pharo development template.  </p>
+<h3 id="usage_4">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image create fromBuild [--help] [--pharoVersion &lt;pharoVersion-value&gt;] [--newImageName &lt;newImageName-value&gt;] [&lt;buildNumber&gt;]
+</code></pre>
+<h3 id="parameters_3">Parameters</h3>
+<pre><code>&lt;buildNumber&gt;
+            Pharo build number, from which will be template found and image created.
+</code></pre>
+<h3 id="options_3">Options</h3>
+<pre><code>--help      Prints this documentation
+--pharoVersion &lt;pharoVersion-value&gt;
+            Version of Pharo to be downloaded.
+--newImageName &lt;newImageName-value&gt;
+            Name of the new Pharo image (template name is used by default).
+</code></pre>
+<h3 id="examples_2">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-create-from-pull-request">Image create from pull request</h2>
+<p>Downloads and creates new image based on a Github pull request number from the successful build of Inria CI server used by Pharo project.</p>
+<h3 id="usage_5">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image create fromPR [--help] [--newImageName &lt;newImageName-value&gt;] [--templateName &lt;templateName-value&gt;] [--templateCategory &lt;templateCategory-value&gt;] [&lt;pullRequest&gt;]
+</code></pre>
+<h3 id="parameters_4">Parameters</h3>
+<pre><code>&lt;pullRequest&gt;
+            Github pull request number, from which will be image created. If missing, project with its baseline is used to determine correct template.
+</code></pre>
+<h3 id="options_4">Options</h3>
+<pre><code>--help      Prints this documentation
+--newImageName &lt;newImageName-value&gt;
+            Name of the new Pharo image (template name is used by default).
+--templateName &lt;templateName-value&gt;
+            Template which will be used to create the image
+--templateCategory &lt;templateCategory-value&gt;
+            Specifies the template category to search the target template.
+</code></pre>
+<h3 id="examples_3">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-create-from-remote-repository">Image create from remote repository</h2>
+<p>Downloads and creates new image based on a template and loads user defined project from Github remote repository into image.</p>
+<h3 id="usage_6">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image create fromRepo [--help] [--newImageName &lt;newImageName-value&gt;] [--templateName &lt;templateName-value&gt;] [--templateCategory &lt;templateCategory-value&gt;] [--subfolder &lt;subfolder-value&gt;] [--baseline &lt;baseline-value&gt;] [--group &lt;group-value&gt;] [&lt;repository&gt;]
+</code></pre>
+<h3 id="parameters_5">Parameters</h3>
+<pre><code>&lt;repository&gt;
+            Github Repository full name (e.g. {owner}/{project} or {owner}/{project}:{branchOrTag}), from which will be project loaded (based on baseline) into created image.
+</code></pre>
+<h3 id="options_5">Options</h3>
+<pre><code>--help      Prints this documentation
+--newImageName &lt;newImageName-value&gt;
+            Name of the new Pharo image (template name is used by default).
+--templateName &lt;templateName-value&gt;
+            Template which will be used to create the image
+--templateCategory &lt;templateCategory-value&gt;
+            Specifies the template category to search the target template.
+--subfolder &lt;subfolder-value&gt;
+            The sub-folder containing the code. By default ''src'' sub-folder is used.
+--baseline &lt;baseline-value&gt;
+            Specifies the project baseline to be loaded by Metacello command (e.g. PharoLauncher) in PascalCase format. If not specified, baseline is determined from repository name.
+--group &lt;group-value&gt;
+            Defines the group as a loadable spec containing only a sub part of the project. If not specified, group 'default' is used.
+</code></pre>
+<h3 id="examples_4">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-create-from-sha-commit">Image create from SHA commit</h2>
+<p>Downloads and creates new image based on the commit SHA (7 letter string) of Pharo build process contained in the name of Pharo development template.</p>
+<h3 id="usage_7">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image create fromSHA [--help] [--pharoVersion &lt;pharoVersion-value&gt;] [--newImageName &lt;newImageName-value&gt;] [&lt;sha&gt;]
+</code></pre>
+<h3 id="parameters_6">Parameters</h3>
+<pre><code>&lt;sha&gt;       Commit SHA (7 letters) of Pharo image development template, from which will be  image created.
+</code></pre>
+<h3 id="options_6">Options</h3>
+<pre><code>--help      Prints this documentation
+--pharoVersion &lt;pharoVersion-value&gt;
+            Version of Pharo to be downloaded.
+--newImageName &lt;newImageName-value&gt;
+            Name of the new Pharo image (template name is used by default).
+</code></pre>
+<h3 id="examples_5">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-delete">Image delete</h2>
+<p>Deletes the local image, including image directory content.</p>
+<h3 id="usage_8">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image delete [--help] [&lt;existingImageName&gt;]
+</code></pre>
+<h3 id="parameters_7">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Local image name to be deleted.
+</code></pre>
+<h3 id="options_7">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples_6">Examples</h3>
+<p>No examples yet. </p>
+<h2 id="image-info">Image info</h2>
+<p>Prints information about image: name, description, origin template, etc.</p>
+<h3 id="usage_9">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image info [--help] [--brief] [--rowMode] [--delimiter &lt;delimiter-value&gt;] [--ston] [&lt;existingImageName&gt;]
+</code></pre>
+<h3 id="parameters_8">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Determines the local image name to print detailed information.
+</code></pre>
+<h3 id="options_8">Options</h3>
+<pre><code>--help      Prints this documentation
+--brief     Prints only name attribute (with leading sequence number).
+--rowMode   Prints one attribute per line only.
+--delimiter &lt;delimiter-value&gt;
+            Specifies the table-cell delimiter that delimits listed information attributes.
+--ston      Prints information in STON format.
+</code></pre>
+<h3 id="examples_7">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-launch">Image launch</h2>
+<p>Launches image with using default (auto-detected) VM.</p>
+<h3 id="usage_10">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image launch [--help] [--script &lt;script-value&gt;] [&lt;existingImageName&gt;]
+</code></pre>
+<h3 id="parameters_9">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Specifies the local image name to be launched.
+</code></pre>
+<h3 id="options_9">Options</h3>
+<pre><code>--help      Prints this documentation
+--script &lt;script-value&gt;
+            Determines a path to the script when launching an Image.
+</code></pre>
+<h3 id="examples_8">Examples</h3>
+<p><strong>#1:</strong> To launch image (passing image name argument) with default VM use:</p>
+<pre><code>pharo-launcher image launch &quot;Pharo 7.0 - 32bit (new 23)&quot;
+</code></pre>
+<p><strong>#2:</strong> To launch image with launch script:</p>
+<pre><code>pharo-launcher image launch &quot;Pharo 7.0 - 32bit (new 23)&quot; --script /script/path/myScript.st
+</code></pre>
+<h2 id="image-list">Image list</h2>
+<p>Lists all local images from Pharo laucher repository.</p>
+<h3 id="usage_11">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image list [--help] [--nameFilter &lt;nameFilter-value&gt;] [--brief] [--rowMode] [--delimiter &lt;delimiter-value&gt;] [--ston]
+</code></pre>
+<h3 id="options_10">Options</h3>
+<pre><code>--help      Prints this documentation
+--nameFilter &lt;nameFilter-value&gt;
+            Images listing will be filtered by the provided name filter.
+--brief     Prints only name attribute (with leading sequence number).
+--rowMode   Prints one attribute per line only.
+--delimiter &lt;delimiter-value&gt;
+            Specifies the table-cell delimiter that delimits listed information attributes.
+--ston      Prints information in STON format.
+</code></pre>
+<h3 id="examples_9">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-package">Image package</h2>
+<p>Creates a package containing all necessary artefacts to launch the image.</p>
+<h3 id="usage_12">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image package [--help] [--zip] [--vm &lt;vm-value&gt;] [&lt;existingImageName&gt;] [&lt;location&gt;]
+</code></pre>
+<h3 id="parameters_10">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Local image name, for which is package created.
+&lt;location&gt;
+            Specifies the directory path, where resulting package will be stored.
+</code></pre>
+<h3 id="options_11">Options</h3>
+<pre><code>--help      Prints this documentation
+--zip       Creates the package with image as a ZIP file.
+--vm &lt;vm-value&gt;
+            Specifies the VM used for launching the image.
+</code></pre>
+<h3 id="examples_10">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="image-recreate">Image recreate</h2>
+<p>Recreates the local image, the image argument determines the image name to recreate.</p>
+<h3 id="usage_13">Usage</h3>
+<pre><code class="language-bash">pharo-launcher image recreate [--help] [&lt;existingImageName&gt;]
+</code></pre>
+<h3 id="parameters_11">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Local image name to recreate.
+</code></pre>
+<h3 id="options_12">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h1 id="process-commands">Process commands</h1>
+<h2 id="process">Process</h2>
+<p>Root command of all process commands, prints help only.<br />
+Run: <code>pharo-launcher process</code> to see help.</p>
+<h2 id="process-kill">Process kill</h2>
+<p>Kills the running Pharo process(es) of given local image.</p>
+<h3 id="usage_14">Usage</h3>
+<pre><code class="language-bash">pharo-launcher process kill [--help] [--all] [&lt;existingImageName&gt;]
+</code></pre>
+<h3 id="parameters_12">Parameters</h3>
+<pre><code>&lt;existingImageName&gt;
+            Specifies the local image name to kill its process.
+</code></pre>
+<h3 id="options_13">Options</h3>
+<pre><code>--help      Prints this documentation
+--all       Determines whether to kill all running Pharo image processes.
+</code></pre>
+<h3 id="examples_11">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="process-list">Process list</h2>
+<p>Lists all running Pharo image processes.</p>
+<h3 id="usage_15">Usage</h3>
+<pre><code class="language-bash">pharo-launcher process list [--help]
+</code></pre>
+<h3 id="options_14">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples_12">Examples</h3>
+<p>No examples yet.</p>
+<h1 id="template-commands">Template commands</h1>
+<h2 id="template">Template</h2>
+<p>Root command of all template commands, prints help only.<br />
+Run: <code>pharo-launcher template</code> to see help.</p>
+<h2 id="template-categories">Template categories</h2>
+<p>Prints list of image template categories.</p>
+<h3 id="usage_16">Usage</h3>
+<pre><code class="language-bash">pharo-launcher template categories [--help] [--brief] [--rowMode] [--delimiter &lt;delimiter-value&gt;] [--ston]
+</code></pre>
+<h3 id="options_15">Options</h3>
+<pre><code>--help      Prints this documentation
+--brief     Prints only name attribute (with leading sequence number).
+--rowMode   Prints one attribute per line only.
+--delimiter &lt;delimiter-value&gt;
+            Specifies the table-cell delimiter that delimits listed information attributes.
+--ston      Prints information in STON format.
+</code></pre>
+<h3 id="examples_13">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="template-info">Template info</h2>
+<p>Prints information about image template name, origin url.</p>
+<h3 id="usage_17">Usage</h3>
+<pre><code class="language-bash">pharo-launcher template info [--help] [--templateCategory &lt;templateCategory-value&gt;] [&lt;templateName&gt;]
+</code></pre>
+<h3 id="parameters_13">Parameters</h3>
+<pre><code>&lt;templateName&gt;
+            Specifies the template name to print information.
+</code></pre>
+<h3 id="options_16">Options</h3>
+<pre><code>--help      Prints this documentation
+--templateCategory &lt;templateCategory-value&gt;
+            Specifies the template category name to list image templates.
+</code></pre>
+<h3 id="examples_14">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="template-list">Template list</h2>
+<p>Prints list of image templates.</p>
+<h3 id="usage_18">Usage</h3>
+<pre><code class="language-bash">pharo-launcher template list [--help] [--templateCategory &lt;templateCategory-value&gt;] [--brief] [--rowMode] [--delimiter &lt;delimiter-value&gt;] [--ston]
+</code></pre>
+<h3 id="options_17">Options</h3>
+<pre><code>--help      Prints this documentation
+--templateCategory &lt;templateCategory-value&gt;
+            Specifies the template category name to list image templates from given category.
+--brief     Prints only name attribute (with leading sequence number).
+--rowMode   Prints one attribute per line only.
+--delimiter &lt;delimiter-value&gt;
+            Specifies the table-cell delimiter that delimits listed information attributes.
+--ston      Prints information in STON format.
+</code></pre>
+<h3 id="examples_15">Examples</h3>
+<p>No examples yet. </p>
+<h2 id="template-update">Template update</h2>
+<p>Update the sources.list file used by Pharo Launcher to list available templates.
+It will download the latest official sources.list available for Pharo Launcher and install it as the new source.</p>
+<h3 id="usage_19">Usage</h3>
+<pre><code class="language-bash">pharo-launcher template update
+</code></pre>
+<h1 id="virtual-machine-commands">Virtual machine commands</h1>
+<h2 id="vm">VM</h2>
+<p>Root command of all VM commands, prints help only.<br />
+Run: <code>pharo-launcher vm</code> to see help.</p>
+<h2 id="vm-delete">VM delete</h2>
+<p>Deletes VM executable from local computer, including dependencies.</p>
+<h3 id="usage_20">Usage</h3>
+<pre><code class="language-bash">pharo-launcher vm delete [--help] [&lt;existingVirtualMachineId&gt;]
+</code></pre>
+<h3 id="parameters_14">Parameters</h3>
+<pre><code>&lt;existingVirtualMachineId&gt;
+            Specifies the local Virtual Machine ID.
+</code></pre>
+<h3 id="options_18">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples_16">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="vm-info">VM info</h2>
+<p>Prints information about VM: name, remote-site URL, last update status, etc.</p>
+<h3 id="usage_21">Usage</h3>
+<pre><code class="language-bash">pharo-launcher vm info [--help] [&lt;existingVirtualMachineId&gt;]
+</code></pre>
+<h3 id="parameters_15">Parameters</h3>
+<pre><code>&lt;existingVirtualMachineId&gt;
+            Specifies the local Virtual Machine ID.
+</code></pre>
+<h3 id="options_19">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples_17">Examples</h3>
+<h2 id="vm-list">VM list</h2>
+<p>Lists all available VMs, with status.</p>
+<h3 id="usage_22">Usage</h3>
+<pre><code class="language-bash">pharo-launcher vm list [--help] [--brief] [--rowMode] [--delimiter &lt;delimiter-value&gt;] [--ston] [&lt;existingVirtualMachineId&gt;]
+</code></pre>
+<h3 id="parameters_16">Parameters</h3>
+<pre><code>&lt;existingVirtualMachineId&gt;
+            Specifies the local Virtual Machine ID.
+</code></pre>
+<h3 id="options_20">Options</h3>
+<pre><code>--help      Prints this documentation
+--brief     Prints only name attribute (with leading sequence number).
+--rowMode   Prints one attribute per line only.
+--delimiter &lt;delimiter-value&gt;
+            Specifies the table-cell delimiter that delimits listed information attributes.
+--ston      Prints information in STON format.
+</code></pre>
+<h3 id="examples_18">Examples</h3>
+<p>No examples yet.</p>
+<h2 id="vm-update">VM update</h2>
+<p>Updates VM executable, including dependent libs to latest version from remote site.</p>
+<h3 id="usage_23">Usage</h3>
+<pre><code class="language-bash">pharo-launcher vm update [--help] [&lt;existingVirtualMachineId&gt;]
+</code></pre>
+<h3 id="parameters_17">Parameters</h3>
+<pre><code>&lt;existingVirtualMachineId&gt;
+            Specifies the local Virtual Machine ID.
+</code></pre>
+<h3 id="options_21">Options</h3>
+<pre><code>--help      Prints this documentation
+</code></pre>
+<h3 id="examples_19">Examples</h3>
+<p>No examples yet.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../commands/" class="btn btn-neutral float-left" title="Commands (UI)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../launch-configurations/" class="btn btn-neutral float-right" title="Launch configurations">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/pharo-project/pharo-launcher/" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../commands/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../launch-configurations/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

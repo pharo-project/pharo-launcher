@@ -29,5 +29,11 @@ PhLVmUpdateCliCommand class >> launcherCmdDescription [
 { #category : 'command execution' }
 PhLVmUpdateCliCommand >> basicExecute [
 
-   self findVM updateFromUrl
+	| vm |
+	vm := [ self findVM ]
+		on: NotFound
+		do: [ (PhLVirtualMachine id: self vmId)
+				   be64bits;
+				   yourself ].
+	vm updateFromUrl
 ]

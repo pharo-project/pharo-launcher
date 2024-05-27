@@ -18,7 +18,7 @@ on:
   workflow_dispatch:
 
 env:
-  PHARO: 110
+  PHARO: 120
   ARCHITECTURE: 64
   VM: vm
   isRelease: ${{ startsWith(github.ref, 'refs/tags/') }}

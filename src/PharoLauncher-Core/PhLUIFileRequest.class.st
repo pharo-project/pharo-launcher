@@ -1,15 +1,17 @@
 Class {
-	#name : #PhLUIFileRequest,
-	#superclass : #PhLUserInteraction,
+	#name : 'PhLUIFileRequest',
+	#superclass : 'PhLUserInteraction',
 	#instVars : [
 		'title',
 		'extensionsToShow',
 		'path'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIFileRequest >> chooseFile [
 	^ UIManager default
 		chooseExistingFileReference: title
@@ -18,17 +20,17 @@ PhLUIFileRequest >> chooseFile [
 		preview: false.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIFileRequest >> extensionsToShow: anObject [
 	extensionsToShow := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIFileRequest >> path: anObject [
 	path := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIFileRequest >> title: anObject [
 	title := anObject
 ]

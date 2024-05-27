@@ -2,40 +2,41 @@
 Mock for a user confirmation interaction
 "
 Class {
-	#name : #PhLTestConfirmation,
-	#superclass : #Object,
+	#name : 'PhLTestConfirmation',
+	#superclass : 'Object',
 	#instVars : [
 		'message'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTestConfirmation >> confirm [
 	^ true
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTestConfirmation >> inform [
 	self noop 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestConfirmation >> message [
 	^ message
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestConfirmation >> message: aString [ 
 	message := aString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTestConfirmation >> noop [
 	"nothing to do"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestConfirmation >> parentWindow: aWindowPresenter [ 
 	"no need to keep the parent"
 ]

@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLVMDeleteCliCommandTest,
-	#superclass : #PhLVmCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLVMDeleteCliCommandTest',
+	#superclass : 'PhLVmCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
 
 	self addVmNamed: 'myVm1'.
@@ -15,7 +16,7 @@ PhLVMDeleteCliCommandTest >> testDeleteVmShouldSucceed [
 	self assert: (( self vmRepository availableVirtualMachines at:'myVm1') isDeleted)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMDeleteCliCommandTest >> testDeleteVmWithWrongVmNameShouldGiveBackNotFoundMessage [
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.

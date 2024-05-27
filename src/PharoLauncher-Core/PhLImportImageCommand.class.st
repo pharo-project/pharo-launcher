@@ -4,15 +4,17 @@ I can be used to import an image into Pharo Launcher.
 I move the image file and its associated changes file to the default location of Pharo Launcher images store.
 "
 Class {
-	#name : #PhLImportImageCommand,
-	#superclass : #PhLImageCommand,
+	#name : 'PhLImportImageCommand',
+	#superclass : 'PhLImageCommand',
 	#instVars : [
 		'importSiblings'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLImportImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallLoadProject;
@@ -21,12 +23,12 @@ PhLImportImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImportImageCommand >> canBeExecuted [
 	^ true
 ]
 
-{ #category : #'ui interaction' }
+{ #category : 'ui interaction' }
 PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 	^ self imagesPresenter newRequest
 		title: 'An image with the name ', anImageName , ' already exists. Please choose a new name:';
@@ -35,7 +37,7 @@ PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 		request
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLImportImageCommand >> execute [
 	| answer |
 	importSiblings := false.
@@ -51,7 +53,7 @@ PhLImportImageCommand >> execute [
 	self importImage.
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLImportImageCommand >> import: imageFileRef [
 	| infoMessage destFolderName imageRepository |
 	destFolderName := imageFileRef basenameWithoutExtension.
@@ -74,7 +76,7 @@ PhLImportImageCommand >> import: imageFileRef [
 		inform
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLImportImageCommand >> importImage [
 	| imageFile |
 	imageFile := self imagesPresenter newFileRequest
@@ -95,7 +97,7 @@ PhLImportImageCommand >> importImage [
 	self import: imageFile
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImportImageCommand >> initialize [
 	super initialize.
 	self

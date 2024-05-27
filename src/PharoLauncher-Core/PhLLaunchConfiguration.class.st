@@ -7,8 +7,8 @@ I have all the required information to run one:
 An image stores many of my instances so the user can choose one to launch it.
 "
 Class {
-	#name : #PhLLaunchConfiguration,
-	#superclass : #Object,
+	#name : 'PhLLaunchConfiguration',
+	#superclass : 'Object',
 	#instVars : [
 		'image',
 		'name',
@@ -21,15 +21,17 @@ Class {
 	#classVars : [
 		'LaunchInALoginShell'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLLaunchConfiguration class >> defaultName [
 	^ 'Default'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLLaunchConfiguration class >> defaultWithImage: anImage [
 
 	^ (self withImage: anImage)
@@ -37,17 +39,17 @@ PhLLaunchConfiguration class >> defaultWithImage: anImage [
 		yourself
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchConfiguration class >> launchInALoginShell [
 	^ LaunchInALoginShell ifNil: [ LaunchInALoginShell := true ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchConfiguration class >> launchInALoginShell: aBoolean [
 	LaunchInALoginShell := aBoolean
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchConfiguration class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -59,14 +61,14 @@ PhLLaunchConfiguration class >> settingsOn: aBuilder [
 		description: 'When enabled, Pharo Launcher will start a Shell and launch the image from it. ' , String cr , 'It allows to inherit from the Shell environment variables.'
 ]
 
-{ #category : #serialization }
+{ #category : 'serialization' }
 PhLLaunchConfiguration class >> stonAllInstVarNames [
 
 	^ super stonAllInstVarNames reject: [ :varName | 
 		  #( #usePharoSettings #workingDirectory ) includes: varName ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLLaunchConfiguration class >> withImage: anImage [
 
 	^ self new
@@ -74,7 +76,7 @@ PhLLaunchConfiguration class >> withImage: anImage [
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLLaunchConfiguration >> = anObject [
 
 	self == anObject
@@ -85,7 +87,7 @@ PhLLaunchConfiguration >> = anObject [
 	^ self name = anObject name
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLLaunchConfiguration >> canBeLaunched [
 	
 	self vm isValidAfterUpdate ifFalse: [ ^ false ].
@@ -93,43 +95,43 @@ PhLLaunchConfiguration >> canBeLaunched [
 	^ true
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLLaunchConfiguration >> commandString [
 	^ self launchProcess commandLineString
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLLaunchConfiguration >> defaultVm [
 	self image ensurePharoVersion.
 	^ self image vmManager virtualMachine
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLLaunchConfiguration >> doNotUseSettings [
 	self useSettings: false
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLLaunchConfiguration >> hash [ 
 	^ self name hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> image [
 	^ image
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> imageArguments [
 	^ imageArguments ifNil: [ OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> imageArguments: aCollection [ 
 	imageArguments := aCollection
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfiguration >> initializeWithImage: anImage [
 
 	self initialize.
@@ -139,17 +141,17 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	imageArguments := anImage defaultArguments
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLLaunchConfiguration >> isNullConfiguration [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLLaunchConfiguration >> isUsingPharoSettings [
 	^ usePharoSettings ifNil: [ usePharoSettings := true ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLLaunchConfiguration >> launchProcess [
 	self vm isValidAfterUpdate
 		ifFalse: [ PhLMissingVirtualMachineError signalVm: self vm ].
@@ -158,22 +160,22 @@ PhLLaunchConfiguration >> launchProcess [
 		visit.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> name: aString [ 
 	name := aString
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLLaunchConfiguration >> printOn: aStream [
 	aStream << self class name << '(' << self name << ')'
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLLaunchConfiguration >> useSettings: aBoolean [
 	"Cannot skip Pharo settings before Pharo 3.0"
 	self image ensurePharoVersion asInteger < 30 ifTrue: [ ^ self ].
@@ -181,35 +183,35 @@ PhLLaunchConfiguration >> useSettings: aBoolean [
 	usePharoSettings := aBoolean.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> vm [
 	^ vm ifNil: [ self vm: self defaultVm. vm ]
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> vm: aPhLVirtualMachine [ 
 	vm := aPhLVirtualMachine.
 	vm manager: self image vmManager.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> vmArguments [
 	^ vmArguments ifNil: [ OrderedCollection new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> vmArguments: aCollection [ 
 	vmArguments := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> workingDirectory [
 
 	^ workingDirectory ifNil: [ image imageFile parent ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfiguration >> workingDirectory: aFileReference [
 	workingDirectory := aFileReference
 ]

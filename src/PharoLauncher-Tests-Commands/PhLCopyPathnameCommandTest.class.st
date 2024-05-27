@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLCopyPathnameCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLCopyPathnameCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCopyPathnameCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCopyPathnameCommandTest >> testCanCopyImagePathname [
 	presenter selectImageAt: 1.
 	PhLCopyPathname new

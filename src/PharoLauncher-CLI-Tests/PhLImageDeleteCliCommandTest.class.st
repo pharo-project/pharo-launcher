@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageDeleteCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageDeleteCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testDeleteImageNameWithPathShouldRaiseError [
 	|  imagePath root |
 	root := FileSystem memory root.
@@ -21,7 +22,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageNameWithPathShouldRaiseError [
 	self assert: imagePath isFile.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testDeleteImageShouldAbortIfNotConfirmed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -33,7 +34,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageShouldAbortIfNotConfirmed [
 	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage2') asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testDeleteImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -45,7 +46,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageShouldSucceed [
 	self assert: self imageRepository imagesName equals: #( 'myImage2' ) asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testDeleteImageWhenNoImageNameProvidedAllowsDeletionByInteractiveImageSelection [
 
 	| image1 image2 |
@@ -61,7 +62,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageWhenNoImageNameProvidedAllowsDele
 	self assert: self imageRepository imagesName equals: #( 'myImageB' ) asSet
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testDeleteImageWrongImageNameShouldRaiseError [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -71,7 +72,7 @@ PhLImageDeleteCliCommandTest >> testDeleteImageWrongImageNameShouldRaiseError [
 	self assert: (self errorString includesSubstring: 'Please enter a correct local image')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageDeleteCliCommandTest >> testForceDeleteImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

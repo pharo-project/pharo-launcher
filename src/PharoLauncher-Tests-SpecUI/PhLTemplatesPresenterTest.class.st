@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLTemplatesPresenterTest,
-	#superclass : #TestCase,
+	#name : 'PhLTemplatesPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : 'PharoLauncher-Tests-SpecUI',
+	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplatesPresenterTest >> setUp [
 	"Hooks that subclasses may override to define the fixture of test."
 	super setUp.
@@ -15,13 +16,13 @@ PhLTemplatesPresenterTest >> setUp [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplatesPresenterTest >> tearDown [
 	presenter window ifNotNil: #close.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplatesPresenterTest >> testCanCreateImageIfOneTemplateSelected [
 	presenter 
 		createLocalTemplateNamed: 'Foo';
@@ -34,7 +35,7 @@ PhLTemplatesPresenterTest >> testCanCreateImageIfOneTemplateSelected [
 	self assert: presenter createButtonEnabled.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplatesPresenterTest >> testCannotCreateImageIfNoTemplateSelected [
 	presenter imageName: 'foo'.
 	
@@ -43,7 +44,7 @@ PhLTemplatesPresenterTest >> testCannotCreateImageIfNoTemplateSelected [
 	self deny: presenter createButtonEnabled.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplatesPresenterTest >> testTemplatesPresenterClosesWhenClickingOnCreateImage [
 
 	presenter

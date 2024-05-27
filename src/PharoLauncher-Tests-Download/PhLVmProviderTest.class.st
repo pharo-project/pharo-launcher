@@ -1,28 +1,29 @@
 Class {
-	#name : #PhLVmProviderTest,
-	#superclass : #TestCase,
+	#name : 'PhLVmProviderTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'vmProvider'
 	],
-	#category : #'PharoLauncher-Tests-Download'
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVmProviderTest >> setUp [
 	vmProvider := PhLVmProvider new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderTest >> testCanDetectArchitecture [
 	self assert: (vmProvider hostArchitecture includesSubstring: '64')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderTest >> testCanDetectOS [
 	self assert: (vmProvider class supportedOs includes: vmProvider hostOS)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderTest >> testLatestUrlIsValidAndAvailable [
 	| url |
 	url := vmProvider urlForPharo: 90 stable: false.
@@ -31,7 +32,7 @@ PhLVmProviderTest >> testLatestUrlIsValidAndAvailable [
 	self assert: (ZnEasy head: url) isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderTest >> testStableUrlIsValidAndAvailable [
 	| url |
 	url := vmProvider urlForPharo: 90 stable: true.

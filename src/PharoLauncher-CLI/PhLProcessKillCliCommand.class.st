@@ -2,12 +2,14 @@
 Command to kill one image if given in option or all the images if the --all flag is set
 "
 Class {
-	#name : #PhLProcessKillCliCommand,
-	#superclass : #PhLProcessCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLProcessKillCliCommand',
+	#superclass : 'PhLProcessCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLProcessKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	aCommandSpec 
@@ -15,7 +17,7 @@ PhLProcessKillCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 		description: 'Determines whether to kill all running Pharo image processes.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLProcessKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -24,24 +26,24 @@ PhLProcessKillCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [ :arg :app | self raiseMissingImageToKill]
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLProcessKillCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #kill 
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLProcessKillCliCommand class >> launcherCmdDescription [
 
 	^ 'Kills the running process(es) of given local image.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLProcessKillCliCommand class >> raiseMissingImageToKill [
 
 	^ NotFound signal: 'An argument is missing, please specify the local image name to kill it process.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessKillCliCommand >> basicExecute [
 	"currently unsupported on Windows"
 	self checkOS.
@@ -50,19 +52,19 @@ PhLProcessKillCliCommand >> basicExecute [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLProcessKillCliCommand >> hasAllFlag [
 
 	^ self hasFlag: #all
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessKillCliCommand >> imageName [
 
 	^ self positional: #existingImageName
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLProcessKillCliCommand >> killArgString [
 
 	^ String
@@ -75,7 +77,7 @@ PhLProcessKillCliCommand >> killArgString [
 			aStream nextPutAll: ' | tr -s '' '' | cut -d '' '' -f1)>' ]
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessKillCliCommand >> osShellArgArray [
 	"provide the command and its args in array"
 

@@ -2,15 +2,16 @@
 A ""fake"" repository only usefull for the tests
 "
 Class {
-	#name : #PhLImagesMockRepo,
-	#superclass : #Object,
+	#name : 'PhLImagesMockRepo',
+	#superclass : 'Object',
 	#instVars : [
 		'images'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLImagesMockRepo >> addImageNamed: anImageName [ 
 	| image |
 	image := PhLImageMock name: anImageName.
@@ -18,24 +19,24 @@ PhLImagesMockRepo >> addImageNamed: anImageName [
 	^ image
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLImagesMockRepo >> addTenRandomImages [
 
 	10 timesRepeat: [ self images add: PhLImageMock atRandom ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> copyImage: anImageToCopy to: anImageCopy [
   (self images anySatisfy: [:image | image name =anImageCopy ]) ifTrue:[PhLNameNotAvailableError signalName: 'Name already used' ].
   self addImageNamed: anImageCopy
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> deleteImage: anImageName [
 	self images remove: anImageName 
 ]
 
-{ #category : #'test methods' }
+{ #category : 'test methods' }
 PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	| testImage |
 	testImage := PhLImageMock name: anImageName.
@@ -43,30 +44,30 @@ PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	^ testImage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> imageNamed: lowercaseImageName [
 	^ self images
 		detect: [ :image | image name asLowercase = lowercaseImageName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> images [
    ^ images
 
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> images: aListOfImageMock [
 	images := aListOfImageMock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> imagesName [
 	^ (self images collect: [ :each | each name ]) asSet
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesMockRepo >> initialize [
 	super initialize.
 	images := OrderedCollection new

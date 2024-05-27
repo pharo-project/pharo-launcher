@@ -1,11 +1,11 @@
-Extension { #name : #FileLocator }
+Extension { #name : 'FileLocator' }
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocator >> asFileLocatorOrReference [
 	^ self
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocator class >> fromPath: aPath ifNone: notFoundBlock [
 	"Returns a file locator if aPath is a reference to a supported origin or is a child of an origin.
 	If no locator matches, return the result of the evaluation of notFoundBlock.
@@ -24,7 +24,7 @@ FileLocator class >> fromPath: aPath ifNone: notFoundBlock [
 	^ notFoundBlock value
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocator class >> fromString: aString ifNone: notFoundBlock [
 	"Returns a file locator if aString converted as path is a reference to a supported origin or is a child of an origin.
 	If no locator matches, return the result of the evaluation of notFoundBlock.

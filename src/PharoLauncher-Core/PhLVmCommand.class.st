@@ -2,18 +2,20 @@
 Superclass of all commands that are applied to one VM or multiple VMs.
 "
 Class {
-	#name : #PhLVmCommand,
-	#superclass : #CmCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLVmCommand',
+	#superclass : 'CmCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVmCommand >> initialize [
 	super initialize.
 	self description: self class comment
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVmCommand >> vmsPresenter [
 	^ self context
 ]

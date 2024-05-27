@@ -2,12 +2,14 @@
 Remove a VM from the hard disk. Can be applied to multiple VMs at the same time.
 "
 Class {
-	#name : #PhLDeleteVmCommand,
-	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLDeleteVmCommand',
+	#superclass : 'PhLVmCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLDeleteVmCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDeleteIcon;
@@ -16,7 +18,7 @@ PhLDeleteVmCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLDeleteVmCommand >> execute [
 	| vms vmNames confirmMessage answer |
 
@@ -34,7 +36,7 @@ PhLDeleteVmCommand >> execute [
 		self vmsPresenter refresh ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDeleteVmCommand >> initialize [
 	super initialize.
 	self

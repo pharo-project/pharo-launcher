@@ -5,32 +5,34 @@ I will do a dichotomic search of images, evaluating the condition block for each
 - end image must evaluates to false (faulty behavior) 
 "
 Class {
-	#name : #PhLImageBisection,
-	#superclass : #Object,
+	#name : 'PhLImageBisection',
+	#superclass : 'Object',
 	#instVars : [
 		'evaluationBlock',
 		'startIndex',
 		'endIndex',
 		'values'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageBisection class >> from: start to: end [
 	^ self new
 		from: start to: end;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageBisection class >> on: values from: start to: end [
 	^ self new
 		on: values from: start to: end;
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageBisection >> evaluateNext [
 
 	| current result |
@@ -41,31 +43,31 @@ PhLImageBisection >> evaluateNext [
 		ifFalse: [ endIndex := current ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImageBisection >> evaluationBlock: aBlock [
 
 	evaluationBlock := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisection >> from: start to: end [
 
 	self on: (start to: end) from: start to: end
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImageBisection >> imageNameFor: buildNumber [
 	
 	^ 'image-', buildNumber
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageBisection >> middle [
 	
 	^ (startIndex to: endIndex) middle
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisection >> on: someValues from: startValue to: endValue [
 
 	startValue > endValue ifTrue: [
@@ -76,7 +78,7 @@ PhLImageBisection >> on: someValues from: startValue to: endValue [
 	endIndex := values indexOf: endValue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisection >> result [
 	
 	[ endIndex - startIndex > 1 ] whileTrue: [ self evaluateNext ].

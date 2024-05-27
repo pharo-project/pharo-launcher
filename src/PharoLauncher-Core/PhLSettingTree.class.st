@@ -2,12 +2,14 @@
 I'm exactly the same as the standard settings browser except I save to a dedicated pharo launcher setting file.
 "
 Class {
-	#name : #PhLSettingTree,
-	#superclass : #SettingTree,
-	#category : #'PharoLauncher-Core-Settings'
+	#name : 'PhLSettingTree',
+	#superclass : 'SettingTree',
+	#category : 'PharoLauncher-Core-Settings',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLSettingTree >> persistence [
 	^ persistence ifNil: 
 		[ persistence := SystemSettingsPersistence new 

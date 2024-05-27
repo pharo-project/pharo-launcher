@@ -1,6 +1,6 @@
-Extension { #name : #PhLImageTest }
+Extension { #name : 'PhLImageTest' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLImageTest >> testExtendedListPrintAttributeBlocks [
 
 	|blocks| 
@@ -9,13 +9,13 @@ PhLImageTest >> testExtendedListPrintAttributeBlocks [
 	self assert: ((blocks collect: [ :aBlock | aBlock value: image ]) allSatisfy: #isString).
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLImageTest >> testExtendedListPrintAttributeLabels [
 
 	self assert: (image class extendedListPrintAttributeLabels allSatisfy: #isString).
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLImageTest >> testListPrintAttributeBlocks [
 
 	|blocks| 
@@ -24,7 +24,7 @@ PhLImageTest >> testListPrintAttributeBlocks [
 	self assert: ((blocks collect: [ :aBlock | aBlock value: image ]) allSatisfy: #isString).
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLImageTest >> testListPrintAttributeLabels [
 
 	self assert: (image class listPrintAttributeLabels allSatisfy: #isString).

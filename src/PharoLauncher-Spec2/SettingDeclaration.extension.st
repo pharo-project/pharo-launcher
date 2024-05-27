@@ -1,6 +1,6 @@
-Extension { #name : #SettingDeclaration }
+Extension { #name : 'SettingDeclaration' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 SettingDeclaration >> inputWidgetForFileOrDirectoryWithAction: aSymbol [
 	"Small update from the original version to get text auto-accepted as default"
 	| list button |

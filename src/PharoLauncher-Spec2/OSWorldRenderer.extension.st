@@ -1,6 +1,6 @@
-Extension { #name : #OSWorldRenderer }
+Extension { #name : 'OSWorldRenderer' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 OSWorldRenderer >> defaultWindowTitle [
 
 	^ PharoLauncherApplication isDeployed 
@@ -8,7 +8,7 @@ OSWorldRenderer >> defaultWindowTitle [
 		ifFalse: [ Smalltalk image imageFile fullName ]
 ]
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 OSWorldRenderer >> doActivate [
 	| attributes initialExtent title |
 
@@ -44,7 +44,7 @@ OSWorldRenderer >> doActivate [
 	osWindow focus
 ]
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 OSWorldRenderer >> updateWindowTitle [
 
 	"do nothing"

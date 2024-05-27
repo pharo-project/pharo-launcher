@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLRenameTemplateCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLRenameTemplateCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhLRenameTemplateCommandTest >> renameTemplateMenuItem [
 	| menu menuItems |
 	menu := (presenter rootCommandsGroup / 'Context Menu')
@@ -16,14 +17,14 @@ PhLRenameTemplateCommandTest >> renameTemplateMenuItem [
 	^ menuItems detect: [ :item | item name = 'Rename template' ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLRenameTemplateCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestTemplatesPresenter new.
 	presenter selectLocalGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameTemplateCommandTest >> testCanRenameALocalTemplate [
 	| command |
 	command := PhLRenameTemplateCommand new.
@@ -44,7 +45,7 @@ PhLRenameTemplateCommandTest >> testCanRenameALocalTemplate [
 		equals: 1.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSelected [
 	| command |
 	command := PhLRenameTemplateCommand new.
@@ -56,7 +57,7 @@ PhLRenameTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSel
 	self assert: self renameTemplateMenuItem isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 	| command |
 	command := PhLRenameTemplateCommand new.
@@ -72,7 +73,7 @@ PhLRenameTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 		hasSameElements: #( #Foo )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplateSelected [
 	| command |
 	command := PhLRenameTemplateCommand new.
@@ -85,7 +86,7 @@ PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplat
  	self deny: self renameTemplateMenuItem isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameTemplateCommandTest >> testCommandNotAvailableWhenThereIsNoTemplateSelected [
 	| command |
 	command := PhLRenameTemplateCommand new.

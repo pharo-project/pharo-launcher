@@ -9,12 +9,13 @@ Example:
 2018-07-03 10:37:53
 "
 Class {
-	#name : #PhLDateAndTimeDisplayStrategy,
-	#superclass : #PhLAbstractDateDisplayStrategy,
-	#category : #'PharoLauncher-Spec2'
+	#name : 'PhLDateAndTimeDisplayStrategy',
+	#superclass : 'PhLAbstractDateDisplayStrategy',
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDateAndTimeDisplayStrategy class >> displayStringOf: aDateAndTime [
 	^ (String
 		streamContents: [ :s | 
@@ -24,7 +25,7 @@ PhLDateAndTimeDisplayStrategy class >> displayStringOf: aDateAndTime [
 			aDateAndTime asTime print24: true on: s ]) asText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDateAndTimeDisplayStrategy class >> label [
 	^ 'Date and time'
 ]

@@ -2,18 +2,19 @@
 A simple presenter to allow to retry or cancel an action. You can provide an explanation text.
 "
 Class {
-	#name : #PhlRetryPresenter,
-	#superclass : #SpPresenter,
+	#name : 'PhlRetryPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'retryBlock',
 		'cancelBlock',
 		'explanationText',
 		'iconPresenter'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 PhlRetryPresenter class >> example [
 	(self new
 		explanation: 'Download error (probably a network error)';
@@ -22,12 +23,12 @@ PhlRetryPresenter class >> example [
 	) openModal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhlRetryPresenter >> cancelBlock: aBlock [
 	cancelBlock := aBlock
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhlRetryPresenter >> defaultLayout [ 
 	^ SpBoxLayout newLeftToRight 
 		spacing: 10;
@@ -36,12 +37,12 @@ PhlRetryPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhlRetryPresenter >> explanation: aString [ 
 	explanationText text: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -52,7 +53,7 @@ PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 		centeredRelativeToTopWindow	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhlRetryPresenter >> initializePresenters [
 	explanationText := self newText
 		beNotEditable;
@@ -63,7 +64,7 @@ PhlRetryPresenter >> initializePresenters [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhlRetryPresenter >> retryBlock: aBlock [
 	retryBlock := aBlock
 ]

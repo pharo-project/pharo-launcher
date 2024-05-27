@@ -1,11 +1,11 @@
-Extension { #name : #UnixPlatform }
+Extension { #name : 'UnixPlatform' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 UnixPlatform >> hostArchitecture [
 	^ (LibC resultOfCommand: 'uname -m') trim
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 UnixPlatform >> uname [
 	^ PhLVmProvider osLinux 
 ]

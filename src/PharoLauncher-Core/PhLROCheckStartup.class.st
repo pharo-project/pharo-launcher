@@ -3,12 +3,14 @@ Startup action used to check if the image can write in the working directory.
 Currently needed for Epicea, logs, etc.
 "
 Class {
-	#name : #PhLROCheckStartup,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLROCheckStartup',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLROCheckStartup class >> initialize [
 	"Must be run before any write acess to the file system.
 	UI should already be usable!"
@@ -18,13 +20,13 @@ PhLROCheckStartup class >> initialize [
 		atPriority: 1"
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLROCheckStartup class >> startUp [
 	
 	self verifyCanWrite
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLROCheckStartup class >> verifyCanWrite [
 
 	[ (FileLocator workingDirectory / 'phl-canwrite') asFileReference  

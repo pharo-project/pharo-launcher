@@ -11,35 +11,37 @@ I execute:
 - just printing help about my sub-commands relevant for Pharo images
 "
 Class {
-	#name : #PhLImageCliCommand,
-	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageCliCommand',
+	#superclass : 'PhLCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #image
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to management of local Pharo images.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCliCommand class >> raiseImageNotFound: anImageName [
 
 	^ NotFound signal: ('Local image ''{1}'' not found. Please enter a correct local image.' format: { anImageName  })
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCliCommand class >> raiseNewImageNotFound [
 
 	^ NotFound signal: 'An argument is missing. Please specify the name for the new Pharo image.'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCliCommand >> askForImageNumberIn: imagesToList [
 	
 	^ self cliInputRequest
@@ -50,7 +52,7 @@ PhLImageCliCommand >> askForImageNumberIn: imagesToList [
 		answer
 ]
 
-{ #category : #'find-select' }
+{ #category : 'find-select' }
 PhLImageCliCommand >> findByPath: anImageName [
 	(anImageName asFileReference exists
 		and: [ anImageName asFileReference isFile ])
@@ -58,30 +60,30 @@ PhLImageCliCommand >> findByPath: anImageName [
 	^ PhLImage location: anImageName asFileReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommand >> findImage [
 	^ self findImage: self imageName  
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommand >> findImage: anImageName [
 	^ [ self findInRepository: anImageName ]
 		on: NotFound
 		do: [ self findByPath: anImageName ]
 ]
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageCliCommand >> findInRepository: anImageName [
 	^ self imageRepository imageNamed: anImageName asLowercase
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommand >> imageName [
 
 	^ self positional: #existingImageName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCliCommand >> listImagesAndAskForImageNumber [
 	
 	| imageNumber imagesToList |
@@ -93,12 +95,12 @@ PhLImageCliCommand >> listImagesAndAskForImageNumber [
 	^ imagesToList at: imageNumber.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCliCommand >> modelClass [
 	^ self class environment at: #PhLImage
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCliCommand >> selectedImage [
 
 	[ self imageName ]
@@ -108,7 +110,7 @@ PhLImageCliCommand >> selectedImage [
 	^ self findImage
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommand >> targetName [
 
 	^ self positional: #newImageName

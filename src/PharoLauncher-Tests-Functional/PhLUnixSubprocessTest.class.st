@@ -2,12 +2,13 @@
 This class contains tests to ensure we can expected behaviour from the library used
 "
 Class {
-	#name : #PhLUnixSubprocessTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#name : 'PhLUnixSubprocessTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLUnixSubprocessTest >> testCanGetExitStatusFromLaunchCommand [
 	| process |
 	process := OSSUnixSubprocess new 
@@ -26,7 +27,7 @@ PhLUnixSubprocessTest >> testCanGetExitStatusFromLaunchCommand [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLUnixSubprocessTest >> testCanGetStdErrFromLaunchCommand [
 	| process stdErrString |
 	process := OSSUnixSubprocess new 

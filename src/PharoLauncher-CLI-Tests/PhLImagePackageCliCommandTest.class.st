@@ -1,14 +1,15 @@
 Class {
-	#name : #PhLImagePackageCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
+	#name : 'PhLImagePackageCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
 	#instVars : [
 		'vmStoreBackup',
 		'vmName'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImagePackageCliCommandTest >> setUp [
 	| tempVmStoreFolder |
 	super setUp.
@@ -24,13 +25,13 @@ PhLImagePackageCliCommandTest >> setUp [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImagePackageCliCommandTest >> tearDown [
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagePackageCliCommandTest >> testCreateLaunchScriptShouldSucceed [
 	| imageFile script |
 	imageFile := self imageRepository createImageNamed: 'myImage'.
@@ -44,7 +45,7 @@ PhLImagePackageCliCommandTest >> testCreateLaunchScriptShouldSucceed [
 	self assert: (script readStream contents includesSubstring: '#!/usr/bin/env bash' ) 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagePackageCliCommandTest >> testCreatePackageShouldSucceed [
 	| packaged  |
 	self imageRepository createImageNamed: 'myImage'.
@@ -58,7 +59,7 @@ PhLImagePackageCliCommandTest >> testCreatePackageShouldSucceed [
 			self assert: (packaged / 'myImage' / 'myImage.image') isFile ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagePackageCliCommandTest >> testCreatePackageWhenNoLocationSetShouldReturnError [
 	self imageRepository createImageNamed: 'myImage'.
 	(self imageRepository baseDirectory / 'directoryWithResultingPackage' / 'myImage') ensureCreateDirectory. 
@@ -71,7 +72,7 @@ PhLImagePackageCliCommandTest >> testCreatePackageWhenNoLocationSetShouldReturnE
 			self assert: (self errorString includesSubstring: 'specify the path') ].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagePackageCliCommandTest >> testCreatePackageWhenOutputFolderExistsShouldReturnError [
 	| outputFolder |
 	self imageRepository createImageNamed: 'myImage'.
@@ -86,7 +87,7 @@ PhLImagePackageCliCommandTest >> testCreatePackageWhenOutputFolderExistsShouldRe
 			self assert: (self errorString includesSubstring: 'Directory with the image name already exists') ].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagePackageCliCommandTest >> testCreateZippedPackageShouldSucceed [
 	| packaged |
 	self imageRepository createImageNamed: 'myImage'.

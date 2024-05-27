@@ -1,12 +1,12 @@
-Extension { #name : #OSSUnixSubprocess }
+Extension { #name : 'OSSUnixSubprocess' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 OSSUnixSubprocess >> argumentsString [
 
 	^ Character space join: self argVArguments allButLast
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 OSSUnixSubprocess >> getExceptionMessageFor: cmdString status: statusMsg stdError: errorString [
 
 	^ String streamContents: [:aStream | 
@@ -17,7 +17,7 @@ OSSUnixSubprocess >> getExceptionMessageFor: cmdString status: statusMsg stdErro
 	]
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 OSSUnixSubprocess >> runAndWaitWithStdOutput [
 	"this is helper method to catch std. output and return to sender of this method, 
 	 exit codes are handled and proper exception is raised, when not successful

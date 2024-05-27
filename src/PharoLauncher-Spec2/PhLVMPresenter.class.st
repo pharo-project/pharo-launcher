@@ -2,25 +2,26 @@
 A simple UI to show locally available Virtual Machines to launch Pharo images.
 "
 Class {
-	#name : #PhLVMPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLVMPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
 		'rootCommandsGroup'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLVMPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 	rootCommandGroup
 		register: (self buildToolbarGroup);
 		register: (self buildContextualMenuGroup)
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLVMPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		register: PhLUpdateVmCommand forSpec;
@@ -30,7 +31,7 @@ PhLVMPresenter class >> buildContextualMenuGroup [
 
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLVMPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher VM Manager toolbar';
@@ -44,25 +45,25 @@ PhLVMPresenter class >> buildToolbarGroup [
 		yourself
 ]
 
-{ #category : #examples }
+{ #category : 'examples' }
 PhLVMPresenter class >> example [
 	<example>
 	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVMPresenter >> datasource [
 	^ self model
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
 	^ SpBoxLayout newVertical
 		add: vmTable;
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVMPresenter >> initializePresenters [
 	vmTable := self newTable
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
@@ -92,7 +93,7 @@ PhLVMPresenter >> initializePresenters [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVMPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -105,23 +106,23 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVMPresenter >> readableDateFor: aTimestamp [
 	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
 
 ]
 
-{ #category : #refreshing }
+{ #category : 'refreshing' }
 PhLVMPresenter >> refresh [ 
 	vmTable items: self datasource virtualMachines
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVMPresenter >> rootCommandsGroup [ 
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
 ]

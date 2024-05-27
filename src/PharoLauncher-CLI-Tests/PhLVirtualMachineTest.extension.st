@@ -1,6 +1,6 @@
-Extension { #name : #PhLVirtualMachineTest }
+Extension { #name : 'PhLVirtualMachineTest' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLVirtualMachineTest >> testListPrintAttributeBlocks [
 
 	|blocks vm| 
@@ -12,7 +12,7 @@ PhLVirtualMachineTest >> testListPrintAttributeBlocks [
 	self assert: ((blocks collect: [ :aBlock | aBlock value: vm ]) allSatisfy: #isString).
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLVirtualMachineTest >> testListPrintAttributeLabels [
 
 	self assert: (PhLVirtualMachine listPrintAttributeLabels allSatisfy: #isString)

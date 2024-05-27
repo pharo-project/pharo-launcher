@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLProcessCliCommandTest,
-	#superclass : #PhLCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLProcessCliCommandTest',
+	#superclass : 'PhLCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessCliCommandTest >> testExecuteOSShellCommand [
 
 	"nothing is executed"
@@ -12,7 +13,7 @@ PhLProcessCliCommandTest >> testExecuteOSShellCommand [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessCliCommandTest >> testExecuteOSShellCommandWithArgs [
 
 	| aCmd |

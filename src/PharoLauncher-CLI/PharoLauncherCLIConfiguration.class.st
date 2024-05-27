@@ -2,8 +2,8 @@
 Create a file containing a ston with all the user settings used for the pharo launcher in command line. 
 "
 Class {
-	#name : #PharoLauncherCLIConfiguration,
-	#superclass : #Object,
+	#name : 'PharoLauncherCLIConfiguration',
+	#superclass : 'Object',
 	#instVars : [
 		'imagesDirectory',
 		'vmsDirectory',
@@ -11,10 +11,12 @@ Class {
 		'initScriptsDirectory',
 		'defaultTemplate'
 	],
-	#category : #'PharoLauncher-CLI-Model'
+	#category : 'PharoLauncher-CLI-Model',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Model'
 }
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
 	PhLNotificationCenter default outStream
 		nextPutAll:
@@ -24,7 +26,7 @@ PharoLauncherCLIConfiguration class >> configFileNotFound: aFile [
 	^ self createConfigurationFile: aFile
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PharoLauncherCLIConfiguration class >> configurationFromFile: aFile [
 	^ [ self fetchConfigurationFromFile: aFile ]
 		on: FileDoesNotExistException
@@ -32,7 +34,7 @@ PharoLauncherCLIConfiguration class >> configurationFromFile: aFile [
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PharoLauncherCLIConfiguration class >> createConfigurationFile: aFileReference [ 
 	| config |
 	config := self new.
@@ -41,13 +43,13 @@ PharoLauncherCLIConfiguration class >> createConfigurationFile: aFileReference [
 	^ config
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration class >> defaultConfiguration [
 
 	^ self configurationFromFile: self preferencesFile 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PharoLauncherCLIConfiguration class >> fetchConfigurationFromFile: aFile [
 	^ aFile
 		readStreamDo: [ :stream | 
@@ -58,7 +60,7 @@ PharoLauncherCLIConfiguration class >> fetchConfigurationFromFile: aFile [
 					PhLInvalidConfiguration signal: error messageText ] ]
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PharoLauncherCLIConfiguration class >> logIncorrectConfigurationFile: aFile [
 	PhLNotificationCenter default errorStream
 		nextPutAll:
@@ -67,17 +69,17 @@ PharoLauncherCLIConfiguration class >> logIncorrectConfigurationFile: aFile [
 	^ self createConfigurationFile: aFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration class >> preferencesFile [
 	^ (FileLocator launcherUserFilesLocation  / 'launcherSettings.ston') asFileReference 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration class >> preferencesFileName [
 	^ 'launcherSettings.ston'
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PharoLauncherCLIConfiguration >> = anObject [
 	self == anObject
 		ifTrue: [ ^ true ].
@@ -89,12 +91,12 @@ PharoLauncherCLIConfiguration >> = anObject [
 						and: [ vmsDirectory = anObject vmsDirectory ] ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> defaultTemplate [
 	^ defaultTemplate ifNil: [ #stable ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> defaultTemplate: aString [ 
 	"default template can only be the stable Pharo version or the dev Pharo version"
 	
@@ -102,7 +104,7 @@ PharoLauncherCLIConfiguration >> defaultTemplate: aString [
 		ifTrue: [ defaultTemplate := aString asSymbol ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PharoLauncherCLIConfiguration >> hash [
 	^ imagesDirectory hash
 		bitXor:
@@ -110,27 +112,27 @@ PharoLauncherCLIConfiguration >> hash [
 				bitXor: vmsDirectory hash)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> imagesDirectory [
 	^ imagesDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> imagesDirectory: aFileReference [ 
 	imagesDirectory := aFileReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> initScriptsDirectory [
 	^ initScriptsDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> initScriptsDirectory: aFileReference [ 
 	initScriptsDirectory := aFileReference
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
 	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation asFileReference .
@@ -140,22 +142,22 @@ PharoLauncherCLIConfiguration >> initialize [
 	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> launchImageFromALoginShell [
 	^ launchImageFromALoginShell
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> launchImageFromALoginShell: aBoolean [
 	launchImageFromALoginShell := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> vmsDirectory [
 	^ vmsDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIConfiguration >> vmsDirectory: aFileReference [ 
 	vmsDirectory := aFileReference
 ]

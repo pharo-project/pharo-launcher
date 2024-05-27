@@ -2,16 +2,17 @@
 A ConsoleListFormatterTest is a test class for testing the behavior of ConsoleListFormatter
 "
 Class {
-	#name : #ConsoleListFormatterTest,
-	#superclass : #TestCase,
+	#name : 'ConsoleListFormatterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'formatter',
 		'command'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 ConsoleListFormatterTest >> setUp [
 	
 	super setUp.
@@ -20,7 +21,7 @@ ConsoleListFormatterTest >> setUp [
 	command cliFormatter: formatter.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testAttributeValuesFrom [
 
 	formatter attributeValueBlocks: { 
@@ -31,14 +32,14 @@ ConsoleListFormatterTest >> testAttributeValuesFrom [
 	self assert: (formatter attributeValuesFrom: 2) equals: #('2' '4' '8').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testFormatterAccessors [
 
 	formatter attributeLabels: #().
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testGetColumnWidthsFrom [
 	formatter attributeLabels: #('1234567890' 'x' 'x').
 	formatter attributeValueBlocks:
@@ -51,7 +52,7 @@ ConsoleListFormatterTest >> testGetColumnWidthsFrom [
 		equals: #(10 5 5)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
 
 	| size |
@@ -61,7 +62,7 @@ ConsoleListFormatterTest >> testGetMaxPrintStringWidthForPrintBlock [
 	self assert: size equals: 5.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 	formatter
 		printAttributeHeaders: #('label1' 'label2' 'label3')
@@ -78,7 +79,7 @@ ConsoleListFormatterTest >> testPrintAttributeHeadersBy [
 						newLine ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintAttributeHeadersByNoSequence [
 	"formatted header should not contain sequence column"
 
@@ -99,7 +100,7 @@ ConsoleListFormatterTest >> testPrintAttributeHeadersByNoSequence [
 						newLine ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 
 	|expectedString|
@@ -118,7 +119,7 @@ ConsoleListFormatterTest >> testPrintAttributeRowsBy [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintAttributeTable [
 
 	|expectedString|
@@ -140,7 +141,7 @@ ConsoleListFormatterTest >> testPrintAttributeTable [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintAttributeTableWithDefaultValue [
 
 	|expectedString|
@@ -162,7 +163,7 @@ ConsoleListFormatterTest >> testPrintAttributeTableWithDefaultValue [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintCellWidth [
 
 	formatter printCell: 'value' width: 10.
@@ -177,21 +178,21 @@ ConsoleListFormatterTest >> testPrintCellWidth [
 	self assert: command outStream contents equals: 'some ... string'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintDelimiter [
 
 	formatter printDelimiter.
 	self assert: command outStream contents equals: command delimiter.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintHeaderLinesBy [
 
 	formatter printHeaderLinesBy: #(1 1 2 2).
 	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*-*-*--*--'; newLine]).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintHeaderLinesByNoSequence [
 
 	"formatted header line should not contain sequence column"
@@ -200,14 +201,14 @@ ConsoleListFormatterTest >> testPrintHeaderLinesByNoSequence [
 	self assert: command outStream contents equals: (String streamContents: [:aStream | aStream nextPutAll: '--*--'; newLine]).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintLineSized [
 
 	formatter printLineSized: 5.
 	self assert: command outStream contents equals: '-----'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintListAsSton [
 
 	| domainObjects deserialized |
@@ -221,7 +222,7 @@ ConsoleListFormatterTest >> testPrintListAsSton [
 	self assert: deserialized first class equals: PhLImageMock.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRowModesDisabled [
 	| tableModeString |
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
@@ -240,7 +241,7 @@ ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonAndRo
 	self assert: formatter outStream contents equals: tableModeString
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisabledAndRowModeEnabled [
 
 	| rowModeString |
@@ -262,7 +263,7 @@ ConsoleListFormatterTest >> testPrintListShouldPrintAttributesTableWhenStonDisab
 	self assert: formatter outStream contents equals: rowModeString
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 	|expectedString|
 	formatter attributeLabels: #('Value' 'Squared' 'Raised to 3').
@@ -289,7 +290,7 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRow [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 	|expectedString|
 	"row output should not contain sequence number"
@@ -308,7 +309,7 @@ ConsoleListFormatterTest >> testPrintOneAttrPerRowNoSequence [
 	self assert: formatter outStream contents equals: expectedString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testPrintRowValuesBy [
 	formatter printRowValues: #('One' 'Two' 'Three') by: #(5 3 5).
 	
@@ -322,7 +323,7 @@ ConsoleListFormatterTest >> testPrintRowValuesBy [
 						newLine ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleListFormatterTest >> testTableColumnWidthLimit [
 
 	| size short longer longest|

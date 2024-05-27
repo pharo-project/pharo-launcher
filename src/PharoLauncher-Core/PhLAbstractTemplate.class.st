@@ -5,16 +5,18 @@ Currently, all templates are represented by a zip file locally or on the network
 
 "
 Class {
-	#name : #PhLAbstractTemplate,
-	#superclass : #PhLObject,
+	#name : 'PhLAbstractTemplate',
+	#superclass : 'PhLObject',
 	#instVars : [
 		'name',
 		'shortName'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	"Extract myself to aDirectory. Name the resulting image aString"
 	| extractionDirectory archive |
@@ -35,7 +37,7 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 		originTemplate: self.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
 	| tempDirectory |
@@ -64,22 +66,22 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	^ tempDirectory
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLAbstractTemplate >> hasChildren [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLAbstractTemplate >> isTemplate [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAbstractTemplate >> name [
 	^ name
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLAbstractTemplate >> printOn: aStream [
 	aStream
 		nextPutAll: 'Image template (';
@@ -87,7 +89,7 @@ PhLAbstractTemplate >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDirectory withName: targetName [
 	"Move the image files from anywhere within extractionDirectory (even subdirectories) to aDirectory and give the image the name aString"
 
@@ -110,32 +112,32 @@ PhLAbstractTemplate >> relocateImageFilesFrom: extractionDirectory to: targetDir
 		ifTrue: [ versionFile moveTo: targetDirectory / versionFile basename ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLAbstractTemplate >> renameTo: aString [
 	name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAbstractTemplate >> shortName [
 	^ shortName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAbstractTemplate >> shortName: aString [ 
 	shortName := aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLAbstractTemplate >> shouldComputeChildrenLazily [ 
 	^ false
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLAbstractTemplate >> suggestedImageName [
 	^ self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAbstractTemplate >> zipArchive [
 	"Return a reference to the archive file representing this template"
 	^ self subclassResponsibility

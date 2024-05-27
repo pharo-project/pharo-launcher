@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLVMListCliCommandTest,
-	#superclass : #PhLVmCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLVMListCliCommandTest',
+	#superclass : 'PhLVmCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMListCliCommandTest >> testListVirtualMachines [
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.
@@ -17,7 +18,7 @@ PhLVMListCliCommandTest >> testListVirtualMachines [
 	self assert: (self outputString includesSubstring: 'myVm3')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMListCliCommandTest >> testListVirtualMachinesAsSton [
 	| vm |
 	self addVmNamed: 'myVm1'.

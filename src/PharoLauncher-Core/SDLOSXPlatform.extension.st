@@ -1,6 +1,6 @@
-Extension { #name : #SDLOSXPlatform }
+Extension { #name : 'SDLOSXPlatform' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 SDLOSXPlatform >> initPlatformSpecific [	
 	ObjCLibrary uniqueInstance
 		sendMessageNamed: 'finishLaunching'

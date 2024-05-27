@@ -1,13 +1,13 @@
-Extension { #name : #LGitLibrary }
+Extension { #name : 'LGitLibrary' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 LGitLibrary class >> startUp: isImageStarting [
 	"avoid init error with libgit. See https://github.com/pharo-project/pharo/issues/4463"
 	(isImageStarting and: [ PharoLauncherApplication isDeployed not ])
 		ifTrue: [ self uniqueInstance initializeLibGit2 ]
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 LGitLibrary >> unixModuleName [
 	| pluginDir |
 	pluginDir := Smalltalk vm directory asFileReference.

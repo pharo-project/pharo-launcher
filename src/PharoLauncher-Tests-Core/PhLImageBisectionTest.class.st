@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageBisectionTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLImageBisectionTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectionTest >> testDichotomy [
 	| bisect testedIndexes result |
 	testedIndexes := OrderedCollection new.
@@ -19,7 +20,7 @@ PhLImageBisectionTest >> testDichotomy [
 	self assert: result equals: 8
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectionTest >> testDichotomyWithMissingValues [
 	| bisect testedIndexes result |
 	testedIndexes := OrderedCollection new.
@@ -34,7 +35,7 @@ PhLImageBisectionTest >> testDichotomyWithMissingValues [
 	self assert: result equals: 10
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectionTest >> testGetExceptionWhenStartIsBiggerThanEnd [
 
 	self
@@ -42,7 +43,7 @@ PhLImageBisectionTest >> testGetExceptionWhenStartIsBiggerThanEnd [
 		raise: PhLImageBisectionError
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectionTest >> testGetFirstValueEvaluatingToFalse [
 
 	| bisect |
@@ -52,7 +53,7 @@ PhLImageBisectionTest >> testGetFirstValueEvaluatingToFalse [
 	self assert: bisect result equals: 8.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectionTest >> testGetStartIndexWhenStartAndEndHaveSameValue [
 
 	| bisect |

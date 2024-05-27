@@ -2,12 +2,14 @@
 Remove an image from the hard disk. Can be applied to multiple images at the same time.
 "
 Class {
-	#name : #PhLDeleteImageCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLDeleteImageCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLDeleteImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDeleteIcon;
@@ -16,12 +18,12 @@ PhLDeleteImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDeleteImageCommand >> canBeExecuted [ 
 	^ self imagesPresenter selectedImages notEmpty
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLDeleteImageCommand >> execute [
 	| images imageNames confirmMessage answer |
 	
@@ -38,7 +40,7 @@ PhLDeleteImageCommand >> execute [
 		self imagesPresenter imageRepository deleteImages: images ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDeleteImageCommand >> initialize [
 	super initialize.
 	self

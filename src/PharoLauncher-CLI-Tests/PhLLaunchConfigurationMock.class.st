@@ -2,18 +2,19 @@
 This is sample image launch configuration mock to be used just in tests (bypassing PhLLaunchConfiguration object)
 "
 Class {
-	#name : #PhLLaunchConfigurationMock,
-	#superclass : #Object,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLLaunchConfigurationMock',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #mock }
+{ #category : 'mock' }
 PhLLaunchConfigurationMock >> commandString [
 
 	^ 'Mock image sample command'
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchConfigurationMock >> workingDirectory: aFileReference [ 
 	
 	"ignore"

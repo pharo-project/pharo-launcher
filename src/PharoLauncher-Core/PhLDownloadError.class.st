@@ -3,22 +3,24 @@ I represent download errors.
 I can be added as a node to the template tree. That's why I have some methods to say I have no children and I am not a template (polymorphism with PhLAbstractTemplate)
 "
 Class {
-	#name : #PhLDownloadError,
-	#superclass : #PhLError,
+	#name : 'PhLDownloadError',
+	#superclass : 'PhLError',
 	#instVars : [
 		'url'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #signalling }
+{ #category : 'signalling' }
 PhLDownloadError class >> signalUrl: anUrl [
 	^ self new
 		setUrl: anUrl;
 		signal
 ]
 
-{ #category : #signalling }
+{ #category : 'signalling' }
 PhLDownloadError class >> signalUrl: anUrl message: errorMessage [
 	^ self new
 		setUrl: anUrl;
@@ -26,17 +28,17 @@ PhLDownloadError class >> signalUrl: anUrl message: errorMessage [
 		signal
 ]
 
-{ #category : #polymorphism }
+{ #category : 'polymorphism' }
 PhLDownloadError >> hasChildren [ 
 	^ false
 ]
 
-{ #category : #polymorphism }
+{ #category : 'polymorphism' }
 PhLDownloadError >> isTemplate [
 	^ false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadError >> longDescription [
 	^ String streamContents: [ :stream |
 		stream 
@@ -45,12 +47,12 @@ PhLDownloadError >> longDescription [
 		messageText ifNotNil: [ stream cr; nextPutAll: messageText ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadError >> name [
 	^ 'network error'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDownloadError >> setUrl: anUrl [	
 	url := anUrl
 ]

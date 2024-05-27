@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageInfoCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageInfoCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageInfoCliCommandTest >> testImageInfoShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -14,7 +15,7 @@ PhLImageInfoCliCommandTest >> testImageInfoShouldSucceed [
 	self assert: (self outputString includesSubstring:'https://testurl').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageInfoCliCommandTest >> testImageInfoWhenNoImageNameProvidedAllowsInteractiveImageSelection [
 
 	| image1 image2 |
@@ -29,7 +30,7 @@ PhLImageInfoCliCommandTest >> testImageInfoWhenNoImageNameProvidedAllowsInteract
 	self assert: (self outputString includesSubstring:'https://testurl')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageInfoCliCommandTest >> testImageInfoWrongImageNameShouldRaiseError [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

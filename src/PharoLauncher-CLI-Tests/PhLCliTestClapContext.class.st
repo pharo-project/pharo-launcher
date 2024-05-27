@@ -4,15 +4,16 @@ It allows to use a Pharo launcher model for tests (using images and templates fr
 The default context will instantiate a new `PharoLauncherCLIModel` while I can return a predefined pharo launcher model.
 "
 Class {
-	#name : #PhLCliTestClapContext,
-	#superclass : #ClapContext,
+	#name : 'PhLCliTestClapContext',
+	#superclass : 'ClapContext',
 	#instVars : [
 		'launcherModel'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliTestClapContext >> command [ 
 
 	^ super command
@@ -20,7 +21,7 @@ PhLCliTestClapContext >> command [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCliTestClapContext >> initialize [ 
 
 	super initialize.
@@ -28,7 +29,7 @@ PhLCliTestClapContext >> initialize [
 	launcherModel consoleInputRequest: (ConsoleInputRequestMock inputStream: nil outputStream: self stdout)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliTestClapContext >> pharoLauncherModel [
 
 	^ launcherModel

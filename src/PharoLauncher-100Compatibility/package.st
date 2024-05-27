@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-100Compatibility' }
+Package { #name : 'PharoLauncher-100Compatibility' }

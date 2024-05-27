@@ -2,12 +2,13 @@
 A PhLImageCreateFromRemoteRepoCliCommandTest is a test class for testing the behavior of PhLImageCreateFromRemoteRepoCliCommand
 "
 Class {
-	#name : #PhLImageCreateFromRemoteRepoCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCreateFromRemoteRepoCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testBaselineName [
 
 	| createCommand |
@@ -23,7 +24,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testBaselineName [
 	self assert: createCommand baselineName	equals: 'SomeBaseline'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testCreateFromRemoteRepoMissingArgs [
 
 	self runCommand: #('launcher' 'image' 'create' 'fromRepo').
@@ -31,7 +32,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testCreateFromRemoteRepoMissingArg
 	self assert: (self errorString includesSubstring: 'specify the Github repository').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testInvalidRepoNames [
 
 	| shouldFailNames commandSpec |
@@ -45,7 +46,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testInvalidRepoNames [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testMcLoadProjectFromRepo [
 
 	| createCommand |
@@ -56,7 +57,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testMcLoadProjectFromRepo [
 	self assert: createCommand mcLoadProjectFromRepo 	equals: 'Iceberg remoteTypeSelector: #httpsUrl. Metacello new baseline: ''PharoLauncher''; repository: ''github://pharo-project/pharo-launcher:development/src''; onConflictUseIncoming; load: ''tests''' surroundedByDoubleQuotes.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepo [
 
 	|aReport|
@@ -64,7 +65,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepo [
 	self assert: aReport isSuccess description: aReport printString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepoWithAllArgs [
 
 	|aReport|
@@ -72,7 +73,7 @@ PhLImageCreateFromRemoteRepoCliCommandTest >> testValidCreateFromRemoteRepoWithA
 	self assert: aReport isSuccess description: aReport printString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromRemoteRepoCliCommandTest >> testValidateRepoFullName [
 
 	| commandSpec validRepoNames invalidRepoName createCommand |

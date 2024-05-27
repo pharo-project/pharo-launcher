@@ -2,27 +2,29 @@
 Announcement thrown when current templates sources do not match downloaded templates sources.
 "
 Class {
-	#name : #PhLSourcesFileUpdateAvailable,
-	#superclass : #Announcement,
+	#name : 'PhLSourcesFileUpdateAvailable',
+	#superclass : 'Announcement',
 	#instVars : [
 		'sources'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLSourcesFileUpdateAvailable class >> sources: aListOfTemplateSources [ 
 	^ self new 
 		sources: aListOfTemplateSources;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLSourcesFileUpdateAvailable >> sources [
 	^ sources
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLSourcesFileUpdateAvailable >> sources: aListOfTemplateSources [ 
 	sources := aListOfTemplateSources
 ]

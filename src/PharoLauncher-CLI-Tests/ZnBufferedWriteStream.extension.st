@@ -1,6 +1,6 @@
-Extension { #name : #ZnBufferedWriteStream }
+Extension { #name : 'ZnBufferedWriteStream' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 ZnBufferedWriteStream >> contents [
 	"Should only be used for testing"
 	self flush.

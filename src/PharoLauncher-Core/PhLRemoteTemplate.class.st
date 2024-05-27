@@ -2,20 +2,22 @@
 I represent a template that is somewhere on the network.
 "
 Class {
-	#name : #PhLRemoteTemplate,
-	#superclass : #PhLAbstractTemplate,
+	#name : 'PhLRemoteTemplate',
+	#superclass : 'PhLAbstractTemplate',
 	#instVars : [
 		'url'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 PhLRemoteTemplate class >> example [ 
 	^ self name: 'Pharo Mooc' url: 'https://mooc.pharo.org/image/PharoWeb.zip'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLRemoteTemplate class >> name: aString shortName: shortNameString url: anUrl username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl)
 		  shortName: shortNameString;
@@ -24,19 +26,19 @@ PhLRemoteTemplate class >> name: aString shortName: shortNameString url: anUrl u
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLRemoteTemplate class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
 	^ self name: aString shortName: nil url: anUrl username: anotherString password: yetAnotherString
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLRemoteTemplate >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
@@ -44,28 +46,28 @@ PhLRemoteTemplate >> = anObject [
 		and: [ url = anObject url ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLRemoteTemplate >> hash [
 	^ name hash bitXor: url hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> password [
 	^ url password
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> password: aString [
 	url password: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLRemoteTemplate >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLRemoteTemplate >> suggestedImageName [
 	| rxMatcher |
 	rxMatcher := '(\((\w+).zip\)).*' asRegex.
@@ -74,22 +76,22 @@ PhLRemoteTemplate >> suggestedImageName [
 		ifFalse: [ self name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> url [
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> username [
 	^ url username
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> username: aString [
 	url username: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoteTemplate >> zipArchive [
 	"The local template group takes care of cashing downloaded templates."
 

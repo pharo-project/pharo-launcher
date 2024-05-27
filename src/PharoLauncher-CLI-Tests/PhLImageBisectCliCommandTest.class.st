@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLImageBisectCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
+	#name : 'PhLImageBisectCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
 	#instVars : [
 		'outputStream'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageBisectCliCommandTest >> setUp [
 
 	super setUp.
@@ -16,7 +17,7 @@ PhLImageBisectCliCommandTest >> setUp [
 	context pharoLauncherModel consoleInputRequest outputStream: outputStream.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanAskfFirstKnownFaultyImage [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).
@@ -29,7 +30,7 @@ PhLImageBisectCliCommandTest >> testCanAskfFirstKnownFaultyImage [
 	self assert: answer equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanAskfLastKnownCorrectImage [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).
@@ -42,7 +43,7 @@ PhLImageBisectCliCommandTest >> testCanAskfLastKnownCorrectImage [
 	self assert: answer equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanSpecifyPharoVersion [
 	| command |
 	context arguments: #( 'launcher' 'image' 'bisect' '--pharoVersion' '11').
@@ -51,7 +52,7 @@ PhLImageBisectCliCommandTest >> testCanSpecifyPharoVersion [
 	self assert: command pharoVersion equals: 11
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageOnlyAcceptsValuesFromBuildValues [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).
@@ -66,7 +67,7 @@ PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageOnlyAcceptsValuesFromBu
 	self assert: self nbInputAnswerRead equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageTakesLastBuildValueIfNoInput [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).
@@ -79,7 +80,7 @@ PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageTakesLastBuildValueIfNo
 	self assert: answer equals: 9
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testGetPharoDevVersionWhenNoVersionSpecified [
 	| devTemplate |
 	self launcherModel
@@ -96,7 +97,7 @@ PhLImageBisectCliCommandTest >> testGetPharoDevVersionWhenNoVersionSpecified [
 		equals: '10'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testLastKnownCorrectImageOnlyAcceptsValuesFromBuildValues [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).
@@ -111,7 +112,7 @@ PhLImageBisectCliCommandTest >> testLastKnownCorrectImageOnlyAcceptsValuesFromBu
 	self assert: self nbInputAnswerRead equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageBisectCliCommandTest >> testLastKnownCorrectImageTakesFirstBuildValueIfNoInput [
 	| answer command |
 	context arguments: #( 'launcher' 'image' 'bisect' ).

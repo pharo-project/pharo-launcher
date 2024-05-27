@@ -9,17 +9,18 @@ Two things unique to GToolkit setup:
 * Per the GToolkit team on 8/28/2020 on the GT Discord Server, general channel
 "
 Class {
-	#name : #PhLGToolkitVirtualMachine,
-	#superclass : #PhLVirtualMachine,
-	#category : #'PharoLauncher-GToolkit'
+	#name : 'PhLGToolkitVirtualMachine',
+	#superclass : 'PhLVirtualMachine',
+	#category : 'PharoLauncher-GToolkit',
+	#package : 'PharoLauncher-GToolkit'
 }
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLGToolkitVirtualMachine class >> executableName [
 	^ 'GlamorousToolkit'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLGToolkitVirtualMachine class >> versionPrefix [
 	^ 'gt-'
 ]

@@ -1,6 +1,6 @@
-Extension { #name : #SpPresenter }
+Extension { #name : 'SpPresenter' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 SpPresenter >> newLaunchToolbar [
 
 	^ self newToolbar

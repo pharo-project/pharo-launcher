@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLCliCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLCliCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'context'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhLCliCommandTest >> assertCommand: commandArgsArray toPrintHelpWith: printHelpString [
 
 	"reset output and check that result of command contains expected print help string"
@@ -17,57 +18,57 @@ PhLCliCommandTest >> assertCommand: commandArgsArray toPrintHelpWith: printHelpS
 	self assert: (self outputString includesSubstring: printHelpString).
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhLCliCommandTest >> assertFailure [
 	self deny: context exitStatus equals: 0
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhLCliCommandTest >> assertSuccess [
 	self assert: context exitStatus equals: 0.
 	self assert: self errorString equals: ''
 ]
 
-{ #category : #instance }
+{ #category : 'instance' }
 PhLCliCommandTest >> defaultTemplateCategoryName [
 
 	^ PhLTemplateGroupRepository new defaultTemplateCategoryName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommandTest >> errorString [
 	^ context stdio stderr contents utf8Decoded
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommandTest >> launcherModel [
 	^ context pharoLauncherModel
 ]
 
-{ #category : #resetting }
+{ #category : 'resetting' }
 PhLCliCommandTest >> outputReset [
 	"this is for test purposes only, to have clear output, when asserting contents"
 	context stdio stdout resetContents
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
 ]
 
-{ #category : #'process actions' }
+{ #category : 'process actions' }
 PhLCliCommandTest >> runCommand: args [
 	^ (context arguments: args) execute.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCliCommandTest >> setUp [
 
 	super setUp.
 	context := PhLCliTestClapContext specification: PhLCliCommand launcherCommand.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testExecuteLauncherCommandToPrintHelp [
 	|expectedPrintout|
 	expectedPrintout := 'This is command line interface of Pharo Launcher'.
@@ -78,7 +79,7 @@ PhLCliCommandTest >> testExecuteLauncherCommandToPrintHelp [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testExecuteLauncherCommandToPrintVersion [
 	|expectedPrintout|
 	expectedPrintout := PhLAboutCommand new launcherVersion.
@@ -87,7 +88,7 @@ PhLCliCommandTest >> testExecuteLauncherCommandToPrintVersion [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirstElementWhenBriefFlagEnabled [
 	
 	| aCommand cmdSpec|
@@ -99,7 +100,7 @@ PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnCollectionWithFirs
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnOriginalCollectionWhenNoBriefFlag [
 	
 	| aCommand |
@@ -110,7 +111,7 @@ PhLCliCommandTest >> testFilterPrintAttributesFromShouldReturnOriginalCollection
 	self assert: (aCommand filterPrintAttributesFrom: #(1 2 3)) equals: #(1 2 3).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testHasFlag [
 
 	"implicit value of not implemented command bool argument is false"
@@ -122,7 +123,7 @@ PhLCliCommandTest >> testHasFlag [
 	self assert: (aCommand hasFlag: #help).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActive [
 	
 	| aCommand cmdSpec|
@@ -134,7 +135,7 @@ PhLCliCommandTest >> testImplicitDelimiterIsColonWhenRowModeActive [
 	self assert: aCommand implicitDelimiter equals: ': '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testImplicitDelimiterIsSpace [
 	
 	| aCommand |
@@ -143,7 +144,7 @@ PhLCliCommandTest >> testImplicitDelimiterIsSpace [
 	self assert: aCommand implicitDelimiter equals: ' '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testIsProductionCommandClass [
 
 	"test whether production classes are correctly set, mock should return false"
@@ -151,7 +152,7 @@ PhLCliCommandTest >> testIsProductionCommandClass [
 	self deny: PhLCliCommandMock isProductionCommandClass.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testListPrintAttributeBlocks [
 	
 	| aCommand |
@@ -161,7 +162,7 @@ PhLCliCommandTest >> testListPrintAttributeBlocks [
 	self assert: aCommand listPrintAttributeBlocks isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testListPrintAttributeLabels [
 	
 	| aCommand |	
@@ -171,7 +172,7 @@ PhLCliCommandTest >> testListPrintAttributeLabels [
 	self assert: aCommand listPrintAttributeLabels isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCliCommandTest >> testPositionalWithValue [
 
 	"implicit value of not implemented/missing flag with parameter should return nil"
@@ -192,7 +193,7 @@ PhLCliCommandTest >> testPositionalWithValue [
 	self assert: (aCommand positional: #delimiter) equals: aCommand implicitDelimiter.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommandTest >> validationReportFor: args [
 
 	context arguments: args; match.

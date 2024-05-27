@@ -1,14 +1,15 @@
 Trait {
-	#name : #TPhLVirtualMachineTestUtil,
-	#category : #'PharoLauncher-Tests-Commands'
+	#name : 'TPhLVirtualMachineTestUtil',
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 TPhLVirtualMachineTestUtil >> createVmNamed: aName [
 	self createVmNamed: aName private: false
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 TPhLVirtualMachineTestUtil >> createVmNamed: aName private: isPrivateVm [
 	| vmDirectory appDir root |
 	root := isPrivateVm 
@@ -26,7 +27,7 @@ TPhLVirtualMachineTestUtil >> createVmNamed: aName private: isPrivateVm [
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 TPhLVirtualMachineTestUtil >> replaceOSByMacIn: url [
 	^ (url copyReplaceAll: 'linux' with: 'mac') copyReplaceAll: 'win' with: 'mac'
 ]

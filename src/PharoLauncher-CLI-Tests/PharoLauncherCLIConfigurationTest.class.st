@@ -1,15 +1,16 @@
 Class {
-	#name : #PharoLauncherCLIConfigurationTest,
-	#superclass : #TestCase,
+	#name : 'PharoLauncherCLIConfigurationTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'root',
 		'errorStream',
 		'outStream'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #utility }
+{ #category : 'utility' }
 PharoLauncherCLIConfigurationTest >> createPreferencesFileWith: aConfiguration [
 	| preferencesFile |
 	preferencesFile := root / PharoLauncherCLIConfiguration preferencesFileName.
@@ -19,7 +20,7 @@ PharoLauncherCLIConfigurationTest >> createPreferencesFileWith: aConfiguration [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PharoLauncherCLIConfigurationTest >> setUp [
 	super setUp.
 	root := FileSystem memory root.
@@ -31,13 +32,13 @@ PharoLauncherCLIConfigurationTest >> setUp [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PharoLauncherCLIConfigurationTest >> tearDown [
 	PhLNotificationCenter default errorStream close.
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testConfigurationsWithDifferentValuesShoudNotBeEqual [
 	| config1 config2 |
 	config1 := PharoLauncherCLIConfiguration new
@@ -54,7 +55,7 @@ PharoLauncherCLIConfigurationTest >> testConfigurationsWithDifferentValuesShoudN
 	self deny: config1 equals: config2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testConfigurationsWithSameValuesShoudBeEqual [
 	| config1 config2 |
 	config1 := PharoLauncherCLIConfiguration new
@@ -71,7 +72,7 @@ PharoLauncherCLIConfigurationTest >> testConfigurationsWithSameValuesShoudBeEqua
 	self assert: config1 equals: config2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileAbsentShouldCreateDefaultConfiguration [
 	
 	| config |
@@ -83,7 +84,7 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileAb
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileExistsShouldSucceed [
 	| config preferencesFile |
 	preferencesFile := self createPreferencesFileWith: PharoLauncherCLIConfiguration new.
@@ -93,7 +94,7 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenConfigurationFileEx
 	self assert: (config isKindOf: PharoLauncherCLIConfiguration)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfigurationFileShouldGiveExplainationMessage [
 	"unable to read the file , correct or delete"
 	|  preferencesFile |
@@ -107,7 +108,7 @@ PharoLauncherCLIConfigurationTest >> testGetConfigurationWhenInvalidConfiguratio
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testGetStableTemplateWhenGivingWrongDefaultTemplateValue [
 
 	| config deserializeConfig |
@@ -120,7 +121,7 @@ PharoLauncherCLIConfigurationTest >> testGetStableTemplateWhenGivingWrongDefault
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PharoLauncherCLIConfigurationTest >> testReadOfSerializedConfigurationShouldGiveBackSameConfiguration [
 	| config preferencesFile serializedConfig |
 	config := PharoLauncherCLIConfiguration new.

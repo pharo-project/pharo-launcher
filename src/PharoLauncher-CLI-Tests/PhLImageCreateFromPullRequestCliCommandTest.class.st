@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageCreateFromPullRequestCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCreateFromPullRequestCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 
 	| command |
@@ -19,7 +20,7 @@ PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
   
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromPullRequestCliCommandTest >> testInvalidPRShouldGiveError [
 
 	self runCommand: #('launcher' 'image' 'create' 'fromPR' 'someNoise123' ).
@@ -28,7 +29,7 @@ PhLImageCreateFromPullRequestCliCommandTest >> testInvalidPRShouldGiveError [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromPullRequestCliCommandTest >> testMissingPRShouldGiveError [
 
 	self runCommand: #('launcher' 'image' 'create' 'fromPR').
@@ -37,7 +38,7 @@ PhLImageCreateFromPullRequestCliCommandTest >> testMissingPRShouldGiveError [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromPullRequestCliCommandTest >> testUnreachablePRShouldGiveError [
 
 	self runCommand: #('launcher' 'image' 'create' 'fromPR' '99999999999999' ).

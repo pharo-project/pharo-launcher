@@ -4,15 +4,17 @@ It includes the shipping of the VM as well as a run script for the current image
 It can also the generation of a run script using pharo-launcher.
 "
 Class {
-	#name : #PhLImagePackageCliCommand,
-	#superclass : #PhLImageCliCommand,
+	#name : 'PhLImagePackageCliCommand',
+	#superclass : 'PhLImageCliCommand',
 	#instVars : [
 		'image'
 	],
-	#category : #'PharoLauncher-CLI-Commands'
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImagePackageCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	aCommandSpec 
@@ -25,7 +27,7 @@ PhLImagePackageCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImagePackageCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -38,29 +40,29 @@ PhLImagePackageCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [:arg :app | self raiseMissingResultingPackagePath].
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImagePackageCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #package
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImagePackageCliCommand class >> launcherCmdDescription [
 	^ 'Creates a package containing all necessary artefacts to launch the image.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImagePackageCliCommand class >> raiseMissingImageToPackage [
 
 	^ NotFound signal: 'An argument is missing, please specify the image name to pack.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImagePackageCliCommand class >> raiseMissingResultingPackagePath [
 
 	^ NotFound signal: 'An argument is missing, please specify the path, where resulting package will be stored.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImagePackageCliCommand >> basicExecute [ 
 
 	| userNewDirectory |
@@ -73,7 +75,7 @@ PhLImagePackageCliCommand >> basicExecute [
 		ifTrue: [ self convertToZip: userNewDirectory ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [ 
 	| zip |
 	zip := ZipArchive new.
@@ -81,7 +83,7 @@ PhLImagePackageCliCommand >> convertToZip: imageFolderFileReference [
 	zip writeToFile:  ( self location, '/' ,self image name,'.zip' ) asFileReference
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> copyImageFilesTo: targetDirectory [
 
 	| imageFolder anImage|
@@ -102,7 +104,7 @@ PhLImagePackageCliCommand >> copyImageFilesTo: targetDirectory [
 		copyAllTo: (targetDirectory / self vmId) asFileReference.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> createDirectoryForImageToPack [
 	|aPath| 
 	aPath := self location , '/' , self image name.
@@ -112,7 +114,7 @@ PhLImagePackageCliCommand >> createDirectoryForImageToPack [
 		do: [ self raiseCannotCreateDirectory:  self location]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> createLaunchScript [
 
 	self image launchScriptName
@@ -121,13 +123,13 @@ PhLImagePackageCliCommand >> createLaunchScript [
 	]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagePackageCliCommand >> defaultVmId [
 
 	^ self image vmManager vmId
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImagePackageCliCommand >> directoryAlreadyExists: aDirectory [ 
 
 	^ ((self imageRepository baseDirectory fileSystem
@@ -136,14 +138,14 @@ PhLImagePackageCliCommand >> directoryAlreadyExists: aDirectory [
 					isDirectory: aDirectory ])
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> ensureExecutionPermissionForImage [
 	
 	self ensureVmFileIsExecutable: self image.
 	self ensureLaunchScriptIsExecutable: self image.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> ensureLaunchScriptIsExecutable: anImage [
 	LibC
 		runCommand:
@@ -151,7 +153,7 @@ PhLImagePackageCliCommand >> ensureLaunchScriptIsExecutable: anImage [
 				, anImage name , '.sh" -type f -exec chmod +x {} \;'.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> ensureVmFileIsExecutable: anImage [
 	LibC
 		runCommand:
@@ -159,17 +161,17 @@ PhLImagePackageCliCommand >> ensureVmFileIsExecutable: anImage [
 				, ' -type f -exec chmod +x {} \;'.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagePackageCliCommand >> image [
 	^ image
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagePackageCliCommand >> image: anImage [
 	image := anImage
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> launchScriptFor: anImage [
 	^ self launchScriptTemplate  
         format: (Dictionary 
@@ -178,7 +180,7 @@ PhLImagePackageCliCommand >> launchScriptFor: anImage [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagePackageCliCommand >> launchScriptTemplate [
 	^ '#!/usr/bin/env bash
 # some magic to find out the real location of this script dealing with symlinks
@@ -204,31 +206,31 @@ elif [ "$OS" = "mac" ]; then
 fi' withUnixLineEndings 
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImagePackageCliCommand >> location [
 
 	^ self positional: #location
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImagePackageCliCommand >> raiseCannotCreateDirectory: aPath [
 
 	^PhLCommandError signal: ('Cannot write to target directory: ''{1}'', please check write permissions.' format: { aPath })
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImagePackageCliCommand >> raiseDirectoryAlreadyExists: aPath [
 
 	^PhLCommandError signal: ('Directory with the image name already exists at the location: ''{1}'', please select another location to pack image.' format: { aPath })
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImagePackageCliCommand >> shouldZip [
 
 	^ self hasFlag: #zip
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImagePackageCliCommand >> vmId [
 
 	(self hasFlag: #vm) ifFalse: [ ^ self defaultVmId].

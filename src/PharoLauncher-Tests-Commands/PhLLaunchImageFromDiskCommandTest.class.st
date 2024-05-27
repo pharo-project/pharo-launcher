@@ -1,15 +1,16 @@
 Class {
-	#name : #PhLLaunchImageFromDiskCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLLaunchImageFromDiskCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'imageDir',
 		'process'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageFromDiskCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new.
@@ -17,7 +18,7 @@ PhLLaunchImageFromDiskCommandTest >> setUp [
 	imageDir ensureCreateDirectory
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageFromDiskCommandTest >> tearDown [
 	imageDir ensureDeleteAll.
 	presenter delete.
@@ -25,7 +26,7 @@ PhLLaunchImageFromDiskCommandTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	| command image |
 	command := PhLLaunchImageFromDiskCommand new.

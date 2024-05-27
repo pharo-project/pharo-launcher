@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLProcessWrapperTest,
-	#superclass : #TestCase,
+	#name : 'PhLProcessWrapperTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'process'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapperTest >> tearDown [
 
 	(process isNotNil and: [ process isRunning ]) 
 		ifTrue: [ process terminate ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testCanDetectAvailableCommandOnLinux [
 	Smalltalk os isWindows ifTrue: [ self skip. ^ self ].
 
@@ -22,7 +23,7 @@ PhLProcessWrapperTest >> testCanDetectAvailableCommandOnLinux [
 	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testCanDetectAvailableCommandOnWindows [
 	Smalltalk os isWindows ifFalse: [ self skip. ^ self  ].
 
@@ -30,7 +31,7 @@ PhLProcessWrapperTest >> testCanDetectAvailableCommandOnWindows [
 	self deny: (PhLProcessWrapper isCommandAvailable: 'foobar').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 	| fileRef |
 
@@ -49,7 +50,7 @@ PhLProcessWrapperTest >> testCanRunCommandWithNonAsciiCharacters [
 		ensure: [ fileRef ensureDelete ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testLinuxCommandLineString [
 	| commandString |
 	process := PhLProcessWrapper new 
@@ -66,7 +67,7 @@ PhLProcessWrapperTest >> testLinuxCommandLineString [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testLinuxCommandLineStringWhenUsingShell [
 	| commandString |
 	process := PhLProcessWrapper new 
@@ -84,7 +85,7 @@ PhLProcessWrapperTest >> testLinuxCommandLineStringWhenUsingShell [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
 	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
 	| argument |
@@ -100,7 +101,7 @@ PhLProcessWrapperTest >> testLinuxCommandRemoveDoubleQuotesFromArguments [
 	self assert: process isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testLinuxShellCommandDoesNotRemoveDoubleQuotesFromArguments [
 	"OSSubProcess gets an array of arguments as input. If arguments are protected with double-quotes, they are interpreted as part of the argument. Protecting arguments with double quotes only works when using a shell command with an arguments string. The shell the interprets double-quotes and remove them to run the command."
 	| pathArgument |
@@ -118,7 +119,7 @@ PhLProcessWrapperTest >> testLinuxShellCommandDoesNotRemoveDoubleQuotesFromArgum
 	self assert: process isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testRunningInfiniteProcessThrowsTimeout [
 	
 	process := PhLProcessWrapper new 
@@ -133,7 +134,7 @@ PhLProcessWrapperTest >> testRunningInfiniteProcessThrowsTimeout [
 		raise: PhLProcessTimeOut.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 	| cmd |
 	 cmd := Smalltalk os isWindows 
@@ -147,7 +148,7 @@ PhLProcessWrapperTest >> testRunningShortProcessDoesNotTimeout [
 		raise: PhLProcessTimeOut.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArguments [
 	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
 	| argument |
@@ -165,7 +166,7 @@ PhLProcessWrapperTest >> testWindowsCommandDoesNotRemoveDoubleQuotesFromArgument
 	self assert: process isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testWindowsCommandLineString [
 	| process commandString |
 	
@@ -184,7 +185,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineString [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
 	| process commandString |
 	
@@ -204,7 +205,7 @@ PhLProcessWrapperTest >> testWindowsCommandLineStringWhenUsingShell [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessWrapperTest >> testWindowsShellCommandOnWindowsDoesNotRemoveDoubleQuotesFromArguments [
 	"Windows API takes a single String with all arguments as parameter. Paths have to be protected by double quotes."
 	| argument |

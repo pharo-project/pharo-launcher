@@ -1,14 +1,16 @@
 Class {
-	#name : #PhLRelocateImageDirectoryCommand,
-	#superclass : #PhLGeneralCommand,
+	#name : 'PhLRelocateImageDirectoryCommand',
+	#superclass : 'PhLGeneralCommand',
 	#instVars : [
 		'source',
 		'target'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLRelocateImageDirectoryCommand >> canBeExecuted [
 	self target ensureCreateDirectory.
 	^ self source ~= self target 
@@ -16,7 +18,7 @@ PhLRelocateImageDirectoryCommand >> canBeExecuted [
 		and: [ self target hasChildren not ] ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLRelocateImageDirectoryCommand >> execute [
 
 	self canBeExecuted 
@@ -28,7 +30,7 @@ PhLRelocateImageDirectoryCommand >> execute [
 			self informManualMigrationNeeded ]
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLRelocateImageDirectoryCommand >> informManualMigrationNeeded [
 	self application newInformation
 		message:
@@ -39,7 +41,7 @@ PhLRelocateImageDirectoryCommand >> informManualMigrationNeeded [
 		inform
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLRelocateImageDirectoryCommand >> informMigrationDone [
 	self application newInformation
 		message:
@@ -50,14 +52,14 @@ PhLRelocateImageDirectoryCommand >> informMigrationDone [
 		inform
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLRelocateImageDirectoryCommand >> relocate [
 	self source children do: [ :child | 
 		child moveTo:
 			(self target resolvePath: (child relativeTo: self source)) resolve ]
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLRelocateImageDirectoryCommand >> requestTargetLocation [
 	^ self application newRequest
 		initialAnswer: self source;
@@ -66,22 +68,22 @@ PhLRelocateImageDirectoryCommand >> requestTargetLocation [
 		request
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRelocateImageDirectoryCommand >> source [
 	^ source ifNil: [ source := PhLDirectoryBasedImageRepository location ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRelocateImageDirectoryCommand >> source: aDirectory [
 	source := aDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRelocateImageDirectoryCommand >> target [
 	^ target ifNil: [ target := self requestTargetLocation asFileReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRelocateImageDirectoryCommand >> target: aDirectory [
 	target := aDirectory
 ]

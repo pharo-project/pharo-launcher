@@ -8,12 +8,14 @@ I execute:
 - delete local image based on specified image name
 "
 Class {
-	#name : #PhLImageDeleteCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageDeleteCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageDeleteCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	aCommandSpec 
@@ -21,7 +23,7 @@ PhLImageDeleteCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 		description: 'Force the image deletion without asking confirmation'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -29,18 +31,18 @@ PhLImageDeleteCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 		description: 'Local image name to be deleted.')
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageDeleteCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #delete 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageDeleteCliCommand class >> launcherCmdDescription [
 
 	^ 'Deletes the local image, including image directory content.'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageDeleteCliCommand >> askConfirmation: anImage [
 
 	^ self cliInputRequest
@@ -49,7 +51,7 @@ PhLImageDeleteCliCommand >> askConfirmation: anImage [
 		answer
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageDeleteCliCommand >> basicExecute [
 
 	| anImage |
@@ -59,14 +61,14 @@ PhLImageDeleteCliCommand >> basicExecute [
 	self imageRepository deleteImage: anImage
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImageDeleteCliCommand >> isDeletionConfirmed: anImage [
 
 	self isForceDelete ifTrue: [ ^ true ].
 	^ (self askConfirmation: anImage) first asLowercase = $y
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImageDeleteCliCommand >> isForceDelete [
 
 	^ self hasFlag: #force

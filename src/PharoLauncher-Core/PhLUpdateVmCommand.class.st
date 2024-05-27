@@ -2,12 +2,14 @@
 Will update selected Virtual Machines. Update will download and install the lastest available archive for the selected VM.
 "
 Class {
-	#name : #PhLUpdateVmCommand,
-	#superclass : #PhLVmCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLUpdateVmCommand',
+	#superclass : 'PhLVmCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLUpdateVmCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallUpdate;
@@ -15,13 +17,13 @@ PhLUpdateVmCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLUpdateVmCommand >> execute [
 	self vmsPresenter selectedVms do: #updateFromUrl.
 	self vmsPresenter refresh.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLUpdateVmCommand >> initialize [
 	super initialize.
 	self name: 'Update'

@@ -1,28 +1,29 @@
 Class {
-	#name : #PhLImageCreateCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCreateCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #utility }
+{ #category : 'utility' }
 PhLImageCreateCliCommandTest >> addLocalTemplateNamed: aName [ 
 	^ self launcherModel templateRepository createLocalTemplateNamed: aName
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommandTest >> localTemplatesGroup [
 	^ context templateRepository localTemplatesGroup
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageCreateCliCommandTest >> setUp [
 	super setUp.
 	self launcherModel
 		templateRepository: PhLTemplateTestRepository new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -35,7 +36,7 @@ PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self assert: (self imageRepository imageNamed: 'myimage3') isLaunched
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithDevFlagUsesDevImage [
 	| template devTemplate |
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
@@ -48,7 +49,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithDevFlagUsesDevImage [
 	self assert: template equals: devTemplate
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesDefaultImage [
 	| template stableTemplate |
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
@@ -61,7 +62,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesDefaultImage [
 	self assert: template equals: stableTemplate
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesUserDefaultImageWhenSpecified [
 	| template devTemplate |
 
@@ -79,7 +80,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesUserDefaultImageWhe
 	self assert: template equals: devTemplate
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithNoLaunchFlagShouldNotLaunchImage [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
@@ -89,7 +90,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoLaunchFlagShouldNotLaunchIm
 	self deny: (self imageRepository imageNamed: 'myimage') isLaunched
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithTooManyArgumentShouldRaiseError [
 
 	self addImageNamed: 'myImage1'.
@@ -105,7 +106,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithTooManyArgumentShouldRaiseErr
 	self assert: (self errorString includesSubstring: 'tooManyArguments').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithWrongTemplateNameShouldGiveErrorMessage [
 
 	self addImageNamed: 'myImage1'.
@@ -118,7 +119,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithWrongTemplateNameShouldGiveEr
 	self assert: (self errorString includesSubstring: 'aRandomTemplateName not found')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithoutImageNameShouldGiveError [
 		
 	self runCommand: {'launcher' . 'image' . 'create' }.
@@ -129,7 +130,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithoutImageNameShouldGiveError [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWithoutTemplateArgumentShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -143,7 +144,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithoutTemplateArgumentShouldSucc
 	self assert: self imageRepository imagesName equals: #( 'myImage1' 'myImage3' 'myImage2' ) asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError [
 
 	self addImageNamed: 'myImage1'.
@@ -156,7 +157,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testTemplateCanBeFoundByShortName [
 
 	| createdTemplate foundTemplate |
@@ -171,7 +172,7 @@ PhLImageCreateCliCommandTest >> testTemplateCanBeFoundByShortName [
 	self assert: foundTemplate equals: createdTemplate
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testTemplateIsFirstSearchByName [
 
 	| createdTemplate foundTemplate |

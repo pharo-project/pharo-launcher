@@ -2,17 +2,18 @@
 A ""fake"" repository only usefull for the tests
 "
 Class {
-	#name : #PhLVirtualMachinesMockRepo,
-	#superclass : #Object,
+	#name : 'PhLVirtualMachinesMockRepo',
+	#superclass : 'Object',
 	#instVars : [
 		'virtualMachines',
 		'availableVirtualMachines',
 		'id'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLVirtualMachinesMockRepo >> addVmNamed: aVMName at: someDictionaryIndice [
 	| vm |
 	vm := PhLVirtualMachineMock id: aVMName.
@@ -20,22 +21,22 @@ PhLVirtualMachinesMockRepo >> addVmNamed: aVMName at: someDictionaryIndice [
 	^ self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachinesMockRepo >> availableVirtualMachines [
    ^availableVirtualMachines
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachinesMockRepo >> availableVirtualMachines: anObject [
    availableVirtualMachines := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachinesMockRepo >> id [ 
    ^self 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachinesMockRepo >> initialize [
 	super initialize.
 	availableVirtualMachines := Dictionary new

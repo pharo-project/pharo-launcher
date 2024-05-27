@@ -10,12 +10,14 @@ I declare:
 
 "
 Class {
-	#name : #PhLVmCliCommand,
-	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLVmCliCommand',
+	#superclass : 'PhLCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -24,24 +26,24 @@ PhLVmCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [:arg :app | self raiseMissingVM]
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLVmCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #vm 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLVmCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to VM management.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLVmCliCommand class >> raiseMissingVM [
 
 	^ NotFound  signal: 'An argument is missing, please enter the correct virtual machine name.'
 ]
 
-{ #category : #'find-select' }
+{ #category : 'find-select' }
 PhLVmCliCommand >> findVM [
 
 	^ 	[self vmRepository detect: [:vm | vm id = self vmId ]]
@@ -49,18 +51,18 @@ PhLVmCliCommand >> findVM [
 		do: [ self raiseVMNotFound: self vmId ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVmCliCommand >> modelClass [
 	^ self class environment at: #PhLVirtualMachine
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLVmCliCommand >> raiseVMNotFound: vmID [
 
 	^ NotFound signal: ('Virtual machine with id ''{1}'' not found. Please enter a correct VM id.' format: { vmID })
 ]
 
-{ #category : #'find-select' }
+{ #category : 'find-select' }
 PhLVmCliCommand >> vmId [
 
   ^ self positional: #existingVirtualMachineId

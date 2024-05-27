@@ -2,32 +2,34 @@
 Command to list all the Pharo processes, i.e. all running Pharo images.
 "
 Class {
-	#name : #PhLProcessListCliCommand,
-	#superclass : #PhLProcessCliCommand,
+	#name : 'PhLProcessListCliCommand',
+	#superclass : 'PhLProcessCliCommand',
 	#instVars : [
 		'shellOutput'
 	],
-	#category : #'PharoLauncher-CLI-Commands'
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLProcessListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addPrintFlagsTo: aCommandSpec.
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLProcessListCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #list
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLProcessListCliCommand class >> launcherCmdDescription [
 
 	^ 'Lists all running Pharo image processes.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessListCliCommand >> basicExecute [
 	|processList|
 	"TODO: Win Powershell version should be something like this: Get-Process | Where-Object { $_.Path -like '*Pharo*' -and $_.Path -like '*.image*' -and $_.Id -ne 2232 } | Select-Object Id, Path, StartTime, CommandLine"
@@ -39,7 +41,7 @@ PhLProcessListCliCommand >> basicExecute [
 	self list: processList
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListCliCommand >> getImageProcessFrom: lineString [
 
 	| imageProcess |
@@ -49,26 +51,26 @@ PhLProcessListCliCommand >> getImageProcessFrom: lineString [
 	^ imageProcess
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessListCliCommand >> imageProcesList [
 
 	^ (shellOutput substrings: OSPlatform current lineEnding)
 		collect: [:line | self getImageProcessFrom: line ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListCliCommand >> modelClass [
 
  ^ self class environment at: #PhLImageProcess
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessListCliCommand >> osShellArgArray [
 
 	^ Array with: self processListCmdArgs
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessListCliCommand >> processListCmdArgs [
 
 	"process grep of all processes with 'pharo' (case-insensitive), where launcher process is ommited as well as export commands for path env. variables"
@@ -82,7 +84,7 @@ PhLProcessListCliCommand >> processListCmdArgs [
 		]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListCliCommand >> startDateOfPid: pidString [
 
 	| pidDateCmd |

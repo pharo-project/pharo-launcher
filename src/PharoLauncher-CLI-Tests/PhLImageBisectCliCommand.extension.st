@@ -1,6 +1,6 @@
-Extension { #name : #PhLImageBisectCliCommand }
+Extension { #name : 'PhLImageBisectCliCommand' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLImageBisectCliCommand >> builds: aSortedListOfIntegers [
 	
 	builds := aSortedListOfIntegers

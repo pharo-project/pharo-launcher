@@ -6,8 +6,8 @@ self reset.
 self current downloadCompatibleVm64Bit; downloadPharo90Image
 "
 Class {
-	#name : #PhLVirtualMachineManagerTestResource,
-	#superclass : #TestResource,
+	#name : 'PhLVirtualMachineManagerTestResource',
+	#superclass : 'TestResource',
 	#instVars : [
 		'vmStoreBackup',
 		'tempVmStoreFolder',
@@ -15,23 +15,24 @@ Class {
 		'imagesFolder',
 		'workspace'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLVirtualMachineManagerTestResource >> backupCurrentVmStore [
 
 	vmStoreBackup := PhLVirtualMachineManager vmStore
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTestResource >> cleanWorkspace [
 	self workspace 
 		ensureDeleteAll;
 		ensureCreateDirectory.
 ]
 
-{ #category : #downloading }
+{ #category : 'downloading' }
 PhLVirtualMachineManagerTestResource >> downloadPharo14Image [
 
 	ZipArchive new 
@@ -39,7 +40,7 @@ PhLVirtualMachineManagerTestResource >> downloadPharo14Image [
 		extractAllTo: self pharo14imageFolder ensureCreateDirectory.
 ]
 
-{ #category : #downloading }
+{ #category : 'downloading' }
 PhLVirtualMachineManagerTestResource >> downloadPharo90Image [
 	| httpClient |
 	
@@ -54,7 +55,7 @@ PhLVirtualMachineManagerTestResource >> downloadPharo90Image [
 		extractAllTo: self pharo90imageFolder ensureCreateDirectory.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTestResource >> pharo14image [
 	self pharo14imageFolder exists
 		ifFalse: [ self downloadPharo14Image ].
@@ -63,12 +64,12 @@ PhLVirtualMachineManagerTestResource >> pharo14image [
 		detect: [ :each | each basename endsWith: '.image' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTestResource >> pharo14imageFolder [
 	^ imagesFolder / '14'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTestResource >> pharo90image [
 	self pharo90imageFolder exists
 		ifFalse: [ self downloadPharo90Image ].
@@ -77,18 +78,18 @@ PhLVirtualMachineManagerTestResource >> pharo90image [
 		detect: [ :each | each basename endsWith: '.image' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTestResource >> pharo90imageFolder [
 	^ imagesFolder / '90'
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLVirtualMachineManagerTestResource >> restoreVmStore [
 
 	PhLVirtualMachineManager vmStore: vmStoreBackup
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTestResource >> setUp [
 	super setUp.
 	tempFolder := (FileLocator temp / self class name, UUIDGenerator next asString) ensureCreateDirectory.
@@ -99,14 +100,14 @@ PhLVirtualMachineManagerTestResource >> setUp [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachineManagerTestResource >> setUpTemporaryVmStore [
 
 	self backupCurrentVmStore.
 	tempVmStoreFolder := (tempFolder / 'vmStore') ensureCreateDirectory.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTestResource >> tearDown [
 
 	tempFolder ensureDeleteAll.
@@ -114,13 +115,13 @@ PhLVirtualMachineManagerTestResource >> tearDown [
 	super tearDown
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLVirtualMachineManagerTestResource >> useTemporaryVmStore [
 
 	PhLVirtualMachineManager vmStore: tempVmStoreFolder
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTestResource >> withCopyOfPharo14ImageDo: aBlock [
 	| imageRef |
 	imageRef := self workspace / 'Pharo.image'.
@@ -131,7 +132,7 @@ PhLVirtualMachineManagerTestResource >> withCopyOfPharo14ImageDo: aBlock [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTestResource >> withCopyOfPharo90ImageDo: aBlock [
 	| imageRef |
 	imageRef := self workspace / 'Pharo.image'.
@@ -142,7 +143,7 @@ PhLVirtualMachineManagerTestResource >> withCopyOfPharo90ImageDo: aBlock [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTestResource >> workspace [
 	"The workspace folder is used as a temporary folder by tests and must be reset at the end of the test"
 	

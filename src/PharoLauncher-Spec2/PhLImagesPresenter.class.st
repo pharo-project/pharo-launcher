@@ -5,8 +5,8 @@ To open me:
 	(self on: PhLDirectoryBasedImageRepository default) openWithSpec
 "
 Class {
-	#name : #PhLImagesPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLImagesPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
@@ -17,10 +17,11 @@ Class {
 		'rootCommandsGroup',
 		'toolbar'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 
 	rootCommandGroup
@@ -28,7 +29,7 @@ PhLImagesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: r
 		register: (self buildContextualMenuGroupContext: anImagesPresenter)
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
 
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
@@ -62,7 +63,7 @@ PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
 		yourself
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
@@ -98,13 +99,13 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 		yourself)
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 PhLImagesPresenter >> actionFilter [
 	^ imageFilter
 		takeKeyboardFocus
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 PhLImagesPresenter >> actionLaunch [
 	| cmd |
 
@@ -112,7 +113,7 @@ PhLImagesPresenter >> actionLaunch [
 	cmd execute
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> buildDescriptionPanel [
 
 	^ self
@@ -120,7 +121,7 @@ PhLImagesPresenter >> buildDescriptionPanel [
 		on: PhLNullImage new
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> buildImageFilter [
 			
 	^ self newTextInput
@@ -129,7 +130,7 @@ PhLImagesPresenter >> buildImageFilter [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> buildImageTable [
 
 	^ self newTable
@@ -163,7 +164,7 @@ PhLImagesPresenter >> buildImageTable [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> buildToolbar [
 	| toolbarGroup |
 	
@@ -182,7 +183,7 @@ PhLImagesPresenter >> buildToolbar [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> connectPresenters [
 
 	imageTable transmitDo: [ :image |
@@ -198,18 +199,18 @@ PhLImagesPresenter >> connectPresenters [
 				ifFalse: [ PhLNullImage new ] ]
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLImagesPresenter >> contextMenuCommandGroupName [
 
 	^ 'Context Menu'
 ]
 
-{ #category : #'api - actions' }
+{ #category : 'api - actions' }
 PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLImagesPresenter >> defaultLayout [
 	^ SpBoxLayout newTopToBottom
 		add: toolbar expand: false;
@@ -222,18 +223,18 @@ PhLImagesPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> editLaunchConfigurations [
 	^ (PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> ensure: aBoolean [
 	aBoolean
 		ifFalse: [ PhLCommandError signal ]
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 PhLImagesPresenter >> ensurePharoVersion [
 	| image |
 	image := self singleImage.
@@ -247,7 +248,7 @@ PhLImagesPresenter >> ensurePharoVersion [
 			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> filter: regexMatcher [
 
 	| images |
@@ -258,17 +259,17 @@ PhLImagesPresenter >> filter: regexMatcher [
 	imageTable items: images
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> hasSingleImageSelected [
 	^ (imageTable selectedItems size = 1) and: [ imageTable selectedItems first notNil ]
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLImagesPresenter >> imageRepository [
 	^ self model
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> initializePresenters [
 
 	toolbar := self buildToolbar.
@@ -279,7 +280,7 @@ PhLImagesPresenter >> initializePresenters [
 	self imageRepository whenChangedSend: #refresh to: self
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -293,7 +294,7 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		toAction: [ self actionFilter ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> keyBindingsCommandsGroup [
 
 	^ self rootCommandsGroup
@@ -302,27 +303,27 @@ PhLImagesPresenter >> keyBindingsCommandsGroup [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> newLaunchConfigurationDropList [
 	^ launchConfigurationList := SpDropListPresenter new
 			items: #();
 			yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> readableDateFor: aDateAndTime [ 
 	
 	^ PhLTimeUntilNowStrategy displayStringOf: aDateAndTime
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLImagesPresenter >> refresh [ 
 
 	imageTable items: self imageRepository images.
 	self refreshLaunchConfigurationList
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image items |
 	
@@ -359,7 +360,7 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 		do: [ launchConfigurationList selectIndex: 2 ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLImagesPresenter >> resetLaunchConfigurationList [
 
 	launchConfigurationList
@@ -367,67 +368,67 @@ PhLImagesPresenter >> resetLaunchConfigurationList [
 		items: #() "no image selected".
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> rootCommandsGroup [ 
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
 
 	launchConfigurationList selectItem: aPhLLaunchConfiguration
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> selectImage: aPhLImage [
 	imageTable items 
 		detect: [ :image | image name = aPhLImage name ]
 		ifFound: [ :item | imageTable selectItem: item ]
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> selectImageAt: anIndex [
 	imageTable selectIndex: anIndex
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> selectImagesAt: aLisOfIndexes [
 	imageTable selectIndexes: aLisOfIndexes
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> selectedImages [
 	^ imageTable selectedItems
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLImagesPresenter >> selectedLaunchConfiguration [
 	
 	^ launchConfigurationList selectedItem
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
 	^ imageTable selection selectedItems first
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLImagesPresenter >> singleImageName [
 	^ self singleImage name
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLImagesPresenter >> templateRepository [
 	^ self application templateRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImagesPresenter >> toolbarGroup [
 	^ self rootCommandsGroup / 'Toolbar'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImagesPresenter >> updatePresenter [
 
 	self imageRepository hasImages 
@@ -435,14 +436,14 @@ PhLImagesPresenter >> updatePresenter [
 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLImagesPresenter >> updateToolbarCommandsAvailability [
 	self withToolbarDo: [ :toolbar |
 		self toolbarGroup allCommands do: #updateEnableStatus ]
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImagesPresenter >> withToolbarDo: aBlock [
 
 	self withWindowDo: [ :window | aBlock value: window toolbar ]

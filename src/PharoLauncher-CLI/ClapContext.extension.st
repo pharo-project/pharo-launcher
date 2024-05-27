@@ -1,6 +1,6 @@
-Extension { #name : #ClapContext }
+Extension { #name : 'ClapContext' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 ClapContext >> initializeLauncherNotificationCenter [
 	"initialize default notification center with proper streams available on context object.
 	This is called just after #initialize method through a meta link defined in 
@@ -11,7 +11,7 @@ ClapContext >> initializeLauncherNotificationCenter [
 
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 ClapContext >> pharoLauncherModel [
 	^ PharoLauncherCLIModel fromDefaultConfiguration
 ]

@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageRecreateCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageRecreateCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageRecreateCliCommandTest >> setUp [
 	super setUp.
 	self launcherModel templateRepository: PhLTemplateTestRepository new.
@@ -12,7 +13,7 @@ PhLImageRecreateCliCommandTest >> setUp [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageRecreateCliCommandTest >> testCanRecreateAnImageShouldSucceed [
 	| image imageFile |
 	imageFile := self imageRepository createImageNamed: 'myImage'.
@@ -30,7 +31,7 @@ PhLImageRecreateCliCommandTest >> testCanRecreateAnImageShouldSucceed [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageRecreateCliCommandTest >> testCanRecreateAnImageWhenNoImageNameProvidedByInteractiveImageSelection [
 	| image imageFile |
 	imageFile := self imageRepository createImageNamed: 'myImage'.
@@ -51,7 +52,7 @@ PhLImageRecreateCliCommandTest >> testCanRecreateAnImageWhenNoImageNameProvidedB
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageRecreateCliCommandTest >> testTemplateContent [
 
 	^ #[102 111 111] " 'foo' in binary) "

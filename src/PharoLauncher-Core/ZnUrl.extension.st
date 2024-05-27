@@ -1,6 +1,6 @@
-Extension { #name : #ZnUrl }
+Extension { #name : 'ZnUrl' }
 
-{ #category : #'*pharolauncher-core' }
+{ #category : '*pharolauncher-core' }
 ZnUrl >> jenkinsOptions [
 	| options |
 	options := Dictionary new.

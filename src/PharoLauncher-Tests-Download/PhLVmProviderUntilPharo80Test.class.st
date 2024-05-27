@@ -1,18 +1,19 @@
 Class {
-	#name : #PhLVmProviderUntilPharo80Test,
-	#superclass : #TestCase,
+	#name : 'PhLVmProviderUntilPharo80Test',
+	#superclass : 'TestCase',
 	#instVars : [
 		'vmProvider'
 	],
-	#category : #'PharoLauncher-Tests-Download'
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVmProviderUntilPharo80Test >> setUp [
 	vmProvider := PhLVmProviderUntilPharo80 new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderUntilPharo80Test >> testUrlIsValidAndAvailable [
 	| url vm |
 	vm := (PhLVirtualMachine id: '80-x64')
@@ -26,7 +27,7 @@ PhLVmProviderUntilPharo80Test >> testUrlIsValidAndAvailable [
 	self assert: (ZnEasy head: url) isSuccess
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmProviderUntilPharo80Test >> testUrlIsValidAndAvailableWhenOs64BitAndImageAvailableOnlyIn32Bits [
 	| url vm |
 	vm := (PhLVirtualMachine id: '40-x86').

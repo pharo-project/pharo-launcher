@@ -2,35 +2,37 @@
 I represent Pharo Image copy sub-command invoked from cmd line of Pharo Launcher. My responsibility is to implement a dichotomic search to find the first image where the evaluation of a script will be true.
 "
 Class {
-	#name : #PhLImageBisectCliCommand,
-	#superclass : #PhLImageCliCommand,
+	#name : 'PhLImageBisectCliCommand',
+	#superclass : 'PhLImageCliCommand',
 	#instVars : [
 		'workingDirectory',
 		'pharoVersion',
 		'builds'
 	],
-	#category : #'PharoLauncher-CLI-Commands'
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageBisectCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	aCommandSpec 
 		addFlagWithPositional: #pharoVersion 
 		description: 'Pharo version number to use for bisection (default is the current development Pharo version)'
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageBisectCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #bisect
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageBisectCliCommand class >> launcherCmdDescription [
 
 	^ 'Do a dichotomic search to find the first image where the evaluation of a script will be true.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> askEvaluationResultToUser: buildNumber [
 
 	^ (self cliInputRequest
@@ -39,7 +41,7 @@ PhLImageBisectCliCommand >> askEvaluationResultToUser: buildNumber [
 		answer) = 'y'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> askForFirstKnownFaultyImage [
 
 	^ self cliInputRequest
@@ -55,7 +57,7 @@ PhLImageBisectCliCommand >> askForFirstKnownFaultyImage [
 		  answer
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> askForLastKnownCorrectImage [
 
 	^ self cliInputRequest
@@ -71,7 +73,7 @@ PhLImageBisectCliCommand >> askForLastKnownCorrectImage [
 		  answer
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> basicExecute [
 
 	| bisection faultyBuild knownFaultybuild correctBuild |
@@ -87,13 +89,13 @@ PhLImageBisectCliCommand >> basicExecute [
 	^ faultyBuild
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisectCliCommand >> builds [
 	
 	^ builds
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisectCliCommand >> computePharoVersion [
 
 	^ (self hasFlag: #pharoVersion)
@@ -101,14 +103,14 @@ PhLImageBisectCliCommand >> computePharoVersion [
 		  ifFalse: [ self pharoDevelopmentVersion allButLast "remove 0 of minor version" ]
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> createAndLaunchImageAndGetEvaluationFromUser: buildNumber [
 
 	self createImage: buildNumber.
 	^ self askEvaluationResultToUser: buildNumber
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageBisectCliCommand >> createImage: buildNumber [
 
 	| createImagecontext command |
@@ -121,14 +123,14 @@ PhLImageBisectCliCommand >> createImage: buildNumber [
 	command execute
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageBisectCliCommand >> initialize [ 
 	
 	super initialize.
 	workingDirectory := self workingDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisectCliCommand >> inputBuildNumberValidationMessage [
 
 	^ 'Please provide a valid build number: image build number must be between {1 and {2}!'
@@ -137,7 +139,7 @@ PhLImageBisectCliCommand >> inputBuildNumberValidationMessage [
 				  self builds last }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisectCliCommand >> pharoDevelopmentVersion [
 	
 	"url looks like https://files.pharo.org/image/120/latest-64.zip"
@@ -145,7 +147,7 @@ PhLImageBisectCliCommand >> pharoDevelopmentVersion [
 	^ self latestDevTemplate url segments second
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageBisectCliCommand >> pharoVersion [
 
 	"The pharo version containing image builds to bisect"
@@ -153,7 +155,7 @@ PhLImageBisectCliCommand >> pharoVersion [
 	^ pharoVersion ifNil: [ pharoVersion := self computePharoVersion ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImageBisectCliCommand >> workingDirectory [
 	
 	| timestamp |

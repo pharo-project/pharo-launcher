@@ -2,18 +2,20 @@
 Superclass of all commands that are applied to one template or multiple templates.
 "
 Class {
-	#name : #PhLTemplateCommand,
-	#superclass : #CmCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLTemplateCommand',
+	#superclass : 'CmCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateCommand >> application [
 
 	^ self context application
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateCommand >> templatesPresenter [
 	^ self context
 ]

@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLLocalTemplateTest,
-	#superclass : #PhLAbstractTemplateTest,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLLocalTemplateTest',
+	#superclass : 'PhLAbstractTemplateTest',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #coverage }
+{ #category : 'coverage' }
 PhLLocalTemplateTest >> classToBeTested [
 	^ PhLLocalTemplate 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLLocalTemplateTest >> newTemplate [
 	^ PhLLocalTemplate name: 'Test' zipFile: root / 'Test.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLocalTemplateTest >> testDeserializationGivesAFileReferenceToTheTemplate [
 	| template |
 	template := STON fromString: 'PhLLocalTemplate{#name:''Test'',#zipFile:''/phl-abstract-template-test-template-extraction.zip''}'.
@@ -22,7 +23,7 @@ PhLLocalTemplateTest >> testDeserializationGivesAFileReferenceToTheTemplate [
 	self assert: (template zipArchive isKindOf: FileReference).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLocalTemplateTest >> testSerializationDoesNotIncludeZipFileButAFileReferenceToIt [
 	| template zipFile stonString |
 	zipFile := '/phl-abstract-template-test-template-extraction.zip' asFileReference.
@@ -33,7 +34,7 @@ PhLLocalTemplateTest >> testSerializationDoesNotIncludeZipFileButAFileReferenceT
 	self assert: stonString equals: 'PhLLocalTemplate{#name:''Test'',#zipFile:FILE[''/phl-abstract-template-test-template-extraction.zip'']}'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLocalTemplateTest >> testTemplateExtractionGenerateImageMetadata [
 	| template destination archive zipFile metadataFile |
 	zipFile := root / 'phl-abstract-template-test-template-extraction.zip'.

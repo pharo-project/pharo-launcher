@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLDownloadManagerTest,
-	#superclass : #TestCase,
+	#name : 'PhLDownloadManagerTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'downloadManager'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLDownloadManagerTest >> setUp [
 	super setUp.
 	
 	downloadManager := PhLDownloadManager new.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDownloadManagerTest >> testCanDownload [
 	| downloadedFile |
 	downloadedFile := FileSystem memory root / 'dwl'.

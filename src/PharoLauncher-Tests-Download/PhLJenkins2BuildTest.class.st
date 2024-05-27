@@ -1,45 +1,46 @@
 Class {
-	#name : #PhLJenkins2BuildTest,
-	#superclass : #PhLJenkins2EntityTest,
-	#category : #'PharoLauncher-Tests-Download'
+	#name : 'PhLJenkins2BuildTest',
+	#superclass : 'PhLJenkins2EntityTest',
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2BuildTest class >> newInstance [
 	^ self newWithoutParent
 		  parent: PhLJenkins2JobTest newInstance;
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2BuildTest class >> newSecureInstance [
 	^ self newWithoutParent
 		  parent: PhLJenkins2JobTest newSecureInstance;
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2BuildTest class >> newWithoutParent [
 	^ PhLJenkins2Build newWithProperties: (STONJSON fromString:
 			   '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/moose/job/ClassNamesAnalyzer/223/","number":223}')
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> artifactRelativePath [
 	^ 'foo.zip'
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> buildNumber [
 	^ 52
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> buildUrlString [
 	^ 'http://server/build'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2BuildTest >> emptyBuild [
 	^ (PhLJenkins2Build newWithProperties: (Dictionary new
 				    at: 'number' put: self buildNumber;
@@ -49,7 +50,7 @@ PhLJenkins2BuildTest >> emptyBuild [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2BuildTest >> emptyLastSuccessfulBuild [
 	^ (PhLJenkins2Build newWithProperties: (Dictionary new
 				    at: 'number' put: self buildNumber;
@@ -59,19 +60,19 @@ PhLJenkins2BuildTest >> emptyLastSuccessfulBuild [
 		  yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> lastSuccessfulBuildUrlString [
 	^ 'http://server/lastSuccessfulBuild'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2BuildTest >> oneArtifactResponse [
 	^ '{"artifacts" : [
 		{ "relativePath" : "', self artifactRelativePath,'" }
 		]}'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2BuildTest >> oneRunResponse [
 	^ '{"runs" : [
 		{ "number" : ',self runNumber printString,',
@@ -79,17 +80,17 @@ PhLJenkins2BuildTest >> oneRunResponse [
 		]}' 
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> runNumber [
 	^ 52
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2BuildTest >> runUrlString [
 	^ 'http://server/run'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2BuildTest >> testBuildWithArtifacts [
 	| artifact |
 	self setUpResponse: self oneArtifactResponse.
@@ -100,7 +101,7 @@ PhLJenkins2BuildTest >> testBuildWithArtifacts [
 	self assert: artifact url equals: self buildUrlString asUrl / 'artifact' / self artifactRelativePath
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2BuildTest >> testBuildWithRuns [
 	| run |
 	self setUpResponse: self oneRunResponse.
@@ -110,14 +111,14 @@ PhLJenkins2BuildTest >> testBuildWithRuns [
 	self assert: run number equals: self runNumber
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2BuildTest >> testEmptyBuild [
 	self setUpResponse: '{}'.
 	self assertEmpty: self emptyBuild artifacts.
 	self assertEmpty: self emptyBuild runs
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2BuildTest >> testLastSuccessfulBuildPropagateTag [
 	| run build |
 	self setUpResponse: self oneRunResponse.

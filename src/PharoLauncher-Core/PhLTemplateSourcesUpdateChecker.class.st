@@ -6,8 +6,8 @@ PhLTemplateSourcesUpdateChecker terminate
 
 "
 Class {
-	#name : #PhLTemplateSourcesUpdateChecker,
-	#superclass : #Object,
+	#name : 'PhLTemplateSourcesUpdateChecker',
+	#superclass : 'Object',
 	#instVars : [
 		'process'
 	],
@@ -15,26 +15,28 @@ Class {
 		'ShouldRun',
 		'UniqueInstance'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateSourcesUpdateChecker class >> initialize [
 	super initialize.
 	PhLStartupManager addToLauncherStartUpList: self
 ]
 
-{ #category : #'launcher startup' }
+{ #category : 'launcher startup' }
 PhLTemplateSourcesUpdateChecker class >> launcherStartUp [
 	self run
 ]
 
-{ #category : #'launcher startup' }
+{ #category : 'launcher startup' }
 PhLTemplateSourcesUpdateChecker class >> launcherStartUpPriority [
 	^ 500
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplateSourcesUpdateChecker class >> run [
 	self shouldRun ifFalse: [ ^ self ].
 	
@@ -46,7 +48,7 @@ PhLTemplateSourcesUpdateChecker class >> run [
 	
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -60,12 +62,12 @@ PhLTemplateSourcesUpdateChecker class >> settingsOn: aBuilder [
 		description: 'Check if Pharo Launcher Template sources has an update available (needs internet access)'
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> shouldRun [
 	^ ShouldRun ifNil: [ ShouldRun := true ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> shouldRun: aBoolean [
 	ShouldRun := aBoolean.
 	ShouldRun 
@@ -73,43 +75,43 @@ PhLTemplateSourcesUpdateChecker class >> shouldRun: aBoolean [
 		ifFalse: [ self terminate ].
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplateSourcesUpdateChecker class >> terminate [
 	self uniqueInstance terminate
 	
 	
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 	^ UniqueInstance ifNil: [ UniqueInstance := self new ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateSourcesUpdateChecker >> basicUpdateTemplateSources [
 	PhLPharoTemplateSources fromFile updateSourcesFile.
 	PharoLauncherApplication resetTemplateRepository.
 	PharoLauncherApplication default resetTemplateRepository.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> check [
 	[ PhLPharoTemplateSources fromFile checkForUpdates ]
 	on: PhLDownloadError 
 	do: [ :e | "ignore. No internet connection available" ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> name [
 	^ 'Launcher sources update checker'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> priority [
 	^ 20
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateSourcesUpdateChecker >> registerOnTemplateSourcesUpdate [
 
 	PhLPharoTemplateSources announcer weak
@@ -118,7 +120,7 @@ PhLTemplateSourcesUpdateChecker >> registerOnTemplateSourcesUpdate [
 		to: self.
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLTemplateSourcesUpdateChecker >> run [
 	self terminate.
 	self registerOnTemplateSourcesUpdate.
@@ -127,19 +129,19 @@ PhLTemplateSourcesUpdateChecker >> run [
 	forkAt: self priority named: self name
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLTemplateSourcesUpdateChecker >> terminate [
 	self unregisterFromTemplateSourcesUpdate.
 	process ifNotNil: [ process isTerminating ifFalse: [ process terminate ] ]
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
 	PhLPharoTemplateSources announcer
 		unsubscribe: self.
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
 	
 	PharoLauncherApplication default shouldUpdateTemplateSources ifFalse: [ ^ self ].
@@ -147,7 +149,7 @@ PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
 	self basicUpdateTemplateSources
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLTemplateSourcesUpdateChecker >> wait [
 	24 hours wait.
 ]

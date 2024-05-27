@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLVMUpdateCliCommandTest,
-	#superclass : #PhLVmCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLVMUpdateCliCommandTest',
+	#superclass : 'PhLVmCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMUpdateCliCommandTest >> testUpdateVmShouldSucceed [
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.

@@ -2,12 +2,13 @@
 A PhLImageCreateFromSHACliCommandTest is a test class for testing the behavior of PhLImageCreateFromSHACliCommand
 "
 Class {
-	#name : #PhLImageCreateFromSHACliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCreateFromSHACliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromABuildShouldFailWhenShaIsMissing [
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromSHA' '--pharoVersion' '10').
@@ -16,7 +17,7 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromABuildShouldFailWhenSh
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaDoesNotExist [
 	| command |
 	command := (context arguments: #('launcher' 'image' 'create' 'fromSHA' 'NotASha' '--pharoVersion' '10')) command.
@@ -25,7 +26,7 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaDo
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaIsInvalid [
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromSHA' 'NotAValidSha' '--pharoVersion' '10').
@@ -34,7 +35,7 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaIs
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldSucceed [
 	| command |
 	self addImageNamed: 'myImage1'.

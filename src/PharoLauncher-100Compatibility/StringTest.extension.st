@@ -1,6 +1,6 @@
-Extension { #name : #StringTest }
+Extension { #name : 'StringTest' }
 
-{ #category : #'*PharoLauncher-100Compatibility' }
+{ #category : '*PharoLauncher-100Compatibility' }
 StringTest >> testAsFileLocatorOrReferenceReturnsALocatorWhenStringRefersToAKnownOrigin [
 	| pathString locator |
 	pathString := (FileLocator home / 'foo') fullName.
@@ -15,7 +15,7 @@ StringTest >> testAsFileLocatorOrReferenceReturnsALocatorWhenStringRefersToAKnow
 		equals: pathString.
 ]
 
-{ #category : #'*PharoLauncher-100Compatibility' }
+{ #category : '*PharoLauncher-100Compatibility' }
 StringTest >> testAsFileLocatorOrReferenceReturnsAReferenceWhenStringDoesNotReferToAKnownOrigin [
 	| fileRef result |
 	fileRef := '/foo' asFileReference.

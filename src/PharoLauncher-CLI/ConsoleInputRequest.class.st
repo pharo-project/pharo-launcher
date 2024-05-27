@@ -13,8 +13,8 @@ WARNING: the user could type some data before waiting for it but this data will 
 ```
 "
 Class {
-	#name : #ConsoleInputRequest,
-	#superclass : #Object,
+	#name : 'ConsoleInputRequest',
+	#superclass : 'Object',
 	#instVars : [
 		'inputStream',
 		'outputStream',
@@ -24,10 +24,12 @@ Class {
 		'answer',
 		'validationErrorMessage'
 	],
-	#category : #'PharoLauncher-CLI-Utility'
+	#category : 'PharoLauncher-CLI-Utility',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Utility'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 ConsoleInputRequest class >> inputStream: inStream outputStream: outStream [
 
 	^ self new
@@ -35,7 +37,7 @@ ConsoleInputRequest class >> inputStream: inStream outputStream: outStream [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequest >> answer [ 
 	
 	| isValid validatedAnswer |
@@ -50,7 +52,7 @@ ConsoleInputRequest >> answer [
 	^ validatedAnswer
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleInputRequest >> askQuestion [
 
 	outputStream 
@@ -59,14 +61,14 @@ ConsoleInputRequest >> askQuestion [
 		flush.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ConsoleInputRequest >> inputStream: inStream outputStream: outStream [
 
 	inputStream := inStream.
 	outputStream := outStream
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleInputRequest >> logError: error [
 
 	outputStream nextPutAll: 'Invalid answer. '.
@@ -75,7 +77,7 @@ ConsoleInputRequest >> logError: error [
 		 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleInputRequest >> oneAnswerCycle [
 	
 	self askQuestion.
@@ -85,13 +87,13 @@ ConsoleInputRequest >> oneAnswerCycle [
 	^ validationBlock value: answer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequest >> question: aString [
 
 	question := aString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleInputRequest >> readAnswer [
 	
 	inputStream waitForData.
@@ -101,7 +103,7 @@ ConsoleInputRequest >> readAnswer [
 				ZnBufferedReadStream on: inputStream) )) nextLine
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ConsoleInputRequest >> reset [
 
 	question := nil.
@@ -111,13 +113,13 @@ ConsoleInputRequest >> reset [
 	answer := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequest >> transform: aBlock [
 	
 	transformBlock := aBlock
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 ConsoleInputRequest >> useShortYesNoValidation [
 	" [y|n] "
 
@@ -127,13 +129,13 @@ ConsoleInputRequest >> useShortYesNoValidation [
 	self validationErrorMessage: 'Please provide a valid answer: y or n'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequest >> validation: aBlock [
 	
 	validationBlock := aBlock
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequest >> validationErrorMessage: aString [
 
 	validationErrorMessage := aString

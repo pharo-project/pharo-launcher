@@ -13,12 +13,14 @@ Example of utilisation with imageToCopy and copiedImageName:
 ./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image copy imageToCopy copiedImageName
 "
 Class {
-	#name : #PhLImageCopyCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageCopyCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	"raise errors, when positional args are missing"
 	(aCommandSpec 
@@ -32,30 +34,30 @@ PhLImageCopyCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [:arg :app | self raiseNewImageNotFound].
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCopyCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #copy
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCopyCliCommand class >> launcherCmdDescription [
 
 	^ 'Creates copy of given image with new name.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCopyCliCommand class >> raiseImageToCopyNotFound [
 
 	^ NotFound signal: 'Image to copy argument is missing.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCopyCliCommand class >> raiseNewImageAlreadyUsed: targetName [
 
 	^ PhLNameNotAvailableError signal: ('Target image name ''{1}'' already used.' format: { targetName  })
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageCopyCliCommand >> basicExecute [
 
 	[ self imageRepository copyImage: self findImage to: self targetName ]

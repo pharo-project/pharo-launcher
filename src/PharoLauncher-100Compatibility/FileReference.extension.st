@@ -1,6 +1,6 @@
-Extension { #name : #FileReference }
+Extension { #name : 'FileReference' }
 
-{ #category : #'*PharoLauncher-100Compatibility' }
+{ #category : '*PharoLauncher-100Compatibility' }
 FileReference >> asFileLocatorOrReference [
 	filesystem isMemoryFileSystem ifTrue: [ ^ self "no convertion for memory file system" ].
 	

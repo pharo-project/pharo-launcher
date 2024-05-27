@@ -1,6 +1,6 @@
-Extension { #name : #VTermOutputDriver }
+Extension { #name : 'VTermOutputDriver' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 VTermOutputDriver >> newLine [
 
 	self nextPutAll: OSPlatform current lineEnding

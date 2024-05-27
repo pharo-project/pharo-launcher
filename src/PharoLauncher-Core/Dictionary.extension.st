@@ -1,6 +1,6 @@
-Extension { #name : #Dictionary }
+Extension { #name : 'Dictionary' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 Dictionary >> asPhLImage [
 	"old metadata file format"
 

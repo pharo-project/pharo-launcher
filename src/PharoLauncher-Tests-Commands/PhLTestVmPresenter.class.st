@@ -2,8 +2,8 @@
 A presenter for Pharo Launcher VMs used for test purposes
 "
 Class {
-	#name : #PhLTestVmPresenter,
-	#superclass : #PhLVMPresenter,
+	#name : 'PhLTestVmPresenter',
+	#superclass : 'PhLVMPresenter',
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
 	#instVars : [
@@ -11,10 +11,11 @@ Class {
 		'vmManager',
 		'vmStoreRoot'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLTestVmPresenter >> createVmNamed: aName [
 	| vmDirectory appDir |
 	vmDirectory := vmStoreRoot / aName.
@@ -27,7 +28,7 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestVmPresenter >> initialize [
 	| datasource |
 	vmManager := PhLTestVirtualMachineManager new.
@@ -41,29 +42,29 @@ PhLTestVmPresenter >> initialize [
 	super initialize
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLTestVmPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestVmPresenter >> selectedVms [
 	^ selection 
 		ifNotNil: [ selection ]
 		ifNil: [ { self vmFor: self singleVmName } ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLTestVmPresenter >> selection: aListOfVms [
 	selection := aListOfVms
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestVmPresenter >> singleVmName [
 	^ '80-TestVM'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTestVmPresenter >> vmFor: aName [
 
 	| vm |
@@ -72,12 +73,12 @@ PhLTestVmPresenter >> vmFor: aName [
 	^ vm
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLTestVmPresenter >> vmNames [
 	^ self datasource virtualMachines
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTestVmPresenter >> vmStoreRoot [
 
 	^ vmStoreRoot

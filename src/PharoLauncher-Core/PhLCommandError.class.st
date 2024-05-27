@@ -2,17 +2,19 @@
 This error is thrown each time a command can not do its job.
 "
 Class {
-	#name : #PhLCommandError,
-	#superclass : #PhLError,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLCommandError',
+	#superclass : 'PhLError',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCommandError >> longDescription [
 	^ 'Pharo Launcher Command Error!'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCommandError >> name [
 	^ 'command error'
 ]

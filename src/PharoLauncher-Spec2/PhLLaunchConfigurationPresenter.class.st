@@ -6,8 +6,8 @@ To open me:
 	self example
 "
 Class {
-	#name : #PhLLaunchConfigurationPresenter,
-	#superclass : #SpPresenter,
+	#name : 'PhLLaunchConfigurationPresenter',
+	#superclass : 'SpPresenter',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
@@ -21,10 +21,11 @@ Class {
 		'applyChangesButton',
 		'saveAndSelectsButton'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 	^ SpBoxLayout newVertical
 		spacing: 5;
@@ -64,7 +65,7 @@ PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
 		yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLLaunchConfigurationPresenter class >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		spacing: 5;
@@ -77,7 +78,7 @@ PhLLaunchConfigurationPresenter class >> defaultLayout [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLLaunchConfigurationPresenter class >> example [
 	| image |
 	image := PhLImage example.
@@ -88,7 +89,7 @@ PhLLaunchConfigurationPresenter class >> example [
 		model: image) open
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLLaunchConfigurationPresenter class >> labelConstraintsBlock [
 	^ [ :constraints | 
 	constraints
@@ -96,12 +97,12 @@ PhLLaunchConfigurationPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLLaunchConfigurationPresenter class >> labelWidth [
 	^ 120
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchConfigurationPresenter >> addInteractiveImageArgument [
 	| interactiveFlag |
 	interactiveFlag := '--interactive'.
@@ -111,27 +112,27 @@ PhLLaunchConfigurationPresenter >> addInteractiveImageArgument [
 	imageArgumentList refresh.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> configurationName [
 	^ selectedConfigurationNameField text
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> connectPresenters [
 	configurationTable selectIndex: 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> image [
 	^ image
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> imageArguments [
 	^ imageArgumentList items
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> initializePresenters [
 
 	configurationTable := (self instantiate: SpEditableListPresenter)
@@ -182,13 +183,13 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> initializeVmListContent [
 	vmList items: image vmManager virtualMachines.
 	self setVmFromConfiguration.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: self image name, ' image launch configurations';
@@ -196,7 +197,7 @@ PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 		whenClosedDo: [ self application launchConfigurationEdited: self selectedConfiguration ].
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLLaunchConfigurationPresenter >> newConfiguration [
 	| newName configuration |
 	
@@ -213,7 +214,7 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 	^ configuration
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	| config |
 	config := self selectedConfiguration.
@@ -226,22 +227,22 @@ PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	self application launchConfigurationEdited: config.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLLaunchConfigurationPresenter >> selectImageArgumentAt: anIndex [
 	imageArgumentList selectIndex: anIndex
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLLaunchConfigurationPresenter >> selectVMArgumentAt: anIndex [
 	vmArgumentList selectIndex: anIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> selectedConfiguration [
 	^ selectedConfiguration
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [
 	selectedConfigurationNameField text: self selectedConfiguration name.
 	self setVmFromConfiguration.
@@ -251,12 +252,12 @@ PhLLaunchConfigurationPresenter >> selectedConfigurationChanged [
 	self selectVMArgumentAt: 1.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> setModelBeforeInitialization: aPhLImage [
 	image := aPhLImage 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLLaunchConfigurationPresenter >> setVmFromConfiguration [
 	| vm |
 	vm := self selectedConfiguration 
@@ -269,7 +270,7 @@ PhLLaunchConfigurationPresenter >> setVmFromConfiguration [
 				selectItem: vm ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> vmArguments [
 	^ vmArgumentList items
 ]

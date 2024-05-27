@@ -1,10 +1,11 @@
 Class {
-	#name : #BaselineOfPharoLauncher,
-	#superclass : #BaselineOf,
-	#category : #BaselineOfPharoLauncher
+	#name : 'BaselineOfPharoLauncher',
+	#superclass : 'BaselineOf',
+	#category : 'BaselineOfPharoLauncher',
+	#package : 'BaselineOfPharoLauncher'
 }
 
-{ #category : #baselines }
+{ #category : 'baselines' }
 BaselineOfPharoLauncher >> baseline: spec [
 	<baseline>
 
@@ -60,7 +61,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				'PharoLauncher-Squeak') ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> clap: spec [
 
 	spec 
@@ -68,7 +69,7 @@ BaselineOfPharoLauncher >> clap: spec [
 		with: [ spec repository: 'github://pharo-contributions/clap-st:master/src' ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> objCBridge: spec [
 
 	spec 
@@ -76,7 +77,7 @@ BaselineOfPharoLauncher >> objCBridge: spec [
 		with: [ spec repository: 'github://estebanlm/objcbridge:v0.9' ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> osSubprocess: spec [
 
 	spec 
@@ -84,7 +85,7 @@ BaselineOfPharoLauncher >> osSubprocess: spec [
 		with: [ spec repository: 'github://pharo-contributions/OSSubprocess:master/repository' ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> osWinSubprocess: spec [
 
 	spec 
@@ -92,7 +93,7 @@ BaselineOfPharoLauncher >> osWinSubprocess: spec [
 		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> ston: spec [
 
 	spec 
@@ -100,7 +101,7 @@ BaselineOfPharoLauncher >> ston: spec [
 		with: [ spec repository: 'github://svenvc/ston:master/repository' ]
 ]
 
-{ #category : #'external projects' }
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> xmlParser: spec [
 
 	spec 

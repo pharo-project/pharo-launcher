@@ -1,28 +1,28 @@
-Extension { #name : #OSPlatform }
+Extension { #name : 'OSPlatform' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform class >> archX86_64 [
 	^ 'x86_64'
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform >> architectureOf: aPathString [
 
 	"ensure file is executable and "
 	^ LibC resultOfCommand: 'file -b ' , aPathString
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform >> canRun32bitApp [
 	^ true
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform >> hostArchitecture [
 	self subclassResponsibility
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform >> isValid: aPhLVirtualMachine [
 	
 	| architecture |
@@ -38,7 +38,7 @@ OSPlatform >> isValid: aPhLVirtualMachine [
 
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OSPlatform >> uname [
 	self subclassResponsibility
 ]

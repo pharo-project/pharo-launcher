@@ -1,6 +1,6 @@
-Extension { #name : #FileReferenceTest }
+Extension { #name : 'FileReferenceTest' }
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileReferenceTest >> testAsFileLocatorOrReferenceReturnsALocatorWhenStringRefersToAKnownOrigin [
 	| fileRef locator |
 	fileRef := (FileLocator home / 'foo') asFileReference.
@@ -15,7 +15,7 @@ FileReferenceTest >> testAsFileLocatorOrReferenceReturnsALocatorWhenStringRefers
 		equals: fileRef fullName.
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileReferenceTest >> testAsFileLocatorOrReferenceReturnsAReferenceWhenStringDoesNotReferToAKnownOrigin [
 	| fileRef result |
 	fileRef := '/foo' asFileReference.

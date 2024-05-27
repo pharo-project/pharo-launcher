@@ -1,22 +1,23 @@
 Class {
-	#name : #PhLVmCliCommandTest,
-	#superclass : #PhLCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLVmCliCommandTest',
+	#superclass : 'PhLCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLVmCliCommandTest >> addVmNamed: vmName [ 
 	^ self vmRepository addVmNamed: vmName at: vmName
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVmCliCommandTest >> setUp [
 
 	super setUp.
 	self launcherModel vmManager: PhLVirtualMachinesMockRepo new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVmCliCommandTest >> testExecuteLauncherVMCommandToPrintHelp [
 	|expectedPrintout|
 	expectedPrintout := 'Usage: launcher vm'.
@@ -27,7 +28,7 @@ PhLVmCliCommandTest >> testExecuteLauncherVMCommandToPrintHelp [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVmCliCommandTest >> vmRepository [ 
 	^ self launcherModel vmManager
 ]

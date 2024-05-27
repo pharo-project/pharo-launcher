@@ -1,6 +1,6 @@
-Extension { #name : #MacOSResolver }
+Extension { #name : 'MacOSResolver' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSResolver >> vmExecutableName [
 	^ 'Pharo'
 ]

@@ -4,8 +4,8 @@ When it is used by a user, dafault configuration is used.
 When it is used for tests, repositories are replaced by mocks.
 "
 Class {
-	#name : #PharoLauncherCLIModel,
-	#superclass : #Object,
+	#name : 'PharoLauncherCLIModel',
+	#superclass : 'Object',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -13,10 +13,12 @@ Class {
 		'configuration',
 		'consoleInputRequest'
 	],
-	#category : #'PharoLauncher-CLI-Model'
+	#category : 'PharoLauncher-CLI-Model',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PharoLauncherCLIModel class >> fromConfiguration: aPharoLauncherConfiguration [
 
 	^ self new
@@ -24,43 +26,43 @@ PharoLauncherCLIModel class >> fromConfiguration: aPharoLauncherConfiguration [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PharoLauncherCLIModel class >> fromDefaultConfiguration [
 
 	^ self fromConfiguration: PharoLauncherCLIConfiguration defaultConfiguration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> configuration [
 
 	^ configuration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> configuration: aPharoLauncherConfiguration [
 
 	configuration := aPharoLauncherConfiguration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> consoleInputRequest [
 
 	^ consoleInputRequest
 		ifNil: [ consoleInputRequest := ConsoleInputRequest new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> consoleInputRequest: aConsoleInputRequest [
 
 	consoleInputRequest := aConsoleInputRequest
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> defaultTemplate [
 	^ configuration defaultTemplate
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> imageRepository [
 	^ imageRepository
 		ifNil: [ self
@@ -70,29 +72,29 @@ PharoLauncherCLIModel >> imageRepository [
 			imageRepository ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> imageRepository: aPhLDirectoryBasedImageRepository [
 	imageRepository := aPhLDirectoryBasedImageRepository
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PharoLauncherCLIModel >> resetTemplateRepository [
 	templateRepository := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> templateRepository [
 	^ templateRepository
 		ifNil: [ self templateRepository: PhLTemplateGroupRepository default.
 					templateRepository ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> templateRepository: aPathString [
 	templateRepository := aPathString 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> vmManager [
 	^ vmManager
 		ifNil: [ PhLVirtualMachineManager vmStore: configuration vmsDirectory.
@@ -100,7 +102,7 @@ PharoLauncherCLIModel >> vmManager [
 			vmManager ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherCLIModel >> vmManager: aPathString [
 	vmManager := aPathString 
 ]

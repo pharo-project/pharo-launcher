@@ -1,12 +1,12 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 String >> shortForm [
 	"this is string abbreviation used when shortening string to given size"
 	^ ' ... '
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 String >> shortenTo: aSizeLimit [
 	"returns shortened string up to desired limit, puts ' ... ' in the middle of shortened string."
 	"('ABCDEF' shortenTo: 5) >>> ' ... '"

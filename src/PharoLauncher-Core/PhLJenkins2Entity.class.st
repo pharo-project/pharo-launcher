@@ -2,44 +2,46 @@
 Abstract superclass for everything that is in a Jenkins server (and is visible from the JSON Jenkins API)
 "
 Class {
-	#name : #PhLJenkins2Entity,
-	#superclass : #PhLAbstractTemplateGroup,
+	#name : 'PhLJenkins2Entity',
+	#superclass : 'PhLAbstractTemplateGroup',
 	#instVars : [
 		'properties',
 		'parent',
 		'childrenCache'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkins2Entity class >> isAbstract [
 	^ self = PhLJenkins2Entity
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Entity class >> jsonFields [
 	^ self subclassResponsibility
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Entity class >> jsonFieldsQuery [
 	^ $, join: self jsonFields
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Entity class >> jsonName [
 	^ self subclassResponsibility 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2Entity class >> newWithProperties: json [ 
 	^ self new
 		setProperties: json;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> children [
 	"Since we need to request the network to get children, it is better to cache them.
 	In the current use of the launcher, the jenkins entities are recreated each time we want to create a new image. Thus, we can cache the children, the probability of the jenkins been updated meanwhile."
@@ -47,7 +49,7 @@ PhLJenkins2Entity >> children [
 	^ childrenCache ifNil: [ childrenCache := super children ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> icon [ 
 	"(Base64MimeConverter mimeEncode: 'jenkins.png' asFileReference binaryReadStream) contents"
 
@@ -109,7 +111,7 @@ QF6/fh1FRUX8nflauvjANLfHdsHkvSzyy8rKOKCsrCwueIw+1W5UV2PP3r3IL8jncxKwyXsf
 /P9/A5DMyWKir68Pbko1ZhmW3/HU7UyJifzYxb4dHof+Bz/cTBmvnojyAAAAAElFTkSuQmCC') magnifyBy: 0.5
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Entity >> jsonQuery: query [
 	| queryUrl |
 	queryUrl := self url / 'api' / 'json' ? ('tree' -> query).
@@ -117,22 +119,22 @@ PhLJenkins2Entity >> jsonQuery: query [
 		fromStream: (PhLDownloadManager default downloadToPositionableStream: queryUrl mimeType: ZnMimeType applicationJson)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> parent: aPhLEntity [
 	parent := aPhLEntity
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> password [
 	^ parent password
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> properties [
 	^ properties
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Entity >> query: jenkinsType [
 	| query |
 	query := jenkinsType jsonName , '[' , jenkinsType jsonFieldsQuery , ']'.
@@ -146,19 +148,19 @@ PhLJenkins2Entity >> query: jenkinsType [
 						yourself ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLJenkins2Entity >> setProperties: json [ 
 	properties := json
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkins2Entity >> shouldComputeChildrenLazily [
 	"to know if the group has children, we need to send an ReST request. It can take a lot of time.
 	It is better to do it lazily"
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> url [
 	"We get the URL from the json sent by Jenkins. In case of a secure Jenkins, we need to set the username and token to the URL we get."
 
@@ -169,7 +171,7 @@ PhLJenkins2Entity >> url [
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Entity >> username [
 	^ parent username
 ]

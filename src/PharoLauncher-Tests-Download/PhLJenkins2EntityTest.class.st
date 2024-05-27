@@ -1,30 +1,31 @@
 Class {
-	#name : #PhLJenkins2EntityTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Download'
+	#name : 'PhLJenkins2EntityTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkins2EntityTest class >> isAbstract [
 	^ self = PhLJenkins2EntityTest
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2EntityTest class >> newInstance [
 	^ self subclassResponsibility
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2EntityTest class >> newSecureInstance [
 	^ self subclassResponsibility
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkins2EntityTest class >> shouldInheritSelectors [
 	^ true
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2EntityTest >> downloadManager [
 	| manager |
 	manager := PhLDownloadManager default.
@@ -33,41 +34,41 @@ PhLJenkins2EntityTest >> downloadManager [
 	^ manager
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2EntityTest >> newInstance [
 	^ self class newInstance
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2EntityTest >> newSecureInstance [
 	^ self class newSecureInstance
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLJenkins2EntityTest >> setUp [
 	super setUp.
 	PhLDownloadManagerMock install.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLJenkins2EntityTest >> setUpResponse: aResponse [
 	"Setup the mock Jenkins server to answer ==aResponse==."
 	self downloadManager defaultResponse: aResponse
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLJenkins2EntityTest >> tearDown [
 	PhLDownloadManagerMock remove.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2EntityTest >> testNonSecureJenkinsDoesNotIncludesIdentifiersInUrl [
 	self deny: self newInstance url hasUsername.
 	self deny: self newInstance url hasPassword
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2EntityTest >> testSecureJenkinsIncludesIdentifiersInUrl [
 	self assert: self newSecureInstance url hasUsername.
 	self assert: self newSecureInstance url hasPassword

@@ -21,8 +21,8 @@ API description:
 - printList - prints listed objects to stream based on flags set
 "
 Class {
-	#name : #ConsoleListFormatter,
-	#superclass : #Object,
+	#name : 'ConsoleListFormatter',
+	#superclass : 'Object',
 	#instVars : [
 		'briefPrint',
 		'cliCommand',
@@ -36,10 +36,12 @@ Class {
 		'rowMode',
 		'defaultValue'
 	],
-	#category : #'PharoLauncher-CLI-Utility'
+	#category : 'PharoLauncher-CLI-Utility',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Utility'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 ConsoleListFormatter class >> on: aCliCommand [
 	
 	"by default - formatter is instantiated from command, 
@@ -49,7 +51,7 @@ ConsoleListFormatter class >> on: aCliCommand [
 		yourself 
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> attributeLabels [
 	"lazy initialize from command, if not explicitly set before"
 
@@ -57,83 +59,83 @@ ConsoleListFormatter >> attributeLabels [
 		ifNil: [ attributeLabels := cliCommand listPrintAttributeLabels ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> attributeLabels: aLabels [
 
 	attributeLabels := aLabels
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> attributeValueBlocks [
 
 	^ attributeValueBlocks
 		ifNil: [ attributeValueBlocks := cliCommand listPrintAttributeBlocks ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> attributeValueBlocks: aBlocks [
 
 	attributeValueBlocks := aBlocks
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> attributeValuesFrom: aDomainObject [
 
 	^ self attributeValueBlocks collect: [:aBlock | aBlock value: aDomainObject ]
 
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> briefPrint [
 
 	^ briefPrint ifNil: [ briefPrint := cliCommand briefPrint ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> briefPrint: aBool [
 
 	briefPrint := aBool
 ]
 
-{ #category : #'accessing - public' }
+{ #category : 'accessing - public' }
 ConsoleListFormatter >> cliCommand: aCommand [
 
 	cliCommand := aCommand
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> delimiter [ 
 
 	^ delimiter ifNil: [ delimiter := cliCommand delimiter ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> delimiter: aString [ 
 
 	delimiter := aString
 ]
 
-{ #category : #'accessing - public' }
+{ #category : 'accessing - public' }
 ConsoleListFormatter >> domainObjects [
  
  ^ domainObjects
 ]
 
-{ #category : #'accessing - public' }
+{ #category : 'accessing - public' }
 ConsoleListFormatter >> domainObjects: anObjects [ 
 
 	domainObjects := anObjects.
 	defaultValue := nil.
 ]
 
-{ #category : #'accessing - public' }
+{ #category : 'accessing - public' }
 ConsoleListFormatter >> domainObjects: someObjects defaultValue: anObject [
 
 	domainObjects := someObjects.
 	defaultValue := anObject.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> getColumnWidthsFrom: someObjects [
 	"get max column width either from column label or value in column"
 	| labels |
@@ -144,7 +146,7 @@ ConsoleListFormatter >> getColumnWidthsFrom: someObjects [
 			[ :attrBlock :index | (self getMaxPrintStringWidthFor: someObjects printBlock: attrBlock) max: (labels at: index) size ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: printBlock [
 	"evaluate print block and obtain string size, return max value from collection"
 
@@ -152,49 +154,49 @@ ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: print
 		max
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 ConsoleListFormatter >> hasDefaultValue [
 
 	^ defaultValue notNil
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> indexColumnDefaultSize [
 	^ 2
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> indexColumnSize [
 	^ self hasDefaultValue 
 		ifTrue: [ self indexColumnDefaultSize + 1 ]
 		ifFalse: [ self indexColumnDefaultSize ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> outStream [ 
 
 	^ outStream ifNil: [ outStream := cliCommand outStream ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> outStream: aWriteStream [
 
 	outStream := aWriteStream
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> outputAsSton [ 
 
 	^ outputAsSton ifNil: [outputAsSton := cliCommand outputAsSton]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> outputAsSton: aBoolean [
 
 	outputAsSton := aBoolean
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printAttributeHeaders: labels by: columnWidths [
 	"print header labels and header line"
 
@@ -207,7 +209,7 @@ ConsoleListFormatter >> printAttributeHeaders: labels by: columnWidths [
 	self printHeaderLinesBy: columnWidths.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printAttributeRows: someObjects by: columnWidths [
 
 	someObjects withIndexDo: [:listedObject :idx|
@@ -218,7 +220,7 @@ ConsoleListFormatter >> printAttributeRows: someObjects by: columnWidths [
 	]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printAttributeTable [
 
 	| columnWidths |
@@ -229,7 +231,7 @@ ConsoleListFormatter >> printAttributeTable [
 	self printAttributeRows: self domainObjects by: columnWidths
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printCell: aString width: widthSize [
 	
 	|shortened|
@@ -240,7 +242,7 @@ ConsoleListFormatter >> printCell: aString width: widthSize [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printDefaultValueMark: listedObject [
 
 	self outStream nextPut: (listedObject == defaultValue
@@ -248,13 +250,13 @@ ConsoleListFormatter >> printDefaultValueMark: listedObject [
 			 ifFalse: [ Character space ])
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printDelimiter [
 
 	self outStream nextPutAll: self delimiter
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printHeaderLinesBy: columnWidths [
 	"print header line"
 
@@ -267,13 +269,13 @@ ConsoleListFormatter >> printHeaderLinesBy: columnWidths [
 	self outStream newLine.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printLineSized: aWidth [ 
 
 	aWidth timesRepeat: [self outStream nextPut: $-]
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 ConsoleListFormatter >> printList [
 
 	self outputAsSton
@@ -282,13 +284,13 @@ ConsoleListFormatter >> printList [
 	self printListAttributes
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 ConsoleListFormatter >> printListAsSton [
 
 	self outStream nextPutAll: (STON toString: self domainObjects) 
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 ConsoleListFormatter >> printListAttributes [
 	self domainObjects isEmptyOrNil
 		ifTrue: [ ^ self ].
@@ -298,7 +300,7 @@ ConsoleListFormatter >> printListAttributes [
 		ifFalse: [ self printAttributeTable ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printOneAttrPerRow [
 	| blockArray aLabels |
 	
@@ -312,7 +314,7 @@ ConsoleListFormatter >> printOneAttrPerRow [
 		self outStream newLine ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> printRowValues: values by: columnWidths [
 
 	values withIndexDo: [:aLabel :idx |
@@ -322,31 +324,31 @@ ConsoleListFormatter >> printRowValues: values by: columnWidths [
 	self outStream newLine.
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> printSequence [ 
 
 	^ printSequence ifNil: [ printSequence := cliCommand printSequence ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> printSequence: aBoolean [
 
 	printSequence := aBoolean 
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> rowMode [ 
 
 	^ rowMode ifNil: [ rowMode := cliCommand rowMode ]
 ]
 
-{ #category : #'accessing - command' }
+{ #category : 'accessing - command' }
 ConsoleListFormatter >> rowMode: aBool [
 
 	rowMode := aBool 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 ConsoleListFormatter >> tableColumnWidthLimit [
 
 	"this is max size of table column, in case value in cell is exceeded, it will be shortened to this limit"

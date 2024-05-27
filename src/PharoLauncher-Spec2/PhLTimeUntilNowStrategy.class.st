@@ -11,12 +11,13 @@ Example:
 3 days ago
 "
 Class {
-	#name : #PhLTimeUntilNowStrategy,
-	#superclass : #PhLAbstractDateDisplayStrategy,
-	#category : #'PharoLauncher-Spec2'
+	#name : 'PhLTimeUntilNowStrategy',
+	#superclass : 'PhLAbstractDateDisplayStrategy',
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTimeUntilNowStrategy class >> displayStringOf: aDateAndTime [
 
 	aDateAndTime ifNil: [ ^ 'N/A' ].
@@ -24,7 +25,7 @@ PhLTimeUntilNowStrategy class >> displayStringOf: aDateAndTime [
 	^ (DateAndTime now - aDateAndTime) simpleTimeAgo asText
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTimeUntilNowStrategy class >> label [
 	^ 'Time since now'
 ]

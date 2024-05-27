@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageCreateFromBuildCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCreateFromBuildCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildOfATemplateShouldSucceed [
 	| command |
 	self addImageNamed: 'myImage1'.
@@ -18,7 +19,7 @@ PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildOfATemplateSho
 	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhenBuildIsMissing [
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromBuild' '--pharoVersion' '10').
@@ -29,7 +30,7 @@ PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhen
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhenBuildNrDoesNotExist [
 
 	| command |
@@ -40,7 +41,7 @@ PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhen
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreateFromBuildCliCommandTest >> testCreateImageFromABuildShouldFailWhenBuildNrIsInvalid [
 	
 	self runCommand: #('launcher' 'image' 'create' 'fromBuild' 'NotANumber' '--pharoVersion' '10').

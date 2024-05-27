@@ -11,23 +11,25 @@ I execute:
 - just printing help about my sub-commands relevant for Pharo templates
 "
 Class {
-	#name : #PhLTemplateCliCommand,
-	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLTemplateCliCommand',
+	#superclass : 'PhLCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLTemplateCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #template 
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLTemplateCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to image templates.'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTemplateCliCommand >> modelClass [
 
  ^ self class environment at: #PhLAbstractTemplate 

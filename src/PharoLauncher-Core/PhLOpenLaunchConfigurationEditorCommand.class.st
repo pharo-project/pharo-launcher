@@ -2,19 +2,21 @@
 Open Launch configuration editor for the selected image.
 "
 Class {
-	#name : #PhLOpenLaunchConfigurationEditorCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLOpenLaunchConfigurationEditorCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLOpenLaunchConfigurationEditorCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #edit;
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLOpenLaunchConfigurationEditorCommand >> execute [
 
 	^ (PhLLaunchConfigurationPresenter
@@ -24,7 +26,7 @@ PhLOpenLaunchConfigurationEditorCommand >> execute [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLOpenLaunchConfigurationEditorCommand >> initialize [
 	super initialize.
 	self 

@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLImageCreationPresenterTest,
-	#superclass : #TestCase,
+	#name : 'PhLImageCreationPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : 'PharoLauncher-Tests-SpecUI',
+	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageCreationPresenterTest >> setUp [
 	super setUp.
 	presenter := PhLImageCreationPresenter
@@ -17,7 +18,7 @@ PhLImageCreationPresenterTest >> setUp [
 				yourself)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreationPresenterTest >> testImageNameIsNotValidWhenContainingFileSeparator [ 
 
 	presenter checkNewName: 'foo/'.
@@ -25,7 +26,7 @@ PhLImageCreationPresenterTest >> testImageNameIsNotValidWhenContainingFileSepara
 	self deny: presenter isNameValid.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreationPresenterTest >> testImageNameIsValid [
 
 	presenter checkNewName: 'nonExistingImageName'.
@@ -33,7 +34,7 @@ PhLImageCreationPresenterTest >> testImageNameIsValid [
 	self assert: presenter isNameValid.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCreationPresenterTest >> testInitializationScriptListUpdatedWhenScriptPresenterDoChange [
 	| scriptPresenter |
 	self

@@ -2,18 +2,20 @@
 Error thrown when a template (zip archive) is corrupted
 "
 Class {
-	#name : #PhLCorruptedTemplateError,
-	#superclass : #PhLError,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLCorruptedTemplateError',
+	#superclass : 'PhLError',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCorruptedTemplateError >> longDescription [
 
 	^ self name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCorruptedTemplateError >> name [
 	^ 'This template appears to be corrupted! Please try again.'
 ]

@@ -1,15 +1,16 @@
 Class {
-	#name : #PhLImageFinderTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Download'
+	#name : 'PhLImageFinderTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinderTest class >> defaultTimeLimit [
 	^ 300 seconds
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testCanGetBuildNumbersForAGivePharoVersion [
 	| builds |
 	
@@ -23,7 +24,7 @@ PhLImageFinderTest >> testCanGetBuildNumbersForAGivePharoVersion [
 	self assert: (builds includes: 15).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 	| finder |
 	
@@ -31,7 +32,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo10AndValidBuildNumberProvided [
 	self assert: finder findUrl equals: 'https://files.pharo.org/image/100/Pharo10-SNAPSHOT.build.21.sha.f022266.arch.64bit.zip'  
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo7AndValidBuildNumberProvided [
 	| finder |
 	
@@ -40,7 +41,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo7AndValidBuildNumberProvided [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo8AndValidBuildNumberProvided [
 	| finder |
 	finder := PhLImageFinderStub pharoVersion: '8' build: '210'.
@@ -50,7 +51,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo8AndValidBuildNumberProvided [
 			'https://files.pharo.org/image/80/Pharo8.0-SNAPSHOT.build.210.sha.5da933e.arch.64bit.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
 	| finder |
 	
@@ -59,7 +60,7 @@ PhLImageFinderTest >> testShouldFindUrlWhenPharo9AndValidBuildNumberProvided [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
 	| url |
 	url := (PhLImageFinderStub fromInriaCIPullRequest: 10553) findTemplateUrlForRemoteArtifact.
@@ -69,7 +70,7 @@ PhLImageFinderTest >> testShouldGetTemplateUrlWhenValidPullRequestNumber [
 		equals: 'pharo-ci-jenkins2/job/Test pending pull request and branch Pipeline/view/change-requests/job/PR-10553/lastSuccessfulBuild/artifact/build/bootstrap-cache/Pharo10.0-PR-64bit-5ce32be.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidBuildNumberProvided [
 
 	self
@@ -78,7 +79,7 @@ PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidBuildNumberProvided [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidPharoVersionProvided [
 
 	self
@@ -87,7 +88,7 @@ PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidPharoVersionProvided [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageFinderTest >> testShouldRaiseNotFoundWhenInvalidShaProvided [
 
 	self

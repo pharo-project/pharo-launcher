@@ -2,17 +2,18 @@
 I'm a simple presenter to fix the version of a Pharo image when no version file exists.
 "
 Class {
-	#name : #PhLPharoVersionChooserPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLPharoVersionChooserPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'versionTable'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #examples }
+{ #category : 'examples' }
 PhLPharoVersionChooserPresenter class >> example [
 	
 	^ (self newApplication: PharoLauncherApplication new)
@@ -20,14 +21,14 @@ PhLPharoVersionChooserPresenter class >> example [
 		yourself
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLPharoVersionChooserPresenter >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		add: versionTable;
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLPharoVersionChooserPresenter >> initializePresenters [
 	versionTable := self newTable
 		addColumn: ((SpStringTableColumn title: 'Pharo version' evaluated: #key) width: 100; yourself);
@@ -39,7 +40,7 @@ PhLPharoVersionChooserPresenter >> initializePresenters [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLPharoVersionChooserPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
@@ -48,7 +49,7 @@ PhLPharoVersionChooserPresenter >> initializeWindow: aWindowPresenter [
 		centered
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLPharoVersionChooserPresenter >> pharoVersions [
 	| maxPharoVersion versions devTemplate |
 	devTemplate := self application templateRepository defaultTemplateCategory latestDevelopmentTemplate.
@@ -58,7 +59,7 @@ PhLPharoVersionChooserPresenter >> pharoVersions [
 	^ versions collect: [ :v | 'Pharo ', v asString ->  (v * 10) asInteger asString]
 ]
 
-{ #category : #versions }
+{ #category : 'versions' }
 PhLPharoVersionChooserPresenter >> version [
 	^ versionTable selectedItem value
 ]

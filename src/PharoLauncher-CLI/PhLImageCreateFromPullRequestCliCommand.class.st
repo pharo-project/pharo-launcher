@@ -3,12 +3,14 @@ I'm the command to create Pharo project image from Github pull request number. I
 I use PharoProject and InriaCI server to determine proper build artifact (image template) that was built previously by CI based on pull request triggered by author of PR.
 "
 Class {
-	#name : #PhLImageCreateFromPullRequestCliCommand,
-	#superclass : #PhLImageCreateCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageCreateFromPullRequestCliCommand',
+	#superclass : 'PhLImageCreateCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateFromPullRequestCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	self addNewImageFlagTo: aCommandSpec.
@@ -16,7 +18,7 @@ PhLImageCreateFromPullRequestCliCommand class >> addLauncherFlagsTo: aCommandSpe
 	self addTemplateCategoryFlagTo: aCommandSpec.
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateFromPullRequestCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -25,31 +27,31 @@ PhLImageCreateFromPullRequestCliCommand class >> addLauncherPositionalsTo: aComm
 	implicitMeaning: [:arg :app | self raiseMissingPullRequest]
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCreateFromPullRequestCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #fromPR
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCreateFromPullRequestCliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image based on a Github pull request number from the successful build of Inria CI server used by Pharo project.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCreateFromPullRequestCliCommand class >> raiseMissingPullRequest [
 
 	^ NotFound signal: 'An argument is missing. Please specify the pull request number to find the image template from Inria CI build.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageCreateFromPullRequestCliCommand >> basicExecute [ 
 
 	self validatePullRequest.
 	super basicExecute
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 
 	"find template from Inria CI server based on Pull request number"
@@ -65,13 +67,13 @@ PhLImageCreateFromPullRequestCliCommand >> findTemplate [
 		  url: templateUrl
 ]
 
-{ #category : #'accessing - arguments' }
+{ #category : 'accessing - arguments' }
 PhLImageCreateFromPullRequestCliCommand >> pullRequestNumber [
 
 	^ self positional: #pullRequest
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCreateFromPullRequestCliCommand >> raiseBuildArtifactNotFound: imageFinder [
 
 	| errMessage |
@@ -83,13 +85,13 @@ PhLImageCreateFromPullRequestCliCommand >> raiseBuildArtifactNotFound: imageFind
 	^ PhLDownloadError signal: errMessage
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCreateFromPullRequestCliCommand >> raisePullRequestInvalid: prNumberString [
 
 	^ PhLError signal: ('Not a valid pull request number: {1}' format: { prNumberString } )
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCreateFromPullRequestCliCommand >> templateNameFrom: url [
 	"make sure that PR number is part of image template name"
 	
@@ -100,7 +102,7 @@ PhLImageCreateFromPullRequestCliCommand >> templateNameFrom: url [
 		  with: ('-PR-{1}-' format: { self pullRequestNumber })
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCreateFromPullRequestCliCommand >> validatePullRequest [
 
 	|prNumber|

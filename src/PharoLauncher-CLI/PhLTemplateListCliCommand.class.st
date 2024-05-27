@@ -8,12 +8,14 @@ I execute:
 - list local images with detailed information about image name, used VM, architecture, local dir, etc.
 "
 Class {
-	#name : #PhLTemplateListCliCommand,
-	#superclass : #PhLTemplateCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLTemplateListCliCommand',
+	#superclass : 'PhLTemplateCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLTemplateListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	aCommandSpec  
@@ -23,18 +25,18 @@ PhLTemplateListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	self addPrintFlagsTo: aCommandSpec
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLTemplateListCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #list 
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLTemplateListCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints list of image templates.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLTemplateListCliCommand >> basicExecute [ 
 	| templateCategory |
 	[ templateCategory := self templateRepository
@@ -48,20 +50,20 @@ PhLTemplateListCliCommand >> basicExecute [
 		ifFalse: [ self list: templateCategory templatesAndGroups asOrderedCollection ]
 ]
 
-{ #category : #message }
+{ #category : 'message' }
 PhLTemplateListCliCommand >> messageErrorCategoryNotFound [
 	self errorStream nextPutAll: 'Image template category not found. Please enter a correct image tamplate category name.'.
 	self errorStream newLine.
 	^ self
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLTemplateListCliCommand >> raiseCategoryNotFound: categoryName [
 
 	^ NotFound signal: ('Image template category ''{1}'' not found. Please enter a correct image tamplate category name.' format: { categoryName })
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLTemplateListCliCommand >> templateCategory [
 
 	^ self positional: #templateCategory

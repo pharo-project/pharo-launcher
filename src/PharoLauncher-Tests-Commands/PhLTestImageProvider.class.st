@@ -2,12 +2,13 @@
 This class gives a real Pharo image that can be used for tests (for example launch).
 "
 Class {
-	#name : #PhLTestImageProvider,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Tests-Commands'
+	#name : 'PhLTestImageProvider',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #copying }
+{ #category : 'copying' }
 PhLTestImageProvider >> copyCurrentImageTo: targetFolder [
 	| image imagePath |
 	imagePath := targetFolder / FileLocator image basenameWithoutExtension / FileLocator image basename. 

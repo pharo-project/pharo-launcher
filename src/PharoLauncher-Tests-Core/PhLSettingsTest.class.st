@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLSettingsTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLSettingsTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #utility }
+{ #category : 'utility' }
 PhLSettingsTest >> beDeployedDuring: aBlock [
 
 	PhLDeploymentScript isDeployed ifTrue: [ ^ self ].
@@ -14,7 +15,7 @@ PhLSettingsTest >> beDeployedDuring: aBlock [
 	ensure: [ PhLDeploymentScript makeUndeployed ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLSettingsTest >> testDevelopmentEnvironmentEnabledSettingIsNotStored [
 
 	| settingsFile settingNodes persistence |

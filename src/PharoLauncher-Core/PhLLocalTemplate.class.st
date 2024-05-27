@@ -2,15 +2,17 @@
 I am a template that has already been downloaded in the past and stored somewhere on the disk.
 "
 Class {
-	#name : #PhLLocalTemplate,
-	#superclass : #PhLAbstractTemplate,
+	#name : 'PhLLocalTemplate',
+	#superclass : 'PhLAbstractTemplate',
 	#instVars : [
 		'zipFile'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #serialization }
+{ #category : 'serialization' }
 PhLLocalTemplate class >> fromSton: stonReader [
 	| template |
 	template := super fromSton: stonReader.
@@ -19,7 +21,7 @@ PhLLocalTemplate class >> fromSton: stonReader [
 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLLocalTemplate class >> name: aString zipFile: aFileReference [
 	^ self new 
 		setName: aString zipFile: aFileReference;
@@ -27,7 +29,7 @@ PhLLocalTemplate class >> name: aString zipFile: aFileReference [
 		
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLLocalTemplate >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
@@ -35,34 +37,34 @@ PhLLocalTemplate >> = anObject [
 		and: [ zipFile = anObject zipArchive ]
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLLocalTemplate >> hash [
 	^ name hash bitXor: zipFile hash
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLLocalTemplate >> isLocalTemplate [
 	^ true
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLLocalTemplate >> renameTo: aString [ 
 	super renameTo: aString.
 	zipFile renameTo: aString, '.zip'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLocalTemplate >> setName: aString zipFile: aFile [ 
 	name := aString.
 	zipFile := aFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLocalTemplate >> url [
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLocalTemplate >> zipArchive [
 	^ zipFile
 ]

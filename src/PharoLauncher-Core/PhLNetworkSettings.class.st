@@ -4,12 +4,14 @@ for the PhLSettingsBrowser (pragma pharoLauncherSettings).
 
 "
 Class {
-	#name : #PhLNetworkSettings,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Core-Settings'
+	#name : 'PhLNetworkSettings',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Core-Settings',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Settings'
 }
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLNetworkSettings class >> networkSettingsOn: aBuilder [
 
 	<pharoLauncherSettings>

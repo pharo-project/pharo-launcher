@@ -26,15 +26,17 @@ Open your terminal in the directory containing the pharo executable. You need to
 
 "
 Class {
-	#name : #PhLImageCreateCliCommand,
-	#superclass : #PhLImageCliCommand,
+	#name : 'PhLImageCreateCliCommand',
+	#superclass : 'PhLImageCliCommand',
 	#instVars : [
 		'imageFinderClass'
 	],
-	#category : #'PharoLauncher-CLI-Commands'
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addDevFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -42,7 +44,7 @@ PhLImageCreateCliCommand class >> addDevFlagTo: aCommandSpec [
 		description: 'When flag is present, the last development image will be used as template. Will take precedence if templateName is specified.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addDevFlagTo: aCommandSpec.
@@ -51,7 +53,7 @@ PhLImageCreateCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	self addTemplateCategoryFlagTo: aCommandSpec.
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -60,7 +62,7 @@ PhLImageCreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [:arg :app | self raiseNewImageNotFound]
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addNewImageFlagTo: aCommandSpec [
 	
 	aCommandSpec 
@@ -69,7 +71,7 @@ PhLImageCreateCliCommand class >> addNewImageFlagTo: aCommandSpec [
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitImageName ] ]
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addNoLaunchFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -77,7 +79,7 @@ PhLImageCreateCliCommand class >> addNoLaunchFlagTo: aCommandSpec [
 		description: 'When flag is present, the just created image will not be launched after its creation.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addPharoVersionFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -86,7 +88,7 @@ PhLImageCreateCliCommand class >> addPharoVersionFlagTo: aCommandSpec [
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitPharoVersion ]]
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addTemplateCategoryFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -95,7 +97,7 @@ PhLImageCreateCliCommand class >> addTemplateCategoryFlagTo: aCommandSpec [
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app defaultTemplateCategoryName ]]
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageCreateCliCommand class >> addTemplateNameFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -103,30 +105,30 @@ PhLImageCreateCliCommand class >> addTemplateNameFlagTo: aCommandSpec [
 		description: 'Template which will be used to create the image'
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCreateCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #create 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageCreateCliCommand class >> launcherCmdDescription [
 
 	^ 'Downloads and creates new image on local computer from remote site based on template name (latest stable template is used by default).'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCreateCliCommand class >> raiseMissingPharoVersion [
 
 	^ NotFound signal: 'An argument is missing. Please specify Pharo version.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageCreateCliCommand class >> raiseMissingTemplateName [
 
 	^ NotFound signal: 'An argument is missing. Please specify Pharo template name.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageCreateCliCommand >> basicExecute [
 	| image config |
 	
@@ -139,7 +141,7 @@ PhLImageCreateCliCommand >> basicExecute [
 	image launchWithConfiguration: config detached: false
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageCreateCliCommand >> createImage: newImageName from: template [
 
 	| anImage |
@@ -151,7 +153,7 @@ PhLImageCreateCliCommand >> createImage: newImageName from: template [
 	^ anImage
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateCliCommand >> findTemplate [ 
 	(self hasFlag: #dev) ifTrue: [ ^ self latestDevTemplate ].
 
@@ -162,14 +164,14 @@ PhLImageCreateCliCommand >> findTemplate [
 	^ self defaultTemplate
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageCreateCliCommand >> findTemplateAndCreateImage [
 
 	"return newly created image"
 	^ self createImage: self imageName from: self findTemplate
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateCliCommand >> findUserTemplate [
 
 	^ [ self findUserTemplateFromName ]
@@ -177,7 +179,7 @@ PhLImageCreateCliCommand >> findUserTemplate [
 		do: [ self findUserTemplateFromShortName ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateCliCommand >> findUserTemplateFromName [
 
 	^ self templateRepository
@@ -186,7 +188,7 @@ PhLImageCreateCliCommand >> findUserTemplateFromName [
 
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateCliCommand >> findUserTemplateFromShortName [
 
 	^ self templateRepository
@@ -195,37 +197,37 @@ PhLImageCreateCliCommand >> findUserTemplateFromShortName [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> imageFinderClass [
 
 	^ imageFinderClass ifNil: [ PhLImageFinder ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> imageFinderClass: aClass [
 	
 	imageFinderClass := aClass
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> imageName [
 
 	^ self positional: #newImageName
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLImageCreateCliCommand >> implicitImageName [
 
 	^ self findTemplate name
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLImageCreateCliCommand >> implicitPharoVersion [
 
 	^ self imageFinderClass findLatestPharoDevelopmentVersion
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 PhLImageCreateCliCommand >> logCannotFindTemplate: templateName [
 
 	self errorStream
@@ -235,7 +237,7 @@ PhLImageCreateCliCommand >> logCannotFindTemplate: templateName [
 		newLine
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 
 	self logInfoMessage:
@@ -243,7 +245,7 @@ PhLImageCreateCliCommand >> logCreationOfImageFrom: aTemplateName [
 	self logInfoMessage: 'Please wait a moment.'
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLImageCreateCliCommand >> officialTemplateRepository [
 
 	| templatesCategories listTemplatesAvailableForDownload |
@@ -254,18 +256,18 @@ PhLImageCreateCliCommand >> officialTemplateRepository [
 	^ listTemplatesAvailableForDownload
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> pharoVersionNumber [ 
 
 	^ self positional: #pharoVersion
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PhLImageCreateCliCommand >> shouldLaunchImage [
 	^ (self hasFlag: #'no-launch') not
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLImageCreateCliCommand >> template [ 
 	^ self templateRepository
 		templateNamed: self templateName
@@ -273,19 +275,19 @@ PhLImageCreateCliCommand >> template [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> templateCategory [
 
 	^ self positional: #templateCategory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCreateCliCommand >> templateCategoryName [ 
 
 		^ self positional: #templateCategoryName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageCreateCliCommand >> templateNameFrom: url [
 	^ url lastPathSegment copyUpToLast: $.
 ]

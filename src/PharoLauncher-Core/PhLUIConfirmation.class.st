@@ -2,15 +2,17 @@
 Abstraction of a yes/no dialog.
 "
 Class {
-	#name : #PhLUIConfirmation,
-	#superclass : #PhLUserInteraction,
+	#name : 'PhLUIConfirmation',
+	#superclass : 'PhLUserInteraction',
 	#instVars : [
 		'message'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIConfirmation >> confirm [
 
 	^ self application newConfirm 
@@ -18,7 +20,7 @@ PhLUIConfirmation >> confirm [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIConfirmation >> message: aString [ 
 	message := aString
 ]

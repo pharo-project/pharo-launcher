@@ -4,8 +4,8 @@ Application that allows users to choose a template from a set of templates (pote
 PharoLauncherApplication open
 "
 Class {
-	#name : #PharoLauncherApplication,
-	#superclass : #SpApplication,
+	#name : 'PharoLauncherApplication',
+	#superclass : 'SpApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -23,46 +23,47 @@ Class {
 	#classInstVars : [
 		'pharoIcon'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> applicationName [
 
 	^ 'pharo-launcher'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PharoLauncherApplication class >> beDeployed [
 	IsDeployed := true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PharoLauncherApplication class >> beUndeployed [
 	IsDeployed := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> default [
 	^ Default ifNil: [ Default := self new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> default: aPharoLauncherApplication [
 	Default := aPharoLauncherApplication
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> defaultInitializationScriptLocation [
 	^ FileLocator launcherUserFilesLocation / 'scripts' 
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> hardResetPersistanceState [
 	^false
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettings [ 
 	|packages|
 	
@@ -84,12 +85,12 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 	self openFull.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> initializationScriptsDirectory [
 	^ self default scriptsDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> initializationScriptsDirectory: aFileUrl [
 	| directory |
 	directory := aFileUrl asFileReference.
@@ -98,25 +99,25 @@ PharoLauncherApplication class >> initializationScriptsDirectory: aFileUrl [
 	
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> initializationScriptsLocation [
 	" Used to display a nice file url in settings browser"
 	^ self initializationScriptsDirectory pathString 
 	
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> initializationScriptsLocation: aFileUrl [
 	" Used to display a nice file url in settings browser"
 	^ self initializationScriptsDirectory: aFileUrl
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PharoLauncherApplication class >> isDeployed [
 	^ IsDeployed ifNil: [ IsDeployed := false ]
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 PharoLauncherApplication class >> menuCommandOn: aBuilder [ 
 	<worldMenu> 
 
@@ -128,7 +129,7 @@ PharoLauncherApplication class >> menuCommandOn: aBuilder [
 		withSeparatorAfter
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 PharoLauncherApplication class >> open [
 	<script>
 	
@@ -137,7 +138,7 @@ PharoLauncherApplication class >> open [
 		run
 ]
 
-{ #category : #opening }
+{ #category : 'opening' }
 PharoLauncherApplication class >> openFull [ 
 	<script>
 	
@@ -146,7 +147,7 @@ PharoLauncherApplication class >> openFull [
 		run
 ]
 
-{ #category : #'world menu' }
+{ #category : 'world menu' }
 PharoLauncherApplication class >> pharoIcon16x16 [
 
 	^ pharoIcon 
@@ -154,7 +155,7 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 PharoLauncherApplication class >> reset [
    Default ifNil: [ ^ self ].
 
@@ -162,13 +163,13 @@ PharoLauncherApplication class >> reset [
 	Default := nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PharoLauncherApplication class >> resetTemplateRepository [
 
 	TemplateRepository := nil
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -206,17 +207,17 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 		]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication class >> templatesClearedOnStartup [
 	^ TemplatesClearedOnStartup ifNil: [ TemplatesClearedOnStartup := false ].
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PharoLauncherApplication class >> templatesClearedOnStartup: aBoolean [ 
 	TemplatesClearedOnStartup := aBoolean
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PharoLauncherApplication class >> useDefault: aPharoLauncherApplication during: aBlock [
 	"Used to set a different app for testing purposes"
 	| oldDefault |
@@ -227,39 +228,39 @@ PharoLauncherApplication class >> useDefault: aPharoLauncherApplication during: 
 		ensure: [ self default: oldDefault ]	
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PharoLauncherApplication >> beOpenedAsWorld [
 	self openAsWorld: true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> defaultTemplateRepository [
 	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> imageRepository: aPhlImageRepository [
 	imageRepository := aPhlImageRepository
 ]
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PharoLauncherApplication >> imageRepositoryChanged [
 	imagesPresenter ifNotNil: #refresh
 ]
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PharoLauncherApplication >> imageRepositoryChanged: newImage [
 
 	self imageRepositoryChanged.
 	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PharoLauncherApplication >> initialize [
 
  	super initialize.
@@ -276,20 +277,20 @@ PharoLauncherApplication >> initialize [
 	self resetTemplateRepository
 ]
 
-{ #category : #'initialization - private' }
+{ #category : 'initialization - private' }
 PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self
 		model: imageRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> jobList [
 
 	^ jobList ifNil: [ jobList := self newJobList  ]
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
 
@@ -298,47 +299,47 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> mainPresenter [
 
 	^ imagesPresenter
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 PharoLauncherApplication >> newImageCreated [
 	"We want to launch the freshly created image"
 	imagesPresenter ifNotNil: [ imagesPresenter actionLaunch ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
 	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := nil.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> scriptsDirectory [
 	^ (scriptsDirectory ifNil: [ 
 		   self class initializationScriptsDirectory: self class defaultInitializationScriptLocation ])
 		  ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PharoLauncherApplication >> shouldUpdateTemplateSources [
 
 	^ self newConfirm
@@ -349,7 +350,7 @@ PharoLauncherApplication >> shouldUpdateTemplateSources [
 		openModal
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PharoLauncherApplication >> showError: anError [
 
 	self newInform 
@@ -358,7 +359,7 @@ PharoLauncherApplication >> showError: anError [
 		openModalWithParent: self topWindow
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
@@ -370,7 +371,7 @@ PharoLauncherApplication >> start [
 	imagesPresenter open
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PharoLauncherApplication >> startFull [
 	
 	imagesPresenter asWorldWindow 
@@ -378,22 +379,22 @@ PharoLauncherApplication >> startFull [
 		open.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> templateRepository [
 	^ 	templateRepository ifNil: [ templateRepository := self defaultTemplateRepository ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> templateRepository: aPhLTemplateGroupRepository [
 	templateRepository := aPhLTemplateGroupRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PharoLauncherApplication >> templatesClearedOnStartup [
 	^ self class templatesClearedOnStartup
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PharoLauncherApplication >> topWindow [
 	"The window that will accept a modal window related to it. 
 	 This is usually the top window, but in case of stacking dialogs, some times this is lost. 

@@ -1,20 +1,21 @@
 Class {
-	#name : #ConsoleInputRequestTest,
-	#superclass : #TestCase,
+	#name : 'ConsoleInputRequestTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'consoleInputRequest',
 		'outputStream'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequestTest >> outputString [ 
 	
 	^ outputStream contents utf8Decoded
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 ConsoleInputRequestTest >> setUp [
 	super setUp.
 	outputStream := ZnBufferedWriteStream on:
@@ -22,7 +23,7 @@ ConsoleInputRequestTest >> setUp [
 	consoleInputRequest := ConsoleInputRequestMock inputStream: nil outputStream: outputStream.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleInputRequestTest >> testCanRequestSimpleValue [
 
 	| name question |
@@ -36,7 +37,7 @@ ConsoleInputRequestTest >> testCanRequestSimpleValue [
 	self assert: self outputString equals: question, ' '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleInputRequestTest >> testCanReuseInstanceAfterGettingAnswer [
 
 	| name question |
@@ -59,7 +60,7 @@ ConsoleInputRequestTest >> testCanReuseInstanceAfterGettingAnswer [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleInputRequestTest >> testGet2InputRequestIfFirstAnswerIsNotValid [
 
 	| name question |
@@ -75,7 +76,7 @@ ConsoleInputRequestTest >> testGet2InputRequestIfFirstAnswerIsNotValid [
 	self assert: self outputString equals: question , ' ', question, ' '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleInputRequestTest >> testGet2InputRequestIfFirstAnswerTriggeredErrorDuringTransform [
 
 	| question |
@@ -90,7 +91,7 @@ ConsoleInputRequestTest >> testGet2InputRequestIfFirstAnswerTriggeredErrorDuring
 	self assert: self outputString equals: question , ' ', 'Invalid answer. ', String lf, question, ' '
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleInputRequestTest >> testGet2InputRequestIfFirstAnswerTriggeredErrorDuringValidation [
 
 	| question |

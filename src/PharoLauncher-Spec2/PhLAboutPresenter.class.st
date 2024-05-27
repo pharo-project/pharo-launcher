@@ -5,8 +5,8 @@ Example:
 	self example
 "
 Class {
-	#name : #PhLAboutPresenter,
-	#superclass : #SpPresenter,
+	#name : 'PhLAboutPresenter',
+	#superclass : 'SpPresenter',
 	#instVars : [
 		'description',
 		'text',
@@ -14,10 +14,11 @@ Class {
 		'icon',
 		'documentationLink'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLAboutPresenter class >> example [
 	| text |
 	text := PhLAboutCommand new aboutText.
@@ -25,7 +26,7 @@ PhLAboutPresenter class >> example [
 	(self text: text iconName: #pharo) openDialog
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLAboutPresenter class >> text: aText iconName: anIconName [
 	^ self new 
 		text: aText;
@@ -33,12 +34,12 @@ PhLAboutPresenter class >> text: aText iconName: anIconName [
 		yourself
 ]
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLAboutPresenter class >> title [ 
 	^ 'About'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLAboutPresenter >> defaultLayout [
 	^ SpBoxLayout newHorizontal
 		add: icon width: 90;
@@ -51,29 +52,29 @@ PhLAboutPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAboutPresenter >> description [ 
 	^ description
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAboutPresenter >> icon [ 
 	^ icon
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAboutPresenter >> iconName: anIconName [
 	iconName := anIconName
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 	self initializeWindow: aDialogWindow.
 	aDialogWindow addButton: 'Ok'
 		do: [ :presenter | presenter close ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLAboutPresenter >> initializePresenters [ 
 	description := self newText.
 	icon := self newImage.
@@ -84,7 +85,7 @@ PhLAboutPresenter >> initializePresenters [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLAboutPresenter >> initializeWindow: aWindow [
 	aWindow title: 'About Pharo Launcher'.
 	description 
@@ -93,7 +94,7 @@ PhLAboutPresenter >> initializeWindow: aWindow [
    icon image: (self iconNamed: iconName).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAboutPresenter >> text: aText [
 	text := aText
 ]

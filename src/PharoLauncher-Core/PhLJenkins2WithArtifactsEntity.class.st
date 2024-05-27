@@ -2,17 +2,19 @@
 Abstract superclass for everything in a Jenkins server that produces artifacts: currently, only simple jobs (i.e., non-matrix jobs) and runs (i.e., what is executed by a matrix job).
 "
 Class {
-	#name : #PhLJenkins2WithArtifactsEntity,
-	#superclass : #PhLJenkins2Entity,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLJenkins2WithArtifactsEntity',
+	#superclass : 'PhLJenkins2Entity',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2WithArtifactsEntity class >> jsonFields [
 	^ #('number' 'url')
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2WithArtifactsEntity >> artifactTemplates [
 	^ self artifacts
 		inject: OrderedCollection new
@@ -22,22 +24,22 @@ PhLJenkins2WithArtifactsEntity >> artifactTemplates [
 			templates ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2WithArtifactsEntity >> artifacts [
 	^ self query: PhLJenkinsArtifact
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2WithArtifactsEntity >> name [
 	^ '#', self number printString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2WithArtifactsEntity >> number [
 	^ properties at: 'number'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2WithArtifactsEntity >> templatesAndGroups [
 	^ self artifactTemplates
 ]

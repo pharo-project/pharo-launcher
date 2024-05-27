@@ -3,8 +3,8 @@ I'm in charge of selecting the appropriate Virtual Machine for a given image. If
 I determine the VM to use by reading the image file header.
 "
 Class {
-	#name : #PhLVirtualMachineManager,
-	#superclass : #Object,
+	#name : 'PhLVirtualMachineManager',
+	#superclass : 'Object',
 	#instVars : [
 		'imageFile',
 		'imageFormatNumber',
@@ -13,15 +13,17 @@ Class {
 	#classInstVars : [
 		'vmStore'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #unzipping }
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> canUseSytemZip [
 	^ PhLProcessWrapper isCommandAvailable: 'unzip'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	PhLDownloadManager default 
 		download: aVmUrl
@@ -31,7 +33,7 @@ PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 		to: (targetFile parent / targetFile basenameWithoutExtension)
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLVirtualMachineManager class >> forImage: aPharoImagePathOrFileReference [
 	^ self new 
 		imageFile: aPharoImagePathOrFileReference asFileReference;
@@ -40,22 +42,22 @@ PhLVirtualMachineManager class >> forImage: aPharoImagePathOrFileReference [
 		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> imageFormat32bits [
 	^ 6521
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> imageFormat64bits [
 	^ 68021
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> imageFormat6504 [
 	^ 6504
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager class >> imageFormatNumberFromFile: anImagePath [
 	| imageFile |
 	imageFile := anImagePath asFileReference.
@@ -65,7 +67,7 @@ PhLVirtualMachineManager class >> imageFormatNumberFromFile: anImagePath [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager class >> imageFormatNumberFromStream: aStream [
 	| number |
 	number := aStream nextLittleEndianNumber: 4.
@@ -73,38 +75,38 @@ PhLVirtualMachineManager class >> imageFormatNumberFromStream: aStream [
 	^ number
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> imageFormatPreSpur [
 	^ 6505
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager class >> is32bits: anImageFormatVersion [
 	"32 bits Spur image format"
 
 	^ anImageFormatVersion = self imageFormat32bits
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager class >> is64bits [
 	^ self is64bits: Smalltalk image imageFormatVersion
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager class >> is64bits: anImageFormatVersion [
 	"64 bits Spur image format"
 
 	^ anImageFormatVersion = self imageFormat64bits
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager class >> isPreSpur: anImageFormatVersion [
 	"Pre-Spur image format"
 
 	^ anImageFormatVersion = self imageFormatPreSpur
 ]
 
-{ #category : #unzipping }
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirectory [
 	
 	PharoLauncherApplication default 
@@ -117,13 +119,13 @@ PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirect
 					overwrite: true ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachineManager class >> reset [
 	<script>
 	vmStore := nil
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLVirtualMachineManager class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -140,7 +142,7 @@ PhLVirtualMachineManager class >> settingsOn: aBuilder [
 				, 'NOTE: This path might need to escape some whitespace characters e.g. "/Pharo\ 3.0/Pharo".' translated
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> supportedImageFormat [
 	"returns an image format corresponding to the current host OS"
 	
@@ -152,7 +154,7 @@ PhLVirtualMachineManager class >> supportedImageFormat [
 		ifFalse: [ self imageFormat64bits ]
 ]
 
-{ #category : #unzipping }
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirectory [
 	PhLProcessWrapper new 
 		shellCommand;
@@ -167,7 +169,7 @@ PhLVirtualMachineManager class >> systemUnzip: aZipFileReference to: outputDirec
 		runAndWait.
 ]
 
-{ #category : #unzipping }
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 	outputDirectory ensureCreateDirectory.
 	self canUseSytemZip
@@ -175,7 +177,7 @@ PhLVirtualMachineManager class >> unzip: aZipFileReference to: outputDirectory [
 		ifFalse: [ self pharoUnzip: aZipFileReference to: outputDirectory ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> useVmStore: aDirectory during: aBlock [
 	| vmStoreBackup |
 	vmStoreBackup := vmStore.
@@ -184,36 +186,36 @@ PhLVirtualMachineManager class >> useVmStore: aDirectory during: aBlock [
 	ensure: [ vmStore := vmStoreBackup ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> vmStore [
 	^ vmStore ifNil: [ vmStore := (FileLocator launcherUserFilesLocation / 'vms') ensureCreateDirectory ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> vmStore: anObject [
 	vmStore := anObject asFileReference.
 	vmStore ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> vmStoreString [
 	" Used to display a nice file url in settings browser"
 	^ self vmStore pathString 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager class >> vmStoreString: aFileUrl [
 	" Used to display a nice file url in settings browser"
 	self vmStore: aFileUrl
 
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager >> availableVirtualMachines [
 	^ self availableVirtualMachinesIn: self vmStore
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	| vmsOnDisk |
 	vmsOnDisk := Dictionary new.
@@ -227,7 +229,7 @@ PhLVirtualMachineManager >> availableVirtualMachinesIn: aFileReference [
 	^ vmsOnDisk
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> checkImageArchitecture [
 	"Only warn on 64-bit Linux"
 	Smalltalk os isUnix64 ifFalse: [ ^ self ]. 
@@ -237,7 +239,7 @@ PhLVirtualMachineManager >> checkImageArchitecture [
 		ifTrue: [ PhLArchitectureMismatchWarning signalLauncherArch: '64-bit' imageArch: '32-bit' ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 
 	^ #('110-x64' '100-x64' '90-x64')
@@ -247,7 +249,7 @@ PhLVirtualMachineManager >> defaultVirtualMachines [
 				yourself ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> fetchSourcesFiles [
 	| previousVersion |
 	"Do not download sources for Pharo versions > 70 as they come along with the image."
@@ -269,7 +271,7 @@ PhLVirtualMachineManager >> fetchSourcesFiles [
 	self fetchSourcesFilesFor: previousVersion asString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString [
 	| vmFolder |
 	
@@ -280,7 +282,7 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString [
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folder [
 	[ | sourcesZip |
 	sourcesZip := folder / ('sourcesV' , anImageVersionString , '.zip').
@@ -294,7 +296,7 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 		do: [ self error: 'No Sources file available for ' , anImageVersionString , ' image.' ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> fetchVm [
 	[ self class 
 		fetch: self vmUrl 
@@ -303,45 +305,45 @@ PhLVirtualMachineManager >> fetchVm [
 	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> flavour [
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageFile: anImagePathOrFileReference [
 	imageFile := anImagePathOrFileReference asFileLocatorOrReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageFormatNumber [
 	^ imageFormatNumber
 		ifNil: [ imageFormatNumber := self class imageFormatNumberFromFile: imageFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageFormatNumber: anInteger [ 
 	imageFormatNumber := anInteger
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageVersion [
 	"get the Pharo version of the image"
 
 	^ imageVersion ifNil: [ self imageVersionFromFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageVersion: aString [ 
 	imageVersion := aString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> imageVersionFile [
 	^ imageFile parent / PhLImage versionFileName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> imageVersionFromFile [
 	self imageVersionFile 
 			readStreamDo: [ :stream | imageVersion := stream contents asInteger asString ]
@@ -350,36 +352,36 @@ PhLVirtualMachineManager >> imageVersionFromFile [
 	^ imageVersion
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager >> is64bit [ 
 	^ self class is64bits: self imageFormatNumber 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachineManager >> isPreSpur [
 	^ self class isPreSpur: self imageFormatNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> pharoVersion [
 	^ self imageVersion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 	"$1: IMAGE_VERSION"
 	^ 'https://files.pharo.org/get-files/{1}/sources.zip'
 		format: {anImageVersionString}
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager >> virtualMachine [
 	^ self virtualMachines
 		detect: [ :vm | vm id = self vmId ]
 		ifNone: [ PhLVirtualMachine id: self vmId ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager >> virtualMachines [
 	| vmsInVmStore defaultVms |
 	defaultVms := self defaultVirtualMachines.
@@ -387,7 +389,7 @@ PhLVirtualMachineManager >> virtualMachines [
 	^ vmsInVmStore , defaultVms
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachineManager >> vm [
 	| vm |
 
@@ -415,7 +417,7 @@ PhLVirtualMachineManager >> vm [
 	^ vm executablePath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> vmId [
 	| architecture pharoVersion |
 	self checkImageArchitecture.
@@ -426,12 +428,12 @@ PhLVirtualMachineManager >> vmId [
 	^ pharoVersion , '-' , architecture.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManager >> vmStore [
 	^ self class vmStore
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVirtualMachineManager >> vmUrl [
 	^ (PhLVmProvider for: self) url
 ]

@@ -2,34 +2,35 @@
 A PhLVirtualMachineManagerTest is a test class for testing the behavior of PhLVirtualMachineManager
 "
 Class {
-	#name : #PhLVirtualMachineManagerFunctionalTest,
-	#superclass : #PhLVirtualMachineManagerTest,
+	#name : 'PhLVirtualMachineManagerFunctionalTest',
+	#superclass : 'PhLVirtualMachineManagerTest',
 	#instVars : [
 		'vmStoreBackup',
 		'tempVmStoreFolder'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerFunctionalTest class >> resources [
 
 	^ Array with: PhLVirtualMachineManagerTestResource 
 ]
 
-{ #category : #support }
+{ #category : 'support' }
 PhLVirtualMachineManagerFunctionalTest >> preSpurHeader [
 	^ self getImageHeader: 'http://files.pharo.org/image/50-preSpur/latest.zip'
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerFunctionalTest >> setUp [
 	super setUp.
 	
 	PhLVirtualMachineManagerTestResource current cleanWorkspace.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerFunctionalTest >> testCanDetectPreSpurImage [
 	| version |
 	self timeLimit: 60 seconds.
@@ -37,12 +38,12 @@ PhLVirtualMachineManagerFunctionalTest >> testCanDetectPreSpurImage [
 	self assert: (PhLVirtualMachineManager isPreSpur: version)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerFunctionalTest >> testCanDetectSystemUnzip [
 	self assert: PhLVirtualMachineManager canUseSytemZip
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
 
 	| vmManager expectedVersion imageRef |
@@ -57,7 +58,7 @@ PhLVirtualMachineManagerFunctionalTest >> testCanGetImageVersion [
 	self assert: vmManager imageVersion equals: expectedVersion
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerFunctionalTest >> withCopyOfCurrentImageDo: aBlock [
 	| imagePath imageRef |
 	imageRef := Smalltalk image lastImagePath asFileReference.

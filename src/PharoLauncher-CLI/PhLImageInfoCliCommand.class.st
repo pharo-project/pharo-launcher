@@ -9,18 +9,20 @@ I execute:
 - create new local image based on specified image template name with new name specified as flag
 "
 Class {
-	#name : #PhLImageInfoCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageInfoCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageInfoCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addPrintFlagsTo: aCommandSpec
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -29,49 +31,49 @@ PhLImageInfoCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [ :arg :app | self raiseMissingImageToPrintDetails]
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageInfoCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #info 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageInfoCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints information about image: name, description, origin template, etc.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageInfoCliCommand class >> raiseMissingImageToPrintDetails [
 
 	^ NotFound signal: 'An argument is missing, please specify the image name to print information.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageInfoCliCommand >> basicExecute [ 
 
 	self list: (Array with: self selectedImage)
 ]
 
-{ #category : #'private ' }
+{ #category : 'private ' }
 PhLImageInfoCliCommand >> listPrintAttributeBlocks [
 
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
 ]
 
-{ #category : #'private ' }
+{ #category : 'private ' }
 PhLImageInfoCliCommand >> listPrintAttributeLabels [
 
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImageInfoCliCommand >> printSequence [
 
 	"do not print sequence number for one image"
 	^ false
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImageInfoCliCommand >> rowMode [
 
 	"image info is printed in one attribute per row"

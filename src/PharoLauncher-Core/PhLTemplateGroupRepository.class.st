@@ -2,34 +2,36 @@
 I maintain a collection of PhLTemplateGroup. I take care of adding a cache to each group.
 "
 Class {
-	#name : #PhLTemplateGroupRepository,
-	#superclass : #PhLRepository,
+	#name : 'PhLTemplateGroupRepository',
+	#superclass : 'PhLRepository',
 	#instVars : [
 		'groupCaches'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateGroupRepository class >> default [
 	^ self newFromGroups: PhLTemplateGroupsBuilder build
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateGroupRepository class >> newFromGroups: aCollection [
 	^ self new
 		setGroups: aCollection;
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTemplateGroupRepository >> addGroup: aGroup [
 	| cache |
 	cache := PhLCacheTemplateGroup group: aGroup.	"wrap all groups inside a cache."
 	groupCaches addLast: cache
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLTemplateGroupRepository >> categoryNamed: aTemplateCategoryName [
 	^ self roots
 		detect: [ :aCategory | aCategory name = aTemplateCategoryName ]
@@ -39,7 +41,7 @@ PhLTemplateGroupRepository >> categoryNamed: aTemplateCategoryName [
 						, ' not found, please enter a correct category name' ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
 	aString ifEmpty: [ PhLCommandError signal: 'Cannot give an empty name to a template' ].
 	(self hasLocalTemplateNamed: aString)
@@ -49,14 +51,14 @@ PhLTemplateGroupRepository >> createLocalTemplateFrom: anImage named: aString [
 	self refresh
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> createLocalTemplateNamed: aString [
 	| localTemplate |
 	localTemplate := PhLLocalTemplate name: aString zipFile: self localTemplatesDirectory / aString , 'zip'.
 	self localTemplatesGroup register: localTemplate withZip: localTemplate zipArchive
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> createZipArchiveFrom: anImage named: aString [
 	| archive |
 	archive := ZipArchive new.
@@ -71,65 +73,65 @@ PhLTemplateGroupRepository >> createZipArchiveFrom: anImage named: aString [
 	archive writeToFile: (self localTemplatesDirectory / aString , 'zip')
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> defaultTemplateCategory [
 	^ self categoryNamed: self defaultTemplateCategoryName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> defaultTemplateCategoryName [
 	^ 'Official distributions'
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> deleteTemplate: aTemplate [ 
 	aTemplate zipArchive delete.
 	self refresh.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> deleteTemplates: someTemplates [ 
 	self dontNotifyDuring: [ someTemplates do: [ :template | self deleteTemplate: template ] ].
 	self refresh
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLTemplateGroupRepository >> hasLocalTemplateNamed: aString [
 	^ self localTemplates
 		anySatisfy: [ :each | each name = aString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> localTemplateNamed: aString [
 	^ self localTemplates detect: [ :each | each name = aString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> localTemplateNames [
 	^ self localTemplates collect: #name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> localTemplates [
 	^ self localTemplatesGroup templatesAndGroups
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> localTemplatesDirectory [
 	^ self localTemplatesGroup baseDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> localTemplatesGroup [
 	^ PhLDownloadedTemplateGroup default
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> makeUniqueTemplateName: aString [
 	^ self makeUniqueTemplateName: aString among: self localTemplateNames
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> makeUniqueTemplateName: baseTemplateName among: existingTemplateNames [
 	"Provide a reasonable default template name using the next incremental count for images with similar basenames"
 
@@ -138,24 +140,24 @@ PhLTemplateGroupRepository >> makeUniqueTemplateName: baseTemplateName among: ex
 	^ self makeUniqueName: baseTemplateName among: existingTemplateNames
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLTemplateGroupRepository >> refresh [
 	groupCaches do: #refresh.
 	self contentsChanged.
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateGroupRepository >> rename: aPhLLocalTemplate to: aString [
 	aPhLLocalTemplate renameTo: aString.
 	self localTemplatesGroup register: aPhLLocalTemplate withZip: aPhLLocalTemplate zipArchive.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateGroupRepository >> roots [
 	^ groupCaches
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateGroupRepository >> setGroups: aCollection [
 	| names |
 	names := Set new.
@@ -167,14 +169,14 @@ PhLTemplateGroupRepository >> setGroups: aCollection [
 				ifFalse: [ self addGroup: group ] ]
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLTemplateGroupRepository >> templateNamed: aTemplateName inCategoryNamed: aCategoryName [
 	| category |
 	category := self categoryNamed: aCategoryName.
 	^ category templateNamed: aTemplateName
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLTemplateGroupRepository >> templateShortNamed: aTemplateName inCategoryNamed: aCategoryName [
 	| category |
 	category := self categoryNamed: aCategoryName.

@@ -1,6 +1,6 @@
 Class {
-	#name : #PhLLaunchImageTest,
-	#superclass : #TestCase,
+	#name : 'PhLLaunchImageTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'launchInALoginShellBackup',
 		'imageDir',
@@ -9,10 +9,11 @@ Class {
 		'resultDir',
 		'process'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> copyCurrentImageToTestDir [
 	| image |
 	
@@ -31,7 +32,7 @@ PhLLaunchImageTest >> copyCurrentImageToTestDir [
 
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 	| vmDirectory imageVersion vmId |
 	
@@ -44,7 +45,7 @@ PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 	LibC runCommand: 'cp -R ' , vmDirectory fullName , ' ' , aDirectory fullName, '/' , vmId
 ]
 
-{ #category : #utils }
+{ #category : 'utils' }
 PhLLaunchImageTest >> pharo110x64Vm [
 	^ PhLVirtualMachineManager new virtualMachines
 		detect: [ :each | each id = '110-x64' ]
@@ -52,7 +53,7 @@ PhLLaunchImageTest >> pharo110x64Vm [
 		ifNone: [ self fail: 'cannot find VM!' ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageTest >> setUp [
 	| uuid |
 	super setUp.
@@ -68,7 +69,7 @@ PhLLaunchImageTest >> setUp [
 	self copyCurrentVmTo: tempVmStoreFolder.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageTest >> tearDown [ 
 	PhLLaunchConfiguration launchInALoginShell: launchInALoginShellBackup.
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
@@ -78,7 +79,7 @@ PhLLaunchImageTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64BitOnlyOS [
 	| image |
 	image := PhLOsXCatalinaTestImage example32.
@@ -90,7 +91,7 @@ PhLLaunchImageTest >> testArchitectureErrorSignaledWhenTryingToRun32BitImageOn64
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 
 	| image |
@@ -109,14 +110,14 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 	"for now, no simple way to test that the image is actually launched"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharactersUsingLoginShell [
 	
 	PhLLaunchConfiguration launchInALoginShell: true.
 	self testCanLaunchImageWithNonAsciiCharacters.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image64 config commandToEval |
 	image64 := PhLOsXCatalinaTestImage example.
@@ -134,7 +135,7 @@ PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	| image |
 	

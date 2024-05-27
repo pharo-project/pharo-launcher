@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLTemplateCategoriesCliCommandTest,
-	#superclass : #PhLTemplatesCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLTemplateCategoriesCliCommandTest',
+	#superclass : 'PhLTemplatesCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateCategoriesCliCommandTest >> testTemplateCategoriesShouldSucceed [
 
 	self runCommand: #('launcher' 'template' 'categories').

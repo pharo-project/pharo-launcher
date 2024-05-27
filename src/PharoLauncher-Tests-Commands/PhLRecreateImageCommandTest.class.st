@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLRecreateImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLRecreateImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLRecreateImageCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #acccessing }
+{ #category : 'acccessing' }
 PhLRecreateImageCommandTest >> templateZipFile [
 	| archive zipFile |
 	archive := ZipArchive new.
@@ -25,7 +26,7 @@ PhLRecreateImageCommandTest >> templateZipFile [
 	^ zipFile
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	| command images image |
 	command := PhLRecreateImageCommand new.
@@ -46,7 +47,7 @@ PhLRecreateImageCommandTest >> testCanRecreateAnImage [
 	self assert: image contents equals: 'foo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRecreateImageCommandTest >> testErrorRaiseWhenImageTemplateNotSet [
 	| command |
 	command := PhLRecreateImageCommand new.

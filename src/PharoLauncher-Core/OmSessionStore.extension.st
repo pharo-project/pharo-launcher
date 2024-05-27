@@ -1,6 +1,6 @@
-Extension { #name : #OmSessionStore }
+Extension { #name : 'OmSessionStore' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 OmSessionStore class >> startUp [
 	
 	PharoLauncherApplication isDeployed ifTrue: [ ^ self ].

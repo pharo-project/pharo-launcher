@@ -2,16 +2,18 @@
 Abstract superclass of the template and image repositories. User interfaces can use my interface to be notified when my instances change.
 "
 Class {
-	#name : #PhLRepository,
-	#superclass : #Object,
+	#name : 'PhLRepository',
+	#superclass : 'Object',
 	#instVars : [
 		'announcer',
 		'wantNotification'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PhLRepository >> contentsChanged [
 	"Called me to announce that I changed"
 
@@ -19,7 +21,7 @@ PhLRepository >> contentsChanged [
 		ifTrue: [ announcer announce: ValueChanged new ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLRepository >> dontNotifyDuring: aBlock [
 	| wantNotificationBackup |
 	[ 
@@ -29,20 +31,20 @@ PhLRepository >> dontNotifyDuring: aBlock [
 		ensure: [ wantNotification := wantNotificationBackup ]
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLRepository >> extractOn: aVisitor [
 
 	self subclassResponsibility
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLRepository >> initialize [
 	super initialize.
 	announcer := Announcer new.
 	wantNotification := true.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLRepository >> makeUniqueName: baseName among: existingNames [
 	"Provide a reasonable default name using the next incremental count for items with similar basenames"
 
@@ -64,17 +66,17 @@ PhLRepository >> makeUniqueName: baseName among: existingNames [
 	^ baseName , separator , (nextUniquifier printPaddedWith: $0 to: 2)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRepository >> roots [
 	^ self subclassResponsibility
 ]
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PhLRepository >> unsubscribe: aReceiver [
 	announcer unsubscribe: aReceiver
 ]
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PhLRepository >> whenChangedSend: aSelector to: aReceiver [
 	announcer when: ValueChanged send: aSelector to: aReceiver
 ]

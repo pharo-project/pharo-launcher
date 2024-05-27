@@ -3,17 +3,18 @@ TemplateGroupRepository used for test purposes.
 I override the default location of templates.
 "
 Class {
-	#name : #PhLTemplateTestRepository,
-	#superclass : #PhLTemplateGroupRepository,
+	#name : 'PhLTemplateTestRepository',
+	#superclass : 'PhLTemplateGroupRepository',
 	#instVars : [
 		'fileSystem',
 		'localTemplateGroup',
 		'remoteTemplatesGroup'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> createLocalTemplateNamed: aName [
 	| zipFile template |
 	zipFile := self localTemplatesGroup baseDirectory / (aName , '.zip').
@@ -23,24 +24,24 @@ PhLTemplateTestRepository >> createLocalTemplateNamed: aName [
 	^ template
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> createRemoteTemplateNamed: aName [
 	self remoteTemplatesGroup
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> createTemplateInDefaultGroupNamed: aName [
 	self remoteTemplatesGroup
 		addTemplate: (PhLRemoteTemplate name: aName url: 'http://', aName, '.foo').
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> createTemplateNamed: aName inCategory: aCategoryName [
 	^ self createTemplateNamed: aName shortName: nil inCategory: aCategoryName 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> createTemplateNamed: aName shortName: aShortName inCategory: aCategoryName [ 
 
 	| template |
@@ -50,7 +51,7 @@ PhLTemplateTestRepository >> createTemplateNamed: aName shortName: aShortName in
 	^ template
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> initialize [ 
 	super initialize.
 	fileSystem := FileSystem memory.
@@ -59,24 +60,24 @@ PhLTemplateTestRepository >> initialize [
 	self setGroups: { localTemplateGroup . remoteTemplatesGroup }.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> localTemplatesGroup [
 	^ localTemplateGroup
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> localTemplatesGroupName [
 	^ 'Local test templates'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> newDefaultTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: self defaultTemplatesGroup Templates: OrderedCollection new;
 			yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> newLocalTemplatesGroup [
 	^ PhLDownloadedTemplateGroup new 
 		baseDirectory: fileSystem root;
@@ -84,21 +85,21 @@ PhLTemplateTestRepository >> newLocalTemplatesGroup [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> newRemoteTemplatesGroup [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: 'Remote test templates' Templates: OrderedCollection new;
 			yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> newRemoteTemplatesGroupNamed: aGroupName [
 	^ PhLFixedURLsTemplateGroup new 
 			setName: aGroupName Templates: OrderedCollection new;
 			yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateTestRepository >> newZipArchive: aFileReference [
 	| archive |
 	archive := ZipArchive new.
@@ -109,7 +110,7 @@ PhLTemplateTestRepository >> newZipArchive: aFileReference [
 		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateTestRepository >> remoteTemplatesGroup [
 	^ remoteTemplatesGroup
 ]

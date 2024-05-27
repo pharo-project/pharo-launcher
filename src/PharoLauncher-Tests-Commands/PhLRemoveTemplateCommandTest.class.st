@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLRemoveTemplateCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLRemoveTemplateCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLRemoveTemplateCommandTest >> removeTemplateMenuItem [
 	| menu menuItems |
 	menu := (presenter rootCommandsGroup / 'Context Menu')
@@ -16,14 +17,14 @@ PhLRemoveTemplateCommandTest >> removeTemplateMenuItem [
 	^ menuItems detect: [ :item | item name = 'Remove template' ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLRemoveTemplateCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestTemplatesPresenter new.
 	presenter selectLocalGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCanRemoveALocalTemplate [
 	| command |
 	command := PhLRemoveTemplateCommand new.
@@ -39,7 +40,7 @@ PhLRemoveTemplateCommandTest >> testCanRemoveALocalTemplate [
 	self assertEmpty: presenter templateRoots
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCanRemoveManyLocalTemplates [
 	| command |
 	command := PhLRemoveTemplateCommand new.
@@ -62,7 +63,7 @@ PhLRemoveTemplateCommandTest >> testCanRemoveManyLocalTemplates [
 		hasSameElements: #('Zee').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSelected [
 	| command |
 	command := PhLRemoveTemplateCommand new.
@@ -74,7 +75,7 @@ PhLRemoveTemplateCommandTest >> testCommandAvailableWhenThereIsALocalTemplateSel
 	self assert: self removeTemplateMenuItem isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 	| command |
 	command := PhLRemoveTemplateCommand new.
@@ -88,7 +89,7 @@ PhLRemoveTemplateCommandTest >> testCommandHasNoEffectWhenNoTemplateSelected [
 		hasSameElements: #( #Foo )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplateSelected [
 	| command |
 	command := PhLRemoveTemplateCommand new.
@@ -101,7 +102,7 @@ PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsARemoteTemplat
  	self deny: self removeTemplateMenuItem isEnabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRemoveTemplateCommandTest >> testCommandNotAvailableWhenThereIsNoTemplateSelected [
 	| command |
 	command := PhLRemoveTemplateCommand new.

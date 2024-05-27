@@ -8,23 +8,25 @@ I execute:
 - update the virtual machine according to the name.
 "
 Class {
-	#name : #PhLVmUpdateCliCommand,
-	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLVmUpdateCliCommand',
+	#superclass : 'PhLVmCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLVmUpdateCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #update 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLVmUpdateCliCommand class >> launcherCmdDescription [
 
 	^ 'Updates VM executable, including dependent libs to latest version from remote site.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLVmUpdateCliCommand >> basicExecute [
 
    self findVM updateFromUrl

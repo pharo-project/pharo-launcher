@@ -9,35 +9,37 @@ I execute:
 - create new local virtual machine based on specified vm template name with new name specified as flag
 "
 Class {
-	#name : #PhLVmInfoCliCommand,
-	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLVmInfoCliCommand',
+	#superclass : 'PhLVmCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLVmInfoCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #info
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLVmInfoCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints information about VM: name, remote-site URL, last update status, etc.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLVmInfoCliCommand >> basicExecute [
   
 	self list: (Array with: self findVM)
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLVmInfoCliCommand >> printSequence [
 
 	^ false
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLVmInfoCliCommand >> rowMode [
 
 	"vm info is printed in one attribute per row"

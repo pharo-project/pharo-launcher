@@ -1,6 +1,6 @@
-Extension { #name : #StringTest }
+Extension { #name : 'StringTest' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 StringTest >> testShortenTo [
 	|shortened|
 	shortened := String new shortForm.

@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-Tests-Download' }
+Package { #name : 'PharoLauncher-Tests-Download' }

@@ -3,37 +3,39 @@ I represent a group of templates as built by a Jenkins server (url of the server
 
 "
 Class {
-	#name : #PhLJenkins2Server,
-	#superclass : #PhLJenkins2Entity,
+	#name : 'PhLJenkins2Server',
+	#superclass : 'PhLJenkins2Entity',
 	#instVars : [
 		'url',
 		'name'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Server class >> jsonFields [
 	"Because the server is the root of the jenkins model"
 
 	^ self shouldNotImplement
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Server class >> jsonName [
 	"Because the server is the root of the jenkins model"
 
 	^ self shouldNotImplement
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2Server class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2Server class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl)
 		  username: anotherString;
@@ -41,48 +43,48 @@ PhLJenkins2Server class >> name: aString url: anUrl username: anotherString pass
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> jobs [
 	^ self query: PhLJenkins2Job
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> password [
 	^ url password
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> password: aString [
 	url password: aString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLJenkins2Server >> setName: aString url: aZnUrl [ 
 	name := aString.
 	url := aZnUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> templatesAndGroups [
 	^ self jobs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> url [
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> username [
 	^ url username
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Server >> username: aString [
 	url username: aString
 ]

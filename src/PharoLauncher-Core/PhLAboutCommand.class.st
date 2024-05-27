@@ -2,21 +2,23 @@
 Command to display a box with information related to the Pharo Launcher
 "
 Class {
-	#name : #PhLAboutCommand,
-	#superclass : #PhLGeneralCommand,
+	#name : 'PhLAboutCommand',
+	#superclass : 'PhLGeneralCommand',
 	#classVars : [
 		'LauncherVersion'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #versions }
+{ #category : 'versions' }
 PhLAboutCommand class >> version: aString [
 
 	LauncherVersion := aString.
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLAboutCommand >> aboutText [
 	^ String streamContents: [:stream |
 		stream
@@ -32,7 +34,7 @@ PhLAboutCommand >> aboutText [
 	
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLAboutCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #help;
@@ -40,7 +42,7 @@ PhLAboutCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLAboutCommand >> execute [
 	| presenter |
 	presenter := PhLAboutPresenter 
@@ -52,7 +54,7 @@ PhLAboutCommand >> execute [
 	^ presenter
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLAboutCommand >> initialize [
 	super initialize.
 	self
@@ -60,7 +62,7 @@ PhLAboutCommand >> initialize [
 		description: 'Documentation and information about Pharo Launcher'
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLAboutCommand >> launcherVersion [
 
 	^ LauncherVersion ifNil: [ 'N/A' ] 

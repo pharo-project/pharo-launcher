@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLImportImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLImportImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'fs'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImportImageCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testCanImportAnImage [
 	| command images someFolder |
 	command := PhLImportImageCommand new.
@@ -35,7 +36,7 @@ PhLImportImageCommandTest >> testCanImportAnImage [
 		hasSameElements: #('TestImage' 'foo').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testImportImageImportsImageSourcesFile [
 	| command importedImageName tmpDirectory importedImageDirectory sourcesFileName |
 	
@@ -55,7 +56,7 @@ PhLImportImageCommandTest >> testImportImageImportsImageSourcesFile [
 	self assert: (importedImageDirectory / sourcesFileName) exists
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testImportImageImportsImageVersionFile [
 	| command importedImageName tmpDirectory importedImageDirectory |
 	
@@ -74,7 +75,7 @@ PhLImportImageCommandTest >> testImportImageImportsImageVersionFile [
 	self assert: (importedImageDirectory / PhLImage versionFileName) exists
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testImportNonExistingImage [
 
 	| command |

@@ -1,12 +1,13 @@
 Class {
-	#name : #PhLVirtualMachineTest,
-	#superclass : #TestCase,
+	#name : 'PhLVirtualMachineTest',
+	#superclass : 'TestCase',
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanDetect32BitArchPath [
 	| vm |
 	vm := PhLVirtualMachine new 
@@ -17,7 +18,7 @@ PhLVirtualMachineTest >> testCanDetect32BitArchPath [
 		equals: ''
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanDetect64BitArchPath [
 	| vm |
 	vm := PhLVirtualMachine new 
@@ -28,7 +29,7 @@ PhLVirtualMachineTest >> testCanDetect64BitArchPath [
 		equals: '64'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanDetectExecutablePath [
 	"WARNING: this test is Linux specific!"
 	| vm vmFolder |
@@ -42,7 +43,7 @@ PhLVirtualMachineTest >> testCanDetectExecutablePath [
 		equals: (vmFolder / PhLVirtualMachine executableName) fullName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanDetectVMDirectory [
 	"WARNING: this test is CI and Linux specific!"
 	| vm |
@@ -55,7 +56,7 @@ PhLVirtualMachineTest >> testCanDetectVMDirectory [
 		equals: FileLocator vmDirectory fullName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanGetDownloadUrl [
 	| vm |
 	vm := PhLVirtualMachine new 
@@ -66,7 +67,7 @@ PhLVirtualMachineTest >> testCanGetDownloadUrl [
 		equals: 'https://files.pharo.org/get-files/70/pharo64-mac-stable.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanGetExecutablePathWhenBeeingSerializedAsString [
 	| vm |
 	vm := STON fromString: 'PhLVirtualMachine {
@@ -81,7 +82,7 @@ PhLVirtualMachineTest >> testCanGetExecutablePathWhenBeeingSerializedAsString [
 	self assert: vm executablePath equals: '/Users/me/Documents/Pharo/vms/80-x64/Pharo.app/Contents/MacOS/Pharo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testCanGetPharoVersion [
 	| vm |
 	vm := PhLVirtualMachine new 
@@ -92,7 +93,7 @@ PhLVirtualMachineTest >> testCanGetPharoVersion [
 		equals: '70'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testSerialization [
 	| vm vmDirectory deserializedVm vmBinaryRef |
 	
@@ -114,7 +115,7 @@ PhLVirtualMachineTest >> testSerialization [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testvm10IsGreaterThanVm1 [
 	| vm10 vm1 |
 	vm10 := (PhLVirtualMachine id: '100-x64')
@@ -126,7 +127,7 @@ PhLVirtualMachineTest >> testvm10IsGreaterThanVm1 [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineTest >> testvm64IsGreaterThanVm32 [
 	| vm vm64 |
 	vm := PhLVirtualMachine id: '90-x86'.

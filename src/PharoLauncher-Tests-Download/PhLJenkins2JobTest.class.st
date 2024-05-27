@@ -1,40 +1,41 @@
 Class {
-	#name : #PhLJenkins2JobTest,
-	#superclass : #PhLJenkins2EntityTest,
-	#category : #'PharoLauncher-Tests-Download'
+	#name : 'PhLJenkins2JobTest',
+	#superclass : 'PhLJenkins2EntityTest',
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2JobTest class >> newInstance [
 	^ self newWithoutParent
 		  parent: PhLJenkins2ServerTest newInstance;
 		  yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2JobTest class >> newSecureInstance [
 	^ self newWithoutParent
 		  parent: PhLJenkins2ServerTest newSecureInstance;
 		  yourself
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2JobTest class >> newWithoutParent [
 	^ PhLJenkins2Job newWithProperties: (STONJSON fromString:
 			   '{"_class":"hudson.matrix.MatrixBuild","url":"https://ci.inria.fr/pharo-contribution/job/A4BP/1304/","number":1304}')
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2JobTest >> lastSuccessfulBuildNumber [
 	^ 52
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLJenkins2JobTest >> lastSuccessfulBuildUrlString [
 	^ 'http://server/build'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2JobTest >> newJobWithNoSuccessfulBuild [
 	^ (PhLJenkins2Job newWithProperties: (Dictionary new
 				    at: 'url' put: 'url' asUrl;
@@ -44,7 +45,7 @@ PhLJenkins2JobTest >> newJobWithNoSuccessfulBuild [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2JobTest >> newJobWithNullSuccessfulBuild [
 	^ (PhLJenkins2Job newWithProperties: (Dictionary new
 				    at: 'url' put: 'url' asUrl;
@@ -55,7 +56,7 @@ PhLJenkins2JobTest >> newJobWithNullSuccessfulBuild [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2JobTest >> newJobWithSuccessfulBuild [
 	^ (PhLJenkins2Job newWithProperties: (Dictionary new
 				    at: 'url' put: 'url' asUrl;
@@ -70,7 +71,7 @@ PhLJenkins2JobTest >> newJobWithSuccessfulBuild [
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2JobTest >> newPipelineJob [
 	^ (PhLJenkins2Job newWithProperties: (Dictionary new
 				    at: 'url' put: 'url' asUrl;
@@ -80,12 +81,12 @@ PhLJenkins2JobTest >> newPipelineJob [
 		  yourself
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2JobTest >> noBuildsResponse [
 	^ '{"builds" : []}'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2JobTest >> oneBuildResponse [
 	^ '{"builds" : [
     {
@@ -94,7 +95,7 @@ PhLJenkins2JobTest >> oneBuildResponse [
     }]}'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2JobTest >> pipelineResponse [
 	^ '{"jobs":[
 		{
@@ -105,19 +106,19 @@ PhLJenkins2JobTest >> pipelineResponse [
 		]}'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2JobTest >> testJobWithNoSuccessfulBuild [
 	self setUpResponse: self noBuildsResponse.
 	self assertEmpty: self newJobWithNoSuccessfulBuild builds
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2JobTest >> testJobWithNullSuccessfulBuild [
 	self setUpResponse: self noBuildsResponse.
 	self assert: self newJobWithNullSuccessfulBuild lastSuccessfulBuildNumber isNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2JobTest >> testJobWithSuccessfulBuild [
 	| job lastSuccessfulBuild |
 	self setUpResponse: self oneBuildResponse.
@@ -132,7 +133,7 @@ PhLJenkins2JobTest >> testJobWithSuccessfulBuild [
 	self assert: lastSuccessfulBuild url lastPathSegment equals: 'lastSuccessfulBuild'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2JobTest >> testPipelineJob [
 	| build |
 	self setUpResponse: self pipelineResponse.

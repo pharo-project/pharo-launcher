@@ -2,16 +2,18 @@
 Create a new local template based on the selected image.
 "
 Class {
-	#name : #PhLCreateTemplateFromImageCommand,
-	#superclass : #PhLImageCommand,
+	#name : 'PhLCreateTemplateFromImageCommand',
+	#superclass : 'PhLImageCommand',
 	#instVars : [
 		'newTemplateName',
 		'willRemoveImage'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCreateTemplateFromImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNewIcon;
@@ -20,7 +22,7 @@ PhLCreateTemplateFromImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 	self
 		willRemoveImage;
@@ -33,7 +35,7 @@ PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
 
 	^ self imagesPresenter newConfirmation
@@ -42,7 +44,7 @@ PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
 		confirm
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCreateTemplateFromImageCommand >> execute [
 	| name |
 	name := self newTemplateName.
@@ -55,7 +57,7 @@ PhLCreateTemplateFromImageCommand >> execute [
 						execute ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCreateTemplateFromImageCommand >> initialize [
 	super initialize.
 	willRemoveImage := false.
@@ -64,13 +66,13 @@ PhLCreateTemplateFromImageCommand >> initialize [
 		description: 'Create a Template from the selected Pharo image'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCreateTemplateFromImageCommand >> newTemplateName [
 	^ newTemplateName 
 		ifNil: [ newTemplateName := self requestNewTemplateName: self imagesPresenter singleImageName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 	| templateRepository |
 	
@@ -86,7 +88,7 @@ PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 		request
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLCreateTemplateFromImageCommand >> willRemoveImage [
 	willRemoveImage := true.
 ]

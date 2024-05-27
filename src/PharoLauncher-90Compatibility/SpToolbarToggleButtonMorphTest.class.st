@@ -1,16 +1,17 @@
 Class {
-	#name : #SpToolbarToggleButtonMorphTest,
-	#superclass : #SpSmokeTest,
-	#category : #'PharoLauncher-90Compatibility'
+	#name : 'SpToolbarToggleButtonMorphTest',
+	#superclass : 'SpSmokeTest',
+	#category : 'PharoLauncher-90Compatibility',
+	#package : 'PharoLauncher-90Compatibility'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SpToolbarToggleButtonMorphTest >> classToTest [
 
 	^ SpToolbarToggleButtonPresenter 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 SpToolbarToggleButtonMorphTest >> testClickDeactivatedCheckboxActivatesIt [
 	| state |
 	state := presenter isSelected.

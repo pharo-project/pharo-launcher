@@ -2,22 +2,24 @@
 I represent a Jenkins job. If I'm a simple job, artifacts are available directly. If I'm a matrix job, artefacts are available from runs.
 "
 Class {
-	#name : #PhLJenkins2Build,
-	#superclass : #PhLJenkins2WithArtifactsEntity,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLJenkins2Build',
+	#superclass : 'PhLJenkins2WithArtifactsEntity',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Build class >> jsonName [
 	^ 'builds'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkins2Build >> isLastSuccessful [
 	^ self url lastPathSegment = 'lastSuccessfulBuild'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Build >> name [
 	^ String streamContents: [:str |
 		self isLastSuccessful 
@@ -27,7 +29,7 @@ PhLJenkins2Build >> name [
 		 	print: self number]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLJenkins2Build >> propagateLastSuccessfulTagTo: aRun [ 
 	| url |
 	url := aRun url copy.
@@ -38,7 +40,7 @@ PhLJenkins2Build >> propagateLastSuccessfulTagTo: aRun [
 	aRun properties at: 'url' put: url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Build >> runs [
 	|runs|
 	runs := self query: PhLJenkins2Run.
@@ -47,7 +49,7 @@ PhLJenkins2Build >> runs [
 	ifFalse: [ runs ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Build >> templatesAndGroups [
 	^ super templatesAndGroups , self runs
 ]

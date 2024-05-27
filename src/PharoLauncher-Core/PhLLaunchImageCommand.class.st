@@ -2,8 +2,8 @@
 Launch the selected image with the appropriate virtual machine.
 "
 Class {
-	#name : #PhLLaunchImageCommand,
-	#superclass : #PhLImageCommand,
+	#name : 'PhLLaunchImageCommand',
+	#superclass : 'PhLImageCommand',
 	#instVars : [
 		'useSettings'
 	],
@@ -11,31 +11,33 @@ Class {
 		'QuitOnLaunch',
 		'WarnOnArchMismatch'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> archMismatchSettingDescription [
 	^ 'Get a warning when trying to launch an image with a different architecture than the Launcher (i.e. trying to launch a 32-bit image from Pharo Launcher 64-bit). '
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> archMismatchSettingLabel [
 	^ 'Warn on image architecture mismatch? ' translated
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> quitOnLaunch [
 	^ QuitOnLaunch ifNil: [  QuitOnLaunch := false ].
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> quitOnLaunch: aBoolean [
 	QuitOnLaunch = aBoolean 
 		ifFalse: [ QuitOnLaunch := aBoolean ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -55,18 +57,18 @@ PhLLaunchImageCommand class >> settingsOn: aBuilder [
 		description: self archMismatchSettingDescription
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> warnOnArchMismatch [
 	^ WarnOnArchMismatch ifNil: [  WarnOnArchMismatch := true ].
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 	WarnOnArchMismatch := aBoolean.
 
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLLaunchImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDoItIcon;
@@ -75,7 +77,7 @@ PhLLaunchImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 	self
 		doNotUseSettings;
@@ -89,43 +91,43 @@ PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageCommand >> basicIconNamed: aName [
 	"Only used for basic launch command"
 	^ super iconNamed: aName
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLLaunchImageCommand >> doNotUseSettings [
 	useSettings := false.
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageCommand >> execute [
 	self imagesPresenter hasSingleImageSelected
 		ifTrue: [ ^ self launchSelectedImage ]
 		ifFalse: [ ^ nil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageCommand >> iconNamed: aName [
 	"Only used for basic launch command"
 	^ (self basicIconNamed: aName) asGrayScaleWithAlpha
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchImageCommand >> initialize [
 	super initialize.
 	useSettings := true.
 	self name: 'Launch'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
 	^ self imagesPresenter selectedLaunchConfiguration
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
 	| process launchConfig |
 
@@ -142,13 +144,13 @@ PhLLaunchImageCommand >> launchImage: aPhLImage [
 	^ process
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageCommand >> launchSelectedImage [
 
 	^ self launchImage: self imagesPresenter singleImage
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageCommand >> quit [
 	(PhLQuitCommand forSpecContext: self imagesPresenter) execute
 ]

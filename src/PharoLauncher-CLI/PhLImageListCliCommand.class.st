@@ -8,12 +8,14 @@ I execute:
 - list local images with detailed information about image name, used VM, architecture, local dir, etc.
 "
 Class {
-	#name : #PhLImageListCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageListCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	aCommandSpec 
@@ -23,24 +25,24 @@ PhLImageListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	self addPrintFlagsTo: aCommandSpec.
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageListCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #list 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageListCliCommand class >> launcherCmdDescription [
 
 	^ 'Lists all local images from Pharo laucher repository.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageListCliCommand >> basicExecute [ 
 
 	self list: self imagesToList 
 ]
 
-{ #category : #listing }
+{ #category : 'listing' }
 PhLImageListCliCommand >> imagesFromName: aSubtring [
 	| imagesIncludingSubstring |
 	imagesIncludingSubstring := self imageRepository images
@@ -48,7 +50,7 @@ PhLImageListCliCommand >> imagesFromName: aSubtring [
 	^ imagesIncludingSubstring
 ]
 
-{ #category : #listing }
+{ #category : 'listing' }
 PhLImageListCliCommand >> imagesToList [
 
 	| images |
@@ -59,7 +61,7 @@ PhLImageListCliCommand >> imagesToList [
 	^ images sorted: [:a :b | b lastModification <= a lastModification]
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImageListCliCommand >> nameFilter [
 
 	^ self positional: #nameFilter

@@ -9,8 +9,8 @@ Instance Variables
 
 "
 Class {
-	#name : #PhLDirectoryBasedImageRepository,
-	#superclass : #PhLRepository,
+	#name : 'PhLDirectoryBasedImageRepository',
+	#superclass : 'PhLRepository',
 	#instVars : [
 		'baseDirectory'
 	],
@@ -18,33 +18,35 @@ Class {
 		'Default',
 		'Location'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLDirectoryBasedImageRepository class >> default [
 	^ Default ifNil: [ Default := self new ]
 ]
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 PhLDirectoryBasedImageRepository class >> defaultLocation [
 	^ FileLocator launcherUserFilesLocation / 'images' 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLDirectoryBasedImageRepository class >> forDirectory: aDirectory [
 	^ self new
 		setBaseDirectory: aDirectory;
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDirectoryBasedImageRepository class >> initialize [
 
 	PhLStartupManager addToLauncherStartUpList: self
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLDirectoryBasedImageRepository class >> launcherStartUp [
 	"Fix the Location because the platform or computer can have changed"
 
@@ -54,17 +56,17 @@ PhLDirectoryBasedImageRepository class >> launcherStartUp [
 			Location := nil ]
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLDirectoryBasedImageRepository class >> launcherStartUpPriority [
 	^ 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository class >> location [
 	^ Location ifNil: [ Location := self defaultLocation ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository class >> location: directory [
 	self location resolve = directory resolve ifTrue: [ ^ self ].
 	self migrateFrom: self location to: directory.
@@ -72,17 +74,17 @@ PhLDirectoryBasedImageRepository class >> location: directory [
 	self default contentsChanged
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository class >> locationString [
 	^ self location pathString 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository class >> locationString: aDirectoryString [
 	^ self location: aDirectoryString asFileReference
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDirectoryBasedImageRepository class >> migrateFrom: oldLocation to: newLocation [
 	(oldLocation exists and: [ (self forDirectory: oldLocation) hasImages ])
 		ifTrue: 
@@ -92,7 +94,7 @@ PhLDirectoryBasedImageRepository class >> migrateFrom: oldLocation to: newLocati
 				execute ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLDirectoryBasedImageRepository class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -105,17 +107,17 @@ PhLDirectoryBasedImageRepository class >> settingsOn: aBuilder [
 		description: 'A directory where all your Pharo images will be saved and launched'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> baseDirectory [
 	^ (baseDirectory ifNil: [ self class location ]) ensureCreateDirectory
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> copyImage: anImage to: aString [
 	self copyImageNamed: anImage name to: aString
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> copyImageNamed: sourceName to: targetName [
 	| sourceDirectory targetDirectory |
 	self ensureNoImageWithName: targetName.
@@ -126,35 +128,35 @@ PhLDirectoryBasedImageRepository >> copyImageNamed: sourceName to: targetName [
 	self contentsChanged
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> deleteImage: anImage [
 	self deleteImageNamed: anImage name
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> deleteImageNamed: aString [
 	(self directoryForImageNamed: aString) deleteAll.
 	self contentsChanged.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> deleteImages: someImages [
 	self dontNotifyDuring: [ someImages do: [ :image | self deleteImage: image ] ].
 	self contentsChanged
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> directoryForImageNamed: aString [
 	^ self baseDirectory / aString
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> ensureNoImageWithName: anImageName [
 	(self hasImageNamed: anImageName)
 		ifTrue: [ PhLNameNotAvailableError signalName: anImageName ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> extractTemplate: aTemplate to: anImageName [
 	| destination image |
 	self ensureNoImageWithName: anImageName.
@@ -164,34 +166,34 @@ PhLDirectoryBasedImageRepository >> extractTemplate: aTemplate to: anImageName [
 	^ image
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLDirectoryBasedImageRepository >> hasImageNamed: aString [ 
 	^ self includesImageNamedCaseInsensitive: aString
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLDirectoryBasedImageRepository >> hasImages [
 	^ self images notEmpty
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> imageNamed: lowercaseImageName [
 	^ self images detect: [ :image | image name asLowercase = lowercaseImageName ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> imageNames [
 	^ self withImagesFilesCollect: #basenameWithoutExtension
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> images [
 	"Creates instances of PhLImage representing the Pharo images the launcher can manage."
 
 	^ self withImagesFilesCollect: [ :imageFile | PhLImage location: imageFile ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> importImage: sourceImageFileRef to: targetName [
 	| sourceDirectory targetDirectory imageLocalDirectory pharoVersionFile sourcesFiles |
 	self ensureNoImageWithName: targetName.
@@ -215,7 +217,7 @@ PhLDirectoryBasedImageRepository >> importImage: sourceImageFileRef to: targetNa
 	self contentsChanged.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> importImageNamed: imagePath andSiblingFilesto: targetName [
 	| sourceDirectory |
 	imagePath asFileReference exists ifFalse: [ ^ self ].
@@ -224,7 +226,7 @@ PhLDirectoryBasedImageRepository >> importImageNamed: imagePath andSiblingFilest
 	self moveImage: sourceDirectory to: targetName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLDirectoryBasedImageRepository >> includesImageNamedCaseInsensitive: anImageName [
 	"Windows OS doesnt care about case for folder names."
 	| lowercaseImageName |
@@ -232,17 +234,17 @@ PhLDirectoryBasedImageRepository >> includesImageNamedCaseInsensitive: anImageNa
 	^ self imageNames anySatisfy: [ :imageName | imageName asLowercase = lowercaseImageName ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLDirectoryBasedImageRepository >> isNewImageNameValid: aString [ 
 	^ aString isEmptyOrNil not and: [ (self hasImageNamed: aString) not ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> makeUniqueImageName: baseImageName [
 	^ self makeUniqueImageName: baseImageName among: self imageNames.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> makeUniqueImageName: baseImageName among: existingImageNames [
 	"Provide a reasonable default image name using the next incremental count for images with similar basenames"
 
@@ -251,7 +253,7 @@ PhLDirectoryBasedImageRepository >> makeUniqueImageName: baseImageName among: ex
 	^ self makeUniqueName: baseImageName among: existingImageNames
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> moveImage: sourceDirectory to: newName [
 	| targetDirectory |
 	self ensureNoImageWithName: newName.
@@ -261,7 +263,7 @@ PhLDirectoryBasedImageRepository >> moveImage: sourceDirectory to: newName [
 	self contentsChanged
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDirectoryBasedImageRepository >> newNameForFile: file whenRelocatingToImageNamed: targetName [
 	"Return the name that should be given to file when the file is going to be moved or copied to the image targetName. The file name is kept intact unless it must reflect the image name."
 	^ (#('image' 'changes') includes: file extension)
@@ -269,12 +271,12 @@ PhLDirectoryBasedImageRepository >> newNameForFile: file whenRelocatingToImageNa
 		ifFalse: [ file basename ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDirectoryBasedImageRepository >> prepareForNewImageNamed: aString [
 	^ (self directoryForImageNamed: aString) ensureCreateDirectory
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> recreateImage: anImage [
 	| image |
 	anImage originTemplate ifNil: [ PhLCommandError signal ].
@@ -286,12 +288,12 @@ PhLDirectoryBasedImageRepository >> recreateImage: anImage [
 	self contentsChanged. "Ensure the image repository has its image with up-to-date metadata"
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> renameImage: anImage to: newName [
 	self renameImageNamed: anImage name to: newName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDirectoryBasedImageRepository >> renameImageInFolder: targetDirectory to: newName [
 	targetDirectory children
 		do: [ :file | 
@@ -303,7 +305,7 @@ PhLDirectoryBasedImageRepository >> renameImageInFolder: targetDirectory to: new
 				ifFalse: [ file renameTo: targetFilename ] ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDirectoryBasedImageRepository >> renameImageNamed: oldName to: newName [
 	| sourceDirectory |
 	(self isNewImageNameValid: newName)
@@ -312,17 +314,17 @@ PhLDirectoryBasedImageRepository >> renameImageNamed: oldName to: newName [
 	self moveImage: sourceDirectory to: newName 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> roots [
 	^ self images sorted: [ :image1 :image2 | image1 name asUppercase < image2 name asUppercase ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDirectoryBasedImageRepository >> setBaseDirectory: aLocation [
 	baseDirectory := aLocation
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDirectoryBasedImageRepository >> withImagesFilesCollect: aBlock [
 	"I iterate over all the folders in the launcher image directory. If this directory contains one image and one change file, I execute the block provided by the user and I return the list of results obtained."
 

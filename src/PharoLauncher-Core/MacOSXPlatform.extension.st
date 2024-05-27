@@ -1,16 +1,16 @@
-Extension { #name : #MacOSXPlatform }
+Extension { #name : 'MacOSXPlatform' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform class >> armArchitecture [
 	^ 'arm64'
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform >> canRun32bitApp [
 	^ self version asInteger < 1015 "OS X Mojave 10.15 drop support of 32-bit application "
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform >> hostArchitecture [
 	| archName |
 	archName := (LibC resultOfCommand: 'uname -m') trim.
@@ -23,12 +23,12 @@ MacOSXPlatform >> hostArchitecture [
 
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform class >> intelArchitecture [
 	^ 'x86_64'
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform >> isValid: aPhLVirtualMachine [
 	
 	| executableArchitecture |
@@ -49,12 +49,12 @@ MacOSXPlatform >> isValid: aPhLVirtualMachine [
 	^ true
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform >> uname [
 	^ PhLVmProvider osDarwin 
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 MacOSXPlatform >> warnWhenWillLaunchInTranslatedMode [	
 	
 	PhLTranslatedModeWarning signal

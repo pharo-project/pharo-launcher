@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-CLI' }
+Package { #name : 'PharoLauncher-CLI' }

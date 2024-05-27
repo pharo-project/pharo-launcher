@@ -6,53 +6,55 @@ Instance Variables
 	simplifiedTemplateAndGroups:			a cached version of what my delegate answered to #simplifiedTemplateAndGroups.
 "
 Class {
-	#name : #PhLCacheTemplateGroup,
-	#superclass : #PhLAbstractTemplateGroup,
+	#name : 'PhLCacheTemplateGroup',
+	#superclass : 'PhLAbstractTemplateGroup',
 	#instVars : [
 		'delegate',
 		'templatesAndGroups'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLCacheTemplateGroup class >> group: aTemplateGroup [
 	^ self new
 		setGroup: aTemplateGroup;
 		yourself
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLCacheTemplateGroup >> hash [
 	^ delegate hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCacheTemplateGroup >> icon [
 	^ delegate icon
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLCacheTemplateGroup >> isHighlighted [
 	^ delegate isHighlighted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCacheTemplateGroup >> name [
 	^ delegate name
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLCacheTemplateGroup >> refresh [
 	templatesAndGroups := nil
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCacheTemplateGroup >> setGroup: templateGroup [
 	delegate := templateGroup.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCacheTemplateGroup >> templatesAndGroups [
 	^ templatesAndGroups
 		ifNil: [ templatesAndGroups := delegate templatesAndGroups ]

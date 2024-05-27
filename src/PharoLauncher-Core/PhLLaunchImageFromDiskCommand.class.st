@@ -2,12 +2,14 @@
 Launch an image from the filesystem without importing it into Pharo Launcher
 "
 Class {
-	#name : #PhLLaunchImageFromDiskCommand,
-	#superclass : #PhLLaunchImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLLaunchImageFromDiskCommand',
+	#superclass : 'PhLLaunchImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLLaunchImageFromDiskCommand >> asSpecCommand [
 	^ super asSpecCommand
 		"iconName: #smallLoadProject;
@@ -18,12 +20,12 @@ PhLLaunchImageFromDiskCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageFromDiskCommand >> canBeExecuted [
 	^ true
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageFromDiskCommand >> execute [
 	| imageFile |
 	imageFile := self imagesPresenter newFileRequest 
@@ -36,18 +38,18 @@ PhLLaunchImageFromDiskCommand >> execute [
 	^ self launchImage: (PhLImage location: imageFile).
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageFromDiskCommand >> iconNamed: anIconName [
 	^ (self basicIconNamed: #open) mergeWith: (self basicIconNamed: #smallDoItIcon) at:0@0
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchImageFromDiskCommand >> initialize [
 	super initialize.
 	self name: 'From disk'
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLLaunchImageFromDiskCommand >> launchConfigurationOfImage: aPhLImage [
 	^ aPhLImage defaultLaunchConfiguration
 ]

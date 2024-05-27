@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLGtkConfiguration,
-	#superclass : #SpGtkConfiguration,
-	#category : #'PharoLauncher-Spec2-Gtk'
+	#name : 'PhLGtkConfiguration',
+	#superclass : 'SpGtkConfiguration',
+	#category : 'PharoLauncher-Spec2-Gtk',
+	#package : 'PharoLauncher-Spec2-Gtk'
 }
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLGtkConfiguration >> configureGeneral: anApplication [ 
 
 	self addCSSProviderFromString: '

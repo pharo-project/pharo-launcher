@@ -6,8 +6,8 @@ To open me:
 	self example
 "
 Class {
-	#name : #PhLTemplatesPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLTemplatesPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
@@ -15,16 +15,17 @@ Class {
 		'templateTable',
 		'descriptionPanel'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootCommandGroup [
 	rootCommandGroup
 		register: (self buildContextualMenuGroup)
 ]
 
-{ #category : #commands }
+{ #category : 'commands' }
 PhLTemplatesPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Templates tree contextual menu';
@@ -34,7 +35,7 @@ PhLTemplatesPresenter class >> buildContextualMenuGroup [
 		yourself
 ]
 
-{ #category : #example }
+{ #category : 'example' }
 PhLTemplatesPresenter class >> example [
 	| app |
 	app := PharoLauncherApplication new 
@@ -48,7 +49,7 @@ PhLTemplatesPresenter class >> example [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> buildCategoryTable [
 	
 	^ self newTable
@@ -59,7 +60,7 @@ PhLTemplatesPresenter >> buildCategoryTable [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> buildDescriptionPanel [
 	| panel |
 
@@ -69,7 +70,7 @@ PhLTemplatesPresenter >> buildDescriptionPanel [
 	^ panel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> buildTemplateTable [
 	
 	^ self newTreeTable
@@ -86,7 +87,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		yourself
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTemplatesPresenter >> childrenOf: aTemplateGroup [
 		
 	^ [ aTemplateGroup children ]
@@ -101,7 +102,7 @@ PhLTemplatesPresenter >> childrenOf: aTemplateGroup [
 			children ]	
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> connectPresenters [
 
 	super connectPresenters.
@@ -120,7 +121,7 @@ PhLTemplatesPresenter >> connectPresenters [
 				ifEmpty: [ nil ] ].
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLTemplatesPresenter >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
@@ -142,12 +143,12 @@ PhLTemplatesPresenter >> defaultLayout [
 		yourself		
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplatesPresenter >> description [
 	^ descriptionPanel description
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> hasLocalTemplateSelected [
 	| items |
 	items := templateTable selectedItems.
@@ -155,7 +156,7 @@ PhLTemplatesPresenter >> hasLocalTemplateSelected [
 		and: [ items first isLocalTemplate ]
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> hasLocalTemplatesSelected [
 	| items |
 	items := templateTable selectedItems.
@@ -163,28 +164,28 @@ PhLTemplatesPresenter >> hasLocalTemplatesSelected [
 		and: [ items allSatisfy: #isLocalTemplate ]
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> hasSingleTemplateSelected [
 	^ (templateTable selection selectedItems size = 1) 
 			and: [ templateTable selectedItem isTemplate ]
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLTemplatesPresenter >> imageName [ 
 	^ descriptionPanel imageName
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLTemplatesPresenter >> imageRepository [
 	^ self application imageRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplatesPresenter >> initializationScript [
 	^ descriptionPanel initializationScript
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> initialize [
 
 	super initialize.
@@ -192,7 +193,7 @@ PhLTemplatesPresenter >> initialize [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> initializePresenters [
 
 	categoryTable := self buildCategoryTable.
@@ -200,7 +201,7 @@ PhLTemplatesPresenter >> initializePresenters [
 	descriptionPanel := self buildDescriptionPanel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher - Image creation';
@@ -210,7 +211,7 @@ PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplatesPresenter >> refresh [
 	| selectedCategory |
 	selectedCategory := categoryTable selection selectedItem.
@@ -219,17 +220,17 @@ PhLTemplatesPresenter >> refresh [
 	categoryTable selectItem: selectedCategory
 ]
 
-{ #category : #reseting }
+{ #category : 'reseting' }
 PhLTemplatesPresenter >> refreshInitializationScriptList [
 	descriptionPanel refreshInitializationScriptList
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> selectCategory: anIndex [
 	categoryTable selectIndex: anIndex
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> selectCategoryNamed: categoryName [
 	
 	|categoryToSelect|
@@ -239,24 +240,24 @@ PhLTemplatesPresenter >> selectCategoryNamed: categoryName [
 	 categoryTable selectItem: categoryToSelect 
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> selectedTemplateCategory [
 	^ categoryTable selection selectedItem
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> selectedTemplates [
 	^ templateTable selectedItems
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTemplatesPresenter >> singleTemplate [
 	self hasSingleTemplateSelected
 		ifFalse: [ PhLCommandError  signal: 'Only one template must be selected!' ].
 	^ templateTable selectedItems first "multiple selection enabled, always return a collection"
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLTemplatesPresenter >> templateRepository [
 
 	^ self model

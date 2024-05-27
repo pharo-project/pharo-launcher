@@ -1,25 +1,26 @@
 Class {
-	#name : #PhLDeleteVmCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLDeleteVmCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLDeleteVmCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestVmPresenter new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLDeleteVmCommandTest >> tearDown [
 	PhLTestVirtualMachineManager reset.	"reset vm store to use for tests"
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteVmCommandTest >> testCanDeleteAVM [
 	| command vms |
 	command := PhLDeleteVmCommand new.
@@ -34,7 +35,7 @@ PhLDeleteVmCommandTest >> testCanDeleteAVM [
 		hasSameElements: #('Foo').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteVmCommandTest >> testCanDeleteManyVms [
 	| command vms |		
 	command := PhLDeleteVmCommand new.

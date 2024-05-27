@@ -3,16 +3,18 @@ Error thrown when Pharo Launcher did not succeed to find a Pharo binary or execu
 Probably, the folder should be deleted as the VM are only cached
 "
 Class {
-	#name : #PhLExecutableNotFoundError,
-	#superclass : #PhLError,
+	#name : 'PhLExecutableNotFoundError',
+	#superclass : 'PhLError',
 	#instVars : [
 		'path',
 		'kindOfApplication'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #signalling }
+{ #category : 'signalling' }
 PhLExecutableNotFoundError class >> signalKind: aKindOfApp inPath: aString [
 	^ self new
 		kindOfApplication: aKindOfApp;
@@ -20,27 +22,27 @@ PhLExecutableNotFoundError class >> signalKind: aKindOfApp inPath: aString [
 		signal
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLExecutableNotFoundError >> kindOfApplication: string [
 	kindOfApplication := string
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLExecutableNotFoundError >> longDescription [
 	^ 'Cannot detect Pharo ', kindOfApplication ,' in ', path, '.', String cr, 'Delete the folder and retry! It can also due to a corruption of the downloaded file...'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLExecutableNotFoundError >> name [
 	^ 'Pharo Executable Not Found'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLExecutableNotFoundError >> path [
 	^ path
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLExecutableNotFoundError >> path: string [
 	path := string
 ]

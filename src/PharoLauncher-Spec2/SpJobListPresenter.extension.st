@@ -1,6 +1,6 @@
-Extension { #name : #SpJobListPresenter }
+Extension { #name : 'SpJobListPresenter' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 SpJobListPresenter >> jobPresenterHeight [
 
 	^ 80

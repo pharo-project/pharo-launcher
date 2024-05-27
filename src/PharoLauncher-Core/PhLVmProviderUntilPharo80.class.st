@@ -3,12 +3,14 @@ I'm used to provide the download URL of the Pharo Virtual Machine for Pharo vers
 Pharo versions > 8.0 have a diffrente URL scheme and are managed by PhLVmProvider.
 "
 Class {
-	#name : #PhLVmProviderUntilPharo80,
-	#superclass : #PhLVmProvider,
-	#category : #'PharoLauncher-Core-Download'
+	#name : 'PhLVmProviderUntilPharo80',
+	#superclass : 'PhLVmProvider',
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 	| os |
 	os := Smalltalk os.
@@ -18,7 +20,7 @@ PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLVmProviderUntilPharo80 >> imageArchitecture [
 	" No 64-bit image before Pharo 6.0"
 	^ (vmManager is64bit and: [ vmManager pharoVersion > '50' ]) 
@@ -26,7 +28,7 @@ PhLVmProviderUntilPharo80 >> imageArchitecture [
 		ifFalse: [ '' ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVmProviderUntilPharo80 >> urlForPharo: pharoVersion stable: useStableVm [ 
 	| vmStatus |
 	vmStatus := useStableVm ifTrue: [ 'stable' ] ifFalse: [ 'latest' ].
@@ -40,7 +42,7 @@ PhLVmProviderUntilPharo80 >> urlForPharo: pharoVersion stable: useStableVm [
 			with: #VM_STATUS -> vmStatus)
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLVmProviderUntilPharo80 >> urlForStable: useStableVm [ 
 	| pharoVersion |
 	pharoVersion  := (vmManager isPreSpur and: [ vmManager imageVersion = '50' ])
@@ -50,7 +52,7 @@ PhLVmProviderUntilPharo80 >> urlForStable: useStableVm [
 	^ self urlForPharo: pharoVersion stable: useStableVm 
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLVmProviderUntilPharo80 >> urlTemplate [
 	"IMAGE_VERSION (11 .. 70, 80)
 	 IMAGE_ARCH (32 or 64)
@@ -60,7 +62,7 @@ PhLVmProviderUntilPharo80 >> urlTemplate [
 	^ 'https://files.pharo.org/get-files/{IMAGE_VERSION}/pharo{IMAGE_ARCH}-{OS_PATH_SEGMENT}{VM_FLAVOUR}-{VM_STATUS}.zip'
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLVmProviderUntilPharo80 >> vmFlavour [
 	^ vmManager flavour
 ]

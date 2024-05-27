@@ -2,8 +2,8 @@
 I present a list of scripts and allow to edit, remove or add a new script.
 "
 Class {
-	#name : #PhLScriptPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLScriptPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
@@ -12,10 +12,11 @@ Class {
 		'saveButton',
 		'scriptListChangedBlock'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 PhLScriptPresenter class >> example [
 	| fs |
 	fs := FileSystem memory.
@@ -32,7 +33,7 @@ PhLScriptPresenter class >> example [
 		yourself
 ]
 
-{ #category : #example }
+{ #category : 'example' }
 PhLScriptPresenter class >> icebergLoadExample [
 	^ 'Metacello new
   baseline: ''Tonel'';
@@ -40,7 +41,7 @@ PhLScriptPresenter class >> icebergLoadExample [
   load.'
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLScriptPresenter >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
@@ -54,12 +55,12 @@ PhLScriptPresenter >> defaultLayout [
 		  yourself
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLScriptPresenter >> defaultSaveShortCut [
 	^ SpAcceptChangesCommand defaultShortcutKey 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLScriptPresenter >> initializePresenters [ 
 	scriptTable := (self instantiate: SpEditableListPresenter)
 		items: self scripts;
@@ -88,14 +89,14 @@ PhLScriptPresenter >> initializePresenters [
 		
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Available initialization scripts';
 		initialExtent: 800@550.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> newScript [
 	| newName |
 	
@@ -107,7 +108,7 @@ PhLScriptPresenter >> newScript [
 	^ self newScriptNamed: newName
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> newScriptNamed: aName [
 	| file |
 	aName ifNil: [ ^ nil ].
@@ -120,7 +121,7 @@ PhLScriptPresenter >> newScriptNamed: aName [
 	^ file
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> removeScript: aFileReference [ 
 	
 	aFileReference ifNil: [ ^ self ].
@@ -135,7 +136,7 @@ PhLScriptPresenter >> removeScript: aFileReference [
 	self scriptListChanged
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> saveSelectedScript [
 	| file |
 	file := scriptTable selectedItem.
@@ -147,30 +148,30 @@ PhLScriptPresenter >> saveSelectedScript [
 		writeStreamDo: [ :stream | stream nextPutAll: fileEditor text asString ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLScriptPresenter >> scriptDirectory [
 	^ self model 
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> scriptListChanged [
 	scriptTable refresh.
 	scriptListChangedBlock ifNotNil: [ scriptListChangedBlock cull: self ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLScriptPresenter >> scripts [
 	^ (self scriptDirectory files 
 		select: [ :file | file extension = 'st' ])
 			asSortedCollection 
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLScriptPresenter >> selectScript: aFileReference [
 	^ scriptTable selectItem: aFileReference
 ]
 
-{ #category : #events }
+{ #category : 'events' }
 PhLScriptPresenter >> whenScriptListChanged: aBlock [ 
 	scriptListChangedBlock := aBlock.
 ]

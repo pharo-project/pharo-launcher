@@ -24,8 +24,8 @@ executableRef is a reference to the script/binary to actually use to launch imag
 vmBinaryRef is a reference to the vm binary (not a bash file).
 "
 Class {
-	#name : #PhLVirtualMachine,
-	#superclass : #Object,
+	#name : 'PhLVirtualMachine',
+	#superclass : 'Object',
 	#instVars : [
 		'executableRef',
 		'vmBinaryRef',
@@ -36,10 +36,12 @@ Class {
 		'blessing',
 		'arch'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLVirtualMachine class >> directory: aFileReference [
 
 	| targetClass |
@@ -51,22 +53,22 @@ PhLVirtualMachine class >> directory: aFileReference [
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine class >> elfMagicNumber [
 	^ ByteArray newFrom: #(127 69 76 70)
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine class >> executableName [
 	^ PlatformResolver forCurrentPlatform vmExecutableName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine class >> headlessOptionString [
 	^ '--headless'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLVirtualMachine class >> id: aString [
 
 	^ self new
@@ -75,20 +77,20 @@ PhLVirtualMachine class >> id: aString [
 		yourself
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine class >> isSubclassForDirectory: aFileReference [
 
 	^ aFileReference basename beginsWith: self versionPrefix
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine class >> versionPrefix [
 	"See class comment, 'Filesystem Location' section"
 
 	^ ''
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLVirtualMachine >> = aVM [
 	self class = aVM class 
 		ifFalse: [ ^ false ]. 
@@ -96,7 +98,7 @@ PhLVirtualMachine >> = aVM [
 	^ aVM id = self id
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLVirtualMachine >> > aPhLVirtualMachine [ 
 	self pharoVersion = aPhLVirtualMachine pharoVersion
 		ifTrue: [ ^ self is64bit ].
@@ -104,46 +106,46 @@ PhLVirtualMachine >> > aPhLVirtualMachine [
 	^ self pharoVersion asNumber > aPhLVirtualMachine pharoVersion asNumber
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine >> archPath [
 	^ self is64bit
 		ifTrue: [ '64' ]
 		ifFalse: [ '' ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> basicInitializeOn: aFolder [
 	id := aFolder basename.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> be64bits [
 	arch := '64'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> beHeadless [
 
 	"Set the flavour to attach to the vm download url"
 	flavour := self headlessFlavour
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> beLatest [
 	blessing := 'latest'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> blessing [
 	^ blessing
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine >> downloadUrl [
 	^ (PhLVmProvider for: self) url
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLVirtualMachine >> ensureExecutionRights [
 	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
 	We have to set it explicitely on Unix and OS X."
@@ -157,34 +159,34 @@ PhLVirtualMachine >> ensureExecutionRights [
 		runAndWaitTimeOut: 5 seconds
 ]
 
-{ #category : #setting }
+{ #category : 'setting' }
 PhLVirtualMachine >> executable: aPathOrfileReference [
 	executableRef := aPathOrfileReference asFileLocatorOrReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> executableFolderPath [
 	^ executableRef parent fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> executablePath [
 	^ executableRef fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> executablesToEnsure [
 	| vmFolder |
 	vmFolder := self vmStore / self id.
 	^ vmFolder exists ifTrue: [ (vmFolder allChildrenMatching: self class executableName) select: #isFile ] ifFalse: [ #() ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> flavour [
 	^ flavour
 ]
 
-{ #category : #'ston persistence' }
+{ #category : 'ston persistence' }
 PhLVirtualMachine >> fromSton: stonReader [
 	super fromSton: stonReader.
 	
@@ -192,43 +194,43 @@ PhLVirtualMachine >> fromSton: stonReader [
 	vmBinaryRef isString ifTrue: [ vmBinaryRef := vmBinaryRef asFileLocatorOrReference ].
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLVirtualMachine >> hash [
 
 	^ self id hash
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> headlessFlavour [
 	^ '-headless'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> id [
 	^ id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> id: aString [
 	id := aString.
 	(aString includesAll: '-x64')
 		ifTrue: [ self be64bits ].
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> ifValid: aBlockClosure [ 
 	self isValid
 		ifTrue: [ aBlockClosure value ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> initialize [
 	super initialize.
 	flavour := ''. "No flavour means heafull vm, it will be used to fetch the vm"
 	blessing := 'stable'.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> initializeExecutableRef [
 	
 	executableRef ifNil: [ | vmFolder |
@@ -236,7 +238,7 @@ PhLVirtualMachine >> initializeExecutableRef [
 		vmFolder exists ifTrue: [ self initializeExecutableRefFrom: vmFolder ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	| executables vmFolder |
 	vmFolder := aFolder asFileReference. "ensure we compare file references and not locators"
@@ -256,13 +258,13 @@ PhLVirtualMachine >> initializeExecutableRefFrom: aFolder [
 	vmBinaryRef := vmBinaryRef  ifNotNil: [ :bin | bin asFileLocatorOrReference ].
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLVirtualMachine >> initializeOn: aFolder [
 	self basicInitializeOn: aFolder.
 	self initializeExecutableRefFrom: aFolder.
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> is64bit [
 	^ arch
 		ifNil: [ (self id last: 3) = 'x64' ] 
@@ -270,24 +272,24 @@ PhLVirtualMachine >> is64bit [
 	
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> isHeadless [ 
 	^ flavour = self headlessFlavour
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> isPreSpur [
 	^ id includes: 'preSpur'
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> isValid [
 	^ executableRef isNotNil
 		and: [ executableRef asFileReference isFile
 				and: [ vmBinaryRef isNotNil ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> isValidAfterUpdate [
 	self isValid ifTrue: [ ^ true ].
 	
@@ -295,18 +297,18 @@ PhLVirtualMachine >> isValidAfterUpdate [
 	^ self isValid
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLVirtualMachine >> isValidForArchitecture [
 	vmBinaryRef ifNil: [ ^ false ].
 	^ OSPlatform current isValid: self
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine >> lastUpdateTimeDescription [
 	
 	| timestamp |
@@ -315,27 +317,27 @@ PhLVirtualMachine >> lastUpdateTimeDescription [
 	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLVirtualMachine >> manager [
 	^ manager ifNil: [ manager := PhLVirtualMachineManager new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> manager: aPhLVirtualMachineManager [ 
 	manager := aPhLVirtualMachineManager
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> name [
 	^ self id
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLVirtualMachine >> pharoVersion [
 	^ ($- split: self id) first
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLVirtualMachine >> printOn: aStream [
 	super printOn: aStream.
 	aStream
@@ -344,7 +346,7 @@ PhLVirtualMachine >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLVirtualMachine >> removeFromSystem [
 	| vmFolder zipFile |
 	vmFolder := self vmStore / self name.
@@ -356,12 +358,12 @@ PhLVirtualMachine >> removeFromSystem [
 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLVirtualMachine >> showInFolder [
 	(self vmStore / self id) asFileReference openInOSFileBrowser 
 ]
 
-{ #category : #'ston persistence' }
+{ #category : 'ston persistence' }
 PhLVirtualMachine >> stonOn: stonWriter [
 	stonWriter writeObject: self streamMap: [ :mapWriter |
 		self class stonAllInstVarNames 
@@ -370,7 +372,7 @@ PhLVirtualMachine >> stonOn: stonWriter [
 				value ifNotNil: [ mapWriter at: each put: value ] ] ].
 ]
 
-{ #category : #'ston persistence' }
+{ #category : 'ston persistence' }
 PhLVirtualMachine >> stonValueOf: anInstVarName [
 	anInstVarName = #executableRef 
 		ifTrue: [ ^ executableRef ifNotNil: [ executableRef asFileLocatorOrReference ] ].
@@ -379,7 +381,7 @@ PhLVirtualMachine >> stonValueOf: anInstVarName [
 	^ self instVarNamed: anInstVarName
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
 
@@ -389,7 +391,7 @@ PhLVirtualMachine >> updateFromUrl [
 	self ensureExecutionRights
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> validityDescription [
 	
 	^ self isValid
@@ -397,27 +399,27 @@ PhLVirtualMachine >> validityDescription [
 		ifFalse: [ 'VM not available' ]
 ]
 
-{ #category : #setting }
+{ #category : 'setting' }
 PhLVirtualMachine >> vmBinary: aPathOrFileReference [
 	vmBinaryRef := aPathOrFileReference asFileReference
 ]
 
-{ #category : #setting }
+{ #category : 'setting' }
 PhLVirtualMachine >> vmBinaryFullName [
 	^ vmBinaryRef fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> vmFolder [
 	^ vmBinaryRef parent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> vmFolderPath [
 	^ self vmFolder fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachine >> vmStore [
 	^ self manager vmStore
 ]

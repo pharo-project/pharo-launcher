@@ -1,15 +1,16 @@
 Class {
-	#name : #PhLImageTest,
-	#superclass : #TestCase,
+	#name : 'PhLImageTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'fs',
 		'image',
 		'imageFileRef'
 	],
-	#category : #'PharoLauncher-Tests-Core'
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 PhLImageTest >> createFakeVM [
 	^ PhLVirtualMachine new 
 		basicInitializeOn: FileLocator launcherVMsLocation / '100-x64';
@@ -17,13 +18,13 @@ PhLImageTest >> createFakeVM [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageTest >> currentImageVersion [ 
 	^  SystemVersion current major asString
 		, SystemVersion current minor asString
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageTest >> setUp [
 	super setUp.
 	fs := FileSystem memory root.
@@ -36,7 +37,7 @@ PhLImageTest >> setUp [
 	image pharoVersion: '110'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testCanGetDefaultLaunchConfigurationWhenNoLaunchConfiguration [
 	| config |
 
@@ -47,7 +48,7 @@ PhLImageTest >> testCanGetDefaultLaunchConfigurationWhenNoLaunchConfiguration [
 		equals: 'Default'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testCanInitializeImageFromMetadatafile [
 	| deserializedImage |
 	image 
@@ -77,7 +78,7 @@ PhLImageTest >> testCanInitializeImageFromMetadatafile [
 		equals: image originTemplate url asString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testCanSerializeAndDeserializeImageLaunchConfigurationMetadata [
 	| deserializedImage launchConfig deserializedLaunchConfig |
 	image 	launchConfigurations. "Add default launch ocnfig to the list of configurations"
@@ -101,7 +102,7 @@ PhLImageTest >> testCanSerializeAndDeserializeImageLaunchConfigurationMetadata [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 	| deserializedImage |
 	image 
@@ -131,7 +132,7 @@ PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 		equals: image originTemplate url asString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWhenAvailable [
 	| config |
 
@@ -148,7 +149,7 @@ PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWh
 		equals: #( #foo ).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFileExists [
 	| desc |
 	image description: nil.
@@ -161,14 +162,14 @@ PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFil
 		equals: desc.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testImageNameIsNotValidWhenContainingFileSeparator [
 
 	self deny: (PhLImage isValidName: 'fo/o').
 	self deny: (PhLImage isValidName: '123\4').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
 
 	self assert: (PhLImage isValidName: 'foo').
@@ -176,7 +177,7 @@ PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
 	self assert: (PhLImage isValidName: 'Fo23')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testPhLImageSerialization [
 	| stonString |
 	(image file parent / image class versionFileName)
@@ -198,7 +199,7 @@ PhLImageTest >> testPhLImageSerialization [
 	self assert: (stonString includesSubstring: '#manager : @2,') description: 'VM manager is not a reference: ', stonString.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testPharoVersionIsSetWhenNoVersionInMetadataButPharoVersionFileExists [
 	| version |
 	
@@ -212,7 +213,7 @@ PhLImageTest >> testPharoVersionIsSetWhenNoVersionInMetadataButPharoVersionFileE
 		equals: version.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageTest >> testTemplateIsSetWhenMetadataFileInOldFormat [
 	"Old metadata file was a STON file with a dictionary with only one entry:
 		template -> ston representation of the template

@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLCreateTemplateFromImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLCreateTemplateFromImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCreateTemplateFromImageCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhenSingleImageSelected [
 	| command templates |
 	command := PhLCreateTemplateFromImageCommand new
@@ -34,7 +35,7 @@ PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateAndRemoveImageWhe
 	self deny: (presenter imageRepository hasImageNamed: 'TestImage')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateTemplateFromImageCommandTest >> testCanCreateATemplateWhenSingleImageSelected [
 	| command templates |
 	command := PhLCreateTemplateFromImageCommand new.

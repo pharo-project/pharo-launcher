@@ -2,7 +2,9 @@
 Error raised when an error happens during Image bisection command.
 "
 Class {
-	#name : #PhLImageBisectionError,
-	#superclass : #Error,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLImageBisectionError',
+	#superclass : 'Error',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }

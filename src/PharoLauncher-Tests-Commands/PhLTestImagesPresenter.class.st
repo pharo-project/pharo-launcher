@@ -2,47 +2,48 @@
 A presenter for Pharo Launcher images used for test purposes
 "
 Class {
-	#name : #PhLTestImagesPresenter,
-	#superclass : #PhLImagesPresenter,
+	#name : 'PhLTestImagesPresenter',
+	#superclass : 'PhLImagesPresenter',
 	#instVars : [
 		'request',
 		'selection',
 		'templateRepository'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #sorting }
+{ #category : 'sorting' }
 PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
 	imageTable clickOnColumnHeaderAt: anIndex
 ]
 
-{ #category : #selection }
+{ #category : 'selection' }
 PhLTestImagesPresenter >> createImageNamed: aString [
 	^ self model createImageNamed: aString 
 ]
 
-{ #category : #selection }
+{ #category : 'selection' }
 PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
 	^ self model createImageNamed: aString in: aPathString
 ]
 
-{ #category : #'api - selection' }
+{ #category : 'api - selection' }
 PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection notNil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestImagesPresenter >> imageLabel [
 	^ descriptionPanel imageLabel label
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestImagesPresenter >> imageNames [
 	^ imageTable items collect: #name
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestImagesPresenter >> initialize [
 	self model: PhLTestImageRepository new.
 	templateRepository := PhLTemplateTestRepository new.
@@ -58,63 +59,63 @@ PhLTestImagesPresenter >> initialize [
 	request := PhLTestRequest new.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestImagesPresenter >> launchConfigurations [
 	^ launchConfigurationList listItems allButFirst
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
 	^ request := PhLTestConfirmation new
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLTestImagesPresenter >> newFileRequest [
 	^ request
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLTestImagesPresenter >> newInformation [
 	self flag: 'TODO: spec should offer a way to open the inform dialog and accept it.'.
 
 	^ PhLTestConfirmation new
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLTestImagesPresenter >> newRequest [
 	^ request
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTestImagesPresenter >> refreshLaunchConfigurationList [
 
 	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTestImagesPresenter >> request [
 
 	^ request
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLTestImagesPresenter >> requestAnswer: answer [
 	request answer: answer
 ]
 
-{ #category : #selection }
+{ #category : 'selection' }
 PhLTestImagesPresenter >> selectedLaunchConfiguration [
 	^ launchConfigurationList 
 		ifNil: [ self singleImage defaultLaunchConfiguration ]
 		ifNotNil: [ launchConfigurationList selectedItem  ifNil: [ self singleImage defaultLaunchConfiguration ] ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLTestImagesPresenter >> singleImage [ 
 	^ [ super singleImage ]
 		on: SubscriptOutOfBounds "no selection in real presenter"
@@ -124,17 +125,17 @@ PhLTestImagesPresenter >> singleImage [
 				ifNotNil: [ selection first ] ]
 ]
 
-{ #category : #selection }
+{ #category : 'selection' }
 PhLTestImagesPresenter >> singleImageName [
 	^ self model singleImageName
 ]
 
-{ #category : #'api - accessing' }
+{ #category : 'api - accessing' }
 PhLTestImagesPresenter >> templateRepository [ 
 	^ templateRepository
 ]
 
-{ #category : #selecting }
+{ #category : 'selecting' }
 PhLTestImagesPresenter >> unselectAll [
 	imageTable unselectAll.
 ]

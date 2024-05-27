@@ -6,8 +6,8 @@ IMPLEMENTATION
 I don't cache anything as variables in the image. For each action, I read the cache.json and update it.
 "
 Class {
-	#name : #PhLDownloadedTemplateGroup,
-	#superclass : #PhLAbstractTemplateGroup,
+	#name : 'PhLDownloadedTemplateGroup',
+	#superclass : 'PhLAbstractTemplateGroup',
 	#instVars : [
 		'name',
 		'baseDirectory'
@@ -15,37 +15,39 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup class >> default [
 	^ Default ifNil: [ Default := self new ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLDownloadedTemplateGroup class >> named: aName [
 	^ Default := self new 	
 		setName: aName;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> baseDirectory [
 	^ baseDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> baseDirectory: aDirectory [
 	baseDirectory := aDirectory ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> cacheFile [	
 	^ (self baseDirectory / 'cache', 'json') ensureCreateFile
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadedTemplateGroup >> dictionary [
 	^ self cacheFile
 		readStreamDo: [ :aStream | 
@@ -54,7 +56,7 @@ PhLDownloadedTemplateGroup >> dictionary [
 				ifFalse: [ STONJSON fromStream: aStream ] ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTemplate [
 	"Download the file at anUrl (hopefully a zip archive), put it in my cache, and update the meta-data file (using information from aRemoteTemplate). If everything went well, a reference to the downloaded file is returned"
 	| destinationFile fileExtension |
@@ -68,23 +70,23 @@ PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTe
 	^ destinationFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> icon [
 	^ self iconNamed: #home
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDownloadedTemplateGroup >> initialize [ 
 	super initialize.
 	baseDirectory := (FileLocator preferences / 'pharo' / 'templateCache') ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> pharoStableImagePath [
 	| img |
 	img := (self resourcesPath  / 'images' / 'pharo-stable.zip') asFileReference.
@@ -93,7 +95,7 @@ PhLDownloadedTemplateGroup >> pharoStableImagePath [
 		ifFalse: [ nil ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile [
 	"Update my cache file by adding information about a new zip file as described in aRemoteTemplate"
 	| aDictionary templateDescription |
@@ -103,7 +105,7 @@ PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile [
 	self saveToFile: aDictionary
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> resourcesPath [
 	| vmDirectory |
 	
@@ -114,17 +116,17 @@ PhLDownloadedTemplateGroup >> resourcesPath [
 	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadedTemplateGroup >> saveToFile: aDictionary [
 	self cacheFile writeStreamDo: [ :aStream | 	STONJSON put: aDictionary onStream: aStream ] 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> setName: aString [ 
 	name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadedTemplateGroup >> templatesAndGroups [
 	"Read the cache file to answer a list of already downloaded templates"
 	| aDictionary templates |
@@ -147,7 +149,7 @@ PhLDownloadedTemplateGroup >> templatesAndGroups [
 	^ templates
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadedTemplateGroup >> updateTemplateDescription: templateDescription with: aRemoteTemplate [
 	templateDescription at: 'url' put: aRemoteTemplate url asString.
 	templateDescription at: 'name' put: aRemoteTemplate name.

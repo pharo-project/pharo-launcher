@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLCopyLaunchCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLCopyLaunchCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCopyLaunchCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCopyLaunchCommandTest >> testCanCopyImageLaunchCommand [
 	| image config commandString |
 	presenter selectImageAt: 1.

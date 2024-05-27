@@ -2,17 +2,19 @@
 Abstraction of a string request dialog.
 "
 Class {
-	#name : #PhLUIRequest,
-	#superclass : #PhLUserInteraction,
+	#name : 'PhLUIRequest',
+	#superclass : 'PhLUserInteraction',
 	#instVars : [
 		'title',
 		'initialAnswer',
 		'validationBlock'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIRequest >> chooseFrom: aListOfChoices [
 
 	^ self application newSelect 
@@ -21,13 +23,13 @@ PhLUIRequest >> chooseFrom: aListOfChoices [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIRequest >> initialAnswer: aString [
 
 	initialAnswer := aString
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIRequest >> request [
 	| answer |
 	
@@ -44,12 +46,12 @@ PhLUIRequest >> request [
 	^ answer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIRequest >> title: aString [ 
 	title := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIRequest >> validateAnswer: aBlock [
 	validationBlock := aBlock
 ]

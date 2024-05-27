@@ -2,12 +2,14 @@
 Command to inspect the current selection
 "
 Class {
-	#name : #PhLInspectCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLInspectCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLInspectCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallInspectIt;
@@ -16,17 +18,17 @@ PhLInspectCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLInspectCommand >> canBeExecuted [ 
 	^ self imagesPresenter selectedImages notEmpty
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLInspectCommand >> execute [
 	self imagesPresenter singleImage inspect
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLInspectCommand >> initialize [
 	super initialize.
 	self

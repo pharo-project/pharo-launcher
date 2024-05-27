@@ -3,12 +3,14 @@ Copy the selected image pathname to the system clipboard.
 
 "
 Class {
-	#name : #PhLCopyPathname,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLCopyPathname',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCopyPathname >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallCopyIcon;
@@ -16,13 +18,13 @@ PhLCopyPathname >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCopyPathname >> execute [
 	Clipboard clipboardText: 
 		self imagesPresenter singleImage file fullName surroundedByDoubleQuotes.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCopyPathname >> initialize [
 	super initialize.
 	self name: 'Copy pathname'

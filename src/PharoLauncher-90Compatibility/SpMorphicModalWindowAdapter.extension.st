@@ -1,6 +1,6 @@
-Extension { #name : #SpMorphicModalWindowAdapter }
+Extension { #name : 'SpMorphicModalWindowAdapter' }
 
-{ #category : #'*PharoLauncher-90Compatibility' }
+{ #category : '*PharoLauncher-90Compatibility' }
 SpMorphicModalWindowAdapter >> open [
 
 	backdropMorph := FullscreenMorph new

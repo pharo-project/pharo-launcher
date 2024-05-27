@@ -2,12 +2,14 @@
 Open the image creation UI.
 "
 Class {
-	#name : #PhLOpenNewImageWindowCommand,
-	#superclass : #PhLGeneralCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLOpenNewImageWindowCommand',
+	#superclass : 'PhLGeneralCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLOpenNewImageWindowCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNew;
@@ -15,7 +17,7 @@ PhLOpenNewImageWindowCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLOpenNewImageWindowCommand >> execute [
 
 	^ (PhLTemplatesPresenter
@@ -25,7 +27,7 @@ PhLOpenNewImageWindowCommand >> execute [
 		  yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLOpenNewImageWindowCommand >> initialize [
 	super initialize.
 	self

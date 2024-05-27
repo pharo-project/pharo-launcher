@@ -2,27 +2,29 @@
 I represent an error as can be signaled by any code of Pharo Launcher.
 "
 Class {
-	#name : #PhLError,
-	#superclass : #Error,
-	#category : #'PharoLauncher-Core-Exceptions'
+	#name : 'PhLError',
+	#superclass : 'Error',
+	#category : 'PharoLauncher-Core-Exceptions',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Exceptions'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLError >> isResumable [ 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLError >> longDescription [
 	^ self subclassResponsibility
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLError >> name [
 	^ self subclassResponsibility
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PhLError >> uiAlert [
 
 	PharoLauncherApplication default showError: self

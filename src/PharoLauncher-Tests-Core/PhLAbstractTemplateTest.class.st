@@ -2,31 +2,32 @@
 Give me unit tests and I will make sure they are run for all subclasses of PhLAbstractTemplate
 "
 Class {
-	#name : #PhLAbstractTemplateTest,
-	#superclass : #ClassTestCase,
+	#name : 'PhLAbstractTemplateTest',
+	#superclass : 'ClassTestCase',
 	#instVars : [
 		'root'
 	],
-	#category : #'PharoLauncher-Tests-Core'
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLAbstractTemplateTest class >> isAbstract [
 	^ self name = #PhLAbstractTemplateTest
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLAbstractTemplateTest >> newTemplate [
 	^ self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLAbstractTemplateTest >> setUp [
 	super setUp.
 	root := FileSystem memory workingDirectory
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 	| template archive |
 	template := self newTemplate.
@@ -38,7 +39,7 @@ PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 		raise: PhLCorruptedTemplateError 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 	| template archive archiveFile |
 	template := self newTemplate.
@@ -54,7 +55,7 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 		raise: PhLCorruptedTemplateError
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLAbstractTemplateTest >> testRelocateImageFilesFromToWithName [
 	| template source destination imageName |
 	template := self newTemplate.

@@ -2,38 +2,40 @@
 Error raised when a virtual machine object describes a VM that cannot be found on disk (i.e. executable not found).
 "
 Class {
-	#name : #PhLMissingVirtualMachineError,
-	#superclass : #PhLError,
+	#name : 'PhLMissingVirtualMachineError',
+	#superclass : 'PhLError',
 	#instVars : [
 		'vm'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #signalling }
+{ #category : 'signalling' }
 PhLMissingVirtualMachineError class >> signalVm: aPhLVirtualMachine [
 	^ self new 
 		setVm: aPhLVirtualMachine;
 		signal
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLMissingVirtualMachineError >> isResumable [ 
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLMissingVirtualMachineError >> longDescription [
 	^ vm id , 
 	' virtual machine was not found!'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLMissingVirtualMachineError >> name [
 	^ 'Cannot find VM'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLMissingVirtualMachineError >> setVm: aPhlVirtualMachine [
 	vm := aPhlVirtualMachine
 ]

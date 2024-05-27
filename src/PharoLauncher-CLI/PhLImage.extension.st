@@ -1,6 +1,6 @@
-Extension { #name : #PhLImage }
+Extension { #name : 'PhLImage' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 PhLImage class >> extendedListPrintAttributeBlocks [
 	"this is used to dump extended image information"
 	|aColl|
@@ -15,7 +15,7 @@ PhLImage class >> extendedListPrintAttributeBlocks [
 	^ aColl
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 PhLImage class >> extendedListPrintAttributeLabels [
 	"this is used to dump extended image information"
 
@@ -25,7 +25,7 @@ PhLImage class >> extendedListPrintAttributeLabels [
 	^ labels
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeBlocks [
 
 	^ {
@@ -35,13 +35,13 @@ PhLImage class >> listPrintAttributeBlocks [
 		  [ :image | image lastModification asLocalStringYMDHMS ] }
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 PhLImage class >> listPrintAttributeLabels [
 
 	^ #( 'Name' 'Architecture' 'Pharo version' 'Last modified' )
 ]
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 PhLImage >> listPrintAttributes [
 	
 	^ #(#name #architecture #pharoVersion #lastModification)

@@ -1,6 +1,6 @@
-Extension { #name : #ZipArchiveMember }
+Extension { #name : 'ZipArchiveMember' }
 
-{ #category : #'*PharoLauncher-Tests-Functional' }
+{ #category : '*PharoLauncher-Tests-Functional' }
 ZipArchiveMember >> binaryContentsFrom: start to: finish [
 	"Answer my contents as a string."
 	| s |

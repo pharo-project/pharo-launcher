@@ -11,8 +11,8 @@ I execute:
 - just printing help about my sub-commands relevant for Pharo Launcher
 "
 Class {
-	#name : #PhLCliCommand,
-	#superclass : #ClapApplication,
+	#name : 'PhLCliCommand',
+	#superclass : 'ClapApplication',
 	#instVars : [
 		'outStream',
 		'pharoLauncherModel',
@@ -20,10 +20,12 @@ Class {
 		'cliFormatter',
 		'cliInputRequest'
 	],
-	#category : #'PharoLauncher-CLI-Commands'
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addBriefFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -38,7 +40,7 @@ PhLCliCommand class >> addBriefFlagTo: aCommandSpec [
 		implicitMeaning: [ :arg :app | false ])"
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -47,7 +49,7 @@ PhLCliCommand class >> addDelimiterFlagTo: aCommandSpec [
 		positionalSpec: [ :positional | positional	defaultValue: [ :arg :app | app implicitDelimiter ] ]
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	"Only version flag to launcher commmand.
@@ -56,7 +58,7 @@ PhLCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	self addVersionFlagTo: aCommandSpec 
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	"No positionals on root spec class 
@@ -64,13 +66,13 @@ PhLCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	"
 ]
 
-{ #category : #'command line - subcommands' }
+{ #category : 'command line - subcommands' }
 PhLCliCommand class >> addLauncherSubcommandsTo: aCommandSpec [
 
 	aCommandSpec addAll: (self productionCommandSubclasses collect: #asCliCommand)
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addPrintFlagsTo: aCommandSpec [
 	
 	self addBriefFlagTo: aCommandSpec.
@@ -80,7 +82,7 @@ PhLCliCommand class >> addPrintFlagsTo: aCommandSpec [
 
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addRowModeFlagTo: aCommandSpec [
 	
 	aCommandSpec 
@@ -88,7 +90,7 @@ PhLCliCommand class >> addRowModeFlagTo: aCommandSpec [
 		description: 'Prints one attribute per line only.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -96,7 +98,7 @@ PhLCliCommand class >> addStonFlagTo: aCommandSpec [
 		description: 'Prints information in STON format.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLCliCommand class >> addVersionFlagTo: aCommandSpec [
 
 	aCommandSpec 
@@ -104,24 +106,24 @@ PhLCliCommand class >> addVersionFlagTo: aCommandSpec [
 		description: 'Prints version of the Pharo Launcher.'
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #launcher 
 ]
 
-{ #category : #'private - testing' }
+{ #category : 'private - testing' }
 PhLCliCommand class >> isProductionCommandClass [
 	
 	"use this when command subclass is visible and representable to user, should return false for non-production command classses like abstract classes or mock classes inheriting from this class"
 	^ true
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
 ]
 
-{ #category : #'command line - instance creation' }
+{ #category : 'command line - instance creation' }
 PhLCliCommand class >> launcherCommand [
 	"Root command for Pharo Launcher"
 	<commandline>
@@ -129,12 +131,12 @@ PhLCliCommand class >> launcherCommand [
 	^ self newLauncherCommandSpec: #launcher
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
 ]
 
-{ #category : #'command line - instance creation' }
+{ #category : 'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [ 
 	"factory for pharo launcher commands"
 	|commandSpec|
@@ -151,19 +153,19 @@ PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [
 	^ commandSpec
 ]
 
-{ #category : #'command line - subcommands' }
+{ #category : 'command line - subcommands' }
 PhLCliCommand class >> productionCommandSubclasses [
 
 	^ self subclasses select: #isProductionCommandClass 
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLCliCommand class >> raiseMissingDelimiter [
 
 	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLCliCommand >> basicExecute [
 	
 	"should be implemented on all sub-classed commands that have business logic, otherwise will print just help"
@@ -171,13 +173,13 @@ PhLCliCommand >> basicExecute [
 	self printHelp
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> briefPrint [ 
 
 	^ self hasFlag: #brief
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLCliCommand >> checkForUpdates [
 	"Should only be used by commands requiring network for a better Ux"
 	PhLPharoTemplateSources announcer weak
@@ -187,19 +189,19 @@ PhLCliCommand >> checkForUpdates [
 	PhLPharoTemplateSources checkForUpdates.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> cliFormatter [
 
 	^ cliFormatter 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> cliFormatter: aFormatter [
 
 	cliFormatter := aFormatter
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> cliInputRequest [
 
 	^ cliInputRequest ifNil: [
@@ -208,7 +210,7 @@ PhLCliCommand >> cliInputRequest [
 			                     outputStream: self outStream ]
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> defaultTemplate [
 	
 	^ self pharoLauncherModel defaultTemplate = #dev
@@ -216,31 +218,31 @@ PhLCliCommand >> defaultTemplate [
 		ifFalse: [ self latestStableTemplate ]
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> defaultTemplateCategory [
 	^ self templateRepository defaultTemplateCategory
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> defaultTemplateCategoryName [
 	^ self templateRepository defaultTemplateCategoryName
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> delimiter [ 
 
 	(self hasFlag: #delimiter) ifFalse: [ ^ self implicitDelimiter ].
 	^ self positional: #delimiter
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> errorStream [
 	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ errorStream
 		ifNil: [ errorStream := VTermOutputDriver on: self context stderr ]
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLCliCommand >> execute [
 	
 	[ self basicExecute ]
@@ -251,7 +253,7 @@ PhLCliCommand >> execute [
 	]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 
 	"only first (most important) attribute is printed for brief mode by default, can be overriden"
@@ -259,36 +261,36 @@ PhLCliCommand >> filterPrintAttributesFrom: attrCollection [
 	^ attrCollection
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLCliCommand >> findLatestPharoStableVersionIn: aTemplateGroup [
 	^ aTemplateGroup latestStableTemplate
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> hasVersionFlag [
 
 	^ self hasFlag: #version
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> imageRepository [
 	^ self pharoLauncherModel imageRepository
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> implicitDelimiter [
 	^ self rowMode
 		ifTrue: [ ': ' ]
 		ifFalse: [ ' ' ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCliCommand >> initialize [
 	super initialize.
 	self cliFormatter: (ConsoleListFormatter on: self).
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> isDefaultTemplateCategory: aCategory ifTrue: trueBlock ifFalse: falseBlock [
 
 	[ aCategory == self defaultTemplateCategory 
@@ -298,21 +300,21 @@ PhLCliCommand >> isDefaultTemplateCategory: aCategory ifTrue: trueBlock ifFalse:
 	do: falseBlock
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> latestDevTemplate [
 	
 	"from default 'Official distributions' obtain latest development template"
 	^ self defaultTemplateCategory latestDevelopmentTemplate
 ]
 
-{ #category : #default }
+{ #category : 'default' }
 PhLCliCommand >> latestStableTemplate [
 	
 	"from default 'Official distributions' obtain latest Pharo version stable template"
 	^ self defaultTemplateCategory latestStableTemplate
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommand >> list: domainObjects [
 	
 	self cliFormatter 
@@ -320,14 +322,14 @@ PhLCliCommand >> list: domainObjects [
 		printList.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommand >> list: domainObjects default: defaultValue [ 
 		self cliFormatter 
 		domainObjects: domainObjects defaultValue: defaultValue;
 		printList.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> listPrintAttributeBlocks [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeBlocks
@@ -335,34 +337,34 @@ PhLCliCommand >> listPrintAttributeBlocks [
 	
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> listPrintAttributeLabels [
 
 	^ self filterPrintAttributesFrom: self modelClass listPrintAttributeLabels
 	
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommand >> logExceptionMessage: errMessage [
 
 	self errorStream nextPutAll: errMessage.
 	self errorStream newLine.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommand >> logInfoMessage: aMessage [
 
 	self outStream nextPutAll: aMessage.
 	self outStream newLine.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> modelClass [
 
  ^ self class environment at: #PhLObject
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLCliCommand >> notifyTemplateSourcesUpdateAvailable [
 	| message |
 	message := String streamContents: [ :stream |
@@ -376,55 +378,55 @@ PhLCliCommand >> notifyTemplateSourcesUpdateAvailable [
 	self logInfoMessage: message
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLCliCommand >> osShellArgArray [
 	"No OS shell arguments by default, using array instead of string"
 	^ #()
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLCliCommand >> outStream [
 	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ outStream
 		ifNil: [ outStream := VTermOutputDriver on: self context stdout ]
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> outputAsSton [
 
 	^ self hasFlag: #ston
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> pharoLauncherModel [
 	^ pharoLauncherModel ifNil: [ pharoLauncherModel := self context pharoLauncherModel ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> pharoLauncherModel: aModel [
 	pharoLauncherModel := aModel
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> printSequence [
 
 	"by default, print also sequence number for all listing commands"
 	^ true
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLCliCommand >> printVersion [ 
 
 	self logInfoMessage: PhLAboutCommand new launcherVersion 
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> rowMode [
 
 	^ self hasFlag: #rowMode
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLCliCommand >> templateName [ 
 
 	^ self positional: #templateName
@@ -432,12 +434,12 @@ PhLCliCommand >> templateName [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> templateRepository [ 
 	^ self pharoLauncherModel templateRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCliCommand >> vmRepository [
 	^ self pharoLauncherModel vmManager availableVirtualMachines
 		values

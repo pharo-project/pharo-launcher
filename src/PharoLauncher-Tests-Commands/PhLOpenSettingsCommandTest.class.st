@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLOpenSettingsCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLOpenSettingsCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'settingsBrowser'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLOpenSettingsCommandTest >> tearDown [
 	settingsBrowser ifNotNil: [ settingsBrowser close ].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLOpenSettingsCommandTest >> testCanOpenSettingsBrowser [
 	settingsBrowser := PhLOpenSettingsCommand new execute.
 

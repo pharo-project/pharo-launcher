@@ -1,25 +1,26 @@
 Class {
-	#name : #PhLAboutCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLAboutCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLAboutCommandTest >> application [
     ^ SpMockApplication new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLAboutCommandTest >> tearDown [
 	presenter window 
 		ifNotNil: [ :window | window close].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLAboutCommandTest >> testCanOpenAboutDialog [
 	| command |
 	command := PhLAboutCommand forContext: self.

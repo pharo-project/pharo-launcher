@@ -2,12 +2,14 @@
 Copy one image to another name.
 "
 Class {
-	#name : #PhLCopyImageCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLCopyImageCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCopyImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallCopyIcon;
@@ -16,7 +18,7 @@ PhLCopyImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCopyImageCommand >> execute [
 	| name |
 	name := self newImageName.
@@ -28,12 +30,12 @@ PhLCopyImageCommand >> execute [
 			to: name ]
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCopyImageCommand >> imageRepository [
 	^ self imagesPresenter imageRepository
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCopyImageCommand >> initialize [
 	super initialize.
 	self
@@ -41,12 +43,12 @@ PhLCopyImageCommand >> initialize [
 		description: 'Copy the currently selected image to the new name.'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLCopyImageCommand >> newImageName [
 	^ self newImageName: self imagesPresenter singleImageName
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLCopyImageCommand >> newImageName: aString [ 
 
 	^ self imagesPresenter newRequest 

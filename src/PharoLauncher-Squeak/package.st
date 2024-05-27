@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-Squeak' }
+Package { #name : 'PharoLauncher-Squeak' }

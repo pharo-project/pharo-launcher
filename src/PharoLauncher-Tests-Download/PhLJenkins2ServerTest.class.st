@@ -1,15 +1,16 @@
 Class {
-	#name : #PhLJenkins2ServerTest,
-	#superclass : #PhLJenkins2EntityTest,
-	#category : #'PharoLauncher-Tests-Download'
+	#name : 'PhLJenkins2ServerTest',
+	#superclass : 'PhLJenkins2EntityTest',
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2ServerTest class >> newInstance [
 	^ PhLJenkins2Server name: 'foo' url: 'bar' asUrl
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkins2ServerTest class >> newSecureInstance [
 	^ self newInstance
 		username: 'BadetitouTheUnicorn';
@@ -17,22 +18,22 @@ PhLJenkins2ServerTest class >> newSecureInstance [
 		yourself
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2ServerTest >> defaultJobName [
 	^ 'theJobName'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2ServerTest >> defaultJobUrlString [
 	^ 'http://server/segment'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2ServerTest >> noJobsResponse [
 	^ '{"jobs" : []}'
 ]
 
-{ #category : #responses }
+{ #category : 'responses' }
 PhLJenkins2ServerTest >> oneJobResponse [
 	^ '{"jobs" : [
 		{
@@ -42,13 +43,13 @@ PhLJenkins2ServerTest >> oneJobResponse [
 		]}'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2ServerTest >> testNoJob [
 	self setUpResponse: self noJobsResponse.
 	self assertEmpty: self newInstance jobs
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLJenkins2ServerTest >> testWith1Job [
 	| job server |
 	self setUpResponse: self oneJobResponse.

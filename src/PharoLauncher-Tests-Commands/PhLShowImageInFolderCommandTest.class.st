@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLShowImageInFolderCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLShowImageInFolderCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLShowImageInFolderCommandTest >> testCommandShouldNotRaiseCommandErrorIfNoImageSelected [
 	| command |
 	presenter := PhLTestImagesPresenter new.

@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLLaunchConfigurationPresenterTest,
-	#superclass : #TestCase,
+	#name : 'PhLLaunchConfigurationPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'image',
 		'application'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : 'PharoLauncher-Tests-SpecUI',
+	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchConfigurationPresenterTest >> defaultTimeLimit [
 	^ 20 seconds
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> setUp [
 	super setUp.
 	image := PhLImage example.
@@ -22,13 +23,13 @@ PhLLaunchConfigurationPresenterTest >> setUp [
 	self setUpPresenter
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> setUpPresenter [
 	self setUpPresenterWithApplication: PhLTestApplication new.
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplication [
 	application := anSpApplication.
 	presenter := PhLLaunchConfigurationPresenter
@@ -36,13 +37,13 @@ PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplic
 		             model: image
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> tearDown [
 	presenter window ifNotNil: #close.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultListNorOnDisk [
 	| config |
 	config := (PhLLaunchConfiguration withImage: image)
@@ -63,7 +64,7 @@ PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultLi
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfigurationDeleted [
 	| config |
 	self setUpPresenter.
@@ -78,7 +79,7 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 	self assertEmpty: presenter configurationName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelectsItInImagesPresenterToolbar [
 
 	| config imagesPresenter |
@@ -108,7 +109,7 @@ PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelects
 	imagesPresenter delete
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsAddedWhenHeadlessVMSelectedAndArgumentNotAlreadyPresent [
 	| headlessVm |
 	headlessVm := presenter vmListItems anyOne beHeadless.
@@ -118,7 +119,7 @@ PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsAddedWhenHe
 	self assert: (presenter imageArguments includes: '--interactive')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsNotAddedWhenHeadlessVMSelectedAndArgumentAlreadyPresent [
 	| headlessVm |
 	headlessVm := presenter vmListItems anyOne beHeadless.
@@ -131,7 +132,7 @@ PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsNotAddedWhe
 		equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationAdded [
 	self setUpPresenter.
 	application requestAnswer: 'foo'.
@@ -149,7 +150,7 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 		equals: 'foo'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationRemoved [
 	| configuration |
 	configuration := (PhLLaunchConfiguration withImage: presenter image)
@@ -173,7 +174,7 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 		equals: PhLLaunchConfiguration defaultName.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testRemoveImageArgument [
 	presenter imageArguments add: '--interactive'.
 	self assert: presenter imageArguments size equals: 1.
@@ -184,7 +185,7 @@ PhLLaunchConfigurationPresenterTest >> testRemoveImageArgument [
 	self assertEmpty: presenter imageArguments
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testRemoveImageArgumentWithoutSelectionDoesNotThrowError [
 	presenter imageArguments add: '--interactive'.
 
@@ -194,7 +195,7 @@ PhLLaunchConfigurationPresenterTest >> testRemoveImageArgumentWithoutSelectionDo
 	self shouldnt: [ presenter clickDeleteImageArgumentButton ] raise: NotFound
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testRemoveVMArgument [
 	presenter vmArguments add: '--interactive'.
 	self assert: presenter vmArguments size equals: 1.
@@ -205,7 +206,7 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgument [
 	self assertEmpty: presenter vmArguments
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesNotThrowError [
 	presenter vmArguments add: '--interactive'.
 
@@ -215,7 +216,7 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesN
 	self shouldnt: [ presenter clickDeleteVMArgumentButton ] raise: NotFound
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
 
 	| config imagesPresenter window |
@@ -243,7 +244,7 @@ PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWind
 	imagesPresenter delete
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testVmsAreSortedById [
 	| vms sortedVms |
 	self setUpPresenter.
@@ -256,7 +257,7 @@ PhLLaunchConfigurationPresenterTest >> testVmsAreSortedById [
 		self assert: vm id equals: (sortedVms at: index) id ].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testWhenOpeningPresenterThenSelectedConfigurationIsDefaultConfiguration [
 	self setUpPresenter.
 

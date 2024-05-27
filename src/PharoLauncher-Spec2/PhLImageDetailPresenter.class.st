@@ -7,8 +7,8 @@ To open me:
 (self on: PhLImage example) openWithSpec
 "
 Class {
-	#name : #PhLImageDetailPresenter,
-	#superclass : #SpPresenterWithModel,
+	#name : 'PhLImageDetailPresenter',
+	#superclass : 'SpPresenterWithModel',
 	#instVars : [
 		'description',
 		'imageLabel',
@@ -20,10 +20,11 @@ Class {
 		'shouldRunInitializationScript',
 		'updating'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #specs }
+{ #category : 'specs' }
 PhLImageDetailPresenter class >> labelConstraintsBlock [
 	^ [ :constraints | 
 	constraints
@@ -31,19 +32,19 @@ PhLImageDetailPresenter class >> labelConstraintsBlock [
 		width: self labelWidth ]
 ]
 
-{ #category : #'labelled-presenters' }
+{ #category : 'labelled-presenters' }
 PhLImageDetailPresenter class >> labelWidth [
 	^ 110
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageDetailPresenter >> connectPresenters [
 	
 	description whenTextChangedDo: [ :text | self updateImageDescription: text ].
 	shouldRunInitializationScript whenChangedDo: [ :state | self updateImageRunScript: state ].
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLImageDetailPresenter >> defaultLayout [ 
 	
 	^ SpBoxLayout newTopToBottom 
@@ -53,12 +54,12 @@ PhLImageDetailPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> description [
 	^ description
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLImageDetailPresenter >> descriptionLayout [ 
 	^ SpGridLayout build: [ :builder |
 		builder
@@ -77,24 +78,24 @@ PhLImageDetailPresenter >> descriptionLayout [
 			add: 'Location'; add: location ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> image [ 
 	^ self model
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> imageLabel [
 	^ imageLabel
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageDetailPresenter >> initialize [
 
 	updating := false.
 	super initialize.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageDetailPresenter >> initializePresenters [
 
 	imageLabel := self newLabel.
@@ -110,12 +111,12 @@ PhLImageDetailPresenter >> initializePresenters [
 	vm := self newTextInput.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> location [
 	^ location
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLImageDetailPresenter >> modelChanged [ 
 	| image |
 	
@@ -142,17 +143,17 @@ PhLImageDetailPresenter >> modelChanged [
 	updating := false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> template [
 	^ template
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> templateUrl [
 	^ templateUrl
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageDetailPresenter >> updateImageDescription: text [
 	
 	updating ifTrue: [ ^ self ].
@@ -162,7 +163,7 @@ PhLImageDetailPresenter >> updateImageDescription: text [
 		description: text
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageDetailPresenter >> updateImageRunScript: state [
 
 	updating ifTrue: [ ^ self ].
@@ -170,7 +171,7 @@ PhLImageDetailPresenter >> updateImageRunScript: state [
 	self image shouldRunInitializationScript: state
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> vm [
 	^ vm
 ]

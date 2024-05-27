@@ -6,17 +6,19 @@ Example of input string from a process listing command:
 '933 /tmp/61d1f200-02cc-0d00-88d2-05d60e98deae/110-x64/pharo /tmp/61d1f200-02cc-0d00-88d2-05d60e98deae/PharoLauncher.image'
 "
 Class {
-	#name : #PhLProcessListEntry,
-	#superclass : #Object,
+	#name : 'PhLProcessListEntry',
+	#superclass : 'Object',
 	#instVars : [
 		'words',
 		'vmIndex',
 		'imageIndex'
 	],
-	#category : #'PharoLauncher-CLI-Utility'
+	#category : 'PharoLauncher-CLI-Utility',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Utility'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLProcessListEntry class >> with: aString [
 
 	^ self new
@@ -24,7 +26,7 @@ PhLProcessListEntry class >> with: aString [
 		yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLProcessListEntry >> asImageProcess [
 
 	^ PhLImageProcess new
@@ -33,7 +35,7 @@ PhLProcessListEntry >> asImageProcess [
 		vmPath: self vmPath
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListEntry >> computeImageIndex [
 
 	imageIndex := words 
@@ -41,7 +43,7 @@ PhLProcessListEntry >> computeImageIndex [
 		ifNone: [ 0 ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListEntry >> computeVmIndex [
 
 	vmIndex := words 
@@ -49,7 +51,7 @@ PhLProcessListEntry >> computeVmIndex [
 		ifNone: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessListEntry >> imagePath [
 
 	vmIndex ifNil: [ ^ '' ].
@@ -65,19 +67,19 @@ PhLProcessListEntry >> imagePath [
 		) trim
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessListEntry >> pidIndex [
 
 	^ 1
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessListEntry >> pidString [
 
 	^ words at: self pidIndex
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLProcessListEntry >> shellString: aString [
 
 	words := aString substrings.
@@ -85,7 +87,7 @@ PhLProcessListEntry >> shellString: aString [
 	self computeImageIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessListEntry >> vmPath [
 
 	vmIndex ifNil: [ ^ '' ].

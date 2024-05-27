@@ -8,29 +8,31 @@ I execute:
 - list different templates categories.
 "
 Class {
-	#name : #PhLTemplateCategoriesCliCommand,
-	#superclass : #PhLTemplateCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLTemplateCategoriesCliCommand',
+	#superclass : 'PhLTemplateCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLTemplateCategoriesCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addPrintFlagsTo: aCommandSpec.
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLTemplateCategoriesCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #categories 
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLTemplateCategoriesCliCommand class >> launcherCmdDescription [
 
 	^ 'Prints list of image template categories.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLTemplateCategoriesCliCommand >> basicExecute [
 
 	[ self list: self templateRepository roots default: self defaultTemplateCategory ]
@@ -38,7 +40,7 @@ PhLTemplateCategoriesCliCommand >> basicExecute [
 	do: [ self list: self templateRepository roots ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTemplateCategoriesCliCommand >> modelClass [ 
 
 	^ self class environment at: #PhLCacheTemplateGroup

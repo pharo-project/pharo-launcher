@@ -1,15 +1,16 @@
 Class {
-	#name : #PhLOpenNewImageWindowTest,
-	#superclass : #TestCase,
+	#name : 'PhLOpenNewImageWindowTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'imagesPresenter',
 		'fs'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLOpenNewImageWindowTest >> setUp [
 	| imagesDirectory app repository |
 	super setUp.
@@ -22,13 +23,13 @@ PhLOpenNewImageWindowTest >> setUp [
 	imagesPresenter := PhLImagesPresenter newApplication: app model: repository
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLOpenNewImageWindowTest >> tearDown [
 	presenter ifNotNil: [ presenter window close ].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLOpenNewImageWindowTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPresenter [
 	presenter := PhLOpenNewImageWindowCommand new 
 		context: imagesPresenter;
@@ -39,7 +40,7 @@ PhLOpenNewImageWindowTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningP
 		equals: 'Official distributions'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLOpenNewImageWindowTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
 	presenter := PhLOpenNewImageWindowCommand new 
 		context: imagesPresenter;

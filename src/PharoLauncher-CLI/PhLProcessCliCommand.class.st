@@ -14,41 +14,43 @@ I execute:
 •	just printing help about my sub-commands relevant for Pharo templates
 "
 Class {
-	#name : #PhLProcessCliCommand,
-	#superclass : #PhLCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLProcessCliCommand',
+	#superclass : 'PhLCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLProcessCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #process 
 ]
 
-{ #category : #'command line - description' }
+{ #category : 'command line - description' }
 PhLProcessCliCommand class >> launcherCmdDescription [
 
 	^ 'All sub-commands related to Pharo processes.'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessCliCommand >> checkOS [
 
 	OSPlatform current isWindows ifTrue: [ self raiseOperationNotSupported ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessCliCommand >> currentVMPid [
 
 	^ OSSVMProcess vmProcess pid
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessCliCommand >> executeOSShellCommand [
 
 	^ self executeOSShellCommandWithArgs: self osShellArgArray
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLProcessCliCommand >> executeOSShellCommandWithArgs: argArray [
 
 ^ PhLProcessWrapper new 
@@ -57,7 +59,7 @@ PhLProcessCliCommand >> executeOSShellCommandWithArgs: argArray [
 		runAndWaitWithStdOutput
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLProcessCliCommand >> raiseOperationNotSupported [
 
 	^ PhLProcessCommandError signal: 'Launcher command currently not supported on OS Windows.'

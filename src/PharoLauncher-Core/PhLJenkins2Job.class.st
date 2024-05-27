@@ -2,31 +2,33 @@
 I'm a job as can be available on a Jenkins platform.
 "
 Class {
-	#name : #PhLJenkins2Job,
-	#superclass : #PhLJenkins2Entity,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLJenkins2Job',
+	#superclass : 'PhLJenkins2Entity',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Job class >> jsonFields [
 	^ {'name'.
 	'url'.
 	('lastSuccessfulBuild[' , PhLJenkins2Build jsonFieldsQuery , ']')}
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Job class >> jsonName [
 	^ 'jobs'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Job >> builds [
 	"Pipelines define jobs whereas standard jobs define builds"
 	^ (self query: PhLJenkins2Build)
 		ifEmpty: [ self query: PhLJenkins2Job ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Job >> lastSuccessfulBuild [
 	^ (PhLJenkins2Build
 		newWithProperties:
@@ -38,19 +40,19 @@ PhLJenkins2Job >> lastSuccessfulBuild [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Job >> lastSuccessfulBuildNumber [
 	^ properties at: 'lastSuccessfulBuild'
 		ifPresent: [ :dict | dict ifNil: [nil] ifNotNil: [dict at: 'number' ifPresent: [:num | num ] ifAbsent: [ nil ] ]]
 		ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Job >> name [
 	^ properties at: 'name'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Job >> templatesAndGroups [
 	| builds |
 	builds := self builds.

@@ -2,8 +2,8 @@
 Only usefull for the tests, is usefull to create ""fake"" images. 
 "
 Class {
-	#name : #PhLImageMock,
-	#superclass : #Object,
+	#name : 'PhLImageMock',
+	#superclass : 'Object',
 	#instVars : [
 		'name',
 		'architecture',
@@ -13,10 +13,11 @@ Class {
 		'pharoVersion',
 		'lastModification'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock class >> atRandom [ 
    ^self new 
 		name: #( 'Image (PharoX.0.0-rc1.build.1436.sha.e281eb4.arch.64bit)'
@@ -30,176 +31,176 @@ PhLImageMock class >> atRandom [
 yourself 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageMock class >> listPrintAttributeBlocks [
 	
 	^ PhLImage listPrintAttributeBlocks
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageMock class >> listPrintAttributeLabels [ 
 	
 	^ PhLImage listPrintAttributeLabels 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageMock class >> location: aFileReference [
 	^ self atRandom
 		setLocation: aFileReference;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock class >> name: aString [
 	^ self atRandom
 		name: aString;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> architecture [
 	^ '64'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> architecture: aString [
 
 	architecture := aString
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> checkImageArchitecture [
 	^self 
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> defaultArguments [
 
 	^ #()
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> defaultLaunchConfiguration [  
 
 	^ PhLLaunchConfigurationMock new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> description [ 
 	^ 'this is the description'
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> ensureDefaultConfiguration [
 	^self
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> file [
 	^ (FileSystem memory root / name) ensureCreateFile
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImageMock >> hasInitializationScript [
 	^ script notNil 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> initializationScript [
 	^ script 
 ]
 
-{ #category : #preparation }
+{ #category : 'preparation' }
 PhLImageMock >> initializationScript: aFileReference [
 	 script := aFileReference
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> initialize [ 
 	super initialize.
 	isLaunched := false.
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> isLaunched [
 	^ isLaunched
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> lastModification [
 	^ lastModification 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> lastModification: aString [
 	
 	lastModification := aString
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> launch [
 	isLaunched := true
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
 
 	self launch
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> location [
 	^ 'my current location'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> name [
    ^name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> name: aString [
    name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> originTemplateName [
 	^ 'the original template name'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> originTemplateUrl [
 	^ 'https://testurl'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> pharoVersion [
 
 	^ pharoVersion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> pharoVersion: aString [
 
 	pharoVersion := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageMock >> pharoVersionFromFile [
 	^ 'Pharo 8'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageMock >> setLocation: aFileReference [ 
 	location := aFileReference.
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> shouldRunInitializationScript: aTrue [ 
 	^ self 
 ]
 
-{ #category : #mocking }
+{ #category : 'mocking' }
 PhLImageMock >> vmManager [
 	^self 
 ]

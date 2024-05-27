@@ -1,6 +1,6 @@
-Extension { #name : #ZipArchive }
+Extension { #name : 'ZipArchive' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 ZipArchive >> directoryMembersDo: aBlock [
 
 	self members
@@ -8,7 +8,7 @@ ZipArchive >> directoryMembersDo: aBlock [
 		thenDo: aBlock
 ]
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 ZipArchive >> fileMembersDo: aBlock [
 
 	self members

@@ -1,6 +1,6 @@
-Extension { #name : #WindowsResolver }
+Extension { #name : 'WindowsResolver' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 WindowsResolver >> vmExecutableName [
 	^ 'Pharo.exe'
 ]

@@ -2,37 +2,39 @@
 Super class of everything the user can act on
 "
 Class {
-	#name : #PhLObject,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLObject',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLObject >> children [
 	^ #()
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLObject >> hasChildren [
 	^ true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLObject >> isImage [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLObject >> isLocalTemplate [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLObject >> isTemplate [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLObject >> isTemplateGroup [
 	^ false
 ]

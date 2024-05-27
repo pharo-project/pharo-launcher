@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLTemplateUpdateCliCommandTest,
-	#superclass : #PhLTemplatesCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLTemplateUpdateCliCommandTest',
+	#superclass : 'PhLTemplatesCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
 	| command workingDir |
 

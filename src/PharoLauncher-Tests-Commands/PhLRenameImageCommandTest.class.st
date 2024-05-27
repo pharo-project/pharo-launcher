@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLRenameImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLRenameImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLRenameImageCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameImageCommandTest >> testCanRenameAnImage [
 	| command images |
 	command := PhLRenameImageCommand new.
@@ -30,7 +31,7 @@ PhLRenameImageCommandTest >> testCanRenameAnImage [
 		hasSameElements: #('TestRenameImage').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRenameImageCommandTest >> testCannotRenameAnImageWithAnExistingName [
 	| command images |
 	command := PhLRenameImageCommand new.

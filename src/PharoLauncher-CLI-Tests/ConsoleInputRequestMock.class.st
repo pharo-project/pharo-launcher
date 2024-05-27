@@ -4,29 +4,30 @@ I mock user interactions.
 You can give me predefined answers for given questions.
 "
 Class {
-	#name : #ConsoleInputRequestMock,
-	#superclass : #ConsoleInputRequest,
+	#name : 'ConsoleInputRequestMock',
+	#superclass : 'ConsoleInputRequest',
 	#instVars : [
 		'predefinedAnswers',
 		'answerIndex'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 ConsoleInputRequestMock >> addAnswer: anAnswer [
 
 	predefinedAnswers add: anAnswer
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequestMock >> answerIndex [
 
 	answerIndex := answerIndex + 1.
 	^ answerIndex.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 ConsoleInputRequestMock >> initialize [ 
 
 	super initialize.
@@ -34,18 +35,18 @@ ConsoleInputRequestMock >> initialize [
 	answerIndex := 0
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 ConsoleInputRequestMock >> nbInputAnswerRead [
 	^ answerIndex
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequestMock >> outputStream: aWriteStream [
 
 	outputStream := aWriteStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 ConsoleInputRequestMock >> readAnswer [
 
 	^ predefinedAnswers at: self answerIndex.

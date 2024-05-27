@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLRefreshImagerepositoryCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLRefreshImagerepositoryCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLRefreshImagerepositoryCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLRefreshImagerepositoryCommandTest >> testCanRefreshImageList [
 	| command images |
 	command := PhLRefreshImageRepositoryCommand new.

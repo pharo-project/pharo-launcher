@@ -1,19 +1,20 @@
 Class {
-	#name : #PhLImagesPresenterTest,
-	#superclass : #TestCase,
+	#name : 'PhLImagesPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : 'PharoLauncher-Tests-SpecUI',
+	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImagesPresenterTest >> tearDown [
 	presenter window ifNotNil: [ :window | window close].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testFirstImageIsSelectedAtOpening [
 
 	presenter := PhLTestImagesPresenter new.
@@ -25,7 +26,7 @@ PhLImagesPresenterTest >> testFirstImageIsSelectedAtOpening [
 		equals: presenter singleImageName
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConfigurationEdition [
 
 	| launchConfigurationPresenter |
@@ -47,7 +48,7 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConf
 	self assert: presenter launchConfigurations size equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfImages [
 
 	presenter := PhLTestImagesPresenter new.
@@ -67,7 +68,7 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfIm
 		equals: 'TestImage'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyImageRepositoryChanged [
 
 	presenter := PhLTestImagesPresenter new.
@@ -81,7 +82,7 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 		hasSameElements: #( 'TestImage' 'Foo' )
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testLaunchCommandIsDisabledWhenNoSelection [
 
 	| enabled |
@@ -97,7 +98,7 @@ PhLImagesPresenterTest >> testLaunchCommandIsDisabledWhenNoSelection [
 	self deny: enabled
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
 
 	| image |

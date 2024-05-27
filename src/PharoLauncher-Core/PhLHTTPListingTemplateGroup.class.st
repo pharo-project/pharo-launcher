@@ -2,8 +2,8 @@
 Represent a list of templates as given by an HTML webpage. <a href=""*.zip""> are searched in the webpage.
 "
 Class {
-	#name : #PhLHTTPListingTemplateGroup,
-	#superclass : #PhLAbstractTemplateGroup,
+	#name : 'PhLHTTPListingTemplateGroup',
+	#superclass : 'PhLAbstractTemplateGroup',
 	#instVars : [
 		'url',
 		'name',
@@ -12,30 +12,32 @@ Class {
 	#classVars : [
 		'RegexCache'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #defaults }
+{ #category : 'defaults' }
 PhLHTTPListingTemplateGroup class >> defaultFilterPattern [
 	"Returns the default filter pattern (Pharo6). The parenthesis here are important because this is what we want to extract for each match. The #subexpression must correspond to the index of this pair of parenthesis"
 	^'href="([^"]*.zip)"' 
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLHTTPListingTemplateGroup class >> name: aString url: anUrl [
 	^ self new
 		setName: aString url: anUrl;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPatternString [
 	^ self new
 		setName: aString url: anUrl filterPattern: aPatternString;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPatternString templateNameFormat: aNameFormat username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl filterPattern: aPatternString)
 		  username: anotherString;
@@ -44,7 +46,7 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPa
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPatternString username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl filterPattern: aPatternString)
 		  username: anotherString;
@@ -52,7 +54,7 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl filterPattern: aPa
 		  yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLHTTPListingTemplateGroup class >> name: aString url: anUrl username: anotherString password: yetAnotherString [
 	^ (self name: aString url: anUrl)
 		  username: anotherString;
@@ -60,19 +62,19 @@ PhLHTTPListingTemplateGroup class >> name: aString url: anUrl username: anotherS
 		  yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup class >> regexCache [
 	"Cache the regex per version so that we don't recompute it all the time"
 	^ RegexCache ifNil: [ RegexCache := Dictionary new ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup class >> subexpression [
 	"Index of the #regex subexpression (delimited by parenthesis) we are interested in. See 'usage' documentation at RxParser"
 	^ 2
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templates [
 	| templateName urlFile |
 	templateNameFormat 
@@ -83,61 +85,61 @@ PhLHTTPListingTemplateGroup >> createTemplateFromHref: filename addingTo: templa
 	templates add: (PhLRemoteTemplate name: templateName url: urlFile)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> icon [
 	^ self iconNamed: #remote
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> password [
 	^ url password
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> password: aString [
 	^ url password: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> regex [
 	^ self class regexCache at: self name asSymbol 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLHTTPListingTemplateGroup >> setName: aName url: anUrl [
 	name := aName.
 	url := anUrl.
 	self class regexCache at: aName asSymbol put: (RxParser parse: self class defaultFilterPattern) 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLHTTPListingTemplateGroup >> setName: aName url: anUrl filterPattern: aPatternString [
 	name := aName.
 	url := anUrl.
 	self class regexCache at: aName asSymbol put: (RxParser parse: aPatternString)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> subexpression [
 	^ self class subexpression
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> templateNameFormat [
 	^ templateNameFormat
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> templateNameFormat: anObject [
 	templateNameFormat := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> templatesAndGroups [
 	| content matcher templates |
 	content := PhLDownloadManager default downloadToPositionableStream: url mimeType: ZnMimeType textHtml. 
@@ -149,12 +151,12 @@ PhLHTTPListingTemplateGroup >> templatesAndGroups [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> username [
 	^ url username
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLHTTPListingTemplateGroup >> username: aString [
 	url username: aString
 ]

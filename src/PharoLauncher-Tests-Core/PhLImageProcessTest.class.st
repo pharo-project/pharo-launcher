@@ -2,12 +2,13 @@
 A PhLImageProcessTest is a test class for testing the behavior of PhLImageProcess
 "
 Class {
-	#name : #PhLImageProcessTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLImageProcessTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageProcessTest >> imagePathNameCandidates [
 
 	|paths delimiter| 
@@ -30,7 +31,7 @@ PhLImageProcessTest >> imagePathNameCandidates [
 	^ paths
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageProcessTest >> testImageName [
 
 	| imageNames |
@@ -42,7 +43,7 @@ PhLImageProcessTest >> testImageName [
 	self assert: (imageNames includesAll: #('myImage1' 'myImage2')).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageProcessTest >> testNewFrom [
 
 	|imgProcess|

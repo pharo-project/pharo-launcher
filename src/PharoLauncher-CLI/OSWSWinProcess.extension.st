@@ -1,6 +1,6 @@
-Extension { #name : #OSWSWinProcess }
+Extension { #name : 'OSWSWinProcess' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 OSWSWinProcess >> runAndWaitWithStdOutput [
 	"this is dummy implementation, TODO: handle std ourput, err output on windows"
 

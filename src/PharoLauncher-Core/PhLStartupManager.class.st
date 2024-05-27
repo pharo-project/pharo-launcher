@@ -2,15 +2,17 @@
 PhLStartupManager is in charge of running startup actions related to the PharoLauncher.
 "
 Class {
-	#name : #PhLStartupManager,
-	#superclass : #Object,
+	#name : 'PhLStartupManager',
+	#superclass : 'Object',
 	#classVars : [
 		'StartUpClasses'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLStartupManager class >> addToLauncherStartUpList: aClass [
 
 	(self startUpClasses includes: aClass)
@@ -18,23 +20,23 @@ PhLStartupManager class >> addToLauncherStartUpList: aClass [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLStartupManager class >> initialize [
 
 	SessionManager default registerToolClassNamed: self name
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLStartupManager class >> removeFromStartupList: aClass [
 	self startUpClasses remove: aClass
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 PhLStartupManager class >> resetStartUpClasses [
 	StartUpClasses := nil
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLStartupManager class >> startUp: isANewSession [
 
 	isANewSession ifFalse: [ ^ self ].
@@ -43,7 +45,7 @@ PhLStartupManager class >> startUp: isANewSession [
 	self startUpClasses do: [ :c | c ifNotNil: [ c launcherStartUp ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLStartupManager class >> startUpClasses [
 
 	^ StartUpClasses ifNil: [ 

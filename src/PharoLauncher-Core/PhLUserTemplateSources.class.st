@@ -5,12 +5,14 @@ Preview :
 	PhLTemplateGroupsBuilder buildFrom: PhLUserTemplateSources fromUserFile.
 "
 Class {
-	#name : #PhLUserTemplateSources,
-	#superclass : #PhLTemplateSources,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLUserTemplateSources',
+	#superclass : 'PhLTemplateSources',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #example }
+{ #category : 'example' }
 PhLUserTemplateSources class >> example [ 
 	^ self withTemplateList:  
 		{ PhLTemplateSource new 	
@@ -20,12 +22,12 @@ PhLUserTemplateSources class >> example [
 			yourself }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUserTemplateSources class >> fromFile [
 	^ self withFile: self sourcesFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUserTemplateSources class >> sourcesFile [
 	"File with the list of user-defined templates sources for Pharo Launcher"
 	^ self launcherCoreDir / 'mysources.list'

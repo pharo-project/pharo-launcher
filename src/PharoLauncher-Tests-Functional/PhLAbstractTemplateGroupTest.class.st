@@ -2,39 +2,40 @@
 Give me unit tests and I will make sure they are run for all subclasses of PhLAbstractTemplateGroup
 "
 Class {
-	#name : #PhLAbstractTemplateGroupTest,
-	#superclass : #ClassTestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#name : 'PhLAbstractTemplateGroupTest',
+	#superclass : 'ClassTestCase',
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLAbstractTemplateGroupTest class >> isAbstract [
 	^ self name = 'PhLAbstractTemplateGroupTest'
 ]
 
-{ #category : #helpers }
+{ #category : 'helpers' }
 PhLAbstractTemplateGroupTest >> downloadManager [
 	^ PhLDownloadManager default
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLAbstractTemplateGroupTest >> newGroup [
 	^ self subclassResponsibility
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLAbstractTemplateGroupTest >> setUp [
 	super setUp.
 	PhLDownloadManagerMock install
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLAbstractTemplateGroupTest >> tearDown [
 	PhLDownloadManagerMock remove.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLAbstractTemplateGroupTest >> testTemplatesAndGroupsIsACollection [
 	| group templateAndGroups |
 	group := self newGroup.

@@ -5,8 +5,8 @@ I can act as the PharoLauncher default application (see PharoLauncherApplication
 I only have a minimal set of methods to provide some polymorphism with an SpApplication and avoid UI interactions.
 "
 Class {
-	#name : #PhLNotificationCenter,
-	#superclass : #Object,
+	#name : 'PhLNotificationCenter',
+	#superclass : 'Object',
 	#instVars : [
 		'outStream',
 		'errorStream'
@@ -14,10 +14,12 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'PharoLauncher-CLI-Utility'
+	#category : 'PharoLauncher-CLI-Utility',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Utility'
 }
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 PhLNotificationCenter class >> beInitializedByClapContextStreams [
 
 	<script>
@@ -27,44 +29,44 @@ PhLNotificationCenter class >> beInitializedByClapContextStreams [
 			 control: #after)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNotificationCenter class >> default [ 
 	^ Default ifNil: [ Default := self new ]
 ]
 
-{ #category : #'class initialization' }
+{ #category : 'class initialization' }
 PhLNotificationCenter class >> initialize [
 
 	self beInitializedByClapContextStreams
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNotificationCenter >> errorStream [
 	^ errorStream 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNotificationCenter >> errorStream: anErrorStream [
 	errorStream := anErrorStream
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNotificationCenter >> outStream [
 	^ outStream 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNotificationCenter >> outStream: anOutStream [
 	outStream := anOutStream 
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PhLNotificationCenter >> pushProgress: aString with: aFullBlockClosure [ 
 	"do not display progress, only evaluate the block"
 	aFullBlockClosure value: DummySystemProgressItem new
 ]
 
-{ #category : #polymorphism }
+{ #category : 'polymorphism' }
 PhLNotificationCenter >> reset [
 
 	"This method is not a 'real' reset but is there for polymorphism with `PharoLauncherApplication`.
@@ -72,7 +74,7 @@ PhLNotificationCenter >> reset [
 	One should not reset my streams as they are initialized by clap at image startup."
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
 PhLNotificationCenter >> showError: anError [
 
 	self errorStream

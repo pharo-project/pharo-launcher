@@ -1,6 +1,6 @@
-Extension { #name : #String }
+Extension { #name : 'String' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 String >> asLegalSelector [
 	"'234znak 43 ) 2' asLegalSelector"
 	
@@ -11,7 +11,7 @@ String >> asLegalSelector [
 	^ toUse uncapitalized asSymbol.
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 String >> formatTemplateName: aUrlString [
 	"Format the receiver by interpolating elements from url string path segments, as in the following examples:" 
 	"('{6} ({5})' formatTemplateName: '/pharo-ide/TelePharo/releases/download/v0.4.2/Pharo7.0-32bit-TelePharo.zip') >>> 'Pharo7.0-32bit-TelePharo (v0.4.2)'"

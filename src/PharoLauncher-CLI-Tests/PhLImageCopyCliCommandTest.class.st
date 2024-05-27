@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageCopyCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCopyCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
 
 	self addImageNamed: 'myImage1'.
@@ -17,7 +18,7 @@ PhLImageCopyCliCommandTest >> testCopyImageNoArguments [
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
 
 	self addImageNamed: 'myImage1'.
@@ -31,7 +32,7 @@ PhLImageCopyCliCommandTest >> testCopyImageNotEnoughArguments [
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -42,7 +43,7 @@ PhLImageCopyCliCommandTest >> testCopyImageShouldSucceed [
 	self assert: self imageRepository imagesName equals: #( 'myImage3' 'myImage2' 'myImage1' ) asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyImageToManyArguments [
 
 	self addImageNamed: 'myImage1'.
@@ -55,7 +56,7 @@ PhLImageCopyCliCommandTest >> testCopyImageToManyArguments [
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1') asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyImageWrongName [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -67,7 +68,7 @@ PhLImageCopyCliCommandTest >> testCopyImageWrongName [
 	self assert: self imageRepository imagesName equals: #('myImage2' 'myImage1' ) asSet. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCopyCliCommandTest >> testCopyTargetImageAlreadyUsed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

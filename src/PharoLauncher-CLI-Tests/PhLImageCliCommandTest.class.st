@@ -1,22 +1,23 @@
 Class {
-	#name : #PhLImageCliCommandTest,
-	#superclass : #PhLCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageCliCommandTest',
+	#superclass : 'PhLCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLImageCliCommandTest >> addImageNamed: anImageName [
 	^ self imageRepository addImageNamed: anImageName
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLImageCliCommandTest >> addInputAnswer: anObject [
 
 	context pharoLauncherModel consoleInputRequest
 		addAnswer: anObject
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PhLImageCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [
 	| templateCategory |
 	templateCategory := self launcherModel templateRepository
@@ -25,14 +26,14 @@ PhLImageCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [
 		setGroups: {templateCategory}
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PhLImageCliCommandTest >> addTemplateNamed: aName inCategory: aCategoryName [
 	^ self launcherModel templateRepository
 		createTemplateNamed: aName
 		inCategory: aCategoryName
 ]
 
-{ #category : #creation }
+{ #category : 'creation' }
 PhLImageCliCommandTest >> addTemplateNamed: aName shortName: aShortName inCategory: aCategoryName [ 
 	^ self launcherModel templateRepository
 		createTemplateNamed: aName
@@ -40,30 +41,30 @@ PhLImageCliCommandTest >> addTemplateNamed: aName shortName: aShortName inCatego
 		inCategory: aCategoryName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommandTest >> imageRepository [ 
 	^ self launcherModel imageRepository
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLImageCliCommandTest >> nbInputAnswerRead [
 
 	^ context pharoLauncherModel consoleInputRequest nbInputAnswerRead
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageCliCommandTest >> setUp [
 
 	super setUp.
 	self useMockImagesRepository
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageCliCommandTest >> templateRepository [ 
 	^ self launcherModel templateRepository
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCliCommandTest >> testExecuteLauncherImageCommandToPrintHelp [
 	|expectedPrintout|
 	expectedPrintout := 'Usage: launcher image'.
@@ -74,7 +75,7 @@ PhLImageCliCommandTest >> testExecuteLauncherImageCommandToPrintHelp [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
 	| memoryFileSystem command location |
 	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
@@ -86,7 +87,7 @@ PhLImageCliCommandTest >> testFindImageFromDiskShouldRaiseNotFound [
 			self should: [ command findImage: '/wrong/path' ] raise: NotFound ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
 	| memoryFileSystem command location |
 	command := (PhLImageLaunchCliCommand asCliCommand activationWith: #('launch')) command.
@@ -101,7 +102,7 @@ PhLImageCliCommandTest >> testFindImageFromDiskShouldSucceed [
 				raise: NotFound ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLImageCliCommandTest >> useMockImagesRepository [
 
 	self launcherModel imageRepository: PhLImagesMockRepo new

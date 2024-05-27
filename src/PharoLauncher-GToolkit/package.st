@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-GToolkit' }
+Package { #name : 'PharoLauncher-GToolkit' }

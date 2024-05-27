@@ -1,10 +1,11 @@
 Class {
-	#name : #ConsoleProgressBarTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'ConsoleProgressBarTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleProgressBarTest >> testCanDisplayProgress [
 	| bar result |
 	result := String streamContents: [ :stream |
@@ -16,7 +17,7 @@ ConsoleProgressBarTest >> testCanDisplayProgress [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleProgressBarTest >> testCannotDisplayProgressAbove100Percent [
 	| bar result |
 	result := String streamContents: [ :stream |
@@ -28,7 +29,7 @@ ConsoleProgressBarTest >> testCannotDisplayProgressAbove100Percent [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 ConsoleProgressBarTest >> testShouldNotRaiseErrorWhenDisplayingProgressAndNoOutStream [
 	| bar |
 	bar := ConsoleProgressBar on: nil. 

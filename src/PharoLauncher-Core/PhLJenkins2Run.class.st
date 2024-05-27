@@ -2,17 +2,19 @@
 I represent a run of a job (one configuration) resulting from a matrix job.
 "
 Class {
-	#name : #PhLJenkins2Run,
-	#superclass : #PhLJenkins2WithArtifactsEntity,
-	#category : #'PharoLauncher-Core-Model'
+	#name : 'PhLJenkins2Run',
+	#superclass : 'PhLJenkins2WithArtifactsEntity',
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkins2Run class >> jsonName [
 	^ 'runs'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkins2Run >> name [
 	^ String streamContents: [ :stream | self url jenkinsOptions printElementsOn: stream ]
 ]

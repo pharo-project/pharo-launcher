@@ -1,13 +1,14 @@
 Class {
-	#name : #PhLDeleteImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLDeleteImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLDeleteImageCommandTest >> createMoreImagesAndEnableSorting [
 
 	presenter createImageNamed: 'Zoo'.
@@ -22,19 +23,19 @@ PhLDeleteImageCommandTest >> createMoreImagesAndEnableSorting [
 		selectImageAt: 3 "Zoo"
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLDeleteImageCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestImagesPresenter new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLDeleteImageCommandTest >> tearDown [
 	presenter delete.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 	| command images |
 	command := PhLDeleteImageCommand new.
@@ -51,7 +52,7 @@ PhLDeleteImageCommandTest >> testCanDeleteAnImage [
 		hasSameElements: #('Foo').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteImageCommandTest >> testDeleteTheRightImageIfImagesSortingIsNotTheDefaultOne [
 	| command images |
 	command := PhLDeleteImageCommand new.
@@ -64,7 +65,7 @@ PhLDeleteImageCommandTest >> testDeleteTheRightImageIfImagesSortingIsNotTheDefau
 	self deny: (images includes: 'Zoo')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
 
 	| command images |
@@ -82,7 +83,7 @@ PhLDeleteImageCommandTest >> testImagesPresenterIsRefreshedWhenImageDeleted [
 		assert: (presenter imageLabel beginsWith: 'No image selected')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLDeleteImageCommandTest >> testWarningMessageWhenDeletingManyImages [
 	| command images |
 	command := PhLDeleteImageCommand new.

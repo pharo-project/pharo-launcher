@@ -16,24 +16,25 @@ do: [ :e | UIManager default handleError: e].
 Smalltalk tools debuggerTool: currentDebugger.
 "
 Class {
-	#name : #PhLErrorDialogPresenter,
-	#superclass : #SpPresenter,
+	#name : 'PhLErrorDialogPresenter',
+	#superclass : 'SpPresenter',
 	#traits : 'TDebugger',
 	#classTraits : 'TDebugger classTrait',
 	#instVars : [
 		'debugSession',
 		'description'
 	],
-	#category : #'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #closing }
+{ #category : 'closing' }
 PhLErrorDialogPresenter class >> closeAllDebuggers [
 	<script>
 	self allInstancesDo: [ :dbg | dbg close ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLErrorDialogPresenter class >> debugSession: aDebugSession [
 	PharoLauncherApplication isDeployed
 		ifTrue: [ (self on: aDebugSession) openDialog ]
@@ -41,22 +42,22 @@ PhLErrorDialogPresenter class >> debugSession: aDebugSession [
 
 ]
 
-{ #category : #'opening api' }
+{ #category : 'opening api' }
 PhLErrorDialogPresenter class >> openDebuggerOn: aDebugSession [
 	StDebugger debugSession: aDebugSession.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLErrorDialogPresenter class >> rank [
 	^rank ifNil:[rank := 10]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLErrorDialogPresenter >> debugSession [ 
 	^ debugSession
 ]
 
-{ #category : #layout }
+{ #category : 'layout' }
 PhLErrorDialogPresenter >> defaultLayout [
 
 	^ SpBoxLayout newVertical
@@ -64,7 +65,7 @@ PhLErrorDialogPresenter >> defaultLayout [
 		yourself
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLErrorDialogPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 	super initializeDialogWindow: aDialogWindowPresenter.
 	aDialogWindowPresenter buttons
@@ -78,7 +79,7 @@ PhLErrorDialogPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 		okAction: [ self class openDebuggerOn: self debugSession ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLErrorDialogPresenter >> initializePresenters [ 
 	description := self newText
 		beNotEditable;
@@ -86,7 +87,7 @@ PhLErrorDialogPresenter >> initializePresenters [
 		yourself.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLErrorDialogPresenter >> initializeWindow: aWindowPresenter [
 	super initializeWindow: aWindowPresenter.
 	aWindowPresenter 
@@ -94,7 +95,7 @@ PhLErrorDialogPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: 390 @ 167.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLErrorDialogPresenter >> setModelBeforeInitialization: aDebugSession [
 	debugSession := aDebugSession
 ]

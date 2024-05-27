@@ -3,12 +3,13 @@ Virtual Machine manager for test purposes.
 I mock network calls.
 "
 Class {
-	#name : #PhLTestVirtualMachineManager,
-	#superclass : #PhLVirtualMachineManager,
-	#category : #'PharoLauncher-Tests-Commands'
+	#name : 'PhLTestVirtualMachineManager',
+	#superclass : 'PhLVirtualMachineManager',
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTestVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	| vmFolder |
 	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
@@ -16,12 +17,12 @@ PhLTestVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	(vmFolder / 'fetched!') ensureCreateFile.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLTestVirtualMachineManager class >> vmStore [
 	^ vmStore ifNil: [ vmStore := FileSystem memory root ]
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 PhLTestVirtualMachineManager >> createVmNamed: aName [
 	| vmDirectory appDir  |
 	vmDirectory := self vmStore / aName.

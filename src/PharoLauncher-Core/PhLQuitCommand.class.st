@@ -2,12 +2,14 @@
 Quit Pharo Launcher.
 "
 Class {
-	#name : #PhLQuitCommand,
-	#superclass : #PhLGeneralCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLQuitCommand',
+	#superclass : 'PhLGeneralCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLQuitCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallQuitIcon;
@@ -15,13 +17,13 @@ PhLQuitCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLQuitCommand >> execute [
 	PhLDownloadManager reset. "reset error logging"
 	Smalltalk snapshot: false andQuit: true
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLQuitCommand >> initialize [
 	super initialize.
 	self

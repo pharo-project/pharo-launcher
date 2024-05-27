@@ -8,29 +8,31 @@ I execute:
 - list local virtual machines with detailed information.
 "
 Class {
-	#name : #PhLVmListCliCommand,
-	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLVmListCliCommand',
+	#superclass : 'PhLVmCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLVmListCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 
 	self addPrintFlagsTo: aCommandSpec.
 ]
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLVmListCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #list 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLVmListCliCommand class >> launcherCmdDescription [
 
 	^ 'Lists all available VMs, with status.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLVmListCliCommand >> basicExecute [ 
 
 	self list: self vmRepository

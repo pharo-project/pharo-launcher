@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLTemplateListCliCommandTest,
-	#superclass : #PhLTemplatesCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLTemplateListCliCommandTest',
+	#superclass : 'PhLTemplatesCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
 
 	| templates |
@@ -18,7 +19,7 @@ PhLTemplateListCliCommandTest >> testListTemplateAsStonShouldSucceed [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 
 	self createOfficialTemplatesCategoryWithSomeTemplates. 	
@@ -28,7 +29,7 @@ PhLTemplateListCliCommandTest >> testListTemplateShouldSucceed [
 	self assert: (self outputString includesSubstring:'fakeTemplate')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed [
 
 	| templateCategory |
@@ -40,7 +41,7 @@ PhLTemplateListCliCommandTest >> testListTemplateWithCategoryAsStonShouldSucceed
 	self assert: (templateCategory first) name equals:'fakeTemplate'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateListCliCommandTest >> testListTemplateWithCategoryShouldSucceed [
 
 	self addLocalTemplateNamed: 'fakeTemplate'.
@@ -51,7 +52,7 @@ PhLTemplateListCliCommandTest >> testListTemplateWithCategoryShouldSucceed [
 	self assert: (self outputString includesSubstring:'fakeTemplate')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateListCliCommandTest >> testListTemplateWithWrongCategoryShouldRaiseErrorMessage [
 
 	self addLocalTemplateNamed: 'fakeTemplate'.

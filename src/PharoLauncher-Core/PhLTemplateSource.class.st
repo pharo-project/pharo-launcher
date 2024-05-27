@@ -5,8 +5,8 @@ I represent a source for templates used by Pharo Launcher to create an image.
 I'm just a state holder easily serializable with Ston 
 "
 Class {
-	#name : #PhLTemplateSource,
-	#superclass : #Object,
+	#name : 'PhLTemplateSource',
+	#superclass : 'Object',
 	#instVars : [
 		'type',
 		'name',
@@ -19,10 +19,12 @@ Class {
 		'password',
 		'templateNameFormat'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation - cache' }
+{ #category : 'instance creation - cache' }
 PhLTemplateSource class >> cacheGroup [
 	^ self new 	
 		type: self cacheType;
@@ -30,12 +32,12 @@ PhLTemplateSource class >> cacheGroup [
 		yourself
 ]
 
-{ #category : #types }
+{ #category : 'types' }
 PhLTemplateSource class >> cacheType [
 	^ #Cache
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> deprecatedDistributionsGroup [
 	^ self new 	
 		type: self urlGroupType;
@@ -48,12 +50,12 @@ PhLTemplateSource class >> deprecatedDistributionsGroup [
 		yourself
 ]
 
-{ #category : #types }
+{ #category : 'types' }
 PhLTemplateSource class >> httpListingType [
 	^ #HttpListing
 ]
 
-{ #category : #'instance creation - jenkins' }
+{ #category : 'instance creation - jenkins' }
 PhLTemplateSource class >> inriaMoose [
 	^ self new 	
 		type: self jenkinsServerType;
@@ -62,7 +64,7 @@ PhLTemplateSource class >> inriaMoose [
 		yourself
 ]
 
-{ #category : #'instance creation - jenkins' }
+{ #category : 'instance creation - jenkins' }
 PhLTemplateSource class >> inriaPharoContribution [
 	^ self new 	
 		type: self jenkinsServerType;
@@ -71,7 +73,7 @@ PhLTemplateSource class >> inriaPharoContribution [
 		yourself
 ]
 
-{ #category : #'instance creation - jenkins' }
+{ #category : 'instance creation - jenkins' }
 PhLTemplateSource class >> inriaRmod [
 	^ self new 	
 		type: self jenkinsServerType;
@@ -80,12 +82,12 @@ PhLTemplateSource class >> inriaRmod [
 		yourself
 ]
 
-{ #category : #types }
+{ #category : 'types' }
 PhLTemplateSource class >> jenkinsServerType [
 	^ #JenkinsServer
 ]
 
-{ #category : #'instance creation - url mooc' }
+{ #category : 'instance creation - url mooc' }
 PhLTemplateSource class >> moocGroup [
 	^ self new 	
 		type: self urlGroupType;
@@ -94,7 +96,7 @@ PhLTemplateSource class >> moocGroup [
 		yourself
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> moose50 [
 	^ self new 	
 		type: self urlType;
@@ -103,7 +105,7 @@ PhLTemplateSource class >> moose50 [
 		yourself
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> moose51 [
 	^ self new 	
 		type: self urlType;
@@ -112,7 +114,7 @@ PhLTemplateSource class >> moose51 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> moose60 [
 	^ self new 	
 		type: self urlType;
@@ -121,7 +123,7 @@ PhLTemplateSource class >> moose60 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> moose61 [
 	^ self new 	
 		type: self urlType;
@@ -130,7 +132,7 @@ PhLTemplateSource class >> moose61 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> officialDistributionsGroup [
 	^ self new 	
 		type: self urlGroupType;
@@ -146,7 +148,7 @@ PhLTemplateSource class >> officialDistributionsGroup [
 		yourself
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> pharo20 [
 	^ self new 	
 		type: self urlType;
@@ -155,7 +157,7 @@ PhLTemplateSource class >> pharo20 [
 		yourself
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> pharo30 [
 	^ self new 	
 		type: self urlType;
@@ -164,7 +166,7 @@ PhLTemplateSource class >> pharo30 [
 		yourself
 ]
 
-{ #category : #'instance creation - url deprecated' }
+{ #category : 'instance creation - url deprecated' }
 PhLTemplateSource class >> pharo40 [
 	^ self new 	
 		type: self urlType;
@@ -173,7 +175,7 @@ PhLTemplateSource class >> pharo40 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> pharo50 [
 	^ self new 	
 		type: self urlType;
@@ -182,7 +184,7 @@ PhLTemplateSource class >> pharo50 [
 		yourself
 ]
 
-{ #category : #'instance creation - http listing' }
+{ #category : 'instance creation - http listing' }
 PhLTemplateSource class >> pharo60 [
 	^ self new 	
 		type: self httpListingType;
@@ -191,7 +193,7 @@ PhLTemplateSource class >> pharo60 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> pharo60x32 [
 	^ self new 	
 		type: self urlType;
@@ -200,7 +202,7 @@ PhLTemplateSource class >> pharo60x32 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> pharo60x64 [
 	^ self new 	
 		type: self urlType;
@@ -209,7 +211,7 @@ PhLTemplateSource class >> pharo60x64 [
 		yourself
 ]
 
-{ #category : #'instance creation - http listing' }
+{ #category : 'instance creation - http listing' }
 PhLTemplateSource class >> pharo70 [
 	^ self new 	
 		type: self httpListingType;
@@ -219,7 +221,7 @@ PhLTemplateSource class >> pharo70 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> pharo70x32 [
 	^ self new 	
 		type: self urlType;
@@ -228,7 +230,7 @@ PhLTemplateSource class >> pharo70x32 [
 		yourself
 ]
 
-{ #category : #'instance creation - url official' }
+{ #category : 'instance creation - url official' }
 PhLTemplateSource class >> pharo70x64 [
 	^ self new 	
 		type: self urlType;
@@ -237,7 +239,7 @@ PhLTemplateSource class >> pharo70x64 [
 		yourself
 ]
 
-{ #category : #'instance creation - url mooc' }
+{ #category : 'instance creation - url mooc' }
 PhLTemplateSource class >> pharoMooc [
 	^ self new
 		type: self urlType;
@@ -246,17 +248,17 @@ PhLTemplateSource class >> pharoMooc [
 		yourself
 ]
 
-{ #category : #types }
+{ #category : 'types' }
 PhLTemplateSource class >> urlGroupType [
 	^ #URLGroup
 ]
 
-{ #category : #types }
+{ #category : 'types' }
 PhLTemplateSource class >> urlType [
 	^ #URL
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 PhLTemplateSource >> = anObject [
 	self == anObject ifTrue: [ ^ true ].
 	self class = anObject class ifFalse: [ ^ false ].
@@ -268,7 +270,7 @@ PhLTemplateSource >> = anObject [
 		and: [ self expanded = anObject expanded ] ] ] ] ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLTemplateSource >> asBasicTemplateGroup [
 	type == self class httpListingType
 		ifTrue: [ | pattern |
@@ -289,7 +291,7 @@ PhLTemplateSource >> asBasicTemplateGroup [
 	self error: 'Group type not supported!'
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLTemplateSource >> asTemplate [
 	type == self class urlType ifTrue: [ 
 		^ PhLRemoteTemplate
@@ -301,55 +303,55 @@ PhLTemplateSource >> asTemplate [
 	self error: 'Template type not supported!'
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLTemplateSource >> asTemplateGroup [
 	^ self asBasicTemplateGroup 
 		isHighlighted: expanded;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> expanded [
 	^ expanded notNil & expanded
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> expanded: aBoolean [
 	"when source is a group, tell if it should be expanded as default"
 	expanded := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> filterPattern [
 	^ filterPattern
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> filterPattern: aString [ 
 	filterPattern := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> name [
 	^ name
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> name: aString [ 
 	name := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> password [
 	^ password
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> password: anObject [
 	password := anObject
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLTemplateSource >> printOn: aStream [
 	super printOn: aStream.
 	aStream 
@@ -358,62 +360,62 @@ PhLTemplateSource >> printOn: aStream [
 		nextPut: $)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> shortName [
 	^ shortName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> templateNameFormat [
 	^ templateNameFormat
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> templateNameFormat: anObject [
 	templateNameFormat := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> templates [
 	^ templates
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> templates: aListOfTemplates [
 	templates := aListOfTemplates.
 ]
 
-{ #category : #iterating }
+{ #category : 'iterating' }
 PhLTemplateSource >> templatesDo: aBlockClosure [ 
 	templates ifNotNil: [ templates do: aBlockClosure ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> type [
 	^ type
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> type: aString [ 
 	type := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> url [
 	^ url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> url: aString [ 
 	url := aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> username [
 	^ username
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSource >> username: anObject [
 	username := anObject
 ]

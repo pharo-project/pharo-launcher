@@ -1,6 +1,6 @@
-Extension { #name : #WinPlatform }
+Extension { #name : 'WinPlatform' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 WinPlatform >> hostArchitecture [
 	| processorArch |
 	processorArch := OSEnvironment current at: 'PROCESSOR_ARCHITECTURE'.
@@ -9,7 +9,7 @@ WinPlatform >> hostArchitecture [
 	^ processorArch 
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 WinPlatform >> isValid: aPhLVirtualMachine [
 	"Maybe we should read the PE format:
 	- https://learn.microsoft.com/en-gb/windows/win32/menurc/enumerating-resources?redirectedfrom=MSDN
@@ -19,7 +19,7 @@ WinPlatform >> isValid: aPhLVirtualMachine [
 	^ true
 ]
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 WinPlatform >> uname [
 	^ PhLVmProvider osWindows
 ]

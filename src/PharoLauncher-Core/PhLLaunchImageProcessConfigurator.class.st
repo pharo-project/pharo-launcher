@@ -2,24 +2,26 @@
 Visitor used to configure the process to launch image dependending on the target OS platform.
 "
 Class {
-	#name : #PhLLaunchImageProcessConfigurator,
-	#superclass : #OSPlatformVisitor,
+	#name : 'PhLLaunchImageProcessConfigurator',
+	#superclass : 'OSPlatformVisitor',
 	#instVars : [
 		'process',
 		'launchInALoginShell',
 		'launchConfiguration'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'private - unix' }
+{ #category : 'private - unix' }
 PhLLaunchImageProcessConfigurator >> cleanLDLibraryPath [
 	^ (self currentLDLibraryPaths
 		reject: [ :path | path = FileLocator vmDirectory pathString ])
 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageProcessConfigurator >> configurePotentialInitializationScript [
 	launchConfiguration image shouldRunInitializationScript 
 		ifFalse: [ ^ self ].
@@ -31,7 +33,7 @@ PhLLaunchImageProcessConfigurator >> configurePotentialInitializationScript [
 							addArgument: script fullName surroundedByDoubleQuotes ].
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLLaunchImageProcessConfigurator >> configureVm [
 	super visit.	"platform specific behavior"
 	launchConfiguration vm isHeadless
@@ -40,45 +42,45 @@ PhLLaunchImageProcessConfigurator >> configureVm [
 		do: [ :arg | process addArgument: arg ].
 ]
 
-{ #category : #'private - unix' }
+{ #category : 'private - unix' }
 PhLLaunchImageProcessConfigurator >> currentLDLibraryPaths [
 	^ (OSEnvironment current at: 'LD_LIBRARY_PATH' ifAbsent: [ '' ])
 		substrings: ':'
 ]
 
-{ #category : #'private - unix' }
+{ #category : 'private - unix' }
 PhLLaunchImageProcessConfigurator >> exportLDLibraryPathCommandWith: vmDirectoryPath [
 	^ 'export LD_LIBRARY_PATH=' ,
 		($: join: ((self cleanLDLibraryPath copyWithFirst: vmDirectoryPath) collect: #surroundedBySingleQuotes))
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> imageFile [
 	^ launchConfiguration image imageFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> launchConfiguration: aPhLLaunchConfiguration [
 	launchConfiguration := aPhLLaunchConfiguration
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> launchInALoginShell [
 	^ launchInALoginShell ifNil: [ launchConfiguration class launchInALoginShell ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> launchInALoginShell: anObject [
 	launchInALoginShell := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> usePharoSettings [
 	^ launchConfiguration isUsingPharoSettings
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLLaunchImageProcessConfigurator >> visit [
 	process := PhLProcessWrapper new.
 	process workingDirectory: launchConfiguration workingDirectory pathString.
@@ -93,7 +95,7 @@ PhLLaunchImageProcessConfigurator >> visit [
 	^ process
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
 	self launchInALoginShell
 		ifTrue: [ process loginShellCommand.
@@ -101,7 +103,7 @@ PhLLaunchImageProcessConfigurator >> visitGeneric: aPlatform [
 		ifFalse: [process command: self vmPath "surroundedByDoubleQuotes" ].
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLLaunchImageProcessConfigurator >> visitUnix: aPlatform [
 	self launchInALoginShell
 		ifTrue: [ process loginShellCommand ]
@@ -112,17 +114,17 @@ PhLLaunchImageProcessConfigurator >> visitUnix: aPlatform [
 		addArgument: self vmPath.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageProcessConfigurator >> vmDirectoryPath [
 	^ self vmPath asFileReference parent fullName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageProcessConfigurator >> vmPath [
 	^ launchConfiguration vm executablePath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLLaunchImageProcessConfigurator >> workingDirectory [
 	^ launchConfiguration workingDirectory
 ]

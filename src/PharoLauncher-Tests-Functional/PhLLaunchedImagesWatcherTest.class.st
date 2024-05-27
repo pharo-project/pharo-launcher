@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLLaunchedImagesWatcherTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Functional'
+	#name : 'PhLLaunchedImagesWatcherTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchedImagesWatcherTest >> testCanCatchProcessError [
 	| process image |
 	process := PhLProcessWrapper new
@@ -21,7 +22,7 @@ PhLLaunchedImagesWatcherTest >> testCanCatchProcessError [
 		raise: PhLLaunchError
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchedImagesWatcherTest >> testProcessSuccessfulDoesNotThrowError [
 	| process image |
 	process := PhLProcessWrapper new

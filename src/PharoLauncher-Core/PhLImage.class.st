@@ -40,8 +40,8 @@ Instance Variables
 My metadata are serialized when setting description, template or before launching the image (implies to compute formatNumber, architecture and pharo version).
 "
 Class {
-	#name : #PhLImage,
-	#superclass : #PhLObject,
+	#name : 'PhLImage',
+	#superclass : 'PhLObject',
 	#instVars : [
 		'file',
 		'description',
@@ -57,22 +57,24 @@ Class {
 	#classInstVars : [
 		'reader'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> classForLocation: imageFileReference [
 	^ self allSubclasses
 		detect: [ :cls | cls isSubclassForLocation: imageFileReference ]
 		ifNone: [ self ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> descriptionFileName [
 	^ 'description.txt'
 ]
 
-{ #category : #example }
+{ #category : 'example' }
 PhLImage class >> example [
 	| fsRoot imageFile |
 	fsRoot := FileSystem memory root.
@@ -85,7 +87,7 @@ PhLImage class >> example [
 	^ self location: imageFile
 ]
 
-{ #category : #example }
+{ #category : 'example' }
 PhLImage class >> example32 [
 	| fsRoot imageFile |
 	fsRoot := FileSystem memory root.
@@ -98,7 +100,7 @@ PhLImage class >> example32 [
 	^ self location: imageFile
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImage class >> imageFromMetadata: imageFileReference ifAbsent: aBlock [
 	"Will recreate the image object from its STON serialized version if possible"
 
@@ -110,24 +112,24 @@ PhLImage class >> imageFromMetadata: imageFileReference ifAbsent: aBlock [
 			ifAbsent: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImage class >> initialize [
 	SessionManager default registerUserClassNamed: self name
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImage class >> isSubclassForLocation: imageFileReference [
 	| versionFile |
 	versionFile := imageFileReference parent / self versionFileName.
 	^ versionFile exists and: [ versionFile contents beginsWith: self versionPrefix ]
 ]
 
-{ #category : #validating }
+{ #category : 'validating' }
 PhLImage class >> isValidName: anImageName [ 
 	^ anImageName isNotEmpty and: [ (anImageName includesAny: #/\) not ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImage class >> location: imageFileReference [
 	| instance |
 	instance := self
@@ -138,23 +140,23 @@ PhLImage class >> location: imageFileReference [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> metadataFileName [
 	^ 'meta-inf.ston'
 ]
 
-{ #category : #'system startup' }
+{ #category : 'system startup' }
 PhLImage class >> startUp: isImageStarting [
 
 	isImageStarting ifTrue: [ reader := nil ]
 ]
 
-{ #category : #serialization }
+{ #category : 'serialization' }
 PhLImage class >> stonAllInstVarNames [
 	^ super stonAllInstVarNames reject: [ :varName | varName = #file ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> stonReader [
 	"The ston reader is building caches when reading a file. Since we read *a lot* of files, we cache a reader with all the built caches."
 
@@ -163,19 +165,19 @@ PhLImage class >> stonReader [
 		ifNotNil: [ reader reset; yourself ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> versionFileName [
 	^ 'pharo.version'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage class >> versionPrefix [
 	"Used in matching me to a VM. See class comment, 'VM Matching' section"
 
 	^ ''
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
 	launchConfigurations 
 		detect: [ :each | each name = aPhLLaunchConfiguration name ]
@@ -183,17 +185,17 @@ PhLImage >> addLaunchConfiguration: aPhLLaunchConfiguration [
 		ifNone: [ launchConfigurations add: aPhLLaunchConfiguration ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> architecture [
 	^ architecture ifNil: [ self computeArchitecture. "Always be able to display image architecture" ]
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLImage >> asPhLImage [
 	^ self
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImage >> basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
 
 	| processWrapper |
@@ -205,19 +207,19 @@ PhLImage >> basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shou
 	^ processWrapper
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImage >> canBeLaunched [
 	^ self architecture = '32' 
 		ifTrue: [ self os canRun32bitApp ]
 		ifFalse: [ true "we do not manage the case where a 64-bit image want to be launched on a 32-bit OS"]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> changesFile [
 	^ self file parent / self file basenameWithoutExtension , 'changes'
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 PhLImage >> computeArchitecture [
 	self computeFormatNumber.
 	((PhLVirtualMachineManager is32bits: formatNumber)
@@ -228,12 +230,12 @@ PhLImage >> computeArchitecture [
 	^ architecture := 	'N/A'
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 PhLImage >> computeFormatNumber [
 	formatNumber := PhLVirtualMachineManager imageFormatNumberFromFile: file
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 PhLImage >> computePharoVersion [
 	pharoVersion := self vmManager imageVersion.
 	self computeArchitecture.
@@ -241,35 +243,35 @@ PhLImage >> computePharoVersion [
 	^ pharoVersion
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> defaultArguments [
 	^ OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> defaultLaunchConfiguration [
 	^ launchConfigurations 
 		detect: [ :each | each name = PhLLaunchConfiguration defaultName ]
 		ifNone: [ PhLLaunchConfiguration defaultWithImage: self ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> defaultLaunchConfigurationName [
 	^ 'Default'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> description [
 	^ description ifNil: [ self descriptionFromFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> description: aString [
 	description := aString ifNotNil: #asString. "ensure we do not get Text"
 	self serializeMetadata.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> descriptionFromFile [
 	| descriptionFile |
 	self flag: 'This method is there for backward compatibility. description.txt file has been superseded by the metainformation file meta-inf.ston'.
@@ -280,12 +282,12 @@ PhLImage >> descriptionFromFile [
 		ifFalse: [ 'There is no description' ]
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImage >> doNotRunInitializationScript [
 	self shouldRunInitializationScript: false.
 ]
 
-{ #category : #computing }
+{ #category : 'computing' }
 PhLImage >> ensurePharoVersion [
 	^ (self pharoVersion isNil or: [ self pharoVersion = '' ])
 			ifFalse: [ 
@@ -295,61 +297,61 @@ PhLImage >> ensurePharoVersion [
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> file [ 
 	^file
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> formatNumber [
 	^ formatNumber
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImage >> hasChildren [
 	^ false
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImage >> hasConfiguration: aConf [
 
    ^ launchConfigurations anySatisfy: [ :a | a name = aConf name ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> imageFile [
 	^ self file
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> initializationScript [
 	^ initializationScript ifNotNil: [ :script | script asFileReference ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> initializationScript: aFileReference [
 	initializationScript := aFileReference.
 	self serializeMetadata
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImage >> initialize [
 	super initialize.
 	launchConfigurations := OrderedCollection new.
 	shouldRunInitializationScript := true
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImage >> isHighlighted [
 	^ false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLImage >> isImage [
 	^ true
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> lastModification [
 
 	^ [ self file modificationTime ]
@@ -357,12 +359,12 @@ PhLImage >> lastModification [
 		  do: [ nil ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLImage >> launch [
 	^ self launchWithConfiguration: self defaultLaunchConfiguration 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> launchConfigurations [
 	^ launchConfigurations
 		ifEmpty: [ launchConfigurations 
@@ -370,12 +372,12 @@ PhLImage >> launchConfigurations [
 						yourself ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> launchConfigurations: aCollection [ 
 	launchConfigurations := aCollection
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> launchScript [
 	^ String streamContents: [ :stream |
 		stream
@@ -387,18 +389,18 @@ PhLImage >> launchScript [
 	]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> launchScriptName [
 	^ file parent / (self name , '.sh').
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 	
 	^ self launchWithConfiguration: aPhLLaunchConfiguration detached: true
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
 	| architectureWarningEnabled continue |
 
@@ -418,30 +420,30 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeD
 		continue ifTrue: [ warning resume ] ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> location [ 
 	^ file fullName
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> name [
 	^ file basenameWithoutExtension
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> originTemplate [
 
 	^ originTemplate
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> originTemplate: aPhLTemplate [
 	
 	self privOriginTemplate: aPhLTemplate.
 	self serializeMetadata.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> originTemplateName [
 
 	^ self originTemplate 
@@ -449,7 +451,7 @@ PhLImage >> originTemplateName [
 		ifNil: [ #unknown ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> originTemplateUrl [
 
 	^ self originTemplate 
@@ -457,17 +459,17 @@ PhLImage >> originTemplateUrl [
 		ifNil: [ #unknown ]
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLImage >> os [
 	^ OSPlatform current
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> pharoVersion [
 	^ pharoVersion ifNil: [ self pharoVersionFromFile ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> pharoVersionFromFile [
 	file ifNil: [ ^ '' ].
 	^ self versionFile exists
@@ -475,13 +477,13 @@ PhLImage >> pharoVersionFromFile [
 		ifFalse: [ '' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> pharoVersionString [
 
 	^ (self pharoVersion asNumber / 10.0) asFloat asString
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLImage >> printOn: aStream [
 	aStream
 		nextPutAll: 'Image (';
@@ -489,13 +491,13 @@ PhLImage >> printOn: aStream [
 		nextPutAll: ')'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> privOriginTemplate: aPhLTemplate [
 	
 	originTemplate := aPhLTemplate.
 ]
 
-{ #category : #serialization }
+{ #category : 'serialization' }
 PhLImage >> serializeMetadata [
 	file exists ifFalse: [ "image deleted" ^ self ].
 
@@ -503,28 +505,28 @@ PhLImage >> serializeMetadata [
 		writeStreamDo: [ :stream | stream nextPutAll: self stonString ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImage >> setLocation: aFile [ 
 	file := aFile.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> shouldRunInitializationScript [
 	^ shouldRunInitializationScript
 ]
 
-{ #category : #configuring }
+{ #category : 'configuring' }
 PhLImage >> shouldRunInitializationScript: aBoolean [
 	shouldRunInitializationScript := aBoolean.
 	self serializeMetadata.
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLImage >> showNativeFolder [
 	file asFileReference openInOSFileBrowser 
 ]
 
-{ #category : #'private ui' }
+{ #category : 'private ui' }
 PhLImage >> showWarning: warning [
 	| continue |
 
@@ -539,18 +541,18 @@ PhLImage >> showWarning: warning [
 	^ continue
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> sourcesFile [
 	^ self file parent files 
 		detect: [ :fileRef | fileRef extension = 'sources' ]
 ]
 
-{ #category : #serialization }
+{ #category : 'serialization' }
 PhLImage >> stonString [
 	^ STON toStringPretty: self
 ]
 
-{ #category : #printing }
+{ #category : 'printing' }
 PhLImage >> summaryInfo [
 	^ String
 		streamContents: [ :s | 
@@ -564,12 +566,12 @@ PhLImage >> summaryInfo [
 				nextPutAll: self description ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImage >> versionFile [
 	^ self file parent / self class versionFileName
 ]
 
-{ #category : #'private - accessing' }
+{ #category : 'private - accessing' }
 PhLImage >> vmManager [
 	^ vmManager ifNil: [ vmManager := PhLVirtualMachineManager forImage: self file ]
 ]

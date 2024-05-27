@@ -1,6 +1,6 @@
-Extension { #name : #PhLProcessListCliCommand }
+Extension { #name : 'PhLProcessListCliCommand' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLProcessListCliCommand >> shellOutput: aString [
 
 	shellOutput := aString

@@ -1,6 +1,6 @@
-Extension { #name : #PhLProcessWrapperTest }
+Extension { #name : 'PhLProcessWrapperTest' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLProcessWrapperTest >> setupProcessCmdWithArgs: argArray [
 
 	^ PhLProcessWrapper new
@@ -9,7 +9,7 @@ PhLProcessWrapperTest >> setupProcessCmdWithArgs: argArray [
 		yourself
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLProcessWrapperTest >> testAddAllArguments [
 
 	| aWrapper |
@@ -20,7 +20,7 @@ PhLProcessWrapperTest >> testAddAllArguments [
 	self assert: aWrapper arguments second equals: 'b'
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLProcessWrapperTest >> testRunAndWaitWithStdOutput [
 
 	"test if command normally returns content of stdout"

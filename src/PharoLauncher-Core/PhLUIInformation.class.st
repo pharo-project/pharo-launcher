@@ -2,15 +2,17 @@
 Abstraction of an information dialog.
 "
 Class {
-	#name : #PhLUIInformation,
-	#superclass : #PhLUserInteraction,
+	#name : 'PhLUIInformation',
+	#superclass : 'PhLUserInteraction',
 	#instVars : [
 		'message'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIInformation >> abort [
 
 	self application newInform 
@@ -19,7 +21,7 @@ PhLUIInformation >> abort [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIInformation >> alert [
 
 	self application newInform 
@@ -28,7 +30,7 @@ PhLUIInformation >> alert [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIInformation >> deny [
 
 	self application newInform 
@@ -37,7 +39,7 @@ PhLUIInformation >> deny [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIInformation >> denyWithTitle: titleString [
 
 	self application newInform 
@@ -46,7 +48,7 @@ PhLUIInformation >> denyWithTitle: titleString [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLUIInformation >> inform [
 
 	self application newInform 
@@ -54,7 +56,7 @@ PhLUIInformation >> inform [
 		openModalWithParent: self relatedWindow
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLUIInformation >> message: aMessage [
 	message := aMessage
 ]

@@ -7,21 +7,23 @@ self new installInOSXWindow
 
 "
 Class {
-	#name : #MacOsPharoLauncherMenu,
-	#superclass : #Object,
+	#name : 'MacOsPharoLauncherMenu',
+	#superclass : 'Object',
 	#classVars : [
 		'UniqueInstance'
 	],
-	#category : #'PharoLauncher-Core-OS-Integration'
+	#category : 'PharoLauncher-Core-OS-Integration',
+	#package : 'PharoLauncher-Core',
+	#tag : 'OS-Integration'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 MacOsPharoLauncherMenu class >> uniqueInstance [
 
 	^ UniqueInstance ifNil: [ UniqueInstance := self new ].
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 MacOsPharoLauncherMenu >> buildPharoLauncherMenu [
 
 	| mainMenu |
@@ -37,25 +39,25 @@ MacOsPharoLauncherMenu >> buildPharoLauncherMenu [
 	mainMenu beMainMenu
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MacOsPharoLauncherMenu >> doAbout [
 
 	UIManager default defer: [ (PhLAboutCommand forContext: PharoLauncherApplication default mainPresenter) execute ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MacOsPharoLauncherMenu >> doPreferences [
 
 	UIManager default defer: [ PhLOpenSettingsCommand new execute ]
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MacOsPharoLauncherMenu >> doQuit [
 
 	UIManager default defer: [ PhLDeploymentScript quitSession ] 
 ]
 
-{ #category : #actions }
+{ #category : 'actions' }
 MacOsPharoLauncherMenu >> installInOSXWindow [
 
 	self buildPharoLauncherMenu 

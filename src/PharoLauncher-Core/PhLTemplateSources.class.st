@@ -7,30 +7,32 @@ ex:
  	(self withFile: PhLPharoTemplateSources sourcesFile) sources 
 "
 Class {
-	#name : #PhLTemplateSources,
-	#superclass : #Object,
+	#name : 'PhLTemplateSources',
+	#superclass : 'Object',
 	#instVars : [
 		'file'
 	],
 	#classVars : [
 		'LauncherCoreDir'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> defaultSources [ 
 	^ PhLCompositeTemplateSources new 
 			initializeWith: { PhLPharoTemplateSources fromFile . PhLUserTemplateSources fromFile };
 			yourself
 ]
 
-{ #category : #example }
+{ #category : 'example' }
 PhLTemplateSources class >> example [
 	^ self withFile: PhLPharoTemplateSources sourcesFile
 ]
 
-{ #category : #serializing }
+{ #category : 'serializing' }
 PhLTemplateSources class >> flush: aListOfPhLTemplateSource in: aFileReference [
 	aFileReference writeStreamDo: [ :stream |
 		STON 
@@ -39,52 +41,52 @@ PhLTemplateSources class >> flush: aListOfPhLTemplateSource in: aFileReference [
 	^ aFileReference 
 ]
 
-{ #category : #serializing }
+{ #category : 'serializing' }
 PhLTemplateSources class >> flushIn: aFileReference [
 	self flush: self defaultSources in: aFileReference
 	
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateSources class >> fromFile [
 	self subclassResponsibility
 ]
 
-{ #category : #serializing }
+{ #category : 'serializing' }
 PhLTemplateSources class >> generateSourcesFile [
 	self flushIn: self sourcesFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> launcherCoreDir [
 	^ (LauncherCoreDir ifNil: [ LauncherCoreDir := FileLocator launcherUserFilesLocation ]) ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> launcherCoreDir: aFileUrl [
 	LauncherCoreDir := aFileUrl asFileReference.
 	LauncherCoreDir ensureCreateDirectory
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> launcherCoreDirString [
 	" Used to display a nice file url in settings browser"
 	^ self launcherCoreDir pathString 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> launcherCoreDirString: aFileUrl [
 	" Used to display a nice file url in settings browser"
 	self launcherCoreDir: aFileUrl
 
 ]
 
-{ #category : #updating }
+{ #category : 'updating' }
 PhLTemplateSources class >> resetLauncherCoreDir [
 	LauncherCoreDir := nil
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLTemplateSources class >> settingsOn: aBuilder [
 	<systemsettings>
 	<pharoLauncherSettings>
@@ -101,13 +103,13 @@ PhLTemplateSources class >> settingsOn: aBuilder [
 				, 'NOTE: This path might need to escape some whitespace characters.' translated.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> sourcesFileName [
 	"Name of the file with the list of default templates sources for Pharo Launcher"
 	^ 'sources.list'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources class >> useLauncherCoreDir: aDirectory during: aBlock [
 
 	| oldLauncherCoreDir |
@@ -117,14 +119,14 @@ PhLTemplateSources class >> useLauncherCoreDir: aDirectory during: aBlock [
 		ensure: [ LauncherCoreDir := oldLauncherCoreDir ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateSources class >> withFile: aSourcesFile [
 	^ self new 
 		initializeWith: aSourcesFile;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 	| file |
 	file := FileSystem memory / self sourcesFileName.
@@ -132,17 +134,17 @@ PhLTemplateSources class >> withTemplateList: aListOfPhLTemplateSource [
 	^ self withFile: file
 ]
 
-{ #category : #iterating }
+{ #category : 'iterating' }
 PhLTemplateSources >> collect: aBlock [
 	^ self sources collect: aBlock
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateSources >> initializeWith: aSourcesFile [
 	file := aSourcesFile.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLTemplateSources >> sources [
 
 	| sources |

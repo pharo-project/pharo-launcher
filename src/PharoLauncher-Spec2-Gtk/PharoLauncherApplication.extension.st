@@ -1,6 +1,6 @@
-Extension { #name : #PharoLauncherApplication }
+Extension { #name : 'PharoLauncherApplication' }
 
-{ #category : #'*PharoLauncher-Spec2-Gtk' }
+{ #category : '*PharoLauncher-Spec2-Gtk' }
 PharoLauncherApplication class >> openGtk [
 	<script>
 	

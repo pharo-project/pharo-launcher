@@ -6,23 +6,25 @@ To watch a process:
 		checkProcess: aPhLProcess image: aPhLImage
 "
 Class {
-	#name : #PhLLaunchedImagesWatcher,
-	#superclass : #Object,
+	#name : 'PhLLaunchedImagesWatcher',
+	#superclass : 'Object',
 	#instVars : [
 		'process',
 		'image'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchedImagesWatcher class >> process: aPhLProcess image: aPhLImage [
 	^ self new 
 		process: aPhLProcess image: aPhLImage;
 		yourself 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchedImagesWatcher >> basicCheckProcess [
 	| timeout pollingDelay failed |
 
@@ -37,7 +39,7 @@ PhLLaunchedImagesWatcher >> basicCheckProcess [
 	failed ifTrue: [ PhLLaunchError signalProcess: process image: image ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchedImagesWatcher >> check [
 	"process ifNil: [ ^ self ]."
 	
@@ -45,23 +47,23 @@ PhLLaunchedImagesWatcher >> check [
 		forkAt: self priority named: self name
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLLaunchedImagesWatcher >> hasProcessFailed [
 	process isRunning ifTrue: [ ^ false ].
 	^ process isSuccess not
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchedImagesWatcher >> name [
 	^ 'Pharo Launcher launched images watcher'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchedImagesWatcher >> priority [
 	^ 20
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLLaunchedImagesWatcher >> process: aPhLProcess image: aPhLImage [
 	process := aPhLProcess.
 	image := aPhLImage.

@@ -8,12 +8,14 @@ I execute:
 - launch local image with auto-detected VM
 "
 Class {
-	#name : #PhLImageLaunchCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageLaunchCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 	
 	aCommandSpec 
@@ -25,7 +27,7 @@ PhLImageLaunchCliCommand class >> addLauncherFlagsTo: aCommandSpec [
 		description: 'Will launch the image in detached mode. The command will exit while the launched image will still be running.'
 ]
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	aCommandSpec 
@@ -33,18 +35,18 @@ PhLImageLaunchCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 		description: 'Specifies the local image name to be launched.'
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageLaunchCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #launch 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageLaunchCliCommand class >> launcherCmdDescription [
 
 	^ 'Launches image with using default (auto-detected) VM.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageLaunchCliCommand >> basicExecute [
 
 	| anImage config |
@@ -58,13 +60,13 @@ PhLImageLaunchCliCommand >> basicExecute [
 	anImage launchWithConfiguration: config detached: self shouldLaunchInDetachedMode
 ]
 
-{ #category : #'accessing arguments' }
+{ #category : 'accessing arguments' }
 PhLImageLaunchCliCommand >> briefPrint [ 
 	"Use a simple list of images when launching"
 	^ true
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 PhLImageLaunchCliCommand >> checkArchitectureForImage: anImage [
 
 	[anImage vmManager checkImageArchitecture] 
@@ -72,7 +74,7 @@ PhLImageLaunchCliCommand >> checkArchitectureForImage: anImage [
 	do:[:warning | self logInfoMessage: warning longDescription]
 ]
 
-{ #category : #checking }
+{ #category : 'checking' }
 PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
 
 	(aScriptPath asFileReference exists
@@ -83,13 +85,13 @@ PhLImageLaunchCliCommand >> checkScriptValidity: aScriptPath [
 		ifFalse: [^ self raiseWrongScriptExtension: aScriptPath]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageLaunchCliCommand >> isUsingScript [
 	
 	^ self hasFlag: #script
 ]
 
-{ #category : #logging }
+{ #category : 'logging' }
 PhLImageLaunchCliCommand >> logLaunchOfImage: anImage [
 
 	| imgConfig |
@@ -97,25 +99,25 @@ PhLImageLaunchCliCommand >> logLaunchOfImage: anImage [
 	self logInfoMessage: ('Launching image with command: "{1}".' format: { imgConfig commandString })
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageLaunchCliCommand >> raiseScriptNotFound: scriptPath [
 
 	^ PhLError signal: ('Launching script for image not found - invalid path to file: {1}.' format: { scriptPath  } )
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageLaunchCliCommand >> raiseWrongScriptExtension: scriptPath [
 
 	^ PhLError signal: ('Launching script has wrong file extension (should be .st): {1}.' format: { scriptPath  } )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageLaunchCliCommand >> script [
 
 	^ self positional: #script
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageLaunchCliCommand >> setupScriptForImage: anImage [
 
 	| script |
@@ -127,7 +129,7 @@ PhLImageLaunchCliCommand >> setupScriptForImage: anImage [
 		initializationScript: script asFileReference
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageLaunchCliCommand >> shouldLaunchInDetachedMode [
 	
 	^ self hasFlag: #detached

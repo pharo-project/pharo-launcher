@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageListCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageListCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testDelimiter [
 
 
@@ -14,7 +15,7 @@ PhLImageListCliCommandTest >> testDelimiter [
 	self assert: aCommand delimiter equals: ' * '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testDelimiterImplicit [
 
 	| aCommand |
@@ -22,7 +23,7 @@ PhLImageListCliCommandTest >> testDelimiterImplicit [
 	self assert: aCommand delimiter equals: ' '.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testListEmptyImageRepositoryShouldSucceed [
 	
 	self runCommand: #('launcher' 'image' 'list').
@@ -31,7 +32,7 @@ PhLImageListCliCommandTest >> testListEmptyImageRepositoryShouldSucceed [
 	self assert: self outputString equals:''.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -43,7 +44,7 @@ PhLImageListCliCommandTest >> testListImageShouldSucceed [
 	self assert: (self outputString includesSubstring:' +myImage2').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
 	| images |
 	self addImageNamed: 'myImage1'.
@@ -59,7 +60,7 @@ PhLImageListCliCommandTest >> testListImageShouldSucceedOutputInSTON [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageListCliCommandTest >> testListImageWithImageNameFilterShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.

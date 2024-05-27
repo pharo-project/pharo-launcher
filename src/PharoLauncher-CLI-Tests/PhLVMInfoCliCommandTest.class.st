@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLVMInfoCliCommandTest,
-	#superclass : #PhLVmCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLVMInfoCliCommandTest',
+	#superclass : 'PhLVmCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVMInfoCliCommandTest >> testInfoVmShouldSucceed [
 	self addVmNamed: 'myVm1'.
 	self addVmNamed: 'myVm2'.

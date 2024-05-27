@@ -3,58 +3,59 @@ Null pattern for a PhLImage.
 Used to display information when no image is selected.
 "
 Class {
-	#name : #PhLNullImage,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Spec2'
+	#name : 'PhLNullImage',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> architecture [
 	
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> description [
 	
 	^ '<no description given>'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> initializationScript [
 	^ nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> lastModification [
 	
 	^ 'N/A'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> location [
 
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> name [
 	^ 'No image selected'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> originTemplateName [
 	
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> originTemplateUrl [
 	
 	^ ''
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLNullImage >> shouldRunInitializationScript [
 	^ false
 ]

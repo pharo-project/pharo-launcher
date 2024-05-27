@@ -1,6 +1,6 @@
-Extension { #name : #OSPlatform }
+Extension { #name : 'OSPlatform' }
 
-{ #category : #'*PharoLauncher-Tests-Core' }
+{ #category : '*PharoLauncher-Tests-Core' }
 OSPlatform class >> usePlatform: anOSPlatform during: aBlock [
 
 	| osPlatform |

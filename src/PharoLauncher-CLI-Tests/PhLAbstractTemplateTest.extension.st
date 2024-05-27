@@ -1,6 +1,6 @@
-Extension { #name : #PhLAbstractTemplateTest }
+Extension { #name : 'PhLAbstractTemplateTest' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLAbstractTemplateTest >> testListPrintAttributeBlocks [
 
 	|blocks aTemplate| 
@@ -10,7 +10,7 @@ PhLAbstractTemplateTest >> testListPrintAttributeBlocks [
 	self assert: ((blocks collect: [ :aBlock | aBlock value: aTemplate ]) allSatisfy: #isString).
 ]
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 PhLAbstractTemplateTest >> testListPrintAttributeLabels [
 	| template |
 	

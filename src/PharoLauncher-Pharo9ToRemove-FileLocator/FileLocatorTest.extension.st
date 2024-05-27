@@ -1,6 +1,6 @@
-Extension { #name : #FileLocatorTest }
+Extension { #name : 'FileLocatorTest' }
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocatorTest >> testCanCreateLocatorFromStringWhenDeepChild [
 	| path |
 	path := (FileLocator home / 'foo' / 'bar' / 'bee' / 'see') fullName.
@@ -15,7 +15,7 @@ FileLocatorTest >> testCanCreateLocatorFromStringWhenDeepChild [
 		equals: path.
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocatorTest >> testCanCreateLocatorFromStringWhenDirectChild [
 	| path |
 	path := (FileLocator home / 'foo') fullName.
@@ -30,7 +30,7 @@ FileLocatorTest >> testCanCreateLocatorFromStringWhenDirectChild [
 		equals: path.
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocatorTest >> testCanCreateLocatorFromStringWhenSamePath [
 	| path |
 	path := FileLocator home fullName.
@@ -45,7 +45,7 @@ FileLocatorTest >> testCanCreateLocatorFromStringWhenSamePath [
 		equals: path.
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocatorTest >> testFromPathReturnsBlockValueIfPathNotPartOfAnOrigin [
 	| path |
 	path := '/foo' asFileReference path.
@@ -57,7 +57,7 @@ FileLocatorTest >> testFromPathReturnsBlockValueIfPathNotPartOfAnOrigin [
 		equals: nil.
 ]
 
-{ #category : #'*PharoLauncher-Pharo9ToRemove-FileLocator' }
+{ #category : '*PharoLauncher-Pharo9ToRemove-FileLocator' }
 FileLocatorTest >> testGetRightLocatorWhenCreatingFromString [
 	| path |
 	path := (FileLocator documents / 'foo') fullName.

@@ -1,6 +1,6 @@
-Extension { #name : #VirtualMachine }
+Extension { #name : 'VirtualMachine' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 VirtualMachine >> fullPath [
 	"Return the full vm path as a string"
 	"Ex: '/Applications/Squeak/Squeak 4.2.5beta1U.app/Contents/MacOS/Squeak VM Opt'"

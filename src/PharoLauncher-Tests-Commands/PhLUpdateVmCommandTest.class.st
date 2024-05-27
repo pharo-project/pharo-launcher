@@ -1,25 +1,26 @@
 Class {
-	#name : #PhLUpdateVmCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLUpdateVmCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLUpdateVmCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestVmPresenter new
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLUpdateVmCommandTest >> tearDown [
 	PhLTestVirtualMachineManager reset.
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 	| command fooVmName vms vmFolderEntries |
 	command := PhLUpdateVmCommand new.
@@ -44,7 +45,7 @@ PhLUpdateVmCommandTest >> testCanUpdateManyVms [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLUpdateVmCommandTest >> testCanUpdateOneVm [
 	| command vms vmFolderEntries |
 	command := PhLUpdateVmCommand new.

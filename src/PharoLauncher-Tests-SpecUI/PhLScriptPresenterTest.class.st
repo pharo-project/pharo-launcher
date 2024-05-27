@@ -1,6 +1,6 @@
 Class {
-	#name : #PhLScriptPresenterTest,
-	#superclass : #TestCase,
+	#name : 'PhLScriptPresenterTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'application',
@@ -8,10 +8,11 @@ Class {
 		'file',
 		'window'
 	],
-	#category : #'PharoLauncher-Tests-SpecUI'
+	#category : 'PharoLauncher-Tests-SpecUI',
+	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLScriptPresenterTest >> setUp [
 	super setUp.
 	scriptFolder := FileSystem memory root.
@@ -19,7 +20,7 @@ PhLScriptPresenterTest >> setUp [
 	self setUpPresenter.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLScriptPresenterTest >> setUpPresenter [
 	application := PhLTestApplication new.
 	presenter := PhLScriptPresenter
@@ -27,13 +28,13 @@ PhLScriptPresenterTest >> setUpPresenter [
 		             model: scriptFolder.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLScriptPresenterTest >> tearDown [ 
 	window ifNotNil: [ window delete ].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testCanAddNewScript [
 	application requestAnswer: 'bar.st'.
 	self
@@ -48,7 +49,7 @@ PhLScriptPresenterTest >> testCanAddNewScript [
 	self assert: (scriptFolder / 'foo.st') exists.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testCanRemoveScript [
 	self
 		assert: scriptFolder files size 
@@ -63,7 +64,7 @@ PhLScriptPresenterTest >> testCanRemoveScript [
 		equals: 0.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testCanSaveScript [
 
 	presenter selectScript: file.
@@ -76,7 +77,7 @@ PhLScriptPresenterTest >> testCanSaveScript [
 		equals: 'bar'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 
 	self
@@ -90,7 +91,7 @@ PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 		equals: 1.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testNewScriptEndsWithStExtension [
 
 	application requestAnswer: 'bar'.
@@ -106,7 +107,7 @@ PhLScriptPresenterTest >> testNewScriptEndsWithStExtension [
 	self assert: (scriptFolder / 'bar.st') exists.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testSaveScriptUsingKeybind [
 	presenter selectScript: file.
 	presenter fileEditor text: 'bar'.

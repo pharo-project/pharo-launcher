@@ -1,24 +1,25 @@
 Class {
-	#name : #PhLCreateTemplateFromImageTest,
-	#superclass : #TestCase,
+	#name : 'PhLCreateTemplateFromImageTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'template'
 	],
-	#category : #'PharoLauncher-Tests-Functional'
+	#category : 'PharoLauncher-Tests-Functional',
+	#package : 'PharoLauncher-Tests-Functional'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLCreateTemplateFromImageTest class >> defaultTimeLimit [
 	^ 1 minute
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCreateTemplateFromImageTest >> tearDown [
 	template ifNotNil: [ template zipArchive ensureDelete ].
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateTemplateFromImageTest >> testCanCreateATemplateFromImage [
 	| image templateName templateRepository zipMemberNames fs fileNames |
 	

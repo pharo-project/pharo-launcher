@@ -2,12 +2,14 @@
 Copy the command used to launch the selected image to the system clipboard.
 "
 Class {
-	#name : #PhLCopyLaunchCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLCopyLaunchCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCopyLaunchCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallCopyIcon;
@@ -15,13 +17,13 @@ PhLCopyLaunchCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCopyLaunchCommand >> execute [
 	Clipboard clipboardText: 
 		self imagesPresenter selectedLaunchConfiguration commandString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCopyLaunchCommand >> initialize [
 	super initialize.
 	self name: 'Copy launch command'

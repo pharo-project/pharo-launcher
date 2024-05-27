@@ -1,6 +1,6 @@
-Extension { #name : #FTTableMorph }
+Extension { #name : 'FTTableMorph' }
 
-{ #category : #'*PharoLauncher-100Compatibility' }
+{ #category : '*PharoLauncher-100Compatibility' }
 FTTableMorph >> alternateRowsColor [
 	self container alternateRowsColor
 ]

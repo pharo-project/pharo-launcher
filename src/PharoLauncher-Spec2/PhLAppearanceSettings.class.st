@@ -3,12 +3,13 @@ I provide Appearance seetings
 for the PhLSettingsBrowser (pragma pharoLauncherSettings).
 "
 Class {
-	#name : #PhLAppearanceSettings,
-	#superclass : #Object,
-	#category : #'PharoLauncher-Spec2'
+	#name : 'PhLAppearanceSettings',
+	#superclass : 'Object',
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [ 
 	<pharoLauncherSettings>
 	(aBuilder group: #appearance)
@@ -24,7 +25,7 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 				domainValues: PolymorphSystemSettings uiThemeClassChoices. ]
 ]
 
-{ #category : #settings }
+{ #category : 'settings' }
 PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
 	<pharoLauncherSettings>
 	(aBuilder group: #standardFonts)
@@ -35,12 +36,12 @@ PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
 		order: 4.
 ]
 
-{ #category : #morphic }
+{ #category : 'morphic' }
 PhLAppearanceSettings class >> uiThemeClass [
 	^ PolymorphSystemSettings uiThemeClass
 ]
 
-{ #category : #morphic }
+{ #category : 'morphic' }
 PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
 	PolymorphSystemSettings uiThemeClass: aUIThemeClass
 ]

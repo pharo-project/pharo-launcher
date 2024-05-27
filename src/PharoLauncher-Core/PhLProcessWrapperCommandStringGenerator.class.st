@@ -2,22 +2,24 @@
 I'm a visitor used to generate a command string out of the given PhLProcessWrapper instance.
 "
 Class {
-	#name : #PhLProcessWrapperCommandStringGenerator,
-	#superclass : #OSPlatformVisitor,
+	#name : 'PhLProcessWrapperCommandStringGenerator',
+	#superclass : 'OSPlatformVisitor',
 	#instVars : [
 		'processWrapper',
 		'sequenceSeparator',
 		'shellCommandBlock'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapperCommandStringGenerator >> processWrapper: aPhLProcessWrapper [
 	processWrapper := aPhLProcessWrapper 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLProcessWrapperCommandStringGenerator >> visitGeneric: aPlatform [
 	| commandLine |
 	commandLine := processWrapper workingDirectory 
@@ -32,19 +34,19 @@ PhLProcessWrapperCommandStringGenerator >> visitGeneric: aPlatform [
 
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLProcessWrapperCommandStringGenerator >> visitMacOS: aPlatform [
 	^ self visitUnix: aPlatform
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLProcessWrapperCommandStringGenerator >> visitUnix: aPlatform [
 	sequenceSeparator := ' && '.
 	shellCommandBlock := [ :commandLine | 'bash -c ''{1}''' format: { commandLine } ].
 	^ self visitGeneric: aPlatform
 ]
 
-{ #category : #visiting }
+{ #category : 'visiting' }
 PhLProcessWrapperCommandStringGenerator >> visitWindows: aPlatform [
 	sequenceSeparator := ' & '.
 	shellCommandBlock := [ :commandLine | 'C:\Windows\System32\cmd.exe /C ', commandLine surroundedByDoubleQuotes ].

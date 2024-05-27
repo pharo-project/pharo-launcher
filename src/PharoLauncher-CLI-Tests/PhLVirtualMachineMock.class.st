@@ -2,8 +2,8 @@
 Only usefull for the tests, is usefull to create ""fake"" virtual machines. 
 "
 Class {
-	#name : #PhLVirtualMachineMock,
-	#superclass : #Object,
+	#name : 'PhLVirtualMachineMock',
+	#superclass : 'Object',
 	#instVars : [
 		'id',
 		'isUpdated',
@@ -12,10 +12,11 @@ Class {
 		'lastUpdateTime',
 		'downloadUrl'
 	],
-	#category : #'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock class >> atRandom [
 	|randomTimeBlock attrArray|
 	
@@ -37,98 +38,98 @@ PhLVirtualMachineMock class >> atRandom [
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock class >> id: aString [
 	^ self atRandom id: aString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> downloadUrl [
 
 	^ downloadUrl 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> downloadUrl: anUrl [
 
 	downloadUrl := anUrl
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> id [ 
    ^id
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> id: aString [
 	id := aString
 ]
 
-{ #category : #instance }
+{ #category : 'instance' }
 PhLVirtualMachineMock >> initialize [ 
 	super initialize.
 	self isDeleted: false.
 	self isUpdated: false
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isDeleted [
 	^ isDeleted
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isDeleted: aBoolean [
 	isDeleted := aBoolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isUpdated [
 	^ isUpdated
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isUpdated: aboolean [
 	isUpdated := aboolean
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isValid [ 
 
 	^ isValid 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isValid: aBoolean [
 
 	isValid := aBoolean
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> lastUpdateTime [
 
 	^ lastUpdateTime 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> lastUpdateTime: aDateTime [
 
 	lastUpdateTime := aDateTime 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> lastUpdateTimeDescription [
 
 	^ lastUpdateTime asString
 ]
 
-{ #category : #instance }
+{ #category : 'instance' }
 PhLVirtualMachineMock >> removeFromSystem [
 	self isDeleted: true.
    
 ]
 
-{ #category : #instance }
+{ #category : 'instance' }
 PhLVirtualMachineMock >> updateFromUrl [
 	 self isUpdated: true.
 ]

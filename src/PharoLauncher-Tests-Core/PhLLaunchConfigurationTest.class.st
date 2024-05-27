@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLLaunchConfigurationTest,
-	#superclass : #PhLImageTest,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLLaunchConfigurationTest',
+	#superclass : 'PhLImageTest',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> newVMWith: bytes [
 
 	| file |
@@ -13,7 +14,7 @@ PhLLaunchConfigurationTest >> newVMWith: bytes [
 	^ file
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> newVm: id exeHeader: bytes [
 
 	| vmFile |
@@ -25,7 +26,7 @@ PhLLaunchConfigurationTest >> newVm: id exeHeader: bytes [
 		yourself
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 	^ (PhLVirtualMachine id: '80-x64-headless')
 			beHeadless;
@@ -35,14 +36,14 @@ PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 			yourself
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> stripExportFrom: arguments [ 
 	^ arguments first = 'export'
 		ifTrue: [ self stripExportFrom: (arguments allButFirst: 3) "export foo=bar &&" ]
 		ifFalse: [ arguments ]
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCanBeLaunchedWhenVmAvailable [
 	| launchConfig |
 	
@@ -52,7 +53,7 @@ PhLLaunchConfigurationTest >> testCanBeLaunchedWhenVmAvailable [
 	self assert: launchConfig canBeLaunched
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 	| launchConfig vm |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
@@ -65,7 +66,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 		equals: image pharoVersion, '-x64'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 	| launchConfig vm |
 	image pharoVersion: '770'.
@@ -79,7 +80,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 		equals: '770-x64'.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 	| launchConfig deserializedConfig |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
@@ -104,7 +105,7 @@ PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 		equals: launchConfig vm
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectureExpected [
 	| launchConfig vm |
 	
@@ -117,7 +118,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectu
 	self deny: launchConfig canBeLaunched
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectureExpected [
 	| launchConfig vm |
 	
@@ -129,7 +130,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectu
 	self deny: launchConfig canBeLaunched
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectureDetected [
 	| launchConfig vm |
 	
@@ -143,7 +144,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectu
 		
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCannotLaunchWhenVmFoundNotExecutable [
 	| launchConfig vm |
 	
@@ -155,7 +156,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenVmFoundNotExecutable [
 	self deny: launchConfig canBeLaunched
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCannotLaunchWhenVmNotValidForArchitecture [
 	| launchConfig |
 	
@@ -167,7 +168,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenVmNotValidForArchitecture [
 	self deny: launchConfig canBeLaunched
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptIsNil [
 	| command launchConfig arguments |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -185,7 +186,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScr
 	self deny: (arguments includes: 'eval').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptShouldNotBeRun [
 	| command launchConfig arguments |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -206,7 +207,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScr
 	self deny: (arguments includesAny: #('eval' '"/foo.st')).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -221,7 +222,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	self assert: (command arguments includesAll: #( 1 2 3 )).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasInitializationScriptArgumentsIfInitializationScriptNotNil [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -238,7 +239,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasInitializationScriptArgum
 	 	hasSameElements: #('eval' '"/foo.st"').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasVmArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -255,7 +256,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasVmArguments [
 	self assert: (command arguments includes: PhLVirtualMachine headlessOptionString)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferencesFlag [
 	| command launchConfig |
 	image := PhLImage example.
@@ -270,7 +271,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWitSettingsDoesNotHaveNoPreferences
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferencesFlagIfNotSupportedByImage [
 	| command launchConfig |
 	image := PhLImage example32.
@@ -288,7 +289,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsDoesNotHavePreferenc
 	self deny: (command arguments includes: '--no-default-preferences')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag [
 	| command launchConfig |
 	image := PhLImage example.
@@ -304,7 +305,7 @@ PhLLaunchConfigurationTest >> testImageLaunchWithoutSettingsHasNoPreferencesFlag
 	self assert: (command arguments includes: '--no-default-preferences')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
 	| dir config configurator |
 	dir := fs / 'foo' / 'bar'.
@@ -317,7 +318,7 @@ PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
 	self assert: configurator workingDirectory equals: dir
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 	| launchConfig |
 	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
@@ -328,7 +329,7 @@ PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 		identicalTo: launchConfig vm manager
 ]
 
-{ #category : #'tests - canBeLaunched' }
+{ #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitectureDetected [
 	| launchConfig vm |
 	
@@ -343,7 +344,7 @@ PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitect
 			raise: PhLTranslatedModeWarning ]
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> useArmOsArchitectureDuring: aBlock [
 	
 	self 
@@ -352,13 +353,13 @@ PhLLaunchConfigurationTest >> useArmOsArchitectureDuring: aBlock [
 		during: aBlock
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> useIntel64OsArchitectureDuring: aBlock [
 	
 	self useOsArchitecture: 'x86_64' during: aBlock.
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> useOsArchitecture: architectureId during: aBlock [
 
 	self
@@ -367,7 +368,7 @@ PhLLaunchConfigurationTest >> useOsArchitecture: architectureId during: aBlock [
 		during: aBlock
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> useOsPlatform: osPlatform architecture: architectureId during: aBlock [
 	
 	| newOsPlatform |
@@ -377,28 +378,28 @@ PhLLaunchConfigurationTest >> useOsPlatform: osPlatform architecture: architectu
 	OSPlatform usePlatform: newOsPlatform new during: aBlock
 ]
 
-{ #category : #'tests - data' }
+{ #category : 'tests - data' }
 PhLLaunchConfigurationTest >> vmMac32bitHeader [
 
 	^ #[206 250 237 254 7 0 0 0 3 0 0 0 2 0 0 0 26 0 0 0 128 14 0 0 133 0 0 1 1 0 0 0
 56 0 0 0 95 95 80 65 71 69 90 69 82 79 0 0 0 0]
 ]
 
-{ #category : #'tests - data' }
+{ #category : 'tests - data' }
 PhLLaunchConfigurationTest >> vmMac64bitHeader [
 	"for Intel processor"
 	^ #[207 250 237 254 7 0 0 1 3 0 0 0 2 0 0 0 18 0 0 0 128 7 0 0 133 0 32 0 0 0 0 0
 25 0 0 0 72 0 0 0 95 95 80 65 71 69 90 69 82 79]
 ]
 
-{ #category : #'tests - data' }
+{ #category : 'tests - data' }
 PhLLaunchConfigurationTest >> vmMacArm64bitHeader [
 	"for ARM processor"
 	^ #[207 250 237 254 12 0 0 1 0 0 0 0 2 0 0 0 21 0 0 0 80 6 0 0 133 0 32 0 0 0 0 0
 25 0 0 0 72 0 0 0 95 95 80 65 71 69 90 69 82 79]
 ]
 
-{ #category : #writing }
+{ #category : 'writing' }
 PhLLaunchConfigurationTest >> writeIntoVersionFile: aString [
 	(fs / PhLImage versionFileName)
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: aString ]

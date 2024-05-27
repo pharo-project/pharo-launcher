@@ -2,12 +2,13 @@
 A PhLImageProcessListCliCommandTest is a test class for testing the behavior of PhLImageProcessListCliCommand
 "
 Class {
-	#name : #PhLProcessListCliCommandTest,
-	#superclass : #PhLProcessCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLProcessListCliCommandTest',
+	#superclass : 'PhLProcessCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessListCliCommandTest >> testExecute [ 
 
 	self runCommand: #('launcher' 'process' 'list').
@@ -18,7 +19,7 @@ PhLProcessListCliCommandTest >> testExecute [
 	self assert: (self outputString isEmpty or: [ self outputString includesSubstring: 'Pharo' caseSensitive: false])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessListCliCommandTest >> testImageProcesListFrom [
 
 	| processListCmd  resultArray |
@@ -44,7 +45,7 @@ PhLProcessListCliCommandTest >> testImageProcesListFrom [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessListCliCommandTest >> testOsShellArgArray [
 
 	| processListCmd argArray |

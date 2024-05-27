@@ -1,1 +1,1 @@
-Package { #name : #'PharoLauncher-Pharo9ToRemove-FileLocator' }
+Package { #name : 'PharoLauncher-Pharo9ToRemove-FileLocator' }

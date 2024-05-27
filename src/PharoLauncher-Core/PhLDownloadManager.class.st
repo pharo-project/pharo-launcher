@@ -4,8 +4,8 @@ I present a simple interface to an HTTP library.
 My semaphore takes care of error handling when multiple downloads occur in parallel.
 "
 Class {
-	#name : #PhLDownloadManager,
-	#superclass : #Object,
+	#name : 'PhLDownloadManager',
+	#superclass : 'Object',
 	#instVars : [
 		'errors',
 		'semaphore'
@@ -13,25 +13,27 @@ Class {
 	#classVars : [
 		'Default'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadManager class >> default [
 	^ Default ifNil: [ self setDefault: self new ]
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadManager class >> reset [
 	Default := nil
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadManager class >> setDefault: aDownloadManager [
 	^ Default := aDownloadManager
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	| tmpFile |
 
@@ -43,7 +45,7 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	tmpFile renameTo: destinationFile basename.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 	"Inform user about download progression"
 
@@ -59,7 +61,7 @@ PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 					progress resume ] ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadManager >> displayProgressDuring: workBlock [
 	"Inform user about download progression"
 
@@ -68,7 +70,7 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 		during: workBlock
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadManager >> download: url toFile: destinationFile [
 	[ self basicDownload: url toFile: destinationFile ]
 	on: PhLDownloadError 
@@ -80,14 +82,14 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 				openModal. ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadManager >> downloadFailureForUrl: url message: errorMessage [
 
 	semaphore critical: [ errors add: url ].
 	PhLDownloadError signalUrl: url message: errorMessage.
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadManager >> downloadToPositionableStream: url mimeType: mimeType [
 	"Unfortunately, Zinc (and HTTP in general) doesn't support positionable streams so well. So we have to get the whole content as a collection and stream over it."
 
@@ -102,7 +104,7 @@ PhLDownloadManager >> downloadToPositionableStream: url mimeType: mimeType [
 	^ content readStream
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLDownloadManager >> initialize [
 	super initialize.
 	semaphore := Semaphore forMutualExclusion.
@@ -110,7 +112,7 @@ PhLDownloadManager >> initialize [
 	self reset
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLDownloadManager >> newHTTPClientForUrl: url [
 	^ ZnClient new
 		signalProgress: true;
@@ -121,17 +123,17 @@ PhLDownloadManager >> newHTTPClientForUrl: url [
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLDownloadManager >> numberOfErrors [
 	^ errors size
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 PhLDownloadManager >> reset [
 	errors removeAll
 ]
 
-{ #category : #announcements }
+{ #category : 'announcements' }
 PhLDownloadManager >> whenErrorAddedDo: aBlock [
 	errors whenChangedDo: aBlock 
 

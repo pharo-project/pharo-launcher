@@ -1,20 +1,21 @@
 Class {
-	#name : #PhLVirtualMachineManagerTest,
-	#superclass : #TestCase,
+	#name : 'PhLVirtualMachineManagerTest',
+	#superclass : 'TestCase',
 	#traits : 'TPhLVirtualMachineTestUtil',
 	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
 	#instVars : [
 		'vmStoreRoot'
 	],
-	#category : #'PharoLauncher-Tests-Download'
+	#category : 'PharoLauncher-Tests-Download',
+	#package : 'PharoLauncher-Tests-Download'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 PhLVirtualMachineManagerTest class >> availaibleVirtualMachines [
 	Smalltalk vm imageVersionNumber
 ]
 
-{ #category : #'expected results' }
+{ #category : 'expected results' }
 PhLVirtualMachineManagerTest >> currentImageVersion [
 	
 	"This test must be rewritten to a controlable version not depending on current image version"
@@ -27,7 +28,7 @@ PhLVirtualMachineManagerTest >> currentImageVersion [
 				, SystemVersion current minor asString ]
 ]
 
-{ #category : #utilities }
+{ #category : 'utilities' }
 PhLVirtualMachineManagerTest >> getImageHeader: anImageUrl [
 	| archive image |
 	archive := ZipArchive new 
@@ -37,14 +38,14 @@ PhLVirtualMachineManagerTest >> getImageHeader: anImageUrl [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLVirtualMachineManagerTest >> setUp [
 
 	super setUp.
 	vmStoreRoot := FileSystem memory root.
 ]
 
-{ #category : #'input data' }
+{ #category : 'input data' }
 PhLVirtualMachineManagerTest >> sixtyFourBitsHeader [
 	" too long to process this request
 		^ self getImageHeader: 'http://files.pharo.org/image/60/latest-64.zip'
@@ -56,7 +57,7 @@ PhLVirtualMachineManagerTest >> sixtyFourBitsHeader [
 	^ #[181 9 1 0 128 0 0 0 112 37 248 2 0 0 0 0 0 64 128 0] readStream "truncated image file"
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testCanDetect32BitsImage [
 	| version |
 	self timeLimit: 60 seconds.
@@ -64,7 +65,7 @@ PhLVirtualMachineManagerTest >> testCanDetect32BitsImage [
 	self assert: (PhLVirtualMachineManager is32bits: version)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testCanDetect64BitsImage [
 	| version |
 	self timeLimit: 60 seconds.
@@ -72,7 +73,7 @@ PhLVirtualMachineManagerTest >> testCanDetect64BitsImage [
 	self assert: (PhLVirtualMachineManager is64bits: version)
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testCanGetAvailableVirtualMachinesEvenIfVMExecutableNotFound [
 	| vmManager vms |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
@@ -89,7 +90,7 @@ PhLVirtualMachineManagerTest >> testCanGetAvailableVirtualMachinesEvenIfVMExecut
 	self assert: vms size equals: 2.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testCanGetImageFormatNumber [
 	| version |
 	version := PhLVirtualMachineManager imageFormatNumberFromFile: Smalltalk image lastImagePath.
@@ -100,7 +101,7 @@ PhLVirtualMachineManagerTest >> testCanGetImageFormatNumber [
 		equals: Smalltalk imageFormatVersion
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testCanGetImageVersionFromFile [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
@@ -113,7 +114,7 @@ PhLVirtualMachineManagerTest >> testCanGetImageVersionFromFile [
 		equals: '60'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testGetExceptionWhenRunningImageVersionFromFileAndFileIsAbsent [
 	| vmManager |
 	vmManager := PhLVirtualMachineManager forImage: Smalltalk image lastImagePath.
@@ -124,7 +125,7 @@ PhLVirtualMachineManagerTest >> testGetExceptionWhenRunningImageVersionFromFileA
 		raise: PhLImageVersionFileNotFound 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testPharo50PreSpurImageUrlIsCorrect [
 	| url |
 	url := PhLVirtualMachineManager new
@@ -134,7 +135,7 @@ PhLVirtualMachineManagerTest >> testPharo50PreSpurImageUrlIsCorrect [
 	self assert: (self replaceOSByMacIn: url) equals: 'https://files.pharo.org/get-files/50-preSpur/pharo-mac-stable.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testPharo60VmUrlIsCorrect [
 	| url |
 	url := PhLVirtualMachineManager new
@@ -144,7 +145,7 @@ PhLVirtualMachineManagerTest >> testPharo60VmUrlIsCorrect [
 	self assert: (self replaceOSByMacIn: url) equals: 'https://files.pharo.org/get-files/60/pharo-mac-stable.zip'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testPharo70Vm64BitsUrlIsCorrect [
 	| url |
 	url := (PhLVirtualMachineManager new 
@@ -156,7 +157,7 @@ PhLVirtualMachineManagerTest >> testPharo70Vm64BitsUrlIsCorrect [
 		equals: 'https://files.pharo.org/get-files/70/pharo64-mac-stable.zip' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testPharo70VmUrlIsCorrect [
 	| url |
 	url := (PhLVirtualMachineManager new 
@@ -168,7 +169,7 @@ PhLVirtualMachineManagerTest >> testPharo70VmUrlIsCorrect [
 		equals: 'https://files.pharo.org/get-files/70/pharo-mac-stable.zip' 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLVirtualMachineManagerTest >> testPreSpurImageUrlIsCorrect [
 	| url |
 	url := (PhLVirtualMachineManager new 
@@ -180,7 +181,7 @@ PhLVirtualMachineManagerTest >> testPreSpurImageUrlIsCorrect [
 		equals: 'https://files.pharo.org/get-files/40/pharo-mac-stable.zip' 
 ]
 
-{ #category : #'input data' }
+{ #category : 'input data' }
 PhLVirtualMachineManagerTest >> thirtyTwoBitsHeader [
 	" too long to process this request
 		^ self getImageHeader: 'http://files.pharo.org/image/60/latest.zip'
@@ -191,7 +192,7 @@ PhLVirtualMachineManagerTest >> thirtyTwoBitsHeader [
 	^ #[121 25 0 0 64 0 0 0 8 84 50 2 112 76 76 10 216 156 254 11] readStream "truncated image file"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLVirtualMachineManagerTest >> vmStoreRoot [
 
 	^ vmStoreRoot

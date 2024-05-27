@@ -3,8 +3,8 @@ I can be used to find the URL of a Pharo image given the Pharo version and a bui
 It is generally useful to detect problems in a specific Pharo image build.
 "
 Class {
-	#name : #PhLImageFinder,
-	#superclass : #Object,
+	#name : 'PhLImageFinder',
+	#superclass : 'Object',
 	#instVars : [
 		'pharoVersion',
 		'build',
@@ -12,22 +12,24 @@ Class {
 		'pullRequest',
 		'inriaCIArtifactUrl'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageFinder class >> buildsForPharoVersion: pharoVersion [
 
 	^ (self pharoVersion: pharoVersion build: '1') buildNumbers
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder class >> defaultArchitectureString [
 	"pattern used to search default templates"
 	^ '64bit'
 ]
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageFinder class >> findLatestPharoDevelopmentVersion [
 
 	| response candidates |
@@ -48,7 +50,7 @@ PhLImageFinder class >> findLatestPharoDevelopmentVersion [
 	^ (candidates collect: [ :aString | aString allButLast asNumber ]) max asString
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageFinder class >> fromInriaCIPullRequest: pullRequestString [
 
 	^ self new
@@ -56,26 +58,26 @@ PhLImageFinder class >> fromInriaCIPullRequest: pullRequestString [
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageFinder class >> pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString [
 	^ self new
 		pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString;
 		yourself
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLImageFinder class >> pharoVersion: aPharoVersionString sha: aPharoImageSha [
 	^ self new
 		pharoVersion: aPharoVersionString sha: aPharoImageSha;
 		yourself
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> buildNumber [
 	^ build
 ]
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageFinder >> buildNumbers [
 
 	| matcher imagesListing builds |
@@ -87,13 +89,13 @@ PhLImageFinder >> buildNumbers [
 	^ builds sorted
 ]
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageFinder >> findTemplateUrlForRemoteArtifact [
 
 	^ (self pullRequestBuildArtifactsUrlString, self templateArtifactName) asUrl
 ]
 
-{ #category : #'finding/searching' }
+{ #category : 'finding/searching' }
 PhLImageFinder >> findUrl [
 	| imagesListing templates matcher buildOrShaFilter imageListingUrl |
 	
@@ -114,30 +116,30 @@ PhLImageFinder >> findUrl [
 	^ imageListingUrl , (matcher subexpression: 2)
 ]
 
-{ #category : #fetching }
+{ #category : 'fetching' }
 PhLImageFinder >> htmlListingFor: url [
 	^ ZnClient new get: url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> imageHtmlListingUrl [
 	^ 'https://files.pharo.org/image/', self pharoVersion , '0/'
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageFinder >> imageMatcherWithImageRegex: imageRegex [
 	
 	^ ('.*href="(Pharo-?[0-9]+[.0]*-(SNAPSHOT|alpha)\.', imageRegex , '[^"]*64bit\.zip)"') asRegex.
 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> inriaCIArtifactUrl [
 	
 	^ inriaCIArtifactUrl ifNil: [ inriaCIArtifactUrl := self findTemplateUrlForRemoteArtifact  ] 
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageFinder >> pharoPRBuildArtifactsHtml [
 
 	"returns html page with build artifacts content for given PR"
@@ -148,24 +150,24 @@ PhLImageFinder >> pharoPRBuildArtifactsHtml [
 		  get
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> pharoVersion [
 	^ pharoVersion
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageFinder >> pharoVersion: aPharoVersionString build: aPharoImageBuildNumberString [
 	pharoVersion := aPharoVersionString.
 	build := aPharoImageBuildNumberString
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageFinder >> pharoVersion: aPharoVersionString sha: aPharoImageSha [
 	pharoVersion := aPharoVersionString.
 	sha := aPharoImageSha 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> pharoVersionForImageListing [
 	
 	^ pharoVersion asNumber < 10
@@ -173,31 +175,31 @@ PhLImageFinder >> pharoVersionForImageListing [
 		ifFalse: [ pharoVersion ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> pullRequest [
 	
 	^ pullRequest 
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> pullRequest: aString [
 	
 	pullRequest := aString
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageFinder >> pullRequestBuildArtifactsUrlString [
 
 	^ 'https://ci.inria.fr/pharo-ci-jenkins2/job/Test%20pending%20pull%20request%20and%20branch%20Pipeline/view/change-requests/job/PR-{1}/lastSuccessfulBuild/artifact/build/bootstrap-cache/' 
 		  format: { self pullRequest }
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageFinder >> sha [ 
 	^ sha
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageFinder >> templateArtifactName [
 
 	| candidates |

@@ -1,6 +1,6 @@
-Extension { #name : #FileLocator }
+Extension { #name : 'FileLocator' }
 
-{ #category : #'*PharoLauncher-100Compatibility' }
+{ #category : '*PharoLauncher-100Compatibility' }
 FileLocator >> asFileLocatorOrReference [
 	^ self
 ]

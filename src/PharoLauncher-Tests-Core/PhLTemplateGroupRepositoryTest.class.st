@@ -2,12 +2,13 @@
 A PhLTemplateGroupRepositoryTest is a test class for testing the behavior of PhLTemplateGroupRepository
 "
 Class {
-	#name : #PhLTemplateGroupRepositoryTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLTemplateGroupRepositoryTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupRepositoryTest >> testCategoryNamedWithExistingCategoryShouldReturnCategory [
 	| repository templateCategory |
 	repository := PhLTemplateTestRepository new.
@@ -17,7 +18,7 @@ PhLTemplateGroupRepositoryTest >> testCategoryNamedWithExistingCategoryShouldRet
 	self assert: templateCategory equals: repository remoteTemplatesGroup 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupRepositoryTest >> testCategoryNamedWithNonExistingCategoryShouldRaiseNotFound [
 	| repository |
 	repository := PhLTemplateTestRepository new.
@@ -27,7 +28,7 @@ PhLTemplateGroupRepositoryTest >> testCategoryNamedWithNonExistingCategoryShould
 		raise: NotFound
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupRepositoryTest >> testTemplateNamedWithExistingTemplateAndCategoryShouldReturnTemplate [
 	| repository template foundTemplate|
 	repository := PhLTemplateTestRepository new.
@@ -38,7 +39,7 @@ PhLTemplateGroupRepositoryTest >> testTemplateNamedWithExistingTemplateAndCatego
 	self assert: foundTemplate equals: template
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupRepositoryTest >> testTemplateNamedWithNonExistingCategoryShouldRaiseNotFound [
 	| repository template |
 	repository := PhLTemplateTestRepository new.
@@ -49,7 +50,7 @@ PhLTemplateGroupRepositoryTest >> testTemplateNamedWithNonExistingCategoryShould
 		raise: NotFound
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupRepositoryTest >> testTemplateNamedWithNonExistingTemplateShouldRaiseNotFound [
 	| repository |
 	repository := PhLTemplateTestRepository new.

@@ -2,19 +2,20 @@
 Image repository which use a filesystem in memory used for the tests. 
 "
 Class {
-	#name : #PhLTestImageRepository,
-	#superclass : #PhLDirectoryBasedImageRepository,
-	#category : #'PharoLauncher-Tests-Commands'
+	#name : 'PhLTestImageRepository',
+	#superclass : 'PhLDirectoryBasedImageRepository',
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestImageRepository >> createImageNamed: aName [
 	^ self createImageNamed: aName in:  (self baseDirectory / aName)
 	
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestImageRepository >> createImageNamed: aName in: aFolder [
 	| imageFile |
 	imageFile := aFolder / (aName , '.image').
@@ -29,12 +30,12 @@ PhLTestImageRepository >> createImageNamed: aName in: aFolder [
 
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLTestImageRepository >> hasImageOnFileSystemNamed: aName [
 	^ self baseDirectory / aName / (aName , '.image')
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestImageRepository >> initialize [
 
 	super initialize.
@@ -44,7 +45,7 @@ PhLTestImageRepository >> initialize [
 
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTestImageRepository >> singleImageName [
 	^ 'TestImage'
 	

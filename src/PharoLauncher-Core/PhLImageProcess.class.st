@@ -2,18 +2,20 @@
 I represent running Pharo image process. I have a known PID of running Pharo image process, image name, vm path, image Path start datetime of process. I am used mainly for pretty printing to user output.
 "
 Class {
-	#name : #PhLImageProcess,
-	#superclass : #PhLObject,
+	#name : 'PhLImageProcess',
+	#superclass : 'PhLObject',
 	#instVars : [
 		'pid',
 		'vmPath',
 		'imagePath',
 		'startDateTime'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageProcess class >> listPrintAttributeBlocks [
 
 	^ {
@@ -24,13 +26,13 @@ PhLImageProcess class >> listPrintAttributeBlocks [
 		  [ :imgProcess | imgProcess startDateTime ] }
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLImageProcess class >> listPrintAttributeLabels [
 
 	^ #( 'PID' 'Image name' 'VM path' 'Image path' 'Date/Time started' )
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> imageName [
 
 	|fileName|
@@ -40,19 +42,19 @@ PhLImageProcess >> imageName [
 	^ fileName  copyUpTo: $.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> imagePath [
 
 	^ imagePath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> imagePath: anObject [
 
 	imagePath := anObject
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLImageProcess >> initializeFrom: processLineArray [
 
 	self pid: processLineArray first.
@@ -61,37 +63,37 @@ PhLImageProcess >> initializeFrom: processLineArray [
 	self startDateTime: processLineArray fourth.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> pid [
 
 	^ pid
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> pid: anObject [
 
 	pid := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> startDateTime [
 
 	^ startDateTime
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> startDateTime: anObject [
 
 	startDateTime := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> vmPath [
 
 	^ vmPath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLImageProcess >> vmPath: anObject [
 
 	vmPath := anObject

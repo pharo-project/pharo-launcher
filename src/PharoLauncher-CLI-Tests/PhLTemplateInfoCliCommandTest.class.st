@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLTemplateInfoCliCommandTest,
-	#superclass : #PhLTemplatesCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLTemplateInfoCliCommandTest',
+	#superclass : 'PhLTemplatesCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
@@ -17,7 +18,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoShouldSucceed [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucceed [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	
@@ -26,7 +27,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTemplateCategoryShouldSucce
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveErrorMessage [
 	self createOfficialTemplatesCategoryWithSomeTemplates.
 	self runCommand: #('launcher' 'template' 'info' 'someTemplate' 'tooManyArguments').
@@ -36,7 +37,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithTooManyArgumentsShouldGiveE
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGiveBadCategoryMessage [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
@@ -47,7 +48,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWithWrongTemplateNameShouldGive
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
 	self createOfficialTemplatesCategoryWithSomeTemplates. 
 	
@@ -56,7 +57,7 @@ PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateName [
 	self assert: (self errorString includesSubstring: 'enter a correct template name')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateInfoCliCommandTest >> testTemplateInfoWrongTemplateNameWithCategory [
 	self addLocalTemplateNamed: 'fakeTemplate'.
 	

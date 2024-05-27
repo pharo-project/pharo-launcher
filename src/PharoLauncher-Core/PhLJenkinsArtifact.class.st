@@ -8,48 +8,50 @@ Instance Variables
 
 "
 Class {
-	#name : #PhLJenkinsArtifact,
-	#superclass : #Object,
+	#name : 'PhLJenkinsArtifact',
+	#superclass : 'Object',
 	#instVars : [
 		'properties',
 		'parent'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkinsArtifact class >> jsonFields [
 	^ #('relativePath')
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkinsArtifact class >> jsonFieldsQuery [
 	^ $, join: self jsonFields
 ]
 
-{ #category : #protected }
+{ #category : 'protected' }
 PhLJenkinsArtifact class >> jsonName [
 	^ 'artifacts'
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLJenkinsArtifact class >> newWithProperties: json [ 
 	^ self new
 		setProperties: json;
 		yourself
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLJenkinsArtifact >> asTemplate [
 	^ PhLRemoteTemplate name: self fullName url: self url
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> fileExtension [
 	^ self url lastPathSegment copyAfterLast: $.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> fullName [
 	^ self options isEmpty
 		ifTrue: [ self name ]
@@ -69,17 +71,17 @@ PhLJenkinsArtifact >> fullName [
 						<< value ] ] ]
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLJenkinsArtifact >> isPotentialTemplate [
 	^ self fileExtension = 'zip' "In a better world we would distinguish potential images differently"
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> name [
 	^ self relativePath
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> options [
 	"Return a dictionary of the options used to build this artifact (typically the version of the image, the version of the project...)."
 
@@ -87,22 +89,22 @@ PhLJenkinsArtifact >> options [
 	^ parent url jenkinsOptions
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> parent: aBuildOrRun [
 	parent := aBuildOrRun
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> relativePath [
 	^ properties at: 'relativePath'
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLJenkinsArtifact >> setProperties: json [
 	properties := json
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLJenkinsArtifact >> url [
 	"Jenkins JSON API does not assign urls to artifacts. You have to get the url of build or run that defines the artifact (i.e., the artifact's parent)."
 	^ parent url / 'artifact' / self relativePath

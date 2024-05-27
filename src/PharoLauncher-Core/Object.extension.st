@@ -1,6 +1,6 @@
-Extension { #name : #Object }
+Extension { #name : 'Object' }
 
-{ #category : #'*PharoLauncher-Core' }
+{ #category : '*PharoLauncher-Core' }
 Object >> asPhLImage [
 	PhLError signal: 'Unrecognized metadata format'
 ]

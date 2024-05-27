@@ -2,12 +2,14 @@
 Command to reset an image 
 "
 Class {
-	#name : #PhLImageRecreateCliCommand,
-	#superclass : #PhLImageCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLImageRecreateCliCommand',
+	#superclass : 'PhLImageCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - arguments' }
+{ #category : 'command line - arguments' }
 PhLImageRecreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 
 	(aCommandSpec 
@@ -16,24 +18,24 @@ PhLImageRecreateCliCommand class >> addLauncherPositionalsTo: aCommandSpec [
 	implicitMeaning: [:arg :app | self raiseMissingImageToRecreate]
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageRecreateCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #recreate 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLImageRecreateCliCommand class >> launcherCmdDescription [
 
 	^ 'Recreates the local image, the image argument determines the image name to recreate.'
 ]
 
-{ #category : #'error signalling' }
+{ #category : 'error signalling' }
 PhLImageRecreateCliCommand class >> raiseMissingImageToRecreate [
 
 	^ NotFound signal: 'An argument is missing, please specify the image name to recreate.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLImageRecreateCliCommand >> basicExecute [ 
 	
 	self imageRepository recreateImage: self selectedImage

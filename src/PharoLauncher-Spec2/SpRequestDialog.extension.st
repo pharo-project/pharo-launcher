@@ -1,6 +1,6 @@
-Extension { #name : #SpRequestDialog }
+Extension { #name : 'SpRequestDialog' }
 
-{ #category : #'*PharoLauncher-Spec2' }
+{ #category : '*PharoLauncher-Spec2' }
 SpRequestDialog >> request [
 	^ self openModal
 ]

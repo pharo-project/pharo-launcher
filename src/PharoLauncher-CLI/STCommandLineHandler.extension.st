@@ -1,6 +1,6 @@
-Extension { #name : #STCommandLineHandler }
+Extension { #name : 'STCommandLineHandler' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 STCommandLineHandler class >> isResponsibleFor: aCommandLine [
 	" for the pharo launcher if we pass a script with st option the command line handler goes before clap "
 	(aCommandLine includesSubCommand: ClapCommandLineHandler commandName) ifTrue: [ ^ false ].

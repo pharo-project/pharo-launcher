@@ -2,12 +2,13 @@
 A PhLImageKillCliCommandTest is a test class for testing the behavior of PhLImageKillCliCommand
 "
 Class {
-	#name : #PhLProcessKillCliCommandTest,
-	#superclass : #PhLProcessCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLProcessKillCliCommandTest',
+	#superclass : 'PhLProcessCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessKillCliCommandTest >> testHasAllFlag [
 
 	| killCliCommand |
@@ -21,7 +22,7 @@ PhLProcessKillCliCommandTest >> testHasAllFlag [
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessKillCliCommandTest >> testKillArgString [
 
 	| killCliCommand aResult |
@@ -38,7 +39,7 @@ PhLProcessKillCliCommandTest >> testKillArgString [
 	self deny: (aResult includesSubstring: '||').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessKillCliCommandTest >> testKillArgStringWithAllFlag [
 
 	| killCliCommand aResult |
@@ -52,7 +53,7 @@ PhLProcessKillCliCommandTest >> testKillArgStringWithAllFlag [
 	self assert: (aResult includesSubstring: ('grep -v ', (killCliCommand currentVMPid asString))).
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessKillCliCommandTest >> testMissingImageName [
 	self runCommand: #('launcher' 'process' 'kill').
 	
@@ -60,7 +61,7 @@ PhLProcessKillCliCommandTest >> testMissingImageName [
 	self assert: ( self errorString includesSubstring: 'specify the local image name to kill it process')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLProcessKillCliCommandTest >> testOsShellArgArray [
 
 	| killCliCommand  result|

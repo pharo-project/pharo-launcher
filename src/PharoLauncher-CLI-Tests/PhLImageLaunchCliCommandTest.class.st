@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLImageLaunchCliCommandTest,
-	#superclass : #PhLImageCliCommandTest,
-	#category : #'PharoLauncher-CLI-Tests'
+	#name : 'PhLImageLaunchCliCommandTest',
+	#superclass : 'PhLImageCliCommandTest',
+	#category : 'PharoLauncher-CLI-Tests',
+	#package : 'PharoLauncher-CLI-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageNoImageNameAllowsLaunchBySelectingImageInteractively [
 	| image1 image2 |
 	image1 := self addImageNamed: 'myImage1'. "#2"
@@ -23,7 +24,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageNoImageNameAllowsLaunchBySelectin
 	self assert: image2 isLaunched. 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	| image |
 	image := self addImageNamed: 'myImage1'.
@@ -38,7 +39,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageShouldSucceed [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageTooManyArguments [
 
 	| image |
@@ -55,7 +56,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageTooManyArguments [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageWithInitializationScript [
 
 	| image script |
@@ -73,7 +74,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageWithInitializationScript [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageWithNonExistingScriptShouldGiveErrorMessage [
 	| image |
 	image := self addImageNamed: 'myImage1'.
@@ -84,7 +85,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageWithNonExistingScriptShouldGiveEr
 	self assert: (self errorString includesSubstring:  'script for image not found') 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageWithScriptWhithoutStExtentionShouldGiveErrorMessage [
 	| image script |
 	script := Smalltalk imageFile asFileReference.	"need a non st file"
@@ -96,7 +97,7 @@ PhLImageLaunchCliCommandTest >> testLaunchImageWithScriptWhithoutStExtentionShou
 	self assert: (self errorString includesSubstring: 'script has wrong file extension')
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageWrongImageName [
 
 	| image |

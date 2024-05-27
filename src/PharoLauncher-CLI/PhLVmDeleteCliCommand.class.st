@@ -8,23 +8,25 @@ I execute:
 - delete vm based on specified vm name
 "
 Class {
-	#name : #PhLVmDeleteCliCommand,
-	#superclass : #PhLVmCliCommand,
-	#category : #'PharoLauncher-CLI-Commands'
+	#name : 'PhLVmDeleteCliCommand',
+	#superclass : 'PhLVmCliCommand',
+	#category : 'PharoLauncher-CLI-Commands',
+	#package : 'PharoLauncher-CLI',
+	#tag : 'Commands'
 }
 
-{ #category : #'command line - converting' }
+{ #category : 'command line - converting' }
 PhLVmDeleteCliCommand class >> asCliCommand [
 	^ self newLauncherCommandSpec: #delete 
 ]
 
-{ #category : #'command line' }
+{ #category : 'command line' }
 PhLVmDeleteCliCommand class >> launcherCmdDescription [
 
 	^ 'Deletes VM executable from local computer, including dependencies.'
 ]
 
-{ #category : #'command execution' }
+{ #category : 'command execution' }
 PhLVmDeleteCliCommand >> basicExecute [
 
    self findVM removeFromSystem

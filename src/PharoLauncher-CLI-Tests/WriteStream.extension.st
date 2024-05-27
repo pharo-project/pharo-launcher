@@ -1,6 +1,6 @@
-Extension { #name : #WriteStream }
+Extension { #name : 'WriteStream' }
 
-{ #category : #'*PharoLauncher-CLI-Tests' }
+{ #category : '*PharoLauncher-CLI-Tests' }
 WriteStream >> newLine [
 	self nextPutAll: OSPlatform current lineEnding
 ]

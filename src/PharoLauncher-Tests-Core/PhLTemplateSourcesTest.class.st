@@ -1,16 +1,17 @@
 Class {
-	#name : #PhLTemplateSourcesTest,
-	#superclass : #TestCase,
+	#name : 'PhLTemplateSourcesTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'sourcesFile',
 		'defaultPharoLauncherApp',
 		'templateSourcesAnnouncerBackup',
 		'pharoTemplateSourcesUrlBackup'
 	],
-	#category : #'PharoLauncher-Tests-Core'
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplateSourcesTest >> setUp [
 	super setUp.
 	sourcesFile := FileSystem memory / 'templates-sources.test'.
@@ -22,7 +23,7 @@ PhLTemplateSourcesTest >> setUp [
 	PharoLauncherApplication default: PhLTestApplication new.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLTemplateSourcesTest >> tearDown [ 
 	PhLPharoTemplateSources announcer: templateSourcesAnnouncerBackup.
 	PhLPharoTemplateSources basicSourcesUrl: pharoTemplateSourcesUrlBackup.
@@ -30,7 +31,7 @@ PhLTemplateSourcesTest >> tearDown [
 	super tearDown 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
 	| templatesSources1 templatesSources2 |
 	templatesSources1 := (PhLPharoTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
@@ -40,7 +41,7 @@ PhLTemplateSourcesTest >> testAlmostIdenticalTemplateSourcesAreDifferent [
 	self deny: templatesSources1 equals: templatesSources2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testCanCreateInstanceFromAListOfTemplateSource [
 	| tplSources sources |
 	
@@ -53,7 +54,7 @@ PhLTemplateSourcesTest >> testCanCreateInstanceFromAListOfTemplateSource [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 	self deny: sourcesFile exists.
 	
@@ -62,7 +63,7 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 	self assert: sourcesFile exists
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileAbsentWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
 	self deny: sourcesFile exists.
@@ -72,7 +73,7 @@ PhLTemplateSourcesTest >> testGivenUserSourcesFileAbsentWhenAskingUserSourcesThe
 	self assertEmpty: sources
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileWithErrorsWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
@@ -82,7 +83,7 @@ PhLTemplateSourcesTest >> testGivenUserSourcesFileWithErrorsWhenAskingUserSource
 	self assertEmpty: sources
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileWithReferencesToUnknownVariablesWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: '[PhLHTTPListingTemplateGroup{#nonexistingiv:''http://foo.org'',#name:''foo''}]' ].
@@ -92,7 +93,7 @@ PhLTemplateSourcesTest >> testGivenUserSourcesFileWithReferencesToUnknownVariabl
 	self assertEmpty: sources
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 	| templatesSources1 templatesSources2 |
 	templatesSources1 := (PhLTemplateSources withTemplateList: PhLPharoTemplateSources defaultSources) sources.
@@ -104,7 +105,7 @@ PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 	
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSources [
 	| announcements sources |
 	
@@ -128,7 +129,7 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 			self assertEmpty: announcements ]
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testSourcesFileNotFetchIfPresentWhenCallingEnsureSourcesFile [
 	sourcesFile ensureCreateFile.	
 	
@@ -139,7 +140,7 @@ PhLTemplateSourcesTest >> testSourcesFileNotFetchIfPresentWhenCallingEnsureSourc
 		equals: 1
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testSourcesFileNotUpdatedWhenDownloadedSourcesFileIsAbsent [
 	| sources sourcesFileModificationTime |
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: 'foobar' ].
@@ -155,7 +156,7 @@ PhLTemplateSourcesTest >> testSourcesFileNotUpdatedWhenDownloadedSourcesFileIsAb
 		equals: sourcesFileModificationTime
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloadedSourcesDifferentFromSources [
 	| announcements sources |
 	
@@ -181,7 +182,7 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloade
 		equals: 1 ].
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testUserTemplatesAreListedAfterPharoTemplates [
 	| userSources pharoSources sources |
 	userSources := PhLUserTemplateSources example.

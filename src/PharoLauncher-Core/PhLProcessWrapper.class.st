@@ -7,8 +7,8 @@ Use me as a builder to configure the process, then call prepareProcess (will use
 I act as a facade to OSSubProcess and OSWinSubprocess.
 "
 Class {
-	#name : #PhLProcessWrapper,
-	#superclass : #OSPlatformVisitor,
+	#name : 'PhLProcessWrapper',
+	#superclass : 'OSPlatformVisitor',
 	#instVars : [
 		'process',
 		'arguments',
@@ -17,10 +17,12 @@ Class {
 		'isShellCommand',
 		'useLoginShell'
 	],
-	#category : #'PharoLauncher-Core-Download'
+	#category : 'PharoLauncher-Core-Download',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Download'
 }
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	| process |
 	
@@ -33,23 +35,23 @@ PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	do: [ ^ false ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> addArgument: aString [
 	arguments add: aString
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> addArguments: aString [
 	self addArguments: aString separator: Character space
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> addArguments: aString separator: aCharacter [
 	(aCharacter split: aString)
 		do: [ :arg | self addArgument: arg ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapper >> arguments [
 	"On Linux and OS X, we give an array of arguments to the process. 
 	If the command is a shell, then pathes HAVE TO be protected with double quotes.
@@ -65,31 +67,31 @@ PhLProcessWrapper >> arguments [
 		as: Array
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapper >> command [ 
 	^ command
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> command: apathString [
 	command := apathString
 ]
 
-{ #category : #querying }
+{ #category : 'querying' }
 PhLProcessWrapper >> commandLineString [
 	^ PhLProcessWrapperCommandStringGenerator new 
 		processWrapper: self;
 		visit
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapper >> exitCode [
 	^ Smalltalk os isWindows
 		ifTrue: [ process exitCode ] 
 		ifFalse: [ process exitStatus ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLProcessWrapper >> initialize [
 	super initialize.
 	arguments := OrderedCollection new.
@@ -97,41 +99,41 @@ PhLProcessWrapper >> initialize [
 	useLoginShell := false
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLProcessWrapper >> isRunning [
 	^ process isRunning
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLProcessWrapper >> isShellCommand [
 	^ isShellCommand
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 PhLProcessWrapper >> isSuccess [
 	^ Smalltalk os isWindows
 		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
 		ifFalse: [ process isSuccess ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> loginShellCommand [ 
 	self shellCommand.
 	useLoginShell := true.
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessWrapper >> prepareProcess [
 	"I am an OSPlatform visitor. Running the visit will actually configure thr process dependending on the Operating System"
 	self visit
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessWrapper >> process: aProcessWrapper [ 
 	process := aProcessWrapper
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapper >> runAndWait [
 	self prepareProcess.
 	process runAndWait.
@@ -141,14 +143,14 @@ PhLProcessWrapper >> runAndWait [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
 	Smalltalk os isWindows
 		ifTrue: [ self runOnWindowsAndWaitTimeOut: aDuration ]
 		ifFalse: [ self runOnLinuxAndWaitTimeOut: aDuration ]
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
 	self prepareProcess.
 	[ process 
@@ -158,7 +160,7 @@ PhLProcessWrapper >> runOnLinuxAndWaitTimeOut: aDuration [
 	do: [ PhLProcessTimeOut signal ].
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
 	self prepareProcess.
 	process runAndWaitTimeOut: aDuration asMilliSeconds.
@@ -168,7 +170,7 @@ PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLProcessWrapper >> runUnwatch [
 	self prepareProcess.
 	Smalltalk os isWindows
@@ -176,29 +178,29 @@ PhLProcessWrapper >> runUnwatch [
 		ifFalse: [ process run. ]
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> shellCommand [ 
 	isShellCommand := true.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapper >> stderrString [
 	^ Smalltalk os isWindows
 		ifTrue: [ 'Std error not available on Windows' ]
 		ifFalse: [ (process stderrStream upToEndOfFile ifNil: [ '' ]) trimBoth ]
 ]
 
-{ #category : #terminating }
+{ #category : 'terminating' }
 PhLProcessWrapper >> terminate [ 
 	process terminate
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessWrapper >> visitMacOS: aPlatform [
 	self visitUnix: aPlatform
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessWrapper >> visitUnix: aPlatform [
 	process := OSSUnixSubprocess new
 		workingDirectory: workingDirectory;
@@ -214,7 +216,7 @@ PhLProcessWrapper >> visitUnix: aPlatform [
 					process arguments: self arguments. ].
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLProcessWrapper >> visitWindows: aPlatform [
 	process := OSWSWinProcess new
 		workingDirectory: workingDirectory;
@@ -225,12 +227,12 @@ PhLProcessWrapper >> visitWindows: aPlatform [
 	process arguments: self arguments.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 PhLProcessWrapper >> workingDirectory [ 
 	^ workingDirectory 
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLProcessWrapper >> workingDirectory: apathString [
 	workingDirectory := apathString
 ]

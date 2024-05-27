@@ -1,6 +1,6 @@
-Extension { #name : #ConfigurationCommandLineHandler }
+Extension { #name : 'ConfigurationCommandLineHandler' }
 
-{ #category : #'*PharoLauncher-CLI' }
+{ #category : '*PharoLauncher-CLI' }
 ConfigurationCommandLineHandler >> handleMergeConflictDuring: aLoadBlock [
 	[aLoadBlock 
 	on: MCMergeOrLoadWarning do: [ :mergeConflict | mergeConflict load ]]

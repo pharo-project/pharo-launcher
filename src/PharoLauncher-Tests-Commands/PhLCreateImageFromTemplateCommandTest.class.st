@@ -1,27 +1,28 @@
 Class {
-	#name : #PhLCreateImageFromTemplateCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLCreateImageFromTemplateCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'imageDir'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLCreateImageFromTemplateCommandTest >> createInitScriptNamed: aString [ 
 	presenter application scriptsDirectory / aString
 		writeStreamDo: [ :s | s nextPutAll: 'Transcript show: ''init done!''' ].
 	presenter refreshInitializationScriptList.
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLCreateImageFromTemplateCommandTest >> setUp [
 	super setUp.
 	presenter := PhLTestTemplatesPresenter new
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateSelected [
 	| command images |
 	command := PhLCreateImageFromTemplateCommand new.
@@ -42,7 +43,7 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWhenSingleTemplateS
 		hasSameElements: #('TestCreateImage').
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWithAnInitializationScript [
 	| command image |
 	command := PhLCreateImageFromTemplateCommand new.
@@ -64,7 +65,7 @@ PhLCreateImageFromTemplateCommandTest >> testCanCreateAnImageWithAnInitializatio
 	self assert: image shouldRunInitializationScript.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenManyTemplatesSelected [
 	| command |
 	command := PhLCreateImageFromTemplateCommand new.
@@ -80,7 +81,7 @@ PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenManyTemplate
 		raise: PhLCommandError
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLCreateImageFromTemplateCommandTest >> testCannotCreateAnImageWhenNoTemplateSelected [
 	| command |
 	command := PhLCreateImageFromTemplateCommand new.

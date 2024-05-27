@@ -3,12 +3,14 @@ Refresh the currently selected image.
 It will first drop the current local image and fetch a fresh version of the template. The name of the local image will not be updated.
 "
 Class {
-	#name : #PhLRecreateImageCommand,
-	#superclass : #PhLImageCommand,
-	#category : #'PharoLauncher-Core-Commands'
+	#name : 'PhLRecreateImageCommand',
+	#superclass : 'PhLImageCommand',
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLRecreateImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #refreshIcon;
@@ -17,7 +19,7 @@ PhLRecreateImageCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #'user interaction' }
+{ #category : 'user interaction' }
 PhLRecreateImageCommand >> askConfirmation [
 	| confirmMessage |
 	
@@ -30,7 +32,7 @@ PhLRecreateImageCommand >> askConfirmation [
 		confirm.
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLRecreateImageCommand >> execute [
 
 	self askConfirmation ifFalse: [ ^ self ].
@@ -40,7 +42,7 @@ PhLRecreateImageCommand >> execute [
 			self imagesPresenter imageRepository recreateImage: image ] ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLRecreateImageCommand >> initialize [
 	super initialize.
 	self

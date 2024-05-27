@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLTemplateGroupsBuilderTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLTemplateGroupsBuilderTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupsBuilderTest >> testCanBuildListWhenNoSourceTemplate [
 	| list sources |
 	sources := PhLTemplateSources withTemplateList: #().
@@ -16,7 +17,7 @@ PhLTemplateGroupsBuilderTest >> testCanBuildListWhenNoSourceTemplate [
 		equals: 0
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupsBuilderTest >> testCanBuildListWithFixedUrlGroup [
 	| groups group sources |
 	sources := PhLTemplateSources withTemplateList: { PhLTemplateSource officialDistributionsGroup }.
@@ -34,7 +35,7 @@ PhLTemplateGroupsBuilderTest >> testCanBuildListWithFixedUrlGroup [
 		equals: PhLFixedURLsTemplateGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupsBuilderTest >> testCanBuildListWithFixedUrlTemplate [
 	| groups group sources |
 	
@@ -55,7 +56,7 @@ PhLTemplateGroupsBuilderTest >> testCanBuildListWithFixedUrlTemplate [
 		equals: PhLRemoteTemplate.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupsBuilderTest >> testCanBuildListWithHttpListingGroup [
 	| groups group sources |
 	sources := PhLTemplateSources withTemplateList: { PhLTemplateSource pharo70 }.
@@ -73,7 +74,7 @@ PhLTemplateGroupsBuilderTest >> testCanBuildListWithHttpListingGroup [
 		equals: PhLHTTPListingTemplateGroup
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLTemplateGroupsBuilderTest >> testCanBuildListWithJenkinsGroup [
 	| groups group sources |
 	sources := PhLTemplateSources withTemplateList: { PhLTemplateSource inriaPharoContribution }.

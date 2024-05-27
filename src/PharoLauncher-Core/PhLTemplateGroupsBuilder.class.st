@@ -8,29 +8,31 @@ I'm used at Launcher creation, see PharoLauncherApplication >>#resetTemplateRepo
 To update the list of official sources, please update the sources files hosted at http://files.pharo.org/pharo-launcher/sources.list
 "
 Class {
-	#name : #PhLTemplateGroupsBuilder,
-	#superclass : #Object,
+	#name : 'PhLTemplateGroupsBuilder',
+	#superclass : 'Object',
 	#instVars : [
 		'sources',
 		'groups',
 		'templates'
 	],
-	#category : #'PharoLauncher-Core-Model'
+	#category : 'PharoLauncher-Core-Model',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Model'
 }
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateGroupsBuilder class >> build [
 	^ self buildFrom: PhLTemplateSources defaultSources
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 PhLTemplateGroupsBuilder class >> buildFrom: aPhLTemplateSourcesList [
 	^ self new 
 		initializeWithSources: aPhLTemplateSourcesList;
 		build
 ]
 
-{ #category : #building }
+{ #category : 'building' }
 PhLTemplateGroupsBuilder >> build [
 	^ groups := sources
 		collect: [ :source | 
@@ -40,7 +42,7 @@ PhLTemplateGroupsBuilder >> build [
 			yourself ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLTemplateGroupsBuilder >> initializeWithSources: aListOfTemplateSource [ 
 	sources := aListOfTemplateSource.
 	groups := OrderedCollection new.

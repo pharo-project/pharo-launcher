@@ -2,15 +2,17 @@
 Extract the selected template to a new image.
 "
 Class {
-	#name : #PhLCreateImageFromTemplateCommand,
-	#superclass : #PhLTemplateCommand,
+	#name : 'PhLCreateImageFromTemplateCommand',
+	#superclass : 'PhLTemplateCommand',
 	#instVars : [
 		'image'
 	],
-	#category : #'PharoLauncher-Core-Commands'
+	#category : 'PharoLauncher-Core-Commands',
+	#package : 'PharoLauncher-Core',
+	#tag : 'Commands'
 }
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
 	| description |
 	description := self templatesPresenter description.
@@ -18,7 +20,7 @@ PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
 		ifTrue: [ image description: description ].
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 	| initScript |
 	initScript := self templatesPresenter initializationScript.
@@ -26,7 +28,7 @@ PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 		ifTrue: [ image initializationScript: initScript ].
 ]
 
-{ #category : #converting }
+{ #category : 'converting' }
 PhLCreateImageFromTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNewIcon;
@@ -35,7 +37,7 @@ PhLCreateImageFromTemplateCommand >> asSpecCommand [
 		yourself
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCreateImageFromTemplateCommand >> createImage [
 	| name |
 
@@ -52,7 +54,7 @@ PhLCreateImageFromTemplateCommand >> createImage [
 	^ image
 ]
 
-{ #category : #executing }
+{ #category : 'executing' }
 PhLCreateImageFromTemplateCommand >> execute [
 	
 	[ ^ self createImage ]
@@ -61,7 +63,7 @@ PhLCreateImageFromTemplateCommand >> execute [
 			self application showError: error ]
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 PhLCreateImageFromTemplateCommand >> initialize [
 	super initialize.
 	self

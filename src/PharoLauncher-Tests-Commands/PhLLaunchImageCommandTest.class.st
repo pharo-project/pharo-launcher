@@ -1,6 +1,6 @@
 Class {
-	#name : #PhLLaunchImageCommandTest,
-	#superclass : #TestCase,
+	#name : 'PhLLaunchImageCommandTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
 		'imageDir',
@@ -10,54 +10,55 @@ Class {
 		'recreateCommand',
 		'application'
 	],
-	#category : #'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> addInitializationScriptToImage [
 	image initializationScript: self initScript
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> denyApplicationHasError [
 
 	application hasError 
 		ifTrue: [ self fail: application error longDescription ]
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> initScript [
 	^ FileSystem memory root / 'foo.st'
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> launchImage [
 	self selectImage.
 	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
 	process := runCommand execute
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 PhLLaunchImageCommandTest >> performTest [ 
 
 	PharoLauncherApplication useDefault: application during: [ super performTest ]
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> recreateImage [
 	recreateCommand execute.
 	self selectImage.
 	^ presenter selectedImages anyOne
 ]
 
-{ #category : #helper }
+{ #category : 'helper' }
 PhLLaunchImageCommandTest >> selectImage [
 	presenter
 		unselectAll;
 		selectImageAt: 1
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageCommandTest >> setUp [
 	super setUp.
 
@@ -82,7 +83,7 @@ PhLLaunchImageCommandTest >> setUp [
 
 ]
 
-{ #category : #running }
+{ #category : 'running' }
 PhLLaunchImageCommandTest >> tearDown [
 
 	imageDir ensureDeleteAll.
@@ -91,7 +92,7 @@ PhLLaunchImageCommandTest >> tearDown [
 	super tearDown
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testAttachingAnInitializationScriptIsOk [
 	
 	self addInitializationScriptToImage.
@@ -99,7 +100,7 @@ PhLLaunchImageCommandTest >> testAttachingAnInitializationScriptIsOk [
 	self assert: image initializationScript isNotNil
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun [
 
 	self addInitializationScriptToImage.
@@ -107,7 +108,7 @@ PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun
 	self assert: image shouldRunInitializationScript.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testCanLaunchImage [
 	self timeLimit: 30 seconds.
 	
@@ -134,7 +135,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 	self assert: process isRunning.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNotRun [
 
 	self addInitializationScriptToImage.
@@ -144,7 +145,7 @@ PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNo
 	self deny: image shouldRunInitializationScript.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testLaunchImageShouldRaiseExceptionWhenNoPharoVersionFile [
 	
 	image versionFile ensureDelete.
@@ -157,7 +158,7 @@ PhLLaunchImageCommandTest >> testLaunchImageShouldRaiseExceptionWhenNoPharoVersi
 		raise: PhLImageVersionFileNotFound
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExecuteScript [
 
 	| recreatedImage |
@@ -167,7 +168,7 @@ PhLLaunchImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExecu
 	self assert: recreatedImage shouldRunInitializationScript.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 
 	| recreatedImage |
@@ -178,7 +179,7 @@ PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 	self assert: recreatedImage shouldRunInitializationScript
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLLaunchImageCommandTest >> testRunningAnImageRemovesTheInitializationScript [
 	self addInitializationScriptToImage.
 	image := self recreateImage.

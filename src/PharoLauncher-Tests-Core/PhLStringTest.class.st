@@ -1,10 +1,11 @@
 Class {
-	#name : #PhLStringTest,
-	#superclass : #TestCase,
-	#category : #'PharoLauncher-Tests-Core'
+	#name : 'PhLStringTest',
+	#superclass : 'TestCase',
+	#category : 'PharoLauncher-Tests-Core',
+	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLStringTest >> testCanformatTemplateNameFromComplexUrl [
 	| result |
 	result := '{6} ({5})' formatTemplateName: '/pharo-ide/TelePharo/releases/download/v0.4.2/Pharo7.0-32bit-TelePharo.zip'.
@@ -14,7 +15,7 @@ PhLStringTest >> testCanformatTemplateNameFromComplexUrl [
 		equals: 'Pharo7.0-32bit-TelePharo (v0.4.2)'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLStringTest >> testCanformatTemplateNameFromComplexUrl2 [
 	| result |
 	result := '{1}-{2}-{3}-{5}' formatTemplateName: '/pharo-ide/TelePharo/releases/download/v0.4.2/Pharo7.0-32bit-TelePharo.zip'.
@@ -24,7 +25,7 @@ PhLStringTest >> testCanformatTemplateNameFromComplexUrl2 [
 		equals: 'pharo-ide-TelePharo-releases-v0.4.2'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLStringTest >> testCanformatTemplateNameFromSimpleUrl [
 	| result |
 	result := '{1}' formatTemplateName: '/foo.zip'.
@@ -34,7 +35,7 @@ PhLStringTest >> testCanformatTemplateNameFromSimpleUrl [
 		equals: 'foo'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 PhLStringTest >> testFormatTemplateNameDoesNotSubsituteWhenNoSubstitutionPatternFound [
 	| result |
 	result := 'foo-bar-1' formatTemplateName: '/pharo-ide/TelePharo/releases/download/v0.4.2/Pharo7.0-32bit-TelePharo.zip'.

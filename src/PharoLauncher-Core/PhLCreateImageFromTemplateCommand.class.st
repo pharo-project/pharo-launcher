@@ -31,7 +31,7 @@ PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 { #category : 'converting' }
 PhLCreateImageFromTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallNewIcon;
+		iconName: #smallNew;
 		shortcutKey: $s meta;
 		beDisabledWhenCantBeRun;
 		yourself

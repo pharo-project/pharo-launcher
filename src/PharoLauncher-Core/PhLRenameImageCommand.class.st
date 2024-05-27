@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLRenameImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #workspaceIcon;
+		iconName: #workspace;
 		shortcutKey: $r meta;
 		beDisabledWhenCantBeRun;
 		yourself

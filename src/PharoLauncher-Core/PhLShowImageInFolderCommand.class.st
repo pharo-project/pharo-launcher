@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLShowImageInFolderCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #openIcon;
+		iconName: #open;
 		shortcutKey: $o meta;
 		beDisabledWhenCantBeRun;
 		yourself

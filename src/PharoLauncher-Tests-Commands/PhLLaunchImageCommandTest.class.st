@@ -60,27 +60,31 @@ PhLLaunchImageCommandTest >> selectImage [
 
 { #category : 'running' }
 PhLLaunchImageCommandTest >> setUp [
+
 	super setUp.
 
 	application := PhLTestApplication new.
 	presenter := PhLTestImagesPresenter new.
-	imageDir := FileLocator temp / 'pharo-launcher-tests-launch-image-command' , UUIDGenerator next asString.
+	imageDir := FileLocator temp
+	            / 'pharo-launcher-tests-launch-image-command'
+	            , UUID new asString.
 	imageDir ensureCreateDirectory.
-	
+
 	runCommand := PhLLaunchImageCommand new.
 	runCommand context: presenter.
 	recreateCommand := PhLRecreateImageCommand new.
 	recreateCommand context: presenter.
-	
-	image := presenter singleImage.
-	image versionFile 
-		writeStreamDo: [ :stream | 
-			SystemVersion current major asString putOn: stream.
-			SystemVersion current minor asString putOn: stream ].
-	image 
-		originTemplate: (PhLTestTemplatesPresenter new createLocalTemplateNamed: 'testTemplate');
-		launchConfigurations: { PhLTestLaunchConfiguration withImage: image }.
 
+	image := presenter singleImage.
+	image versionFile writeStreamDo: [ :stream |
+		SystemVersion current major asString putOn: stream.
+		SystemVersion current minor asString putOn: stream ].
+	image
+		originTemplate:
+			(PhLTestTemplatesPresenter new createLocalTemplateNamed:
+					 'testTemplate');
+		launchConfigurations:
+			{ (PhLTestLaunchConfiguration withImage: image) }
 ]
 
 { #category : 'running' }

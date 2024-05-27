@@ -29,7 +29,7 @@ SettingDeclaration >> inputWidgetForFileOrDirectoryWithAction: aSymbol [
 		getEnabled: nil
 		label:
 			(AlphaImageMorph new
-				image: (self iconNamed: #smallOpenIcon))
+				image: (self iconNamed: #smallOpen))
 		help: 'Open directory chooser dialog' translated.
 	^ self theme
 		newRowIn: self currentWorld

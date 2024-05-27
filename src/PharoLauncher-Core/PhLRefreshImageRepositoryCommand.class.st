@@ -15,7 +15,7 @@ Class {
 { #category : 'converting' }
 PhLRefreshImageRepositoryCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallUpdateIcon;
+		iconName: #smallUpdate;
 		shortcutKey: $u meta;
 		yourself
 ]

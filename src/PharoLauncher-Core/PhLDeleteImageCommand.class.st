@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLDeleteImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallDeleteIcon;
+		iconName: #smallDelete;
 		shortcutKey: $x meta;
 		beDisabledWhenCantBeRun;
 		yourself

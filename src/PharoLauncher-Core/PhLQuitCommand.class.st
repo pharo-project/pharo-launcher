@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLQuitCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallQuitIcon;
+		iconName: #smallQuit;
 		shortcutKey: $q meta;
 		yourself
 ]

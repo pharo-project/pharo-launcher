@@ -55,18 +55,20 @@ PhLLaunchImageTest >> pharo110x64Vm [
 
 { #category : 'running' }
 PhLLaunchImageTest >> setUp [
+
 	| uuid |
 	super setUp.
-	launchInALoginShellBackup := PhLLaunchConfiguration launchInALoginShell.
+	launchInALoginShellBackup := PhLLaunchConfiguration
+		                             launchInALoginShell.
 	PhLLaunchConfiguration launchInALoginShell: false.
-	uuid := UUIDGenerator next asString.
+	uuid := UUID new asString.
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
 	self deny: imageDir exists.
 	imageDir ensureCreateDirectory.
 	vmStoreBackup := PhLVirtualMachineManager vmStore.
 	tempVmStoreFolder := FileLocator temp / self class name , uuid.
 	PhLVirtualMachineManager vmStore: tempVmStoreFolder.
-	self copyCurrentVmTo: tempVmStoreFolder.
+	self copyCurrentVmTo: tempVmStoreFolder
 ]
 
 { #category : 'running' }

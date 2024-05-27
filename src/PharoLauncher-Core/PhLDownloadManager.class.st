@@ -35,14 +35,14 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 
 { #category : 'action' }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
-	| tmpFile |
 
-	tmpFile := destinationFile , UUIDGenerator  next asString.
-	self 
+	| tmpFile |
+	tmpFile := destinationFile , UUID new asString.
+	self
 		displayProgress: ('Downloading {1}...' format: { url })
 		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
-	destinationFile ensureDelete. 
-	tmpFile renameTo: destinationFile basename.
+	destinationFile ensureDelete.
+	tmpFile renameTo: destinationFile basename
 ]
 
 { #category : 'private' }

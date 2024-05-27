@@ -16,7 +16,7 @@ Class {
 { #category : 'converting' }
 PhLCreateTemplateFromImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallNewIcon;
+		iconName: #smallNew;
 		shortcutKey: $t meta;
 		beDisabledWhenCantBeRun;
 		yourself
@@ -30,7 +30,7 @@ PhLCreateTemplateFromImageCommand >> asSpecCommandWithImageRemoval [
 		description:
 			'Create a Template from the selected Pharo image and delete the image just after template creation'.
 	^ super asSpecCommand
-		iconName: #smallNewIcon;
+		iconName: #smallNew;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

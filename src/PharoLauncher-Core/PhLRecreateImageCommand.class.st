@@ -13,7 +13,7 @@ Class {
 { #category : 'converting' }
 PhLRecreateImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #refreshIcon;
+		iconName: #refresh;
 		shortcutKey: $R meta;
 		beDisabledWhenCantBeRun;
 		yourself

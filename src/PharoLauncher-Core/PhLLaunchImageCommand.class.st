@@ -71,7 +71,7 @@ PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 { #category : 'converting' }
 PhLLaunchImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallDoItIcon;
+		iconName: #smallDoIt;
 		shortcutKey: $l meta;
 		beDisabledWhenCantBeRun;
 		yourself
@@ -85,7 +85,7 @@ PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
 		description: 'Launch the selected Pharo image without settings'.
 	^ super asSpecCommand
 		iconProvider: self;
-		iconName: #smallDoItIcon;
+		iconName: #smallDoIt;
 		"shortcutKey: $l meta, $b meta ;"
 		beDisabledWhenCantBeRun;
 		yourself

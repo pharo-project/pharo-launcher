@@ -15,7 +15,7 @@ Class {
 { #category : 'converting' }
 PhLOpenSettingsCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #configurationIcon;
+		iconName: #configuration;
 		yourself
 ]
 

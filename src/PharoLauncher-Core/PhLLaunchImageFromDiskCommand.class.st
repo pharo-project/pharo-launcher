@@ -40,7 +40,7 @@ PhLLaunchImageFromDiskCommand >> execute [
 
 { #category : 'accessing' }
 PhLLaunchImageFromDiskCommand >> iconNamed: anIconName [
-	^ (self basicIconNamed: #open) mergeWith: (self basicIconNamed: #smallDoItIcon) at:0@0
+	^ (self basicIconNamed: #open) mergeWith: (self basicIconNamed: #smallDoIt) at:0@0
 ]
 
 { #category : 'initialization' }

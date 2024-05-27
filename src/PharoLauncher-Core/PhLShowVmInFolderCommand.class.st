@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLShowVmInFolderCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #openIcon;
+		iconName: #open;
 		shortcutKey: $o meta;
 		yourself
 ]

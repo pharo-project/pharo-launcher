@@ -91,13 +91,14 @@ PhLVirtualMachineManagerTestResource >> restoreVmStore [
 
 { #category : 'running' }
 PhLVirtualMachineManagerTestResource >> setUp [
+
 	super setUp.
-	tempFolder := (FileLocator temp / self class name, UUIDGenerator next asString) ensureCreateDirectory.
+	tempFolder := (FileLocator temp / self class name , UUID new asString)
+		              ensureCreateDirectory.
 	imagesFolder := (tempFolder / 'images') ensureCreateDirectory.
 	workspace := (tempFolder / 'workspace') ensureCreateDirectory.
 	self setUpTemporaryVmStore.
-	self useTemporaryVmStore.
-
+	self useTemporaryVmStore
 ]
 
 { #category : 'initialization' }

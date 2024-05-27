@@ -12,7 +12,7 @@ Class {
 { #category : 'converting' }
 PhLCopyImageCommand >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallCopyIcon;
+		iconName: #smallCopy;
 		shortcutKey: $c meta;
 		beDisabledWhenCantBeRun;
 		yourself

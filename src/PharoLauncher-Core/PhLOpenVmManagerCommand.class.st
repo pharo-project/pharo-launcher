@@ -13,7 +13,7 @@ Class {
 PhLOpenVmManagerCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconProvider: self;
-		iconName: #configurationIcon;
+		iconName: #configuration;
 		yourself
 ]
 

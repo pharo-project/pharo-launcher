@@ -13,7 +13,7 @@ Class {
 { #category : 'converting' }
 PhLCopyPathname >> asSpecCommand [
 	^ super asSpecCommand
-		iconName: #smallCopyIcon;
+		iconName: #smallCopy;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

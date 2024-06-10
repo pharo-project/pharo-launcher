@@ -26,33 +26,6 @@ Class {
 	#package : 'PharoLauncher-Spec2'
 }
 
-{ #category : 'layout' }
-PhLImageCreationPresenter class >> defaultLayout [
-
-	^ SpBoxLayout newVertical
-		borderWidth: 5;
-		spacing: 5;
-		add: 'Image name:' expand: false;
-		add: (SpBoxLayout newHorizontal 
-				spacing: 5;
-				add: #imageName;
-				add: #imageNameCheck expand: false;
-				yourself)
-			expand: false;
-		add: 'Image description:' expand: false;
-		add: #descriptionText height: 60;
-		add: 'Initialization script:' expand: false;
-		add: (SpBoxLayout newHorizontal 
-				spacing: 5;
-				add: #initScript;
-				add: #editInitScriptButton expand: false;
-				yourself)
-			expand: false;
-		add: #initScriptText height: 100;
-		addLast: #createButton expand: false;
-		yourself
-]
-
 { #category : 'example' }
 PhLImageCreationPresenter class >> example [
 	(self 
@@ -84,6 +57,7 @@ PhLImageCreationPresenter >> close [
 
 { #category : 'initialization' }
 PhLImageCreationPresenter >> connectPresenters [
+
 	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
 ]
 
@@ -98,6 +72,36 @@ PhLImageCreationPresenter >> createImageWithCommand: createCommand [
 		self newInformation 
 			message: 'An image with the same name already exists! Please choose a new one.';
 			alert ] 
+]
+
+{ #category : 'layout' }
+PhLImageCreationPresenter >> defaultLayout [
+
+	^ SpBoxLayout newVertical
+		borderWidth: 5;
+		spacing: 5;
+		add: 'Image name:' expand: false;
+		add: (SpBoxLayout newHorizontal 
+				spacing: 5;
+				add: #imageName;
+				add: #imageNameCheck expand: false;
+				yourself)
+			expand: false;
+		add: 'Image description:' expand: false;
+		add: descriptionText height: 60;
+		add: 'Initialization script:' expand: false;
+		add: (SpBoxLayout newHorizontal 
+				spacing: 5;
+				add: initScript;
+				add: editInitScriptButton expand: false;
+				yourself)
+			expand: false;
+		add: initScriptText height: 100;
+		add: (SpBoxLayout newVertical 
+			vAlignEnd;
+			add: createButton;
+			yourself);
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -151,7 +155,7 @@ PhLImageCreationPresenter >> initialize [
 { #category : 'initialization' }
 PhLImageCreationPresenter >> initializePresenters [
 	| createCommand |
-	
+
 	imageName := self newTextInput.
 	imageNameCheck := self newImage.
 	initScriptText := self newText

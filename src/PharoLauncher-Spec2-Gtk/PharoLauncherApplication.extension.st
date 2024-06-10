@@ -4,7 +4,7 @@ Extension { #name : 'PharoLauncherApplication' }
 PharoLauncherApplication class >> openGtk [
 	<script>
 	
-	^ (Default := self new)
+	^ self new
 		useBackend: #Gtk with: PhLGtkConfiguration new;
 		openAsWorld: false;
 		run

@@ -30,6 +30,7 @@ PhLPharoVersionChooserPresenter >> defaultLayout [
 
 { #category : 'initialization' }
 PhLPharoVersionChooserPresenter >> initializePresenters [
+
 	versionTable := self newTable
 		addColumn: ((SpStringTableColumn title: 'Pharo version' evaluated: #key) width: 100; yourself);
 		addColumn: ((SpStringTableColumn 

@@ -2,7 +2,8 @@ Class {
 	#name : 'PhLUserInteraction',
 	#superclass : 'Object',
 	#instVars : [
-		'parentWindow'
+		'parentWindow',
+		'application'
 	],
 	#category : 'PharoLauncher-Core-Commands',
 	#package : 'PharoLauncher-Core',
@@ -12,7 +13,13 @@ Class {
 { #category : 'accessing' }
 PhLUserInteraction >> application [
 
-	^ PharoLauncherApplication default
+	^ application ifNil: [ PharoLauncherApplication default ]
+]
+
+{ #category : 'accessing' }
+PhLUserInteraction >> application: anApplication [
+
+	^ application := anApplication
 ]
 
 { #category : 'accessing' }

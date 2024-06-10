@@ -15,7 +15,8 @@ Class {
 		'launchConfigurationList',
 		'imageFilter',
 		'rootCommandsGroup',
-		'toolbar'
+		'toolbar',
+		'editConfigurationButton'
 	],
 	#category : 'PharoLauncher-Spec2',
 	#package : 'PharoLauncher-Spec2'
@@ -136,7 +137,6 @@ PhLImagesPresenter >> buildImageTable [
 	^ self newTable
 		activateOnDoubleClick;
 		alternateRowsColor;
-		items: self imageRepository images;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
 		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
@@ -172,10 +172,12 @@ PhLImagesPresenter >> buildToolbar [
 	^ self newPresenter
 		layout: (SpBoxLayout newLeftToRight
 			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Create') expand: false;
-			add: (SpBoxLayout newTopToBottom 
-				vAlignCenter;
-				add: self newLaunchConfigurationDropList expand: false;
-				yourself);
+			add: (SpBoxLayout newLeftToRight 
+					vAlignCenter;
+					add: self newLaunchConfigurationDropList expand: true;
+					add: self newEditConfigurationButton expand: false; 
+					yourself)
+				expand: true;
 			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;
 			add: self newLabel; "to create a space"
 			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
@@ -208,6 +210,12 @@ PhLImagesPresenter >> contextMenuCommandGroupName [
 { #category : 'api - actions' }
 PhLImagesPresenter >> createLocalTemplateFromSelectionNamed: aString [
 	^ self templateRepository createLocalTemplateFrom: self singleImage named: aString
+]
+
+{ #category : 'api - focus' }
+PhLImagesPresenter >> defaultKeyboardFocus [
+
+	^ imageTable
 ]
 
 { #category : 'layout' }
@@ -304,10 +312,25 @@ PhLImagesPresenter >> keyBindingsCommandsGroup [
 ]
 
 { #category : 'initialization' }
+PhLImagesPresenter >> newEditConfigurationButton [
+		
+	^ editConfigurationButton := self newButton
+		addStyle: 'flat';
+		icon: (self iconNamed: #edit);
+		action: [ 
+			self 
+				editLaunchConfigurations;
+				refreshLaunchConfigurationList ];
+		yourself
+]
+
+{ #category : 'initialization' }
 PhLImagesPresenter >> newLaunchConfigurationDropList [
-	^ launchConfigurationList := SpDropListPresenter new
-			items: #();
-			yourself
+
+	^ launchConfigurationList := self newDropList
+		items: #();
+		display: [ :item | item label ];
+		yourself
 ]
 
 { #category : 'private' }
@@ -338,26 +361,15 @@ PhLImagesPresenter >> refreshLaunchConfigurationList [
 			SpDropListItem new
 				model: each;
 				display: [ :config | config name ];
-				icon: (self application iconNamed: #configuration);
 				yourself ]
 		as: OrderedCollection.
 	
-	items addFirst: (SpDropListItem new
-				model: 'Edit configurations ...';
-				action: [ 
-					self 
-						editLaunchConfigurations;
-						refreshLaunchConfigurationList ];
-				icon: (self application iconNamed: #edit);
-				yourself ).
-	
 	launchConfigurationList
-		resetSelection;
-		dropListItems: items.
+		items: items.
 	
 	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
 		on: NotFound "Default configuration has been deleted but there are still other configurations"
-		do: [ launchConfigurationList selectIndex: 2 ]
+		do: [ launchConfigurationList selectFirst ]
 ]
 
 { #category : 'updating' }
@@ -369,7 +381,8 @@ PhLImagesPresenter >> resetLaunchConfigurationList [
 ]
 
 { #category : 'initialization' }
-PhLImagesPresenter >> rootCommandsGroup [ 
+PhLImagesPresenter >> rootCommandsGroup [
+
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
 ]
 
@@ -432,15 +445,21 @@ PhLImagesPresenter >> toolbarGroup [
 PhLImagesPresenter >> updatePresenter [
 
 	self imageRepository hasImages 
-		ifTrue: [ imageTable selectFirst ]
+		ifTrue: [ 
+			imageTable 
+				items: self imageRepository images;
+				selectFirst ]
+		ifFalse: [ 
+			imageTable items: #() ]
 
 ]
 
 { #category : 'updating' }
 PhLImagesPresenter >> updateToolbarCommandsAvailability [
+
+	editConfigurationButton enabled: imageTable selectedItem notNil.
 	self withToolbarDo: [ :toolbar |
 		self toolbarGroup allCommands do: #updateEnableStatus ]
-
 ]
 
 { #category : 'private' }

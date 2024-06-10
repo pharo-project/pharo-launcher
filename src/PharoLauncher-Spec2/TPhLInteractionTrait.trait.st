@@ -11,20 +11,32 @@ Trait {
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newConfirmation [
+
 	^ PhLUIConfirmation new
+		application: self application;
+		yourself	
 ]
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newFileRequest [
+
 	^ PhLUIFileRequest new
+		application: self application;
+		yourself	
 ]
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newInformation [
+
 	^ PhLUIInformation new
+		application: self application;
+		yourself	
 ]
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newRequest [
+
 	^ PhLUIRequest new
+		application: self application;
+		yourself
 ]

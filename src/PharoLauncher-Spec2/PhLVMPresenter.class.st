@@ -65,6 +65,7 @@ PhLVMPresenter >> defaultLayout [
 
 { #category : 'initialization' }
 PhLVMPresenter >> initializePresenters [
+
 	vmTable := self newTable
 		whenActivatedDo: [ PhLShowVmInFolderCommand new
 									context: self;

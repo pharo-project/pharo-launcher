@@ -53,11 +53,10 @@ PhLTemplatesPresenter class >> example [
 { #category : 'initialization' }
 PhLTemplatesPresenter >> buildCategoryTable [
 	
-	^ self newTable
-		hideColumnHeaders;
+	^ self newList
 		items: self templateRepository roots;
-		addColumn: ((SpImageTableColumn evaluated: #icon) width: 30);
-		addColumn: (SpStringTableColumn evaluated: #name);
+		displayIcon: #icon;
+		display: #name;
 		yourself
 ]
 
@@ -74,12 +73,12 @@ PhLTemplatesPresenter >> buildDescriptionPanel [
 { #category : 'initialization' }
 PhLTemplatesPresenter >> buildTemplateTable [
 	
-	^ self newTreeTable
-		hideColumnHeaders;
+	^ self newTree
 		"alternateRowsColor;"
 		children: [ :aTemplateGroup | self childrenOf: aTemplateGroup ];
-		addColumn: (SpStringTableColumn evaluated: #name);
+		display: #name;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		actionGroup: self rootCommandsGroup / 'Context Menu';
 		beMultipleSelection; "bulk delete templates for example"
 		whenRootsChangedDo: [ :roots | 
 			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
@@ -124,11 +123,11 @@ PhLTemplatesPresenter >> connectPresenters [
 
 { #category : 'layout' }
 PhLTemplatesPresenter >> defaultLayout [
-
+	
 	^ SpPanedLayout newHorizontal
-		positionOfSlider: 60 percent;
+		positionOfSlider: self initialExtent x * (2/3);
 		add: (SpPanedLayout newHorizontal
-			positionOfSlider: 40 percent;
+			positionOfSlider: self initialExtent x * (1/3);
 			add: (SpBoxLayout newVertical 
 				add: '1. Choose a template category:' expand: false;
 				add: categoryTable;
@@ -138,10 +137,8 @@ PhLTemplatesPresenter >> defaultLayout [
 				add: templateTable;
 				yourself);
 			yourself);
-		add: (SpBoxLayout newVertical 
-			add: descriptionPanel;
-			yourself);
-		yourself		
+		add: descriptionPanel;
+	yourself		
 ]
 
 { #category : 'accessing' }
@@ -181,6 +178,12 @@ PhLTemplatesPresenter >> imageRepository [
 	^ self application imageRepository
 ]
 
+{ #category : 'initialization' }
+PhLTemplatesPresenter >> initialExtent [
+	
+	^ 800@400
+]
+
 { #category : 'accessing' }
 PhLTemplatesPresenter >> initializationScript [
 	^ descriptionPanel initializationScript
@@ -206,7 +209,7 @@ PhLTemplatesPresenter >> initializePresenters [
 PhLTemplatesPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Pharo Launcher - Image creation';
-		initialExtent: 800@400;
+		initialExtent: self initialExtent;
 		"toolBar: (self rootCommandsGroup / 'Toolbar') asToolbarPresenter;"
 		centered.	
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter"

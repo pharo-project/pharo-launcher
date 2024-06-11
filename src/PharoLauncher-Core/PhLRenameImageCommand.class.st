@@ -13,7 +13,7 @@ Class {
 PhLRenameImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #workspace;
-		shortcutKey: $r meta;
+		shortcutKey: $r actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

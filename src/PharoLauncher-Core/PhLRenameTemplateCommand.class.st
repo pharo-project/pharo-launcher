@@ -19,6 +19,7 @@ PhLRenameTemplateCommand >> asSpecCommand [
 
 { #category : 'testing' }
 PhLRenameTemplateCommand >> canBeExecuted [
+
 	^ self templatesPresenter hasLocalTemplateSelected
 ]
 

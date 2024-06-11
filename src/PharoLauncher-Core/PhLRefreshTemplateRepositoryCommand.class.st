@@ -16,7 +16,7 @@ Class {
 PhLRefreshTemplateRepositoryCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallUpdate;
-		shortcutKey: $u meta;
+		shortcutKey: $u actionModifier;
 		yourself
 ]
 

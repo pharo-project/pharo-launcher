@@ -14,7 +14,7 @@ Class {
 PhLRecreateImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #refresh;
-		shortcutKey: $R meta;
+		shortcutKey: $R actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

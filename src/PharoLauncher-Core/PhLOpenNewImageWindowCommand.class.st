@@ -13,7 +13,7 @@ Class {
 PhLOpenNewImageWindowCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNew;
-		shortcutKey: $n meta;
+		shortcutKey: $n actionModifier;
 		yourself
 ]
 

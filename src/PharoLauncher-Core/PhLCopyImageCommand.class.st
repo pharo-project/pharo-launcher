@@ -13,7 +13,7 @@ Class {
 PhLCopyImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallCopy;
-		shortcutKey: $c meta;
+		shortcutKey: $c actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

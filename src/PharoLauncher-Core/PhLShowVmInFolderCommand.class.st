@@ -13,7 +13,7 @@ Class {
 PhLShowVmInFolderCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #open;
-		shortcutKey: $o meta;
+		shortcutKey: $o actionModifier;
 		yourself
 ]
 

@@ -18,7 +18,7 @@ Class {
 PhLImportImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallLoadProject;
-		shortcutKey: $y meta;
+		shortcutKey: $y actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

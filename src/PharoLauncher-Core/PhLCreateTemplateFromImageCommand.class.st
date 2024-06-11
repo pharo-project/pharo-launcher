@@ -17,7 +17,7 @@ Class {
 PhLCreateTemplateFromImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNew;
-		shortcutKey: $t meta;
+		shortcutKey: $t actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

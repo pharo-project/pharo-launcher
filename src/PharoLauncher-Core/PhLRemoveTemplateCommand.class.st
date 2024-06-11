@@ -13,7 +13,7 @@ Class {
 PhLRemoveTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDelete;
-		shortcutKey: $x meta;
+		shortcutKey: $x actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

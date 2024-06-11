@@ -13,7 +13,7 @@ Class {
 PhLQuitCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallQuit;
-		shortcutKey: $q meta;
+		shortcutKey: $q actionModifier;
 		yourself
 ]
 

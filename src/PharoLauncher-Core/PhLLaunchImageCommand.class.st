@@ -72,7 +72,7 @@ PhLLaunchImageCommand class >> warnOnArchMismatch: aBoolean [
 PhLLaunchImageCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallDoIt;
-		shortcutKey: $l meta;
+		shortcutKey: $l actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

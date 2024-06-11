@@ -13,7 +13,7 @@ Class {
 PhLShowImageInFolderCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #open;
-		shortcutKey: $o meta;
+		shortcutKey: $a actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

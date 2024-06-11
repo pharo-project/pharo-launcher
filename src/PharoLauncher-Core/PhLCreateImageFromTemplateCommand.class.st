@@ -32,7 +32,7 @@ PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 PhLCreateImageFromTemplateCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallNew;
-		shortcutKey: $s meta;
+		shortcutKey: $s actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

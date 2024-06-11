@@ -13,7 +13,7 @@ Class {
 PhLInspectCommand >> asSpecCommand [
 	^ super asSpecCommand
 		iconName: #smallInspectIt;
-		shortcutKey: $i meta;
+		shortcutKey: $i actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

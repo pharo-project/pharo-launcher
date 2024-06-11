@@ -201,16 +201,17 @@ PhLLaunchConfigurationPresenter >> initializeWindow: aWindowPresenter [
 PhLLaunchConfigurationPresenter >> newConfiguration [
 	| newName configuration |
 	
-	newName := self application newRequest
-			title: 'New Launch configuration name?';
-			validateAnswer: [ :answer | 
-				self image launchConfigurations noneSatisfy: [ :each | each name = answer ] ];
-			request.
+	newName := self newRequest
+		title: 'New launch configuration name?';
+		validateAnswer: [ :answer | 
+			self image launchConfigurations noneSatisfy: [ :each | each name = answer ] ];
+		request.
 	newName ifNil: [ ^ nil ].
 	
 	configuration := (PhLLaunchConfiguration  withImage: self image)
 		name: newName;
 		yourself.
+	
 	^ configuration
 ]
 

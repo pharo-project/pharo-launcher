@@ -45,12 +45,15 @@ PhLAboutCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLAboutCommand >> execute [
 	| presenter |
+
 	presenter := PhLAboutPresenter 
 		text: self aboutText
 		iconName: #pharo.
 	presenter application: self application.
-	
-	presenter openDialog.
+	presenter asDialogWindow 
+		owner: self context window;
+		open.
+
 	^ presenter
 ]
 

@@ -220,11 +220,12 @@ PhLImagesPresenter >> defaultKeyboardFocus [
 
 { #category : 'layout' }
 PhLImagesPresenter >> defaultLayout [
+
 	^ SpBoxLayout newTopToBottom
 		add: toolbar expand: false;
 		add: imageFilter expand: false;
 		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: 55 percent;
+			positionOfSlider: self initialExtent y * 50 percent;
 			add: imageTable;
 			add: descriptionPanel;
 			yourself);
@@ -278,6 +279,12 @@ PhLImagesPresenter >> imageRepository [
 ]
 
 { #category : 'initialization' }
+PhLImagesPresenter >> initialExtent [
+		
+	^ 900@650
+]
+
+{ #category : 'initialization' }
 PhLImagesPresenter >> initializePresenters [
 
 	toolbar := self buildToolbar.
@@ -285,7 +292,9 @@ PhLImagesPresenter >> initializePresenters [
 	imageTable := self buildImageTable.
 	descriptionPanel := self buildDescriptionPanel.
 	
-	self imageRepository whenChangedSend: #refresh to: self
+	self imageRepository 
+		whenChangedSend: #refresh 
+		to: self
 ]
 
 { #category : 'initialization' }
@@ -293,12 +302,12 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Pharo Launcher';
-		initialExtent: 900@550;
+		initialExtent: self initialExtent;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	aWindowPresenter 
-		bindKeyCombination: $f meta
+		bindKeyCombination: $f actionModifier
 		toAction: [ self actionFilter ]
 ]
 
@@ -329,7 +338,7 @@ PhLImagesPresenter >> newLaunchConfigurationDropList [
 
 	^ launchConfigurationList := self newDropList
 		items: #();
-		display: [ :item | item label ];
+		display: [ :item | item name ];
 		yourself
 ]
 
@@ -348,24 +357,16 @@ PhLImagesPresenter >> refresh [
 
 { #category : 'updating' }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
-	| image items |
+	| image |
 	
 	[ image := self singleImage ]
 	on: PhLCommandError
 	do: [ 
 		self resetLaunchConfigurationList.
 		^ self ].
-	
-	items := image launchConfigurations 
-		collect: [ :each | 
-			SpDropListItem new
-				model: each;
-				display: [ :config | config name ];
-				yourself ]
-		as: OrderedCollection.
-	
+		
 	launchConfigurationList
-		items: items.
+		items: image launchConfigurations.
 	
 	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
 		on: NotFound "Default configuration has been deleted but there are still other configurations"

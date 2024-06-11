@@ -6,13 +6,7 @@ Class {
 }
 
 { #category : 'configuring' }
-PhLGtkConfiguration >> configureGeneral: anApplication [ 
+PhLGtkConfiguration >> addPredefinedStyles [
 
-	self addCSSProviderFromString: '
-toolbar.compact { 
-	font-size: 0.6em }
-toolbar.compact toolbutton > button { 
-	padding: 1px;
-	margin: 1px }
-'
+	super addPredefinedStyles
 ]

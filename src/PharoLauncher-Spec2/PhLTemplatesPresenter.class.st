@@ -27,6 +27,7 @@ PhLTemplatesPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot
 
 { #category : 'commands' }
 PhLTemplatesPresenter class >> buildContextualMenuGroup [
+
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		description: 'Templates tree contextual menu';
 		register: PhLRenameTemplateCommand forSpec;

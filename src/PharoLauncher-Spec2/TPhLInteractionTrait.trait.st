@@ -14,6 +14,7 @@ TPhLInteractionTrait >> newConfirmation [
 
 	^ PhLUIConfirmation new
 		application: self application;
+		parentWindow: self window;
 		yourself	
 ]
 
@@ -22,6 +23,7 @@ TPhLInteractionTrait >> newFileRequest [
 
 	^ PhLUIFileRequest new
 		application: self application;
+		parentWindow: self window;
 		yourself	
 ]
 
@@ -30,6 +32,7 @@ TPhLInteractionTrait >> newInformation [
 
 	^ PhLUIInformation new
 		application: self application;
+		parentWindow: self window;
 		yourself	
 ]
 
@@ -38,5 +41,6 @@ TPhLInteractionTrait >> newRequest [
 
 	^ PhLUIRequest new
 		application: self application;
+		parentWindow: self window;
 		yourself
 ]

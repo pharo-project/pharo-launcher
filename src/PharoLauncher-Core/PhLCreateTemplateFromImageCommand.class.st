@@ -48,7 +48,7 @@ PhLCreateTemplateFromImageCommand >> confirmTemplateOverride [
 PhLCreateTemplateFromImageCommand >> execute [
 	| name |
 	name := self newTemplateName.
-	name ifNil: [ PhLCommandCancellation signal ].
+	name ifNil: [ ^ PhLCommandCancellation signal ].
 	self imagesPresenter createLocalTemplateFromSelectionNamed: name.
 	"ensure the template is created before removing the image"
 	(willRemoveImage and: [self imagesPresenter templateRepository hasLocalTemplateNamed: name])

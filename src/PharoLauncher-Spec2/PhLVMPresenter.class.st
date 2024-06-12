@@ -99,7 +99,7 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
-		initialExtent: 720 @ 300;
+		initialExtent: 800@350;
 		toolbar:
 			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.

@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'title',
 		'initialAnswer',
-		'validationBlock'
+		'validationBlock',
+		'label'
 	],
 	#category : 'PharoLauncher-Core-Commands',
 	#package : 'PharoLauncher-Core',
@@ -29,13 +30,21 @@ PhLUIRequest >> initialAnswer: aString [
 	initialAnswer := aString
 ]
 
+{ #category : 'accessing' }
+PhLUIRequest >> label: aString [ 
+	
+	label := aString
+]
+
 { #category : 'action' }
 PhLUIRequest >> request [
 	| answer |
 	
 	[ 
 		answer := self application newRequest
-			title: title; 
+			in: [ :this | 
+				title ifNotNil: [ this title: title ] ]; 
+			label: label;
 			text: initialAnswer;
 			openModalWithParent: self relatedWindow ] 
 	doWhileTrue: [ 

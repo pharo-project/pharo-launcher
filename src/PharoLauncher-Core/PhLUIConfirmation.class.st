@@ -5,7 +5,8 @@ Class {
 	#name : 'PhLUIConfirmation',
 	#superclass : 'PhLUserInteraction',
 	#instVars : [
-		'message'
+		'message',
+		'title'
 	],
 	#category : 'PharoLauncher-Core-Commands',
 	#package : 'PharoLauncher-Core',
@@ -16,6 +17,8 @@ Class {
 PhLUIConfirmation >> confirm [
 
 	^ self application newConfirm 
+		in: [ :this | 
+			title ifNotNil: [ this title: title ] ];
 		label: message;
 		openModalWithParent: self relatedWindow
 ]
@@ -23,4 +26,10 @@ PhLUIConfirmation >> confirm [
 { #category : 'accessing' }
 PhLUIConfirmation >> message: aString [ 
 	message := aString
+]
+
+{ #category : 'accessing' }
+PhLUIConfirmation >> title: aString [
+	
+	title := aString
 ]

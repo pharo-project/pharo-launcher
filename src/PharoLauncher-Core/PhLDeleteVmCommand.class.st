@@ -27,7 +27,8 @@ PhLDeleteVmCommand >> execute [
 	confirmMessage := 'Are you sure you want to delete VM ' , (vmNames joinUsing: ', ' last: ' and ').
 	answer := self vmsPresenter newConfirmation
 		parentWindow: self context window;
-		message: (confirmMessage withNoLineLongerThan: 60) , '?';
+		title: 'Delete';
+		message: confirmMessage, '?';
 		confirm.
 	answer ifFalse: [ ^ self ].
 	

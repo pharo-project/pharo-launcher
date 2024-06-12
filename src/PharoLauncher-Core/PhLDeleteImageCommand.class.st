@@ -29,10 +29,17 @@ PhLDeleteImageCommand >> execute [
 	
 	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
-	confirmMessage := 'Are you sure you want to delete {1} images: {2}' format: {images size . (imageNames joinUsing: ', ' last: ' and ')}.
+	confirmMessage := 'Delete {1} image{2}?
+{3}' format: {
+		images size . 
+		images size > 1 ifTrue: [ 's' ] ifFalse: [ '' ].
+		(imageNames joinUsing: String cr)
+	}.
+	
 	answer := self imagesPresenter newConfirmation
 		parentWindow: self context window;
-		message: (confirmMessage withNoLineLongerThan: 60) , '?';
+		title: 'Delete';
+		message: confirmMessage;
 		confirm.
 	answer ifFalse: [ ^ self ].
 

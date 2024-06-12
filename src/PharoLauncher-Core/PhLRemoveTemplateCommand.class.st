@@ -32,13 +32,14 @@ PhLRemoveTemplateCommand >> execute [
 	templateNames := templates collect: #name.
 	confirmMessage := 'Are you sure you want to delete ' , (templateNames joinUsing: ', ' last: ' and ').
 	answer := self templatesPresenter newConfirmation
+		title: 'Delete';
 		parentWindow: self context window;
 		message: (confirmMessage withNoLineLongerThan: 60) , '?';
 		confirm.
 	answer ifFalse: [ ^ self "abort" ].
 		
 	self templatesPresenter templateRepository deleteTemplates: templates.
-	self templatesPresenter refresh. 
+	self templatesPresenter refresh
 ]
 
 { #category : 'initialization' }

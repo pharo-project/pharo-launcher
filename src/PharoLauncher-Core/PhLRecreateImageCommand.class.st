@@ -24,12 +24,12 @@ PhLRecreateImageCommand >> askConfirmation [
 	| confirmMessage |
 	
 	confirmMessage := 'Are you sure you want to recreate this image?' , Character cr asString, 
-							'This will overwrite the existing image and you will lose changes.'.
+							'This will overwrite the existing image and you will lose your changes.'.
 	
 	^ self imagesPresenter newConfirmation
 		parentWindow: self context window;
-		message: (confirmMessage withNoLineLongerThan: 60) , '?';
-		confirm.
+		message: confirmMessage;
+		confirm
 ]
 
 { #category : 'executing' }

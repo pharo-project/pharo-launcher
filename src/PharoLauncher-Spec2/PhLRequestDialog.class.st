@@ -1,0 +1,68 @@
+Class {
+	#name : 'PhLRequestDialog',
+	#superclass : 'SpRequestDialog',
+	#category : 'PharoLauncher-Spec2-Dialogs',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Dialogs'
+}
+
+{ #category : 'layout' }
+PhLRequestDialog >> defaultLayout [
+
+	^ SpBoxLayout newTopToBottom
+		spacing: 5;
+		add: (SpBoxLayout newVertical
+				hAlignCenter;
+				vAlignCenter;
+				add: label;
+				yourself) 
+			expand: true;
+		add: textInput expand: false;
+		add: errorLabel;
+		yourself
+]
+
+{ #category : 'initialization' }
+PhLRequestDialog >> initializePresenters [
+
+	super initializePresenters.
+	label addStyle: 'message'.
+	textInput addStyle: 'request'.
+	errorLabel 
+		addStyle: 'message'; 
+		addStyle: 'error'.	
+	errorLabel hide
+]
+
+{ #category : 'initialization' }
+PhLRequestDialog >> initializeWindow: aWindowPresenter [
+
+	super initializeWindow: aWindowPresenter.
+	"aWindowPresenter withoutDecorations"
+]
+
+{ #category : 'initialization' }
+PhLRequestDialog >> initializeWindowExtent: aDialogWindowPresenter [
+]
+
+{ #category : 'api' }
+PhLRequestDialog >> label: aString [
+
+	label label: aString.
+	label ifNotNil: [  
+		label show ]
+]
+
+{ #category : 'private' }
+PhLRequestDialog >> newDialogLabel [
+
+	^ self newLabel
+]
+
+{ #category : 'initialization' }
+PhLRequestDialog >> setErrorText: aText [
+
+	errorLabel label: aText asString.
+	errorLabel visible: aText isEmptyOrNil not
+	
+]

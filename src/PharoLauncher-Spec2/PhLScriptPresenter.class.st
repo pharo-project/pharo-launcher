@@ -100,8 +100,8 @@ PhLScriptPresenter >> initializeWindow: aWindowPresenter [
 PhLScriptPresenter >> newScript [
 	| newName |
 	
-	newName := self application newRequest
-			title: 'New script name?';
+	newName := self newRequest
+			label: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.
 	
@@ -127,6 +127,7 @@ PhLScriptPresenter >> removeScript: aFileReference [
 	aFileReference ifNil: [ ^ self ].
 	(self application newConfirmation
 		parentWindow: self window;
+		title: 'Delete';
 		message: 'Do you want to remove ', aFileReference fullName, ' script?';
 		confirm) 
 		ifFalse: [ ^ self ].

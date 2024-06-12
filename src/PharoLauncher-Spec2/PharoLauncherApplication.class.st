@@ -305,10 +305,22 @@ PharoLauncherApplication >> mainPresenter [
 	^ imagesPresenter
 ]
 
+{ #category : 'ui' }
+PharoLauncherApplication >> newConfirm [
+
+	^ PhLConfirmDialog newApplication: self
+]
+
 { #category : 'events' }
 PharoLauncherApplication >> newImageCreated [
 	"We want to launch the freshly created image"
 	imagesPresenter ifNotNil: [ imagesPresenter actionLaunch ]
+]
+
+{ #category : 'ui' }
+PharoLauncherApplication >> newRequest [
+
+	^ PhLRequestDialog newApplication: self
 ]
 
 { #category : 'configuring' }

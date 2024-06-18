@@ -11,6 +11,7 @@ Class {
 
 { #category : 'converting' }
 PhLOpenLaunchConfigurationEditorCommand >> asSpecCommand [
+
 	^ super asSpecCommand
 		iconName: #edit;
 		yourself
@@ -22,14 +23,16 @@ PhLOpenLaunchConfigurationEditorCommand >> execute [
 	^ (PhLLaunchConfigurationPresenter
 		   newApplication: self imagesPresenter application
 		   model: self imagesPresenter singleImage)
-		  open;
-		  yourself
+		owner: self context window;
+		open;
+		yourself
 ]
 
 { #category : 'initialization' }
 PhLOpenLaunchConfigurationEditorCommand >> initialize [
+	
 	super initialize.
 	self 
-		name: '';
+		name: 'Edit launch configurations';
 		description: self class comment.
 ]

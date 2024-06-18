@@ -5,7 +5,8 @@ Class {
 	#name : 'PhLUIInformation',
 	#superclass : 'PhLUserInteraction',
 	#instVars : [
-		'message'
+		'message',
+		'title'
 	],
 	#category : 'PharoLauncher-Core-Commands',
 	#package : 'PharoLauncher-Core',
@@ -52,6 +53,7 @@ PhLUIInformation >> denyWithTitle: titleString [
 PhLUIInformation >> inform [
 
 	self application newInform 
+		in: [ :this | title ifNotNil: [ this title: title ] ];
 		label: message;
 		openModalWithParent: self relatedWindow
 ]
@@ -59,4 +61,10 @@ PhLUIInformation >> inform [
 { #category : 'accessing' }
 PhLUIInformation >> message: aMessage [
 	message := aMessage
+]
+
+{ #category : 'accessing' }
+PhLUIInformation >> title: aString [ 
+	
+	title := aString
 ]

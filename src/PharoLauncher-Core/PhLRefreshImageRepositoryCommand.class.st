@@ -22,7 +22,8 @@ PhLRefreshImageRepositoryCommand >> asSpecCommand [
 
 { #category : 'executing' }
 PhLRefreshImageRepositoryCommand >> execute [
-	self context imageRepository contentsChanged.
+
+	self context imageRepository contentsChanged
 ]
 
 { #category : 'initialization' }

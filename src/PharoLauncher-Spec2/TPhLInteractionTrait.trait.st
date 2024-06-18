@@ -5,8 +5,9 @@ This trait provides an abstraction to provide user interaction (confirm, inform,
 "
 Trait {
 	#name : 'TPhLInteractionTrait',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Application',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Application'
 }
 
 { #category : 'user interaction' }

@@ -19,7 +19,12 @@ PhLUpdateVmCommand >> asSpecCommand [
 
 { #category : 'executing' }
 PhLUpdateVmCommand >> execute [
-	self vmsPresenter selectedVms do: #updateFromUrl.
+
+	PhLCurrentContext 
+		use: self context
+		during: [ 
+			self vmsPresenter selectedVms 
+				do: [ :each | each updateFromUrl ] ].
 	self vmsPresenter refresh.
 ]
 

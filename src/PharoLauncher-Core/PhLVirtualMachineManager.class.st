@@ -210,6 +210,12 @@ PhLVirtualMachineManager class >> vmStoreString: aFileUrl [
 
 ]
 
+{ #category : 'private - accessing' }
+PhLVirtualMachineManager >> application [
+
+	^ self context application
+]
+
 { #category : 'querying' }
 PhLVirtualMachineManager >> availableVirtualMachines [
 	^ self availableVirtualMachinesIn: self vmStore
@@ -239,6 +245,12 @@ PhLVirtualMachineManager >> checkImageArchitecture [
 		ifTrue: [ PhLArchitectureMismatchWarning signalLauncherArch: '64-bit' imageArch: '32-bit' ]
 ]
 
+{ #category : 'private - accessing' }
+PhLVirtualMachineManager >> context [
+
+	^ PhLCurrentContext value
+]
+
 { #category : 'querying' }
 PhLVirtualMachineManager >> defaultVirtualMachines [
 
@@ -247,6 +259,17 @@ PhLVirtualMachineManager >> defaultVirtualMachines [
 			(PhLVirtualMachine id: id)
 				be64bits;
 				yourself ]
+]
+
+{ #category : 'querying' }
+PhLVirtualMachineManager >> fetch: aVmUrl to: targetFile [
+	
+	PhLDownloadManager default 
+		download: aVmUrl
+		toFile: targetFile.
+	self
+		unzip: targetFile
+		to: (targetFile parent / targetFile basenameWithoutExtension)
 ]
 
 { #category : 'private' }
@@ -298,6 +321,7 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 
 { #category : 'private' }
 PhLVirtualMachineManager >> fetchVm [
+
 	[ self class 
 		fetch: self vmUrl 
 		to: self vmStore / (self vmId , '.zip') ]
@@ -375,6 +399,15 @@ PhLVirtualMachineManager >> sourcesFileUrlFor: anImageVersionString [
 ]
 
 { #category : 'querying' }
+PhLVirtualMachineManager >> unzip: aZipFileReference to: outputDirectory [
+	
+	outputDirectory ensureCreateDirectory.
+	self canUseSytemZip
+		ifTrue: [ self systemUnzip: aZipFileReference to: outputDirectory ]
+		ifFalse: [ self pharoUnzip: aZipFileReference to: outputDirectory ]
+]
+
+{ #category : 'querying' }
 PhLVirtualMachineManager >> virtualMachine [
 	^ self virtualMachines
 		detect: [ :vm | vm id = self vmId ]
@@ -393,7 +426,7 @@ PhLVirtualMachineManager >> virtualMachines [
 PhLVirtualMachineManager >> vm [
 	| vm |
 
-	PharoLauncherApplication default 
+	self application 
 		pushProgress: 'UNNAMED'
 		with: [ :bar | 
 			bar label: 'Determining Image version'.

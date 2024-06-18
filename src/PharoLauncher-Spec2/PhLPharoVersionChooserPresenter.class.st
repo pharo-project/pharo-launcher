@@ -9,8 +9,9 @@ Class {
 	#instVars : [
 		'versionTable'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View'
 }
 
 { #category : 'examples' }

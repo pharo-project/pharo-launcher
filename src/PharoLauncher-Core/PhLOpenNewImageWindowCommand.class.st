@@ -20,12 +20,13 @@ PhLOpenNewImageWindowCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenNewImageWindowCommand >> execute [
 
-	^ (PhLTemplatesPresenter
-			newApplication: self application
-			model: PhLTemplateGroupRepository default)
-		owner: self context window;
-		open;
-		yourself
+	^ ((self context 
+			instantiate: PhLTemplatesPresenter
+			on: PhLTemplateGroupRepository default)
+		asModalWindow)
+			owner: self context window;
+			withoutButtons;
+			open
 ]
 
 { #category : 'initialization' }

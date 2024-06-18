@@ -79,14 +79,16 @@ PhLLaunchImageCommand >> asSpecCommand [
 
 { #category : 'converting' }
 PhLLaunchImageCommand >> asSpecLaunchWithoutSettingsCommand [
+
 	self
 		doNotUseSettings;
-		name: 'Basic lau...';
+		name: 'Basic launch';
 		description: 'Launch the selected Pharo image without settings'.
+	
 	^ super asSpecCommand
 		iconProvider: self;
 		iconName: #smallDoIt;
-		"shortcutKey: $l meta, $b meta ;"
+		shortcutKey: $l shift actionModifier;
 		beDisabledWhenCantBeRun;
 		yourself
 ]

@@ -44,7 +44,7 @@ PhLRepository >> initialize [
 	wantNotification := true.
 ]
 
-{ #category : 'action' }
+{ #category : 'actions' }
 PhLRepository >> makeUniqueName: baseName among: existingNames [
 	"Provide a reasonable default name using the next incremental count for items with similar basenames"
 
@@ -64,6 +64,12 @@ PhLRepository >> makeUniqueName: baseName among: existingNames [
 	existingUniquifiers ifEmpty: [ ^ baseName ].
 	nextUniquifier := existingUniquifiers max + 1.
 	^ baseName , separator , (nextUniquifier printPaddedWith: $0 to: 2)
+]
+
+{ #category : 'accessing' }
+PhLRepository >> reset [
+
+	announcer := Announcer new
 ]
 
 { #category : 'accessing' }

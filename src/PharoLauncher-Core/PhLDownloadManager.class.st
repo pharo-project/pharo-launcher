@@ -33,7 +33,13 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 	^ Default := aDownloadManager
 ]
 
-{ #category : 'action' }
+{ #category : 'private - accessing' }
+PhLDownloadManager >> application [
+
+	^ self context application
+]
+
+{ #category : 'actions' }
 PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 
 	| tmpFile |
@@ -45,20 +51,37 @@ PhLDownloadManager >> basicDownload: url toFile: destinationFile [
 	tmpFile renameTo: destinationFile basename
 ]
 
+{ #category : 'private - accessing' }
+PhLDownloadManager >> context [
+
+	^ PhLCurrentContext value
+]
+
 { #category : 'private' }
 PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 	"Inform user about download progression"
+	| presenter job window |
 
-	PharoLauncherApplication default 
-		pushProgress: aTitle
-		with: [ :bar |
-			workBlock
-				on: HTTPProgress
-				do: [ :progress |
-					bar label: progress printString.
-					progress isEmpty
-						ifFalse: [ bar progressPercent: progress percentage ].
-					progress resume ] ]
+	job := self newJobFor: aTitle do: workBlock.
+	presenter := self context instantiate: SpJobPresenter on: job. 
+
+	window := presenter asModalWindow 
+		owner: self context window;
+		withoutButtons;
+		whenOpenedDo: [
+			"I need to fork it because otherwise the http request breaks the flow"
+			[ job run ] fork ];
+		yourself.
+
+	job 
+		installOn: presenter announcer;
+		whenChangedDo: [ presenter updatePresenter ];
+		whenEndDo: [ 
+			window beOk.
+			window close ].
+	
+	"I can't use whenStartDo: to open the job because is a modal"		
+	window open
 ]
 
 { #category : 'private' }
@@ -70,16 +93,20 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 		during: workBlock
 ]
 
-{ #category : 'action' }
+{ #category : 'actions' }
 PhLDownloadManager >> download: url toFile: destinationFile [
+
 	[ self basicDownload: url toFile: destinationFile ]
 	on: PhLDownloadError 
 	do: [ :error |
-			PhlRetryPresenter new
+			(PhlRetryPresenter new
+				application: self application;
 				explanation: error longDescription;
 				retryBlock: [ self download: url toFile: destinationFile ];
 				cancelBlock: [ error pass ];
-				openModal. ]
+				asModalWindow) 
+					owner: self context window;
+					open. ]
 ]
 
 { #category : 'private' }
@@ -89,18 +116,20 @@ PhLDownloadManager >> downloadFailureForUrl: url message: errorMessage [
 	PhLDownloadError signalUrl: url message: errorMessage.
 ]
 
-{ #category : 'action' }
+{ #category : 'actions' }
 PhLDownloadManager >> downloadToPositionableStream: url mimeType: mimeType [
 	"Unfortunately, Zinc (and HTTP in general) doesn't support positionable streams so well. So we have to get the whole content as a collection and stream over it."
-
 	| client content |
+	
 	client := (self newHTTPClientForUrl: url)
 		beOneShot;
 		accept: mimeType;
 		enforceAcceptContentType: true.
+	
 	self 
 		displayProgress: ('Downloading {1}...' format: { url }) 
 		during: [ content := client get ].
+	
 	^ content readStream
 ]
 
@@ -114,6 +143,7 @@ PhLDownloadManager >> initialize [
 
 { #category : 'private' }
 PhLDownloadManager >> newHTTPClientForUrl: url [
+	
 	^ ZnClient new
 		signalProgress: true;
 		url: url;
@@ -123,13 +153,29 @@ PhLDownloadManager >> newHTTPClientForUrl: url [
 		yourself
 ]
 
+{ #category : 'private' }
+PhLDownloadManager >> newJobFor: aTitle do: workBlock [
+	
+	^ SpJob 
+		newTitle: aTitle 
+		block: [ :bar |
+			workBlock
+				on: HTTPProgress
+				do: [ :progress |
+					bar label: progress printString.
+					progress isEmpty
+						ifFalse: [ bar progressPercent: progress percentage ].
+					progress resume ] ]
+]
+
 { #category : 'accessing' }
 PhLDownloadManager >> numberOfErrors [
 	^ errors size
 ]
 
-{ #category : 'action' }
+{ #category : 'actions' }
 PhLDownloadManager >> reset [
+
 	errors removeAll
 ]
 

@@ -5,8 +5,9 @@ for the PhLSettingsBrowser (pragma pharoLauncherSettings).
 Class {
 	#name : 'PhLAppearanceSettings',
 	#superclass : 'Object',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Model',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Model'
 }
 
 { #category : 'settings' }

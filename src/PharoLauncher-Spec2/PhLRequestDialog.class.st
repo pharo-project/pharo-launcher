@@ -1,9 +1,9 @@
 Class {
 	#name : 'PhLRequestDialog',
 	#superclass : 'SpRequestDialog',
-	#category : 'PharoLauncher-Spec2-Dialogs',
+	#category : 'PharoLauncher-Spec2-View-Dialogs',
 	#package : 'PharoLauncher-Spec2',
-	#tag : 'Dialogs'
+	#tag : 'View-Dialogs'
 }
 
 { #category : 'layout' }
@@ -26,7 +26,10 @@ PhLRequestDialog >> defaultLayout [
 PhLRequestDialog >> initializePresenters [
 
 	super initializePresenters.
-	label addStyle: 'message'.
+	label
+		addStyle: 'message';
+		beJustifyCenter;
+		beWrap.
 	textInput addStyle: 'request'.
 	errorLabel 
 		addStyle: 'message'; 

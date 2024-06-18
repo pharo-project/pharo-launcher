@@ -14,6 +14,7 @@ Class {
 
 { #category : 'converting' }
 PhLOpenSettingsCommand >> asSpecCommand [
+	
 	^ super asSpecCommand
 		iconName: #configuration;
 		yourself
@@ -24,7 +25,7 @@ PhLOpenSettingsCommand >> execute [
 
 	^ (PhLSettingBrowser forKeywords: #( #pharoLauncherSettings ))
 			loadSettings;
-			open.
+			open
 ]
 
 { #category : 'initialization' }

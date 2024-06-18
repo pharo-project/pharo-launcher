@@ -52,7 +52,8 @@ Class {
 		'vmManager',
 		'launchConfigurations',
 		'initializationScript',
-		'shouldRunInitializationScript'
+		'shouldRunInitializationScript',
+		'lastUsedConfigurationName'
 	],
 	#classInstVars : [
 		'reader'
@@ -250,6 +251,7 @@ PhLImage >> defaultArguments [
 
 { #category : 'accessing' }
 PhLImage >> defaultLaunchConfiguration [
+
 	^ launchConfigurations 
 		detect: [ :each | each name = PhLLaunchConfiguration defaultName ]
 		ifNone: [ PhLLaunchConfiguration defaultWithImage: self ]
@@ -357,6 +359,28 @@ PhLImage >> lastModification [
 	^ [ self file modificationTime ]
 		  on: FileDoesNotExistException
 		  do: [ nil ]
+]
+
+{ #category : 'accessing' }
+PhLImage >> lastUsedConfiguration [
+	
+	^ self launchConfigurations 
+		detect: [ :each | each name = lastUsedConfigurationName ]
+		ifNone: [ self defaultLaunchConfiguration ]
+]
+
+{ #category : 'accessing' }
+PhLImage >> lastUsedConfiguration: aConfiguration [
+	| configName |
+
+	aConfiguration ifNil: [ ^ self ].
+	configName := aConfiguration name.
+	configName = lastUsedConfigurationName 
+		ifTrue: [ ^ self ].
+	lastUsedConfigurationName := aConfiguration isBasicOrDefault
+		ifTrue: [ nil ]
+		ifFalse: [ configName ].
+	self serializeMetadata
 ]
 
 { #category : 'action' }
@@ -502,6 +526,7 @@ PhLImage >> serializeMetadata [
 	file exists ifFalse: [ "image deleted" ^ self ].
 
 	(file parent / self class metadataFileName)
+		ensureDelete;
 		writeStreamDo: [ :stream | stream nextPutAll: self stonString ]
 ]
 
@@ -526,7 +551,7 @@ PhLImage >> showNativeFolder [
 	file asFileReference openInOSFileBrowser 
 ]
 
-{ #category : 'private ui' }
+{ #category : 'private - ui' }
 PhLImage >> showWarning: warning [
 	| continue |
 

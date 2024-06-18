@@ -43,6 +43,12 @@ PhLAbstractTemplateGroup >> isTemplateGroup [
 	^ true
 ]
 
+{ #category : 'testing' }
+PhLAbstractTemplateGroup >> isUpdated [
+
+	^ true
+]
+
 { #category : 'querying' }
 PhLAbstractTemplateGroup >> latestDevelopmentTemplate [ 
 	^ self templatesAndGroups

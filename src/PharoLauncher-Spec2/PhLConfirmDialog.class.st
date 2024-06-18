@@ -1,9 +1,9 @@
 Class {
 	#name : 'PhLConfirmDialog',
 	#superclass : 'SpConfirmDialog',
-	#category : 'PharoLauncher-Spec2-Dialogs',
+	#category : 'PharoLauncher-Spec2-View-Dialogs',
 	#package : 'PharoLauncher-Spec2',
-	#tag : 'Dialogs'
+	#tag : 'View-Dialogs'
 }
 
 { #category : 'api' }
@@ -52,10 +52,4 @@ PhLConfirmDialog >> label: aString [
 PhLConfirmDialog >> newDialogLabel [
 
 	^ self newLabel
-]
-
-{ #category : 'initialization' }
-PhLConfirmDialog >> updatePresenter [
-
-	super updatePresenter
 ]

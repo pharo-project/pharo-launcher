@@ -5,14 +5,21 @@ Used to display information when no image is selected.
 Class {
 	#name : 'PhLNullImage',
 	#superclass : 'Object',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Model',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }
 PhLNullImage >> architecture [
 	
 	^ ''
+]
+
+{ #category : 'accessing' }
+PhLNullImage >> defaultArguments [
+	
+	^ #()
 ]
 
 { #category : 'accessing' }
@@ -29,7 +36,18 @@ PhLNullImage >> initializationScript [
 { #category : 'accessing' }
 PhLNullImage >> lastModification [
 	
-	^ 'N/A'
+	^ nil
+]
+
+{ #category : 'accessing' }
+PhLNullImage >> lastUsedConfiguration: aLaunchConfiguration [
+
+]
+
+{ #category : 'accessing' }
+PhLNullImage >> launchConfigurations [
+	
+	^ #()
 ]
 
 { #category : 'accessing' }

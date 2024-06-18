@@ -11,8 +11,7 @@ Class {
 		'templateRepository',
 		'imagesPresenter',
 		'scriptsDirectory',
-		'openAsWorld',
-		'jobList'
+		'openAsWorld'
 	],
 	#classVars : [
 		'Default',
@@ -23,8 +22,9 @@ Class {
 	#classInstVars : [
 		'pharoIcon'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Application',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Application'
 }
 
 { #category : 'accessing' }
@@ -271,7 +271,10 @@ PharoLauncherApplication >> initialize [
 	self
 		useBackend: #Morphic 
 		with: PharoLauncherConfiguration new.
+	
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
+	imageRepository reset.
+	
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository
@@ -282,12 +285,6 @@ PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self
 		model: imageRepository
-]
-
-{ #category : 'accessing' }
-PharoLauncherApplication >> jobList [
-
-	^ jobList ifNil: [ jobList := self newJobList  ]
 ]
 
 { #category : 'events' }
@@ -318,9 +315,27 @@ PharoLauncherApplication >> newImageCreated [
 ]
 
 { #category : 'ui' }
+PharoLauncherApplication >> newInform [
+
+	^ PhLInformDialog newApplication: self
+]
+
+{ #category : 'instance creation' }
+PharoLauncherApplication >> newJobList [
+
+	^ PhLModalJobListPresenter newApplication: self
+]
+
+{ #category : 'ui' }
 PharoLauncherApplication >> newRequest [
 
 	^ PhLRequestDialog newApplication: self
+]
+
+{ #category : 'ui' }
+PharoLauncherApplication >> newSelect [
+
+	^ PhLSelectDialog newApplication: self
 ]
 
 { #category : 'configuring' }

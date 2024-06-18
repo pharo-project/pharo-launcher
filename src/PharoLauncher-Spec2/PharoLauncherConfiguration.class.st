@@ -5,8 +5,9 @@ For now, I only define new styles.
 Class {
 	#name : 'PharoLauncherConfiguration',
 	#superclass : 'SpMorphicConfiguration',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Application',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Application'
 }
 
 { #category : 'styling' }

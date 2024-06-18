@@ -9,8 +9,9 @@ My subclasses should each implement a different format strategy.
 Class {
 	#name : 'PhLAbstractDateDisplayStrategy',
 	#superclass : 'PhLObject',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Model',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Model'
 }
 
 { #category : 'accessing' }

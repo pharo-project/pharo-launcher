@@ -39,6 +39,12 @@ PhLCacheTemplateGroup >> isHighlighted [
 	^ delegate isHighlighted
 ]
 
+{ #category : 'testing' }
+PhLCacheTemplateGroup >> isUpdated [
+
+	^ templatesAndGroups notNil	
+]
+
 { #category : 'accessing' }
 PhLCacheTemplateGroup >> name [
 	^ delegate name

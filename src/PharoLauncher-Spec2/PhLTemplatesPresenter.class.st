@@ -15,8 +15,9 @@ Class {
 		'templateTable',
 		'descriptionPanel'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View'
 }
 
 { #category : 'commands' }
@@ -75,7 +76,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 	
 	^ self newTree
 		"alternateRowsColor;"
-		children: [ :aTemplateGroup | self childrenOf: aTemplateGroup ];
+		children: [ :aTemplateGroup | self templateChildrenOf: aTemplateGroup ];
 		display: #name;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		actionGroup: self rootCommandsGroup / 'Context Menu';
@@ -88,18 +89,11 @@ PhLTemplatesPresenter >> buildTemplateTable [
 ]
 
 { #category : 'private' }
-PhLTemplatesPresenter >> childrenOf: aTemplateGroup [
+PhLTemplatesPresenter >> categoryChildrenOf: aTemplateGroup [
 		
-	^ [ aTemplateGroup children ]
-		on: PhLDownloadError
-		do: [ :error | 
-			| children |
-			(PhlRetryPresenter newApplication: self application)
-				explanation: error longDescription;
-				retryBlock: [ children := aTemplateGroup children ];
-				cancelBlock: [ children := #() ];
-				openModal.
-			children ]	
+	^ PhLCurrentContext 
+		use: self 
+		during: [ aTemplateGroup children ]
 ]
 
 { #category : 'initialization' }
@@ -110,8 +104,8 @@ PhLTemplatesPresenter >> connectPresenters [
 		transmitTo: templateTable 
 		transform: [ :group | 
 			group 
-				ifNil: [ #() ]
-				ifNotNil: [ group children ] ].
+				ifNotNil: [ self categoryChildrenOf: group ]
+				ifNil: [ #() ] ].
 
 	templateTable 
 		transmitTo: descriptionPanel
@@ -181,7 +175,7 @@ PhLTemplatesPresenter >> imageRepository [
 { #category : 'initialization' }
 PhLTemplatesPresenter >> initialExtent [
 	
-	^ 800@400
+	^ 980@400
 ]
 
 { #category : 'accessing' }
@@ -261,8 +255,44 @@ PhLTemplatesPresenter >> singleTemplate [
 	^ templateTable selectedItems first "multiple selection enabled, always return a collection"
 ]
 
+{ #category : 'private' }
+PhLTemplatesPresenter >> templateChildrenOf: aTemplateGroup [
+		
+	^ [ aTemplateGroup children ]
+		on: PhLDownloadError
+		do: [ :error | 
+			| children |
+			((PhlRetryPresenter newApplication: self application)
+				explanation: error longDescription;
+				retryBlock: [ children := aTemplateGroup children ];
+				cancelBlock: [ children := #() ];
+				asModalWindow)
+					owner: self window; 
+					open.
+			children ]	
+]
+
 { #category : 'api - accessing' }
 PhLTemplatesPresenter >> templateRepository [
 
 	^ self model
+]
+
+{ #category : 'private - updating' }
+PhLTemplatesPresenter >> updateTemplateTableWith: aGroup [
+
+		aGroup ifNil: [ 
+			templateTable items: #().
+			^ self ].
+		
+		aGroup isUpdated ifTrue: [ 
+			templateTable items: aGroup children.
+			^ self ].
+		
+		templateTable items: #().
+		[ 
+			| children |
+			children := self categoryChildrenOf: aGroup.
+			templateTable items: children.
+		] fork
 ]

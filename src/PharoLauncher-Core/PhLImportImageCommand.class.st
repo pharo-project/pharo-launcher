@@ -43,8 +43,9 @@ PhLImportImageCommand >> execute [
 
 	importSiblings := false.
 	answer := self imagesPresenter newRequest
-		title: 'What would you like to do?';
-		chooseFrom: { 
+		title: 'Import';
+		label: 'What would you like to do?';
+		chooseFrom: {
 			'Import an image into Pharo Launcher images store (will move files)' .
 			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' 
 		}.
@@ -87,11 +88,13 @@ PhLImportImageCommand >> importImage [
 		chooseFile.
 	imageFile ifNil: [ 
 		self imagesPresenter newInformation 
+			title: 'Import';
 			message: 'No path selected. Import failed.';
 			inform.
 		^ self ].
 	imageFile asFileReference isDirectory ifTrue: [ 
-		self imagesPresenter newInformation 
+		self imagesPresenter newInformation
+			title: 'Import'; 
 			message: 'The file selected is a directory and not a Pharo image. Import failed.';
 			inform.
 		^ self ].

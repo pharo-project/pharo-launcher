@@ -18,8 +18,9 @@ Class {
 { #category : 'action' }
 PhLUIRequest >> chooseFrom: aListOfChoices [
 
-	^ self application newSelect 
-		title: title;
+	^ self application newSelect
+		in: [ :this | title ifNotNil: [ this title: title ] ];
+		label: label;
 		items: aListOfChoices;
 		openModalWithParent: self relatedWindow
 ]

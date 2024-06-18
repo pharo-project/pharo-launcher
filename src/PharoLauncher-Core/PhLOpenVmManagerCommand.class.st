@@ -20,9 +20,13 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenVmManagerCommand >> execute [
 
-	(PhLVMPresenter
-		 newApplication: self application
-		 model: PhLVirtualMachinesDataSource default) open
+	((self context 
+		instantiate: PhLVMPresenter 
+		on: PhLVirtualMachinesDataSource default)
+		asModalWindow)
+			owner: self context window;
+			withoutButtons;
+			open
 ]
 
 { #category : 'accessing' }

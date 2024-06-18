@@ -385,7 +385,9 @@ PhLVirtualMachine >> stonValueOf: anInstVarName [
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
 
-	self manager class fetch: self downloadUrl to: self vmStore / (self id , '.zip').
+	self manager class 
+		fetch: self downloadUrl 
+		to: self vmStore / (self id , '.zip').
 
 	self initializeExecutableRefFrom: self vmStore / self id.
 	self ensureExecutionRights

@@ -18,8 +18,9 @@ Class {
 		'toolbar',
 		'editConfigurationButton'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View'
 }
 
 { #category : 'commands' }
@@ -46,17 +47,21 @@ PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
 			yourself);
 		register: ((CmCommandGroup named: 'edition') asSpecGroup
 			beDisplayedAsGroup;
+			register: (PhLOpenLaunchConfigurationEditorCommand forSpecContext: aContext);
 			register: (PhLRenameImageCommand forSpecContext: aContext);
 			register: (PhLCopyImageCommand forSpecContext: aContext);
-			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
-		register: (PhLRecreateImageCommand forSpecContext: aContext);
 		register: (PhLShowImageInFolderCommand forSpecContext: aContext);
 		register: (PhLCopyPathname forSpecContext: aContext);
 		register: (PhLCopyLaunchCommand forSpecContext: aContext);
 		register: (PhLCreateTemplateFromImageCommand forSpecContext: aContext);
 		register: (PhLCreateTemplateFromImageCommand new asSpecCommandWithImageRemoval
 			context: aContext;
+			yourself);
+		register: ((CmCommandGroup named: 'DANGER ZONE') asSpecGroup
+			beDisplayedAsGroup;
+			register: (PhLRecreateImageCommand forSpecContext: aContext);
+			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'extra') asSpecGroup
 			register: (PhLInspectCommand forSpecContext: aContext);
@@ -72,6 +77,8 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 		register: ((CmCommandGroup named: 'Create') asSpecGroup
 			beDisplayedAsGroup;
 			register: (PhLOpenNewImageWindowCommand forSpecContext: aContext);
+			register: (PhLImportImageCommand forSpecContext: aContext);
+			register: (PhLLaunchImageFromDiskCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Image') asSpecGroup
 			beDisplayedAsGroup;
@@ -79,15 +86,13 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 			register: (PhLLaunchImageCommand new asSpecLaunchWithoutSettingsCommand
 				context: aContext;
 				yourself);
-			register: (PhLLaunchImageFromDiskCommand forSpecContext: aContext);
-			register: (PhLImportImageCommand forSpecContext: aContext);
-			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
 			register: ((PhLShowImageInFolderCommand forSpecContext: aContext)
 				name: 'Show';
 				yourself);
 			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Settings') asSpecGroup
+			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
 			register: ((PhLOpenVmManagerCommand forSpecContext: aContext)
 				name: 'VMs';
 				yourself);
@@ -159,6 +164,7 @@ PhLImagesPresenter >> buildImageTable [
 			yourself);
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / self contextMenuCommandGroupName ];
 		contextKeyBindings: self keyBindingsCommandsGroup asKMCategory;
+		actionGroup: self rootCommandsGroup / self contextMenuCommandGroupName;
 		beResizable;
 		beMultipleSelection;
 		yourself
@@ -172,13 +178,14 @@ PhLImagesPresenter >> buildToolbar [
 	^ self newPresenter
 		layout: (SpBoxLayout newLeftToRight
 			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Create') expand: false;
+			"add: self newLabel;
 			add: (SpBoxLayout newLeftToRight 
 					vAlignCenter;
 					add: self newLaunchConfigurationDropList expand: true;
 					add: self newEditConfigurationButton expand: false; 
 					yourself)
-				expand: true;
-			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;
+				expand: false;
+			add: (self newLaunchToolbar fillWith: toolbarGroup / 'Image') expand: false;"
 			add: self newLabel; "to create a space"
 			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
 			yourself);
@@ -189,10 +196,8 @@ PhLImagesPresenter >> buildToolbar [
 PhLImagesPresenter >> connectPresenters [
 
 	imageTable transmitDo: [ :image |
-		self 
-			refreshLaunchConfigurationList;
-			updateToolbarCommandsAvailability ].
-		
+		self updateToolbarCommandsAvailability ].
+
 	imageTable 
 		transmitTo: descriptionPanel
 		transform: [ :images | 		
@@ -225,7 +230,7 @@ PhLImagesPresenter >> defaultLayout [
 		add: toolbar expand: false;
 		add: imageFilter expand: false;
 		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: self initialExtent y * 50 percent;
+			positionOfSlider: self initialExtent y * (40 percent);
 			add: imageTable;
 			add: descriptionPanel;
 			yourself);
@@ -249,8 +254,9 @@ PhLImagesPresenter >> ensurePharoVersion [
 	image := self singleImage.
 	[ image ensurePharoVersion ]
 	on: PhLImageVersionFileNotFound 
-	do: [ :error | | presenter |
-		presenter := PhLPharoVersionChooserPresenter newApplication: self application.
+	do: [ :error | 
+		| presenter |
+		presenter := self instantiate: PhLPharoVersionChooserPresenter.
 		presenter openModal.
 		presenter version ifNil: [ error pass ].
 		image versionFile 
@@ -281,7 +287,7 @@ PhLImagesPresenter >> imageRepository [
 { #category : 'initialization' }
 PhLImagesPresenter >> initialExtent [
 		
-	^ 900@650
+	^ 900@700
 ]
 
 { #category : 'initialization' }
@@ -293,7 +299,7 @@ PhLImagesPresenter >> initializePresenters [
 	descriptionPanel := self buildDescriptionPanel.
 	
 	self imageRepository 
-		whenChangedSend: #refresh 
+		whenChangedSend: #refresh
 		to: self
 ]
 
@@ -351,13 +357,14 @@ PhLImagesPresenter >> readableDateFor: aDateAndTime [
 { #category : 'updating' }
 PhLImagesPresenter >> refresh [ 
 
-	imageTable items: self imageRepository images.
-	self refreshLaunchConfigurationList
+	imageTable items: self imageRepository images
 ]
 
 { #category : 'updating' }
 PhLImagesPresenter >> refreshLaunchConfigurationList [
 	| image |
+	
+	true ifTrue: [ ^ self ].
 	
 	[ image := self singleImage ]
 	on: PhLCommandError
@@ -378,7 +385,7 @@ PhLImagesPresenter >> resetLaunchConfigurationList [
 
 	launchConfigurationList
 		resetSelection;
-		items: #() "no image selected".
+		items: #() "no image selected"
 ]
 
 { #category : 'initialization' }
@@ -418,7 +425,7 @@ PhLImagesPresenter >> selectedImages [
 { #category : 'api - accessing' }
 PhLImagesPresenter >> selectedLaunchConfiguration [
 	
-	^ launchConfigurationList selectedItem
+	^ descriptionPanel selectedLaunchConfiguration
 ]
 
 { #category : 'api - selection' }
@@ -458,7 +465,7 @@ PhLImagesPresenter >> updatePresenter [
 { #category : 'updating' }
 PhLImagesPresenter >> updateToolbarCommandsAvailability [
 
-	editConfigurationButton enabled: imageTable selectedItem notNil.
+	"editConfigurationButton enabled: imageTable selectedItem notNil."
 	self withToolbarDo: [ :toolbar |
 		self toolbarGroup allCommands do: #updateEnableStatus ]
 ]

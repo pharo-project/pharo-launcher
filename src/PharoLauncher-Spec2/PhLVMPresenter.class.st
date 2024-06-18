@@ -10,8 +10,9 @@ Class {
 		'vmTable',
 		'rootCommandsGroup'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View'
 }
 
 { #category : 'commands' }
@@ -26,7 +27,10 @@ PhLVMPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
 		register: PhLUpdateVmCommand forSpec;
 		register: PhLShowVmInFolderCommand forSpec;
-		register: PhLDeleteVmCommand forSpec;
+		register: ((CmCommandGroup named: 'DANGER ZONE') asSpecGroup
+			beDisplayedAsGroup;
+			register: PhLDeleteVmCommand forSpec;
+			yourself);
 		yourself
 
 ]
@@ -63,31 +67,42 @@ PhLVMPresenter >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'private - actions' }
+PhLVMPresenter >> doShowInFolder [
+		
+	PhLShowVmInFolderCommand new
+		context: self;
+		execute 
+]
+
+{ #category : 'private' }
+PhLVMPresenter >> iconFor: vm [
+	| icon |
+	
+	icon := vm isValid
+		ifTrue: [ self iconNamed: #testGreen ]
+		ifFalse: [ self iconNamed: #testNotRun ].
+	
+	^ icon asMorph
+		setBalloonText: vm validityDescription;
+		yourself
+]
+
 { #category : 'initialization' }
 PhLVMPresenter >> initializePresenters [
 
 	vmTable := self newTable
-		whenActivatedDo: [ PhLShowVmInFolderCommand new
-									context: self;
-									execute  ];
-		addColumn: ((SpImageTableColumn title: '' evaluated: 
-			[ :vm | | icon |
-			icon := vm isValid
-				ifTrue: [ self iconNamed: #testGreen ]
-				ifFalse: [ self iconNamed: #testNotRun ].
-			icon asMorph
-				setBalloonText: vm validityDescription;
-				yourself.
-			]) 
-			width: 20);
-		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 100; yourself);
+		whenActivatedDo: [ self doShowInFolder ];
+		addColumn: ((SpImageTableColumn title: '' evaluated: [ :vm | self iconFor: vm ]) width: 20);
+		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 150; yourself);
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
-			evaluated: #lastUpdateTimeDescription) width: 120; yourself);
+			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
 		showColumnHeaders;
 		alternateRowsColor;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
+		actionGroup: self rootCommandsGroup / 'Context Menu';
 		beResizable;
 		beMultipleSelection;
 		items: self datasource virtualMachines;
@@ -99,7 +114,7 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
-		initialExtent: 800@350;
+		initialExtent: 850@350;
 		toolbar:
 			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.

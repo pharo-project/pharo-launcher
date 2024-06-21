@@ -81,8 +81,8 @@ PhLImportImageCommand >> importImage [
 	| imageFile |
 	imageFile := self imagesPresenter newFileRequest
 		title: 'Import a Pharo image (will move image, changes file and pharo-local folder)';
-		extensionsToShow: #('image');
-		path: FileLocator home;
+		filter: '.image';
+		currentFolder: FileLocator home;
 		chooseFile.
 	imageFile ifNil: [ 
 		self imagesPresenter newInformation 

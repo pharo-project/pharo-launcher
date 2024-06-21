@@ -16,7 +16,7 @@ TPhLInteractionTrait >> newConfirmation [
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newFileRequest [
-	^ PhLUIFileRequest new
+	^ ITFileRequest new
 ]
 
 { #category : 'user interaction' }

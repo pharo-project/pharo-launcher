@@ -15,16 +15,17 @@ Class {
 		'description',
 		'imageLabel',
 		'template',
-		'initializationScript',
 		'location',
 		'vm',
 		'templateUrl',
-		'shouldRunInitializationScript',
 		'updating',
 		'actionBar',
 		'launchConfigurationList',
 		'statusBar',
-		'lastEditedLabel'
+		'lastEditedLabel',
+		'launchConfigurationEdit',
+		'initializationScriptEdit',
+		'initializationScriptList'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -74,7 +75,7 @@ PhLImageDetailPresenter class >> labelWidth [
 PhLImageDetailPresenter >> connectPresenters [
 
 	description whenTextChangedDo: [ :text | self updateImageDescription: text ].
-	shouldRunInitializationScript whenChangedDo: [ :state | self updateImageRunScript: state ]
+	initializationScriptEdit whenChangedDo: [ :state | self updateImageRunScript: state ]
 ]
 
 { #category : 'layout' }
@@ -98,6 +99,7 @@ PhLImageDetailPresenter >> descriptionLayout [
 
 	^ self newPresenter 
 		addStyle: 'form';
+		"addStyle: 'frame';"
 		layout: (SpGridLayout build: [ :builder | builder
 			beRowNotHomogeneous;
 			beColumnNotHomogeneous;
@@ -105,21 +107,44 @@ PhLImageDetailPresenter >> descriptionLayout [
 			column: 1 withConstraints: [ :c | c hAlignEnd; vAlignStart ];
 			column: 2 withConstraints: [ :c | c beExpand ];
 			add: 'Description'; add: description; nextRow;
-			add: 'Origin template'; add: template; nextRow;
-			add: ''; add: templateUrl; nextRow;
-			add: 'Initialization script'; add: (SpBoxLayout newLeftToRight
-					add: initializationScript expand: false; 
-					add: shouldRunInitializationScript expand: false;
+			add: 'Configuration'; add: (SpBoxLayout newLeftToRight 
+					add: launchConfigurationList;
+					add: launchConfigurationEdit expand: false;
 					yourself); 
 				nextRow;
+			add: 'Initialization script'; add: (SpBoxLayout newLeftToRight
+					add: initializationScriptList "expand: false"; 
+					add: initializationScriptEdit expand: false;
+					yourself); 
+				nextRow;
+			add: 'Origin template'; add: template; nextRow;
 			add: 'Location'; add: location ]);
 		yourself
+]
+
+{ #category : 'private - actions' }
+PhLImageDetailPresenter >> doEditInitializationScripts [
+
+	^ ((self 
+		instantiate: PhLScriptPresenter 
+		on: self application scriptsDirectory)
+		whenScriptListChanged: [ self updateInitializationScriptList ];
+	 	asModalWindow)
+			owner: self window;
+			withoutButtons;
+			open
 ]
 
 { #category : 'private - actions' }
 PhLImageDetailPresenter >> doEditLaunchConfigurations [
 	
 	(PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
+]
+
+{ #category : 'private - actions' }
+PhLImageDetailPresenter >> doShowInFolder [ 
+
+	(PhLShowImageInFolderCommand forContext: self) execute
 ]
 
 { #category : 'accessing' }
@@ -154,6 +179,17 @@ PhLImageDetailPresenter >> imageLabel [
 	^ imageLabel
 ]
 
+{ #category : 'private' }
+PhLImageDetailPresenter >> initializationScriptList [
+	| files |
+	
+	files := self application scriptsDirectory files 
+		select: [ :file | file extension = 'st' ].	
+	files := files copyWith: ((FileSystem memory root / 'No initialization script') ensureCreateFile).
+	
+	^ files
+]
+
 { #category : 'initialization' }
 PhLImageDetailPresenter >> initialize [
 
@@ -166,40 +202,56 @@ PhLImageDetailPresenter >> initializePresenters [
 
 	imageLabel := self newLabel.
 	imageLabel addStyle: 'form_header'.
-	
+		
+	description := self newText.
+	description addScrollBarStyle: 'frame'.
+
 	launchConfigurationList := self newDropList
 		items: #();
 		display: [ :item | item name ];
 		whenSelectedItemChangedDo: [ :aConfiguration | 
 			self updateLastSelectedConfiguration: aConfiguration ];
 		yourself.	
+	launchConfigurationEdit := self newButton 
+		addStyle: 'flat';
+		icon: (self iconNamed: #edit);
+		action: [ self doEditLaunchConfigurations ];
+		yourself.
+
+	template := self newLink.
+	"templateUrl := self newLabel."
+	initializationScriptList := self newDropList
+		display: [ :item | item basename ];
+		whenSelectedItemChangedDo: [ :aReference | 
+			self updateInitializationScript: aReference ];
+		yourself.
+	initializationScriptEdit := self newButton
+		addStyle: 'flat';
+		icon: (self iconNamed: #edit);
+		action: [ self doEditInitializationScripts ];
+		yourself.
 	
-	description := self newText.
-	template := self newLabel.
-	templateUrl := self newLabel.
-	initializationScript := self newLabel.
-	shouldRunInitializationScript := self newCheckBox
-		help: 'Run the initialization script at next launch?';
-		disable.
-	location := self newLabel.
+	location := self newLink.
+	
 	vm := self newTextInput.
 	
 	actionBar := self newActionBar.
-	actionBar addStyle: 'status_bar'.
-	actionBar add: (PhLDeleteImageCommand forSpecContext: self) asActionButtonPresenter.
-	actionBar add: (PhLShowImageInFolderCommand forSpecContext: self) asActionButtonPresenter.
-	actionBar addLast: (self newButton 
-		icon: (self iconNamed: #edit);
-		action: [ self doEditLaunchConfigurations ];
+	actionBar addStyle: 'action_bar'.
+	actionBar add: ((PhLDeleteImageCommand forSpecContext: self) asActionButtonPresenter
+		addStyle: 'flat';
 		yourself).
-	actionBar addLast: launchConfigurationList.
-	actionBar addLast: (PhLLaunchImageCommand forSpecContext: self) asActionButtonPresenter.
+	actionBar add: ((PhLShowImageInFolderCommand forSpecContext: self) asActionButtonPresenter
+		addStyle: 'flat';
+		yourself).
+	actionBar addLast: ((PhLLaunchImageCommand forSpecContext: self) asActionButtonPresenter
+		"addStyle: 'circular';"
+		yourself).
 	actionBar centerPresenter: imageLabel.
-	
+
 	statusBar := self newPresenter.
 	statusBar addStyle: 'status_bar'.
 	statusBar layout: (SpBoxLayout newHorizontal
-		vAlignCenter; 
+		vAlignCenter;
 		add: (lastEditedLabel := self newLabel);
 		yourself).
 		
@@ -295,18 +347,21 @@ PhLImageDetailPresenter >> updateImage [
 		ifNil: [ 'N/A' ] ).
 	
 	description text: image description.
-	template label: (image originTemplateName ifEmpty: [ '(noname)' ]).
-	templateUrl label: image originTemplateUrl.
-	image initializationScript 
-		ifNil: [ 
-			initializationScript label: '<none>'.
-			shouldRunInitializationScript disable. ] 
-		ifNotNil: [ :script | 
-			initializationScript label: script basename.
-			shouldRunInitializationScript 
-				enable;
-				state: image shouldRunInitializationScript. ].
-	location label: image location.
+	
+	template 
+		label: (image originTemplateName ifEmpty: [ '(noname)' ]);
+		url: image originTemplateUrl;
+		help: image originTemplateUrl.
+	
+	initializationScriptList 
+		items: self initializationScriptList;
+		selectItem: image initializationScript.
+	
+	location 
+		label: image location asFileReference parent fullName;
+		action: [ self doShowInFolder ];
+		help: image location.
+		
 	vm text: 'N/A'. "self image vm."
 ]
 
@@ -326,6 +381,18 @@ PhLImageDetailPresenter >> updateImageRunScript: state [
 	updating ifTrue: [ ^ self ].
 	
 	self image shouldRunInitializationScript: state
+]
+
+{ #category : 'private - updating' }
+PhLImageDetailPresenter >> updateInitializationScript: aReference [
+
+	self image initializationScript: aReference
+]
+
+{ #category : 'private - updating' }
+PhLImageDetailPresenter >> updateInitializationScriptList [
+	
+	initializationScriptList items: self initializationScriptList
 ]
 
 { #category : 'private - updating' }

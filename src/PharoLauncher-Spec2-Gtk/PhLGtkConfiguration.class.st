@@ -17,8 +17,8 @@ PhLGtkConfiguration >> launcherStyle [
 
 	^ '
 box.status_bar {
-	min-height: 40px;
-	padding: 10px;
+	min-height: 30px;
+	padding: 5px;
 }
 actionbar.status_bar {
 	border-radius: 0;
@@ -34,7 +34,24 @@ box.status_bar label.status_message {
 	font-weight: lighter;
 }
 grid.form {
-	padding: 15px;
+	margin: 10px 10px 0px 10px;
+	padding: 15px 30px 15px 30px;
+	border-spacing: 0px;
+}
+scrolledwindow.frame {
+	border-style: solid;
+	border-radius: 5px;
+}
+scrolledwindow textview { 
+	border-radius: 5px;
+	padding: 5px;
+}
+grid.form button.link {
+	margin: 0px;
+	padding: 0px;
+}
+box {
+	border-spacing: 5px;
 }
 box.choice_area {
 	padding: 15px;

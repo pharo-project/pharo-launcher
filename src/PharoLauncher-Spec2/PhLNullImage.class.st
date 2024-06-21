@@ -34,6 +34,11 @@ PhLNullImage >> initializationScript [
 ]
 
 { #category : 'accessing' }
+PhLNullImage >> initializationScript: aFileReference [
+
+]
+
+{ #category : 'accessing' }
 PhLNullImage >> lastModification [
 	
 	^ nil

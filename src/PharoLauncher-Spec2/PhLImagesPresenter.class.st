@@ -230,7 +230,7 @@ PhLImagesPresenter >> defaultLayout [
 		add: toolbar expand: false;
 		add: imageFilter expand: false;
 		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: self initialExtent y * (40 percent);
+			positionOfSlider: self initialExtent y * (35 percent);
 			add: imageTable;
 			add: descriptionPanel;
 			yourself);
@@ -287,7 +287,7 @@ PhLImagesPresenter >> imageRepository [
 { #category : 'initialization' }
 PhLImagesPresenter >> initialExtent [
 		
-	^ 900@700
+	^ 900@750
 ]
 
 { #category : 'initialization' }

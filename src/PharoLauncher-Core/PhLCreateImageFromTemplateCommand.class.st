@@ -44,12 +44,15 @@ PhLCreateImageFromTemplateCommand >> createImage [
 	name := self templatesPresenter imageName.
 	name isEmptyOrNil ifTrue: [ ^ self ].
 	
-	image := self templatesPresenter imageRepository
-		extractTemplate: self templatesPresenter singleTemplate
-		to: name.
-	self addInitializationScriptMetadataIfPresent.
-	self addDescriptionIfAny.
-	self templatesPresenter application imageRepositoryChanged: image.
+	PhLCurrentContext 
+		use: self context
+		during: [  
+		image := self templatesPresenter imageRepository
+			extractTemplate: self templatesPresenter singleTemplate
+			to: name.
+		self addInitializationScriptMetadataIfPresent.
+		self addDescriptionIfAny.
+		self templatesPresenter application imageRepositoryChanged: image ].
 
 	^ image
 ]

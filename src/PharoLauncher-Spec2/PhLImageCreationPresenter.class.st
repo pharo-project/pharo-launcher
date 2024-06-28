@@ -89,19 +89,16 @@ PhLImageCreationPresenter >> defaultLayout [
 				yourself)
 			expand: false;
 		add: 'Image description:' expand: false;
-		add: descriptionText height: 60;
-		add: 'Initialization script:' expand: false;
+		add: descriptionText "height: 60";
+		"add: 'Initialization script:' expand: false;
 		add: (SpBoxLayout newHorizontal 
 				spacing: 5;
 				add: initScript;
 				add: editInitScriptButton expand: false;
 				yourself)
 			expand: false;
-		add: initScriptText height: 100;
-		add: (SpBoxLayout newVertical 
-			vAlignEnd;
-			add: createButton;
-			yourself);
+		add: initScriptText height: 100;"
+		add: createButton expand: false;
 		yourself
 ]
 
@@ -176,7 +173,7 @@ PhLImageCreationPresenter >> initializePresenters [
 		icon: (self iconNamed: #edit);
 		yourself.
 	
-	createCommand := PhLCreateImageFromTemplateCommand forSpecContext: owner.
+	createCommand := PhLCreateImageFromTemplateCommand forSpecContext: self owner.
 	(createButton := createCommand asButtonPresenter)
 		action: [ self createImageWithCommand: createCommand ].
 	createButton disable

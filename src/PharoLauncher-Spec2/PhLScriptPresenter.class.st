@@ -62,7 +62,8 @@ PhLScriptPresenter >> defaultSaveShortCut [
 ]
 
 { #category : 'initialization' }
-PhLScriptPresenter >> initializePresenters [ 
+PhLScriptPresenter >> initializePresenters [
+
 	scriptTable := (self instantiate: SpEditableListPresenter)
 		items: self scripts;
 		display: [ :file | file basename ];

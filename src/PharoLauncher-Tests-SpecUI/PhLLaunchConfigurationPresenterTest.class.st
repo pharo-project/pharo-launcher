@@ -31,10 +31,11 @@ PhLLaunchConfigurationPresenterTest >> setUpPresenter [
 
 { #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> setUpPresenterWithApplication: anSpApplication [
+
 	application := anSpApplication.
 	presenter := PhLLaunchConfigurationPresenter
-		             newApplication: anSpApplication
-		             model: image
+		newApplication: anSpApplication
+		model: image
 ]
 
 { #category : 'running' }
@@ -55,7 +56,6 @@ PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultLi
 	presenter initializeVmListContent.
 
 	self assert: (presenter vmListItems noneSatisfy: [ :each | each id = config vm id]). "ensure we test with vm not listed in presenter"
-	presenter selectConfiguration: config.
 	
 	self 
 		assert: presenter selectedVm id 
@@ -71,7 +71,6 @@ PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfi
 	config := image defaultLaunchConfiguration.
 
 	presenter
-		selectConfiguration: config;
 		clickDeleteConfigurationButton.
 
 	self assertEmpty: presenter imageArguments.
@@ -99,9 +98,6 @@ PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelects
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: 'Default'.
-
-	presenter selectConfiguration: config.
-	presenter saveSelectedConfiguration.
 
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
@@ -163,7 +159,6 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 		equals: 2. "Default + foo"
 
 	presenter
-		selectConfiguration: configuration;
 		clickDeleteConfigurationButton.
 		
 	self
@@ -235,7 +230,6 @@ PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWind
 	self setUpPresenterWithApplication: imagesPresenter application.
 
 	window := presenter open.
-	presenter selectConfiguration: config.
 	window close.
 
 	self

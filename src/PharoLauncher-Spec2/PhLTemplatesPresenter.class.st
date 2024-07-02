@@ -123,11 +123,19 @@ PhLTemplatesPresenter >> defaultLayout [
 		add: (SpPanedLayout newHorizontal
 			positionOfSlider: self initialExtent x * (1/3);
 			add: (SpBoxLayout newVertical 
-				add: '1. Choose a template category:' expand: false;
+				add: (self newLabel 
+						addStyle: 'list_header';
+						label: 'Category';
+						yourself) 
+					expand: false;
 				add: categoryTable;
 				yourself);
 			add: (SpBoxLayout newVertical 
-				add: '2. Choose a template:' expand: false;
+				add: (self newLabel 
+						addStyle: 'list_header';
+						label: 'Template';
+						yourself) 
+					expand: false;
 				add: templateTable;
 				yourself);
 			yourself);
@@ -180,6 +188,7 @@ PhLTemplatesPresenter >> initialExtent [
 
 { #category : 'accessing' }
 PhLTemplatesPresenter >> initializationScript [
+
 	^ descriptionPanel initializationScript
 ]
 

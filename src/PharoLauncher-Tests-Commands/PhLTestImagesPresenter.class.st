@@ -86,12 +86,6 @@ PhLTestImagesPresenter >> newRequest [
 	^ request
 ]
 
-{ #category : 'updating' }
-PhLTestImagesPresenter >> refreshLaunchConfigurationList [
-
-	launchConfigurationList ifNotNil: [ super refreshLaunchConfigurationList ]
-]
-
 { #category : 'accessing' }
 PhLTestImagesPresenter >> request [
 

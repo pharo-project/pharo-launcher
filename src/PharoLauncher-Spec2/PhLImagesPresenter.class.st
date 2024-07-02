@@ -12,7 +12,6 @@ Class {
 	#instVars : [
 		'imageTable',
 		'descriptionPanel',
-		'launchConfigurationList',
 		'imageFilter',
 		'rootCommandsGroup',
 		'toolbar',
@@ -332,19 +331,7 @@ PhLImagesPresenter >> newEditConfigurationButton [
 	^ editConfigurationButton := self newButton
 		addStyle: 'flat';
 		icon: (self iconNamed: #edit);
-		action: [ 
-			self 
-				editLaunchConfigurations;
-				refreshLaunchConfigurationList ];
-		yourself
-]
-
-{ #category : 'initialization' }
-PhLImagesPresenter >> newLaunchConfigurationDropList [
-
-	^ launchConfigurationList := self newDropList
-		items: #();
-		display: [ :item | item name ];
+		action: [ self editLaunchConfigurations ];
 		yourself
 ]
 
@@ -360,44 +347,10 @@ PhLImagesPresenter >> refresh [
 	imageTable items: self imageRepository images
 ]
 
-{ #category : 'updating' }
-PhLImagesPresenter >> refreshLaunchConfigurationList [
-	| image |
-	
-	true ifTrue: [ ^ self ].
-	
-	[ image := self singleImage ]
-	on: PhLCommandError
-	do: [ 
-		self resetLaunchConfigurationList.
-		^ self ].
-		
-	launchConfigurationList
-		items: image launchConfigurations.
-	
-	[ launchConfigurationList selectItem: image defaultLaunchConfiguration ]
-		on: NotFound "Default configuration has been deleted but there are still other configurations"
-		do: [ launchConfigurationList selectFirst ]
-]
-
-{ #category : 'updating' }
-PhLImagesPresenter >> resetLaunchConfigurationList [
-
-	launchConfigurationList
-		resetSelection;
-		items: #() "no image selected"
-]
-
 { #category : 'initialization' }
 PhLImagesPresenter >> rootCommandsGroup [
 
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
-]
-
-{ #category : 'api - selection' }
-PhLImagesPresenter >> selectConfiguration: aPhLLaunchConfiguration [
-
-	launchConfigurationList selectItem: aPhLLaunchConfiguration
 ]
 
 { #category : 'api - selection' }

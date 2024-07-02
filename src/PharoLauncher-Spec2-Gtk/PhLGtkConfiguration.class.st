@@ -16,18 +16,23 @@ PhLGtkConfiguration >> addPredefinedStyles [
 PhLGtkConfiguration >> launcherStyle [
 
 	^ '
+label.list_header { 
+	padding: 8px;
+	font-weight: bold;
+}
 box.status_bar {
 	min-height: 30px;
 	padding: 5px;
 }
-actionbar.status_bar {
+actionbar.status_bar, box.action_area {
+	border-spacing: 0px;
 	border-radius: 0;
 	border-bottom-left-radius: 13px; 
 	border-bottom-right-radius: 13px;
 	border-left: none; 
 	border-right: none; 
 }
-actionbar.status_bar label.form_header {
+label.form_header {
 	font-size: larger;
 }
 box.status_bar label.status_message {

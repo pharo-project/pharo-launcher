@@ -290,10 +290,8 @@ PharoLauncherApplication >> initializeImagesPresenter [
 { #category : 'events' }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
-
-	imagesPresenter refreshLaunchConfigurationList.
-	aLaunchConfiguration isNullConfiguration 
-		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
+	
+	self flag: #REMOVEME
 ]
 
 { #category : 'accessing' }

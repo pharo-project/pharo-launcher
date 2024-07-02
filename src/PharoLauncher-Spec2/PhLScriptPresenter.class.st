@@ -46,19 +46,30 @@ PhLScriptPresenter class >> icebergLoadExample [
 PhLScriptPresenter >> defaultLayout [
 
 	^ SpPanedLayout newHorizontal
-		  positionOfSlider: 30 percent;
-		  add: scriptTable withConstraints: [ :constraints | 
-			  constraints spec: #withoutOrderingBar ];
-		  add: (SpBoxLayout newVertical
-				   add: fileEditor;
-				   add: saveButton expand: false;
-				   yourself);
-		  yourself
+		positionOfSlider: (self initialExtent x * 0.3) asInteger;
+		add: scriptTable layout: #withoutOrderingBar;
+		add: (SpBoxLayout newVertical 
+			add: fileEditor;
+			add: (self newPresenter 
+					addStyle: 'action_area';
+					layout: (SpBoxLayout newHorizontal 
+						add: saveButton;
+						yourself);
+					yourself)
+				expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : 'user interaction' }
 PhLScriptPresenter >> defaultSaveShortCut [
 	^ SpAcceptChangesCommand defaultShortcutKey 
+]
+
+{ #category : 'initialization' }
+PhLScriptPresenter >> initialExtent [
+
+	^ 700@550
 ]
 
 { #category : 'initialization' }
@@ -93,9 +104,10 @@ PhLScriptPresenter >> initializePresenters [
 
 { #category : 'initialization' }
 PhLScriptPresenter >> initializeWindow: aWindowPresenter [
+	
 	aWindowPresenter
 		title: 'Available initialization scripts';
-		initialExtent: 800@550.
+		initialExtent: self initialExtent
 ]
 
 { #category : 'action' }

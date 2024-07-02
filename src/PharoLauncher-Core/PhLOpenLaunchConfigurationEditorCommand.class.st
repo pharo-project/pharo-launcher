@@ -20,12 +20,14 @@ PhLOpenLaunchConfigurationEditorCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenLaunchConfigurationEditorCommand >> execute [
 
-	^ (PhLLaunchConfigurationPresenter
+	((PhLLaunchConfigurationPresenter
 		   newApplication: self imagesPresenter application
 		   model: self imagesPresenter singleImage)
 		owner: self context window;
-		open;
-		yourself
+		asModalWindow)
+			owner: self context window;
+			withoutButtons;
+			open
 ]
 
 { #category : 'initialization' }

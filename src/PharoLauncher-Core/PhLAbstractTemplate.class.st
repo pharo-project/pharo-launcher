@@ -20,9 +20,10 @@ Class {
 PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	"Extract myself to aDirectory. Name the resulting image aString"
 	| extractionDirectory archive |
-	PharoLauncherApplication default 
-		pushProgress: 'Extract template'
-		with: [ :bar | 
+	
+	PhLProgressManager 
+		displayProgress: 'Extract template'
+		during: [ :bar | 
 			bar label: 'Downloading zip archive';
 			current: 25.
 			archive := self zipArchive.
@@ -30,11 +31,11 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 			current: 75.
 			extractionDirectory := self extractZipArchive: archive to: aDirectory.
 			self relocateImageFilesFrom: extractionDirectory to: aDirectory withName: aString.
-			extractionDirectory deleteAll
-	].
+			extractionDirectory deleteAll ].
+
 	"Will serialize image metadata with the template information"
 	^ (PhLImage location: aDirectory / aString , 'image') 
-		originTemplate: self.
+		originTemplate: self
 ]
 
 { #category : 'private' }
@@ -42,9 +43,12 @@ PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
 	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
 	| tempDirectory |
 
-	PharoLauncherApplication default
-		pushProgress: ('Extracting {1}' format: { zipFile isStream ifTrue: [ '' ] ifFalse: [ zipFile basename ] }) 
-		with: [ :bar | | zip |	
+	PhLProgressManager
+		displayProgress: ('Extracting {1}' format: { 
+			zipFile isStream 
+				ifTrue: [ '' ] 
+				ifFalse: [ zipFile basename ] }) 
+		during: [ :bar | | zip |	
 			"We have to go through a temporary directory because we don't know where 
 			 the interesting files are in the archive (maybe at the root or maybe in 
 			 a subdirectory)"

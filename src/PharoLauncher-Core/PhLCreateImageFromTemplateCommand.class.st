@@ -23,8 +23,11 @@ PhLCreateImageFromTemplateCommand >> addDescriptionIfAny [
 { #category : 'executing' }
 PhLCreateImageFromTemplateCommand >> addInitializationScriptMetadataIfPresent [
 	| initScript |
+	
 	initScript := self templatesPresenter initializationScript.
-	(initScript exists and: [ initScript contents isNotEmpty ])
+	(initScript isNotNil 
+		and: [ initScript exists 
+		and: [ initScript contents isNotEmpty ] ])
 		ifTrue: [ image initializationScript: initScript ].
 ]
 

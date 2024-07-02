@@ -69,6 +69,12 @@ PhLAboutPresenter >> iconName: anIconName [
 ]
 
 { #category : 'initialization' }
+PhLAboutPresenter >> initialExtent [
+
+	^ 420@500
+]
+
+{ #category : 'initialization' }
 PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 	self initializeWindow: aDialogWindow.
 	aDialogWindow addButton: 'Ok'
@@ -88,7 +94,10 @@ PhLAboutPresenter >> initializePresenters [
 
 { #category : 'initialization' }
 PhLAboutPresenter >> initializeWindow: aWindow [
+	
 	aWindow title: 'About Pharo Launcher'.
+	aWindow initialExtent: self initialExtent.
+	
 	description 
 		text: text;
 		disable.

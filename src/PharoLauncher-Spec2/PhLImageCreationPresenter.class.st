@@ -84,21 +84,19 @@ PhLImageCreationPresenter >> defaultLayout [
 		add: 'Image name:' expand: false;
 		add: (SpBoxLayout newHorizontal 
 				spacing: 5;
-				add: #imageName;
-				add: #imageNameCheck expand: false;
+				add: imageName;
+				add: imageNameCheck expand: false;
 				yourself)
 			expand: false;
 		add: 'Image description:' expand: false;
-		add: descriptionText "height: 60";
-		"add: 'Initialization script:' expand: false;
-		add: (SpBoxLayout newHorizontal 
-				spacing: 5;
-				add: initScript;
-				add: editInitScriptButton expand: false;
-				yourself)
+		add: descriptionText;
+		add: (self newPresenter
+				addStyle: 'action_area';
+				layout: (SpBoxLayout newHorizontal
+					add: createButton;
+					yourself);
+				yourself) 
 			expand: false;
-		add: initScriptText height: 100;"
-		add: createButton expand: false;
 		yourself
 ]
 

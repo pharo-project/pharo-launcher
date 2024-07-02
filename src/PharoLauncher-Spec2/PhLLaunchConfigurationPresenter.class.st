@@ -27,59 +27,6 @@ Class {
 }
 
 { #category : 'specs' }
-PhLLaunchConfigurationPresenter class >> configurationDetailSpec [
-	^ SpBoxLayout newVertical
-		spacing: 5;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Configuration name:' withConstraints: self labelConstraintsBlock;
-				add: #selectedConfigurationNameField;
-				yourself)
-			height: self inputTextHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'VM:' withConstraints: self labelConstraintsBlock;
-				add: #vmList;
-				yourself)
-			height: self inputTextHeight;
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'VM arguments:' withConstraints: self labelConstraintsBlock;
-				add: #vmArgumentList;
-				yourself)
-			height: 200"80";
-		add:
-			(SpBoxLayout newHorizontal
-				add: 'Image arguments:' withConstraints: self labelConstraintsBlock;
-				add: #imageArgumentList;
-				yourself)
-			height: 200"150";
-		add: 
-			(SpBoxLayout newHorizontal
-				add: ''; "work-around to center the button"
-				add: #applyChangesButton expand: false;
-				add: '   ' expand: false;
-				add: #saveAndSelectsButton expand: false;
-				add: '  '; "work-around to center the button"
-				yourself)
-			height: self buttonHeight;
-		yourself
-]
-
-{ #category : 'layout' }
-PhLLaunchConfigurationPresenter class >> defaultLayout [
-	^ SpBoxLayout newHorizontal
-		spacing: 5;
-		add: #configurationTable 
-			withConstraints: [ :constraints | 
-				constraints 
-					spec: #withoutOrderingBar; 
-					width: 200 ];
-		add: self configurationDetailSpec;
-		yourself
-]
-
-{ #category : 'specs' }
 PhLLaunchConfigurationPresenter class >> example [
 	| image |
 	image := PhLImage example.
@@ -113,6 +60,28 @@ PhLLaunchConfigurationPresenter >> addInteractiveImageArgument [
 	imageArgumentList refresh.
 ]
 
+{ #category : 'private' }
+PhLLaunchConfigurationPresenter >> close [
+	
+	self withWindowDo: [ :aWindow | 
+		aWindow beOk; close ]
+]
+
+{ #category : 'layout' }
+PhLLaunchConfigurationPresenter >> configurationDetailSpec [
+	
+	^ SpGridLayout build: [ :builder | builder
+		beRowNotHomogeneous;
+		beColumnNotHomogeneous;
+		borderWidth: 0;
+		column: 1 withConstraints: [ :c | c hAlignEnd; vAlignStart ];
+		column: 2 withConstraints: [ :c | c beExpand ];
+		add: 'Configuration name'; add: selectedConfigurationNameField; nextRow;
+		add: 'VM'; add: vmList; nextRow;
+		add: 'VM arguments'; add: vmArgumentList; nextRow;
+		add: 'Image arguments'; add: imageArgumentList; nextRow ]
+]
+
 { #category : 'accessing' }
 PhLLaunchConfigurationPresenter >> configurationName [
 	^ selectedConfigurationNameField text
@@ -121,6 +90,27 @@ PhLLaunchConfigurationPresenter >> configurationName [
 { #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> connectPresenters [
 	configurationTable selectIndex: 1
+]
+
+{ #category : 'layout' }
+PhLLaunchConfigurationPresenter >> defaultLayout [
+
+	^ SpPanedLayout newHorizontal
+		positionOfSlider: 200;
+		add: configurationTable layout: #withoutOrderingBar;
+		add: (SpBoxLayout newVertical  
+			add: self configurationDetailSpec;
+			add: (self newPresenter 
+					addStyle: 'action_area';
+					layout: (SpBoxLayout newHorizontal
+						"hAlignEnd;"
+						add: applyChangesButton;
+						add: saveAndSelectsButton;
+						yourself);
+					yourself)
+				expand: false;
+			yourself);
+		yourself
 ]
 
 { #category : 'accessing' }
@@ -182,7 +172,7 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		icon: (self application iconNamed: #smallSave);
 		action: [ 
 			self saveSelectedConfiguration.
-			self delete ];
+			self close ];
 		yourself
 ]
 

@@ -30,6 +30,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'PharoLauncher-100Compatibility'). ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
+			package: 'PharoLauncher-Spec2-Gtk' with: [ 
+				spec requires: #('PharoLauncher-Spec2') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Squeak' with: [ 
@@ -54,6 +56,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				'PharoLauncher-Tests-Download' 
 				'PharoLauncher-Core' 
 				'PharoLauncher-Spec2' 
+				'PharoLauncher-Spec2-Gtk'
 				'PharoLauncher-Tests-SpecUI' 
 				'PharoLauncher-Tests-Functional'
 				'PharoLauncher-CLI-Tests' 

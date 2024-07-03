@@ -30,11 +30,11 @@ PhLLaunchImageFromDiskCommand >> execute [
 	| imageFile |
 	imageFile := self imagesPresenter newFileRequest 
 		title: 'Open a Pharo image';
-		extensionsToShow: #('image');
-		path: FileLocator home;
+		filter: '.image';
+		currentFolder: FileLocator home;
 		chooseFile.
 	imageFile ifNil: [ ^ self ].
-	imageFile isFile ifFalse: [ ^self ].
+	imageFile isFile ifFalse: [ ^ self ].
 	^ self launchImage: (PhLImage location: imageFile).
 ]
 

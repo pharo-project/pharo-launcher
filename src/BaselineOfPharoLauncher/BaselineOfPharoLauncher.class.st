@@ -73,6 +73,14 @@ BaselineOfPharoLauncher >> clap: spec [
 ]
 
 { #category : 'external projects' }
+BaselineOfPharoLauncher >> interactions: spec [
+
+	spec 
+		baseline: #Interactions
+		with: [ spec repository: 'github://pharo-contributions/interactions' ]
+]
+
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> objCBridge: spec [
 
 	spec 

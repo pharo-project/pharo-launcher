@@ -22,10 +22,10 @@ TPhLInteractionTrait >> newConfirmation [
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newFileRequest [
 
-	^ PhLUIFileRequest new
-		application: self application;
+	^ ITFileRequest new
+		"application: self application;
 		parentWindow: self window;
-		yourself	
+		yourself"
 ]
 
 { #category : 'user interaction' }

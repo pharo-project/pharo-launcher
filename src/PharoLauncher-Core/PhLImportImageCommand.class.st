@@ -83,18 +83,18 @@ PhLImportImageCommand >> importImage [
 	| imageFile |
 	imageFile := self imagesPresenter newFileRequest
 		title: 'Import a Pharo image (will move image, changes file and pharo-local folder)';
-		extensionsToShow: #('image');
-		path: FileLocator home;
+		filter: '.image';
+		currentFolder: FileLocator home;
 		chooseFile.
 	imageFile ifNil: [ 
-		self imagesPresenter newInformation 
+		self imagesPresenter newInformation
 			title: 'Import';
 			message: 'No path selected. Import failed.';
 			inform.
 		^ self ].
 	imageFile asFileReference isDirectory ifTrue: [ 
-		self imagesPresenter newInformation
-			title: 'Import'; 
+		self imagesPresenter newInformation 
+			title: 'Import';
 			message: 'The file selected is a directory and not a Pharo image. Import failed.';
 			inform.
 		^ self ].

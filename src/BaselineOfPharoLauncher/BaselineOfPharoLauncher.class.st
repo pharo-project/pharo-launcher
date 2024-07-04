@@ -17,6 +17,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self xmlParser: spec.
 		self clap: spec.
 		self objCBridge: spec.
+		self interactions: spec.
 
 		spec
 			package: 'PharoLauncher-100Compatibility'; 
@@ -26,10 +27,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'OSSubprocess' 
 					'OSWinSubprocess' 
 					'Ston'
+					'Interactions'
 					'ObjCBridge' 
 					'PharoLauncher-100Compatibility'). ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
+			package: 'PharoLauncher-Spec2-Gtk' with: [ 
+				spec requires: #('PharoLauncher-Spec2') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Squeak' with: [ 
@@ -53,7 +57,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 				'PharoLauncher-Tests-Core' 
 				'PharoLauncher-Tests-Download' 
 				'PharoLauncher-Core' 
-				'PharoLauncher-Spec2' 
+				'PharoLauncher-Spec2'
+				'PharoLauncher-Spec2-Gtk' 
 				'PharoLauncher-Tests-SpecUI' 
 				'PharoLauncher-Tests-Functional'
 				'PharoLauncher-CLI-Tests' 
@@ -67,6 +72,14 @@ BaselineOfPharoLauncher >> clap: spec [
 	spec 
 		baseline: #Clap
 		with: [ spec repository: 'github://pharo-contributions/clap-st:master/src' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> interactions: spec [
+
+	spec 
+		baseline: #Interactions
+		with: [ spec repository: 'github://pharo-contributions/interactions' ]
 ]
 
 { #category : 'external projects' }

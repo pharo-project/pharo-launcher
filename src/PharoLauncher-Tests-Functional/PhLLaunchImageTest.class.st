@@ -99,7 +99,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 	| image |
 	image := self copyCurrentImageToTestDir.
 
-	image launch.
+	process := image launch.
 	2 seconds wait. "let time to the process to be launched, else test cleanup will interfer with process launch"
 
 	"ensure image determination succeeded"
@@ -143,7 +143,7 @@ PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	
 	image := self copyCurrentImageToTestDir.
 	
-	image launch.
+	process := image launch.
 	2 seconds wait. "let time to the process to be launched, else test cleanup will interfer with process launch"
 	
 	image := PhLImage location: imageDir / FileLocator image basename. "read image metadata from disk"

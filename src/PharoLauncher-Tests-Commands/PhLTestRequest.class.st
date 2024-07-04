@@ -33,7 +33,12 @@ PhLTestRequest >> chooseFrom: aCollection [
 ]
 
 { #category : 'noop' }
-PhLTestRequest >> extensionsToShow: aCollection [ 
+PhLTestRequest >> currentFolder: aFileLocator [ 
+	"noop"
+]
+
+{ #category : 'noop' }
+PhLTestRequest >> filter: aFilterString [ 
 	"noop"
 ]
 
@@ -50,11 +55,6 @@ PhLTestRequest >> noop [
 { #category : 'accessing' }
 PhLTestRequest >> parentWindow: aWindowPresenter [ 
 	"no need to keep the parent"
-]
-
-{ #category : 'noop' }
-PhLTestRequest >> path: aFileLocator [ 
-	"noop"
 ]
 
 { #category : 'accessing' }

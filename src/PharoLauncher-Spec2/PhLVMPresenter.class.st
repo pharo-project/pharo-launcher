@@ -89,6 +89,12 @@ PhLVMPresenter >> iconFor: vm [
 ]
 
 { #category : 'initialization' }
+PhLVMPresenter >> initialExtent [
+	
+	^ 850@450
+]
+
+{ #category : 'initialization' }
 PhLVMPresenter >> initializePresenters [
 
 	vmTable := self newTable
@@ -114,7 +120,7 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
-		initialExtent: 850@350;
+		initialExtent: self initialExtent;
 		toolbar:
 			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.

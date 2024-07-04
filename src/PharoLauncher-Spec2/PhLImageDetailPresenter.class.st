@@ -113,7 +113,7 @@ PhLImageDetailPresenter >> descriptionLayout [
 					yourself); 
 				nextRow;
 			add: 'Initialization script'; add: (SpBoxLayout newLeftToRight
-					add: initializationScriptList "expand: false"; 
+					add: initializationScriptList; 
 					add: initializationScriptEdit expand: false;
 					yourself); 
 				nextRow;
@@ -214,6 +214,7 @@ PhLImageDetailPresenter >> initializePresenters [
 		yourself.	
 	launchConfigurationEdit := self newButton 
 		addStyle: 'flat';
+		addStyle: 'small';
 		icon: (self iconNamed: #edit);
 		action: [ self doEditLaunchConfigurations ];
 		yourself.
@@ -227,6 +228,7 @@ PhLImageDetailPresenter >> initializePresenters [
 		yourself.
 	initializationScriptEdit := self newButton
 		addStyle: 'flat';
+		addStyle: 'small';
 		icon: (self iconNamed: #edit);
 		action: [ self doEditInitializationScripts ];
 		yourself.
@@ -239,12 +241,15 @@ PhLImageDetailPresenter >> initializePresenters [
 	actionBar addStyle: 'action_bar'.
 	actionBar add: ((PhLDeleteImageCommand forSpecContext: self) asActionButtonPresenter
 		addStyle: 'flat';
+		addStyle: 'small';
 		yourself).
 	actionBar add: ((PhLShowImageInFolderCommand forSpecContext: self) asActionButtonPresenter
 		addStyle: 'flat';
+		addStyle: 'small';
 		yourself).
 	actionBar addLast: ((PhLLaunchImageCommand forSpecContext: self) asActionButtonPresenter
 		"addStyle: 'circular';"
+		addStyle: 'small';
 		yourself).
 	actionBar centerPresenter: imageLabel.
 

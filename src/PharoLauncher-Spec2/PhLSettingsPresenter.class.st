@@ -17,7 +17,7 @@ PhLSettingsPresenter class >> open [
 
 	<script>
 
-	^ self new open
+	^ (self on: PharoLauncherSettings new) open
 ]
 
 { #category : 'accessing' }

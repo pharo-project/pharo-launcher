@@ -6,10 +6,20 @@ I'm used by the Pharo Launcher settings presenter.
 Class {
 	#name : 'PharoLauncherSettings',
 	#superclass : 'Object',
+	#instVars : [
+		'settingNodes'
+	],
 	#category : 'PharoLauncher-Core-Settings',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Settings'
 }
+
+{ #category : 'private' }
+PharoLauncherSettings >> buildSettingNodes [	
+	^ StSettingsTree new
+		acceptableKeywords: { #pharoLauncherSettings };
+		newSettingTreeBuilderNodes
+]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> checkTemplateSourcesUpdate: aBoolean [ 
@@ -82,9 +92,7 @@ PharoLauncherSettings >> settingNodeNamed: aSettingIdentifier [
 
 { #category : 'private' }
 PharoLauncherSettings >> settingNodes [	
-	^ StSettingsTree new
-		acceptableKeywords: { #pharoLauncherSettings };
-		newSettingTreeBuilderNodes
+	^ settingNodes ifNil: [ settingNodes := self buildSettingNodes ]
 ]
 
 { #category : 'accessing' }

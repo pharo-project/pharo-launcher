@@ -13,7 +13,7 @@ PhLAbstractSettingsPresenter >> newCheckBoxFor: aSettingIdentifier [
 	| declaration |
 	
 	declaration := self settings declarationNamed: aSettingIdentifier.
-	^ self newCheckBox
+	^ self newSwitch
 		help: declaration description;
 		state: (self settings valueOfDeclarationNamed: aSettingIdentifier);
 		whenChangedDo: [ :state | self settings setValueOfDeclarationNamed: aSettingIdentifier with: state ]

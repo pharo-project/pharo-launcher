@@ -54,27 +54,27 @@ PhLGeneralSettingsPresenter >> defaultLayout [
 		spacing: 15;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Check for template sources update?';
-			add: checkForTemplateSourcesUpdateSwitch;
+			add: checkForTemplateSourcesUpdateSwitch expand: false;
 			yourself) expand: false;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Templates cleared at startup';
-			add: clearTemplatesSwitch;
+			add: clearTemplatesSwitch expand: false;
 			yourself) expand: false;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Quit On Launch';
-			add: quitOnLaunchSwitch;
+			add: quitOnLaunchSwitch expand: false;
 			yourself) expand: false;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Launch image from a login shell';
-			add: launchFromALoginShellSwitch;
+			add: launchFromALoginShellSwitch expand: false;
 			yourself) expand: false;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Warn on image architecture mismatch?';
-			add: warnOnImageArchMisMatchSwitch;
+			add: warnOnImageArchMisMatchSwitch expand: false;
 			yourself) expand: false;
 		add: (SpBoxLayout newLeftToRight 
 			add: 'Enable development environment';
-			add: enableDevEnvironmentSwitch;
+			add: enableDevEnvironmentSwitch expand: false;
 			yourself) expand: false;
 			
 		add: 'Template sources Url' expand: false;

@@ -23,7 +23,9 @@ PhLOpenSettingsCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenSettingsCommand >> execute [
 
-	^ PhLSettingsPresenter open
+	^ (PhLSettingsPresenter 
+		newApplication: self application
+		model: PharoLauncherSettings new) open
 ]
 
 { #category : 'initialization' }

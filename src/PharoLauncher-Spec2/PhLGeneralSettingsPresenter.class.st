@@ -1,6 +1,9 @@
+"
+I allow to edit settings related to Pharo Launcher
+"
 Class {
 	#name : 'PhLGeneralSettingsPresenter',
-	#superclass : 'SpPresenterWithModel',
+	#superclass : 'PhLAbstractSettingsPresenter',
 	#traits : 'TPhLInteractionTrait',
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
@@ -109,32 +112,32 @@ PhLGeneralSettingsPresenter >> defaultLayout [
 { #category : 'initialization' }
 PhLGeneralSettingsPresenter >> initializePresenters [
 
-	clearTemplatesSwitch := self settings newCheckBoxFor: #templatesClearedOnStartup presenter: self.
-	quitOnLaunchSwitch := self settings newCheckBoxFor: #quitOnLaunch presenter: self.
-	launchFromALoginShellSwitch := self settings newCheckBoxFor: #launchInALoginShell presenter: self.
-	warnOnImageArchMisMatchSwitch := self settings newCheckBoxFor: #warnOnArchMismatch presenter: self.
-	checkForTemplateSourcesUpdateSwitch := self settings newCheckBoxFor: #shouldCheckTemplateSourcesUpdate presenter: self.
-	enableDevEnvironmentSwitch := self settings newCheckBoxFor: #developmentEnvironmentEnabled presenter: self.
+	clearTemplatesSwitch := self newCheckBoxFor: #templatesClearedOnStartup.
+	quitOnLaunchSwitch := self newCheckBoxFor: #quitOnLaunch.
+	launchFromALoginShellSwitch := self newCheckBoxFor: #launchInALoginShell .
+	warnOnImageArchMisMatchSwitch := self newCheckBoxFor: #warnOnArchMismatch.
+	checkForTemplateSourcesUpdateSwitch := self newCheckBoxFor: #shouldCheckTemplateSourcesUpdate.
+	enableDevEnvironmentSwitch := self newCheckBoxFor: #developmentEnvironmentEnabled.
 
-	templateSourcesUrlInput := self settings newTextInputFor: #sourcesUrl presenter: self.
-	sourcesFileLocationInput := (self settings newTextInputFor: #launcherCoreDirString presenter: self)
+	templateSourcesUrlInput := self newTextInputFor: #sourcesUrl.
+	sourcesFileLocationInput := (self newTextInputFor: #launcherCoreDirString)
 		beNotEditable;
 		yourself.
 	sourcesFileLocationButton := self newButton
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: sourcesFileLocationInput ];
 		yourself.
-	imagesLocationInput := self settings newTextInputFor: #locationString presenter: self.
+	imagesLocationInput := self newTextInputFor: #locationString.
 	imagesLocationButton := self newButton
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: imagesLocationInput ];
 		yourself.
-	imagesInitScriptsLocationInput := self settings newTextInputFor: #initializationScriptsLocation presenter: self..
+	imagesInitScriptsLocationInput := self newTextInputFor: #initializationScriptsLocation.
 	imagesInitScriptsLocationButton := self newButton
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: imagesInitScriptsLocationInput ];
 		yourself.
-	vmsLocationInput := self settings newTextInputFor: #vmStoreString presenter: self.
+	vmsLocationInput := self newTextInputFor: #vmStoreString.
 	vmsLocationButton := self newButton
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor:  vmsLocationInput ];
@@ -143,10 +146,4 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 	hardResetPersistentStateButton := self newButton
 		label: 'Hard reset persistent state'.
 	
-]
-
-{ #category : 'accessing' }
-PhLGeneralSettingsPresenter >> settings [
-
-	^ self model
 ]

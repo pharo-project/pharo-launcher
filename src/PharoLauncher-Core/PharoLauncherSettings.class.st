@@ -59,29 +59,6 @@ PharoLauncherSettings >> launchInALoginShell: aBoolean [
 	self setValueOfDeclarationNamed: #launchInALoginShell with: aBoolean
 ]
 
-{ #category : 'building' }
-PharoLauncherSettings >> newCheckBoxFor: aSettingIdentifier presenter: aPresenter [
-	| declaration |
-	
-	declaration := self declarationNamed: aSettingIdentifier.
-	^ aPresenter newCheckBox
-		help: declaration description;
-		state: (self valueOfDeclarationNamed: aSettingIdentifier);
-		whenChangedDo: [ :state | self setValueOfDeclarationNamed: aSettingIdentifier with: state ]
-	
-]
-
-{ #category : 'instance creation' }
-PharoLauncherSettings >> newTextInputFor: aSettingIdentifier presenter: aPresenter [
-	| declaration |
-	
-	declaration := self declarationNamed: aSettingIdentifier.
-	^ aPresenter newTextInput
-		help: declaration description;
-		text: (self valueOfDeclarationNamed: aSettingIdentifier);
-		whenChangedDo: [ :text | self setValueOfDeclarationNamed: aSettingIdentifier with: text ]
-]
-
 { #category : 'accessing' }
 PharoLauncherSettings >> quitOnLaunch: aBoolean [ 
 	

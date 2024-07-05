@@ -1,6 +1,9 @@
+"
+I allow to choose the Pharo Launcher theme.
+"
 Class {
 	#name : 'PhLAppearanceSettingsPresenter',
-	#superclass : 'SpPresenter',
+	#superclass : 'PhLAbstractSettingsPresenter',
 	#instVars : [
 		'lightThemePresenter',
 		'darkThemePresenter'

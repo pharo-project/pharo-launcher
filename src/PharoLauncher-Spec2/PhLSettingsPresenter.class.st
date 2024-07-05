@@ -1,8 +1,10 @@
+"
+I allow to edit Pharo Launcher settings.
+"
 Class {
 	#name : 'PhLSettingsPresenter',
-	#superclass : 'SpPresenterWithModel',
+	#superclass : 'PhLAbstractSettingsPresenter',
 	#instVars : [
-		'helpInput',
 		'settingsPanel',
 		'generalCategoryImagePresenter',
 		'networkCategoryImagePresenter',
@@ -108,12 +110,6 @@ PhLSettingsPresenter >> initializeWindow: aWindowPresenter [
 { #category : 'accessing' }
 PhLSettingsPresenter >> networkSettingsPanel [
 	^ self instantiate: PhLNetworkSettingsPresenter on: self settings
-]
-
-{ #category : 'accessing' }
-PhLSettingsPresenter >> settings [
-
-	^ self model
 ]
 
 { #category : 'accessing' }

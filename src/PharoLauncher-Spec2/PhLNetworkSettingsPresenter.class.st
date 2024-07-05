@@ -1,6 +1,9 @@
+"
+I allow to edit network settings in the context of Pharo Launcher
+"
 Class {
 	#name : 'PhLNetworkSettingsPresenter',
-	#superclass : 'SpPresenter',
+	#superclass : 'PhLAbstractSettingsPresenter',
 	#instVars : [
 		'proxyServerInput',
 		'proxyServerPortInput',

@@ -68,7 +68,7 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 	[ self basicDownload: url toFile: destinationFile ]
 	on: PhLDownloadError 
 	do: [ :error |
-			(PhlRetryPresenter new
+			(PhLRetryPresenter new
 				application: self application;
 				explanation: error longDescription;
 				retryBlock: [ self download: url toFile: destinationFile ];

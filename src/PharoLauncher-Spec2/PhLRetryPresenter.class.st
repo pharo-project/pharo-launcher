@@ -2,7 +2,7 @@
 A simple presenter to allow to retry or cancel an action. You can provide an explanation text.
 "
 Class {
-	#name : 'PhlRetryPresenter',
+	#name : 'PhLRetryPresenter',
 	#superclass : 'SpPresenter',
 	#instVars : [
 		'retryBlock',
@@ -16,7 +16,7 @@ Class {
 }
 
 { #category : 'example' }
-PhlRetryPresenter class >> example [
+PhLRetryPresenter class >> example [
 	(self new
 		explanation: 'Download error (probably a network error)';
 		retryBlock: [ "nothing" ];
@@ -25,12 +25,12 @@ PhlRetryPresenter class >> example [
 ]
 
 { #category : 'accessing' }
-PhlRetryPresenter >> cancelBlock: aBlock [
+PhLRetryPresenter >> cancelBlock: aBlock [
 	cancelBlock := aBlock
 ]
 
 { #category : 'layout' }
-PhlRetryPresenter >> defaultLayout [ 
+PhLRetryPresenter >> defaultLayout [ 
 	^ SpBoxLayout newLeftToRight 
 		spacing: 10;
 		add: iconPresenter expand: false;
@@ -39,12 +39,12 @@ PhlRetryPresenter >> defaultLayout [
 ]
 
 { #category : 'accessing' }
-PhlRetryPresenter >> explanation: aString [ 
+PhLRetryPresenter >> explanation: aString [ 
 	explanationText text: aString
 ]
 
 { #category : 'initialization' }
-PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
+PhLRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 
 	aWindowPresenter
 		title: 'Retry?';
@@ -55,7 +55,7 @@ PhlRetryPresenter >> initializeDialogWindow: aWindowPresenter [
 ]
 
 { #category : 'initialization' }
-PhlRetryPresenter >> initializePresenters [
+PhLRetryPresenter >> initializePresenters [
 	explanationText := self newText
 		beNotEditable;
 		yourself.
@@ -66,6 +66,6 @@ PhlRetryPresenter >> initializePresenters [
 ]
 
 { #category : 'accessing' }
-PhlRetryPresenter >> retryBlock: aBlock [
+PhLRetryPresenter >> retryBlock: aBlock [
 	retryBlock := aBlock
 ]

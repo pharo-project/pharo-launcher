@@ -38,10 +38,18 @@ label.form_header {
 box.status_bar label.status_message {
 	font-weight: lighter;
 }
-grid.form {
+grid.form, box.form {
 	margin: 10px 10px 0px 10px;
 	padding: 15px 30px 15px 30px;
 	border-spacing: 0px;
+}
+/* box inside a form */
+box.form box {
+	margin: 0px;	
+	padding: 3px 0px 3px 0px;
+}
+box.form box.section {
+	padding: 8px 0px 8px 0px;
 }
 scrolledwindow.frame {
 	border-style: solid;

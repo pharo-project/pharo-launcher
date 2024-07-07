@@ -10,8 +10,9 @@ Class {
 		'proxyUsernameInput',
 		'proxyPasswordInput'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View-Settings',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View-Settings'
 }
 
 { #category : 'initialization' }
@@ -25,29 +26,35 @@ PhLNetworkSettingsPresenter class >> open [
 { #category : 'layout' }
 PhLNetworkSettingsPresenter >> defaultLayout [ 
 
-	^ self newBoxLayoutTopToBottom
-		spacing: 15;
-		add: (SpBoxLayout newLeftToRight 
+	^ SpBoxLayout newTopToBottom
+		vAlignStart;
+		add: (SpBoxLayout newTopToBottom
+			vAlignStart;
 			add: 'HTTP Proxy server';
-			add: proxyServerInput ;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
+			add: proxyServerInput;
+			yourself);
+		add: (SpBoxLayout newTopToBottom
+			vAlignStart;
 			add: 'HTTP Proxy port';
-			add: proxyServerPortInput ;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
+			add: proxyServerPortInput;
+			yourself);
+		add: (SpBoxLayout newTopToBottom
+			vAlignStart;
 			add: 'HTTP Proxy username';
-			add: proxyUsernameInput ;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
+			add: proxyUsernameInput;
+			yourself);
+		add: (SpBoxLayout newTopToBottom
+			vAlignStart;
 			add: 'HTTP Proxy password';
-			add: proxyPasswordInput ;
-			yourself) expand: false;
+			add: proxyPasswordInput;
+			yourself);
 		yourself
 ]
 
 { #category : 'initialization' }
 PhLNetworkSettingsPresenter >> initializePresenters [
+
+	self addStyle: 'form'.
 
 	proxyServerInput := self newTextInput.
 	proxyServerPortInput := self newTextInput.

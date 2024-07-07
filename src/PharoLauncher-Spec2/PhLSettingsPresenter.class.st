@@ -10,8 +10,9 @@ Class {
 		'networkCategoryImagePresenter',
 		'appearenceCategoryImagePresenter'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View-Settings',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View-Settings'
 }
 
 { #category : 'instance creation' }
@@ -57,12 +58,11 @@ PhLSettingsPresenter >> categoriesLayout [
 { #category : 'layout' }
 PhLSettingsPresenter >> defaultLayout [
 
-	^ SpBoxLayout newLeftToRight 
-		spacing: 20;
-		borderWidth: 5;
-		add: self categoriesLayout expand: false;
-		add: settingsPanel;
-		yourself.
+	^ SpTabLayout new
+		add: self generalSettingsPanel label: 'General';
+		add: self appearenceSettingsPanel label: 'Appearence';
+		add: self networkSettingsPanel label: 'Network';
+		yourself
 ]
 
 { #category : 'accessing' }

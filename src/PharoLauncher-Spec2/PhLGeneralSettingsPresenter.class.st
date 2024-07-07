@@ -24,8 +24,9 @@ Class {
 		'imagesInitScriptsLocationButton',
 		'vmsLocationButton'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View-Settings',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View-Settings'
 }
 
 { #category : 'instance creation' }
@@ -51,66 +52,16 @@ PhLGeneralSettingsPresenter >> chooseDirectoryFor: anInputTextPresenter [
 PhLGeneralSettingsPresenter >> defaultLayout [ 
 
 	^ SpBoxLayout newTopToBottom 
-		spacing: 15;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Check for template sources update?';
-			add: checkForTemplateSourcesUpdateSwitch expand: false;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Templates cleared at startup';
-			add: clearTemplatesSwitch expand: false;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Quit On Launch';
-			add: quitOnLaunchSwitch expand: false;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Launch image from a login shell';
-			add: launchFromALoginShellSwitch expand: false;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Warn on image architecture mismatch?';
-			add: warnOnImageArchMisMatchSwitch expand: false;
-			yourself) expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: 'Enable development environment';
-			add: enableDevEnvironmentSwitch expand: false;
-			yourself) expand: false;
-			
-		add: 'Template sources Url' expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			add: templateSourcesUrlInput;
-			yourself) expand: false;
-		add: 'Location of template sources file' expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			spacing: 5; 
-			add: sourcesFileLocationInput;
-			add: sourcesFileLocationButton expand: false;
-			yourself) expand: false;
-		add: 'Location of your images' expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			spacing: 5; 
-			add: imagesLocationInput;
-			add: imagesLocationButton expand: false;
-			yourself) expand: false;
-		add: 'Location of your image initialization scripts' expand: false;
-		add: (SpBoxLayout newLeftToRight
-			spacing: 5; 
-			add: imagesInitScriptsLocationInput;
-			add: imagesInitScriptsLocationButton expand: false;
-			yourself) expand: false;
-		add: 'VMs Directory' expand: false;
-		add: (SpBoxLayout newLeftToRight 
-			spacing: 5; 
-			add: vmsLocationInput;
-			add: vmsLocationButton expand: false;
-			yourself) expand: false;
-		add: hardResetPersistentStateButton expand: false;
+		add: self newGeneralSection;
+		add: self newLocationsSection;
+		add: self newResetSection expand: false;
 		yourself
 ]
 
 { #category : 'initialization' }
 PhLGeneralSettingsPresenter >> initializePresenters [
+
+	self addStyle: 'form'.
 
 	clearTemplatesSwitch := self newCheckBoxFor: #templatesClearedOnStartup.
 	quitOnLaunchSwitch := self newCheckBoxFor: #quitOnLaunch.
@@ -124,26 +75,121 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 		beNotEditable;
 		yourself.
 	sourcesFileLocationButton := self newButton
+		addStyle: 'flat';
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: sourcesFileLocationInput ];
 		yourself.
 	imagesLocationInput := self newTextInputFor: #locationString.
 	imagesLocationButton := self newButton
+		addStyle: 'flat';
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: imagesLocationInput ];
 		yourself.
 	imagesInitScriptsLocationInput := self newTextInputFor: #initializationScriptsLocation.
 	imagesInitScriptsLocationButton := self newButton
+		addStyle: 'flat';
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: imagesInitScriptsLocationInput ];
 		yourself.
 	vmsLocationInput := self newTextInputFor: #vmStoreString.
 	vmsLocationButton := self newButton
+		addStyle: 'flat';
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor:  vmsLocationInput ];
 		yourself.
 		
 	hardResetPersistentStateButton := self newButton
-		label: 'Hard reset persistent state'.
-	
+		label: 'Hard reset persistent state'
+]
+
+{ #category : 'layout' }
+PhLGeneralSettingsPresenter >> newGeneralSection [
+		
+	^ self newPresenter 
+		addStyle: 'section';
+		layout: (SpBoxLayout newTopToBottom 
+			add: (SpBoxLayout newLeftToRight
+				add: 'Check for template sources update?';
+				add: checkForTemplateSourcesUpdateSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Templates cleared at startup';
+				add: clearTemplatesSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Quit On Launch';
+				add: quitOnLaunchSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Launch image from a login shell';
+				add: launchFromALoginShellSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Warn on image architecture mismatch?';
+				add: warnOnImageArchMisMatchSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Enable development environment';
+				add: enableDevEnvironmentSwitch expand: false;
+				yourself) expand: false;
+			yourself);
+		yourself
+]
+
+{ #category : 'layout' }
+PhLGeneralSettingsPresenter >> newLocationsSection [
+		
+	^ self newPresenter
+		addStyle: 'section';
+		layout: (SpBoxLayout newTopToBottom
+			add: 'Template sources Url' expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: templateSourcesUrlInput;
+				yourself) expand: false;
+			add: 'Location of template sources file' expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				spacing: 5; 
+				add: sourcesFileLocationInput;
+				add: sourcesFileLocationButton expand: false;
+				yourself) expand: false;
+			add: 'Location of your images' expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				spacing: 5; 
+				add: imagesLocationInput;
+				add: imagesLocationButton expand: false;
+				yourself) expand: false;
+			add: 'Location of your image initialization scripts' expand: false;
+			add: (SpBoxLayout newLeftToRight
+				spacing: 5; 
+				add: imagesInitScriptsLocationInput;
+				add: imagesInitScriptsLocationButton expand: false;
+				yourself) expand: false;
+			add: 'VMs Directory' expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				spacing: 5; 
+				add: vmsLocationInput;
+				add: vmsLocationButton expand: false;
+				yourself) expand: false;
+			yourself);
+		yourself
+]
+
+{ #category : 'layout' }
+PhLGeneralSettingsPresenter >> newResetSection [
+
+	^ self newPresenter 
+		addStyle: 'section';
+		layout: (SpBoxLayout newTopToBottom
+			add: hardResetPersistentStateButton expand: false;
+			yourself);
+		yourself
+]
+
+{ #category : 'layout' }
+PhLGeneralSettingsPresenter >> newSection: aString [
+
+	^ self newLabel 
+		addStyle: 'header';
+		label: aString;
+		yourself
 ]

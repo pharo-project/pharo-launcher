@@ -8,8 +8,9 @@ Class {
 		'lightThemePresenter',
 		'darkThemePresenter'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View-Settings',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View-Settings'
 }
 
 { #category : 'instance creation' }

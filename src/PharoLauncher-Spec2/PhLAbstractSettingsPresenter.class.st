@@ -4,8 +4,9 @@ I share common behviour common to presenters used to present Pharo Launcher sett
 Class {
 	#name : 'PhLAbstractSettingsPresenter',
 	#superclass : 'SpPresenterWithModel',
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-View-Settings',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'View-Settings'
 }
 
 { #category : 'instance creation' }

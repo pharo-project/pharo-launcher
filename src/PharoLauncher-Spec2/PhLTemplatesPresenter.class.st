@@ -271,7 +271,7 @@ PhLTemplatesPresenter >> templateChildrenOf: aTemplateGroup [
 		on: PhLDownloadError
 		do: [ :error | 
 			| children |
-			((PhlRetryPresenter newApplication: self application)
+			((PhLRetryPresenter newApplication: self application)
 				explanation: error longDescription;
 				retryBlock: [ children := aTemplateGroup children ];
 				cancelBlock: [ children := #() ];

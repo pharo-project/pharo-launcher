@@ -10,7 +10,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-PhLAbstractSettingsPresenter >> newCheckBoxFor: aSettingIdentifier [
+PhLAbstractSettingsPresenter >> newSwitchFor: aSettingIdentifier [
 	| declaration |
 	
 	declaration := self settings declarationNamed: aSettingIdentifier.

@@ -12,7 +12,11 @@ Class {
 		'imagesLocation',
 		'sourcesFileLocation',
 		'initializationScriptsLocation',
-		'vmLocation'
+		'vmLocation',
+		'httpProxyServer',
+		'httpProxyPort',
+		'proxyPassword',
+		'proxyUser'
 	],
 	#category : 'PharoLauncher-Tests-Core',
 	#package : 'PharoLauncher-Tests-Core'
@@ -32,6 +36,10 @@ PharoLauncherSettingsTest >> setUp [
 	sourcesFileLocation := PhLTemplateSources launcherCoreDirString.
 	initializationScriptsLocation := PharoLauncherApplication initializationScriptsLocation.
 	vmLocation := PhLVirtualMachineManager vmStoreString.
+	httpProxyServer := NetworkSystemSettings httpProxyServer.
+	httpProxyPort := NetworkSystemSettings httpProxyPort.
+	proxyUser := NetworkSystemSettings proxyUser.
+	proxyPassword := NetworkSystemSettings proxyPassword.
 ]
 
 { #category : 'running' }
@@ -47,6 +55,10 @@ PharoLauncherSettingsTest >> tearDown [
 	PhLTemplateSources launcherCoreDirString: sourcesFileLocation.
 	PharoLauncherApplication initializationScriptsLocation: initializationScriptsLocation.
 	PhLVirtualMachineManager vmStoreString: vmLocation.
+	NetworkSystemSettings httpProxyServer: httpProxyServer.
+	NetworkSystemSettings httpProxyPort: httpProxyPort.
+	NetworkSystemSettings proxyUser: proxyUser.
+	NetworkSystemSettings proxyPassword: proxyPassword.
 	super tearDown
 ]
 
@@ -84,6 +96,34 @@ PharoLauncherSettingsTest >> testCanSetLaunchInALoginShell [
 	
 	settings launchInALoginShell: true.
 	self assert: PhLLaunchConfiguration launchInALoginShell
+]
+
+{ #category : 'tests' }
+PharoLauncherSettingsTest >> testCanSetProxyPassword [
+
+	settings proxyPassword: 'pass'.
+	self assert: NetworkSystemSettings proxyPassword equals: 'pass'
+]
+
+{ #category : 'tests' }
+PharoLauncherSettingsTest >> testCanSetProxyPort [
+
+	settings proxyPort: '9000'.
+	self assert: NetworkSystemSettings httpProxyPort equals: '9000'
+]
+
+{ #category : 'tests' }
+PharoLauncherSettingsTest >> testCanSetProxyServer [
+
+	settings proxyServer: 'foo'.
+	self assert: NetworkSystemSettings httpProxyServer equals: 'foo'
+]
+
+{ #category : 'tests' }
+PharoLauncherSettingsTest >> testCanSetProxyUser [
+
+	settings proxyUser: 'me'.
+	self assert: NetworkSystemSettings proxyUser equals: 'me'
 ]
 
 { #category : 'tests' }

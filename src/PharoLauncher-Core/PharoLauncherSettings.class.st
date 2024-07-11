@@ -69,6 +69,30 @@ PharoLauncherSettings >> launchInALoginShell: aBoolean [
 	self setValueOfDeclarationNamed: #launchInALoginShell with: aBoolean
 ]
 
+{ #category : 'accessing - network' }
+PharoLauncherSettings >> proxyPassword: aString [ 
+	
+	self setValueOfDeclarationNamed: #proxyPassword with: aString
+]
+
+{ #category : 'accessing - network' }
+PharoLauncherSettings >> proxyPort: aString [ 
+	
+	self setValueOfDeclarationNamed: #httpProxyPort with: aString
+]
+
+{ #category : 'accessing - network' }
+PharoLauncherSettings >> proxyServer: aString [ 
+	
+	self setValueOfDeclarationNamed: #httpProxyServer with: aString
+]
+
+{ #category : 'accessing - network' }
+PharoLauncherSettings >> proxyUser: aString [ 
+	
+	self setValueOfDeclarationNamed: #proxyUser with: aString
+]
+
 { #category : 'accessing' }
 PharoLauncherSettings >> quitOnLaunch: aBoolean [ 
 	

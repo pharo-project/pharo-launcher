@@ -49,9 +49,9 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 { #category : 'initialization' }
 PhLNetworkSettingsPresenter >> initializePresenters [
 
-	proxyServerInput := self newTextInput.
-	proxyServerPortInput := self newTextInput.
-	proxyUsernameInput := self newTextInput.
-	proxyPasswordInput := self newTextInput.
+	proxyServerInput := self newTextInputFor: #httpProxyServer.
+	proxyServerPortInput := self newTextInputFor: #httpProxyPort.
+	proxyUsernameInput := self newTextInputFor: #proxyUser.
+	proxyPasswordInput := self newTextInputFor: #proxyPassword.
 	
 ]

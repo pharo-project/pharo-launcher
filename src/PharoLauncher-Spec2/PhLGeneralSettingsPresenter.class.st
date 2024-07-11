@@ -63,12 +63,12 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 
 	self addStyle: 'settings_form'.
 
-	clearTemplatesSwitch := self newCheckBoxFor: #templatesClearedOnStartup.
-	quitOnLaunchSwitch := self newCheckBoxFor: #quitOnLaunch.
-	launchFromALoginShellSwitch := self newCheckBoxFor: #launchInALoginShell .
-	warnOnImageArchMisMatchSwitch := self newCheckBoxFor: #warnOnArchMismatch.
-	checkForTemplateSourcesUpdateSwitch := self newCheckBoxFor: #shouldCheckTemplateSourcesUpdate.
-	enableDevEnvironmentSwitch := self newCheckBoxFor: #developmentEnvironmentEnabled.
+	clearTemplatesSwitch := self newSwitchFor: #templatesClearedOnStartup.
+	quitOnLaunchSwitch := self newSwitchFor: #quitOnLaunch.
+	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell .
+	warnOnImageArchMisMatchSwitch := self newSwitchFor: #warnOnArchMismatch.
+	checkForTemplateSourcesUpdateSwitch := self newSwitchFor: #shouldCheckTemplateSourcesUpdate.
+	enableDevEnvironmentSwitch := self newSwitchFor: #developmentEnvironmentEnabled.
 
 	templateSourcesUrlInput := self newTextInputFor: #sourcesUrl.
 	sourcesFileLocationInput := (self newTextInputFor: #launcherCoreDirString)
@@ -99,7 +99,8 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 		yourself.
 		
 	hardResetPersistentStateButton := self newButton
-		label: 'Hard reset persistent state'
+		label: 'Hard reset persistent state'.
+	
 ]
 
 { #category : 'layout' }

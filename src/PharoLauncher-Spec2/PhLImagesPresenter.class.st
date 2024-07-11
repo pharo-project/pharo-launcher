@@ -78,6 +78,7 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 			register: (PhLOpenNewImageWindowCommand forSpecContext: aContext);
 			register: (PhLImportImageCommand forSpecContext: aContext);
 			register: (PhLLaunchImageFromDiskCommand forSpecContext: aContext);
+			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Image') asSpecGroup
 			beDisplayedAsGroup;
@@ -91,7 +92,6 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
 		register: ((CmCommandGroup named: 'Settings') asSpecGroup
-			register: (PhLRefreshImageRepositoryCommand forSpecContext: aContext);
 			register: ((PhLOpenVmManagerCommand forSpecContext: aContext)
 				name: 'VMs';
 				yourself);
@@ -344,13 +344,21 @@ PhLImagesPresenter >> readableDateFor: aDateAndTime [
 { #category : 'updating' }
 PhLImagesPresenter >> refresh [ 
 
-	imageTable items: self imageRepository images
+	imageTable 
+		unselectAll;
+		items: self imageRepository images
 ]
 
 { #category : 'initialization' }
 PhLImagesPresenter >> rootCommandsGroup [
 
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> selectConfiguration: aLaunchConfiguration [
+	
+	descriptionPanel model: aLaunchConfiguration image
 ]
 
 { #category : 'api - selection' }

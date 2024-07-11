@@ -5,7 +5,7 @@ PharoLauncherApplication open
 "
 Class {
 	#name : 'PharoLauncherApplication',
-	#superclass : 'SpApplication',
+	#superclass : 'SgaApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -157,8 +157,9 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 
 { #category : 'class initialization' }
 PharoLauncherApplication class >> reset [
+	<script>
+	
    Default ifNil: [ ^ self ].
-
    Default reset.
 	Default := nil
 ]
@@ -280,7 +281,7 @@ PharoLauncherApplication >> initialize [
 	self resetTemplateRepository
 ]
 
-{ #category : 'initialization - private' }
+{ #category : 'initialization' }
 PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self
@@ -290,8 +291,9 @@ PharoLauncherApplication >> initializeImagesPresenter [
 { #category : 'events' }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
-	
-	self flag: #REMOVEME
+
+	aLaunchConfiguration isNullConfiguration 
+		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
 ]
 
 { #category : 'accessing' }

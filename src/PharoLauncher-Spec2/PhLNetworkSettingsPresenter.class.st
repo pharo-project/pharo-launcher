@@ -54,7 +54,7 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 { #category : 'initialization' }
 PhLNetworkSettingsPresenter >> initializePresenters [
 
-	self addStyle: 'form'.
+	self addStyle: 'settings_form'.
 
 	proxyServerInput := self newTextInput.
 	proxyServerPortInput := self newTextInput.

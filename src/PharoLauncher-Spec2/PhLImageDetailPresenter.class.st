@@ -179,6 +179,14 @@ PhLImageDetailPresenter >> imageLabel [
 	^ imageLabel
 ]
 
+{ #category : 'accessing' }
+PhLImageDetailPresenter >> imageRepository [
+	
+	"not cool, but running to the green"
+	^ self application imageRepository
+
+]
+
 { #category : 'private' }
 PhLImageDetailPresenter >> initializationScriptList [
 	| files |

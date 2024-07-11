@@ -25,13 +25,12 @@ PhLAppearanceSettingsPresenter class >> open [
 PhLAppearanceSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newLeftToRight
-				   spacing: 10;
-				   add: lightThemePresenter;
-				   add: darkThemePresenter;
-				   yourself)
-		  expand: false;
-		  vAlignCenter 
+		vAlignCenter;
+		add: (SpBoxLayout newLeftToRight
+			add: lightThemePresenter;
+		   add: darkThemePresenter;
+		   yourself);
+		yourself
 ]
 
 { #category : 'layout' }

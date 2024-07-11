@@ -23,9 +23,9 @@ TPhLInteractionTrait >> newConfirmation [
 TPhLInteractionTrait >> newFileRequest [
 
 	^ ITFileRequest new
-		"application: self application;
+		application: self application;
 		parentWindow: self window;
-		yourself"
+		yourself
 ]
 
 { #category : 'user interaction' }

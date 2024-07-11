@@ -61,7 +61,7 @@ PhLGeneralSettingsPresenter >> defaultLayout [
 { #category : 'initialization' }
 PhLGeneralSettingsPresenter >> initializePresenters [
 
-	self addStyle: 'form'.
+	self addStyle: 'settings_form'.
 
 	clearTemplatesSwitch := self newCheckBoxFor: #templatesClearedOnStartup.
 	quitOnLaunchSwitch := self newCheckBoxFor: #quitOnLaunch.

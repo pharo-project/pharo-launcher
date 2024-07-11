@@ -218,7 +218,8 @@ PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	config imageArguments: imageArgumentList items.
 	config vmArguments: vmArgumentList items.
 	config vm: vmList selectedItem.
-	self image serializeMetadata.
+
+	self image lastUsedConfiguration: config.
 	self application launchConfigurationEdited: config.
 ]
 

@@ -5,13 +5,14 @@ PharoLauncherApplication open
 "
 Class {
 	#name : 'PharoLauncherApplication',
-	#superclass : 'SgaApplication',
+	#superclass : 'SpApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
 		'imagesPresenter',
 		'scriptsDirectory',
-		'openAsWorld'
+		'openAsWorld',
+		'jobList'
 	],
 	#classVars : [
 		'Default',
@@ -22,9 +23,8 @@ Class {
 	#classInstVars : [
 		'pharoIcon'
 	],
-	#category : 'PharoLauncher-Spec2-Application',
-	#package : 'PharoLauncher-Spec2',
-	#tag : 'Application'
+	#category : 'PharoLauncher-Spec2',
+	#package : 'PharoLauncher-Spec2'
 }
 
 { #category : 'accessing' }
@@ -158,8 +158,8 @@ PharoLauncherApplication class >> pharoIcon16x16 [
 { #category : 'class initialization' }
 PharoLauncherApplication class >> reset [
 	<script>
-	
    Default ifNil: [ ^ self ].
+
    Default reset.
 	Default := nil
 ]

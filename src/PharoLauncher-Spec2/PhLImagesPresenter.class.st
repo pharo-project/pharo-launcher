@@ -143,7 +143,6 @@ PhLImagesPresenter >> buildImageTable [
 		alternateRowsColor;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
-		bindKeyCombination: Character cr asShortcut toAction: [ self actionLaunch ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
 			width: 350;
 			beSortable;
@@ -161,9 +160,10 @@ PhLImagesPresenter >> buildImageTable [
 			evaluated: [ :image | self readableDateFor: image lastModification ])
 			sortFunction: #lastModification descending;
 			yourself);
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / self contextMenuCommandGroupName ];
-		contextKeyBindings: self keyBindingsCommandsGroup asKMCategory;
-		actionGroup: self rootCommandsGroup / self contextMenuCommandGroupName;
+		actions: self rootCommandsGroup / self contextMenuCommandGroupName;
+		addShortcutWith: [ :action | action 
+			shortcutKey: Character cr asKeyCombination;
+			action: [ self actionLaunch ] ];
 		beResizable;
 		beMultipleSelection;
 		yourself
@@ -312,17 +312,9 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
 	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
 	aWindowPresenter 
-		bindKeyCombination: $f actionModifier
-		toAction: [ self actionFilter ]
-]
-
-{ #category : 'private' }
-PhLImagesPresenter >> keyBindingsCommandsGroup [
-
-	^ self rootCommandsGroup
-		commandOrGroupNamed: self contextMenuCommandGroupName
-		ifNone: [ nil ]
-		
+		addShortcutWith: [ :action | action 
+			shortcutKey: $f actionModifier;
+			action: [ self actionFilter ] ]
 ]
 
 { #category : 'initialization' }

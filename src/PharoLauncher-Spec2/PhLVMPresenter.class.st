@@ -108,7 +108,7 @@ PhLVMPresenter >> initializePresenters [
 		showColumnHeaders;
 		alternateRowsColor;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		actionGroup: self rootCommandsGroup / 'Context Menu';
+		actions: self rootCommandsGroup / 'Context Menu';
 		beResizable;
 		beMultipleSelection;
 		items: self datasource virtualMachines;

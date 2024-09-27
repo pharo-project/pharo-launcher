@@ -27,10 +27,10 @@ Class {
 	#tag : 'Application'
 }
 
-{ #category : 'accessing' }
+{ #category : 'activation' }
 PharoLauncherApplication class >> applicationName [
 
-	^ 'pharo-launcher'
+	^ 'launcher'
 ]
 
 { #category : 'testing' }
@@ -234,6 +234,18 @@ PharoLauncherApplication >> beOpenedAsWorld [
 	self openAsWorld: true
 ]
 
+{ #category : 'initialization' }
+PharoLauncherApplication >> cleanProcesses [
+
+    (Smalltalk classNamed: #MorphicUIManager) 
+        ifNotNil: [ :clazz | clazz uiProcess ifNotNil: #terminate ].
+    (Smalltalk classNamed: #ProcessBrowser) 
+        ifNotNil: [ :clazz | 
+            clazz new processList
+                detect: [ :each | each name = 'SDL2 Event loop' ]
+                ifFound: [ :aProcess | aProcess terminate ] ]
+]
+
 { #category : 'accessing' }
 PharoLauncherApplication >> defaultTemplateRepository [
 	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
@@ -269,16 +281,23 @@ PharoLauncherApplication >> initialize [
 	 This can be use to push progress bars (they stack)."
 	windows := OrderedCollection new. 
 	openAsWorld := false.
-	self
-		useBackend: #Morphic 
-		with: PharoLauncherConfiguration new.
+	self isStandalone 
+		ifTrue: [ 
+			GEngine ensureEngine
+				applicationId: 'org.pharo.PharoLauncher';
+				whenInitializedDo: [ GLibLibrary uniqueInstance gSetPrgName: 'Pharo Launcher' ];
+				run.
+			self useBackend: #Gtk with: PhLGtkConfiguration new ]
+		ifFalse: [ 
+			self useBackend: #Morphic with: PharoLauncherConfiguration new ].
 	
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	imageRepository reset.
 	
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
-	self resetTemplateRepository
+	self resetTemplateRepository.
+
 ]
 
 { #category : 'initialization' }
@@ -343,6 +362,12 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
+{ #category : 'initialization' }
+PharoLauncherApplication >> prepareAsStandaloneApplication [
+
+	super prepareAsStandaloneApplication
+]
+
 { #category : 'ui' }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
@@ -395,7 +420,13 @@ PharoLauncherApplication >> start [
 		self startFull.
 		^ self ].
 
-	imagesPresenter open
+	imagesPresenter asWindow
+		whenClosedDo: [
+			self isStandalone 
+				ifTrue: [ self exitApplication ] ];
+		open.
+	
+	self isStandalone ifTrue: [ self cleanProcesses ]
 ]
 
 { #category : 'running' }

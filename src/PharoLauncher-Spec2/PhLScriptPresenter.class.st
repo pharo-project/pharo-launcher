@@ -91,15 +91,15 @@ PhLScriptPresenter >> initializePresenters [
 		yourself.
 	fileEditor := self newCode
 		disable;
-		bindKeyCombination: self defaultSaveShortCut
-			toAction: [ self saveSelectedScript ];
+		addShortcutWith: [ :action | action 
+			shortcutKey: self defaultSaveShortCut;
+			action: [ self saveSelectedScript ] ];
 		yourself.
 	saveButton := self newButton
 		label: 'Save';
 		icon: (self iconNamed: #smallSave);
 		action: [ self saveSelectedScript ];
-		yourself.
-		
+		yourself
 ]
 
 { #category : 'initialization' }

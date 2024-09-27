@@ -79,7 +79,7 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		children: [ :aTemplateGroup | self templateChildrenOf: aTemplateGroup ];
 		display: #name;
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		actionGroup: self rootCommandsGroup / 'Context Menu';
+		actions: self rootCommandsGroup / 'Context Menu';
 		beMultipleSelection; "bulk delete templates for example"
 		whenRootsChangedDo: [ :roots | 
 			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];

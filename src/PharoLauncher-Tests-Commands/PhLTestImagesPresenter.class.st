@@ -30,7 +30,7 @@ PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
 
 { #category : 'api - selection' }
 PhLTestImagesPresenter >> hasSingleImageSelected [
-	^ super hasSingleImageSelected or: [ selection notNil ]
+	^ super hasSingleImageSelected or: [ selection isNotNil ]
 ]
 
 { #category : 'accessing' }

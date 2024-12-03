@@ -5,7 +5,7 @@ PharoLauncherApplication open
 "
 Class {
 	#name : 'PharoLauncherApplication',
-	#superclass : 'SpApplication',
+	#superclass : 'SgaApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -74,7 +74,7 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 	World doOneCycle.
 	500 milliSeconds wait. "To help user perception that *something* was reset"
 		
-	packages := RPackageOrganizer default packages select:[ :package | 
+	packages := PackageOrganizer default packages select:[ :package | 
 		(package name includesSubstring: 'PharoLauncher') ].
 	packages do: 
 		[ :package | 

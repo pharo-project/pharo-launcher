@@ -1,7 +1,7 @@
-Extension { #name : 'SystemDictionary' }
+Extension { #name : 'SystemEnvironment' }
 
 { #category : '*PharoLauncher-100Compatibility' }
-SystemDictionary >> at: aKey put: anObject [
+SystemEnvironment >> at: aKey put: anObject [
 	"Override from Dictionary to check Undeclared and fix up
 	references to undeclared variables."
 	| index assoc registeredMethods |

@@ -160,10 +160,12 @@ PhLImagesPresenter >> buildImageTable [
 			evaluated: [ :image | self readableDateFor: image lastModification ])
 			sortFunction: #lastModification descending;
 			yourself);
-		actions: self rootCommandsGroup / self contextMenuCommandGroupName;
-		addShortcutWith: [ :action | action 
-			shortcutKey: Character cr asKeyCombination;
-			action: [ self actionLaunch ] ];
+		actions: (SpActionGroup new 
+			add: self rootCommandsGroup / self contextMenuCommandGroupName;
+			addShortcutWith: [ :action | action
+				shortcutKey: Character cr asKeyCombination;
+				action: [ self actionLaunch ] ];
+			yourself);
 		beResizable;
 		beMultipleSelection;
 		yourself
@@ -310,7 +312,7 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		initialExtent: self initialExtent;
 		centered;
 		whenClosedDo: [ self imageRepository unsubscribe: self ].
-	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+	"self rootCommandsGroup installShortcutsIn: aWindowPresenter."
 	aWindowPresenter 
 		addShortcutWith: [ :action | action 
 			shortcutKey: $f actionModifier;

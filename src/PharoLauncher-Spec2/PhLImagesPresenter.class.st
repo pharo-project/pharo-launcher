@@ -235,16 +235,14 @@ PhLImagesPresenter >> ensure: aBoolean [
 ]
 
 { #category : 'computing' }
-PhLImagesPresenter >> ensurePharoVersion [
-	| image |
-	image := self singleImage.
-	[ image ensurePharoVersion ]
+PhLImagesPresenter >> ensurePharoVersionFor: anImage [
+	[ anImage ensurePharoVersion ]
 	on: PhLImageVersionFileNotFound 
 	do: [ :error | | presenter |
 		presenter := PhLPharoVersionChooserPresenter newApplication: self application.
 		presenter openModal.
 		presenter version ifNil: [ error pass ].
-		image versionFile 
+		anImage versionFile 
 			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
 ]
 

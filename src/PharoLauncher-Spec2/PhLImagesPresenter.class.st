@@ -270,10 +270,10 @@ PhLImagesPresenter >> imageRepository [
 { #category : 'initialization' }
 PhLImagesPresenter >> initializePresenters [
 
-	toolbar := self buildToolbar.
 	imageFilter := self buildImageFilter.
 	imageTable := self buildImageTable.
 	descriptionPanel := self buildDescriptionPanel.
+	toolbar := self buildToolbar.
 	
 	self imageRepository whenChangedSend: #refresh to: self
 ]

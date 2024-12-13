@@ -46,7 +46,7 @@ PhLImportImageCommand >> execute [
 		chooseFrom:
 			{ 'Import an image into Pharo Launcher images store (will move files)' .
 			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' }.
-	answer = 0 
+	(answer = 0 or: [ answer isNil ])
 		ifTrue: [ ^ self "cancel" ].
 	answer = 2
 		ifTrue: [ importSiblings := true ].

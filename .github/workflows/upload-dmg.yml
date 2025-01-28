@@ -29,7 +29,15 @@ jobs:
             run: |
               APP_URL=$( [ "${{ matrix.arch }}" == "arm64" ] && echo "${{  github.event.inputs.arm-signed-archive-url }}" || echo "${{  github.event.inputs.signed-archive-url }}" )
               curl -O $APP_URL
-              SIGNED_TAR_FILE=$(echo *.tar)
+              SIGNED_TAR_FILE="${APP_URL##*/}"
+              if [[ "SIGNED_TAR_FILE" =~ \.tgz$ || "SIGNED_TAR_FILE" =~ \.tar\.gz$ ]]; then
+                UNCOMPRESSED_TAR_FILE="${SIGNED_TAR_FILE%.tgz}.tar"
+                UNCOMPRESSED_TAR_FILE="${UNCOMPRESSED_TAR_FILE%.tar.gz}.tar"
+                tar -xzf "SIGNED_TAR_FILE" --to-stdout > "$UNCOMPRESSED_TAR_FILE"
+                echo "Extracted $SIGNED_TAR_FILE to $UNCOMPRESSED_TAR_FILE"
+                SIGNED_TAR_FILE=$UNCOMPRESSED_TAR_FILE
+              fi
+              echo "Building Pharo Launcher ${{ github.event.inputs.pharo-launcher-version }} ${{ matrix.arch }} DMG from $SIGNED_TAR_FILE"
               ./mac/build-dmg-from-tar.sh --arch ${{ matrix.arch }} --version ${{ github.event.inputs.pharo-launcher-version }} $SIGNED_TAR_FILE
 
           - uses: actions/upload-artifact@v4

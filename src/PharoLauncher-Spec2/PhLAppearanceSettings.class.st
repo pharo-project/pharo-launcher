@@ -45,3 +45,22 @@ PhLAppearanceSettings class >> uiThemeClass [
 PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
 	PolymorphSystemSettings uiThemeClass: aUIThemeClass
 ]
+
+{ #category : 'settings' }
+PhLAppearanceSettings class >> worldRendererSettingsOn: aBuilder [
+	<pharoLauncherSettings>
+
+	(aBuilder group: #canvasScaleFactorGroup)
+		parent: #appearance;
+		label: 'World renderer canvas scaling';
+		with: [
+			(aBuilder pickOne: #canvasScaleFactor)
+				label: 'Canvas scale factor';
+				target: OSWorldRenderer;
+				domainValues: (1 to: 5);
+				default: 1.
+			(aBuilder setting: #autoSetCanvasScaleFactor)
+				label: 'Set canvas scale factor automatically';
+				target: OSWorldRenderer;
+				default: true ]
+]

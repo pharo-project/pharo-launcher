@@ -29,4 +29,4 @@ The process is as following:
 
 ### Links
 - **Source code:** [https://github.com/pharo-project/pharo-launcher](https://github.com/pharo-project/pharo-launcher)
-- **CI:** [https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/](https://ci.inria.fr/pharo-ci-jenkins2/blue/organizations/jenkins/PharoLauncher-Pipeline/branches/) [![Build Status](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/badge/icon)](https://ci.inria.fr/pharo-ci-jenkins2/job/PharoLauncher-Pipeline/job/dev/)
+- **CI:** [https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml](https://github.com/pharo-project/pharo-launcher/actions/workflows/CI.yml) ![Build Statu](https://github.com//pharo-project/pharo-launcher/actions/workflows/CI.yml/badge.svg)

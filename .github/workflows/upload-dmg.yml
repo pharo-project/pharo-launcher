@@ -29,17 +29,17 @@ jobs:
             run: |
               APP_URL=$( [ "${{ matrix.arch }}" == "arm64" ] && echo "${{  github.event.inputs.arm-signed-archive-url }}" || echo "${{  github.event.inputs.signed-archive-url }}" )
               curl -O $APP_URL
-              tar -xf *.tgz
-              # move PharoLauncher.app to the current directory
-              find . -name PharoLauncher.app -print0 | xargs -0 -I{} mv {} .
-              chmod +x PharoLauncher.app/Contents/MacOS/Pharo PharoLauncher.app/Contents/Resources/pharo-launcher || true
-              mv mac-installer-background.png background.png
-              ARCHITECTURE=${{ matrix.arch }} VERSION=${{ github.event.inputs.pharo-launcher-version }} APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
-              generated_dmg=$(echo *.dmg)
-              mv "$generated_dmg" "PharoLauncher-${{ github.event.inputs.pharo-launcher-version }}.dmg"
-              generated_dmg=$(echo *.dmg)
-              md5 "$generated_dmg" > "$generated_dmg.md5sum"
-    
+              SIGNED_TAR_FILE="${APP_URL##*/}"
+              if [[ "SIGNED_TAR_FILE" =~ \.tgz$ || "SIGNED_TAR_FILE" =~ \.tar\.gz$ ]]; then
+                UNCOMPRESSED_TAR_FILE="${SIGNED_TAR_FILE%.tgz}.tar"
+                UNCOMPRESSED_TAR_FILE="${UNCOMPRESSED_TAR_FILE%.tar.gz}.tar"
+                tar -xzf "SIGNED_TAR_FILE" --to-stdout > "$UNCOMPRESSED_TAR_FILE"
+                echo "Extracted $SIGNED_TAR_FILE to $UNCOMPRESSED_TAR_FILE"
+                SIGNED_TAR_FILE=$UNCOMPRESSED_TAR_FILE
+              fi
+              echo "Building Pharo Launcher ${{ github.event.inputs.pharo-launcher-version }} ${{ matrix.arch }} DMG from $SIGNED_TAR_FILE"
+              ./mac/build-dmg-from-tar.sh --arch ${{ matrix.arch }} --version ${{ github.event.inputs.pharo-launcher-version }} $SIGNED_TAR_FILE
+
           - uses: actions/upload-artifact@v4
             with:
                 name: PharoLauncher-mac-installer-${{ github.event.inputs.pharo-launcher-version }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}

@@ -25,6 +25,20 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 				domainValues: PolymorphSystemSettings uiThemeClassChoices. ]
 ]
 
+{ #category : 'setting' }
+PhLAppearanceSettings class >> displayScaleFactorSettingsOn: aBuilder [
+	<pharoLauncherSettings>
+
+	(aBuilder range: #scaleFactor)
+		parent: #appearance;
+		order: 3;
+		default: 1;
+		label: 'Display scale factor';
+		description: 'Specify scale factor for UI elements. This setting does not affect defined font sizes.';
+		target: WorldMorph;
+		range: (0.5 to: 5 by: 0.5)
+]
+
 { #category : 'settings' }
 PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
 	<pharoLauncherSettings>

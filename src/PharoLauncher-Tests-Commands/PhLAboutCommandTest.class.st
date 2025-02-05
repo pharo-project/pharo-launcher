@@ -4,9 +4,8 @@ Class {
 	#instVars : [
 		'presenter'
 	],
-	#category : 'PharoLauncher-Tests-Core-Move-From-Commands',
-	#package : 'PharoLauncher-Tests-Core',
-	#tag : 'Move-From-Commands'
+	#category : 'PharoLauncher-Tests-Commands',
+	#package : 'PharoLauncher-Tests-Commands'
 }
 
 { #category : 'accessing' }

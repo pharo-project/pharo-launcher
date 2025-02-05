@@ -4,8 +4,9 @@ This is sample image launch configuration mock to be used just in tests (bypassi
 Class {
 	#name : 'PhLLaunchConfigurationMock',
 	#superclass : 'Object',
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Mocks',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Mocks'
 }
 
 { #category : 'mock' }

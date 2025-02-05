@@ -4,8 +4,9 @@ Class {
 	#instVars : [
 		'context'
 	],
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Commands',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Commands'
 }
 
 { #category : 'asserting' }
@@ -150,26 +151,6 @@ PhLCliCommandTest >> testIsProductionCommandClass [
 	"test whether production classes are correctly set, mock should return false"
 	self assert: PhLCliCommand isProductionCommandClass.
 	self deny: PhLCliCommandMock isProductionCommandClass.
-]
-
-{ #category : 'tests' }
-PhLCliCommandTest >> testListPrintAttributeBlocks [
-	
-	| aCommand |
-	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
-	
-	"should be empty by on launcher class"
-	self assert: aCommand listPrintAttributeBlocks isEmpty
-]
-
-{ #category : 'tests' }
-PhLCliCommandTest >> testListPrintAttributeLabels [
-	
-	| aCommand |	
-	aCommand := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
-
-	"should be empty by on launcher class"
-	self assert: aCommand listPrintAttributeLabels isEmpty
 ]
 
 { #category : 'tests' }

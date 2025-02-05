@@ -13,8 +13,9 @@ Class {
 		'pharoVersion',
 		'lastModification'
 	],
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Mocks',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Mocks'
 }
 
 { #category : 'accessing' }
@@ -29,6 +30,16 @@ PhLImageMock class >> atRandom [
 		pharoVersion: #('60' '61' '70' '80' '90' '100') atRandom;
 		lastModification: (DateAndTime fromUnixTime: (1 to: 1600000000) atRandom );
 yourself 
+]
+
+{ #category : 'accessing' }
+PhLImageMock class >> extendedListPrintAttributeBlocks [
+	^ PhLImage extendedListPrintAttributeBlocks
+]
+
+{ #category : 'accessing' }
+PhLImageMock class >> extendedListPrintAttributeLabels [
+	^ PhLImage extendedListPrintAttributeLabels
 ]
 
 { #category : 'private' }

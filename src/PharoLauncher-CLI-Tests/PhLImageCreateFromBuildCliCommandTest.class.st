@@ -1,8 +1,9 @@
 Class {
 	#name : 'PhLImageCreateFromBuildCliCommandTest',
 	#superclass : 'PhLImageCliCommandTest',
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Commands',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Commands'
 }
 
 { #category : 'tests' }

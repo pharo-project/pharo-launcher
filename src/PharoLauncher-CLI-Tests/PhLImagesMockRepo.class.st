@@ -7,8 +7,9 @@ Class {
 	#instVars : [
 		'images'
 	],
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Mocks',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Mocks'
 }
 
 { #category : 'adding' }

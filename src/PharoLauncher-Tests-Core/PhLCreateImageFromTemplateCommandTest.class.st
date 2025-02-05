@@ -5,8 +5,9 @@ Class {
 		'presenter',
 		'imageDir'
 	],
-	#category : 'PharoLauncher-Tests-Commands',
-	#package : 'PharoLauncher-Tests-Commands'
+	#category : 'PharoLauncher-Tests-Core-not-faulty',
+	#package : 'PharoLauncher-Tests-Core',
+	#tag : 'not-faulty'
 }
 
 { #category : 'helper' }

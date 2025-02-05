@@ -6,9 +6,9 @@ Class {
 		'imagesPresenter',
 		'fs'
 	],
-	#category : 'PharoLauncher-Tests-Core-Move-From-Commands',
+	#category : 'PharoLauncher-Tests-Core-not-faulty',
 	#package : 'PharoLauncher-Tests-Core',
-	#tag : 'Move-From-Commands'
+	#tag : 'not-faulty'
 }
 
 { #category : 'running' }

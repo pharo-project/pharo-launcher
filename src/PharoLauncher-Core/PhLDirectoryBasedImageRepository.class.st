@@ -69,7 +69,6 @@ PhLDirectoryBasedImageRepository class >> location [
 { #category : 'accessing' }
 PhLDirectoryBasedImageRepository class >> location: directory [
 	self location resolve = directory resolve ifTrue: [ ^ self ].
-	self migrateFrom: self location to: directory.
 	Location := directory.
 	self default contentsChanged
 ]
@@ -85,7 +84,7 @@ PhLDirectoryBasedImageRepository class >> locationString: aDirectoryString [
 ]
 
 { #category : 'private' }
-PhLDirectoryBasedImageRepository class >> migrateFrom: oldLocation to: newLocation [
+PhLDirectoryBasedImageRepository class >> moveImagesFrom: oldLocation to: newLocation [
 	(oldLocation exists and: [ (self forDirectory: oldLocation) hasImages ])
 		ifTrue: 
 			[ PhLRelocateImageDirectoryCommand new

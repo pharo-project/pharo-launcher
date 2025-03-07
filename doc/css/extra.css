@@ -1,0 +1,11 @@
+/* Increase the max width of the content */
+.wy-nav-content {
+    max-width: 1400px !important;  /* Default is around 800px, increase as needed */
+}
+
+/* Ensure tables and code blocks do not overflow */
+.wy-table-responsive table {
+    width: 100% !important;
+    display: table;
+}
+

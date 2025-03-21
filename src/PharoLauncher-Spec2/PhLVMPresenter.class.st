@@ -121,11 +121,10 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	aWindowPresenter
 		title: 'Locally available Virtual Machines';
 		initialExtent: self initialExtent;
-		toolbar:
-			(self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
+		toolbar: (self newLaunchToolbar fillWith: self rootCommandsGroup / 'Toolbar');
 		centered.
 
-	self rootCommandsGroup installShortcutsIn: aWindowPresenter.
+	"self rootCommandsGroup installShortcutsIn: aWindowPresenter."
 ]
 
 { #category : 'private' }

@@ -11,11 +11,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 
-		self ston: spec.
 		self osSubprocess: spec.
 		self osWinSubprocess: spec.
 		self xmlParser: spec.
-		self clap: spec.
 		self objCBridge: spec.
 		self interactions: spec.
 
@@ -26,7 +24,6 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'XMLParser' 
 					'OSSubprocess' 
 					'OSWinSubprocess' 
-					'Ston'
 					'Interactions'
 					'ObjCBridge' 
 					'PharoLauncher-100Compatibility'). ];
@@ -48,8 +45,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #('PharoLauncher-Tests-Core' ). ];
 			package: 'PharoLauncher-Tests-Functional' with: [
 				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Tests-Download'). ];
-			package: 'PharoLauncher-CLI' with: [ 
-				spec requires: #('Clap') ];
+			package: 'PharoLauncher-CLI';
 			package: 'PharoLauncher-CLI-Tests' with: [ 
 				spec requires: #('PharoLauncher-CLI') ].
 		spec 

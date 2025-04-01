@@ -16,6 +16,8 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self xmlParser: spec.
 		self objCBridge: spec.
 		self interactions: spec.
+		self gtkBindings: spec.
+		self specGtk: spec.
 
 		spec
 			package: 'PharoLauncher-100Compatibility'; 
@@ -30,7 +32,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
-				spec requires: #('PharoLauncher-Spec2') ];
+				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Squeak' with: [ 
@@ -71,6 +73,14 @@ BaselineOfPharoLauncher >> clap: spec [
 ]
 
 { #category : 'external projects' }
+BaselineOfPharoLauncher >> gtkBindings: spec [
+
+	spec 
+		baseline: #Gtk
+		with: [ spec repository: 'github://pharo-spec/gtk-bindings:gtk4' ]
+]
+
+{ #category : 'external projects' }
 BaselineOfPharoLauncher >> interactions: spec [
 
 	spec 
@@ -100,6 +110,14 @@ BaselineOfPharoLauncher >> osWinSubprocess: spec [
 	spec 
 		baseline: #OSWinSubprocess
 		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> specGtk: spec [
+
+	spec 
+		baseline: #SpecGtk
+		with: [ spec repository: 'github://pharo-spec/Spec-Gtk:gtk4' ]
 ]
 
 { #category : 'external projects' }

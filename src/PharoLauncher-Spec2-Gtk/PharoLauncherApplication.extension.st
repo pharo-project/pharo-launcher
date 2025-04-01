@@ -1,7 +1,7 @@
 Extension { #name : 'PharoLauncherApplication' }
 
 { #category : '*PharoLauncher-Spec2-Gtk' }
-PharoLauncherApplication class >> openGtk [
+PharoLauncherApplication classSide >> openGtk [
 	<script>
 	
 	^ self new

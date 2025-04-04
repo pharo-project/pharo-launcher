@@ -307,6 +307,12 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : 'testing' }
+PharoLauncherApplication >> isStandalone [
+	
+	^ false
+]
+
 { #category : 'events' }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "

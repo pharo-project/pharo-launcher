@@ -21,23 +21,86 @@ PhLAppearanceSettingsPresenter class >> open [
 	^ self new open
 ]
 
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> activeTheme [
+
+	^ PhLAppearanceSettings uiThemeClass 
+		ifNotNil: [ :aThemeClass | aThemeClass uniqueInstance ]
+		ifNil: [ self defaultActiveTheme ]
+]
+
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> defaultActiveTheme [
+
+	^ self application isLightTheme
+		ifTrue: [ PhLAppearanceTheme light ]
+		ifFalse: [ PhLAppearanceTheme dark ]
+]
+
 { #category : 'layout' }
 PhLAppearanceSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		vAlignCenter;
+		vAlignStart;
 		add: (SpBoxLayout newLeftToRight
 			add: lightThemePresenter;
-		   add: darkThemePresenter;
-		   yourself);
+		   	add: darkThemePresenter;
+		   	yourself);
 		yourself
 ]
 
-{ #category : 'layout' }
+{ #category : 'initialization' }
 PhLAppearanceSettingsPresenter >> initializePresenters [ 
-	| welcomePresenter |
+
+	lightThemePresenter := self newThemePresenter: PhLAppearanceTheme light.
+	darkThemePresenter := self newThemePresenter:  PhLAppearanceTheme dark.
+]
+
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> newThemePresenter: aTheme [
+	| presenter imagePresenter labelPresenter |
 	
-	welcomePresenter := StWelcomeSetupPresenter new.
-	lightThemePresenter := welcomePresenter newThemePresenter: StWelcomeTheme light.
-	darkThemePresenter := welcomePresenter newThemePresenter: StWelcomeTheme dark.
+	presenter := self newPresenter.
+	presenter propertyAt: #theme put: aTheme.
+	presenter addStyle: 'welcomeThemeImage'.
+	self activeTheme = aTheme ifTrue: [
+		presenter addStyle: 'welcomeThemeSelected' ].
+	
+	imagePresenter := presenter newImage.
+	labelPresenter := presenter newLabel.
+	
+	presenter layout: (SpBoxLayout newTopToBottom
+		hAlignCenter;
+		add: imagePresenter;
+		add: labelPresenter expand: false;
+		yourself).
+		
+	labelPresenter label: aTheme name.
+	labelPresenter addStyle: 'subtitle'.
+
+	imagePresenter image: aTheme image.
+	imagePresenter addStyle: 'image'.
+		
+ 	presenter eventHandler whenMouseDownDo: [ :anEvent | 
+ 		GRunLoop enterSystem: [
+			self selectTheme: aTheme.
+			presenter addStyle: 'welcomeThemeSelected' 
+		] 
+	].
+
+	^ presenter
+]
+
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> selectTheme: aTheme [
+	| themePresenters |
+
+	themePresenters := { lightThemePresenter. darkThemePresenter }.
+	themePresenters do: [ :each | each removeStyle: 'welcomeThemeSelected' ].
+	themePresenters 
+		detect: [ :each | (each propertyAt: #theme ifAbsent: [ nil ]) = aTheme ]
+		ifFound: [ :aPresenter |
+			aTheme activateOn: self application.
+			PhLAppearanceSettings uiThemeClass: aTheme class.
+			aPresenter addStyle: 'welcomeThemeSelected' ]
 ]

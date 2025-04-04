@@ -5,6 +5,9 @@ For now, I only define new styles.
 Class {
 	#name : 'PharoLauncherConfiguration',
 	#superclass : 'SpMorphicConfiguration',
+	#instVars : [
+		'activeTheme'
+	],
 	#category : 'PharoLauncher-Spec2-Application',
 	#package : 'PharoLauncher-Spec2',
 	#tag : 'Application'

@@ -5,6 +5,9 @@ for the PhLSettingsBrowser (pragma pharoLauncherSettings).
 Class {
 	#name : 'PhLAppearanceSettings',
 	#superclass : 'Object',
+	#classVars : [
+		'UIThemeClass'
+	],
 	#category : 'PharoLauncher-Spec2-Model',
 	#package : 'PharoLauncher-Spec2',
 	#tag : 'Model'
@@ -13,6 +16,7 @@ Class {
 { #category : 'settings' }
 PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [ 
 	<pharoLauncherSettings>
+	
 	(aBuilder group: #appearance)
 		label: 'Appearance' ;  
 		description: 'All settings concerned with the look''n feel of your system';
@@ -21,9 +25,9 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 			(aBuilder pickOne: #uiThemeClass)
 				label: 'User interface theme';
 				target: self;
-				default: PharoLightTheme;
+				default: PhLAppearanceThemeLight;
 				order: 1;
-				domainValues: PolymorphSystemSettings uiThemeClassChoices. ]
+				domainValues: PhLAppearanceTheme all ]
 ]
 
 { #category : 'settings' }
@@ -39,10 +43,12 @@ PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
 
 { #category : 'morphic' }
 PhLAppearanceSettings class >> uiThemeClass [
-	^ PolymorphSystemSettings uiThemeClass
+
+	^ UIThemeClass
 ]
 
 { #category : 'morphic' }
 PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
-	PolymorphSystemSettings uiThemeClass: aUIThemeClass
+
+	UIThemeClass := aUIThemeClass
 ]

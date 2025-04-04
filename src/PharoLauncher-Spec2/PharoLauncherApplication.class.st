@@ -307,6 +307,18 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : 'testing' }
+PharoLauncherApplication >> isDarkTheme [
+
+	^ self configuration isDarkTheme
+]
+
+{ #category : 'testing' }
+PharoLauncherApplication >> isLightTheme [
+
+	^ self isDarkTheme not
+]
+
 { #category : 'events' }
 PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 	"set the last edited launch configuration in the toolbar "
@@ -435,6 +447,18 @@ PharoLauncherApplication >> startFull [
 	imagesPresenter asWorldWindow 
 		title: 'Pharo Launcher';
 		open.
+]
+
+{ #category : 'configuring' }
+PharoLauncherApplication >> switchThemeToDark [
+
+	self configuration switchThemeToDark
+]
+
+{ #category : 'configuring' }
+PharoLauncherApplication >> switchThemeToLight [
+
+	self configuration switchThemeToLight
 ]
 
 { #category : 'accessing' }

@@ -5,7 +5,7 @@ PharoLauncherApplication open
 "
 Class {
 	#name : 'PharoLauncherApplication',
-	#superclass : 'SgaApplication',
+	#superclass : 'SpApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',
@@ -317,6 +317,12 @@ PharoLauncherApplication >> isDarkTheme [
 PharoLauncherApplication >> isLightTheme [
 
 	^ self isDarkTheme not
+]
+
+{ #category : 'testing' }
+PharoLauncherApplication >> isStandalone [
+	
+	^ false
 ]
 
 { #category : 'events' }

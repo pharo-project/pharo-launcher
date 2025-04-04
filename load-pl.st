@@ -11,14 +11,6 @@ Metacello new
     baseline: 'SpecCore';
     lock.
 
-"Avoid to load Stargate for now"
-SpApplication << #SgaApplication
-    slots: {};
-    package: 'PharoLauncher-Spec2';
-    install.
-SgaApplication compile: 'isStandalone
-    ^ false'.
-
 "temporary fix for Iceberg: see issue https://github.com/pharo-vcs/iceberg/issues/1921"
 IceRepositoryCreator compile: 'cloneRepository
 	IceGitClone new

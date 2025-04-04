@@ -11,13 +11,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 
 	spec for: #'common' do: [
 
-		self ston: spec.
 		self osSubprocess: spec.
 		self osWinSubprocess: spec.
 		self xmlParser: spec.
-		self clap: spec.
 		self objCBridge: spec.
 		self interactions: spec.
+		self gtkBindings: spec.
+		self specGtk: spec.
 
 		spec
 			package: 'PharoLauncher-100Compatibility'; 
@@ -26,14 +26,13 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'XMLParser' 
 					'OSSubprocess' 
 					'OSWinSubprocess' 
-					'Ston'
 					'Interactions'
 					'ObjCBridge' 
 					'PharoLauncher-100Compatibility'). ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
-				spec requires: #('PharoLauncher-Spec2') ];
+				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Squeak' with: [ 
@@ -48,8 +47,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 				spec requires: #('PharoLauncher-Tests-Core' ). ];
 			package: 'PharoLauncher-Tests-Functional' with: [
 				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Tests-Download'). ];
-			package: 'PharoLauncher-CLI' with: [ 
-				spec requires: #('Clap') ];
+			package: 'PharoLauncher-CLI';
 			package: 'PharoLauncher-CLI-Tests' with: [ 
 				spec requires: #('PharoLauncher-CLI') ].
 		spec 
@@ -72,6 +70,14 @@ BaselineOfPharoLauncher >> clap: spec [
 	spec 
 		baseline: #Clap
 		with: [ spec repository: 'github://pharo-contributions/clap-st:master/src' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> gtkBindings: spec [
+
+	spec 
+		baseline: #Gtk
+		with: [ spec repository: 'github://pharo-spec/gtk-bindings:gtk4' ]
 ]
 
 { #category : 'external projects' }
@@ -104,6 +110,14 @@ BaselineOfPharoLauncher >> osWinSubprocess: spec [
 	spec 
 		baseline: #OSWinSubprocess
 		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> specGtk: spec [
+
+	spec 
+		baseline: #SpecGtk
+		with: [ spec repository: 'github://pharo-spec/Spec-Gtk:gtk4' ]
 ]
 
 { #category : 'external projects' }

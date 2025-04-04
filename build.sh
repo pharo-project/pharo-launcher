@@ -28,7 +28,7 @@ function prepare_image() {
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
-	./pharo PharoLauncher.image eval --save "Metacello new baseline: 'PharoLauncher'; repository: 'gitlocal://src'; ignoreImage; onConflictUseIncoming; onWarning: [:ex | ex load]; load"
+	./pharo PharoLauncher.image eval --save load-pl.st
 }
 
 function run_tests() {
@@ -158,7 +158,7 @@ function fetch_current_mac_vm_to() {
 	# udpate this method to use either the old or new VM URL format (see zeroconf).
 	local DEST_PATH=${1:-.} # If no argument given, use current working dir
 	set_arch_path
-	local VM_URL="http://files.pharo.org/get-files/$PHARO/pharo-vm-Darwin-${VM_ARCH_PATH}-stable.zip"
+	local VM_URL="http://files.pharo.org/get-files/$PHARO/pharo-vm-Darwin-${VM_ARCH_PATH}-gtk-stable.zip"
 	local VM_TMP_PATH="$DEST_PATH/tmp"
 	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
 	VM_ZIP="${VM_TMP_PATH}/vm.zip"

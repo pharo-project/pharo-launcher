@@ -5,7 +5,7 @@ PharoLauncherApplication open
 "
 Class {
 	#name : 'PharoLauncherApplication',
-	#superclass : 'SgaApplication',
+	#superclass : 'SpApplication',
 	#instVars : [
 		'imageRepository',
 		'templateRepository',

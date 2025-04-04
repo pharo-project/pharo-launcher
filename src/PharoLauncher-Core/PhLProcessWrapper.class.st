@@ -210,7 +210,9 @@ PhLProcessWrapper >> visitUnix: aPlatform [
 		ifTrue: [ | commandLine |
 			commandLine := Character space join: self arguments.
 			useLoginShell 
-				ifTrue: [ process loginShellCommand: commandLine ]
+				ifTrue: [ 
+					self flag: 'TODO: find a better way to deal with SDL and GTK render loop'.
+					process loginShellCommand: 'PHARO_WINDOW_DRIVER=OSSDL2Driver ' , commandLine ]
 				ifFalse: [ process shellCommand: commandLine ] ] 
 		ifFalse: [ process command: command.
 					process arguments: self arguments. ].

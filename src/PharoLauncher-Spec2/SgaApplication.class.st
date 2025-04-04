@@ -8,3 +8,9 @@ Class {
 	#category : 'PharoLauncher-Spec2',
 	#package : 'PharoLauncher-Spec2'
 }
+
+{ #category : 'testing' }
+SgaApplication >> isStandalone [
+
+	^ false
+]

@@ -91,11 +91,11 @@ PhLSettingsPresenter >> initializeSettingsCategories [
 		action: [ self updateSettingsPanelWith: self generalSettingsPanel ]
 		yourself.
 	networkCategoryImagePresenter := self newButton
-		icon: (StSettingIcons networkingIcon);
+		"icon: (StSettingIcons networkingIcon);"
 		action: [ self updateSettingsPanelWith:self networkSettingsPanel ]
 		yourself.
 	appearenceCategoryImagePresenter := self newButton
-		icon: (StSettingIcons appearanceIcon);
+		"icon: (StSettingIcons appearanceIcon);"
 		action: [ self updateSettingsPanelWith: self appearenceSettingsPanel ]
 		yourself.
 ]

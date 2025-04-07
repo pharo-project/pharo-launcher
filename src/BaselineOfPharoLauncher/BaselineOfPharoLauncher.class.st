@@ -18,6 +18,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self interactions: spec.
 		self gtkBindings: spec.
 		self specGtk: spec.
+		self specAdwaita: spec.
 
 		spec
 			package: 'PharoLauncher-100Compatibility'; 
@@ -32,7 +33,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
-				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk') ];
+				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk' 'Adwaita') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Squeak' with: [ 
@@ -110,6 +111,14 @@ BaselineOfPharoLauncher >> osWinSubprocess: spec [
 	spec 
 		baseline: #OSWinSubprocess
 		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> specAdwaita: spec [
+
+	spec 
+		baseline: #Adwaita
+		with: [ spec repository: 'github://estebanlm/Spec-LibAdwaita' ]
 ]
 
 { #category : 'external projects' }

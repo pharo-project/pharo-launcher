@@ -13,6 +13,19 @@ PhLGtkConfiguration >> addPredefinedStyles [
 ]
 
 { #category : 'configuring' }
+PhLGtkConfiguration >> configureGeneral: anApplication [
+
+	PhLAppearanceSettings uiThemeClass ifNotNil: [ :aThemeClass | 
+		aThemeClass uniqueInstance activateOn: anApplication ]
+]
+
+{ #category : 'testing' }
+PhLGtkConfiguration >> isDarkTheme [
+
+	^ GRunLoop defer: [ AdwStyleManager default isDark ]
+]
+
+{ #category : 'configuring' }
 PhLGtkConfiguration >> launcherStyle [
 
 	^ '
@@ -78,5 +91,27 @@ box.choice_area checkbutton {
 box.choice_area checkbutton label { 
 	margin-left: 10px;
 }
+box.welcomeThemeImage { 
+	min-width: 280px;
+	min-height: 280px;
+	margin-top: 20px;
+	padding: 5px;
+	color: var(--accent-fg-color);
+}
+box.welcomeThemeSelected {
+	background-color: var(--accent-bg-color);
+}
 '
+]
+
+{ #category : 'configuring' }
+PhLGtkConfiguration >> switchThemeToDark [
+
+	GRunLoop defer: [ AdwStyleManager default forceDark ]
+]
+
+{ #category : 'configuring' }
+PhLGtkConfiguration >> switchThemeToLight [
+
+	GRunLoop defer: [ AdwStyleManager default forceLight ]
 ]

@@ -28,7 +28,7 @@ function prepare_image() {
 
 	./pharo Pharo.image save PharoLauncher --delete-old
 	./pharo PharoLauncher.image --version > version.txt
-	./pharo PharoLauncher.image eval --save load-pl.st
+	./pharo PharoLauncher.image eval --save load-pl.st --quit
 }
 
 function run_tests() {

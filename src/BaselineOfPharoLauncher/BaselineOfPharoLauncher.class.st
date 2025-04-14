@@ -118,7 +118,7 @@ BaselineOfPharoLauncher >> specAdwaita: spec [
 
 	spec 
 		baseline: #Adwaita
-		with: [ spec repository: 'github://estebanlm/Spec-LibAdwaita' ]
+		with: [ spec repository: 'github://estebanlm/Spec-LibAdwaita:main' ]
 ]
 
 { #category : 'external projects' }

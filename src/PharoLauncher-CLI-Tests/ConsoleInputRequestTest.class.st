@@ -5,8 +5,9 @@ Class {
 		'consoleInputRequest',
 		'outputStream'
 	],
-	#category : 'PharoLauncher-CLI-Tests',
-	#package : 'PharoLauncher-CLI-Tests'
+	#category : 'PharoLauncher-CLI-Tests-Others',
+	#package : 'PharoLauncher-CLI-Tests',
+	#tag : 'Others'
 }
 
 { #category : 'accessing' }

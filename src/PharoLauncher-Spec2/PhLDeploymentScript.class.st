@@ -228,7 +228,7 @@ PhLDeploymentScript class >> resetImageDescriptionUpdater [
 { #category : 'actions' }
 PhLDeploymentScript class >> resetPharoLauncherIcebergRepositoryLocation [
 	| phLCorePackage |
-	phLCorePackage := RPackageOrganizer default packageNamed: 'PharoLauncher-Core'.
+	phLCorePackage := PackageOrganizer default packageNamed: 'PharoLauncher-Core'.
 	(IceRepository registeredRepositoryIncludingPackage: phLCorePackage)
 		name: 'pharo-launcher';
 		location: nil

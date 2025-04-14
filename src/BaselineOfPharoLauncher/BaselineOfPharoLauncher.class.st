@@ -110,7 +110,7 @@ BaselineOfPharoLauncher >> osWinSubprocess: spec [
 
 	spec 
 		baseline: #OSWinSubprocess
-		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1' ]
+		with: [ spec repository: 'github://pharo-contributions/OSWinSubprocess:v1.1' ]
 ]
 
 { #category : 'external projects' }

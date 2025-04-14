@@ -101,7 +101,7 @@ function package_mac_version() {
 	expand_all_templates $OUTPUT_PATH
 	copy_current_stable_image_to $RESOURCES_PATH
 	copy_mac_icon_files_to $RESOURCES_PATH/
-	mv mac-installer-background.png background.png
+	mv mac/installer-background.png background.png
 	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
 	cp scripts/pharo-launcher.sh $RESOURCES_PATH/pharo-launcher && chmod +x $RESOURCES_PATH/pharo-launcher
 	mv $BIN_PATH/pharo.signatures $RESOURCES_PATH/ || true

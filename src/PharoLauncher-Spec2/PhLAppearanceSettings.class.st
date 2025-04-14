@@ -30,6 +30,20 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 				domainValues: PhLAppearanceTheme all ]
 ]
 
+{ #category : 'setting' }
+PhLAppearanceSettings class >> displayScaleFactorSettingsOn: aBuilder [
+	<pharoLauncherSettings>
+
+	(aBuilder range: #scaleFactor)
+		parent: #appearance;
+		order: 3;
+		default: 1;
+		label: 'Display scale factor';
+		description: 'Specify scale factor for UI elements. This setting does not affect defined font sizes.';
+		target: WorldMorph;
+		range: (0.5 to: 5 by: 0.5)
+]
+
 { #category : 'settings' }
 PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
 	<pharoLauncherSettings>
@@ -51,4 +65,23 @@ PhLAppearanceSettings class >> uiThemeClass [
 PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
 
 	UIThemeClass := aUIThemeClass
+]
+
+{ #category : 'settings' }
+PhLAppearanceSettings class >> worldRendererSettingsOn: aBuilder [
+	<pharoLauncherSettings>
+
+	(aBuilder group: #canvasScaleFactorGroup)
+		parent: #appearance;
+		label: 'World renderer canvas scaling';
+		with: [
+			(aBuilder pickOne: #canvasScaleFactor)
+				label: 'Canvas scale factor';
+				target: OSWorldRenderer;
+				domainValues: (1 to: 5);
+				default: 1.
+			(aBuilder setting: #autoSetCanvasScaleFactor)
+				label: 'Set canvas scale factor automatically';
+				target: OSWorldRenderer;
+				default: true ]
 ]

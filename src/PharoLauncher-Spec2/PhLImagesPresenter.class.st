@@ -250,17 +250,15 @@ PhLImagesPresenter >> ensure: aBoolean [
 ]
 
 { #category : 'computing' }
-PhLImagesPresenter >> ensurePharoVersion [
-	| image |
-	image := self singleImage.
-	[ image ensurePharoVersion ]
+PhLImagesPresenter >> ensurePharoVersionFor: anImage [
+	[ anImage ensurePharoVersion ]
 	on: PhLImageVersionFileNotFound 
 	do: [ :error | 
 		| presenter |
 		presenter := self instantiate: PhLPharoVersionChooserPresenter.
 		presenter openModal.
 		presenter version ifNil: [ error pass ].
-		image versionFile 
+		anImage versionFile 
 			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
 ]
 
@@ -294,10 +292,10 @@ PhLImagesPresenter >> initialExtent [
 { #category : 'initialization' }
 PhLImagesPresenter >> initializePresenters [
 
-	toolbar := self buildToolbar.
 	imageFilter := self buildImageFilter.
 	imageTable := self buildImageTable.
 	descriptionPanel := self buildDescriptionPanel.
+	toolbar := self buildToolbar.
 	
 	self imageRepository 
 		whenChangedSend: #refresh

@@ -1,0 +1,48 @@
+name: upload DMG
+
+on:
+  workflow_dispatch:
+    inputs:
+      pharo-launcher-version:
+       type: string
+       description: 'The Pharo Launcher version number'
+      arm-signed-archive-url:
+       type: string
+       description: 'The Pharo Launcher archive URL containing the signed App for ARM architecture'
+      signed-archive-url:
+        type: string
+        description: 'The Pharo Launcher archive URL containing the signed App for Intel architecture'
+     
+jobs:
+    upload-dmg:
+        runs-on: macos-latest
+        strategy:
+          matrix:
+            arch: [ 'arm64', '64' ]
+    
+        steps:
+          - uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+    
+          - name: Build ${{ matrix.arch }} mac os package
+            run: |
+              APP_URL=$( [ "${{ matrix.arch }}" == "arm64" ] && echo "${{  github.event.inputs.arm-signed-archive-url }}" || echo "${{  github.event.inputs.signed-archive-url }}" )
+              curl -O $APP_URL
+              SIGNED_TAR_FILE="${APP_URL##*/}"
+              if [[ "SIGNED_TAR_FILE" =~ \.tgz$ || "SIGNED_TAR_FILE" =~ \.tar\.gz$ ]]; then
+                UNCOMPRESSED_TAR_FILE="${SIGNED_TAR_FILE%.tgz}.tar"
+                UNCOMPRESSED_TAR_FILE="${UNCOMPRESSED_TAR_FILE%.tar.gz}.tar"
+                tar -xzf "SIGNED_TAR_FILE" --to-stdout > "$UNCOMPRESSED_TAR_FILE"
+                echo "Extracted $SIGNED_TAR_FILE to $UNCOMPRESSED_TAR_FILE"
+                SIGNED_TAR_FILE=$UNCOMPRESSED_TAR_FILE
+              fi
+              echo "Building Pharo Launcher ${{ github.event.inputs.pharo-launcher-version }} ${{ matrix.arch }} DMG from $SIGNED_TAR_FILE"
+              ./mac/build-dmg-from-tar.sh --arch ${{ matrix.arch }} --version ${{ github.event.inputs.pharo-launcher-version }} $SIGNED_TAR_FILE
+
+          - uses: actions/upload-artifact@v4
+            with:
+                name: PharoLauncher-mac-installer-${{ github.event.inputs.pharo-launcher-version }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}
+                path: PharoLauncher-*.dmg
+                retention-days: 5
+    

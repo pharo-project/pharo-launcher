@@ -31,12 +31,6 @@ PhLRepository >> dontNotifyDuring: aBlock [
 		ensure: [ wantNotification := wantNotificationBackup ]
 ]
 
-{ #category : 'visiting' }
-PhLRepository >> extractOn: aVisitor [
-
-	self subclassResponsibility
-]
-
 { #category : 'initialization' }
 PhLRepository >> initialize [
 	super initialize.

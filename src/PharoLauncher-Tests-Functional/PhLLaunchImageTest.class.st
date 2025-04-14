@@ -77,7 +77,10 @@ PhLLaunchImageTest >> tearDown [
 	PhLVirtualMachineManager vmStore: vmStoreBackup.
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	tempVmStoreFolder ensureDeleteAll.
-	imageDir ensureDeleteAll.
+	"To avoid random bugs with DirectoryIsNotEmpty error on CI"
+	Smalltalk os isWindows
+		ifTrue: [ imageDir ensureDeleteAll ]
+		ifFalse: [ LibC runCommand: 'rm -rf ', imageDir fullName. ].
 	super tearDown
 ]
 

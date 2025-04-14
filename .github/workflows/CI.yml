@@ -217,12 +217,16 @@ jobs:
           path: ${{ env.RESOURCES_DIR }}
 
       - name: Build ${{ matrix.arch }} mac os package
-        run: ARCHITECTURE=${{ matrix.arch }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
+        run: |
+          ARCHITECTURE=${{ matrix.arch }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
+          ls -ld PharoLauncher.app
+          zip -r -9 PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}.zip PharoLauncher.app
+          ls -la .
 
       - uses: actions/upload-artifact@v4
         with:
-            name: PharoLauncher-mac-installer-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}
-            path: PharoLauncher-*.dmg
+            name: PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}
+            path: PharoLauncher-mac-*.zip
 
   publish:
     runs-on: ubuntu-latest
@@ -233,7 +237,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
             path: artifacts
-        
+      
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+
       - name: Prepare upload
         run: |
           LINUX_PKG_NAME=$(echo artifacts/PharoLauncher-linux-${{ needs.build.outputs.launcherVersion }}-*)
@@ -244,12 +251,15 @@ jobs:
           zip -q -r -9 $WINDOWS_PKG_NAME.zip $WINDOWS_PKG_NAME
           ls -R .
         
+      - name: Display structure of downloaded files
+        run: ls -R artifacts
+  
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
             **/*.msi
-            **/*.dmg
+            **/PharoLauncher-mac-*.zip
             artifacts/*.zip
           body: |
             Warning: Release artefacts below are not signed nor notarized and by consequence, are not recognized as safe by Operating Systems.

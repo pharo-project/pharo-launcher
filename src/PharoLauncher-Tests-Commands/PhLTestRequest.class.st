@@ -47,6 +47,11 @@ PhLTestRequest >> initialAnswer: aString [
 	self noop
 ]
 
+{ #category : 'accessing' }
+PhLTestRequest >> label: aString [ 
+	self noop
+]
+
 { #category : 'private' }
 PhLTestRequest >> noop [
 	"do nothing"

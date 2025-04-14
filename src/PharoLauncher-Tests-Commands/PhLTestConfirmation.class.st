@@ -5,7 +5,8 @@ Class {
 	#name : 'PhLTestConfirmation',
 	#superclass : 'Object',
 	#instVars : [
-		'message'
+		'message',
+		'title'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -39,4 +40,9 @@ PhLTestConfirmation >> noop [
 { #category : 'accessing' }
 PhLTestConfirmation >> parentWindow: aWindowPresenter [ 
 	"no need to keep the parent"
+]
+
+{ #category : 'accessing' }
+PhLTestConfirmation >> title: aString [ 
+	title := aString
 ]

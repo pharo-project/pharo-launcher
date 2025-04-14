@@ -29,3 +29,9 @@ PhLAboutCommandTest >> testCanOpenAboutDialog [
 
 	self assert: (presenter description text includesSubstring: 'Pharo Launcher')
 ]
+
+{ #category : 'accessing' }
+PhLAboutCommandTest >> window [
+	"In a non-testing environment this message will be send to a SpWindowPresenter"
+	^ nil
+]

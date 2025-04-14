@@ -22,7 +22,7 @@ PhLAbstractTemplate >> extractTo: aDirectory named: aString [
 	
 	PhLProgressManager 
 		displayProgress: 'Extract template'
-		during: [ :bar | 
+		during: [ :bar | | archive |
 			bar label: 'Downloading zip archive';
 			current: 25.
 			archive := self zipArchive.

@@ -153,13 +153,6 @@ PhLJenkins2Entity >> setProperties: json [
 	properties := json
 ]
 
-{ #category : 'testing' }
-PhLJenkins2Entity >> shouldComputeChildrenLazily [
-	"to know if the group has children, we need to send an ReST request. It can take a lot of time.
-	It is better to do it lazily"
-	^ true
-]
-
 { #category : 'accessing' }
 PhLJenkins2Entity >> url [
 	"We get the URL from the json sent by Jenkins. In case of a secure Jenkins, we need to set the username and token to the URL we get."

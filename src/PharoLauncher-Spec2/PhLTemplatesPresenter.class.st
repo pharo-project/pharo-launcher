@@ -81,8 +81,6 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		actions: self rootCommandsGroup / 'Context Menu';
 		beMultipleSelection; "bulk delete templates for example"
-		whenRootsChangedDo: [ :roots | 
-			templateTable lazilyComputeChildren: (roots anySatisfy: #shouldComputeChildrenLazily) ];
 		whenSelectionChangedDo: [ :selection | 
 			descriptionPanel enabled: selection isEmpty not ]
 		yourself

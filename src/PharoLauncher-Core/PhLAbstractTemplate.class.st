@@ -111,11 +111,6 @@ PhLAbstractTemplate >> shortName: aString [
 	shortName := aString
 ]
 
-{ #category : 'testing' }
-PhLAbstractTemplate >> shouldComputeChildrenLazily [ 
-	^ false
-]
-
 { #category : 'querying' }
 PhLAbstractTemplate >> suggestedImageName [
 	^ self name

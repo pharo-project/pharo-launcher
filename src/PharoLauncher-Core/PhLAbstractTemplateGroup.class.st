@@ -78,11 +78,6 @@ PhLAbstractTemplateGroup >> refresh [
 	"Clear any cached data - this is a noop for non caching groups"
 ]
 
-{ #category : 'testing' }
-PhLAbstractTemplateGroup >> shouldComputeChildrenLazily [
-	^ false
-]
-
 { #category : 'querying' }
 PhLAbstractTemplateGroup >> templateNamed: aTemplateName [
 	^ self templatesAndGroups

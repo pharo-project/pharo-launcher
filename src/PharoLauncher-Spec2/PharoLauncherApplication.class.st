@@ -12,7 +12,8 @@ Class {
 		'imagesPresenter',
 		'scriptsDirectory',
 		'openAsWorld',
-		'jobList'
+		'jobList',
+		'standalone'
 	],
 	#classVars : [
 		'Default',
@@ -269,6 +270,12 @@ PharoLauncherApplication >> defaultTemplateRepository [
 	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
 ]
 
+{ #category : 'initialization' }
+PharoLauncherApplication >> exitApplication [
+
+	Smalltalk exitSuccess
+]
+
 { #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
@@ -339,8 +346,8 @@ PharoLauncherApplication >> isLightTheme [
 
 { #category : 'testing' }
 PharoLauncherApplication >> isStandalone [
-	
-	^ false
+
+	^ standalone ifNil: [ standalone := false ]
 ]
 
 { #category : 'events' }
@@ -400,8 +407,15 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 
 { #category : 'initialization' }
 PharoLauncherApplication >> prepareAsStandaloneApplication [
-
-	super prepareAsStandaloneApplication
+	
+	standalone := true.
+	
+	Smalltalk vm isRunningInWorkerThread 
+		ifTrue: [ ProcessorScheduler idleTime: 3600000000*12 "12hs" ].
+		
+	self
+		useBackend: #Gtk with: PhLGtkConfiguration new;
+		openAsWorld: false
 ]
 
 { #category : 'ui' }
@@ -425,6 +439,12 @@ PharoLauncherApplication >> scriptsDirectory [
 { #category : 'accessing' }
 PharoLauncherApplication >> scriptsDirectory: aFileReference [
 	scriptsDirectory := aFileReference
+]
+
+{ #category : 'asserting' }
+PharoLauncherApplication >> shouldExitWhenNoMoreWindows [
+
+	^ true
 ]
 
 { #category : 'ui' }
@@ -510,4 +530,20 @@ PharoLauncherApplication >> topWindow [
 	^ self windows 
 		ifNotEmpty: [ :aCollection | aCollection last ]
 		ifEmpty: [ nil ]
+]
+
+{ #category : 'private' }
+PharoLauncherApplication >> unregisterWindow: aWindow [
+
+	super unregisterWindow: aWindow.
+	self verifyPossibleExit
+]
+
+{ #category : 'private' }
+PharoLauncherApplication >> verifyPossibleExit [
+
+	self windows ifNotEmpty: [ ^ self ].
+	self isStandalone ifFalse: [ ^ self ].
+	self shouldExitWhenNoMoreWindows ifFalse: [ ^ self ].
+	self exitApplication
 ]

@@ -103,5 +103,5 @@ PhLDeleteImageCommandTest >> testWarningMessageWhenDeletingManyImages [
 		hasSameElements: #('Bar' 'TestImage').
 	self
 		assert: presenter request message
-		equals: 'Are you sure you want to delete 2 images: baz and Foo?'
+		equals: 'Are you sure you want to delete 2 images?', String cr, 'baz', String cr, 'Foo'
 ]

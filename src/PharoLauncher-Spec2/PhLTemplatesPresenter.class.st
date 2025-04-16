@@ -56,7 +56,7 @@ PhLTemplatesPresenter >> buildCategoryTable [
 	
 	^ self newList
 		items: self templateRepository roots;
-		displayIcon: #icon;
+		displayIcon: [ :category | category icon ];
 		display: #name;
 		yourself
 ]

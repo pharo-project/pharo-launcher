@@ -211,7 +211,6 @@ PhLImageDetailPresenter >> initializationScriptList [
 { #category : 'initialization' }
 PhLImageDetailPresenter >> initialize [
 
-	super initialize.
 	isPresenterUpdatingFromModel := true.
 	updating := false.
 	super initialize

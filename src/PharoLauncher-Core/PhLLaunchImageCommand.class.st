@@ -106,6 +106,7 @@ PhLLaunchImageCommand >> doNotUseSettings [
 
 { #category : 'executing' }
 PhLLaunchImageCommand >> execute [
+
 	self imagesPresenter hasSingleImageSelected
 		ifTrue: [ ^ self launchSelectedImage ]
 		ifFalse: [ ^ nil ]

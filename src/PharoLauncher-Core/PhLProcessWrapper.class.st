@@ -207,15 +207,18 @@ PhLProcessWrapper >> visitUnix: aPlatform [
 		"redirectStderr;" "Waiting for https://github.com/pharo-contributions/OSSubprocess/issues/58 to be fixed"
 		yourself.
 	isShellCommand 
-		ifTrue: [ | commandLine |
+		ifTrue: [ 
+			| commandLine |
 			commandLine := Character space join: self arguments.
 			useLoginShell 
-				ifTrue: [ 
+				ifTrue: [
 					self flag: 'TODO: find a better way to deal with SDL and GTK render loop'.
-					process loginShellCommand: 'PHARO_WINDOW_DRIVER=OSSDL2Driver ' , commandLine ]
-				ifFalse: [ process shellCommand: commandLine ] ] 
-		ifFalse: [ process command: command.
-					process arguments: self arguments. ].
+					process loginShellCommand: 'export PHARO_WINDOW_DRIVER=OSSDL2Driver &&' , commandLine ]
+				ifFalse: [ 
+					process shellCommand: commandLine ] ] 
+		ifFalse: [ 
+			process command: command.
+			process arguments: self arguments. ].
 ]
 
 { #category : 'private' }

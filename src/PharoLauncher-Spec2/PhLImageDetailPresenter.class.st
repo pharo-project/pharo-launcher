@@ -25,7 +25,8 @@ Class {
 		'lastEditedLabel',
 		'launchConfigurationEdit',
 		'initializationScriptEdit',
-		'initializationScriptList'
+		'initializationScriptList',
+		'isPresenterUpdatingFromModel'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -141,6 +142,15 @@ PhLImageDetailPresenter >> doEditLaunchConfigurations [
 	(PhLOpenLaunchConfigurationEditorCommand forContext: self) execute
 ]
 
+{ #category : 'private' }
+PhLImageDetailPresenter >> doNotUpdateImageDuring: aBlock [
+
+	| backup |
+	backup := isPresenterUpdatingFromModel.
+	[ aBlock value ]
+	ensure: [ isPresenterUpdatingFromModel := backup ]
+]
+
 { #category : 'private - actions' }
 PhLImageDetailPresenter >> doShowInFolder [ 
 
@@ -207,6 +217,8 @@ PhLImageDetailPresenter >> initializationScriptList [
 { #category : 'initialization' }
 PhLImageDetailPresenter >> initialize [
 
+	super initialize.
+	isPresenterUpdatingFromModel := true.
 	updating := false.
 	super initialize
 ]
@@ -276,7 +288,9 @@ PhLImageDetailPresenter >> initializePresenters [
 		
 	lastEditedLabel 
 		addStyle: 'greenOnGray';
-		addStyle: 'status_message'
+		addStyle: 'status_message'.
+		
+	self whenBuiltDo: [ isPresenterUpdatingFromModel := false ]
 ]
 
 { #category : 'accessing' }
@@ -289,8 +303,9 @@ PhLImageDetailPresenter >> modelChanged [
 	
 	updating := true.
 	
-	self updateImage.
-	self refreshLaunchConfigurationList.
+	self doNotUpdateImageDuring: [ 
+		self updateImage.
+		self refreshLaunchConfigurationList. ].
 	
 	updating := false
 ]
@@ -321,9 +336,10 @@ PhLImageDetailPresenter >> refreshLaunchConfigurationList [
 { #category : 'private' }
 PhLImageDetailPresenter >> resetLaunchConfigurationList [
 
-	launchConfigurationList
-		resetSelection;
-		items: #() "no image selected"
+	self doNotUpdateImageDuring: [ 
+		launchConfigurationList
+			resetSelection;
+			items: #() "no image selected"  ]
 ]
 
 { #category : 'api - selection' }
@@ -405,13 +421,16 @@ PhLImageDetailPresenter >> updateImageRunScript: state [
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateInitializationScript: aReference [
 
+	isPresenterUpdatingFromModel ifTrue: [ ^ self ].
+	
 	self image initializationScript: aReference
 ]
 
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateInitializationScriptList [
 	
-	initializationScriptList items: self initializationScriptList
+	self doNotUpdateImageDuring: [ 
+		initializationScriptList items: self initializationScriptList ]
 ]
 
 { #category : 'private - updating' }

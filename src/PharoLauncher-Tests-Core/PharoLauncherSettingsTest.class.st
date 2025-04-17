@@ -176,9 +176,9 @@ PharoLauncherSettingsTest >> testCanStoreSettings [
 	| stonString |
 	stonString := STON toStringPretty: settings.
 	
-	self assert: (stonString withInternetLineEndings beginsWith: 
-		'[
-	StoredSetting {
+	self assert: (stonString withInternetLineEndings beginsWith: '[', String cr).
+	self assert: (stonString withInternetLineEndings includesSubstring: 
+		'	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
 	},' withInternetLineEndings).

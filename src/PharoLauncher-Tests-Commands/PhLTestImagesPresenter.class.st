@@ -97,13 +97,6 @@ PhLTestImagesPresenter >> requestAnswer: answer [
 	request answer: answer
 ]
 
-{ #category : 'selection' }
-PhLTestImagesPresenter >> selectedLaunchConfiguration [
-	^ launchConfigurationList 
-		ifNil: [ self singleImage defaultLaunchConfiguration ]
-		ifNotNil: [ launchConfigurationList selectedItem  ifNil: [ self singleImage defaultLaunchConfiguration ] ]
-]
-
 { #category : 'configuring' }
 PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages

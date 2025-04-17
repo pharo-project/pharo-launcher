@@ -29,7 +29,7 @@ PhLDeleteImageCommand >> execute [
 	
 	images := self imagesPresenter selectedImages.
 	imageNames := images collect: #name.
-	confirmMessage := 'Delete {1} image{2}?
+	confirmMessage := 'Are you sure you want to delete {1} image{2}?
 {3}' format: {
 		images size . 
 		images size > 1 ifTrue: [ 's' ] ifFalse: [ '' ].

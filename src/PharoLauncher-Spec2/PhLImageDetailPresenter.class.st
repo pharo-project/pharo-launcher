@@ -18,7 +18,6 @@ Class {
 		'location',
 		'vm',
 		'templateUrl',
-		'updating',
 		'actionBar',
 		'launchConfigurationList',
 		'statusBar',
@@ -212,7 +211,6 @@ PhLImageDetailPresenter >> initializationScriptList [
 PhLImageDetailPresenter >> initialize [
 
 	isPresenterUpdatingFromModel := true.
-	updating := false.
 	super initialize
 ]
 
@@ -294,13 +292,9 @@ PhLImageDetailPresenter >> location [
 { #category : 'updating' }
 PhLImageDetailPresenter >> modelChanged [
 	
-	updating := true.
-	
 	self doNotUpdateImageDuring: [ 
 		self updateImage.
-		self refreshLaunchConfigurationList. ].
-	
-	updating := false
+		self refreshLaunchConfigurationList. ]
 ]
 
 { #category : 'private - updating' }
@@ -396,7 +390,7 @@ PhLImageDetailPresenter >> updateImage [
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateImageDescription: text [
 	
-	updating ifTrue: [ ^ self ].
+	isPresenterUpdatingFromModel ifTrue: [ ^ self ].
 
 	PhLImageDescriptionUpdater 
 		image: self image 
@@ -406,7 +400,7 @@ PhLImageDetailPresenter >> updateImageDescription: text [
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateImageRunScript: state [
 
-	updating ifTrue: [ ^ self ].
+	isPresenterUpdatingFromModel ifTrue: [ ^ self ].
 	
 	self image shouldRunInitializationScript: state
 ]
@@ -431,6 +425,7 @@ PhLImageDetailPresenter >> updateLastSelectedConfiguration: aLaunchConfiguration
 
 	(aLaunchConfiguration isNil or: [ aLaunchConfiguration isBasicOrDefault ])
 		 ifTrue: [ ^ self ].
+	
 	self image lastUsedConfiguration: aLaunchConfiguration.
 ]
 

@@ -383,7 +383,7 @@ PhLImage >> lastUsedConfiguration: aConfiguration [
 	configName := aConfiguration name.
 	configName = lastUsedConfigurationName 
 		ifTrue: [ ^ self ].
-	lastUsedConfigurationName := aConfiguration isBasicOrDefault
+	lastUsedConfigurationName := aConfiguration isDefault
 		ifTrue: [ nil ]
 		ifFalse: [ configName ].
 	self serializeMetadata

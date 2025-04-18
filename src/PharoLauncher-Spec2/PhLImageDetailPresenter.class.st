@@ -313,8 +313,7 @@ PhLImageDetailPresenter >> refreshLaunchConfigurationList [
 		self resetLaunchConfigurationList.
 		^ self ].
 	
-	configurations := image launchConfigurations 
-		copyWithFirst: (PhLLaunchConfiguration basicWithImage: image).
+	configurations := image launchConfigurations.
 	launchConfigurationList
 		resetSelection;
 		items: configurations.
@@ -429,7 +428,7 @@ PhLImageDetailPresenter >> updateInitializationScriptList [
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateLastSelectedConfiguration: aLaunchConfiguration [
 
-	(aLaunchConfiguration isNil or: [ aLaunchConfiguration isBasicOrDefault ])
+	(aLaunchConfiguration isNil or: [ aLaunchConfiguration isDefault ])
 		 ifTrue: [ ^ self ].
 	
 	self image lastUsedConfiguration: aLaunchConfiguration.

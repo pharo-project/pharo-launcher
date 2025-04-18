@@ -379,6 +379,8 @@ PhLImagesPresenter >> selectedImages [
 PhLImagesPresenter >> selectedLaunchConfiguration [
 	
 	^ descriptionPanel selectedLaunchConfiguration
+		ifNil: [ self singleImage defaultLaunchConfiguration ]
+		ifNotNil: [ :launchConfig | launchConfig ]
 ]
 
 { #category : 'api - selection' }

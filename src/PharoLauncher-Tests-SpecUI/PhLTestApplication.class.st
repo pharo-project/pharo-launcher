@@ -4,10 +4,9 @@ I can answer pre-arranged responses to UI requests.
 "
 Class {
 	#name : 'PhLTestApplication',
-	#superclass : 'SpApplication',
+	#superclass : 'PharoLauncherApplication',
 	#instVars : [
 		'requestAnswer',
-		'imagesPresenter',
 		'requestAttributes'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
@@ -42,7 +41,6 @@ PhLTestApplication >> inform [
 { #category : 'initialization' }
 PhLTestApplication >> initialize [ 
 
-	super initialize.
 	requestAttributes := OrderedDictionary new.
 ]
 

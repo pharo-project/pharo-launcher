@@ -27,20 +27,6 @@ Class {
 }
 
 { #category : 'instance creation' }
-PhLLaunchConfiguration class >> basicName [
-		
-	^ '(None)'
-]
-
-{ #category : 'instance creation' }
-PhLLaunchConfiguration class >> basicWithImage: anImage [
-
-	^ (self withImage: anImage)
-		name: self basicName;
-		yourself
-]
-
-{ #category : 'instance creation' }
 PhLLaunchConfiguration class >> defaultName [
 	^ 'Default'
 ]
@@ -153,18 +139,6 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 	name := 'new configuration...'.
 	usePharoSettings := true.
 	imageArguments := anImage defaultArguments
-]
-
-{ #category : 'testing' }
-PhLLaunchConfiguration >> isBasic [
-
-	^ self name = self class basicName
-]
-
-{ #category : 'testing' }
-PhLLaunchConfiguration >> isBasicOrDefault [
-
-	^ self isBasic or: [ self isDefault ]
 ]
 
 { #category : 'testing' }

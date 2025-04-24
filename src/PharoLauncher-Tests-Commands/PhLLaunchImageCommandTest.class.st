@@ -8,7 +8,9 @@ Class {
 		'runCommand',
 		'image',
 		'recreateCommand',
-		'application'
+		'application',
+		'fs',
+		'scriptsDirectory'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -28,7 +30,7 @@ PhLLaunchImageCommandTest >> denyApplicationHasError [
 
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> initScript [
-	^ FileSystem memory root / 'foo.st'
+	^ (presenter application scriptsDirectory / 'foo.st') ensureCreateFile
 ]
 
 { #category : 'helper' }
@@ -41,7 +43,9 @@ PhLLaunchImageCommandTest >> launchImage [
 { #category : 'private' }
 PhLLaunchImageCommandTest >> performTest [ 
 
-	PharoLauncherApplication useDefault: application during: [ super performTest ]
+	super performTest.
+
+	"PharoLauncherApplication useDefault: application during: [ super performTest ]"
 ]
 
 { #category : 'helper' }
@@ -63,7 +67,7 @@ PhLLaunchImageCommandTest >> setUp [
 
 	super setUp.
 
-	application := PhLTestApplication new.
+	"application := PhLTestApplication new."
 	presenter := PhLTestImagesPresenter new.
 	imageDir := FileLocator temp
 	            / 'pharo-launcher-tests-launch-image-command'
@@ -81,8 +85,7 @@ PhLLaunchImageCommandTest >> setUp [
 		SystemVersion current minor asString putOn: stream ].
 	image
 		originTemplate:
-			(PhLTestTemplatesPresenter new createLocalTemplateNamed:
-					 'testTemplate');
+			(presenter application templateRepository createLocalTemplateNamed: 'testTemplate');
 		launchConfigurations:
 			{ (PhLTestLaunchConfiguration withImage: image) }
 ]
@@ -90,7 +93,7 @@ PhLLaunchImageCommandTest >> setUp [
 { #category : 'running' }
 PhLLaunchImageCommandTest >> tearDown [
 
-	imageDir ensureDeleteAll.
+	imageDir ifNotNil: [ imageDir ensureDeleteAll ].
 	(process isNotNil and: [ process isRunning ]) 
 		ifTrue: [ process terminate ].
 	super tearDown

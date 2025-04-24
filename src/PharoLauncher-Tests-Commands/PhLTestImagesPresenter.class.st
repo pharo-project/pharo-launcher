@@ -6,8 +6,7 @@ Class {
 	#superclass : 'PhLImagesPresenter',
 	#instVars : [
 		'request',
-		'selection',
-		'templateRepository'
+		'selection'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -45,14 +44,11 @@ PhLTestImagesPresenter >> imageNames [
 
 { #category : 'initialization' }
 PhLTestImagesPresenter >> initialize [
-	self model: PhLTestImageRepository new.
-	templateRepository := PhLTemplateTestRepository new.
-	self
-		application:
-			(PharoLauncherApplication new
-				imageRepository: self model;
-				instVarNamed: 'imagesPresenter' put: self;
+	self application:
+			(PhLTestApplication new
+				imagesPresenter: self;
 				yourself).
+	self model: self application imageRepository.
 	super initialize.
 
 	self createImageNamed: self singleImageName.
@@ -119,7 +115,7 @@ PhLTestImagesPresenter >> singleImageName [
 
 { #category : 'api - accessing' }
 PhLTestImagesPresenter >> templateRepository [ 
-	^ templateRepository
+	^ application templateRepository
 ]
 
 { #category : 'selecting' }

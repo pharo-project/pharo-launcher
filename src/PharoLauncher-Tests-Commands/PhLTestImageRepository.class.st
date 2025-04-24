@@ -39,7 +39,7 @@ PhLTestImageRepository >> hasImageOnFileSystemNamed: aName [
 PhLTestImageRepository >> initialize [
 
 	super initialize.
-	self setBaseDirectory: FileSystem memory root.
+	self setBaseDirectory: (FileSystem identifiableMemory: #ImageRepositoryStore) root.
 	self createImageNamed: self singleImageName.
 	
 

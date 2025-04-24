@@ -54,7 +54,7 @@ PhLTemplateTestRepository >> createTemplateNamed: aName shortName: aShortName in
 { #category : 'initialization' }
 PhLTemplateTestRepository >> initialize [ 
 	super initialize.
-	fileSystem := FileSystem memory.
+	fileSystem := (FileSystem identifiableMemory: #TemplateRepositoryStore).
 	localTemplateGroup := self newLocalTemplatesGroup.
 	remoteTemplatesGroup := self newRemoteTemplatesGroup.
 	self setGroups: { localTemplateGroup . remoteTemplatesGroup }.

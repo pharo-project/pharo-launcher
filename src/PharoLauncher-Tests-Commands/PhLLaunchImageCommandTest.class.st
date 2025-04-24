@@ -8,9 +8,7 @@ Class {
 		'runCommand',
 		'image',
 		'recreateCommand',
-		'application',
-		'fs',
-		'scriptsDirectory'
+		'application'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -24,8 +22,8 @@ PhLLaunchImageCommandTest >> addInitializationScriptToImage [
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> denyApplicationHasError [
 
-	application hasError 
-		ifTrue: [ self fail: application error longDescription ]
+	presenter application hasError 
+		ifTrue: [ self fail: presenter application error longDescription ]
 ]
 
 { #category : 'helper' }
@@ -41,11 +39,9 @@ PhLLaunchImageCommandTest >> launchImage [
 ]
 
 { #category : 'private' }
-PhLLaunchImageCommandTest >> performTest [ 
+PhLLaunchImageCommandTest >> performTest [
 
-	super performTest.
-
-	"PharoLauncherApplication useDefault: application during: [ super performTest ]"
+	PharoLauncherApplication useDefault: presenter application during: [ super performTest ]
 ]
 
 { #category : 'helper' }
@@ -67,7 +63,6 @@ PhLLaunchImageCommandTest >> setUp [
 
 	super setUp.
 
-	"application := PhLTestApplication new."
 	presenter := PhLTestImagesPresenter new.
 	imageDir := FileLocator temp
 	            / 'pharo-launcher-tests-launch-image-command'

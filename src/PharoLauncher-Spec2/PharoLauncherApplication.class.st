@@ -410,12 +410,12 @@ PharoLauncherApplication >> prepareAsStandaloneApplication [
 	
 	standalone := true.
 	
+	"I do not want the morphic world... nor the idle process annoying us"
 	Smalltalk vm isRunningInWorkerThread 
 		ifTrue: [ ProcessorScheduler idleTime: 3600000000*12 "12hs" ].
-		
-	self
-		useBackend: #Gtk with: PhLGtkConfiguration new;
-		openAsWorld: false
+
+	self useBackend: #Gtk with: PhLGtkConfiguration new.
+	self openAsWorld: false
 ]
 
 { #category : 'ui' }
@@ -476,11 +476,7 @@ PharoLauncherApplication >> start [
 		self startFull.
 		^ self ].
 
-	imagesPresenter asWindow
-		whenClosedDo: [
-			self isStandalone 
-				ifTrue: [ self exitApplication ] ];
-		open.
+	imagesPresenter open.
 	
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]

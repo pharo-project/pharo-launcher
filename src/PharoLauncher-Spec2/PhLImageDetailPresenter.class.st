@@ -163,6 +163,12 @@ PhLImageDetailPresenter >> ensurePharoVersion [
 			writeStreamDo: [ :stream | stream nextPutAll: presenter version ] ]
 ]
 
+{ #category : 'computing' }
+PhLImageDetailPresenter >> ensurePharoVersionFor: aPhLImage [ 
+	
+	^ self owner ensurePharoVersionFor: aPhLImage
+]
+
 { #category : 'testing' }
 PhLImageDetailPresenter >> hasSingleImageSelected [
 	

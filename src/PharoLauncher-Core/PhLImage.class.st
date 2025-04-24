@@ -329,11 +329,7 @@ PhLImage >> imageFile [
 PhLImage >> initializationScript [
 
 	^ initializationScript 
-		ifNotNil: [ :script | | ref |
-			ref := script asFileReference. 
-			(ref fullName includesSubstring: 'No initialization')
-				ifTrue: [ nil ]
-				ifFalse: [ ref ] ]
+		ifNotNil: [ :script | script asFileReference ]
 ]
 
 { #category : 'accessing' }

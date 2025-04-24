@@ -9,3 +9,14 @@ Class {
 	#package : 'PharoLauncher-Spec2',
 	#tag : 'Model'
 }
+
+{ #category : 'converting' }
+PhLNoInitializationScript >> asFileReference [
+	
+	^ nil
+]
+
+{ #category : 'accessing' }
+PhLNoInitializationScript >> basename [
+	^ #'No initialization script'
+]

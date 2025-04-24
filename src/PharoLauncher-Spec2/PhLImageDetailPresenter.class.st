@@ -208,7 +208,7 @@ PhLImageDetailPresenter >> initializationScriptList [
 	
 	files := self application scriptsDirectory files 
 		select: [ :file | file extension = 'st' ].	
-	files := files copyWith: ((FileSystem memory root / 'No initialization script') ensureCreateFile).
+	files := files copyWithFirst: PhLNoInitializationScript new.
 	
 	^ files
 ]

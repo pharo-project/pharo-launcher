@@ -61,10 +61,8 @@ PhLTestTemplatesPresenter >> imageRepository [
 
 { #category : 'initialization' }
 PhLTestTemplatesPresenter >> initialize [
-	self model: (PhLTemplateTestRepository new).
-	self application: (PharoLauncherApplication new
-		scriptsDirectory: FileSystem memory root;
-		yourself).
+	self application: PhLTestApplication new.
+	self model: self application templateRepository.
 	request := PhLTestRequest new.
 	templates := OrderedCollection new.
 	

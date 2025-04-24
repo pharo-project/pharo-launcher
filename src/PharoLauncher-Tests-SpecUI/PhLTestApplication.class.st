@@ -29,6 +29,11 @@ PhLTestApplication >> hasError [
 ]
 
 { #category : 'accessing' }
+PhLTestApplication >> imageRepository [
+	^ 	imageRepository ifNil: [ imageRepository := PhLTestImageRepository new ]
+]
+
+{ #category : 'accessing' }
 PhLTestApplication >> imagesPresenter: aPhLImagesPresenter [
 	imagesPresenter := aPhLImagesPresenter
 ]
@@ -110,6 +115,12 @@ PhLTestApplication >> requestAnswer: aString [
 	requestAnswer := aString
 ]
 
+{ #category : 'accessing' }
+PhLTestApplication >> scriptsDirectory [
+
+	^ scriptsDirectory ifNil: [ scriptsDirectory := (FileSystem identifiableMemory: #ScriptsStore) root ]
+]
+
 { #category : 'asserting' }
 PhLTestApplication >> shouldUpdateTemplateSources [
 	^ false
@@ -119,6 +130,11 @@ PhLTestApplication >> shouldUpdateTemplateSources [
 PhLTestApplication >> showError: anError [
 
 	requestAttributes at: #error put: anError
+]
+
+{ #category : 'accessing' }
+PhLTestApplication >> templateRepository [
+	^ 	templateRepository ifNil: [ templateRepository := PhLTemplateTestRepository new ] 
 ]
 
 { #category : 'request' }

@@ -368,6 +368,8 @@ PhLImageDetailPresenter >> updateImage [
 	
 	image := self image ifNil: [ PhLNullImage new ].
 	
+	self updateImageActions.
+	
 	imageLabel label: image name.
 	lastEditedLabel label: 'Last modified: ', (image lastModification 
 		ifNotNil: [ :time | PhLTimeUntilNowStrategy displayStringOf: time ]
@@ -390,6 +392,14 @@ PhLImageDetailPresenter >> updateImage [
 		help: image location.
 		
 	vm text: 'N/A'. "self image vm."
+]
+
+{ #category : 'private - updating' }
+PhLImageDetailPresenter >> updateImageActions [
+	
+	| shouldEnableActions |
+	shouldEnableActions := self image shouldEnableActions.
+	actionBar presenters do: [ :presenter | presenter enabled: shouldEnableActions ]
 ]
 
 { #category : 'private - updating' }

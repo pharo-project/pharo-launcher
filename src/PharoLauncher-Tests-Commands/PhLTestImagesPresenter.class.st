@@ -32,6 +32,12 @@ PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection isNotNil ]
 ]
 
+{ #category : 'as yet unclassified' }
+PhLTestImagesPresenter >> imageActionButtons [
+	
+	^ descriptionPanel imageActionButtons
+]
+
 { #category : 'accessing' }
 PhLTestImagesPresenter >> imageLabel [
 	^ descriptionPanel imageLabel label

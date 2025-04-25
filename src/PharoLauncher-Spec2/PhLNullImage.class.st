@@ -79,6 +79,11 @@ PhLNullImage >> originTemplateUrl [
 ]
 
 { #category : 'accessing' }
+PhLNullImage >> shouldEnableActions [
+	^ false
+]
+
+{ #category : 'accessing' }
 PhLNullImage >> shouldRunInitializationScript [
 	^ false
 ]

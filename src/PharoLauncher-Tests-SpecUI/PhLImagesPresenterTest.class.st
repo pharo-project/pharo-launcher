@@ -10,8 +10,35 @@ Class {
 
 { #category : 'running' }
 PhLImagesPresenterTest >> tearDown [
-	presenter window ifNotNil: [ :window | window close].
+	presenter ifNotNil: [ 
+		presenter window ifNotNil: [ :window | window close] ].
 	super tearDown
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testCommandsApplyingOnAnImageAreDisabledWhenNoSelection [
+
+	presenter := PhLTestImagesPresenter new.
+	presenter
+		open;
+		unselectAll.
+
+	presenter imageActionButtons do: 
+		[ :button |
+		self deny: button isEnabled ]
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testCommandsApplyingOnAnImageAreEnabledWhenImageSelected [
+
+	presenter := PhLTestImagesPresenter new.
+	
+	presenter open.
+	
+	self assert: presenter hasSingleImageSelected.
+	presenter imageActionButtons do: 
+		[ :button |
+		self assert: button isEnabled ]
 ]
 
 { #category : 'tests' }
@@ -80,22 +107,6 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 	self
 		assertCollection: presenter imageNames
 		hasSameElements: #( 'TestImage' 'Foo' )
-]
-
-{ #category : 'tests' }
-PhLImagesPresenterTest >> testLaunchCommandIsDisabledWhenNoSelection [
-
-	| enabled |
-	presenter := PhLTestImagesPresenter new.
-	presenter
-		open;
-		unselectAll.
-
-	presenter withToolbarDo: [ :toolbar | 
-		presenter toolbarGroup allCommands
-			detect: [ :cmd | cmd name = 'Launch' ]
-			ifFound: [ :cmd | enabled := cmd presenter isEnabled ] ].
-	self deny: enabled
 ]
 
 { #category : 'tests' }

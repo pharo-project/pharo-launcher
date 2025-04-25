@@ -8,6 +8,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'accessing' }
+PhLOpenSettingsCommandTest >> application [ 
+
+	^ PhLTestApplication new
+]
+
 { #category : 'running' }
 PhLOpenSettingsCommandTest >> tearDown [
 	settingsBrowser ifNotNil: [ settingsBrowser close ].
@@ -16,7 +22,9 @@ PhLOpenSettingsCommandTest >> tearDown [
 
 { #category : 'tests' }
 PhLOpenSettingsCommandTest >> testCanOpenSettingsBrowser [
-	settingsBrowser := PhLOpenSettingsCommand new execute.
+	settingsBrowser := PhLOpenSettingsCommand new
+		context: self;
+		execute.
 
-	self assert: (settingsBrowser model isKindOf: PhLSettingBrowser)
+	self assert: (settingsBrowser presenter isKindOf: PhLSettingsPresenter)
 ]

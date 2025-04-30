@@ -10,6 +10,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'private' }
+PhLOpenNewImageWindowTest >> performTest [ 
+
+	SpWindowForceOpenNonModal during: [ super performTest ]
+]
+
 { #category : 'running' }
 PhLOpenNewImageWindowTest >> setUp [
 	| imagesDirectory app repository |
@@ -31,9 +37,9 @@ PhLOpenNewImageWindowTest >> tearDown [
 
 { #category : 'tests' }
 PhLOpenNewImageWindowTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningPresenter [
-	presenter := PhLOpenNewImageWindowCommand new 
+	presenter := (PhLOpenNewImageWindowCommand new 
 		context: imagesPresenter;
-		execute.
+		execute) presenter.
 
 	self 
 		assert: presenter selectedTemplateCategory name
@@ -42,9 +48,9 @@ PhLOpenNewImageWindowTest >> testOfficialTemplatesCategoryIsSelectedWhenOpeningP
 
 { #category : 'tests' }
 PhLOpenNewImageWindowTest >> testTemplatesPresenterOpenWhenClickingOnNewImage [
-	presenter := PhLOpenNewImageWindowCommand new 
+	presenter := (PhLOpenNewImageWindowCommand new 
 		context: imagesPresenter;
-		execute.
+		execute) presenter.
 
 	self 
 		assert: presenter className

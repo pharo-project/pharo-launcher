@@ -7,7 +7,8 @@ Class {
 	#superclass : 'PharoLauncherApplication',
 	#instVars : [
 		'requestAnswer',
-		'requestAttributes'
+		'requestAttributes',
+		'text'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
@@ -96,7 +97,7 @@ PhLTestApplication >> newRequest [
 { #category : 'ui' }
 PhLTestApplication >> openModalWithParent: aWindow [
 
-	"do nothing"
+	^ requestAnswer 
 ]
 
 { #category : 'ui' }
@@ -135,6 +136,11 @@ PhLTestApplication >> showError: anError [
 { #category : 'accessing' }
 PhLTestApplication >> templateRepository [
 	^ 	templateRepository ifNil: [ templateRepository := PhLTemplateTestRepository new ] 
+]
+
+{ #category : 'accessing' }
+PhLTestApplication >> text: aString [ 
+	text := aString
 ]
 
 { #category : 'request' }

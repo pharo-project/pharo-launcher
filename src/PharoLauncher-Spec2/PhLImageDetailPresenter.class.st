@@ -399,7 +399,9 @@ PhLImageDetailPresenter >> updateImageActions [
 	
 	| shouldEnableActions |
 	shouldEnableActions := self image shouldEnableActions.
-	actionBar presenters do: [ :presenter | presenter enabled: shouldEnableActions ]
+	actionBar presenters do: [ :presenter | presenter enabled: shouldEnableActions ].
+	launchConfigurationEdit enabled: shouldEnableActions.
+	initializationScriptEdit enabled: shouldEnableActions
 ]
 
 { #category : 'private - updating' }

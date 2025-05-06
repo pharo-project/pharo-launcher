@@ -48,7 +48,7 @@ PhLLaunchConfigurationTest >> testCanBeLaunchedWhenVmAvailable [
 	| launchConfig |
 	
 	self writeIntoVersionFile: '110'.
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	
 	self assert: launchConfig canBeLaunched
 ]
@@ -56,7 +56,7 @@ PhLLaunchConfigurationTest >> testCanBeLaunchedWhenVmAvailable [
 { #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 	| launchConfig vm |
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	
 	vm := launchConfig vm.
 	
@@ -70,7 +70,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVm [
 PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 	| launchConfig vm |
 	image pharoVersion: '770'.
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 
 	vm := launchConfig vm.
 	
@@ -83,7 +83,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 { #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 	| launchConfig deserializedConfig |
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	launchConfig vm executable: 'pharo'.
 	launchConfig
 		vmArguments: #(1 2 3);
@@ -109,7 +109,7 @@ PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectureExpected [
 	| launchConfig vm |
 	
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	vm := self newVm: '110-x64' exeHeader: self vmMac32bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.
@@ -122,7 +122,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectureExpected [
 	| launchConfig vm |
 	
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	vm := self newVm: '110-x86' exeHeader: self vmMac64bitHeader.
 	launchConfig vm: vm.
 	
@@ -134,7 +134,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectureDetected [
 	| launchConfig vm |
 	
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	vm := self newVm: '110-x64' exeHeader: self vmMacArm64bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.
@@ -148,7 +148,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhenVmFoundNotExecutable [
 	| launchConfig vm |
 	
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	vm := self newVm: '110-x86' exeHeader: #[0 1 2 3].
 	launchConfig vm: vm.
 	
@@ -162,7 +162,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenVmNotValidForArchitecture [
 	
 	self writeIntoVersionFile: '11'.
 	image pharoVersion: nil.
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	
 	self deny: launchConfig vm isValidForArchitecture.
 	self deny: launchConfig canBeLaunched
@@ -321,7 +321,7 @@ PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
 { #category : 'tests' }
 PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 	| launchConfig |
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	launchConfig vm executable: 'pharo'.
 	
 	self 
@@ -333,7 +333,7 @@ PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitectureDetected [
 	| launchConfig vm |
 	
-	launchConfig := PhLLaunchConfiguration defaultWithImage: image.
+	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
 	vm := self newVm: '110-x64' exeHeader: self vmMac64bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.

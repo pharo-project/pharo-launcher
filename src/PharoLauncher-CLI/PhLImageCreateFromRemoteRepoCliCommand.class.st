@@ -120,7 +120,7 @@ PhLImageCreateFromRemoteRepoCliCommand >> basicExecute [
 { #category : 'command execution' }
 PhLImageCreateFromRemoteRepoCliCommand >> getPullRequestLoadConfigFor: anImage [
 
-	^ (PhLLaunchConfiguration defaultWithImage: anImage)
+	^ (PhLDefaultLaunchConfiguration withImage: anImage)
 		  name: 'Lauch configuration for loading project from the pull request.';
 		  vmArguments: self launchVmArguments;
 		  imageArguments: self remoteRepoProjectLoadArguments

@@ -26,19 +26,6 @@ Class {
 	#tag : 'Model'
 }
 
-{ #category : 'instance creation' }
-PhLLaunchConfiguration class >> defaultName [
-	^ 'Default'
-]
-
-{ #category : 'instance creation' }
-PhLLaunchConfiguration class >> defaultWithImage: anImage [
-
-	^ (self withImage: anImage)
-		name: self defaultName;
-		yourself
-]
-
 { #category : 'settings' }
 PhLLaunchConfiguration class >> launchInALoginShell [
 	^ LaunchInALoginShell ifNil: [ LaunchInALoginShell := true ]
@@ -144,7 +131,7 @@ PhLLaunchConfiguration >> initializeWithImage: anImage [
 { #category : 'testing' }
 PhLLaunchConfiguration >> isDefault [
 
-	^ self name = self class defaultName
+	^ false
 ]
 
 { #category : 'testing' }

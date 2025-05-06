@@ -253,8 +253,8 @@ PhLImage >> defaultArguments [
 PhLImage >> defaultLaunchConfiguration [
 
 	^ launchConfigurations 
-		detect: [ :each | each name = PhLLaunchConfiguration defaultName ]
-		ifNone: [ PhLLaunchConfiguration defaultWithImage: self ]
+		detect: [ :each | each isDefault ]
+		ifNone: [ PhLDefaultLaunchConfiguration withImage: self ]
 ]
 
 { #category : 'accessing' }

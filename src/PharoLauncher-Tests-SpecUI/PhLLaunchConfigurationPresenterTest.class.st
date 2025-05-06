@@ -165,8 +165,8 @@ PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenC
 		assert: image launchConfigurations size 
 		equals: 1.
 	self
-		assert: image launchConfigurations first name
-		equals: PhLLaunchConfiguration defaultName.
+		assert: image launchConfigurations first isDefault
+		description: 'Expected to find default configuration'
 ]
 
 { #category : 'tests' }

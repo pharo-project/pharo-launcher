@@ -168,6 +168,12 @@ PhLLaunchConfiguration >> printOn: aStream [
 	aStream << self class name << '(' << self name << ')'
 ]
 
+{ #category : 'private' }
+PhLLaunchConfiguration >> setVm: aPhLVirtualMachine [ 
+	vm := aPhLVirtualMachine.
+	vm manager: self image vmManager.
+]
+
 { #category : 'configuring' }
 PhLLaunchConfiguration >> useSettings: aBoolean [
 	"Cannot skip Pharo settings before Pharo 3.0"
@@ -178,14 +184,14 @@ PhLLaunchConfiguration >> useSettings: aBoolean [
 
 { #category : 'accessing' }
 PhLLaunchConfiguration >> vm [
-	^ vm ifNil: [ self vm: self defaultVm. vm ]
+	^ vm ifNil: [ self setVm: self defaultVm. vm ]
 
 ]
 
 { #category : 'accessing' }
 PhLLaunchConfiguration >> vm: aPhLVirtualMachine [ 
-	vm := aPhLVirtualMachine.
-	vm manager: self image vmManager.
+
+	self setVm: aPhLVirtualMachine
 ]
 
 { #category : 'accessing' }

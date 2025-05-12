@@ -234,25 +234,33 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesN
 ]
 
 { #category : 'tests' }
-PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
+PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClickApplyDoesNotUpdateConfigurationInImagesPresenter [
 
-	| config imagesPresenter window |
+	| config imagesPresenter selectedLaunchConfiguration |
 	imagesPresenter := PhLTestImagesPresenter new.
-	imagesPresenter selectImageAt: 1.
+	application := imagesPresenter application.
 	image := imagesPresenter singleImage.
+	presenter := PhLLaunchConfigurationPresenter
+		newApplication: application
+		model: image.
 	image addLaunchConfiguration: (self newLaunchConfigurationNamed: 'foo').
 	config := self newLaunchConfigurationNamed: 'bar'.
 	image addLaunchConfiguration: config.
-	self setUpPresenterWithApplication: imagesPresenter application.
-	presenter setModelBeforeInitialization: image.
+	imagesPresenter updateImageDetails.
+	selectedLaunchConfiguration := imagesPresenter selectedLaunchConfiguration name.
 
 	presenter 
+		refreshLaunchConfigurations;
 		selectConfiguration: config;
 		clickApplyChangesButton.
-	
+		
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
+		equals: selectedLaunchConfiguration.
+	self 
+		deny: imagesPresenter selectedLaunchConfiguration name
 		equals: config name.
+		
 	imagesPresenter delete
 ]
 

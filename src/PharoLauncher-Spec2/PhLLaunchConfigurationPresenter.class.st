@@ -216,11 +216,17 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 	^ configuration
 ]
 
+{ #category : 'private' }
+PhLLaunchConfigurationPresenter >> refreshLaunchConfigurations [
+
+	^ configurationTable items: self image launchConfigurations
+]
+
 { #category : 'action' }
 PhLLaunchConfigurationPresenter >> removeLaunchConfiguration: config [
 
 	self image removeLaunchConfiguration: config.
-	configurationTable items: self image launchConfigurations
+	self refreshLaunchConfigurations
 ]
 
 { #category : 'action' }

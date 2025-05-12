@@ -58,9 +58,9 @@ PhLLaunchImageTest >> setUp [
 
 	| uuid |
 	super setUp.
-	launchInALoginShellBackup := PhLLaunchConfiguration
+	launchInALoginShellBackup := PhLDefaultLaunchConfiguration
 		                             launchInALoginShell.
-	PhLLaunchConfiguration launchInALoginShell: false.
+	PhLDefaultLaunchConfiguration launchInALoginShell: false.
 	uuid := UUID new asString.
 	imageDir := FileLocator temp / 'Yann-Gaël Bérès' , uuid.
 	self deny: imageDir exists.

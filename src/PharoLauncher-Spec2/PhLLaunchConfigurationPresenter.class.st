@@ -68,7 +68,7 @@ PhLLaunchConfigurationPresenter >> close [
 ]
 
 { #category : 'layout' }
-PhLLaunchConfigurationPresenter >> configurationDetailSpec [
+PhLLaunchConfigurationPresenter >> configurationDetailLayout [
 	
 	^ SpGridLayout build: [ :builder | builder
 		beRowNotHomogeneous;
@@ -87,6 +87,11 @@ PhLLaunchConfigurationPresenter >> configurationName [
 	^ selectedConfigurationNameField text
 ]
 
+{ #category : 'accessing' }
+PhLLaunchConfigurationPresenter >> configurations [
+	^ configurationTable items
+]
+
 { #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> connectPresenters [
 	configurationTable selectIndex: 1
@@ -99,7 +104,7 @@ PhLLaunchConfigurationPresenter >> defaultLayout [
 		positionOfSlider: 200;
 		add: configurationTable layout: #withoutOrderingBar;
 		add: (SpBoxLayout newVertical  
-			add: self configurationDetailSpec;
+			add: self configurationDetailLayout;
 			add: (self newPresenter 
 					addStyle: 'action_area';
 					layout: (SpBoxLayout newHorizontal
@@ -128,6 +133,7 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 
 	configurationTable := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self newConfiguration ];
+		removeItemBlock: [ :config | self removeLaunchConfiguration: config ];
 		label: 'Launch configurations';
 		items: self image launchConfigurations;
 		display: [ :each | each name ];
@@ -202,11 +208,19 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 		request.
 	newName ifNil: [ ^ nil ].
 	
-	configuration := (PhLLaunchConfiguration  withImage: self image)
+	configuration := (PhLLaunchConfiguration withImage: self image)
 		name: newName;
 		yourself.
 	
+	self image addLaunchConfiguration: configuration.
 	^ configuration
+]
+
+{ #category : 'action' }
+PhLLaunchConfigurationPresenter >> removeLaunchConfiguration: config [
+
+	self image removeLaunchConfiguration: config.
+	configurationTable items: self image launchConfigurations
 ]
 
 { #category : 'action' }

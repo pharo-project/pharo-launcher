@@ -29,7 +29,7 @@ PharoLauncherSettingsTest >> setUp [
 	templatesClearedOnStartup := PharoLauncherApplication templatesClearedOnStartup.
 	checkTemplateSourcesUpdate := PhLTemplateSourcesUpdateChecker shouldRun.
 	quitOnLaunch := PhLLaunchImageCommand quitOnLaunch.
-	launchInALoginShell := PhLLaunchConfiguration launchInALoginShell.
+	launchInALoginShell := PhLDefaultLaunchConfiguration launchInALoginShell.
 	warnOnArchMismatch := PhLLaunchImageCommand warnOnArchMismatch.
 	sourcesUrl := PhLPharoTemplateSources sourcesUrl.
 	imagesLocation := PhLDirectoryBasedImageRepository locationString.
@@ -92,10 +92,10 @@ PharoLauncherSettingsTest >> testCanSetInitializationScriptsLocation [
 PharoLauncherSettingsTest >> testCanSetLaunchInALoginShell [
 
 	settings launchInALoginShell: false.
-	self deny: PhLLaunchConfiguration launchInALoginShell.
+	self deny: PhLDefaultLaunchConfiguration launchInALoginShell.
 	
 	settings launchInALoginShell: true.
-	self assert: PhLLaunchConfiguration launchInALoginShell
+	self assert: PhLDefaultLaunchConfiguration launchInALoginShell
 ]
 
 { #category : 'tests' }

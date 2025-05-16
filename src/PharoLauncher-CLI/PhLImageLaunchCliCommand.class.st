@@ -55,7 +55,7 @@ PhLImageLaunchCliCommand >> basicExecute [
 	self checkArchitectureForImage: anImage.
 	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
-	config := anImage defaultLaunchConfiguration copy.
+	config := anImage defaultLaunchConfiguration asLaunchConfiguration.
 	config workingDirectory: FileSystem workingDirectory.
 	anImage launchWithConfiguration: config detached: self shouldLaunchInDetachedMode
 ]

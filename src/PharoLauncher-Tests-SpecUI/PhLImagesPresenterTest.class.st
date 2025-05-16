@@ -78,6 +78,7 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConf
 { #category : 'tests' }
 PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfImages [
 
+	self skip: 'Sorting is not yet available on GTK'.
 	presenter := PhLTestImagesPresenter new.
 	presenter createImageNamed: 'Zoo'.
 	presenter application imageRepositoryChanged.

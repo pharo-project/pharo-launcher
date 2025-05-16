@@ -291,6 +291,11 @@ PhLImageDetailPresenter >> initializePresenters [
 ]
 
 { #category : 'accessing' }
+PhLImageDetailPresenter >> launchConfigurations [
+	^ launchConfigurationList listItems
+]
+
+{ #category : 'accessing' }
 PhLImageDetailPresenter >> location [
 	^ location
 ]

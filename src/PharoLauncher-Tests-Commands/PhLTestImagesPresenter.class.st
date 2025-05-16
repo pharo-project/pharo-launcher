@@ -63,7 +63,7 @@ PhLTestImagesPresenter >> initialize [
 
 { #category : 'accessing' }
 PhLTestImagesPresenter >> launchConfigurations [
-	^ launchConfigurationList listItems allButFirst
+	^ descriptionPanel launchConfigurations
 ]
 
 { #category : 'user interaction' }

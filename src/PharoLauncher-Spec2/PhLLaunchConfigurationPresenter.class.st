@@ -232,7 +232,7 @@ PhLLaunchConfigurationPresenter >> removeLaunchConfiguration: config [
 { #category : 'action' }
 PhLLaunchConfigurationPresenter >> saveSelectedConfiguration [
 	| config |
-	config := self selectedConfiguration.
+	config := self selectedConfiguration asLaunchConfiguration.
 	config isNullConfiguration ifTrue: [ ^ self ].
 	
 	config imageArguments: imageArgumentList items.

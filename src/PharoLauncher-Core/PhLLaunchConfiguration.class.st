@@ -26,6 +26,12 @@ PhLLaunchConfiguration class >> stonAllInstVarNames [
 		  #( #usePharoSettings #workingDirectory ) includes: varName ]
 ]
 
+{ #category : 'converting' }
+PhLLaunchConfiguration >> asLaunchConfiguration [
+
+	^ self
+]
+
 { #category : 'accessing' }
 PhLLaunchConfiguration >> imageArguments: aCollection [ 
 	imageArguments := aCollection

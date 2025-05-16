@@ -57,6 +57,9 @@ PhLImagesPresenterTest >> testFirstImageIsSelectedAtOpening [
 PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConfigurationEdition [
 
 	| launchConfigurationPresenter |
+	
+	self skip: 'need to handle modal presenter to run this test'.
+	
 	presenter := PhLTestImagesPresenter new.
 	presenter
 		open;

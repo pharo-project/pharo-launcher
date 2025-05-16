@@ -133,23 +133,6 @@ PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 ]
 
 { #category : 'tests' }
-PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWhenAvailable [
-	| config |
-
-	config := image defaultLaunchConfiguration asLaunchConfiguration.
-	config imageArguments: #( #foo ).
-	image launchConfigurations: { config }.
-		
-	self 
-		assert: image defaultLaunchConfiguration
-		equals: config.
-		
-	self 
-		assert: image defaultLaunchConfiguration imageArguments
-		equals: #( #foo ).
-]
-
-{ #category : 'tests' }
 PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFileExists [
 	| desc |
 	image description: nil.

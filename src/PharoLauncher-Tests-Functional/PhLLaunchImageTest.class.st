@@ -127,7 +127,7 @@ PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	| image64 config commandToEval |
 	image64 := PhLOsXCatalinaTestImage example.
 	commandToEval := '"''' , imageDir fullName , '/result'' asFileReference writeStreamDo:[ :s | s nextPutAll: (1 + 1) asString ]"'.
-	config := image64 defaultLaunchConfiguration.
+	config := image64 defaultLaunchConfiguration asLaunchConfiguration.
 	config
 		vm: self pharo110x64Vm;
 		imageArguments: {'eval' . commandToEval}.

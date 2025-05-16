@@ -9,6 +9,11 @@ Class {
 	#tag : 'Mocks'
 }
 
+{ #category : 'converting' }
+PhLLaunchConfigurationMock >> asLaunchConfiguration [
+	^ self
+]
+
 { #category : 'mock' }
 PhLLaunchConfigurationMock >> commandString [
 

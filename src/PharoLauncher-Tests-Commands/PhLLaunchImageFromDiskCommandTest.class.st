@@ -43,7 +43,7 @@ PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	presenter requestAnswer: image file.
 	presenter open.
 	image addLaunchConfiguration: 
-		(image defaultLaunchConfiguration 
+		(image defaultLaunchConfiguration asLaunchConfiguration
 			vmArguments: #('--headless');  "be able to run test without X session"
 			imageArguments: #('--no-quit');
 			yourself).

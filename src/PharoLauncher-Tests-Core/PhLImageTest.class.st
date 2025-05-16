@@ -82,7 +82,7 @@ PhLImageTest >> testCanInitializeImageFromMetadatafile [
 PhLImageTest >> testCanSerializeAndDeserializeImageLaunchConfigurationMetadata [
 	| deserializedImage launchConfig deserializedLaunchConfig |
 	image 	launchConfigurations. "Add default launch ocnfig to the list of configurations"
-	launchConfig := image defaultLaunchConfiguration 
+	launchConfig := image defaultLaunchConfiguration asLaunchConfiguration
 		imageArguments: #('foo');
 		vmArguments: #(1 2);
 		yourself.
@@ -136,7 +136,7 @@ PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWhenAvailable [
 	| config |
 
-	config := image defaultLaunchConfiguration.
+	config := image defaultLaunchConfiguration asLaunchConfiguration.
 	config imageArguments: #( #foo ).
 	image launchConfigurations: { config }.
 		
@@ -179,11 +179,12 @@ PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
 
 { #category : 'tests' }
 PhLImageTest >> testPhLImageSerialization [
-	| stonString |
+	| stonString config |
 	(image file parent / image class versionFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
-	image launchConfigurations. "create default configuration"
-	image defaultLaunchConfiguration vm: self createFakeVM. "Avoid to download a VM"
+	config := image defaultLaunchConfiguration asLaunchConfiguration.
+	config vm: self createFakeVM. "Avoid to download a VM"
+	image addLaunchConfiguration: config.
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.

@@ -1,9 +1,5 @@
-"temporary fix: see https://github.com/pharo-project/pharo/pull/18167"
-MCGitBasedNetworkRepository compile: 'projectVersion
-	^ projectVersion'.
-
 Metacello new
-    repository: 'github://pharo-spec/Spec';
+    repository: 'github://pharo-spec/Spec:Pharo13';
     baseline: 'Spec2';
     onConflict: [ :e | e useIncoming ];
     onUpgrade: [ :e | e useIncoming ];
@@ -11,7 +7,7 @@ Metacello new
     load;
     lock.
 Metacello new
-    repository: 'github://pharo-spec/Spec';
+    repository: 'github://pharo-spec/Spec:Pharo13';
     baseline: 'SpecCore';
     lock.
 

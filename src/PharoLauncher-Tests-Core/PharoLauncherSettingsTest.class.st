@@ -173,13 +173,17 @@ PharoLauncherSettingsTest >> testCanSetWarnOnImageArchitectureMismatch [
 { #category : 'tests' }
 PharoLauncherSettingsTest >> testCanStoreSettings [
 
-	| stonString |
+	| stonString expextedSettingSerialization |
 	stonString := STON toStringPretty: settings.
-	
-	self assert: (stonString withInternetLineEndings beginsWith: '[', String cr).
-	self assert: (stonString withInternetLineEndings includesSubstring: 
-		'	StoredSetting {
+	expextedSettingSerialization := '	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
-	},' withInternetLineEndings).
+	},'.
+	
+	self 
+		assert: (stonString withInternetLineEndings beginsWith: '[', String cr)
+		description: 'Serialization is not an array: ', stonString withInternetLineEndings.
+	self 
+		assert: (stonString withInternetLineEndings includesSubstring: expextedSettingSerialization withInternetLineEndings)
+		description: 'Setting node serialization is not the one expected:', stonString withInternetLineEndings
 ]

@@ -409,6 +409,7 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 PharoLauncherApplication >> prepareAsStandaloneApplication [
 	
 	standalone := true.
+	self class default: self.
 	
 	"I do not want the morphic world... nor the idle process annoying us"
 	Smalltalk vm isRunningInWorkerThread 

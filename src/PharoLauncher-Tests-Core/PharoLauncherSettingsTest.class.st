@@ -178,7 +178,7 @@ PharoLauncherSettingsTest >> testCanStoreSettings [
 	expextedSettingSerialization := '	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
-	},'.
+	}'.
 	
 	self 
 		assert: (stonString withInternetLineEndings beginsWith: '[', String cr)

@@ -127,6 +127,7 @@ PhLDeploymentScript class >> doAll [
 		deactivateDeprecationWarnings;
 		deactivateLostChangesDetector;
 		activateErrorCatching;
+		initializeGTkEnumerations;
 		makeDeployed;
 		resetImageDescriptionUpdater;
 		addToStartupList;
@@ -154,6 +155,13 @@ PhLDeploymentScript class >> dontRaiseWarningForMissingChangesOrSourcesFiles [
 { #category : 'initialization' }
 PhLDeploymentScript class >> initialize [
 	Save := false
+]
+
+{ #category : 'actions' }
+PhLDeploymentScript class >> initializeGTkEnumerations [
+
+	"Should be done by Metacello at loading time but does not woark as expected"
+	GEnumeration allSubclassesDo: #initializeEnumeration
 ]
 
 { #category : 'public' }

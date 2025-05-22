@@ -12,7 +12,6 @@ Class {
 		'launchFromALoginShellSwitch',
 		'warnOnImageArchMisMatchSwitch',
 		'checkForTemplateSourcesUpdateSwitch',
-		'enableDevEnvironmentSwitch',
 		'hardResetPersistentStateButton',
 		'templateSourcesUrlInput',
 		'sourcesFileLocationInput',
@@ -68,7 +67,6 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell .
 	warnOnImageArchMisMatchSwitch := self newSwitchFor: #warnOnArchMismatch.
 	checkForTemplateSourcesUpdateSwitch := self newSwitchFor: #shouldCheckTemplateSourcesUpdate.
-	enableDevEnvironmentSwitch := self newSwitchFor: #developmentEnvironmentEnabled.
 
 	templateSourcesUrlInput := self newTextInputFor: #sourcesUrl.
 	sourcesFileLocationInput := (self newTextInputFor: #launcherCoreDirString)
@@ -128,10 +126,6 @@ PhLGeneralSettingsPresenter >> newGeneralSection [
 			add: (SpBoxLayout newLeftToRight 
 				add: 'Warn on image architecture mismatch?';
 				add: warnOnImageArchMisMatchSwitch expand: false;
-				yourself) expand: false;
-			add: (SpBoxLayout newLeftToRight 
-				add: 'Enable development environment';
-				add: enableDevEnvironmentSwitch expand: false;
 				yourself) expand: false;
 			yourself);
 		yourself

@@ -39,12 +39,6 @@ PharoLauncherSettings >> declarationNamed: aSettingIdentifier [
 	^ (self settingNodeNamed: aSettingIdentifier) declaration
 ]
 
-{ #category : 'accessing' }
-PharoLauncherSettings >> enableDevelopmentEnvironment: aBoolean [ 
-
-	self setValueOfDeclarationNamed: #developmentEnvironmentEnabled with: aBoolean
-]
-
 { #category : 'resetting' }
 PharoLauncherSettings >> hardResetPersistanceState [
 

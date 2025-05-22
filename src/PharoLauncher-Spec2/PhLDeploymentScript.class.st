@@ -98,25 +98,6 @@ PhLDeploymentScript class >> deactivateStartupActions [
 	StartupPreferencesLoader allowStartupScript: false.
 ]
 
-{ #category : 'settings' }
-PhLDeploymentScript class >> developmentEnvironmentEnabled [
-	^ self isDeployed not
-]
-
-{ #category : 'settings' }
-PhLDeploymentScript class >> developmentEnvironmentEnabled: aBoolean [
-	aBoolean 
-		ifTrue: 
-		[	self undoAll.  	
-			self closeWindowsAndOpenDevelopmentEnvironment 
-		]
-		ifFalse: 
-		[ 	self doAll. 
-			self closeWindowsAndOpenLauncher.
-			self isDeployed ifFalse: [ Smalltalk snapshot: true andQuit: false "save deployed mode" ]
-		].
-]
-
 { #category : 'public' }
 PhLDeploymentScript class >> doAll [
 	self
@@ -250,21 +231,6 @@ PhLDeploymentScript class >> setProgressBarSizeAndPosition [
 		minHeight: 50;
 		layoutInset: 30 @ 20;
 		position: 150 @ 200	
-]
-
-{ #category : 'settings' }
-PhLDeploymentScript class >> settingsOn: aBuilder [
-	<systemsettings>
-	<pharoLauncherSettings>
-	(aBuilder setting: #developmentEnvironmentEnabled) 
-		parent: #pharoLauncher;
-		target: self;
-		default: false;
-		order: 60;
-		label: 'Enable development environment';
-		description: 'Missing a feature?  Hey come join in!  Add your custom feature.
-When enabled, exits the Launcher application into the Pharo development environment.
-When disabled, closes all windows and locks Launcher as the only running application. '.
 ]
 
 { #category : 'public' }

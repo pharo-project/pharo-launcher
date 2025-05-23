@@ -45,19 +45,20 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 12 (development)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip'
+				#name : 'Moose Suite 13 (development)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose13-development-Pharo64-13.zip'
 				},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 11 (stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip'
-  			},
+				#name : 'Moose Suite 12 (stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v12.0.0/Moose12-stable-Pharo64-12.zip'
+				},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 10 (old stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
+				#name : 'Moose Suite 11 (old stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip'
   			}
+			
 		],
 		#expanded : true
 	},
@@ -144,6 +145,11 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Moose Suite 9.0',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-10.zip'
+  			}, 
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 10 (old stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
   			}
 		]
 	},

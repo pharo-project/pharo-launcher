@@ -25,34 +25,35 @@ OrderedCollection [
 		#templates : [
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 13.0 - 64bit (development version, latest)',
+				#name : 'Pharo 14.0 - 64bit (development version, latest)',
+				#url : 'https://files.pharo.org/image/140/latest-64.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 13.0 - 64bit (stable)',
 				#url : 'https://files.pharo.org/image/130/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 12.0 - 64bit (stable)',
+				#name : 'Pharo 12.0 - 64bit (old stable)',
 				#url : 'https://files.pharo.org/image/120/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 11.0 - 64bit (old stable)',
-				#url : 'https://files.pharo.org/image/110/latest-64.zip'
-			},
-			PhLTemplateSource {
-				#type : #URL,
-				#name : 'Moose Suite 12 (development)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose12-development-Pharo64-12.zip'
+				#name : 'Moose Suite 13 (development)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/continuous/Moose13-development-Pharo64-13.zip'
 				},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 11 (stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip'
-  			},
+				#name : 'Moose Suite 12 (stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v12.0.0/Moose12-stable-Pharo64-12.zip'
+				},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Moose Suite 10 (old stable)',
-				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
+				#name : 'Moose Suite 11 (old stable)',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v11.x.x/Moose11-stable-Pharo64-11.zip'
   			}
+			
 		],
 		#expanded : true
 	},
@@ -60,6 +61,11 @@ OrderedCollection [
 		#type : #URLGroup,
 		#name : 'Deprecated distributions',
 		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo 11.0 - 64bit',
+				#url : 'https://files.pharo.org/image/110/latest-64.zip'
+			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Pharo 10.0 - 64bit',
@@ -139,20 +145,25 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Moose Suite 9.0',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v9.x.x/Moose9-stable-Pharo64-10.zip'
+  			}, 
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 10',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
   			}
 		]
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
-		#name : 'Pharo 12.0 (stable)',
-		#url : 'https://files.pharo.org/image/120/',
-                #filterPattern : 'href="(Pharo-?12(.[0-9]+)?-SNAPSHOT.build.[^"]*.zip)"'
+		#name : 'Pharo 14.0 (development version)',
+		#url : 'https://files.pharo.org/image/140/',
+		#filterPattern : 'href="(Pharo-?14(.[0-9]+)?-SNAPSHOT.build.[^"]*.zip)"'
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,
-		#name : 'Pharo 13.0 (development version)',
+		#name : 'Pharo 13.0 (stable)',
 		#url : 'https://files.pharo.org/image/130/',
-		#filterPattern : 'href="(Pharo-?13(.[0-9]+)?-SNAPSHOT.build.[^"]*.zip)"'
+                #filterPattern : 'href="(Pharo-?13(.[0-9]+)?-SNAPSHOT.build.[^"]*.zip)"'
 	},
 	PhLTemplateSource {
 		#type : #HttpListing,

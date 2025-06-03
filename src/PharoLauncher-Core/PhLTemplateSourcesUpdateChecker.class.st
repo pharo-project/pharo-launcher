@@ -20,9 +20,8 @@ Class {
 	#tag : 'Model'
 }
 
-{ #category : 'initialization' }
+{ #category : 'class initialization' }
 PhLTemplateSourcesUpdateChecker class >> initialize [
-	super initialize.
 	PhLStartupManager addToLauncherStartUpList: self
 ]
 
@@ -41,7 +40,7 @@ PhLTemplateSourcesUpdateChecker class >> run [
 	self shouldRun ifFalse: [ ^ self ].
 	
 	"need to manage it for command-line. Not available for now"
-	Smalltalk isInteractive ifFalse: [ ^ self ].
+	Smalltalk isInteractiveGraphic ifFalse: [ ^ self ].
 	
 	self uniqueInstance run
 	

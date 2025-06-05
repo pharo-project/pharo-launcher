@@ -175,6 +175,14 @@ PhLPharoTemplateSources >> file [
 	^ file
 ]
 
+{ #category : 'actions' }
+PhLPharoTemplateSources >> forceTemplateSourcesUpdate [
+
+	self removeDownloadedSources.
+	self ensureSourcesFile.
+	PharoLauncherApplication default resetTemplateRepository
+]
+
 { #category : 'private' }
 PhLPharoTemplateSources >> lockDownloadedSourcesFileDuring: aBlock [
 	self downloadedSourcesFileLockFile exists
@@ -190,6 +198,12 @@ PhLPharoTemplateSources >> lockDownloadedSourcesFileDuring: aBlock [
 	"Lock working for this image."
 	[ self downloadedSourcesFileLock critical: aBlock ]
 	ensure: [ self downloadedSourcesFileLockFile ensureDelete ]
+]
+
+{ #category : 'removing' }
+PhLPharoTemplateSources >> removeDownloadedSources [
+	
+	self downloadedSourcesFile ensureDelete
 ]
 
 { #category : 'actions' }

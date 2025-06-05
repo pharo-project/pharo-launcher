@@ -18,7 +18,6 @@ Class {
 	#classVars : [
 		'Default',
 		'IsDeployed',
-		'TemplateRepository',
 		'TemplatesClearedOnStartup'
 	],
 	#classInstVars : [
@@ -181,12 +180,6 @@ PharoLauncherApplication class >> reset [
 
    Default reset.
 	Default := nil
-]
-
-{ #category : 'initialization' }
-PharoLauncherApplication class >> resetTemplateRepository [
-
-	TemplateRepository := nil
 ]
 
 { #category : 'settings' }

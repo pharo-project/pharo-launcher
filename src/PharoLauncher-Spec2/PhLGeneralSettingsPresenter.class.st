@@ -21,7 +21,8 @@ Class {
 		'sourcesFileLocationButton',
 		'imagesLocationButton',
 		'imagesInitScriptsLocationButton',
-		'vmsLocationButton'
+		'vmsLocationButton',
+		'forceSourcesUpdateButton'
 	],
 	#category : 'PharoLauncher-Spec2-View-Settings',
 	#package : 'PharoLauncher-Spec2',
@@ -51,10 +52,17 @@ PhLGeneralSettingsPresenter >> chooseDirectoryFor: anInputTextPresenter [
 PhLGeneralSettingsPresenter >> defaultLayout [ 
 
 	^ SpBoxLayout newTopToBottom 
+		add: self newSourcesSection;
 		add: self newGeneralSection;
 		add: self newLocationsSection;
 		add: self newResetSection expand: false;
 		yourself
+]
+
+{ #category : 'private' }
+PhLGeneralSettingsPresenter >> forceTemplateSourcesUpdate [
+
+	PhLPharoTemplateSources fromFile forceTemplateSourcesUpdate
 ]
 
 { #category : 'initialization' }
@@ -77,6 +85,11 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 		icon: (self iconNamed: #open);
 		action: [ self chooseDirectoryFor: sourcesFileLocationInput ];
 		yourself.
+	forceSourcesUpdateButton := self newButton
+		label: 'Force template sources update';
+		action: [ self forceTemplateSourcesUpdate ];
+		yourself.
+
 	imagesLocationInput := self newTextInputFor: #locationString.
 	imagesLocationButton := self newButton
 		addStyle: 'flat';
@@ -107,14 +120,6 @@ PhLGeneralSettingsPresenter >> newGeneralSection [
 	^ self newPresenter 
 		addStyle: 'section';
 		layout: (SpBoxLayout newTopToBottom 
-			add: (SpBoxLayout newLeftToRight
-				add: 'Check for template sources update?';
-				add: checkForTemplateSourcesUpdateSwitch expand: false;
-				yourself) expand: false;
-			add: (SpBoxLayout newLeftToRight 
-				add: 'Templates cleared at startup';
-				add: clearTemplatesSwitch expand: false;
-				yourself) expand: false;
 			add: (SpBoxLayout newLeftToRight 
 				add: 'Quit On Launch';
 				add: quitOnLaunchSwitch expand: false;
@@ -186,5 +191,24 @@ PhLGeneralSettingsPresenter >> newSection: aString [
 	^ self newLabel 
 		addStyle: 'header';
 		label: aString;
+		yourself
+]
+
+{ #category : 'layout' }
+PhLGeneralSettingsPresenter >> newSourcesSection [
+
+	^ self newPresenter 
+		addStyle: 'section';
+		layout: (SpBoxLayout newTopToBottom 
+			add: (SpBoxLayout newLeftToRight
+				add: 'Check for template sources update?';
+				add: checkForTemplateSourcesUpdateSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight 
+				add: 'Templates cleared at startup';
+				add: clearTemplatesSwitch expand: false;
+				yourself) expand: false;
+			add: forceSourcesUpdateButton expand: false;
+			yourself);
 		yourself
 ]

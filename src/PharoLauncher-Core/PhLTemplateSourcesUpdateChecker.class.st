@@ -89,7 +89,6 @@ PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 { #category : 'updating' }
 PhLTemplateSourcesUpdateChecker >> basicUpdateTemplateSources [
 	PhLPharoTemplateSources fromFile updateSourcesFile.
-	PharoLauncherApplication resetTemplateRepository.
 	PharoLauncherApplication default resetTemplateRepository.
 ]
 

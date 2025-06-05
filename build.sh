@@ -56,7 +56,6 @@ function make_pharo_launcher_deloyed() {
         # Avoid to have PL core dir set to the slave location and having an outdated list of templates
 	./pharo PharoLauncher.image eval --save \
 		"PhLTemplateSources resetLauncherCoreDir.
-		PharoLauncherApplication resetTemplateRepository.
 		PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
 }
 

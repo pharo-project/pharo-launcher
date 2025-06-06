@@ -160,7 +160,7 @@ PhLDirectoryBasedImageRepository >> extractTemplate: aTemplate to: anImageName [
 	| destination image |
 	self ensureNoImageWithName: anImageName.
 	destination := self prepareForNewImageNamed: anImageName.
-	image := aTemplate extractTo: destination named: anImageName.
+	image := aTemplate extractTo: destination.
 	self contentsChanged.
 	^ image
 ]

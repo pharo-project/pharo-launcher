@@ -17,42 +17,53 @@ Class {
 }
 
 { #category : 'actions' }
-PhLAbstractTemplate >> extractTo: aDirectory named: aString [
+PhLAbstractTemplate >> extractTo: aDirectory [
 	"Extract myself to aDirectory. Name the resulting image aString"
 	
 	PharoLauncherApplication default 
 		pushProgress: 'Extract template'
-		with: [ :bar | | archive |
+		with: [ :bar | | archive extractionDir |
 			bar label: 'Downloading zip archive';
 			current: 25.
 			archive := self zipArchive.
 			bar label: 'Extracting archive to target directory';
 			current: 75.
-			self extractZipArchive: archive to: aDirectory.
-			self renameImageFilesIn: aDirectory withName: aString.
+			extractionDir := self extractZipArchive: archive.
+			self relocateImageFilesFrom: extractionDir to: aDirectory.
+			extractionDir ensureDeleteAll.
 	].
 	"Will serialize image metadata with the template information"
-	^ (PhLImage location: aDirectory / aString , 'image') 
+	^ (PhLImage location: aDirectory / self name , 'image') 
 		originTemplate: self.
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
-
+PhLAbstractTemplate >> extractZipArchive: zipFile [
+	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
+	| tempDirectory |
+	
 	PharoLauncherApplication default
 		pushProgress: ('Extracting {1}' format: { zipFile isStream ifTrue: [ '' ] ifFalse: [ zipFile basename ] }) 
 		with: [ :bar | | zip |	
+			"We have to go through a temporary directory because we don't know where 
+			 the interesting files are in the archive (maybe at the root or maybe in 
+			 a subdirectory)"
+			tempDirectory := FileLocator temp / (self name, '-', DateAndTime millisecondClockValue asString).
+			"It will crash if directory already exists. And that's good :-)"
+			tempDirectory createDirectory. 
 			[
 				zip := ZipArchive new.
 				zip readFrom: zipFile.
 				bar max: zip numberOfMembers.
-				zip extractAllTo: aDirectory informing: bar.
+				zip extractAllTo: tempDirectory informing: bar.
 			]
 			on: Error
 			do: [ :error | 
 				error messageText = 'can''t find EOCD position'
 					ifTrue: [ PhLCorruptedTemplateError signal ]
-					ifFalse: [ error pass ] ] ]
+					ifFalse: [ error pass ] ] ].
+
+	^ tempDirectory
 ]
 
 { #category : 'testing' }
@@ -79,18 +90,27 @@ PhLAbstractTemplate >> printOn: aStream [
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> renameImageFilesIn: aDirectory withName: targetName [
-	| imageFile changesFile |
+PhLAbstractTemplate >> relocateImageFilesFrom: aDirectory to: targetDirectory [
+	| imageFile |
 	
-	imageFile := aDirectory files detect: [ :aFile | '*.image' match: aFile basename ].	
-	imageFile basename = (targetName , '.image')
+	imageFile := aDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	
+		
+	self renameFilesIfNeeded: imageFile.
+	imageFile parent moveTo: targetDirectory
+]
+
+{ #category : 'private' }
+PhLAbstractTemplate >> renameFilesIfNeeded: imageFile [
+	| changesFile |
+		
+	imageFile basename = (self name , '.image')
 		ifTrue: [ ^ self "no need to rename" ].
 
 	"A changes file must have the same name and be in the same directory as the image file"
 	changesFile := imageFile parent / imageFile basenameWithoutExtension , 'changes'.
 
-	imageFile renameTo: targetName , '.image'.
-	changesFile renameTo: targetName , '.changes'
+	imageFile renameTo: self name , '.image'.
+	changesFile renameTo: self name , '.changes'
 ]
 
 { #category : 'actions' }

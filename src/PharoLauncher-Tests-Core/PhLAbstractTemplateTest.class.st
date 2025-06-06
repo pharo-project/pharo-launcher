@@ -28,6 +28,25 @@ PhLAbstractTemplateTest >> setUp [
 ]
 
 { #category : 'tests' }
+PhLAbstractTemplateTest >> testCanRelocateImageFileWhenNotInZipArchiveRoot [
+	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory |
+	template := self newTemplate.
+	folder := (root / 'level1' / 'level2' / 'imageFolder') ensureCreateDirectory.
+	imageToBeRenamed := (folder / 'file.image') ensureCreateFile.
+	changesFileToBeRenamed := (folder / 'file.changes') ensureCreateFile.
+	someOtherFile := (folder / 'foo.css') ensureCreateFile.
+	targetDirectory := root / 'target'.
+
+	template relocateImageFilesFrom: folder to: targetDirectory.
+
+	self assert: (targetDirectory / template name , 'image') exists.
+	self deny: imageToBeRenamed exists.
+	self assert: (targetDirectory / template name , 'changes') exists.
+	self deny: changesFileToBeRenamed exists.
+	self assert: (targetDirectory / someOtherFile basename) exists
+]
+
+{ #category : 'tests' }
 PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 	| template archive |
 	template := self newTemplate.
@@ -35,7 +54,7 @@ PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 	archive := (ByteArray readHexFrom: ((1 to: 50) collect: [ :x| '0123456789ABCDEF' atRandom ])) readStream.
 
 	self 
-		should: [ template extractZipArchive: archive to: root ]
+		should: [ template extractZipArchive: archive ]
 		raise: PhLCorruptedTemplateError 
 ]
 
@@ -51,25 +70,25 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 		archive writeTo: stream ].
 	
 	self 
-		shouldnt: [ template extractZipArchive: archiveFile to: root ]
+		shouldnt: [ template extractZipArchive: archiveFile ]
 		raise: PhLCorruptedTemplateError
 ]
 
 { #category : 'tests' }
 PhLAbstractTemplateTest >> testRenameImageFilesFromToWithName [
-	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile imageName |
+	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory |
 	template := self newTemplate.
 	folder := (root / 'imageFolder') ensureCreateDirectory.
 	imageToBeRenamed := (folder / 'file.image') ensureCreateFile.
 	changesFileToBeRenamed := (folder / 'file.changes') ensureCreateFile.
 	someOtherFile := (folder / 'foo.css') ensureCreateFile.
-	imageName := 'new'.
+	targetDirectory := root / 'target'.
 
-	template renameImageFilesIn: folder withName: imageName.
+	template relocateImageFilesFrom: folder to: targetDirectory.
 
-	self assert: (folder / imageName , 'image') exists.
+	self assert: (targetDirectory / template name , 'image') exists.
 	self deny: imageToBeRenamed exists.
-	self assert: (folder / imageName , 'changes') exists.
+	self assert: (targetDirectory / template name , 'changes') exists.
 	self deny: changesFileToBeRenamed exists.
-	self assert: someOtherFile exists
+	self assert: (targetDirectory / someOtherFile basename) exists
 ]

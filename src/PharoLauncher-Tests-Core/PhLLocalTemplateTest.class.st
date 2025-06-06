@@ -45,9 +45,9 @@ PhLLocalTemplateTest >> testTemplateExtractionGenerateImageMetadata [
 		addDeflateString: 'foo' as: 'bar.changes'.
 	template zipArchive asFileReference
 		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
-	destination := (root / 'new') ensureCreateDirectory.
+	destination := root / 'new'.
 	
-	template extractTo: destination named: 'new'.
+	template extractTo: destination.
 	
 	metadataFile := destination / PhLImage metadataFileName.
 	self assert: metadataFile exists.

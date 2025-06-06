@@ -20,17 +20,18 @@ PhLAboutCommand class >> version: aString [
 
 { #category : 'querying' }
 PhLAboutCommand >> aboutText [
+
 	^ String streamContents: [:stream |
 		stream
-			<< 'Pharo Launcher version: ';
-			<< self launcherVersion;
-			cr; cr;
-			<< 'Pharo Launcher is a tool that eases the management of Pharo images and their associated Virtual Machines. It can download official Pharo images from the Pharo repository, fetch the right virtual machine to run your image and many other things.';
+			<< 'Pharo Launcher version: '; << self launcherVersion; cr; 
 			cr;
-			<< 'Documentation is available at https://pharo-project.github.io/pharo-launcher.';
+			<< 'Pharo Launcher is a tool that eases the management of Pharo images and their associated Virtual Machines. It can download official Pharo images from the Pharo repository, fetch the right virtual machine to run your image and many other things.'; cr;
 			cr;
-			<< 'If you find a bug, please open an issue at https://github.com/pharo-project/pharo-launcher/issues.'.
- ]
+			<< 'Documentation is available at '; cr; 
+			<< 'https://pharo-project.github.io/pharo-launcher.'; cr;
+			cr;
+			<< 'If you find a bug, please open an issue at'; cr; 
+			<< 'https://github.com/pharo-project/pharo-launcher/issues.' ]
 	
 ]
 
@@ -46,10 +47,8 @@ PhLAboutCommand >> asSpecCommand [
 PhLAboutCommand >> execute [
 	| presenter |
 
-	presenter := PhLAboutPresenter 
-		text: self aboutText
-		iconName: #pharo.
-	presenter application: self application.
+	presenter := PhLAboutPresenter newApplication: self application.
+	presenter text: self aboutText.
 	presenter asDialogWindow 
 		owner: self context window;
 		open.

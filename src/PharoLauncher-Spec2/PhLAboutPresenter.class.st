@@ -29,6 +29,7 @@ PhLAboutPresenter class >> example [
 
 { #category : 'instance creation' }
 PhLAboutPresenter class >> text: aText iconName: anIconName [
+
 	^ self new 
 		text: aText;
 		iconName: anIconName;
@@ -42,10 +43,11 @@ PhLAboutPresenter class >> title [
 
 { #category : 'layout' }
 PhLAboutPresenter >> defaultLayout [
+
 	^ SpBoxLayout newHorizontal
-		add: icon width: 90;
-		add: 
-			(SpBoxLayout newVertical
+		borderWidth: 10;
+		add: icon;
+		add: (SpBoxLayout newVertical
 				spacing: 15;
 				add: description;
 				add: documentationLink expand: false;
@@ -65,13 +67,22 @@ PhLAboutPresenter >> icon [
 
 { #category : 'accessing' }
 PhLAboutPresenter >> iconName: anIconName [
-	iconName := anIconName
+
+	iconName := anIconName.
+	self updatePresenter
 ]
 
 { #category : 'initialization' }
 PhLAboutPresenter >> initialExtent [
 
-	^ 420@500
+	^ 680@440
+]
+
+{ #category : 'initialization' }
+PhLAboutPresenter >> initialize [
+
+	iconName := #pharoBig.
+	super initialize
 ]
 
 { #category : 'initialization' }
@@ -82,9 +93,12 @@ PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 ]
 
 { #category : 'initialization' }
-PhLAboutPresenter >> initializePresenters [ 
+PhLAboutPresenter >> initializePresenters [
+ 
 	description := self newText.
-	icon := self newImage.
+	icon := self newImage
+		addStyle: 'aboutIcon';
+		yourself.
 	documentationLink := self newLink
 		url: 'https://pharo-project.github.io/pharo-launcher';
 		label: 'Open Pharo Launcher documentation (web)';
@@ -96,15 +110,21 @@ PhLAboutPresenter >> initializePresenters [
 PhLAboutPresenter >> initializeWindow: aWindow [
 	
 	aWindow title: 'About Pharo Launcher'.
-	aWindow initialExtent: self initialExtent.
-	
-	description 
-		text: text;
-		disable.
-   icon image: (self iconNamed: iconName).
+	aWindow initialExtent: self initialExtent
 ]
 
 { #category : 'accessing' }
 PhLAboutPresenter >> text: aText [
-	text := aText
+
+	text := aText.
+	self updatePresenter
+]
+
+{ #category : 'initialization' }
+PhLAboutPresenter >> updatePresenter [ 
+
+	description 
+		text: text;
+		editable: false.
+   icon image: (self iconNamed: iconName)
 ]

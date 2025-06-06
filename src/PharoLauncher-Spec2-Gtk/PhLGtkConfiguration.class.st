@@ -101,6 +101,10 @@ box.welcomeThemeImage {
 box.welcomeThemeSelected {
 	background-color: var(--accent-bg-color);
 }
+.aboutIcon { 
+	min-width: 120px;
+	min-height: 120px;
+}
 '
 ]
 

@@ -15,6 +15,14 @@ PhLLaunchConfigurationPresenterTest >> defaultTimeLimit [
 	^ 20 seconds
 ]
 
+{ #category : 'instance creation' }
+PhLLaunchConfigurationPresenterTest >> newLaunchConfigurationNamed: aName [
+
+	^ (PhLLaunchConfiguration withImage: presenter image)
+		                 name: aName;
+		                 yourself
+]
+
 { #category : 'running' }
 PhLLaunchConfigurationPresenterTest >> setUp [
 	super setUp.
@@ -47,15 +55,17 @@ PhLLaunchConfigurationPresenterTest >> tearDown [
 { #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultListNorOnDisk [
 	| config |
-	config := (PhLLaunchConfiguration withImage: image)
-				name: 'test config';
-				vm: (PhLVirtualMachine id: '01-x86')
+	image addLaunchConfiguration: (self newLaunchConfigurationNamed: 'foo').
+	config := (self newLaunchConfigurationNamed: 'test config')
+				vm: (PhLVirtualMachine id: '01-x86');
 				yourself.
 	image addLaunchConfiguration: config.
-	self setUpPresenter.
-	presenter initializeVmListContent.
-
+	presenter := PhLLaunchConfigurationPresenter
+		newApplication: application
+		model: image.
 	self assert: (presenter vmListItems noneSatisfy: [ :each | each id = config vm id]). "ensure we test with vm not listed in presenter"
+
+	presenter selectConfiguration: config.
 	
 	self 
 		assert: presenter selectedVm id 
@@ -88,9 +98,8 @@ PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelects
 		open;
 		selectImageAt: 1.
 	image := imagesPresenter singleImage.
-	config := (PhLLaunchConfiguration withImage: image)
-		          name: 'test config';
-		          yourself.
+	presenter setModelBeforeInitialization: image. 
+	config := self newLaunchConfigurationNamed: 'test config'.
 	image addLaunchConfiguration: config.
 
 	self setUpPresenterWithApplication: imagesPresenter application.
@@ -98,11 +107,44 @@ PhLLaunchConfigurationPresenterTest >> testEditingAndSavingAConfigurationSelects
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: 'Default'.
+		
+	presenter selectConfiguration: config.
+	presenter saveSelectedConfiguration.
 
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
 		equals: config name.
 	imagesPresenter delete
+]
+
+{ #category : 'tests' }
+PhLLaunchConfigurationPresenterTest >> testImageHasOnlyDefaultLaunchConfigurationWhenNoConfiguration [
+	self setUpPresenter.
+
+	self
+		assert: image launchConfigurations size 
+		equals: 1. 
+	self
+		assert: image launchConfigurations first name
+		equals: PhLDefaultLaunchConfiguration defaultName.
+]
+
+{ #category : 'tests' }
+PhLLaunchConfigurationPresenterTest >> testImageHasOnlyOneLaunchConfigurationWhenLaunchConfigurationAdded [
+	self setUpPresenter.
+	application requestAnswer: 'foo'.
+	self
+		assert: image launchConfigurations size 
+		equals: 1. "Default"
+		
+	presenter clickAddConfigurationButton.
+		
+	self
+		assert: image launchConfigurations size 
+		equals: 1. "foo"
+	self
+		assert: image launchConfigurations first name
+		equals: 'foo'.
 ]
 
 { #category : 'tests' }
@@ -129,44 +171,27 @@ PhLLaunchConfigurationPresenterTest >> testImageInteractiveArgumentIsNotAddedWhe
 ]
 
 { #category : 'tests' }
-PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationAdded [
-	self setUpPresenter.
-	application requestAnswer: 'foo'.
-	self
-		assert: image launchConfigurations size 
-		equals: 1. "Default"
-		
-	presenter clickAddConfigurationButton.
-		
-	self
-		assert: image launchConfigurations size 
-		equals: 2. "Default foo"
-	self
-		assert: image launchConfigurations second name
-		equals: 'foo'.
-]
-
-{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageLaunchConfigurationsUpdatedWhenConfigurationRemoved [
-	| configuration |
-	configuration := (PhLLaunchConfiguration withImage: presenter image)
-		                 name: 'foo';
-		                 yourself.
-	image addLaunchConfiguration: configuration.
+	| configToDelete |
+	configToDelete := self newLaunchConfigurationNamed: 'bar'.
+	image 
+		addLaunchConfiguration: (self newLaunchConfigurationNamed: 'foo');
+		addLaunchConfiguration: configToDelete.
 	self setUpPresenter.
 	self
 		assert: image launchConfigurations size 
-		equals: 2. "Default + foo"
+		equals: 2. "foo + bar"
 
-	presenter
+	presenter 
+		selectConfiguration: configToDelete;
 		clickDeleteConfigurationButton.
 		
 	self
 		assert: image launchConfigurations size 
 		equals: 1.
 	self
-		assert: image launchConfigurations first isDefault
-		description: 'Expected to find default configuration'
+		assert: image launchConfigurations first name
+		equals: 'foo'
 ]
 
 { #category : 'tests' }
@@ -212,29 +237,33 @@ PhLLaunchConfigurationPresenterTest >> testRemoveVMArgumentWithoutSelectionDoesN
 ]
 
 { #category : 'tests' }
-PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClosingWindowSelectsItInImagesPresenterToolbar [
+PhLLaunchConfigurationPresenterTest >> testSelectingAConfigurationAndClickApplyDoesNotUpdateConfigurationInImagesPresenter [
 
-	| config imagesPresenter window |
+	| config imagesPresenter selectedLaunchConfiguration |
 	imagesPresenter := PhLTestImagesPresenter new.
-	imagesPresenter selectImageAt: 1.
+	application := imagesPresenter application.
 	image := imagesPresenter singleImage.
-	image launchConfigurations. "generate default configuration"
-	config := (PhLLaunchConfiguration withImage: image)
-		          name: 'test config';
-		          yourself.
+	presenter := PhLLaunchConfigurationPresenter
+		newApplication: application
+		model: image.
+	image addLaunchConfiguration: (self newLaunchConfigurationNamed: 'foo').
+	config := self newLaunchConfigurationNamed: 'bar'.
 	image addLaunchConfiguration: config.
-	presenter application imagesPresenter: imagesPresenter.
-	imagesPresenter
-		open;
-		selectImageAt: 1.
-	self setUpPresenterWithApplication: imagesPresenter application.
+	imagesPresenter updateImageDetails.
+	selectedLaunchConfiguration := imagesPresenter selectedLaunchConfiguration name.
 
-	window := presenter open.
-	window close.
-
+	presenter 
+		refreshLaunchConfigurations;
+		selectConfiguration: config;
+		clickApplyChangesButton.
+		
 	self
 		assert: imagesPresenter selectedLaunchConfiguration name
+		equals: selectedLaunchConfiguration.
+	self 
+		deny: imagesPresenter selectedLaunchConfiguration name
 		equals: config name.
+		
 	imagesPresenter delete
 ]
 

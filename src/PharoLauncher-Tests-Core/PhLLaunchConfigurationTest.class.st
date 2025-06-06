@@ -83,7 +83,7 @@ PhLLaunchConfigurationTest >> testCanGetDefaultVmWhenVMNotListedInVmManager [
 { #category : 'tests' }
 PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 	| launchConfig deserializedConfig |
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	launchConfig vm executable: 'pharo'.
 	launchConfig
 		vmArguments: #(1 2 3);
@@ -109,7 +109,7 @@ PhLLaunchConfigurationTest >> testCanSerializeLaunchConfiguration [
 PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectureExpected [
 	| launchConfig vm |
 	
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	vm := self newVm: '110-x64' exeHeader: self vmMac32bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.
@@ -122,7 +122,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen32bitVmFoundAnd64bitArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectureExpected [
 	| launchConfig vm |
 	
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	vm := self newVm: '110-x86' exeHeader: self vmMac64bitHeader.
 	launchConfig vm: vm.
 	
@@ -134,7 +134,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhen64bitVmFoundAnd32bitArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectureDetected [
 	| launchConfig vm |
 	
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	vm := self newVm: '110-x64' exeHeader: self vmMacArm64bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.
@@ -148,7 +148,7 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenArmVmFoundAndIntelVmArchitectu
 PhLLaunchConfigurationTest >> testCannotLaunchWhenVmFoundNotExecutable [
 	| launchConfig vm |
 	
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	vm := self newVm: '110-x86' exeHeader: #[0 1 2 3].
 	launchConfig vm: vm.
 	
@@ -211,7 +211,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScr
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasImageArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
-	launchConfig := image defaultLaunchConfiguration.
+	launchConfig := image defaultLaunchConfiguration asLaunchConfiguration.
 	launchConfig imageArguments: #( 1 2 3 ).
 	launchConfig vm executable: 'pharo'.
 	
@@ -243,7 +243,7 @@ PhLLaunchConfigurationTest >> testImageLaunchProcessHasInitializationScriptArgum
 PhLLaunchConfigurationTest >> testImageLaunchProcessHasVmArguments [
 	| command launchConfig |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
-	launchConfig := image defaultLaunchConfiguration.
+	launchConfig := image defaultLaunchConfiguration asLaunchConfiguration.
 	launchConfig 
 		doNotUseSettings;
 		vm: self pharo80HeadlessVm.
@@ -333,7 +333,7 @@ PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 PhLLaunchConfigurationTest >> testWarningRaisedWhenIntelVmFoundAndArmVmArchitectureDetected [
 	| launchConfig vm |
 	
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
 	vm := self newVm: '110-x64' exeHeader: self vmMac64bitHeader.
 	vm be64bits.
 	launchConfig vm: vm.

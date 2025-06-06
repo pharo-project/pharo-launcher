@@ -57,6 +57,9 @@ PhLImagesPresenterTest >> testFirstImageIsSelectedAtOpening [
 PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConfigurationEdition [
 
 	| launchConfigurationPresenter |
+	
+	self skip: 'need to handle modal presenter to run this test'.
+	
 	presenter := PhLTestImagesPresenter new.
 	presenter
 		open;
@@ -78,6 +81,7 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsAreUpdatedAfterLaunchConf
 { #category : 'tests' }
 PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfImages [
 
+	self skip: 'Sorting is not yet available on GTK'.
 	presenter := PhLTestImagesPresenter new.
 	presenter createImageNamed: 'Zoo'.
 	presenter application imageRepositoryChanged.

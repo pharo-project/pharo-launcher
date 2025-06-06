@@ -30,6 +30,9 @@ PhLAbstractTemplateTest >> setUp [
 { #category : 'tests' }
 PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 	| template archive |
+	
+	self skip: 'need to handle modal presenter to run this test (progress)'.
+	
 	template := self newTemplate.
 	"simulate a broken zip archive)"
 	archive := (ByteArray readHexFrom: ((1 to: 50) collect: [ :x| '0123456789ABCDEF' atRandom ])) readStream.

@@ -18,7 +18,6 @@ Class {
 	#classVars : [
 		'Default',
 		'IsDeployed',
-		'TemplateRepository',
 		'TemplatesClearedOnStartup'
 	],
 	#classInstVars : [
@@ -181,12 +180,6 @@ PharoLauncherApplication class >> reset [
 
    Default reset.
 	Default := nil
-]
-
-{ #category : 'initialization' }
-PharoLauncherApplication class >> resetTemplateRepository [
-
-	TemplateRepository := nil
 ]
 
 { #category : 'settings' }
@@ -409,6 +402,7 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 PharoLauncherApplication >> prepareAsStandaloneApplication [
 	
 	standalone := true.
+	self class default: self.
 	
 	"I do not want the morphic world... nor the idle process annoying us"
 	Smalltalk vm isRunningInWorkerThread 

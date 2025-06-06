@@ -139,7 +139,7 @@ PharoLauncherCLIConfiguration >> initialize [
 	vmsDirectory := (FileLocator launcherUserFilesLocation / 'vms') asFileReference.
 	initScriptsDirectory := PharoLauncherApplication 
 		defaultInitializationScriptLocation asFileReference.
-	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell
+	launchImageFromALoginShell := PhLDefaultLaunchConfiguration launchInALoginShell
 ]
 
 { #category : 'accessing' }

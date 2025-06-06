@@ -58,7 +58,8 @@ PhLTestApplication >> label: aString [
 
 { #category : 'events' }
 PhLTestApplication >> launchConfigurationEdited: aPhLLaunchConfiguration [ 
-	"do nothing"
+	
+	imagesPresenter ifNotNil: [ super launchConfigurationEdited: aPhLLaunchConfiguration ]
 ]
 
 { #category : 'confirmation' }

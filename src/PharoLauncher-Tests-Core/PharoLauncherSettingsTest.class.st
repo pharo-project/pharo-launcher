@@ -29,7 +29,7 @@ PharoLauncherSettingsTest >> setUp [
 	templatesClearedOnStartup := PharoLauncherApplication templatesClearedOnStartup.
 	checkTemplateSourcesUpdate := PhLTemplateSourcesUpdateChecker shouldRun.
 	quitOnLaunch := PhLLaunchImageCommand quitOnLaunch.
-	launchInALoginShell := PhLLaunchConfiguration launchInALoginShell.
+	launchInALoginShell := PhLDefaultLaunchConfiguration launchInALoginShell.
 	warnOnArchMismatch := PhLLaunchImageCommand warnOnArchMismatch.
 	sourcesUrl := PhLPharoTemplateSources sourcesUrl.
 	imagesLocation := PhLDirectoryBasedImageRepository locationString.
@@ -92,10 +92,10 @@ PharoLauncherSettingsTest >> testCanSetInitializationScriptsLocation [
 PharoLauncherSettingsTest >> testCanSetLaunchInALoginShell [
 
 	settings launchInALoginShell: false.
-	self deny: PhLLaunchConfiguration launchInALoginShell.
+	self deny: PhLDefaultLaunchConfiguration launchInALoginShell.
 	
 	settings launchInALoginShell: true.
-	self assert: PhLLaunchConfiguration launchInALoginShell
+	self assert: PhLDefaultLaunchConfiguration launchInALoginShell
 ]
 
 { #category : 'tests' }
@@ -173,13 +173,17 @@ PharoLauncherSettingsTest >> testCanSetWarnOnImageArchitectureMismatch [
 { #category : 'tests' }
 PharoLauncherSettingsTest >> testCanStoreSettings [
 
-	| stonString |
+	| stonString expextedSettingSerialization |
 	stonString := STON toStringPretty: settings.
-	
-	self assert: (stonString withInternetLineEndings beginsWith: '[', String cr).
-	self assert: (stonString withInternetLineEndings includesSubstring: 
-		'	StoredSetting {
+	expextedSettingSerialization := '	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
-	},' withInternetLineEndings).
+	}'.
+	
+	self 
+		assert: (stonString withInternetLineEndings beginsWith: '[', String cr)
+		description: 'Serialization is not an array: ', stonString withInternetLineEndings.
+	self 
+		assert: (stonString withInternetLineEndings includesSubstring: expextedSettingSerialization withInternetLineEndings)
+		description: 'Setting node serialization is not the one expected:', stonString withInternetLineEndings
 ]

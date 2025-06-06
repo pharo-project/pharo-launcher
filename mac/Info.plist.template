@@ -28,6 +28,15 @@
 	<string>Pharo Launcher</string>
 	<key>PharoImageFile</key>
 	<string>PharoLauncher.image</string>
+	<key>PharoHeadless</key>
+	<true/>
+	<key>PharoWorker</key>
+	<true/>
+	<key>PharoImageParameters</key>
+	<array>
+		<string>run</string>
+		<string>launcher</string>
+	</array>
 	<key>PharoLogLevel</key>
 	<integer>1</integer>
 	<key>CFBundleDocumentTypes</key>

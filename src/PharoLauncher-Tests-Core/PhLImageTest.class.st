@@ -81,14 +81,14 @@ PhLImageTest >> testCanInitializeImageFromMetadatafile [
 { #category : 'tests' }
 PhLImageTest >> testCanSerializeAndDeserializeImageLaunchConfigurationMetadata [
 	| deserializedImage launchConfig deserializedLaunchConfig |
-	image 	launchConfigurations. "Add default launch ocnfig to the list of configurations"
-	launchConfig := image defaultLaunchConfiguration 
+	launchConfig := image defaultLaunchConfiguration asLaunchConfiguration
 		imageArguments: #('foo');
 		vmArguments: #(1 2);
 		yourself.
-		
+	image addLaunchConfiguration: launchConfig.
+	
 	deserializedImage := STON fromString: image stonString.
-	deserializedLaunchConfig := deserializedImage defaultLaunchConfiguration.
+	deserializedLaunchConfig := deserializedImage launchConfigurations first.
 
 	self
 		assert: deserializedLaunchConfig name 
@@ -133,23 +133,6 @@ PhLImageTest >> testCanSerializeAndDeserializeImageMetadata [
 ]
 
 { #category : 'tests' }
-PhLImageTest >> testDefaultLaunchConfigurationIsRetrievedFromConfigurationListWhenAvailable [
-	| config |
-
-	config := image defaultLaunchConfiguration.
-	config imageArguments: #( #foo ).
-	image launchConfigurations: { config }.
-		
-	self 
-		assert: image defaultLaunchConfiguration
-		equals: config.
-		
-	self 
-		assert: image defaultLaunchConfiguration imageArguments
-		equals: #( #foo ).
-]
-
-{ #category : 'tests' }
 PhLImageTest >> testDescriptionIsSetWhenNoDescriptionInMetadataButDescriptionFileExists [
 	| desc |
 	image description: nil.
@@ -179,11 +162,12 @@ PhLImageTest >> testImageNameIsValidWithLettersAndNumbers [
 
 { #category : 'tests' }
 PhLImageTest >> testPhLImageSerialization [
-	| stonString |
+	| stonString config |
 	(image file parent / image class versionFileName)
 		writeStreamDo: [ :stream | stream nextPutAll: self currentImageVersion ].
-	image launchConfigurations. "create default configuration"
-	image defaultLaunchConfiguration vm: self createFakeVM. "Avoid to download a VM"
+	config := image defaultLaunchConfiguration asLaunchConfiguration.
+	config vm: self createFakeVM. "Avoid to download a VM"
+	image addLaunchConfiguration: config.
 	image vmManager imageFile: FileLocator launcherImagesLocation / (image name , '.image'). "do not serialize a memory FS"
 	
 	stonString := image stonString.

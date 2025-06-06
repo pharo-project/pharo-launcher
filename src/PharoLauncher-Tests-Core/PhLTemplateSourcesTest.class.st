@@ -64,6 +64,19 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 ]
 
 { #category : 'tests' }
+PhLTemplateSourcesTest >> testCanForceTemplateSourcesUpdateWhenSourcesAlreadySet [
+	| templateSources |
+	sourcesFile ensureCreateFile.	
+	templateSources := PhLPharoTemplateSources withFile: sourcesFile. 
+	self assert: templateSources sources equals: #().
+
+	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: '''updated sources''' ].
+	templateSources forceTemplateSourcesUpdate.
+	
+	self assert: templateSources sources equals: 'updated sources'
+]
+
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testGivenUserSourcesFileAbsentWhenAskingUserSourcesThenGetEmptyCollection [
 	| sources |
 	self deny: sourcesFile exists.

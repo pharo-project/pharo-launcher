@@ -392,10 +392,8 @@ PhLImage >> launch [
 
 { #category : 'accessing' }
 PhLImage >> launchConfigurations [
-	^ launchConfigurations
-		ifEmpty: [ launchConfigurations 
-						add: self defaultLaunchConfiguration;
-						yourself ]
+	^ launchConfigurations copy
+		ifEmpty: [ OrderedCollection with: self defaultLaunchConfiguration ]
 ]
 
 { #category : 'accessing' }
@@ -521,6 +519,13 @@ PhLImage >> printOn: aStream [
 PhLImage >> privOriginTemplate: aPhLTemplate [
 	
 	originTemplate := aPhLTemplate.
+]
+
+{ #category : 'configuring' }
+PhLImage >> removeLaunchConfiguration: aPhLLaunchConfiguration [
+	launchConfigurations 
+		detect: [ :each | each name = aPhLLaunchConfiguration name ]
+		ifFound: [ launchConfigurations remove: aPhLLaunchConfiguration ]
 ]
 
 { #category : 'serialization' }

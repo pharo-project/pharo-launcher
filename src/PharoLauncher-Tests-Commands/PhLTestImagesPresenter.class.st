@@ -17,12 +17,12 @@ PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
 	imageTable clickOnColumnHeaderAt: anIndex
 ]
 
-{ #category : 'selection' }
+{ #category : 'image creation' }
 PhLTestImagesPresenter >> createImageNamed: aString [
 	^ self model createImageNamed: aString 
 ]
 
-{ #category : 'selection' }
+{ #category : 'image creation' }
 PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
 	^ self model createImageNamed: aString in: aPathString
 ]
@@ -32,7 +32,7 @@ PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection isNotNil ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
 PhLTestImagesPresenter >> imageActionButtons [
 	
 	^ descriptionPanel imageActionButtons
@@ -63,7 +63,7 @@ PhLTestImagesPresenter >> initialize [
 
 { #category : 'accessing' }
 PhLTestImagesPresenter >> launchConfigurations [
-	^ launchConfigurationList listItems allButFirst
+	^ descriptionPanel launchConfigurations
 ]
 
 { #category : 'user interaction' }
@@ -114,7 +114,7 @@ PhLTestImagesPresenter >> singleImage [
 				ifNotNil: [ selection first ] ]
 ]
 
-{ #category : 'selection' }
+{ #category : 'api - selection' }
 PhLTestImagesPresenter >> singleImageName [
 	^ self model singleImageName
 ]
@@ -124,7 +124,13 @@ PhLTestImagesPresenter >> templateRepository [
 	^ application templateRepository
 ]
 
-{ #category : 'selecting' }
+{ #category : 'api - selection' }
 PhLTestImagesPresenter >> unselectAll [
 	imageTable unselectAll.
+]
+
+{ #category : 'updating' }
+PhLTestImagesPresenter >> updateImageDetails [
+
+	descriptionPanel model: descriptionPanel model
 ]

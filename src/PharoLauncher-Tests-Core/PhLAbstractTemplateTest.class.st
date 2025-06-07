@@ -29,19 +29,20 @@ PhLAbstractTemplateTest >> setUp [
 
 { #category : 'tests' }
 PhLAbstractTemplateTest >> testCanRelocateImageFileWhenNotInZipArchiveRoot [
-	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory |
+	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory imageName |
 	template := self newTemplate.
 	folder := (root / 'level1' / 'level2' / 'imageFolder') ensureCreateDirectory.
 	imageToBeRenamed := (folder / 'file.image') ensureCreateFile.
 	changesFileToBeRenamed := (folder / 'file.changes') ensureCreateFile.
 	someOtherFile := (folder / 'foo.css') ensureCreateFile.
-	targetDirectory := root / 'target'.
+	imageName := 'foo'.
+	targetDirectory := root / imageName.
 
 	template relocateImageFilesFrom: folder to: targetDirectory.
 
-	self assert: (targetDirectory / template name , 'image') exists.
+	self assert: (targetDirectory / imageName , 'image') exists.
 	self deny: imageToBeRenamed exists.
-	self assert: (targetDirectory / template name , 'changes') exists.
+	self assert: (targetDirectory / imageName , 'changes') exists.
 	self deny: changesFileToBeRenamed exists.
 	self assert: (targetDirectory / someOtherFile basename) exists
 ]
@@ -76,19 +77,20 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 
 { #category : 'tests' }
 PhLAbstractTemplateTest >> testRenameImageFilesFromToWithName [
-	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory |
+	| template folder imageToBeRenamed changesFileToBeRenamed someOtherFile targetDirectory imageName |
 	template := self newTemplate.
 	folder := (root / 'imageFolder') ensureCreateDirectory.
 	imageToBeRenamed := (folder / 'file.image') ensureCreateFile.
 	changesFileToBeRenamed := (folder / 'file.changes') ensureCreateFile.
 	someOtherFile := (folder / 'foo.css') ensureCreateFile.
-	targetDirectory := root / 'target'.
+	imageName := 'foo'.
+	targetDirectory := root / imageName.
 
 	template relocateImageFilesFrom: folder to: targetDirectory.
 
-	self assert: (targetDirectory / template name , 'image') exists.
+	self assert: (targetDirectory / imageName , 'image') exists.
 	self deny: imageToBeRenamed exists.
-	self assert: (targetDirectory / template name , 'changes') exists.
+	self assert: (targetDirectory / imageName , 'changes') exists.
 	self deny: changesFileToBeRenamed exists.
 	self assert: (targetDirectory / someOtherFile basename) exists
 ]

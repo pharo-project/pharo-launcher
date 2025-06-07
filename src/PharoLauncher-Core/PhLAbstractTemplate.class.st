@@ -90,24 +90,24 @@ PhLAbstractTemplate >> relocateImageFilesFrom: aDirectory to: targetDirectory [
 	
 	imageFile := aDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	
 		
-	self renameFilesIfNeeded: imageFile.
+	self renameFilesIfNeeded: imageFile to: targetDirectory basename.
 	targetDirectory ensureCreateDirectory.
 	imageFile parent allFiles 
 		do: [ :each | each moveTo: targetDirectory ]
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> renameFilesIfNeeded: imageFile [
+PhLAbstractTemplate >> renameFilesIfNeeded: imageFile to: newName [
 	| changesFile |
 		
-	imageFile basename = (self name , '.image')
+	imageFile basename = (newName , '.image')
 		ifTrue: [ ^ self "no need to rename" ].
 
 	"A changes file must have the same name and be in the same directory as the image file"
 	changesFile := imageFile parent / imageFile basenameWithoutExtension , 'changes'.
 
-	imageFile renameTo: self name , '.image'.
-	changesFile renameTo: self name , '.changes'
+	imageFile renameTo: newName , '.image'.
+	changesFile renameTo: newName , '.changes'
 ]
 
 { #category : 'actions' }

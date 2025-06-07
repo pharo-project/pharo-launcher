@@ -54,7 +54,7 @@ PhLAbstractTemplateTest >> testHandleEOCDErrorWhenTemplateIsCorrupted [
 	archive := (ByteArray readHexFrom: ((1 to: 50) collect: [ :x| '0123456789ABCDEF' atRandom ])) readStream.
 
 	self 
-		should: [ template extractZipArchive: archive ]
+		should: [ template extractZipArchive: archive into: root ]
 		raise: PhLCorruptedTemplateError 
 ]
 
@@ -70,7 +70,7 @@ PhLAbstractTemplateTest >> testNoEOCDErrorWhenTemplateIsOk [
 		archive writeTo: stream ].
 	
 	self 
-		shouldnt: [ template extractZipArchive: archiveFile ]
+		shouldnt: [ template extractZipArchive: archiveFile into: root ]
 		raise: PhLCorruptedTemplateError
 ]
 

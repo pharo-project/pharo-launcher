@@ -17,53 +17,48 @@ Class {
 }
 
 { #category : 'actions' }
-PhLAbstractTemplate >> extractTo: aDirectory [
+PhLAbstractTemplate >> extractTo: targetDirectory [
 	"Extract myself to aDirectory. Name the resulting image aString"
-	
-	PharoLauncherApplication default 
+
+	PharoLauncherApplication default
 		pushProgress: 'Extract template'
-		with: [ :bar | | archive extractionDir |
-			bar label: 'Downloading zip archive';
-			current: 25.
+		with: [ :bar |
+			| archive extractionDir |
+			bar
+				label: 'Downloading zip archive';
+				current: 25.
 			archive := self zipArchive.
-			bar label: 'Extracting archive to target directory';
-			current: 75.
-			extractionDir := self extractZipArchive: archive.
-			self relocateImageFilesFrom: extractionDir to: aDirectory.
-			extractionDir ensureDeleteAll.
-	].
+			bar
+				label: 'Extracting archive to target directory';
+				current: 75.
+			extractionDir := targetDirectory / 'private-extracted'.
+			[ self extractZipArchive: archive into: extractionDir.
+			  self relocateImageFilesFrom: extractionDir to: targetDirectory ]
+				ensure: [ extractionDir ensureDeleteAll ] ].
 	"Will serialize image metadata with the template information"
-	^ (PhLImage location: aDirectory / self name , 'image') 
-		originTemplate: self.
+	^ (PhLImage location: targetDirectory / self name , 'image')
+		  originTemplate: self
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> extractZipArchive: zipFile [
+PhLAbstractTemplate >> extractZipArchive: zipFile into: targetDirectory [
 	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
-	| tempDirectory |
-	
 	PharoLauncherApplication default
 		pushProgress: ('Extracting {1}' format: { zipFile isStream ifTrue: [ '' ] ifFalse: [ zipFile basename ] }) 
 		with: [ :bar | | zip |	
-			"We have to go through a temporary directory because we don't know where 
-			 the interesting files are in the archive (maybe at the root or maybe in 
-			 a subdirectory)"
-			tempDirectory := FileLocator temp / (self name, '-', DateAndTime millisecondClockValue asString).
 			"It will crash if directory already exists. And that's good :-)"
-			tempDirectory createDirectory. 
+			targetDirectory createDirectory. 
 			[
 				zip := ZipArchive new.
 				zip readFrom: zipFile.
 				bar max: zip numberOfMembers.
-				zip extractAllTo: tempDirectory informing: bar.
+				zip extractAllTo: targetDirectory informing: bar.
 			]
 			on: Error
 			do: [ :error | 
 				error messageText = 'can''t find EOCD position'
 					ifTrue: [ PhLCorruptedTemplateError signal ]
-					ifFalse: [ error pass ] ] ].
-
-	^ tempDirectory
+					ifFalse: [ error pass ] ] ]
 ]
 
 { #category : 'testing' }
@@ -96,7 +91,9 @@ PhLAbstractTemplate >> relocateImageFilesFrom: aDirectory to: targetDirectory [
 	imageFile := aDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	
 		
 	self renameFilesIfNeeded: imageFile.
-	imageFile parent moveTo: targetDirectory
+	targetDirectory ensureCreateDirectory.
+	imageFile parent allFiles 
+		do: [ :each | each moveTo: targetDirectory ]
 ]
 
 { #category : 'private' }

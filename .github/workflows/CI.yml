@@ -131,7 +131,7 @@ jobs:
       - name: Prepare files
         shell: pwsh
         run: |
-          Invoke-WebRequest -OutFile pharo-win-stable-signed.zip -Uri http://files.pharo.org/get-files/${{ env.PHARO }}/pharo-win-stable-signed.zip
+          Invoke-WebRequest -OutFile pharo-win-stable-signed.zip -Uri https://files.pharo.org/get-files/${{ env.PHARO }}/pharo-vm-Windows-x86_64-gtk-stable-signed.zip
           Expand-Archive -LiteralPath .\pharo-win-stable-signed.zip -DestinationPath $Env:PACKAGE_DIR
           $Env:IMAGES_DIR = "${Env:PACKAGE_DIR}\images"
           mkdir "$Env:IMAGES_DIR"

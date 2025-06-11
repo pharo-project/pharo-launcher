@@ -18,4 +18,4 @@ gvfs-set-attribute \
 image="$RESOURCES/PharoLauncher.image"
  
 # execute
-exec "$LINUX/pharo" "$image"
+exec "$LINUX/pharo" --headless --worker "$image" run launcher

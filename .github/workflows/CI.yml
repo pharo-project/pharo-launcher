@@ -179,7 +179,7 @@ jobs:
             $shortcut = $project.ShortcutsComponent.Shortcuts[$index]
             $shortcut.Icon($Env:PHARO_LAUNCHER_ICON)
             $shortcut.Name = 'Pharo Launcher'
-            $shortcut.Arguments = 'PharoLauncher.image'
+            $shortcut.Arguments = "PharoLauncher.image run launcher"
           }
 
           $outputFolder = "${{ github.workspace }}\setup";

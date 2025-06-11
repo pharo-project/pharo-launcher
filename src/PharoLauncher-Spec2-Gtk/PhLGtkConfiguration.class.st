@@ -105,6 +105,10 @@ box.welcomeThemeSelected {
 	min-width: 120px;
 	min-height: 120px;
 }
+.stToolbar label {
+	font-weight: normal;
+	color: var(--text-color);
+}
 '
 ]
 

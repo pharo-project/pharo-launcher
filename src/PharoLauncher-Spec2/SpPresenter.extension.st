@@ -4,6 +4,7 @@ Extension { #name : 'SpPresenter' }
 SpPresenter >> newLaunchToolbar [
 
 	^ self newToolbar
+		addStyle: 'stToolbar';
 		addStyle: 'compact';
 		yourself
 ]

@@ -29,6 +29,9 @@ PhLGtkConfiguration >> isDarkTheme [
 PhLGtkConfiguration >> launcherStyle [
 
 	^ '
+label {  
+	color: var(--text-color)
+}
 label.list_header { 
 	padding: 8px;
 	font-weight: bold;
@@ -55,9 +58,6 @@ grid.form, box.settings_form {
 	margin: 10px 10px 0px 10px;
 	padding: 15px 30px 15px 30px;
 	border-spacing: 0px;
-}
-.welcomeThemeImage image { 
-	min-width: 200px;
 }
 /* box inside a form */
 box.settings_form box {
@@ -91,15 +91,29 @@ box.choice_area checkbutton {
 box.choice_area checkbutton label { 
 	margin-left: 10px;
 }
+
+box.appearance {  
+	margin: 10px;
+	padding: 5px;
+}
+
 box.welcomeThemeImage { 
 	min-width: 280px;
 	min-height: 280px;
-	margin-top: 20px;
+	margin: 20px 0px 0px 0px;
 	padding: 5px;
-	color: var(--accent-fg-color);
+	/* color: var(--accent-fg-color); */
+}
+box.welcomeThemeImage image { 
+	min-width: 180px;
+}
+box.welcomeThemeImage label { 
+	color: var(--text-color);
 }
 box.welcomeThemeSelected {
 	background-color: var(--accent-bg-color);
+}
+box.welcomeThemeSelected label {
 }
 .aboutIcon { 
 	min-width: 120px;

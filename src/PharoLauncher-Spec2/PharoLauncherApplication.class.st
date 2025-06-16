@@ -23,8 +23,9 @@ Class {
 	#classInstVars : [
 		'pharoIcon'
 	],
-	#category : 'PharoLauncher-Spec2',
-	#package : 'PharoLauncher-Spec2'
+	#category : 'PharoLauncher-Spec2-Application',
+	#package : 'PharoLauncher-Spec2',
+	#tag : 'Application'
 }
 
 { #category : 'activation' }

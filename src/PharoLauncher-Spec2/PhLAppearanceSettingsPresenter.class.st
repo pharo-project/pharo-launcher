@@ -6,7 +6,8 @@ Class {
 	#superclass : 'PhLAbstractSettingsPresenter',
 	#instVars : [
 		'lightThemePresenter',
-		'darkThemePresenter'
+		'darkThemePresenter',
+		'fontSizePresenter'
 	],
 	#category : 'PharoLauncher-Spec2-View-Settings',
 	#package : 'PharoLauncher-Spec2',
@@ -76,7 +77,7 @@ PhLAppearanceSettingsPresenter >> newThemePresenter: aTheme [
 		yourself).
 		
 	labelPresenter label: aTheme name.
-	labelPresenter addStyle: 'subtitle'.
+	"labelPresenter addStyle: 'subtitle'."
 
 	imagePresenter image: aTheme image.
 	imagePresenter addStyle: 'image'.

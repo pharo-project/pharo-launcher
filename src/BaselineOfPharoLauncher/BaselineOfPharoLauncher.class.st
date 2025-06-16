@@ -86,7 +86,7 @@ BaselineOfPharoLauncher >> interactions: spec [
 
 	spec 
 		baseline: #Interactions
-		with: [ spec repository: 'github://pharo-contributions/interactions' ]
+		with: [ spec repository: 'github://pharo-contributions/interactions:gtk4' ]
 ]
 
 { #category : 'external projects' }

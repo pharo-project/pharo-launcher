@@ -179,6 +179,7 @@ PhLPharoTemplateSources >> file [
 PhLPharoTemplateSources >> forceTemplateSourcesUpdate [
 
 	self removeDownloadedSources.
+	file ensureDelete.
 	self ensureSourcesFile.
 	PharoLauncherApplication default resetTemplateRepository
 ]

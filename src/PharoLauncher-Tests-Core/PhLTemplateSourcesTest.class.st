@@ -65,15 +65,20 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 
 { #category : 'tests' }
 PhLTemplateSourcesTest >> testCanForceTemplateSourcesUpdateWhenSourcesAlreadySet [
-	| templateSources |
-	sourcesFile ensureCreateFile.	
+	| templateSources downloadedSourcesFile expectedSources |
+	sourcesFile ensureCreateFile.
 	templateSources := PhLPharoTemplateSources withFile: sourcesFile. 
+	downloadedSourcesFile := sourcesFile copyWithPath: templateSources downloadedSourcesFile path.
+	downloadedSourcesFile  writeStreamDo: [ :stream | stream nextPutAll: '''downloaded sources''' ].
+	expectedSources := OrderedCollection with: PhLTemplateSource pharo60.
+	
 	self assert: templateSources sources equals: #().
 
-	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: '''updated sources''' ].
-	templateSources forceTemplateSourcesUpdate.
+	PhLDownloadManagerMock during: [ :mock |
+		mock defaultResponse: (STON toStringPretty: expectedSources).
+		templateSources forceTemplateSourcesUpdate ].
 	
-	self assert: templateSources sources equals: 'updated sources'
+	self assert: templateSources sources equals: expectedSources
 ]
 
 { #category : 'tests' }

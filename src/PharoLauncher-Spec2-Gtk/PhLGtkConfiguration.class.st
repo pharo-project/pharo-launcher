@@ -19,13 +19,35 @@ PhLGtkConfiguration >> configureGeneral: anApplication [
 		aThemeClass uniqueInstance activateOn: anApplication ]
 ]
 
+{ #category : 'configuring' }
+PhLGtkConfiguration >> configureOSX: anApplication [
+
+	super configureOSX: anApplication.
+	self addCSSProviderFromString: self macOSStyle
+]
+
+{ #category : 'configuring' }
+PhLGtkConfiguration >> configureWindows: anApplication [
+
+	super configureWindows: anApplication.
+	self addCSSProviderFromString: self windowsStyle
+]
+
+{ #category : 'initialization' }
+PhLGtkConfiguration >> initialize [ 
+
+	super initialize.
+	self applicationId: 'org.pharo.PharoLauncher'.
+	self applicationClass: AdwApplication
+]
+
 { #category : 'testing' }
 PhLGtkConfiguration >> isDarkTheme [
 
 	^ GRunLoop defer: [ AdwStyleManager default isDark ]
 ]
 
-{ #category : 'configuring' }
+{ #category : 'accessing - styles' }
 PhLGtkConfiguration >> launcherStyle [
 
 	^ '
@@ -126,6 +148,14 @@ box.welcomeThemeSelected label {
 '
 ]
 
+{ #category : 'accessing - styles' }
+PhLGtkConfiguration >> macOSStyle [
+
+	^ '* {
+  font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
+}'
+]
+
 { #category : 'configuring' }
 PhLGtkConfiguration >> switchThemeToDark [
 
@@ -136,4 +166,13 @@ PhLGtkConfiguration >> switchThemeToDark [
 PhLGtkConfiguration >> switchThemeToLight [
 
 	GRunLoop defer: [ AdwStyleManager default forceLight ]
+]
+
+{ #category : 'accessing - styles' }
+PhLGtkConfiguration >> windowsStyle [
+
+	^ '* { 
+	font-family: "Segoe UI", Tahoma, sans-serif;
+}
+'
 ]

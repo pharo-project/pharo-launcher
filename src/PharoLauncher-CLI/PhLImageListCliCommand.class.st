@@ -33,7 +33,7 @@ PhLImageListCliCommand class >> asCliCommand [
 { #category : 'command line' }
 PhLImageListCliCommand class >> launcherCmdDescription [
 
-	^ 'Lists all local images from Pharo laucher repository.'
+	^ 'Lists all local images from Pharo launcher repository.'
 ]
 
 { #category : 'command execution' }

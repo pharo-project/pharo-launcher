@@ -16,7 +16,7 @@ Use: `pharo-launcher <command>`
 |         | [delete](#image-delete)    | | Deletes the local image, including image directory content. |
 |         | [info](#image-info)      | | Prints information about image: name, description, origin template, etc. |
 |         | [launch](#image-launch)  | | Launches image with using default (auto-detected) VM. |
-|         | [list](#image-list)     | | Lists all local images from Pharo laucher repository. |
+|         | [list](#image-list)     | | Lists all local images from Pharo launcher repository. |
 |         | [package](#image-package)     | | Creates a package containing all necessary artefacts to launch the image. |
 |         | [recreate](#image-recreate)     | | Recreates the local image, the image argument determines the image name to recreate. |
 | [process](#process) |         | | All sub-commands related to Pharo processes. (Prints help only) | 
@@ -90,7 +90,7 @@ You can list Pharo images again to check that image is deleted.
 ## Help  
 
 This is help for command line interface of Pharo Launcher.
-Common purpose of laucher is to create Pharo image locally from remote site template, launch Pharo, eventually delete an image, update VMs, etc.  
+Common purpose of launcher is to create Pharo image locally from remote site template, launch Pharo, eventually delete an image, update VMs, etc.  
 Run: `pharo-launcher help`
 
 # Image commands
@@ -328,7 +328,7 @@ pharo-launcher image launch "Pharo 7.0 - 32bit (new 23)" --script /script/path/m
 ```
 
 ## Image list
-Lists all local images from Pharo laucher repository.
+Lists all local images from Pharo launcher repository.
 
 ### Usage
 ```bash

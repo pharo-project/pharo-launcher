@@ -120,7 +120,7 @@ PhLCliCommand class >> isProductionCommandClass [
 
 { #category : 'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
-	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
+	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, launch Pharo, eventually delete image, update VMs, etc.'
 ]
 
 { #category : 'command line - instance creation' }
@@ -133,7 +133,7 @@ PhLCliCommand class >> launcherCommand [
 
 { #category : 'command line - description' }
 PhLCliCommand class >> launcherDescription [
-	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
+	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, launch Pharo, eventually delete image, update VMs, etc.'
 ]
 
 { #category : 'command line - instance creation' }

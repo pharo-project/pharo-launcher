@@ -13,6 +13,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Functional'
 }
 
+{ #category : 'utils' }
+PhLLaunchImageTest >> addHeadlessVmArgumentTo: aLaunchConfiguration [
+
+	aLaunchConfiguration vmArguments: (aLaunchConfiguration vmArguments copyWith: '--headless')
+]
+
 { #category : 'tests' }
 PhLLaunchImageTest >> copyCurrentImageToTestDir [
 	| image |
@@ -43,6 +49,15 @@ PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 		ifTrue: [ vmDirectory renameTo: vmId ].
 	
 	LibC runCommand: 'cp -R ' , vmDirectory fullName , ' ' , aDirectory fullName, '/' , vmId
+]
+
+{ #category : 'running' }
+PhLLaunchImageTest >> launchHeadless: anImage [
+
+	| config |
+	config := anImage defaultLaunchConfiguration.
+	self addHeadlessVmArgumentTo: config.
+	anImage launchWithConfiguration: config
 ]
 
 { #category : 'utils' }
@@ -131,6 +146,7 @@ PhLLaunchImageTest >> testCanRun64bitImageOn64BitOnlyOS [
 	config
 		vm: self pharo110x64Vm;
 		imageArguments: {'eval' . commandToEval}.
+	self addHeadlessVmArgumentTo: config.
 	
 	self 
 		shouldnt: [ process := image64 launchWithConfiguration: config ]
@@ -146,7 +162,7 @@ PhLLaunchImageTest >> testLaunchImageSetShouldRunInitilizationScriptToFalse [
 	
 	image := self copyCurrentImageToTestDir.
 	
-	image launch.
+	self launchHeadless: image.
 	2 seconds wait. "let time to the process to be launched, else test cleanup will interfer with process launch"
 	
 	image := PhLImage location: imageDir / FileLocator image basename. "read image metadata from disk"

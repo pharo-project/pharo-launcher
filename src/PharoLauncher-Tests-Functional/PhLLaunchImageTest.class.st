@@ -117,7 +117,7 @@ PhLLaunchImageTest >> testCanLaunchImageWithNonAsciiCharacters [
 	| image |
 	image := self copyCurrentImageToTestDir.
 
-	image launch.
+	self launchHeadless: image.
 	2 seconds wait. "let time to the process to be launched, else test cleanup will interfer with process launch"
 
 	"ensure image determination succeeded"

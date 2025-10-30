@@ -63,7 +63,7 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 }
 
  testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-     launchSampleImageCommand> /dev/null
+     launchSampleImageCommand > /dev/null
      result=$(processListCommand)
      kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
      assertContainsPrinted "$result" "$SAMPLE_IMAGE"
@@ -72,7 +72,7 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 # Following unit test is disabled due to the fact that there are running concurrent builds on CI that might be killed accidentally by this test
 
 # testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
-# 	launchSampleImageCommand> /dev/null
+# 	launchSampleImageCommand > /dev/null
 # 	result=$(processListCommand)
 # 	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
 # 	killAllCommand
@@ -81,7 +81,7 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 # }
 
  testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
- 	launchSampleImageCommand> /dev/null
+ 	launchSampleImageCommand > /dev/null
  	result=$(processListCommand)
  	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
  	killSampleImageCommand
@@ -95,7 +95,7 @@ oneTimeTearDown() {
 
 	echo "Running teardown..."
 	echo "Killing sample image (if running)."
-	kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
+	kill $(pgrep -l -f $SAMPLE_IMAGE.image | cut -d ' ' -f1) > /dev/null
 	echo "Deleting sample image."
 	deleteSampleImageCommand
 	echo "Cleaning launcher script and image."

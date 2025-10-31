@@ -45,8 +45,6 @@ updateVMforSampleImage () {
 
 oneTimeSetUp() {
     echo "Running oneTimeSetup..."
-    echo "Preparing launcher script and image."
-	prepareLauncherScriptAndImage
 	echo "Setting up image template list."
 	setupImageTemplateList
 	echo "Updating VM for running sample image."
@@ -98,8 +96,6 @@ oneTimeTearDown() {
 	kill $(pgrep -l -f $SAMPLE_IMAGE.image | cut -d ' ' -f1) > /dev/null
 	echo "Deleting sample image."
 	deleteSampleImageCommand
-	echo "Cleaning launcher script and image."
-	cleanupLauncherScriptAndImage
 	echo "Restoring original image template list."
 	restoreOriginalImageTemplateList
 }

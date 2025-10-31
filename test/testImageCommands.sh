@@ -7,27 +7,27 @@ source PharoLauncherCommonFunctions.sh
 ensureShunitIsPresent
 
 #setup sample image name and template name
-SAMPLE_IMAGE="PhLTestImage"
-SAMPLE_TEMPLATE="Pharo 10.0 - 64bit (stable)"
+TEST_IMAGE="PhLTestImage"
+TEST_TEMPLATE="Pharo 10.0 - 64bit (stable)"
 IMAGE_METADATA_FILE="meta-inf.ston"
-SAMPLE_IMAGE_PATH="$HOME"/Pharo/images/$SAMPLE_IMAGE
+TEST_IMAGE_PATH="$HOME"/Pharo/images/$TEST_IMAGE
 
 # setup commands for sample image manipulation
-createSampleImageCommand () {
-    runLauncherScript image create $SAMPLE_IMAGE --no-launch --templateName "$SAMPLE_TEMPLATE"
-    cp -f "$ROOT"/$IMAGE_METADATA_FILE $SAMPLE_IMAGE_PATH/$IMAGE_METADATA_FILE
+createTestImageCommand () {
+    runLauncherScript image create $TEST_IMAGE --no-launch --templateName "$TEST_TEMPLATE"
+    cp -f "$ROOT"/$IMAGE_METADATA_FILE $TEST_IMAGE_PATH/$IMAGE_METADATA_FILE
 }
 
-launchSampleImageCommand () {
-    runLauncherScript image launch --detached $SAMPLE_IMAGE
+launchTestImageCommand () {
+    runLauncherScript image launch --detached $TEST_IMAGE
 }
 
-killSampleImageCommand () {
-    runLauncherScript process kill $SAMPLE_IMAGE
+killTestImageCommand () {
+    runLauncherScript process kill $TEST_IMAGE
 }
 
-deleteSampleImageCommand () { 
-    runLauncherScript image delete --force $SAMPLE_IMAGE
+deleteTestImageCommand () { 
+    runLauncherScript image delete --force $TEST_IMAGE
 }
 
 processListCommand () {
@@ -38,7 +38,7 @@ killAllCommand () {
     runLauncherScript image kill --all
 }
 
-updateVMforSampleImage () {
+updateVMforTestImage () {
     runLauncherScript vm update 100-x64
 }
 
@@ -48,43 +48,43 @@ oneTimeSetUp() {
 	echo "Setting up image template list."
 	setupImageTemplateList
 	echo "Updating VM for running sample image."
-	updateVMforSampleImage
+	updateVMforTestImage
 	echo "Creating sample image."
-	createSampleImageCommand
+	createTestImageCommand
 }
 
 
 testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 	result=$(processListCommand)
 	#since VM prints some warnings, we need to check presence of image name from process list
-	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
+	assertNotContainsPrinted "$result" "$TEST_IMAGE"
 }
 
  testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-     launchSampleImageCommand > /dev/null
+     launchTestImageCommand > /dev/null
      result=$(processListCommand)
-     kill $(pgrep -l -f $SAMPLE_IMAGE.image |  cut -d ' ' -f1)> /dev/null
-     assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+     kill $(pgrep -l -f $TEST_IMAGE.image |  cut -d ' ' -f1)> /dev/null
+     assertContainsPrinted "$result" "$TEST_IMAGE"
  }
 
 # Following unit test is disabled due to the fact that there are running concurrent builds on CI that might be killed accidentally by this test
 
 # testLauncherKillAllCommandWithOneImageLaunchedShouldKillAll(){
-# 	launchSampleImageCommand > /dev/null
+# 	launchTestImageCommand > /dev/null
 # 	result=$(processListCommand)
-# 	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
+# 	assertContainsPrinted "$result" "$TEST_IMAGE"
 # 	killAllCommand
 # 	result=$(processListCommand)
-# 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
+# 	assertNotContainsPrinted "$result" "$TEST_IMAGE"
 # }
 
  testLauncherKillCommandWithOneImageLaunchedShouldKillIt(){
- 	launchSampleImageCommand > /dev/null
+ 	launchTestImageCommand > /dev/null
  	result=$(processListCommand)
- 	assertContainsPrinted "$result" "$SAMPLE_IMAGE"
- 	killSampleImageCommand
+ 	assertContainsPrinted "$result" "$TEST_IMAGE"
+ 	killTestImageCommand
  	result=$(processListCommand)
- 	assertNotContainsPrinted "$result" "$SAMPLE_IMAGE"
+ 	assertNotContainsPrinted "$result" "$TEST_IMAGE"
  }
 
 oneTimeTearDown() {
@@ -93,9 +93,9 @@ oneTimeTearDown() {
 
 	echo "Running teardown..."
 	echo "Killing sample image (if running)."
-	kill $(pgrep -l -f $SAMPLE_IMAGE.image | cut -d ' ' -f1) > /dev/null
+	kill $(pgrep -l -f $TEST_IMAGE.image | cut -d ' ' -f1) > /dev/null
 	echo "Deleting sample image."
-	deleteSampleImageCommand
+	deleteTestImageCommand
 	echo "Restoring original image template list."
 	restoreOriginalImageTemplateList
 }

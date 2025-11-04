@@ -14,7 +14,7 @@ PhLImageCliCommandTest >> addImageNamed: anImageName [
 { #category : 'adding' }
 PhLImageCliCommandTest >> addInputAnswer: anObject [
 
-	context pharoLauncherModel consoleInputRequest
+	self launcherModel consoleInputRequest
 		addAnswer: anObject
 ]
 
@@ -50,7 +50,7 @@ PhLImageCliCommandTest >> imageRepository [
 { #category : 'adding' }
 PhLImageCliCommandTest >> nbInputAnswerRead [
 
-	^ context pharoLauncherModel consoleInputRequest nbInputAnswerRead
+	^ self launcherModel consoleInputRequest nbInputAnswerRead
 ]
 
 { #category : 'running' }

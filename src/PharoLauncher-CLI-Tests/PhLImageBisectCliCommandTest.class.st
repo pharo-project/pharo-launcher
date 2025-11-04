@@ -15,13 +15,13 @@ PhLImageBisectCliCommandTest >> setUp [
 	super setUp.
 	outputStream := ZnBufferedWriteStream on:
 		                (ZnCharacterWriteStream on: ByteArray new writeStream).
-	context pharoLauncherModel consoleInputRequest outputStream: outputStream.
+	self launcherModel consoleInputRequest outputStream: outputStream.
 ]
 
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanAskfFirstKnownFaultyImage [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: '1'.
 	command builds: #(1 3 4 7 9).
@@ -34,7 +34,7 @@ PhLImageBisectCliCommandTest >> testCanAskfFirstKnownFaultyImage [
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanAskfLastKnownCorrectImage [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: '1'.
 	command builds: #(1 3 4 7 9).
@@ -47,7 +47,7 @@ PhLImageBisectCliCommandTest >> testCanAskfLastKnownCorrectImage [
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testCanSpecifyPharoVersion [
 	| command |
-	context arguments: #( 'launcher' 'image' 'bisect' '--pharoVersion' '11').
+	self context arguments: #( 'launcher' 'image' 'bisect' '--pharoVersion' '11').
 	command := context command.
 	
 	self assert: command pharoVersion equals: 11
@@ -56,7 +56,7 @@ PhLImageBisectCliCommandTest >> testCanSpecifyPharoVersion [
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageOnlyAcceptsValuesFromBuildValues [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: '2'.
 	self addInputAnswer: '1'.
@@ -71,7 +71,7 @@ PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageOnlyAcceptsValuesFromBu
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testFirstKnownFaultyImageTakesLastBuildValueIfNoInput [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: ''.
 	command builds: #(3 4 7 9).
@@ -91,7 +91,7 @@ PhLImageBisectCliCommandTest >> testGetPharoDevVersionWhenNoVersionSpecified [
 	devTemplate := self addTemplateNamed: 'Pharo 10 64bit (development version, latest)' inCategory: self defaultTemplateCategoryName.
 	devTemplate setName: devTemplate name url: 'https://files.pharo.org/image/100/latest-64.zip' asZnUrl.
 	
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 
 	self
 		assert: context command pharoVersion
@@ -101,7 +101,7 @@ PhLImageBisectCliCommandTest >> testGetPharoDevVersionWhenNoVersionSpecified [
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testLastKnownCorrectImageOnlyAcceptsValuesFromBuildValues [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: '2'.
 	self addInputAnswer: '1'.
@@ -116,7 +116,7 @@ PhLImageBisectCliCommandTest >> testLastKnownCorrectImageOnlyAcceptsValuesFromBu
 { #category : 'tests' }
 PhLImageBisectCliCommandTest >> testLastKnownCorrectImageTakesFirstBuildValueIfNoInput [
 	| answer command |
-	context arguments: #( 'launcher' 'image' 'bisect' ).
+	self context arguments: #( 'launcher' 'image' 'bisect' ).
 	command := context command.
 	self addInputAnswer: ''.
 	command builds: #(3 4 7 9).

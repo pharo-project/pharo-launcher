@@ -11,7 +11,7 @@ PhLImageCreateFromPullRequestCliCommandTest >> testExecuteFromPR [
 
 	| command |
 
-	command := (context arguments: #('launcher' 'image' 'create' 'fromPR' '9588')) command.
+	command := (self context arguments: #('launcher' 'image' 'create' 'fromPR' '9588')) command.
 	command imageFinderClass: PhLImageFinderStub.
 	
 	command execute.

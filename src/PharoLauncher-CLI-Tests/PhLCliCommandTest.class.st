@@ -2,7 +2,8 @@ Class {
 	#name : 'PhLCliCommandTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'context'
+		'context',
+		'launcherModel'
 	],
 	#category : 'PharoLauncher-CLI-Tests-Commands',
 	#package : 'PharoLauncher-CLI-Tests',
@@ -30,6 +31,11 @@ PhLCliCommandTest >> assertSuccess [
 	self assert: self errorString equals: ''
 ]
 
+{ #category : 'accessing' }
+PhLCliCommandTest >> context [
+	^ context ifNil: [ context := ClapContext specification: PhLCliCommand launcherCommand ]
+]
+
 { #category : 'instance' }
 PhLCliCommandTest >> defaultTemplateCategoryName [
 
@@ -43,13 +49,13 @@ PhLCliCommandTest >> errorString [
 
 { #category : 'accessing' }
 PhLCliCommandTest >> launcherModel [
-	^ context pharoLauncherModel
+	^ launcherModel
 ]
 
 { #category : 'resetting' }
 PhLCliCommandTest >> outputReset [
 	"this is for test purposes only, to have clear output, when asserting contents"
-	context stdio stdout resetContents
+	self context stdio stdout resetContents
 ]
 
 { #category : 'accessing' }
@@ -57,16 +63,27 @@ PhLCliCommandTest >> outputString [
 	^ context stdio stdout contents utf8Decoded
 ]
 
+{ #category : 'private' }
+PhLCliCommandTest >> runCase [ 
+
+	PhLCliCommand 
+		launcherModelInitializationBlock: [ :command | 
+			command pharoLauncherModel: launcherModel.
+			launcherModel consoleInputRequest outputStream: command context stdout ]
+		during: [ super runCase ]
+]
+
 { #category : 'process actions' }
 PhLCliCommandTest >> runCommand: args [
-	^ (context arguments: args) execute.
+	^ (self context arguments: args) execute.
 ]
 
 { #category : 'running' }
 PhLCliCommandTest >> setUp [
 
 	super setUp.
-	context := PhLCliTestClapContext specification: PhLCliCommand launcherCommand.
+	launcherModel := PharoLauncherCLIModel fromDefaultConfiguration.
+	launcherModel consoleInputRequest: ConsoleInputRequestMock new.
 ]
 
 { #category : 'tests' }
@@ -177,6 +194,6 @@ PhLCliCommandTest >> testPositionalWithValue [
 { #category : 'printing' }
 PhLCliCommandTest >> validationReportFor: args [
 
-	context arguments: args; match.
-	^ context allValidations
+	self context arguments: args; match.
+	^ self context allValidations
 ]

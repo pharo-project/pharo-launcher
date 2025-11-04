@@ -20,6 +20,9 @@ Class {
 		'cliFormatter',
 		'cliInputRequest'
 	],
+	#classVars : [
+		'LauncherModelInitializationBlock'
+	],
 	#category : 'PharoLauncher-CLI-Commands',
 	#package : 'PharoLauncher-CLI',
 	#tag : 'Commands'
@@ -136,6 +139,30 @@ PhLCliCommand class >> launcherDescription [
 	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, launch Pharo, eventually delete image, update VMs, etc.'
 ]
 
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock [
+
+	^ LauncherModelInitializationBlock ifNil: [ [ :command | "No specific initialization by default" ] ]
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock: aBlock [
+
+	LauncherModelInitializationBlock := aBlock
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock: initBlock during: aBlock [
+
+	"Used to set a different model during testing"
+	| oldInitBlock |
+	
+	oldInitBlock := self launcherModelInitializationBlock.
+	[ self launcherModelInitializationBlock: initBlock.
+	aBlock value ]
+		ensure: [ self launcherModelInitializationBlock: oldInitBlock ]
+]
+
 { #category : 'command line - instance creation' }
 PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [ 
 	"factory for pharo launcher commands"
@@ -163,6 +190,18 @@ PhLCliCommand class >> productionCommandSubclasses [
 PhLCliCommand class >> raiseMissingDelimiter [
 
 	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> with: aClapContext [
+
+	| command |
+	
+	command := super with: aClapContext.
+	self launcherModelInitializationBlock value: command.
+	^ command
+			
+	
 ]
 
 { #category : 'command execution' }
@@ -287,7 +326,7 @@ PhLCliCommand >> implicitDelimiter [
 { #category : 'initialization' }
 PhLCliCommand >> initialize [
 	super initialize.
-	self cliFormatter: (ConsoleListFormatter on: self).
+	self cliFormatter: (ConsoleListFormatter on: self)
 ]
 
 { #category : 'default' }
@@ -399,7 +438,7 @@ PhLCliCommand >> outputAsSton [
 
 { #category : 'accessing' }
 PhLCliCommand >> pharoLauncherModel [
-	^ pharoLauncherModel ifNil: [ pharoLauncherModel := self context pharoLauncherModel ]
+	^ pharoLauncherModel ifNil: [ pharoLauncherModel := PharoLauncherCLIModel fromDefaultConfiguration ]
 ]
 
 { #category : 'accessing' }

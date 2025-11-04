@@ -1,6 +1,6 @@
 "
 Model used both for the test and the normal execution. 
-When it is used by a user, dafault configuration is used.
+When it is used by a user, default configuration is used.
 When it is used for tests, repositories are replaced by mocks.
 "
 Class {

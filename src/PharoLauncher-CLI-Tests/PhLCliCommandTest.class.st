@@ -64,13 +64,13 @@ PhLCliCommandTest >> outputString [
 ]
 
 { #category : 'private' }
-PhLCliCommandTest >> runCase [ 
+PhLCliCommandTest >> performTest [ 
 
 	PhLCliCommand 
 		launcherModelInitializationBlock: [ :command | 
 			command pharoLauncherModel: launcherModel.
 			launcherModel consoleInputRequest outputStream: command context stdout ]
-		during: [ super runCase ]
+		during: [ super performTest ]
 ]
 
 { #category : 'process actions' }

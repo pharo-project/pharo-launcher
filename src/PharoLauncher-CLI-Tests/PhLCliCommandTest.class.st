@@ -67,8 +67,9 @@ PhLCliCommandTest >> outputString [
 PhLCliCommandTest >> performTest [ 
 
 	PhLCliCommand 
-		launcherModelInitializationBlock: [ :command | 
+		launcherModelInitializationBlock: [ :command |
 			command pharoLauncherModel: launcherModel.
+			command templateSourcesChecker: (MockObject on: #checkForUpdates).
 			launcherModel consoleInputRequest outputStream: command context stdout ]
 		during: [ super performTest ]
 ]

@@ -18,7 +18,8 @@ Class {
 		'pharoLauncherModel',
 		'errorStream',
 		'cliFormatter',
-		'cliInputRequest'
+		'cliInputRequest',
+		'templateSourcesChecker'
 	],
 	#classVars : [
 		'LauncherModelInitializationBlock'
@@ -220,12 +221,8 @@ PhLCliCommand >> briefPrint [
 
 { #category : 'updating' }
 PhLCliCommand >> checkForUpdates [
-	"Should only be used by commands requiring network for a better Ux"
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #notifyTemplateSourcesUpdateAvailable
-		to: self.
-	PhLPharoTemplateSources checkForUpdates.
+
+	^ self templateSourcesChecker checkForUpdates
 ]
 
 { #category : 'accessing' }
@@ -476,6 +473,18 @@ PhLCliCommand >> templateName [
 { #category : 'accessing' }
 PhLCliCommand >> templateRepository [ 
 	^ self pharoLauncherModel templateRepository
+]
+
+{ #category : 'accessing' }
+PhLCliCommand >> templateSourcesChecker [
+
+	^ templateSourcesChecker ifNil: [ templateSourcesChecker := PhLCliTemplateSourcesChecker forCommand: self ]
+]
+
+{ #category : 'accessing' }
+PhLCliCommand >> templateSourcesChecker: anObject [
+
+	templateSourcesChecker := anObject
 ]
 
 { #category : 'accessing' }

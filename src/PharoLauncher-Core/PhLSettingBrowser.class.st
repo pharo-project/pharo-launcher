@@ -4,6 +4,9 @@ I'm exactly the same as the standard settings browser except I save to a dedicat
 Class {
 	#name : 'PhLSettingBrowser',
 	#superclass : 'SettingBrowser',
+	#classVars : [
+		'PreferencesFile'
+	],
 	#category : 'PharoLauncher-Core-Settings',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Settings'
@@ -33,12 +36,24 @@ PhLSettingBrowser class >> launcherStartUpPriority [
 
 { #category : 'accessing' }
 PhLSettingBrowser class >> preferencesFile [
-	^ (self preferencesFolder / 'settings.ston') asFileReference
+	^ PreferencesFile ifNil: [ (self preferencesFolder / 'settings.ston') asFileReference ]
 ]
 
 { #category : 'private' }
 PhLSettingBrowser class >> preferencesFolder [
 	^ FileLocator preferences / 'pharo-launcher'
+]
+
+{ #category : 'accessing' }
+PhLSettingBrowser class >> usePreferencesFile: aFileReference during: aBlock [
+	
+	"Used to set a different preferences file for testing purposes"
+	| oldPreferencesFile |
+	
+	oldPreferencesFile := PreferencesFile.
+	[ 	PreferencesFile := aFileReference.
+	aBlock value ]
+		ensure: [ PreferencesFile := oldPreferencesFile ]
 ]
 
 { #category : 'private' }

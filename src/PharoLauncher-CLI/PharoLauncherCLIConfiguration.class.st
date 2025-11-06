@@ -9,7 +9,8 @@ Class {
 		'vmsDirectory',
 		'launchImageFromALoginShell',
 		'initScriptsDirectory',
-		'defaultTemplate'
+		'defaultTemplate',
+		'templateSourcesFileLocation'
 	],
 	#category : 'PharoLauncher-CLI-Model',
 	#package : 'PharoLauncher-CLI',
@@ -87,8 +88,10 @@ PharoLauncherCLIConfiguration >> = anObject [
 		ifFalse: [ ^ false ].
 	^ imagesDirectory = anObject imagesDirectory
 		and: [ initScriptsDirectory = anObject initScriptsDirectory
+			and: [ templateSourcesFileLocation = anObject templateSourcesFileLocation 
 				and: [ launchImageFromALoginShell = anObject launchImageFromALoginShell
-						and: [ vmsDirectory = anObject vmsDirectory ] ] ]
+						and: [ vmsDirectory = anObject vmsDirectory
+							and: [ self defaultTemplate = anObject defaultTemplate ] ] ] ] ]
 ]
 
 { #category : 'accessing' }
@@ -137,6 +140,7 @@ PharoLauncherCLIConfiguration >> initialize [
 	super initialize.
 	imagesDirectory := PhLDirectoryBasedImageRepository defaultLocation asFileReference .
 	vmsDirectory := (FileLocator launcherUserFilesLocation / 'vms') asFileReference.
+	templateSourcesFileLocation := FileLocator launcherUserFilesLocation asFileReference.
 	initScriptsDirectory := PharoLauncherApplication 
 		defaultInitializationScriptLocation asFileReference.
 	launchImageFromALoginShell := PhLLaunchConfiguration launchInALoginShell
@@ -150,6 +154,18 @@ PharoLauncherCLIConfiguration >> launchImageFromALoginShell [
 { #category : 'accessing' }
 PharoLauncherCLIConfiguration >> launchImageFromALoginShell: aBoolean [
 	launchImageFromALoginShell := aBoolean
+]
+
+{ #category : 'accessing' }
+PharoLauncherCLIConfiguration >> templateSourcesFileLocation [
+
+	^ templateSourcesFileLocation
+]
+
+{ #category : 'accessing' }
+PharoLauncherCLIConfiguration >> templateSourcesFileLocation: aDirectory [
+
+	templateSourcesFileLocation := aDirectory
 ]
 
 { #category : 'accessing' }

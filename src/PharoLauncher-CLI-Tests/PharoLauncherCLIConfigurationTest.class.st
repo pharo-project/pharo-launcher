@@ -63,12 +63,16 @@ PharoLauncherCLIConfigurationTest >> testConfigurationsWithSameValuesShoudBeEqua
 		imagesDirectory: FileLocator imageDirectory;
 		vmsDirectory: FileLocator vmDirectory;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
-		launchImageFromALoginShell: true.
+		templateSourcesFileLocation: FileLocator launcherUserFilesLocation;
+		launchImageFromALoginShell: true;
+		defaultTemplate: 'dev'.
 	config2 := PharoLauncherCLIConfiguration new
 		imagesDirectory: FileLocator imageDirectory;
 		vmsDirectory: FileLocator vmDirectory;
+		templateSourcesFileLocation: FileLocator launcherUserFilesLocation;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
-		launchImageFromALoginShell: true.
+		launchImageFromALoginShell: true;
+		defaultTemplate: 'dev'.
 		
 	self assert: config1 equals: config2
 ]
@@ -131,7 +135,9 @@ PharoLauncherCLIConfigurationTest >> testReadOfSerializedConfigurationShouldGive
 		imagesDirectory: FileLocator imageDirectory;
 		vmsDirectory: FileLocator vmDirectory;
 		initScriptsDirectory: FileLocator launcherUserFilesLocation / 'scripts';
-		launchImageFromALoginShell: true.
+		templateSourcesFileLocation: FileLocator launcherUserFilesLocation;
+		launchImageFromALoginShell: true;
+		defaultTemplate: 'dev'.
 		
 	preferencesFile := self createPreferencesFileWith: config.
 	serializedConfig := PharoLauncherCLIConfiguration

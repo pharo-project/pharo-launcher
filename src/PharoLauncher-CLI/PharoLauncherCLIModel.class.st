@@ -82,6 +82,14 @@ PharoLauncherCLIModel >> resetTemplateRepository [
 	templateRepository := nil
 ]
 
+{ #category : 'initialization' }
+PharoLauncherCLIModel >> setTemplateRepositoryFromConfiguration: aPharoLauncherCLIConfiguration [
+
+	| sourcesFile |
+	sourcesFile := aPharoLauncherCLIConfiguration templateSourcesFileLocation asFileReference / PhLTemplateSources sourcesFileName.
+	self templateRepository: (PhLTemplateGroupRepository newFromFile: sourcesFile)
+]
+
 { #category : 'accessing' }
 PharoLauncherCLIModel >> templateRepository [
 	^ templateRepository

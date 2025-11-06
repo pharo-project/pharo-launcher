@@ -370,10 +370,11 @@ PhLCliCommand >> list: domainObjects [
 ]
 
 { #category : 'printing' }
-PhLCliCommand >> list: domainObjects default: defaultValue [ 
-		self cliFormatter 
+PhLCliCommand >> list: domainObjects default: defaultValue [
+
+	self cliFormatter
 		domainObjects: domainObjects defaultValue: defaultValue;
-		printList.
+		printList
 ]
 
 { #category : 'private' }
@@ -394,8 +395,9 @@ PhLCliCommand >> listPrintAttributeLabels [
 { #category : 'printing' }
 PhLCliCommand >> logExceptionMessage: errMessage [
 
-	self errorStream nextPutAll: errMessage.
-	self errorStream newLine.
+	self errorStream
+		nextPutAll: errMessage;
+		newLine
 ]
 
 { #category : 'printing' }
@@ -505,7 +507,8 @@ PhLCliCommand >> updatePharoLauncherFromConfigurationIfSpecified [
 
 	self positional: #configuration ifPresent: [ :configName | | config |
 		config := PharoLauncherCLIConfiguration configurationFromFile: configName asFileReference.
-		self pharoLauncherModel: (PharoLauncherCLIModel fromConfiguration: config) ]
+		self pharoLauncherModel: (PharoLauncherCLIModel fromConfiguration: config).
+		self pharoLauncherModel setTemplateRepositoryFromConfiguration: config ]
 ]
 
 { #category : 'accessing' }

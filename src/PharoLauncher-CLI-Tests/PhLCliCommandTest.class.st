@@ -53,6 +53,7 @@ PhLCliCommandTest >> launcherConfigurationContentForTestsIn: aDirectory [
 	^ 'PharoLauncherCLIConfiguration \{
 	#imagesDirectory : FILE [ ''{1}/Pharo/images'' ],
 	#vmsDirectory : FILE [ ''{1}/Pharo/vms'' ],
+	#templateSourcesFileLocation : FILE [ ''{1}/Pharo'' ],
 	#launchImageFromALoginShell : true,
 	#initScriptsDirectory : FILE [ ''{1}/Pharo/scripts'' ]
 \}' format: { aDirectory fullName }

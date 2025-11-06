@@ -10,7 +10,7 @@ ensureShunitIsPresent
 TEST_IMAGE="PhLTestImage"
 TEST_TEMPLATE="Pharo 10.0 - 64bit (stable)"
 IMAGE_METADATA_FILE="meta-inf.ston"
-TEST_IMAGE_PATH="$HOME"/Pharo/images/$TEST_IMAGE
+TEST_IMAGE_PATH="$ROOT"/Pharo/images/$TEST_IMAGE
 
 # setup commands for sample image manipulation
 createTestImageCommand () {
@@ -47,9 +47,9 @@ oneTimeSetUp() {
     echo "Running oneTimeSetup..."
 	echo "Setting up image template list."
 	setupImageTemplateList
-	echo "Updating VM for running sample image."
+	echo "Updating VM for running Test image."
 	updateVMforTestImage
-	echo "Creating sample image."
+	echo "Creating Test image."
 	createTestImageCommand
 }
 
@@ -60,12 +60,12 @@ testLauncherProcessListCommandWhenNoPharoImageRunningShouldReturnEmptyList(){
 	assertNotContainsPrinted "$result" "$TEST_IMAGE"
 }
 
- testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
-     launchTestImageCommand > /dev/null
-     result=$(processListCommand)
-     kill $(pgrep -l -f $TEST_IMAGE.image |  cut -d ' ' -f1)> /dev/null
-     assertContainsPrinted "$result" "$TEST_IMAGE"
- }
+testLauncherProcessListCommandWhenImageIsLaunchedShouldReturnOneImage(){
+    launchTestImageCommand > /dev/null
+    result=$(processListCommand)
+    kill $(pgrep -l -f $TEST_IMAGE.image |  cut -d ' ' -f1)> /dev/null
+    assertContainsPrinted "$result" "$TEST_IMAGE"
+}
 
 # Following unit test is disabled due to the fact that there are running concurrent builds on CI that might be killed accidentally by this test
 
@@ -92,12 +92,10 @@ oneTimeTearDown() {
     [[ "${_shunit_name_}" = 'EXIT' ]] && return 0
 
 	echo "Running teardown..."
-	echo "Killing sample image (if running)."
+	echo "Killing Test image (if running)."
 	kill $(pgrep -l -f $TEST_IMAGE.image | cut -d ' ' -f1) > /dev/null
-	echo "Deleting sample image."
+	echo "Deleting Test image."
 	deleteTestImageCommand
-	echo "Restoring original image template list."
-	restoreOriginalImageTemplateList
 }
 
 # Load shUnit2.

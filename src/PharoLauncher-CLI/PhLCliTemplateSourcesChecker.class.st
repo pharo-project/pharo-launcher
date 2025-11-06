@@ -30,3 +30,9 @@ PhLCliTemplateSourcesChecker >> checkForUpdates [
 		to: command.
 	PhLPharoTemplateSources checkForUpdates.
 ]
+
+{ #category : 'accessing' }
+PhLCliTemplateSourcesChecker >> command: anObject [
+
+	command := anObject
+]

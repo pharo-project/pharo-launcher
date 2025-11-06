@@ -172,6 +172,7 @@ PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [
 		description: self launcherCmdDescription;
 		commandClass: self;
 		addHelp;
+		addFlagWithPositional: #configuration description: 'The Pharo launcher command-line configuration to use';
 		yourself.
 	"add subcommands, positionals, flags, depending on subclass"
 	self addLauncherSubcommandsTo: commandSpec.
@@ -246,6 +247,15 @@ PhLCliCommand >> cliInputRequest [
 			                     outputStream: self outStream ]
 ]
 
+{ #category : 'accessing arguments' }
+PhLCliCommand >> configuration [
+
+	self positional: #configuration ifPresent: [ :config | 
+		PharoLauncherCLIConfiguration configurationFromFile: config asFileReference ].
+	
+	^ PharoLauncherCLIConfiguration defaultConfiguration
+]
+
 { #category : 'default' }
 PhLCliCommand >> defaultTemplate [
 	
@@ -281,6 +291,7 @@ PhLCliCommand >> errorStream [
 { #category : 'command execution' }
 PhLCliCommand >> execute [
 	
+	self updatePharoLauncherFromConfigurationIfSpecified.
 	[ self basicExecute ]
 	on: NotFound, PhLError
 	do: [:ex | 
@@ -435,7 +446,9 @@ PhLCliCommand >> outputAsSton [
 
 { #category : 'accessing' }
 PhLCliCommand >> pharoLauncherModel [
-	^ pharoLauncherModel ifNil: [ pharoLauncherModel := PharoLauncherCLIModel fromDefaultConfiguration ]
+
+	^ pharoLauncherModel ifNil: [
+		  pharoLauncherModel := PharoLauncherCLIModel fromConfiguration: self configuration ]
 ]
 
 { #category : 'accessing' }
@@ -485,6 +498,14 @@ PhLCliCommand >> templateSourcesChecker [
 PhLCliCommand >> templateSourcesChecker: anObject [
 
 	templateSourcesChecker := anObject
+]
+
+{ #category : 'private' }
+PhLCliCommand >> updatePharoLauncherFromConfigurationIfSpecified [
+
+	self positional: #configuration ifPresent: [ :configName | | config |
+		config := PharoLauncherCLIConfiguration configurationFromFile: configName asFileReference.
+		self pharoLauncherModel: (PharoLauncherCLIModel fromConfiguration: config) ]
 ]
 
 { #category : 'accessing' }

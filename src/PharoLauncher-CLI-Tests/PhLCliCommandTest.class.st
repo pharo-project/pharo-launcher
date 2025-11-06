@@ -36,7 +36,7 @@ PhLCliCommandTest >> context [
 	^ context ifNil: [ context := ClapContext specification: PhLCliCommand launcherCommand ]
 ]
 
-{ #category : 'instance' }
+{ #category : 'accessing' }
 PhLCliCommandTest >> defaultTemplateCategoryName [
 
 	^ PhLTemplateGroupRepository new defaultTemplateCategoryName
@@ -45,6 +45,28 @@ PhLCliCommandTest >> defaultTemplateCategoryName [
 { #category : 'accessing' }
 PhLCliCommandTest >> errorString [
 	^ context stdio stderr contents utf8Decoded
+]
+
+{ #category : 'accessing' }
+PhLCliCommandTest >> launcherConfigurationContentForTestsIn: aDirectory [
+
+	^ 'PharoLauncherCLIConfiguration \{
+	#imagesDirectory : FILE [ ''{1}/Pharo/images'' ],
+	#vmsDirectory : FILE [ ''{1}/Pharo/vms'' ],
+	#launchImageFromALoginShell : true,
+	#initScriptsDirectory : FILE [ ''{1}/Pharo/scripts'' ]
+\}' format: { aDirectory fullName }
+]
+
+{ #category : 'running' }
+PhLCliCommandTest >> launcherConfigurationForTestsIn: aDirectory named: configurationFileName [
+
+	aDirectory ensureCreateDirectory.
+	aDirectory / configurationFileName writeStreamDo: [ :stream |
+		stream nextPutAll:
+			(self launcherConfigurationContentForTestsIn: aDirectory) ].
+		
+	^ aDirectory / configurationFileName
 ]
 
 { #category : 'accessing' }
@@ -85,6 +107,46 @@ PhLCliCommandTest >> setUp [
 	super setUp.
 	launcherModel := PharoLauncherCLIModel fromDefaultConfiguration.
 	launcherModel consoleInputRequest: ConsoleInputRequestMock new.
+]
+
+{ #category : 'tests' }
+PhLCliCommandTest >> testCommandUseDefaultConfigurationWhenNoConfigurationSpecified [
+
+	| command defaultConfig |
+	
+	command := (PhLCliCommand asCliCommand activationWith: #('launcher' )) command.
+	defaultConfig := PharoLauncherCLIConfiguration defaultConfiguration.
+
+	self assert: command pharoLauncherModel configuration equals: defaultConfig
+]
+
+{ #category : 'tests' }
+PhLCliCommandTest >> testCommandUseProvidedConfigurationWhenConfigurationSpecified [
+
+	| command configurationFile |
+	configurationFile := self
+		                     launcherConfigurationForTestsIn: FileLocator temp
+		                     named: 'my-config.ston'.
+	command := (PhLCliCommand asCliCommand activationWith:{ 'launcher'. '--configuration'. configurationFile fullName })
+		           command.
+	command execute.
+
+	self
+		assert: command pharoLauncherModel configuration
+		equals: (PharoLauncherCLIConfiguration configurationFromFile: configurationFile)
+]
+
+{ #category : 'tests' }
+PhLCliCommandTest >> testCommandWhenBadConfigurationSpecified [
+
+	| command configurationFile |
+	
+	configurationFile := (FileLocator temp / 'my-config.ston').
+	configurationFile writeStreamDo: [ :stream | stream nextPutAll: 'BAD config!' ].
+	command := (PhLCliCommand asCliCommand activationWith:{ 'launcher'. '--configuration'. configurationFile fullName })
+		           command.
+		
+	self should: [ command execute ] raise: PhLInvalidConfiguration
 ]
 
 { #category : 'tests' }

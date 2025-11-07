@@ -36,6 +36,7 @@ setUpLauncherTestConfiguration () {
 
 setupImageTemplateList () {
     #using own image template list file to have same templates that are used for testing
+	mkdir -p "$ROOT"/Pharo
     cp -f "$ROOT"/sources-for-tests.list "$ROOT"/Pharo/sources.list
 }
 

@@ -78,7 +78,7 @@ BaselineOfPharoLauncher >> gtkBindings: spec [
 
 	spec 
 		baseline: #Gtk
-		with: [ spec repository: 'github://pharo-spec/gtk-bindings:gtk4' ]
+		with: [ spec repository: 'github://pharo-spec/gtk-bindings:pharolauncher-gtk-1' ]
 ]
 
 { #category : 'external projects' }
@@ -118,7 +118,7 @@ BaselineOfPharoLauncher >> specAdwaita: spec [
 
 	spec 
 		baseline: #Adwaita
-		with: [ spec repository: 'github://estebanlm/Spec-LibAdwaita:main' ]
+		with: [ spec repository: 'github://estebanlm/Spec-LibAdwaita:pharolauncher-gtk-1' ]
 ]
 
 { #category : 'external projects' }
@@ -126,7 +126,7 @@ BaselineOfPharoLauncher >> specGtk: spec [
 
 	spec 
 		baseline: #SpecGtk
-		with: [ spec repository: 'github://pharo-spec/Spec-Gtk:gtk4' ]
+		with: [ spec repository: 'github://pharo-spec/Spec-Gtk:pharolauncher-gtk-1' ]
 ]
 
 { #category : 'external projects' }

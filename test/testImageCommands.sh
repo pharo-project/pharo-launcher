@@ -45,6 +45,7 @@ updateVMforTestImage () {
 
 oneTimeSetUp() {
     echo "Running oneTimeSetup..."
+	setUpLauncherTestConfiguration
 	echo "Setting up image template list."
 	setupImageTemplateList
 	echo "Updating VM for running Test image."

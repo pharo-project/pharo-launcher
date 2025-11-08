@@ -7,8 +7,7 @@ export ROOT
 
 #setup pharo launcher and image name paths
 PHL_SCRIPT="$ROOT"/../scripts/pharo-launcher.sh
-# PHARO_LAUNCHER_IMAGE="$ROOT"/../PharoLauncher.image
-PHARO_LAUNCHER_IMAGE="/Users/demarey/Documents/Pharo/images/Pharo 12.0 - launcher dev/Pharo 12.0 - launcher dev.image"
+PHARO_LAUNCHER_IMAGE="$ROOT"/../PharoLauncher.image
 export PHARO_LAUNCHER_IMAGE
 PHARO_LAUNCHER_VM="$ROOT"/../pharo # pharo headless wrapper script, avoid to find the exe path that is different on Linux ans MacOs
 export PHARO_LAUNCHER_VM
@@ -31,7 +30,7 @@ ensureShunitIsPresent () {
 }
 
 setUpLauncherTestConfiguration () {
-	sed "s/PHL_CLI_TEST_DIR/$ROOT/g" "$PHL_TEST_CONFIG_TEMPLATE" > "$PHL_TEST_CONFIG"
+	sed "s|PHL_CLI_TEST_DIR|$ROOT|g" "$PHL_TEST_CONFIG_TEMPLATE" > "$PHL_TEST_CONFIG"
 }
 
 setupImageTemplateList () {

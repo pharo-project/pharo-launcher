@@ -57,7 +57,7 @@ PhLLaunchImageTest >> launchHeadless: anImage [
 	| config |
 	config := anImage defaultLaunchConfiguration.
 	self addHeadlessVmArgumentTo: config.
-	anImage launchWithConfiguration: config
+	^ anImage launchWithConfiguration: config
 ]
 
 { #category : 'utils' }

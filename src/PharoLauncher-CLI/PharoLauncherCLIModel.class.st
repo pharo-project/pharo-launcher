@@ -1,6 +1,6 @@
 "
 Model used both for the test and the normal execution. 
-When it is used by a user, dafault configuration is used.
+When it is used by a user, default configuration is used.
 When it is used for tests, repositories are replaced by mocks.
 "
 Class {
@@ -80,6 +80,14 @@ PharoLauncherCLIModel >> imageRepository: aPhLDirectoryBasedImageRepository [
 { #category : 'initialization' }
 PharoLauncherCLIModel >> resetTemplateRepository [
 	templateRepository := nil
+]
+
+{ #category : 'initialization' }
+PharoLauncherCLIModel >> setTemplateRepositoryFromConfiguration: aPharoLauncherCLIConfiguration [
+
+	| sourcesFile |
+	sourcesFile := aPharoLauncherCLIConfiguration templateSourcesFileLocation asFileReference / PhLTemplateSources sourcesFileName.
+	self templateRepository: (PhLTemplateGroupRepository newFromFile: sourcesFile)
 ]
 
 { #category : 'accessing' }

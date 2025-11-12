@@ -17,39 +17,41 @@ Class {
 }
 
 { #category : 'actions' }
-PhLAbstractTemplate >> extractTo: aDirectory named: aString [
+PhLAbstractTemplate >> extractTo: targetDirectory [
 	"Extract myself to aDirectory. Name the resulting image aString"
 	
 	PhLProgressManager 
 		displayProgress: 'Extract template'
-		during: [ :bar | | archive |
-			bar label: 'Downloading zip archive';
-			current: 25.
+		during: [ :bar | | archive extractionDir |
 			archive := self zipArchive.
-			bar label: 'Extracting archive to target directory';
-			current: 75.
-			self extractZipArchive: archive to: aDirectory.
-			self renameImageFilesIn: aDirectory withName: aString.
-	].
+			bar
+				label: 'Extracting archive to target directory';
+				current: 75.
+			extractionDir := targetDirectory / 'private-extracted'.
+			[ self extractZipArchive: archive into: extractionDir.
+			  self relocateImageFilesFrom: extractionDir to: targetDirectory ]
+				ensure: [ extractionDir ensureDeleteAll ] ].
 	"Will serialize image metadata with the template information"
-	^ (PhLImage location: aDirectory / aString , 'image') 
-		originTemplate: self
+	^ (PhLImage location: targetDirectory / targetDirectory basename , 'image')
+		  originTemplate: self
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> extractZipArchive: zipFile to: aDirectory [
-
+PhLAbstractTemplate >> extractZipArchive: zipFile into: targetDirectory [
+	"Unzip zipFile inside a temporary subdirectory of aDirectory. Return a reference to the subdirectory. The subdirectory can and must be deleted by the caller"
 	PhLProgressManager
 		displayProgress: ('Extracting {1}' format: { 
 			zipFile isStream 
 				ifTrue: [ '' ] 
 				ifFalse: [ zipFile basename ] }) 
 		during: [ :bar | | zip |	
+			"It will crash if directory already exists. And that's good :-)"
+			targetDirectory createDirectory. 
 			[
 				zip := ZipArchive new.
 				zip readFrom: zipFile.
 				bar max: zip numberOfMembers.
-				zip extractAllTo: aDirectory informing: bar.
+				zip extractAllTo: targetDirectory informing: bar.
 			]
 			on: Error
 			do: [ :error | 
@@ -82,18 +84,29 @@ PhLAbstractTemplate >> printOn: aStream [
 ]
 
 { #category : 'private' }
-PhLAbstractTemplate >> renameImageFilesIn: aDirectory withName: targetName [
-	| imageFile changesFile |
+PhLAbstractTemplate >> relocateImageFilesFrom: aDirectory to: targetDirectory [
+	| imageFile |
 	
-	imageFile := aDirectory files detect: [ :aFile | '*.image' match: aFile basename ].	
-	imageFile basename = (targetName , '.image')
+	imageFile := aDirectory allFiles detect: [ :aFile | '*.image' match: aFile basename ].	
+		
+	self renameFilesIfNeeded: imageFile to: targetDirectory basename.
+	targetDirectory ensureCreateDirectory.
+	imageFile parent allFiles 
+		do: [ :each | each moveTo: targetDirectory ]
+]
+
+{ #category : 'private' }
+PhLAbstractTemplate >> renameFilesIfNeeded: imageFile to: newName [
+	| changesFile |
+		
+	imageFile basename = (newName , '.image')
 		ifTrue: [ ^ self "no need to rename" ].
 
 	"A changes file must have the same name and be in the same directory as the image file"
 	changesFile := imageFile parent / imageFile basenameWithoutExtension , 'changes'.
 
-	imageFile renameTo: targetName , '.image'.
-	changesFile renameTo: targetName , '.changes'
+	imageFile renameTo: newName , '.image'.
+	changesFile renameTo: newName , '.changes'
 ]
 
 { #category : 'actions' }

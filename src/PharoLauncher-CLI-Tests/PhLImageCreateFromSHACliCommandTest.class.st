@@ -20,10 +20,16 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromABuildShouldFailWhenSh
 
 { #category : 'tests' }
 PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldFailWhenShaDoesNotExist [
+
 	| command |
-	command := (context arguments: #('launcher' 'image' 'create' 'fromSHA' 'NotASha' '--pharoVersion' '10')) command.
+	command := (self context arguments:
+		            #( 'launcher' 'image' 'create' 'fromSHA' 'NotASha' '--pharoVersion' '10' )) command.
 	command imageFinderClass: PhLImageFinderStub.
-	self should: [command basicExecute] raise: PhLDownloadError whoseDescriptionIncludes: 'Could not determine remote image template from SHA' description: 'Error is expected when trying to get non-existent SHA'.
+	self
+		should: [ command basicExecute ]
+		raise: PhLDownloadError
+		whoseDescriptionIncludes: 'Could not determine remote image template from SHA'
+		description: 'Error is expected when trying to get non-existent SHA'.
 	self assert: self imageRepository imagesName equals: Set empty
 ]
 
@@ -41,7 +47,7 @@ PhLImageCreateFromSHACliCommandTest >> testCreateImageFromShaShouldSucceed [
 	| command |
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
-	command := (context arguments: #('launcher' 'image' 'create' 'fromSHA' '06373fd' '--newImageName' 'myImage3'  '--pharoVersion' '10')) command.
+	command := (self context arguments: #('launcher' 'image' 'create' 'fromSHA' '06373fd' '--newImageName' 'myImage3'  '--pharoVersion' '10')) command.
 	command imageFinderClass: PhLImageFinderStub.
 	command basicExecute.
 	self assert: self imageRepository imagesName equals: #('myImage1' 'myImage3' 'myImage2') asSet

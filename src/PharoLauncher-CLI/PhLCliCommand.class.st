@@ -18,7 +18,11 @@ Class {
 		'pharoLauncherModel',
 		'errorStream',
 		'cliFormatter',
-		'cliInputRequest'
+		'cliInputRequest',
+		'templateSourcesChecker'
+	],
+	#classVars : [
+		'LauncherModelInitializationBlock'
 	],
 	#category : 'PharoLauncher-CLI-Commands',
 	#package : 'PharoLauncher-CLI',
@@ -120,7 +124,7 @@ PhLCliCommand class >> isProductionCommandClass [
 
 { #category : 'command line - description' }
 PhLCliCommand class >> launcherCmdDescription [
-	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
+	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, launch Pharo, eventually delete image, update VMs, etc.'
 ]
 
 { #category : 'command line - instance creation' }
@@ -133,7 +137,31 @@ PhLCliCommand class >> launcherCommand [
 
 { #category : 'command line - description' }
 PhLCliCommand class >> launcherDescription [
-	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, lauch Pharo, eventually delete image, update VMs, etc.'
+	^ 'This is command line interface of Pharo Launcher. Create Pharo image from remote site template, launch Pharo, eventually delete image, update VMs, etc.'
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock [
+
+	^ LauncherModelInitializationBlock ifNil: [ [ :command | "No specific initialization by default" ] ]
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock: aBlock [
+
+	LauncherModelInitializationBlock := aBlock
+]
+
+{ #category : 'configuring' }
+PhLCliCommand class >> launcherModelInitializationBlock: initBlock during: aBlock [
+
+	"Used to set a different model during testing"
+	| oldInitBlock |
+	
+	oldInitBlock := self launcherModelInitializationBlock.
+	[ self launcherModelInitializationBlock: initBlock.
+	aBlock value ]
+		ensure: [ self launcherModelInitializationBlock: oldInitBlock ]
 ]
 
 { #category : 'command line - instance creation' }
@@ -144,6 +172,7 @@ PhLCliCommand class >> newLauncherCommandSpec: idOfCommand [
 		description: self launcherCmdDescription;
 		commandClass: self;
 		addHelp;
+		addFlagWithPositional: #configuration description: 'The Pharo launcher command-line configuration to use';
 		yourself.
 	"add subcommands, positionals, flags, depending on subclass"
 	self addLauncherSubcommandsTo: commandSpec.
@@ -165,6 +194,18 @@ PhLCliCommand class >> raiseMissingDelimiter [
 	^ NotFound signal: 'Missing argument value specifying delimiter for printing.'
 ]
 
+{ #category : 'configuring' }
+PhLCliCommand class >> with: aClapContext [
+
+	| command |
+	
+	command := super with: aClapContext.
+	self launcherModelInitializationBlock value: command.
+	^ command
+			
+	
+]
+
 { #category : 'command execution' }
 PhLCliCommand >> basicExecute [
 	
@@ -181,12 +222,8 @@ PhLCliCommand >> briefPrint [
 
 { #category : 'updating' }
 PhLCliCommand >> checkForUpdates [
-	"Should only be used by commands requiring network for a better Ux"
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #notifyTemplateSourcesUpdateAvailable
-		to: self.
-	PhLPharoTemplateSources checkForUpdates.
+
+	^ self templateSourcesChecker checkForUpdates
 ]
 
 { #category : 'accessing' }
@@ -208,6 +245,15 @@ PhLCliCommand >> cliInputRequest [
 		  cliInputRequest := self pharoLauncherModel consoleInputRequest
 			                     inputStream: Stdio stdin
 			                     outputStream: self outStream ]
+]
+
+{ #category : 'accessing arguments' }
+PhLCliCommand >> configuration [
+
+	self positional: #configuration ifPresent: [ :config | 
+		PharoLauncherCLIConfiguration configurationFromFile: config asFileReference ].
+	
+	^ PharoLauncherCLIConfiguration defaultConfiguration
 ]
 
 { #category : 'default' }
@@ -245,6 +291,7 @@ PhLCliCommand >> errorStream [
 { #category : 'command execution' }
 PhLCliCommand >> execute [
 	
+	self updatePharoLauncherFromConfigurationIfSpecified.
 	[ self basicExecute ]
 	on: NotFound, PhLError
 	do: [:ex | 
@@ -287,7 +334,7 @@ PhLCliCommand >> implicitDelimiter [
 { #category : 'initialization' }
 PhLCliCommand >> initialize [
 	super initialize.
-	self cliFormatter: (ConsoleListFormatter on: self).
+	self cliFormatter: (ConsoleListFormatter on: self)
 ]
 
 { #category : 'default' }
@@ -323,10 +370,11 @@ PhLCliCommand >> list: domainObjects [
 ]
 
 { #category : 'printing' }
-PhLCliCommand >> list: domainObjects default: defaultValue [ 
-		self cliFormatter 
+PhLCliCommand >> list: domainObjects default: defaultValue [
+
+	self cliFormatter
 		domainObjects: domainObjects defaultValue: defaultValue;
-		printList.
+		printList
 ]
 
 { #category : 'private' }
@@ -347,8 +395,9 @@ PhLCliCommand >> listPrintAttributeLabels [
 { #category : 'printing' }
 PhLCliCommand >> logExceptionMessage: errMessage [
 
-	self errorStream nextPutAll: errMessage.
-	self errorStream newLine.
+	self errorStream
+		nextPutAll: errMessage;
+		newLine
 ]
 
 { #category : 'printing' }
@@ -399,7 +448,9 @@ PhLCliCommand >> outputAsSton [
 
 { #category : 'accessing' }
 PhLCliCommand >> pharoLauncherModel [
-	^ pharoLauncherModel ifNil: [ pharoLauncherModel := self context pharoLauncherModel ]
+
+	^ pharoLauncherModel ifNil: [
+		  pharoLauncherModel := PharoLauncherCLIModel fromConfiguration: self configuration ]
 ]
 
 { #category : 'accessing' }
@@ -437,6 +488,27 @@ PhLCliCommand >> templateName [
 { #category : 'accessing' }
 PhLCliCommand >> templateRepository [ 
 	^ self pharoLauncherModel templateRepository
+]
+
+{ #category : 'accessing' }
+PhLCliCommand >> templateSourcesChecker [
+
+	^ templateSourcesChecker ifNil: [ templateSourcesChecker := PhLCliTemplateSourcesChecker forCommand: self ]
+]
+
+{ #category : 'accessing' }
+PhLCliCommand >> templateSourcesChecker: anObject [
+
+	templateSourcesChecker := anObject
+]
+
+{ #category : 'private' }
+PhLCliCommand >> updatePharoLauncherFromConfigurationIfSpecified [
+
+	self positional: #configuration ifPresent: [ :configName | | config |
+		config := PharoLauncherCLIConfiguration configurationFromFile: configName asFileReference.
+		self pharoLauncherModel: (PharoLauncherCLIModel fromConfiguration: config).
+		self pharoLauncherModel setTemplateRepositoryFromConfiguration: config ]
 ]
 
 { #category : 'accessing' }

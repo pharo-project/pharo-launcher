@@ -10,8 +10,3 @@ ClapContext >> initializeLauncherNotificationCenter [
 	PhLNotificationCenter default errorStream: self stderr.
 
 ]
-
-{ #category : '*PharoLauncher-CLI' }
-ClapContext >> pharoLauncherModel [
-	^ PharoLauncherCLIModel fromDefaultConfiguration
-]

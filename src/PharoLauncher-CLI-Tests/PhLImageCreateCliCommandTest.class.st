@@ -43,7 +43,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithDevFlagUsesDevImage [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
 	devTemplate := self addTemplateNamed: 'Pharo 10 64bit (development version, latest)' inCategory: self defaultTemplateCategoryName.
-	context arguments: #('launcher' 'image' 'create' '--dev' 'myImage').
+	self context arguments: #('launcher' 'image' 'create' '--dev' 'myImage').
 	
 	template := context command findTemplate.
 	 
@@ -56,7 +56,7 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesDefaultImage [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	stableTemplate := self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'Pharo 10 64bit (development version)' inCategory: self defaultTemplateCategoryName.
-	context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
+	self context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
 	
 	template := context command findTemplate.
 	 
@@ -67,14 +67,14 @@ PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesDefaultImage [
 PhLImageCreateCliCommandTest >> testCreateImageWithNoFlagUsesUserDefaultImageWhenSpecified [
 	| template devTemplate |
 
-	context pharoLauncherModel configuration: 
-		(context pharoLauncherModel configuration
+	self launcherModel configuration: 
+		(self launcherModel configuration
 			defaultTemplate: #dev;
 			yourself).
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'Pharo 9 64bit stable' inCategory: self defaultTemplateCategoryName.
 	devTemplate := self addTemplateNamed: 'Pharo 10 64bit (development version, latest)' inCategory: self defaultTemplateCategoryName.
-	context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
+	self context arguments: {'launcher' . 'image' . 'create' . 'myImage'}.
 	
 	template := context command findTemplate.
 	 
@@ -165,8 +165,8 @@ PhLImageCreateCliCommandTest >> testTemplateCanBeFoundByShortName [
 
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	createdTemplate := self addTemplateNamed: 'fakeTemplate' shortName: 'foo' inCategory: self defaultTemplateCategoryName.
-	context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'foo' }.
-	context match.
+	self context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'foo' }.
+	self context match.
 	
 	foundTemplate := context command findUserTemplate.
 	
@@ -181,8 +181,8 @@ PhLImageCreateCliCommandTest >> testTemplateIsFirstSearchByName [
 	self addTemplateCategoryNamed: self defaultTemplateCategoryName.
 	createdTemplate := self addTemplateNamed: 'fakeTemplate' shortName: 'foo' inCategory: self defaultTemplateCategoryName.
 	self addTemplateNamed: 'foo' inCategory: self defaultTemplateCategoryName.
-	context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' }.
-	context match.
+	self context arguments: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' }.
+	self context match.
 	
 	foundTemplate := context command findUserTemplate.
 	

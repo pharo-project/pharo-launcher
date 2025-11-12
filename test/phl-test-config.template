@@ -1,0 +1,7 @@
+PharoLauncherCLIConfiguration {
+	#imagesDirectory : FILE [ 'PHL_CLI_TEST_DIR/Pharo/images' ],
+	#vmsDirectory : FILE [ 'PHL_CLI_TEST_DIR/Pharo/vms' ],
+    #templateSourcesFileLocation : FILE [ 'PHL_CLI_TEST_DIR/Pharo' ],
+	#launchImageFromALoginShell : true,
+	#initScriptsDirectory : FILE [ 'PHL_CLI_TEST_DIR/Pharo/scripts' ]
+}

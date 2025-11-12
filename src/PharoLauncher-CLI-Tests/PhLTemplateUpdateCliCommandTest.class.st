@@ -15,7 +15,7 @@ PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
 	
 	PhLTemplateSources useLauncherCoreDir: workingDir during: [ 
 		PhLTemplateSources flush: #() in: workingDir / PhLTemplateSources sourcesFileName.
-		command := (context arguments: #('launcher' 'template' 'update')) command.
+		command := (self context arguments: #('launcher' 'template' 'update')) command.
 		self assert: command pharoLauncherModel templateRepository roots size equals: 0.
 		
 		command execute ].

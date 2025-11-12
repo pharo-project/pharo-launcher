@@ -47,7 +47,7 @@ PhLLocalTemplateTest >> testTemplateExtractionGenerateImageMetadata [
 		binaryWriteStreamDo: [ :stream | archive writeTo: stream ].
 	destination := (root / 'new') ensureCreateDirectory.
 	
-	template extractTo: destination named: 'new'.
+	template extractTo: destination.
 	
 	metadataFile := destination / PhLImage metadataFileName.
 	self assert: metadataFile exists.

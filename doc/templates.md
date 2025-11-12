@@ -1,4 +1,4 @@
-Templates are the only way to create images. They are materialized by a zip file contining the Pharo image and all its associated file.
+Templates are the only way to create images. They are materialized by a zip file containing the Pharo image and all its associated file.
 
 For example, the Pharo 8 official template is composed of:
 

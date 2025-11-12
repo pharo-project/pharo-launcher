@@ -18,6 +18,13 @@ PhLTemplateGroupRepository class >> default [
 ]
 
 { #category : 'instance creation' }
+PhLTemplateGroupRepository class >> newFromFile: aTemplateSourcesFileReference [
+	| sources |
+	sources := PhLTemplateSources withFile: aTemplateSourcesFileReference.
+	^ self newFromGroups: (PhLTemplateGroupsBuilder buildFrom: sources)
+]
+
+{ #category : 'instance creation' }
 PhLTemplateGroupRepository class >> newFromGroups: aCollection [
 	^ self new
 		setGroups: aCollection;

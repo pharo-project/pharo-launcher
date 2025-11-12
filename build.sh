@@ -41,6 +41,7 @@ function run_tests() {
 function run_shell_cli_tests() {
 	pushd test
 	for f in test*.sh; do
+		echo "Running CLI test suite $f ..."
   		SHUNIT_COLOR=none bash "$f"
 	done
 	popd

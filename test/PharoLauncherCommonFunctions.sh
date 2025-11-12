@@ -2,13 +2,19 @@
 
 # some magic to find out the real location of this script dealing with symlinks
 DIR=$(readlink "$0") || DIR="$0";
-ROOT=$(dirname "$DIR");
+ROOT=$(realpath "$(dirname "$DIR")");
+export ROOT
 
 #setup pharo launcher and image name paths
-PHL_SCRIPT="$ROOT"/pharo-launcher.sh
+PHL_SCRIPT="$ROOT"/../scripts/pharo-launcher.sh
+PHARO_LAUNCHER_IMAGE="$ROOT"/../PharoLauncher.image
+export PHARO_LAUNCHER_IMAGE
+PHARO_LAUNCHER_VM="$ROOT"/../pharo # pharo headless wrapper script, avoid to find the exe path that is different on Linux ans MacOs
+export PHARO_LAUNCHER_VM
+PHL_TEST_CONFIG_TEMPLATE="$ROOT/phl-test-config.template"
+PHL_TEST_CONFIG="$ROOT/phl-test-config.ston"
+
 SHUNIT="$ROOT"/shunit2/shunit2
-SOURCES_LIST_PATH="$HOME"/Pharo/sources.list
-SOURCES_LIST_BACKUP_PATH="${SOURCES_LIST_PATH}.original"
 
 ensureShunitIsPresent () {
 	#Check if shunit is present
@@ -23,61 +29,19 @@ ensureShunitIsPresent () {
 	rm -rf shunit2/shunit2-*
 }
 
-detectPharoLauncherImagePath() {
-	# pharo-launcher.sh script used for testing is the one packaged in the distributed app
-	# That's why we need to adapt paths to the ones used in production.
-
-	# DETECT SYSTEM PROPERTIES ======================================================
-	OS=`uname | tr "[:upper:]" "[:lower:]"`
-	if [[ "{$OS}" = *darwin* ]]; then
-		mkdir -p "$ROOT"/../Resources
-		IMAGE="$ROOT"/../Resources/PharoLauncher.image
-	elif [[ "{$OS}" = *linux* ]]; then
-		mkdir -p "$ROOT"/shared
-		IMAGE="$ROOT"/shared/PharoLauncher.image
-	else
-		echo "Unsupported OS";
-		exit 1;
-	fi
+setUpLauncherTestConfiguration () {
+	sed "s|PHL_CLI_TEST_DIR|$ROOT|g" "$PHL_TEST_CONFIG_TEMPLATE" > "$PHL_TEST_CONFIG"
 }
+
 setupImageTemplateList () {
     #using own image template list file to have same templates that are used for testing
-	if [ -f "$SOURCES_LIST_PATH" ] ; then
-    	cp "$SOURCES_LIST_PATH" "$SOURCES_LIST_BACKUP_PATH"
-	fi
-    cp -f "$ROOT"/sources-for-tests.list "$SOURCES_LIST_PATH"
-}
-
-restoreOriginalImageTemplateList () {
-    #restore original image template list file that was previously used
-	if [ -f "$SOURCES_LIST_BACKUP_PATH" ] ; then
-	    mv -f "$SOURCES_LIST_BACKUP_PATH" "$SOURCES_LIST_PATH"
-	fi
-}
-
-prepareLauncherScriptAndImage () {
-	# ensure that launcher script and image are in needed directories for test evaluation (before packaging)
-	pushd .. > /dev/null
-	if [ ! -f "$PHL_SCRIPT" ] ; then
-	    cp ./scripts/pharo-launcher.sh $PHL_SCRIPT
-	fi
-	detectPharoLauncherImagePath
-	if [ ! -f "$IMAGE" ] ; then
-	    cp PharoLauncher.image $IMAGE
-	fi
-	popd > /dev/null
-}
-
-cleanupLauncherScriptAndImage () {
-	pushd .. > /dev/null
-	rm -rf "$ROOT"/shared "$ROOT"/../Resources
-	rm -f $PHL_SCRIPT
-	popd > /dev/null
+	mkdir -p "$ROOT"/Pharo
+    cp -f "$ROOT"/sources-for-tests.list "$ROOT"/Pharo/sources.list
 }
 
 runLauncherScript() {
 	pushd .. > /dev/null
-	$PHL_SCRIPT "$@"
+	$PHL_SCRIPT --configuration "$PHL_TEST_CONFIG" "$@"
 	popd > /dev/null
 }
 

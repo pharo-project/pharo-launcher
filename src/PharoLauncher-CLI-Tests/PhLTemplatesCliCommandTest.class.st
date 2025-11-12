@@ -15,7 +15,7 @@ PhLTemplatesCliCommandTest >> addLocalTemplateNamed: aName [
 PhLTemplatesCliCommandTest >> addTemplateCategoryNamed: aTemplateCategoryName [  
 	| templateCategory |
 	templateCategory := self launcherModel templateRepository newRemoteTemplatesGroupNamed: aTemplateCategoryName.
-	context pharoLauncherModel templateRepository setGroups:{ templateCategory }.
+	self launcherModel templateRepository setGroups:{ templateCategory }.
 ]
 
 { #category : 'adding' }

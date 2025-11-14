@@ -261,7 +261,7 @@ PharoLauncherApplication >> cleanProcesses [
 
 { #category : 'accessing' }
 PharoLauncherApplication >> defaultTemplateRepository [
-	^ TemplateRepository ifNil: [ TemplateRepository := PhLTemplateGroupRepository default ]
+	^ PhLTemplateGroupRepository default
 ]
 
 { #category : 'initialization' }

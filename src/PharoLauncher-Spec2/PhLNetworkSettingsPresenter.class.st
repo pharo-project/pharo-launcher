@@ -20,7 +20,7 @@ PhLNetworkSettingsPresenter class >> open [
 
 	<script>
 
-	^ self new open
+	^ (self on: PharoLauncherSettings new) open
 ]
 
 { #category : 'layout' }
@@ -57,7 +57,7 @@ PhLNetworkSettingsPresenter >> initializePresenters [
 	self addStyle: 'settings_form'.
 
 	proxyServerInput := self newTextInputFor: #httpProxyServer.
-	proxyServerPortInput := self newTextInputFor: #httpProxyPort.
+	proxyServerPortInput := self newNumberInputFor: #httpProxyPort.
 	proxyUsernameInput := self newTextInputFor: #proxyUser.
 	proxyPasswordInput := self newTextInputFor: #proxyPassword.
 ]

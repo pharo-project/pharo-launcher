@@ -10,6 +10,19 @@ Class {
 }
 
 { #category : 'instance creation' }
+PhLAbstractSettingsPresenter >> newNumberInputFor: aSettingIdentifier [
+	| declaration |
+	
+	declaration := self settings declarationNamed: aSettingIdentifier.
+	^ self newNumberInput
+		help: declaration description;
+		beInteger;
+		minimum: 0;
+		number: (self settings valueOfDeclarationNamed: aSettingIdentifier);
+		whenNumberChangedDo: [ :aNumber | self settings setValueOfDeclarationNamed: aSettingIdentifier with: aNumber ]
+]
+
+{ #category : 'instance creation' }
 PhLAbstractSettingsPresenter >> newSwitchFor: aSettingIdentifier [
 	| declaration |
 	
@@ -29,7 +42,7 @@ PhLAbstractSettingsPresenter >> newTextInputFor: aSettingIdentifier [
 	^ self newTextInput
 		help: declaration description;
 		text: (self settings valueOfDeclarationNamed: aSettingIdentifier);
-		whenChangedDo: [ :text | self settings setValueOfDeclarationNamed: aSettingIdentifier with: text ]
+		whenTextChangedDo: [ :text | self settings setValueOfDeclarationNamed: aSettingIdentifier with: text ]
 ]
 
 { #category : 'accessing' }

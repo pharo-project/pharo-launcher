@@ -33,7 +33,7 @@ function prepare_image() {
 
 function run_tests() {
 	rm -rf ~/Pharo # clean posssible remaining Pharo files
-	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
+	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"
 	run_shell_cli_tests
 }
 
@@ -50,9 +50,9 @@ function run_shell_cli_tests() {
 function make_pharo_launcher_deloyed() {
 	./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
 
-	# Set the launcher version on Pharo 
+	# Set the launcher version on Pharo
 	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
-	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
+	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"
 
         # Avoid to have PL core dir set to the slave location and having an outdated list of templates
 	./pharo PharoLauncher.image eval --save \
@@ -84,7 +84,6 @@ function package_linux_version() {
 
 function copy_mac_icon_files_to() {
 	cd icons
-	./build-icns.sh pharo-launcher.png PharoLauncher.iconset
 	cd ..
 	cp icons/PharoLauncher.icns $1
 	cp icons/PharoImage.icns $1
@@ -106,13 +105,13 @@ function package_mac_version() {
 	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
 	cp scripts/pharo-launcher.sh $RESOURCES_PATH/pharo-launcher && chmod +x $RESOURCES_PATH/pharo-launcher
 	mv $BIN_PATH/pharo.signatures $RESOURCES_PATH/ || true
-	
+
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg
 	generated_dmg=$(echo *.dmg)
 	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
 	generated_dmg=$(echo *.dmg)
-	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
+	md5 "$generated_dmg" > "$generated_dmg.md5sum"
 }
 
 function set_env() {
@@ -144,7 +143,7 @@ function fetch_current_vm_to() {
 	set_arch_path
 	local LINUX_VM_PATH="pharo-vm-Linux-$VM_ARCH_PATH-stable.zip"
 	test -f $LINUX_VM_PATH || wget --progress=dot:mega http://files.pharo.org/get-files/$PHARO/$LINUX_VM_PATH
-  
+
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$DEST_PATH/tmp"
 		mkdir "$DEST_PATH/pharo-vm/"
@@ -155,7 +154,7 @@ function fetch_current_vm_to() {
 }
 
 function fetch_current_mac_vm_to() {
-	# Only works for VM >= 90. If you need a VM < 90, you need to 
+	# Only works for VM >= 90. If you need a VM < 90, you need to
 	# udpate this method to use either the old or new VM URL format (see zeroconf).
 	local DEST_PATH=${1:-.} # If no argument given, use current working dir
 	set_arch_path

@@ -55,7 +55,7 @@ PhLLaunchImageTest >> copyCurrentVmTo: aDirectory [
 PhLLaunchImageTest >> launchHeadless: anImage [
 
 	| config |
-	config := anImage defaultLaunchConfiguration.
+	config := anImage defaultLaunchConfiguration asLaunchConfiguration.
 	self addHeadlessVmArgumentTo: config.
 	^ anImage launchWithConfiguration: config
 ]

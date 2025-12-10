@@ -139,11 +139,11 @@ PhLScriptPresenter >> newScriptNamed: aName [
 PhLScriptPresenter >> removeScript: aFileReference [ 
 	
 	aFileReference ifNil: [ ^ self ].
-	(self application newConfirmation
+	(self application newConfirm
 		parentWindow: self window;
 		title: 'Delete';
-		message: 'Do you want to remove ', aFileReference fullName, ' script?';
-		confirm) 
+		label: 'Do you want to remove ', aFileReference fullName, ' script?';
+		openModalWithParent: self window) 
 		ifFalse: [ ^ self ].
 		
 	aFileReference ensureDelete.

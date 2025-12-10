@@ -90,7 +90,6 @@ PhLScriptPresenter >> initializePresenters [
 		removeItemBlock: [ :item | self removeScript: item ];
 		yourself.
 	fileEditor := self newCode
-		disable;
 		addShortcutWith: [ :action | action 
 			shortcutKey: self defaultSaveShortCut;
 			action: [ self saveSelectedScript ] ];

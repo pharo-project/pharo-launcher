@@ -67,7 +67,9 @@ PhLAppearanceSettingsPresenter >> newThemePresenter: aTheme [
 	self activeTheme = aTheme ifTrue: [
 		presenter addStyle: 'welcomeThemeSelected' ].
 	
-	imagePresenter := presenter newImage.
+	imagePresenter := presenter newImage 
+		autoScale: true;
+		yourself.
 	labelPresenter := presenter newLabel.
 	
 	presenter layout: (SpBoxLayout newTopToBottom

@@ -98,6 +98,7 @@ PhLAboutPresenter >> initializePresenters [
 	description := self newText.
 	icon := self newImage
 		addStyle: 'aboutIcon';
+		autoScale: true;
 		yourself.
 	documentationLink := self newLink
 		url: 'https://pharo-project.github.io/pharo-launcher';
@@ -126,5 +127,5 @@ PhLAboutPresenter >> updatePresenter [
 	description 
 		text: text;
 		editable: false.
-   icon image: (self iconNamed: iconName)
+   	icon image: (self iconNamed: iconName)
 ]

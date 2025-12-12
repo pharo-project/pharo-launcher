@@ -26,3 +26,6 @@ Metacello new
     onUpgrade: [ :e | e useIncoming ];
     ignoreImage;
     load.
+
+"Need the following fix since Monticello does not do the job"
+(Smalltalk at: #GEnumeration) allSubclassesDo: #initializeEnumeration

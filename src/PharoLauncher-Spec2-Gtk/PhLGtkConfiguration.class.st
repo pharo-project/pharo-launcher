@@ -9,6 +9,7 @@ Class {
 PhLGtkConfiguration >> addPredefinedStyles [
 
 	super addPredefinedStyles.
+	self addCSSProviderFromString: self palette.
 	self addCSSProviderFromString: self launcherStyle
 ]
 
@@ -31,6 +32,15 @@ PhLGtkConfiguration >> configureWindows: anApplication [
 
 	super configureWindows: anApplication.
 	self addCSSProviderFromString: self windowsStyle
+]
+
+{ #category : 'configuring' }
+PhLGtkConfiguration >> darkPalette [
+	
+	^ '
+:root { 
+	--dim-color: #d3d3d3;
+}'
 ]
 
 { #category : 'initialization' }
@@ -74,7 +84,8 @@ label.form_header {
 	font-size: larger;
 }
 box.status_bar label.status_message {
-	font-weight: lighter;
+	font-weight: normal;
+	color: var(--dim-color);
 }
 grid.form, box.settings_form {
 	margin: 10px 10px 0px 10px;
@@ -148,31 +159,53 @@ box.welcomeThemeSelected label {
 '
 ]
 
+{ #category : 'configuring' }
+PhLGtkConfiguration >> lightPalette [
+	
+	^ '
+:root { 
+	--dim-color: darkgray; 
+}'
+]
+
 { #category : 'accessing - styles' }
 PhLGtkConfiguration >> macOSStyle [
 
 	^ '* {
-  font-family: "Helvetica Neue", "Lucida Grande", sans-serif;
+  /* font-family: "Helvetica Neue", "Lucida Grande", sans-serif; */
 }'
+]
+
+{ #category : 'configuring' }
+PhLGtkConfiguration >> palette [
+	
+	^ self isDarkTheme 
+		ifTrue: [ self darkPalette ]
+		ifFalse: [ self lightPalette ] 
 ]
 
 { #category : 'configuring' }
 PhLGtkConfiguration >> switchThemeToDark [
 
-	GRunLoop defer: [ AdwStyleManager default forceDark ]
+	GRunLoop defer: [ 
+		AdwStyleManager default forceDark.
+		self addCSSProviderFromString: self palette ].
+	
 ]
 
 { #category : 'configuring' }
 PhLGtkConfiguration >> switchThemeToLight [
 
-	GRunLoop defer: [ AdwStyleManager default forceLight ]
+	GRunLoop defer: [ 
+		AdwStyleManager default forceLight.
+		self addCSSProviderFromString: self palette ]
 ]
 
 { #category : 'accessing - styles' }
 PhLGtkConfiguration >> windowsStyle [
 
 	^ '* { 
-	font-family: "Segoe UI", Tahoma, sans-serif;
+	/* font-family: "Segoe UI", Tahoma, sans-serif; */
 }
 '
 ]

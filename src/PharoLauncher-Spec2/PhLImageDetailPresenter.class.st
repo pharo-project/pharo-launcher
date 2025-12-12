@@ -284,7 +284,7 @@ PhLImageDetailPresenter >> initializePresenters [
 		yourself).
 		
 	lastEditedLabel 
-		addStyle: 'greenOnGray';
+		addStyle: 'dim';
 		addStyle: 'status_message'.
 		
 	self whenBuiltDo: [ isPresenterUpdatingFromModel := false ]

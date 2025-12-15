@@ -339,6 +339,12 @@ PharoLauncherApplication >> isLightTheme [
 ]
 
 { #category : 'testing' }
+PharoLauncherApplication >> isMorphicBackend [
+
+	^ self backend isKindOf: SpMorphicBackend
+]
+
+{ #category : 'testing' }
 PharoLauncherApplication >> isStandalone [
 
 	^ standalone ifNil: [ standalone := false ]

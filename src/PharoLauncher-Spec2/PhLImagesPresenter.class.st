@@ -62,9 +62,12 @@ PhLImagesPresenter class >> buildContextualMenuGroupContext: aContext [
 			register: (PhLRecreateImageCommand forSpecContext: aContext);
 			register: (PhLDeleteImageCommand forSpecContext: aContext);
 			yourself);
-		register: ((CmCommandGroup named: 'extra') asSpecGroup
-			register: (PhLInspectCommand forSpecContext: aContext);
-			yourself);
+		in: [ :commandGroup | 
+			aContext application isMorphicBackend ifTrue: [ 
+				commandGroup register: 
+					((CmCommandGroup named: 'extra') asSpecGroup
+						register: (PhLInspectCommand forSpecContext: aContext);
+					yourself) ] ];
 		yourself
 ]
 

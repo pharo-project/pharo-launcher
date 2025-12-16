@@ -154,6 +154,7 @@ box.welcomeThemeSelected label {
 }
 .stToolbar label {
 	font-weight: normal;
+	letter-spacing: 0.05em;
 	color: var(--text-color);
 }
 '

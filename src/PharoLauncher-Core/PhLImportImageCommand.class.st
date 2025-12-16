@@ -39,19 +39,22 @@ PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 
 { #category : 'executing' }
 PhLImportImageCommand >> execute [
-	| answer |
+	| answer options answerIndex |
 
 	importSiblings := false.
+	options := {
+		'Import an image into Pharo Launcher images store (will move files)' .
+		'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' 
+	}. 
+
 	answer := self imagesPresenter newRequest
 		title: 'Import';
 		label: 'What would you like to do?';
-		chooseFrom: {
-			'Import an image into Pharo Launcher images store (will move files)' .
-			'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' 
-		}.
-	
+		chooseFrom: options.
+
 	(answer isNil or: [ answer = 0  ]) ifTrue: [ ^ self "cancel" ].
-	answer = 2 ifTrue: [ importSiblings := true ].
+	answerIndex := options indexOf: answer.
+	importSiblings := answerIndex = 2. "second option"
 	self importImage
 ]
 

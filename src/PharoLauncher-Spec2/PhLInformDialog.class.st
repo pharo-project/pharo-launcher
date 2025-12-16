@@ -25,6 +25,14 @@ PhLInformDialog >> initializePresenters [
 ]
 
 { #category : 'initialization' }
+PhLInformDialog >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter 
+		title: self title;
+		initialExtent: self class defaultExtent
+]
+
+{ #category : 'initialization' }
 PhLInformDialog >> initializeWindowExtent: aDialogWindowPresenter [
 ]
 

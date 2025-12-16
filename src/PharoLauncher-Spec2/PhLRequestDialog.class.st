@@ -39,9 +39,11 @@ PhLRequestDialog >> initializePresenters [
 
 { #category : 'initialization' }
 PhLRequestDialog >> initializeWindow: aWindowPresenter [
-
-	super initializeWindow: aWindowPresenter.
-	"aWindowPresenter withoutDecorations"
+	
+	aWindowPresenter 
+		title: self title;
+		initialExtent: self class defaultExtent;
+		whenOpenedDo: [ textInput takeKeyboardFocus; selectAll ]
 ]
 
 { #category : 'initialization' }

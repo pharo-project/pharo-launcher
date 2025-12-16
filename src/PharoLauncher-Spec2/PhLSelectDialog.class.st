@@ -6,6 +6,12 @@ Class {
 	#tag : 'View-Dialogs'
 }
 
+{ #category : 'accessing' }
+PhLSelectDialog class >> defaultExtent [
+
+	^ 650@300
+]
+
 { #category : 'layout' }
 PhLSelectDialog >> defaultLayout [
 
@@ -28,6 +34,15 @@ PhLSelectDialog >> initializePresenters [
 		addStyle: 'message';
 		beJustifyCenter;
 		beWrap
+]
+
+{ #category : 'initialization' }
+PhLSelectDialog >> initializeWindow: aWindowPresenter [
+
+	aWindowPresenter 
+		title: self title;
+		initialExtent: self class defaultExtent;
+		whenOpenedDo: [ list takeKeyboardFocus ]
 ]
 
 { #category : 'initialization' }

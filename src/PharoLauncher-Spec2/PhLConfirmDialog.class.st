@@ -36,8 +36,9 @@ PhLConfirmDialog >> initializePresenters [
 { #category : 'initialization' }
 PhLConfirmDialog >> initializeWindow: aWindowPresenter [
 
-	super initializeWindow: aWindowPresenter.
-	"aWindowPresenter withoutDecorations"
+	aWindowPresenter 
+		title: self title;
+		initialExtent: self class defaultExtent
 ]
 
 { #category : 'api' }

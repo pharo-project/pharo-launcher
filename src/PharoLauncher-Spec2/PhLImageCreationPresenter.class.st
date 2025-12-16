@@ -63,6 +63,12 @@ PhLImageCreationPresenter >> connectPresenters [
 ]
 
 { #category : 'action' }
+PhLImageCreationPresenter >> createImage [
+		
+	createButton click
+]
+
+{ #category : 'action' }
 PhLImageCreationPresenter >> createImageWithCommand: createCommand [
 	
 	[ createCommand execute.

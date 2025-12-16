@@ -199,6 +199,16 @@ PhLTemplatesPresenter >> initialize [
 ]
 
 { #category : 'initialization' }
+PhLTemplatesPresenter >> initializeDialogWindow: aDialogWindowPresenter [
+	"overriden to remove default buttons"
+	
+	aDialogWindowPresenter 
+		addDefaultButton: 'Create' 
+		do: [ :presenter | 
+			 descriptionPanel createImage ]
+]
+
+{ #category : 'initialization' }
 PhLTemplatesPresenter >> initializePresenters [
 
 	categoryTable := self buildCategoryTable.

@@ -6,6 +6,12 @@ Class {
 	#tag : 'View-Dialogs'
 }
 
+{ #category : 'accessing' }
+PhLRequestDialog class >> defaultExtent [
+
+	^ 450@200
+]
+
 { #category : 'layout' }
 PhLRequestDialog >> defaultLayout [
 

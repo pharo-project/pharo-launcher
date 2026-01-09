@@ -7,36 +7,23 @@ Class {
 	#name : 'PharoLauncherSettings',
 	#superclass : 'Object',
 	#instVars : [
-		'settingNodes'
+		'manager'
 	],
 	#category : 'PharoLauncher-Core-Settings',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Settings'
 }
 
-{ #category : 'private' }
-PharoLauncherSettings >> buildSettingNodes [	
-	^ StSettingsTree new
-		acceptableKeywords: { #pharoLauncherSettings };
-		newSettingTreeBuilderNodes
-]
-
 { #category : 'accessing' }
 PharoLauncherSettings >> checkTemplateSourcesUpdate: aBoolean [ 
 	
-	self setValueOfDeclarationNamed: #shouldCheckTemplateSourcesUpdate with: aBoolean
+	self setValueOfSettingNamed: '#pharoLauncher#shouldCheckTemplateSourcesUpdate' with: aBoolean
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> clearTemplatesAtStartup: aBoolean [
 
-	self setValueOfDeclarationNamed: #templatesClearedOnStartup with: aBoolean
-]
-
-{ #category : 'private' }
-PharoLauncherSettings >> declarationNamed: aSettingIdentifier [
-
-	^ (self settingNodeNamed: aSettingIdentifier) declaration
+	self setValueOfSettingNamed: '#pharoLauncher#templatesClearedOnStartup' with: aBoolean
 ]
 
 { #category : 'resetting' }
@@ -48,107 +35,109 @@ PharoLauncherSettings >> hardResetPersistanceState [
 { #category : 'accessing' }
 PharoLauncherSettings >> imagesLocation: aString [ 
 	
-	self setValueOfDeclarationNamed: #locationString with: aString
+	self setValueOfSettingNamed: '#pharoLauncher#locationString' with: aString
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> initializationScriptsLocation: aFileReference [ 
 	
-	self setValueOfDeclarationNamed: #initializationScriptsLocation with: aFileReference
+	self setValueOfSettingNamed: '#pharoLauncher#initializationScriptsLocation' with: aFileReference
+]
+
+{ #category : 'initialization' }
+PharoLauncherSettings >> initialize [ 
+
+	super initialize.
+	manager := SettingsManager forPragmaNamed: #pharoLauncherSettings
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> launchInALoginShell: aBoolean [
 
-	self setValueOfDeclarationNamed: #launchInALoginShell with: aBoolean
+	self setValueOfSettingNamed: '#pharoLauncher#launchInALoginShell' with: aBoolean
 ]
 
 { #category : 'accessing - network' }
 PharoLauncherSettings >> proxyPassword: aString [ 
 	
-	self setValueOfDeclarationNamed: #proxyPassword with: aString
+	self setValueOfSettingNamed: '#network#useNetworkAuthentification#proxyPassword' with: aString
 ]
 
 { #category : 'accessing - network' }
 PharoLauncherSettings >> proxyPort: aString [ 
 	
-	self setValueOfDeclarationNamed: #httpProxyPort with: aString
+	self setValueOfSettingNamed: '#network#useHTTPProxy#httpProxyPort' with: aString
 ]
 
 { #category : 'accessing - network' }
 PharoLauncherSettings >> proxyServer: aString [ 
 	
-	self setValueOfDeclarationNamed: #httpProxyServer with: aString
+	self setValueOfSettingNamed: '#network#useHTTPProxy#httpProxyServer' with: aString
 ]
 
 { #category : 'accessing - network' }
 PharoLauncherSettings >> proxyUser: aString [ 
 	
-	self setValueOfDeclarationNamed: #proxyUser with: aString
+	self setValueOfSettingNamed: '#network#useNetworkAuthentification#proxyUser' with: aString
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> quitOnLaunch: aBoolean [ 
 	
-	self setValueOfDeclarationNamed: #quitOnLaunch with: aBoolean
+	self setValueOfSettingNamed: '#pharoLauncher#quitOnLaunch' with: aBoolean
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> setValueOfDeclarationNamed: aName with: anArgument [
-	| declaration |
+PharoLauncherSettings >> setValueOfSettingNamed: aSettingIdentifier with: aValue [
 	
-	declaration := self declarationNamed: aName.
-	declaration settingReceiver perform: declaration setSelector with: anArgument.
+	(self settingNamed: aSettingIdentifier) realValue: aValue
 
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> settingNodeNamed: aSettingIdentifier [
+PharoLauncherSettings >> settingNamed: aSettingIdentifier [
 
-	^ self settingNodes detect: [ :node | node declaration name = aSettingIdentifier ]
-]
-
-{ #category : 'private' }
-PharoLauncherSettings >> settingNodes [	
-	^ settingNodes ifNil: [ settingNodes := self buildSettingNodes ]
+	^ manager settingNamed: aSettingIdentifier
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> sourcesFileLocation: aString [ 
 	
-	self setValueOfDeclarationNamed: #launcherCoreDirString with: aString
+	self setValueOfSettingNamed: '#pharoLauncher#launcherCoreDirString' with: aString
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> sourcesUrl: aString [ 
 	
-	self setValueOfDeclarationNamed: #sourcesUrl with: aString
+	self setValueOfSettingNamed: '#pharoLauncher#sourcesUrl' with: aString
 ]
 
-{ #category : 'ston persistence' }
-PharoLauncherSettings >> stonOn: stonWriter [
+{ #category : 'persistence' }
+PharoLauncherSettings >> store [
 
-	^ (StoredSettingsFactory new fromSettingNodes: self settingNodes) asArray
-		stonOn: stonWriter
+	manager storeSettings
+]
+
+{ #category : 'accessing - appearance' }
+PharoLauncherSettings >> uiThemeClass: aClass [
+
+	self setValueOfSettingNamed: #uiThemeClass with: aClass
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> valueOfDeclarationNamed: aName [
-	| declaration |
+PharoLauncherSettings >> valueOfSettingNamed: aSettingIdentifier [
 	
-	declaration := self declarationNamed: aName.
-	^ declaration settingReceiver perform: declaration getSelector
-
+	^ (self settingNamed: aSettingIdentifier) realValue
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> vmsLocation: aFileReference [ 
 	
-	self setValueOfDeclarationNamed: #vmStoreString with: aFileReference
+	self setValueOfSettingNamed: '#pharoLauncher#vmStoreString' with: aFileReference
 ]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> warnOnArchMismatch: aBoolean [ 
 
-	self setValueOfDeclarationNamed: #warnOnArchMismatch with: aBoolean
+	self setValueOfSettingNamed: '#pharoLauncher#warnOnArchMismatch' with: aBoolean
 ]

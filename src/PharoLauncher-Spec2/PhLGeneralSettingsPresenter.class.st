@@ -212,3 +212,9 @@ PhLGeneralSettingsPresenter >> newSourcesSection [
 			yourself);
 		yourself
 ]
+
+{ #category : 'private' }
+PhLGeneralSettingsPresenter >> settingIdentifierFor: aSettingName [
+	
+	^ #pharoLauncher, aSettingName printString
+]

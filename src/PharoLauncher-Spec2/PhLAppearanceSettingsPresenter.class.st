@@ -25,7 +25,7 @@ PhLAppearanceSettingsPresenter class >> open [
 { #category : 'private' }
 PhLAppearanceSettingsPresenter >> activeTheme [
 
-	^ PhLAppearanceSettings uiThemeClass 
+	^ self settings uiThemeClass 
 		ifNotNil: [ :aThemeClass | aThemeClass uniqueInstance ]
 		ifNil: [ self defaultActiveTheme ]
 ]
@@ -104,6 +104,12 @@ PhLAppearanceSettingsPresenter >> selectTheme: aTheme [
 		detect: [ :each | (each propertyAt: #theme ifAbsent: [ nil ]) = aTheme ]
 		ifFound: [ :aPresenter |
 			aTheme activateOn: self application.
-			PhLAppearanceSettings uiThemeClass: aTheme class.
+			self settings uiThemeClass: aTheme class.
 			aPresenter addStyle: 'welcomeThemeSelected' ]
+]
+
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> settingIdentifierFor: aSettingName [
+	
+	^ #appearance, aSettingName printString
 ]

@@ -18,6 +18,12 @@ Class {
 }
 
 { #category : 'instance creation' }
+SettingsManager class >> forPragmaNamed: aSymbol [
+
+	^ self forSettings: (SettingsBuilder forPragmaNamed: aSymbol) settings
+]
+
+{ #category : 'instance creation' }
 SettingsManager class >> forSettings: aListOfSettings [
 
 	^ self new

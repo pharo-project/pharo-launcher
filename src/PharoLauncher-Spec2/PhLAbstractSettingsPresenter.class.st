@@ -10,43 +10,67 @@ Class {
 }
 
 { #category : 'instance creation' }
-PhLAbstractSettingsPresenter >> newNumberInputFor: aSettingIdentifier [
+PhLAbstractSettingsPresenter >> newNumberInputFor: aSettingName [
 	| declaration |
 	
-	declaration := self settings declarationNamed: aSettingIdentifier.
+	declaration := self settingNamed: aSettingName.
 	^ self newNumberInput
 		help: declaration description;
 		beInteger;
 		minimum: 0;
-		number: (self settings valueOfDeclarationNamed: aSettingIdentifier);
-		whenNumberChangedDo: [ :aNumber | self settings setValueOfDeclarationNamed: aSettingIdentifier with: aNumber ]
+		number: (self valueOfSettingNamed: aSettingName);
+		whenNumberChangedDo: [ :aNumber | self setValueOfSettingNamed: aSettingName with: aNumber ]
 ]
 
 { #category : 'instance creation' }
-PhLAbstractSettingsPresenter >> newSwitchFor: aSettingIdentifier [
+PhLAbstractSettingsPresenter >> newSwitchFor: aSettingName [
 	| declaration |
 	
-	declaration := self settings declarationNamed: aSettingIdentifier.
+	declaration := self settingNamed: aSettingName.
 	^ self newSwitch
 		help: declaration description;
-		state: (self settings valueOfDeclarationNamed: aSettingIdentifier);
-		whenChangedDo: [ :state | self settings setValueOfDeclarationNamed: aSettingIdentifier with: state ]
+		state: (self valueOfSettingNamed: aSettingName);
+		whenChangedDo: [ :state | self setValueOfSettingNamed: aSettingName with: state ]
 	
 ]
 
 { #category : 'instance creation' }
-PhLAbstractSettingsPresenter >> newTextInputFor: aSettingIdentifier [
+PhLAbstractSettingsPresenter >> newTextInputFor: aSettingName [
 	| declaration |
 	
-	declaration := self settings declarationNamed: aSettingIdentifier.
+	declaration := self settingNamed: aSettingName.
 	^ self newTextInput
 		help: declaration description;
-		text: (self settings valueOfDeclarationNamed: aSettingIdentifier);
-		whenTextChangedDo: [ :text | self settings setValueOfDeclarationNamed: aSettingIdentifier with: text ]
+		text: (self valueOfSettingNamed: aSettingName);
+		whenTextChangedDo: [ :text | self setValueOfSettingNamed: aSettingName with: text ]
+]
+
+{ #category : 'accessing' }
+PhLAbstractSettingsPresenter >> setValueOfSettingNamed: aSettingName with: aValue [
+	
+	^ self settings setValueOfSettingNamed: (self settingIdentifierFor: aSettingName) with: aValue
+]
+
+{ #category : 'private' }
+PhLAbstractSettingsPresenter >> settingIdentifierFor: aSettingName [
+
+	^ aSettingName
+]
+
+{ #category : 'accessing' }
+PhLAbstractSettingsPresenter >> settingNamed: aSettingName [
+	
+	^ self settings settingNamed: (self settingIdentifierFor: aSettingName)
 ]
 
 { #category : 'accessing' }
 PhLAbstractSettingsPresenter >> settings [
 
 	^ self model
+]
+
+{ #category : 'accessing' }
+PhLAbstractSettingsPresenter >> valueOfSettingNamed: aSettingName [
+	
+	^ self settings valueOfSettingNamed: (self settingIdentifierFor: aSettingName)
 ]

@@ -7,18 +7,15 @@ Class {
 
 { #category : 'tests' }
 StoredSettingsFactoryTest >> testStoreBooleanSetting [
-	| setting stored string stored2 |
+	| setting storedSetting stonString deserializedStoredSetting |
 	setting := SettingsTestData booleanSetting.
 	
-	stored := StoredSettingsFactory new from: setting.
+	storedSetting := StoredSettingsFactory new from: setting.
 	
-	self assert: stored isNotNil.
-	string := String streamContents: [ :aStream | | writer |
-		writer := STON writer on: aStream; prettyPrint: true; yourself.
-		writer writeObject: stored.
-	].
-	self assert: string isNotNil.
-	stored2 := STON fromString: string.
-	self assert: stored2 isNotNil.
-	self assert: stored2 equals: stored
+	self assert: storedSetting isNotNil.
+	stonString := STON toStringPretty: storedSetting.
+	self assert: stonString isNotNil.
+	deserializedStoredSetting := STON fromString: stonString.
+	self assert: deserializedStoredSetting isNotNil.
+	self assert: deserializedStoredSetting equals: storedSetting
 ]

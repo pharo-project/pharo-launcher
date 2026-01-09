@@ -12,12 +12,26 @@ Class {
 	#package : 'PharoLauncher-Settings-Tests'
 }
 
+{ #category : 'asserting' }
+SettingsManagerTest >> assertStoredSettingsDoNotInclude: aIdentifier [
+
+	| settings |
+	self assert: preferencesFile exists.
+
+	settings := preferencesFile readStreamDo: [ :stream | STON fromStream: stream ].
+
+	settings detect: [ :aSetting | aSetting settingNodeIdentifier = aIdentifier printString ]
+		ifFound: [ :aSetting | self fail: 'The node has been found, it should not be there' ]
+		ifNone: [ ^ self ]
+]
+
 { #category : 'running' }
 SettingsManagerTest >> setUp [
 	super setUp.
 
 	manager := SettingsManager new.
 	preferencesFile := FileSystem memory root / 'pharo' / 'pharoX.Y' / 'preferences.ston.txt'.
+	manager fileReference: preferencesFile.
 ]
 
 { #category : 'test data' }
@@ -145,26 +159,68 @@ SettingsManagerTest >> testCanStoreSettingNodesSequentially [
 	| settings storedSettings |
 	manager fileReference: preferencesFile.
 	self deny: preferencesFile exists.
-	settings :=  { SettingsTestData booleanSetting . SettingsTestData rangeSetting }.
+	settings := {
+		            SettingsTestData booleanSetting.
+		            SettingsTestData rangeSetting }.
+	settings first target shouldQuit: true.
 	settings second target scaleFactor: 2.
 
 	manager storeSetting: settings first.
-	
+
 	self assert: preferencesFile exists.
 	self assert: preferencesFile size > 0.
 	storedSettings := STON fromString: preferencesFile contents.
 	self assert: storedSettings size equals: 1.
-	self assert: storedSettings first settingNodeIdentifier equals: settings first settingNodeIdentifier.
+	self
+		assert: storedSettings first settingNodeIdentifier
+		equals: settings first settingIdentifier.
 
 	manager storeSetting: settings second.
-	self flag: 'Missing self mergeStoredSettings: in storeStoredSettings: Do we need to save in parts? and preserve old settings in file?'.
 
 	storedSettings := STON fromString: preferencesFile contents.
 	self assert: storedSettings size equals: settings size.
-	self assert: storedSettings first settingNodeIdentifier equals: settings first settingNodeIdentifier.
-	self assert: storedSettings second settingNodeIdentifier equals: settings second settingNodeIdentifier
-	
+	self
+		assert: storedSettings first settingNodeIdentifier
+		equals: settings first settingIdentifier.
+	self
+		assert: storedSettings second settingNodeIdentifier
+		equals: settings second settingIdentifier
+]
 
+{ #category : 'tests - loading' }
+SettingsManagerTest >> testCanUpdateSomeSettings [
+
+	| settings settingsToUpdate |
+	settings := SettingsTestData settings.
+	manager settings: settings.
+	(manager settingNamed: '#uiThemeClass') realValue: Array.
+	(manager settingNamed: '#shouldQuit') realValue: true.
+	(manager settingNamed: '#appearance#scaleFactor') realValue: 2.5.
+	manager storeSettings.
+	(manager settingNamed: '#uiThemeClass') realValue: String.
+	(manager settingNamed: '#shouldQuit') realValue: false.
+	(manager settingNamed: '#appearance#scaleFactor') realValue: 1.
+	
+	settingsToUpdate := settings reject: [ :setting | setting settingIdentifier = '#uiThemeClass' ].
+	manager updateSettings: settingsToUpdate.
+	
+	self assert: (manager settingNamed: '#shouldQuit') realValue equals: true.
+	self assert: (manager settingNamed: '#appearance#scaleFactor') realValue equals: 2.5.
+	"uiThemeClass should not be updated"
+	self assert: (manager settingNamed: '#uiThemeClass') realValue equals: String
+]
+
+{ #category : 'tests - storing - defaults' }
+SettingsManagerTest >> testFreshSettingsHaveDefaultValue [
+
+	| nodesToStore |
+	"A setting with default value should not be saved.
+	The settings should only be saved if changed from default value"
+	
+	nodesToStore := manager storedSettingsFor:
+		                (SettingsTestData settings select: [ :aSetting | aSetting hasDefault ]).
+
+	self assert: (nodesToStore reject: [ :aNode | aNode hasDefaultValue ]) isEmpty
 ]
 
 { #category : 'tests - storing' }
@@ -227,6 +283,27 @@ SettingsManagerTest >> testSettingsNotDuplicatedWhenStoreSettingNodeTwice [
 ]
 
 { #category : 'tests - storing' }
+SettingsManagerTest >> testStoreIdentifier [
+
+	| setting storedSetting |
+	manager fileReference: preferencesFile.
+	self deny: preferencesFile exists.
+	setting := SettingsTestData booleanSetting.
+	setting target shouldQuit: true.
+	manager settings: { setting }.
+	
+	manager storeIdentifier: setting settingIdentifier.
+	
+	self assert: preferencesFile exists.
+	self assert: preferencesFile size > 0.
+	storedSetting := (STON fromString: preferencesFile contents) first.
+	self
+		assert: storedSetting settingNodeIdentifier
+		equals: setting settingIdentifier.
+	self assert: storedSetting realValue equals: setting realValue
+]
+
+{ #category : 'tests - storing' }
 SettingsManagerTest >> testStoreSettingNode [
 
 	| setting storedSetting |
@@ -271,26 +348,51 @@ SettingsManagerTest >> testStoreSettingNodes [
 		equals: settings second settingIdentifier
 ]
 
-{ #category : 'tests - storing' }
+{ #category : 'tests - loading' }
+SettingsManagerTest >> testStoredSettingForKnownSettingIdentifier [
+
+	| file setting |
+	file := FileSystem memory root / 'settings.ston'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: self stonStoredSettingsString ].
+	manager fileReference: file.
+
+	setting := manager storedSettingFor: '#pharoLauncher#templatesClearedOnStartup'.
+	
+	self assert: setting realValue equals: false
+]
+
+{ #category : 'tests - loading' }
+SettingsManagerTest >> testStoredSettingForUnknownSettingIdentifierRaiseNotFound [
+
+	| file |
+	file := FileSystem memory root / 'settings.ston'.
+	file writeStreamDo: [ :stream |
+		stream nextPutAll: self stonStoredSettingsString ].
+	manager fileReference: file.
+
+	self
+		should: [ manager storedSettingFor: #unknown_setting ]
+		raise: NotFound
+]
+
+{ #category : 'tests - storing - defaults' }
 SettingsManagerTest >> testStoringNonDefaultValueAndThenStoringTheDefaultRemovesTheNode [
 
-	| storedSettings setting |
-	manager fileReference: preferencesFile.
-	self deny: preferencesFile exists.
-	setting :=  { SettingsTestData rangeSetting }.
-
 	"Store with a non default value"
-	setting first target scaleFactor: 1.5.
-	manager storeSettings: setting.
-	storedSettings := STON fromString: preferencesFile contents.
-	self assert: storedSettings size equals: 1.
+	| booleanSetting |
 	
-	"Store with a default value"
-	setting first target scaleFactor: 1.
-	manager storeSettings: setting.
-	storedSettings := STON fromString: preferencesFile contents.
-	self assert: storedSettings size equals: 0.
+	manager settings: SettingsTestData settings.
+	booleanSetting := manager settingNamed: '#shouldQuit'.
+	booleanSetting realValue: booleanSetting defaultValue not.
+	manager storeSettings.
+	self assert: preferencesFile exists.
 
+	"Store with a default value"
+	booleanSetting realValue: booleanSetting defaultValue.
+	manager storeSettings.
+
+	self assertStoredSettingsDoNotInclude: #shouldQuit
 ]
 
 { #category : 'tests' }

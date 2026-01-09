@@ -108,6 +108,12 @@ PhLAbstractSetting >> groupName: aSymbol [
 ]
 
 { #category : 'testing' }
+PhLAbstractSetting >> hasDefault [
+	
+	^ self defaultValue notNil
+]
+
+{ #category : 'testing' }
 PhLAbstractSetting >> hasDefaultValue [
 
 	^ self realValue = self defaultValue
@@ -158,9 +164,7 @@ PhLAbstractSetting >> label: aString [
 { #category : 'accessing' }
 PhLAbstractSetting >> name [
 
-	^ name 
-		ifNil: [ 'Unnamed ' , self class name ] 
-		ifNotNil: [ name ]
+	^ name ifNil: [ 'Unnamed ' , self class name ]
 ]
 
 { #category : 'accessing' }
@@ -220,6 +224,7 @@ PhLAbstractSetting >> printOn: aStream [
 
 { #category : 'accessing' }
 PhLAbstractSetting >> settingIdentifier [
+	"identifier is a string because it can contains many #"
 	
 	^ String streamContents: [ :aStream |
 			self settingIdentifierOn: aStream ]

@@ -9,7 +9,9 @@ Class {
 		'readStream',
 		'fileReference',
 		'writeStream',
-		'settings'
+		'settings',
+		'storedSettingsMerger',
+		'storedSettingsWriter'
 	],
 	#category : 'PharoLauncher-Settings',
 	#package : 'PharoLauncher-Settings'
@@ -28,6 +30,12 @@ SettingsManager >> allStoredSettings [
 	"Load all stored settings from the read stream."
 	
 	^ self storedSettingsReader secureLoad
+]
+
+{ #category : 'accessing' }
+SettingsManager >> defaultStoredSettingsMerger [
+
+	^ StoredSettingsMerger new
 ]
 
 { #category : 'accessing' }
@@ -67,6 +75,15 @@ SettingsManager >> loadSettings [
 	self updateSettingsWith: self allStoredSettings
 ]
 
+{ #category : 'private - storing' }
+SettingsManager >> mergeStoredSettings: aCollectionOfStoredSettings [
+
+	^ self storedSettingsMerger
+		addStoredSettings: self allStoredSettings;
+		addStoredSettings: aCollectionOfStoredSettings;
+		storedSettings
+]
+
 { #category : 'accessing' }
 SettingsManager >> readStream [
 
@@ -93,6 +110,12 @@ SettingsManager >> removeFileReferenceIfExists [
 ]
 
 { #category : 'accessing' }
+SettingsManager >> settingNamed: identifier [
+
+	^ settings detect: [ :setting | setting settingIdentifier = identifier ]
+]
+
+{ #category : 'accessing' }
 SettingsManager >> settings [
 
 	^ settings
@@ -104,13 +127,47 @@ SettingsManager >> settings: aListOfSettings [
 	settings := aListOfSettings
 ]
 
+{ #category : 'accessing' }
+SettingsManager >> settingsFromIdentifiers: identifiers [
+
+	^ identifiers
+		  collect: [ :identifier |
+				  self settings detect: [ :setting |
+					  setting settingIdentifier = identifier ] ]
+		  thenReject: [ :each | each isNil ]
+]
+
 { #category : 'storing' }
+SettingsManager >> storeExactStoredSettings: allStoredSettings [
+
+	self
+		ensureFileReferenceParent;
+		removeFileReferenceIfExists.
+		
+	self fileReference writeStreamDo: [ :stream |
+		self storeExactStoredSettings: allStoredSettings on: stream ]
+]
+
+{ #category : 'private - storing' }
 SettingsManager >> storeExactStoredSettings: aCollectionOfStoredSettings on: aStream [
 
-	self defaultStoredSettingsWriter
+	self storedSettingsWriter
 		stream: aStream;
 		addSettings: aCollectionOfStoredSettings;
 		store
+]
+
+{ #category : 'storing' }
+SettingsManager >> storeIdentifier: aSettingIdentifier [
+	
+	self storeIdentifiers: (Array with: aSettingIdentifier)
+]
+
+{ #category : 'storing' }
+SettingsManager >> storeIdentifiers: aListOfSettingIdentifiers [
+	
+	settings := self settingsFromIdentifiers: aListOfSettingIdentifiers.
+	self storeSettings: settings 
 ]
 
 { #category : 'storing' }
@@ -122,8 +179,7 @@ SettingsManager >> storeSetting: aSetting [
 { #category : 'storing' }
 SettingsManager >> storeSettings [
 	
-	self flag: 'TO DO'
-	"self storeSettings: self settings"
+	self storeSettings: self settings
 ]
 
 { #category : 'storing' }
@@ -136,7 +192,9 @@ SettingsManager >> storeSettings: aListOfSettings [
 SettingsManager >> storeStoredSettings: aCollectionOfStoredSettings [
 	"It stores a collection of stored settings on the disk."
 
-	self writeStreamDo: [ :stream | self storeExactStoredSettings: aCollectionOfStoredSettings on: stream ]
+	| allStoredSettings |
+	allStoredSettings := self mergeStoredSettings: aCollectionOfStoredSettings.
+	self storeExactStoredSettings: allStoredSettings
 ]
 
 { #category : 'accessing' }
@@ -145,16 +203,24 @@ SettingsManager >> storedSettingFactory [
 	^ StoredSettingsFactory new
 ]
 
-{ #category : 'converting' }
-SettingsManager >> storedSettingFor: aSetting [
+{ #category : 'loading' }
+SettingsManager >> storedSettingFor: aSettingIdentifier [
 
-	^ self storedSettingFactory from: aSetting
+	^ self allStoredSettings
+				detect: [ :eachStoredSetting |
+					eachStoredSetting isForSettingIdentifier: aSettingIdentifier ]
 ]
 
 { #category : 'converting' }
 SettingsManager >> storedSettingsFor: aListOfSetting [
 
 	^ self storedSettingFactory fromSettingNodes: aListOfSetting
+]
+
+{ #category : 'accessing' }
+SettingsManager >> storedSettingsMerger [
+
+	^ storedSettingsMerger ifNil: [ self defaultStoredSettingsMerger ]
 ]
 
 { #category : 'accessing' }
@@ -171,14 +237,32 @@ SettingsManager >> storedSettingsReader: aStoredSettingReader [
 	storedSettingsReader := aStoredSettingReader
 ]
 
+{ #category : 'accessing' }
+SettingsManager >> storedSettingsWriter [
+
+	^ storedSettingsWriter ifNil: [ self defaultStoredSettingsWriter ]
+]
+
 { #category : 'loading' }
-SettingsManager >> updateSettingsWith: aListOfStoredSettings [
+SettingsManager >> updateSettings: someSettings [
+
+	self updateSettings: someSettings with: self allStoredSettings
+]
+
+{ #category : 'private - loading' }
+SettingsManager >> updateSettings: aLitOfSettings with: aListOfStoredSettings [
 
 	aListOfStoredSettings do: [ :storedSetting |
-			settings
-				detect: [ :aSetting | storedSetting isForSettingNode: aSetting ]
+			aLitOfSettings
+				detect: [ :aSetting | storedSetting isForSettingIdentifier: aSetting settingIdentifier ]
 				ifFound: [ :aSetting | storedSetting updateSettingNode: aSetting ]
 				ifNone: [ "ignore it" ] ]
+]
+
+{ #category : 'private - loading' }
+SettingsManager >> updateSettingsWith: aListOfStoredSettings [
+
+	self updateSettings: settings with: aListOfStoredSettings
 ]
 
 { #category : 'private - storing' }

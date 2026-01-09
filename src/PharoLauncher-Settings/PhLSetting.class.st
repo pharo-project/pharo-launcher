@@ -158,6 +158,20 @@ PhLSetting >> settingReceiver [
 		  ifNotNil: [ self realTarget perform: self targetSelector ]
 ]
 
+{ #category : 'accessing' }
+PhLSetting >> type [
+
+	^ type
+]
+
+{ #category : 'accessing' }
+PhLSetting >> type: aSymbol [
+
+	(self class validTypes includes: aSymbol)
+		ifTrue: [ type := aSymbol ]
+		ifFalse: [ PhLUnknownSettingType signalType: aSymbol ]
+]
+
 { #category : 'old setting builder - with support on setting' }
 PhLSetting >> with: aBlock [
 

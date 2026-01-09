@@ -3,7 +3,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'scaleFactor',
-		'shouldQuit'
+		'shouldQuit',
+		'uiThemeClass'
 	],
 	#category : 'PharoLauncher-Settings-Tests',
 	#package : 'PharoLauncher-Settings-Tests'
@@ -103,6 +104,7 @@ SettingsTestData class >> booleanSetting [
 { #category : 'settings' }
 SettingsTestData class >> booleanSettingWithDefaultOn: aBuilder [
 
+	<settings_test_data>
 	<boolean_setting_test_data>
 	(aBuilder setting: #booleanSettingWithDefault)
 		name: 'shouldQuit';
@@ -115,10 +117,11 @@ SettingsTestData class >> booleanSettingWithDefaultOn: aBuilder [
 { #category : 'settings' }
 SettingsTestData class >> pickOneSettingOn: aBuilder [
 
+	<settings_test_data>
 	<pick_one_setting_test_data>
 	(aBuilder pickOne: #uiThemeClass)
 		label: 'User interface theme';
-		target: self;
+		target: self new;
 		defaultValue: PhLAppearanceThemeLight;
 		order: 1;
 		domainValues: PhLAppearanceTheme all
@@ -133,6 +136,7 @@ SettingsTestData class >> rangeSetting [
 { #category : 'settings' }
 SettingsTestData class >> rangeSettingOn: aBuilder [
 
+	<settings_test_data>
 	<range_setting_test_data>
 	(aBuilder range: #scaleFactor)
 		groupName: #appearance;
@@ -196,4 +200,16 @@ SettingsTestData >> shouldQuit [
 SettingsTestData >> shouldQuit: aBoolean [
 
 	shouldQuit := aBoolean
+]
+
+{ #category : 'settings accessors' }
+SettingsTestData >> uiThemeClass [
+
+	^ uiThemeClass
+]
+
+{ #category : 'settings accessors' }
+SettingsTestData >> uiThemeClass: aClass [
+
+	uiThemeClass :=  aClass
 ]

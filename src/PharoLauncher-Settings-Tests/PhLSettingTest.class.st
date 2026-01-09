@@ -45,6 +45,18 @@ PhLSettingTest >> testChildIdentifier [
 		equals: '#appearance#scaleFactor'
 ]
 
+{ #category : 'tests' }
+PhLSettingTest >> testIdentifierIsAString [
+
+	| setting |
+	setting := PhLSetting new.
+	setting name: #foo.
+
+	self
+		assert: setting settingIdentifier
+		equals: '#foo'
+]
+
 { #category : 'tests - realTarget' }
 PhLSettingTest >> testReceiverIsClassDefiningSettingWhenNoTargetSpecified [
 

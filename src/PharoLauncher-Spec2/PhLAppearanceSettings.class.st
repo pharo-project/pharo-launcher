@@ -14,45 +14,48 @@ Class {
 }
 
 { #category : 'settings' }
-PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [ 
+PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
+
 	<pharoLauncherSettings>
-	
 	(aBuilder group: #appearance)
-		label: 'Appearance' ;  
-		description: 'All settings concerned with the look''n feel of your system';
+		label: 'Appearance';
+		description:
+			'All settings concerned with the look''n feel of your system';
 		target: PolymorphSystemSettings;
 		with: [
-			(aBuilder pickOne: #uiThemeClass)
-				label: 'User interface theme';
-				target: self;
-				default: PhLAppearanceThemeLight;
-				order: 1;
-				domainValues: PhLAppearanceTheme all ]
+				(aBuilder pickOne: #uiThemeClass)
+					label: 'User interface theme';
+					target: self;
+					defaultValue: PhLAppearanceThemeLight;
+					order: 1;
+					domainValues: PhLAppearanceTheme all ]
 ]
 
 { #category : 'setting' }
 PhLAppearanceSettings class >> displayScaleFactorSettingsOn: aBuilder [
-	<pharoLauncherSettings>
 
+	<pharoLauncherSettings>
 	(aBuilder range: #scaleFactor)
-		parent: #appearance;
+		groupName: #appearance;
 		order: 3;
-		default: 1;
+		defaultValue: 1;
 		label: 'Display scale factor';
-		description: 'Specify scale factor for UI elements. This setting does not affect defined font sizes.';
+		description:
+			'Specify scale factor for UI elements. This setting does not affect defined font sizes.';
 		target: WorldMorph;
 		range: (0.5 to: 5 by: 0.5)
 ]
 
 { #category : 'settings' }
 PhLAppearanceSettings class >> standardFontsSettingsOn: aBuilder [
+
 	<pharoLauncherSettings>
 	(aBuilder group: #standardFonts)
 		label: 'Standard fonts';
 		target: StandardFonts;
-		dialog: [GraphicFontSettings fontSizeRow];
-		parent: #appearance;
-		order: 4.
+		dialog: [ GraphicFontSettings fontSizeRow ];
+		groupName: #appearance;
+		order: 4
 ]
 
 { #category : 'morphic' }
@@ -69,19 +72,19 @@ PhLAppearanceSettings class >> uiThemeClass: aUIThemeClass [
 
 { #category : 'settings' }
 PhLAppearanceSettings class >> worldRendererSettingsOn: aBuilder [
-	<pharoLauncherSettings>
 
+	<pharoLauncherSettings>
 	(aBuilder group: #canvasScaleFactorGroup)
-		parent: #appearance;
+		groupName: #appearance;
 		label: 'World renderer canvas scaling';
 		with: [
-			(aBuilder pickOne: #canvasScaleFactor)
-				label: 'Canvas scale factor';
-				target: OSWorldRenderer;
-				domainValues: (1 to: 5);
-				default: 1.
-			(aBuilder setting: #autoSetCanvasScaleFactor)
-				label: 'Set canvas scale factor automatically';
-				target: OSWorldRenderer;
-				default: true ]
+				(aBuilder pickOne: #canvasScaleFactor)
+					label: 'Canvas scale factor';
+					target: OSWorldRenderer;
+					domainValues: (1 to: 5);
+					defaultValue: 1.
+				(aBuilder setting: #autoSetCanvasScaleFactor)
+					label: 'Set canvas scale factor automatically';
+					target: OSWorldRenderer;
+					defaultValue: true ]
 ]

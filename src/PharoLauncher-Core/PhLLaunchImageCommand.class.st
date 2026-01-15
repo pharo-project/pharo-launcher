@@ -39,19 +39,21 @@ PhLLaunchImageCommand class >> quitOnLaunch: aBoolean [
 
 { #category : 'settings' }
 PhLLaunchImageCommand class >> settingsOn: aBuilder [
+
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder setting: #quitOnLaunch)
 		label: 'Quit On Launch' translated;
-		parent: #pharoLauncher;
+		groupName: #pharoLauncher;
 		target: self;
 		order: 30;
 		description:
-			'When enabled, Launcher quits when an image is launched. ' , String cr
-				, 'When disabled, Launcher stays alive when an image is launched.'.
+			'When enabled, Launcher quits when an image is launched. '
+			, String cr
+			, 'When disabled, Launcher stays alive when an image is launched.'.
 	(aBuilder setting: #warnOnArchMismatch)
 		label: self archMismatchSettingLabel;
-		parent: #pharoLauncher;
+		groupName: #pharoLauncher;
 		target: self;
 		order: 35;
 		description: self archMismatchSettingDescription

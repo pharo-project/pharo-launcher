@@ -2,6 +2,7 @@
 I manage Pharo Launcher settings.
 I reuse settings pragma already defined and provide a nice API to set settings.
 I'm used by the Pharo Launcher settings presenter.
+In Pharo Launcher application, the Default instance is used.
 "
 Class {
 	#name : 'PharoLauncherSettings',
@@ -9,10 +10,40 @@ Class {
 	#instVars : [
 		'manager'
 	],
+	#classVars : [
+		'Default'
+	],
 	#category : 'PharoLauncher-Core-Settings',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Settings'
 }
+
+{ #category : 'accessing' }
+PharoLauncherSettings class >> default [
+
+	^ Default ifNil: [
+			  Default := self new
+				             preferencesFile: self preferencesFile;
+				             yourself ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherSettings class >> preferencesFile [
+
+	^ (self preferencesFolder / 'settings.ston') asFileReference
+]
+
+{ #category : 'accessing' }
+PharoLauncherSettings class >> preferencesFolder [
+
+	^ FileLocator preferences / 'pharo-launcher'
+]
+
+{ #category : 'resetting' }
+PharoLauncherSettings class >> resetDefault [
+
+	Default := nil
+]
 
 { #category : 'accessing' }
 PharoLauncherSettings >> checkTemplateSourcesUpdate: aBoolean [ 
@@ -55,6 +86,12 @@ PharoLauncherSettings >> initialize [
 PharoLauncherSettings >> launchInALoginShell: aBoolean [
 
 	self setValueOfSettingNamed: '#pharoLauncher#launchInALoginShell' with: aBoolean
+]
+
+{ #category : 'initialization' }
+PharoLauncherSettings >> preferencesFile: aFileReference [
+
+	manager fileReference: aFileReference
 ]
 
 { #category : 'accessing - network' }

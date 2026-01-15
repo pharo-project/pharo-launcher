@@ -25,7 +25,7 @@ PhLOpenSettingsCommand >> execute [
 
 	^ (PhLSettingsPresenter 
 		newApplication: self application
-		model: PharoLauncherSettings new) open
+		model: PharoLauncherSettings default) open
 ]
 
 { #category : 'initialization' }

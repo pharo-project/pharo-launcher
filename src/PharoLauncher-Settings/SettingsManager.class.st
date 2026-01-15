@@ -116,9 +116,9 @@ SettingsManager >> removeFileReferenceIfExists [
 ]
 
 { #category : 'accessing' }
-SettingsManager >> settingNamed: identifier [
+SettingsManager >> settingNamed: aName [
 
-	^ settings detect: [ :setting | setting settingIdentifier = identifier ]
+	^ settings detect: [ :setting | setting name = aName ]
 ]
 
 { #category : 'accessing' }
@@ -185,6 +185,7 @@ SettingsManager >> storeSetting: aSetting [
 { #category : 'storing' }
 SettingsManager >> storeSettings [
 	
+	fileReference ifNil: [ ^ self ].
 	self storeSettings: self settings
 ]
 

@@ -22,11 +22,17 @@ PhLSettingsGroup >> hasDefaultValue [
 	^ true
 ]
 
-{ #category : 'testing' }
+{ #category : 'accessing' }
 PhLSettingsGroup >> realValue [
 
 	"Group should manage its visibily. When done, this methods should return the value of the group visibility"
 	^ true
+]
+
+{ #category : 'accessing' }
+PhLSettingsGroup >> realValue: aValue [
+
+	"Group should manage its visibily. When done, this methods should set the value of the group visibility"
 ]
 
 { #category : 'accessing' }

@@ -48,19 +48,13 @@ PhLAbstractSettingsPresenter >> newTextInputFor: aSettingName [
 { #category : 'accessing' }
 PhLAbstractSettingsPresenter >> setValueOfSettingNamed: aSettingName with: aValue [
 	
-	^ self settings setValueOfSettingNamed: (self settingIdentifierFor: aSettingName) with: aValue
-]
-
-{ #category : 'private' }
-PhLAbstractSettingsPresenter >> settingIdentifierFor: aSettingName [
-
-	^ aSettingName
+	^ self settings setValueOfSettingNamed: aSettingName with: aValue
 ]
 
 { #category : 'accessing' }
 PhLAbstractSettingsPresenter >> settingNamed: aSettingName [
 	
-	^ self settings settingNamed: (self settingIdentifierFor: aSettingName)
+	^ self settings settingNamed: aSettingName
 ]
 
 { #category : 'accessing' }
@@ -72,5 +66,5 @@ PhLAbstractSettingsPresenter >> settings [
 { #category : 'accessing' }
 PhLAbstractSettingsPresenter >> valueOfSettingNamed: aSettingName [
 	
-	^ self settings valueOfSettingNamed: (self settingIdentifierFor: aSettingName)
+	^ self settings valueOfSettingNamed: aSettingName
 ]

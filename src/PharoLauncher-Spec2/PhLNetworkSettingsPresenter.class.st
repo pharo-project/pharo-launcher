@@ -62,8 +62,26 @@ PhLNetworkSettingsPresenter >> initializePresenters [
 	proxyPasswordInput := self newTextInputFor: #proxyPassword.
 ]
 
-{ #category : 'private' }
-PhLNetworkSettingsPresenter >> settingIdentifierFor: aSettingName [
-	
-	^ #network, aSettingName printString
+{ #category : 'accessing' }
+PhLNetworkSettingsPresenter >> proxyPassword: aString [
+
+	proxyPasswordInput text: aString
+]
+
+{ #category : 'accessing' }
+PhLNetworkSettingsPresenter >> proxyPort: anInteger [
+
+	proxyServerPortInput text: anInteger
+]
+
+{ #category : 'accessing' }
+PhLNetworkSettingsPresenter >> proxyServer: aString [
+
+	proxyServerInput text: aString
+]
+
+{ #category : 'accessing' }
+PhLNetworkSettingsPresenter >> proxyUser: aString [
+
+	proxyUsernameInput text: aString
 ]

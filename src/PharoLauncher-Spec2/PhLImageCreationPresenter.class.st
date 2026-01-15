@@ -59,7 +59,8 @@ PhLImageCreationPresenter >> close [
 { #category : 'initialization' }
 PhLImageCreationPresenter >> connectPresenters [
 
-	imageName whenTextChangedDo: [ :name | self checkNewName: name ]
+	imageName 
+		whenTextChangedDo: [ :name | self checkNewName: name ]
 ]
 
 { #category : 'action' }

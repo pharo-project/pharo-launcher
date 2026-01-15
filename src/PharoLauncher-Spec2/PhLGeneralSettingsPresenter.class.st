@@ -36,6 +36,12 @@ PhLGeneralSettingsPresenter class >> open [
 	^ (self on: PharoLauncherSettings new) open
 ]
 
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> checkForTemplateSourcesUpdateSwitch: aBoolean [
+
+	checkForTemplateSourcesUpdateSwitch state: aBoolean
+]
+
 { #category : 'initialization' }
 PhLGeneralSettingsPresenter >> chooseDirectoryFor: anInputTextPresenter [
 	
@@ -46,6 +52,12 @@ PhLGeneralSettingsPresenter >> chooseDirectoryFor: anInputTextPresenter [
 	directory ifNil: [ ^ self ].
 	
 	anInputTextPresenter text: directory asFileReference fullName
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> clearTemplatesAtStartup: aBoolean [
+
+	clearTemplatesSwitch state: aBoolean
 ]
 
 { #category : 'layout' }
@@ -63,6 +75,18 @@ PhLGeneralSettingsPresenter >> defaultLayout [
 PhLGeneralSettingsPresenter >> forceTemplateSourcesUpdate [
 
 	PhLPharoTemplateSources fromFile forceTemplateSourcesUpdate
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> imagesInitScriptsLocation: aValue [
+
+	imagesInitScriptsLocationInput text: aValue
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> imagesLocation: aValue [
+
+	imagesLocationInput text: aValue
 ]
 
 { #category : 'initialization' }
@@ -112,6 +136,12 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 	hardResetPersistentStateButton := self newButton
 		label: 'Hard reset persistent state'.
 	
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> launchInALoginShell: aBoolean [
+
+	launchFromALoginShellSwitch state: aBoolean
 ]
 
 { #category : 'layout' }
@@ -213,8 +243,26 @@ PhLGeneralSettingsPresenter >> newSourcesSection [
 		yourself
 ]
 
-{ #category : 'private' }
-PhLGeneralSettingsPresenter >> settingIdentifierFor: aSettingName [
-	
-	^ #pharoLauncher, aSettingName printString
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> quitOnLaunch: aBoolean [
+
+	quitOnLaunchSwitch state: aBoolean
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> sourcesFileLocation: aValue [
+
+	sourcesFileLocationInput text: aValue
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> vmsLocation: aValue [
+
+	vmsLocationInput text: aValue
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> warnOnArchMismatch: aBoolean [
+
+	warnOnImageArchMisMatchSwitch state: aBoolean
 ]

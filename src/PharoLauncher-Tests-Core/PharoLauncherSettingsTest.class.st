@@ -3,20 +3,7 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'settings',
-		'templatesClearedOnStartup',
-		'checkTemplateSourcesUpdate',
-		'quitOnLaunch',
-		'launchInALoginShell',
-		'warnOnArchMismatch',
-		'sourcesUrl',
-		'imagesLocation',
-		'sourcesFileLocation',
-		'initializationScriptsLocation',
-		'vmLocation',
-		'httpProxyServer',
-		'httpProxyPort',
-		'proxyPassword',
-		'proxyUser'
+		'settingsBackup'
 	],
 	#category : 'PharoLauncher-Tests-Core',
 	#package : 'PharoLauncher-Tests-Core'
@@ -26,164 +13,59 @@ Class {
 PharoLauncherSettingsTest >> setUp [
 	super setUp.
 	settings := PharoLauncherSettings new.
-	templatesClearedOnStartup := PharoLauncherApplication templatesClearedOnStartup.
-	checkTemplateSourcesUpdate := PhLTemplateSourcesUpdateChecker shouldRun.
-	quitOnLaunch := PhLLaunchImageCommand quitOnLaunch.
-	launchInALoginShell := PhLDefaultLaunchConfiguration launchInALoginShell.
-	warnOnArchMismatch := PhLLaunchImageCommand warnOnArchMismatch.
-	sourcesUrl := PhLPharoTemplateSources sourcesUrl.
-	imagesLocation := PhLDirectoryBasedImageRepository locationString.
-	sourcesFileLocation := PhLTemplateSources launcherCoreDirString.
-	initializationScriptsLocation := PharoLauncherApplication initializationScriptsLocation.
-	vmLocation := PhLVirtualMachineManager vmStoreString.
-	httpProxyServer := NetworkSystemSettings httpProxyServer.
-	httpProxyPort := NetworkSystemSettings httpProxyPort.
-	proxyUser := NetworkSystemSettings proxyUser.
-	proxyPassword := NetworkSystemSettings proxyPassword.
+	settingsBackup := settings names 
+		collect: [ :id | id -> (settings valueOfSettingNamed: id) ]
 ]
 
 { #category : 'running' }
 PharoLauncherSettingsTest >> tearDown [
 
-	PharoLauncherApplication templatesClearedOnStartup: templatesClearedOnStartup.
-	PhLTemplateSourcesUpdateChecker shouldRun: checkTemplateSourcesUpdate.
-	PhLLaunchImageCommand quitOnLaunch: quitOnLaunch.
-	PhLLaunchConfiguration launchInALoginShell: launchInALoginShell.
-	PhLLaunchImageCommand warnOnArchMismatch: warnOnArchMismatch.
-	PhLPharoTemplateSources sourcesUrl: sourcesUrl.
-	PhLDirectoryBasedImageRepository locationString: imagesLocation.
-	PhLTemplateSources launcherCoreDirString: sourcesFileLocation.
-	PharoLauncherApplication initializationScriptsLocation: initializationScriptsLocation.
-	PhLVirtualMachineManager vmStoreString: vmLocation.
-	NetworkSystemSettings httpProxyServer: httpProxyServer.
-	NetworkSystemSettings httpProxyPort: httpProxyPort.
-	NetworkSystemSettings proxyUser: proxyUser.
-	NetworkSystemSettings proxyPassword: proxyPassword.
+	settingsBackup do: [ :association |
+			settings
+				setValueOfSettingNamed: association key
+				with: association value ].
 	super tearDown
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetCheckTemplateSourcesUpdate [
-
-	settings checkTemplateSourcesUpdate: false.
-	self deny: PhLTemplateSourcesUpdateChecker shouldRun.
-	
-	settings checkTemplateSourcesUpdate: true.
-	self assert: PhLTemplateSourcesUpdateChecker shouldRun
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetImagesLocation [
-
-	self skip: 'Need to handle application that is nil'.
-	
-	settings imagesLocation: '/tmp/foo'.
-	self deny: PhLDirectoryBasedImageRepository locationString
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetInitializationScriptsLocation [
-
-	settings initializationScriptsLocation: '/tmp/foo' asFileReference.
-	self assert: PharoLauncherApplication initializationScriptsLocation equals: '/tmp/foo'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetLaunchInALoginShell [
-
-	settings launchInALoginShell: false.
-	self deny: PhLDefaultLaunchConfiguration launchInALoginShell.
-	
-	settings launchInALoginShell: true.
-	self assert: PhLDefaultLaunchConfiguration launchInALoginShell
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetProxyPassword [
-
-	settings proxyPassword: 'pass'.
-	self assert: NetworkSystemSettings proxyPassword equals: 'pass'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetProxyPort [
-
-	settings proxyPort: '9000'.
-	self assert: NetworkSystemSettings httpProxyPort equals: '9000'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetProxyServer [
-
-	settings proxyServer: 'foo'.
-	self assert: NetworkSystemSettings httpProxyServer equals: 'foo'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetProxyUser [
-
-	settings proxyUser: 'me'.
-	self assert: NetworkSystemSettings proxyUser equals: 'me'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetQuitOnLaunch [
-
-	settings quitOnLaunch: false.
-	self deny: PhLLaunchImageCommand quitOnLaunch.
-	
-	settings quitOnLaunch: true.
-	self assert: PhLLaunchImageCommand quitOnLaunch
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetSourcesFileLocation [
-
-	settings sourcesFileLocation: '/tmp/foo'.
-	self assert: PhLTemplateSources launcherCoreDirString equals: '/tmp/foo'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetTemplatesClearedAtStartup [
-
-	settings clearTemplatesAtStartup: false.
-	self deny: PharoLauncherApplication templatesClearedOnStartup.
-	
-	settings clearTemplatesAtStartup: true.
-	self assert: PharoLauncherApplication templatesClearedOnStartup
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetVmsLocation [
-
-	settings vmsLocation: '/tmp/foo' asFileReference.
-	self assert: PhLVirtualMachineManager vmStoreString equals: '/tmp/foo'
-]
-
-{ #category : 'tests' }
-PharoLauncherSettingsTest >> testCanSetWarnOnImageArchitectureMismatch [
-
-	settings warnOnArchMismatch: false.
-	self deny: PhLLaunchImageCommand warnOnArchMismatch.
-	
-	settings warnOnArchMismatch: true.
-	self assert: PhLLaunchImageCommand warnOnArchMismatch
 ]
 
 { #category : 'tests' }
 PharoLauncherSettingsTest >> testCanStoreSettings [
 
-	| stonString expextedSettingSerialization |
-	stonString := STON toStringPretty: settings.
+	| stonString expextedSettingSerialization settingsFile |
+	
+	settingsFile := FileSystem memory root / 'settings.ston'.
+	settings manager fileReference: settingsFile.
 	expextedSettingSerialization := '	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
 	}'.
 	
+	settings store.
+	
+	stonString := settingsFile contents.
 	self 
 		assert: (stonString withInternetLineEndings beginsWith: '[', String cr)
 		description: 'Serialization is not an array: ', stonString withInternetLineEndings.
 	self 
 		assert: (stonString withInternetLineEndings includesSubstring: expextedSettingSerialization withInternetLineEndings)
 		description: 'Setting node serialization is not the one expected:', stonString withInternetLineEndings
+]
+
+{ #category : 'tests' }
+PharoLauncherSettingsTest >> testChangeInASettingTriggerSettingsSaving [
+
+	| settingsFile presenter storedSettings launchInALoginShellSetting |
+	
+	settingsFile := FileSystem memory root / 'settings.ston'.
+	settings manager fileReference: settingsFile.
+	presenter := PhLGeneralSettingsPresenter on: settings.
+	
+	self assert: PhLDefaultLaunchConfiguration launchInALoginShell equals: true.
+	presenter launchInALoginShell: false.
+	
+	self deny: PhLDefaultLaunchConfiguration launchInALoginShell.
+	storedSettings := settings manager allStoredSettings.
+	launchInALoginShellSetting := storedSettings detect: [ :storedSetting | storedSetting settingNodeIdentifier = '#pharoLauncher#launchInALoginShell' ].
+	self assert: launchInALoginShellSetting realValue equals: false
+	
+	
 ]

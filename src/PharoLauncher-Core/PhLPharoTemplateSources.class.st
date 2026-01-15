@@ -78,14 +78,15 @@ PhLPharoTemplateSources class >> resetSourcesUrl [
 
 { #category : 'settings' }
 PhLPharoTemplateSources class >> settingsOn: aBuilder [
+
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder setting: #sourcesUrl)
 		label: 'Template sources Url' translated;
-		parent: #pharoLauncher;
+		groupName: #pharoLauncher;
 		target: self;
 		order: 38;
-		default: self defaultSourcesUrl;
+		defaultValue: self defaultSourcesUrl;
 		description: 'Url for downloading the template list'
 ]
 

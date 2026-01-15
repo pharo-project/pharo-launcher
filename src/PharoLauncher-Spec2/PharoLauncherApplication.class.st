@@ -189,7 +189,7 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 	<pharoLauncherSettings>
 	(aBuilder group: #pharoLauncher)
 		label: 'Pharo Launcher' translated;
-		description: 'General application settings' translated;
+		description: 'General application settings';
 		with: [ 
 					(aBuilder setting: #templatesClearedOnStartup)
 						label: 'Templates cleared at startup' translated;
@@ -197,12 +197,12 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 						target: self;
 						description:
 								'When enabled, Launcher startup clears the Templates List. ' , String cr
-										, 'When disabled, Launcher startup retains the Templates List from last run.' translated.
+										, 'When disabled, Launcher startup retains the Templates List from last run.'.
 		
 					(aBuilder setting: #initializationScriptsLocation)
-						label: 'Location of your image initialization scripts' translated;
+						label: 'Location of your image initialization scripts';
 						type: #Directory;
-						parent: #pharoLauncher;
+						groupName: #pharoLauncher;
 						target: self;
 						order: 40;
 						description: 'A directory where all your Pharo images initialization scripts will be saved (executed once at image creation)'.
@@ -215,9 +215,7 @@ PharoLauncherApplication class >> settingsOn: aBuilder [
 								'When PharoLauncher is updated through Monticello ' , 
 								'sometimes you need to clear persistent state to pick up new changes.' , String cr, 
 								'Clicking this box is a one-shot action, i.e. this state is also reset.', String cr, 
-								'Note, all open windows are clsoed and the application restarted.'
-								translated 
-		
+								'Note, all open windows are clsoed and the application restarted.' 
 		]
 ]
 

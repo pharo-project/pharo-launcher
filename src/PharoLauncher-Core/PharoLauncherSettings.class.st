@@ -124,6 +124,12 @@ PharoLauncherSettings >> store [
 ]
 
 { #category : 'accessing - appearance' }
+PharoLauncherSettings >> uiThemeClass [
+
+	^ self valueOfSettingNamed: #uiThemeClass
+]
+
+{ #category : 'accessing - appearance' }
 PharoLauncherSettings >> uiThemeClass: aClass [
 
 	self setValueOfSettingNamed: #uiThemeClass with: aClass

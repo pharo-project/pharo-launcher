@@ -107,9 +107,3 @@ PhLAppearanceSettingsPresenter >> selectTheme: aTheme [
 			self settings uiThemeClass: aTheme class.
 			aPresenter addStyle: 'welcomeThemeSelected' ]
 ]
-
-{ #category : 'private' }
-PhLAppearanceSettingsPresenter >> settingIdentifierFor: aSettingName [
-	
-	^ #appearance, aSettingName printString
-]

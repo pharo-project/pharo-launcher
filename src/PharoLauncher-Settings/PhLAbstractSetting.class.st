@@ -1,5 +1,7 @@
 "
 I factor common slots between a Setting and a Setting Category.
+
+Setting name must be unique among all settings managed by the same SettingManager.
 "
 Class {
 	#name : 'PhLAbstractSetting',

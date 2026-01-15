@@ -88,16 +88,21 @@ PharoLauncherSettings >> quitOnLaunch: aBoolean [
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> setValueOfSettingNamed: aSettingIdentifier with: aValue [
+PharoLauncherSettings >> setValueOfSettingNamed: aSettingName with: aValue [
 	
-	(self settingNamed: aSettingIdentifier) realValue: aValue
+	| setting |
+	setting := self settingNamed: aSettingName.
+	setting realValue = aValue ifTrue: [ ^ self ].
+	
+	setting realValue: aValue.
+	self store
 
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> settingNamed: aSettingIdentifier [
+PharoLauncherSettings >> settingNamed: aSettingName [
 
-	^ manager settingNamed: aSettingIdentifier
+	^ manager settingNamed: aSettingName
 ]
 
 { #category : 'accessing' }
@@ -125,9 +130,9 @@ PharoLauncherSettings >> uiThemeClass: aClass [
 ]
 
 { #category : 'private' }
-PharoLauncherSettings >> valueOfSettingNamed: aSettingIdentifier [
+PharoLauncherSettings >> valueOfSettingNamed: aSettingName [
 	
-	^ (self settingNamed: aSettingIdentifier) realValue
+	^ (self settingNamed: aSettingName) realValue
 ]
 
 { #category : 'accessing' }

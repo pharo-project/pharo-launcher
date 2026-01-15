@@ -10,7 +10,8 @@ Class {
 		'setSelector',
 		'readBlock',
 		'writeBlock',
-		'precondition'
+		'precondition',
+		'type'
 	],
 	#category : 'PharoLauncher-Settings',
 	#package : 'PharoLauncher-Settings'

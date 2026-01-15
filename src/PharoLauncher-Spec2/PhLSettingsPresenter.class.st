@@ -25,7 +25,7 @@ PhLSettingsPresenter class >> open [
 
 { #category : 'accessing' }
 PhLSettingsPresenter >> appearenceSettingsPanel [
-	^ self instantiate: PhLAppearanceSettingsPresenter
+	^ self instantiate: PhLAppearanceSettingsPresenter on: self settings
 ]
 
 { #category : 'layout' }

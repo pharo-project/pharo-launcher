@@ -95,12 +95,13 @@ PhLDirectoryBasedImageRepository class >> moveImagesFrom: oldLocation to: newLoc
 
 { #category : 'settings' }
 PhLDirectoryBasedImageRepository class >> settingsOn: aBuilder [
+
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder setting: #locationString)
 		label: 'Location of your images' translated;
 		type: #Directory;
-		parent: #pharoLauncher;
+		groupName: #pharoLauncher;
 		target: self;
 		order: 40;
 		description: 'A directory where all your Pharo images will be saved and launched'

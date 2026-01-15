@@ -88,19 +88,21 @@ PhLTemplateSources class >> resetLauncherCoreDir [
 
 { #category : 'settings' }
 PhLTemplateSources class >> settingsOn: aBuilder [
+
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder setting: #launcherCoreDirString)
 		label: 'Location of template sources file' translated;
 		type: #Directory;
-		parent: #pharoLauncher;
+		groupName: #pharoLauncher;
 		target: self;
 		order: 37;
-		default: FileLocator launcherUserFilesLocation;
+		defaultValue: FileLocator launcherUserFilesLocation;
 		description:
-			'Path to the directory that will contain Pharo Launcher template sources file.' , String cr
-				, 'You must have the read/write rights on this folder.' , String cr
-				, 'NOTE: This path might need to escape some whitespace characters.' translated.
+			'Path to the directory that will contain Pharo Launcher template sources file.'
+			, String cr , 'You must have the read/write rights on this folder.'
+			, String cr
+			, 'NOTE: This path might need to escape some whitespace characters.'
 ]
 
 { #category : 'accessing' }

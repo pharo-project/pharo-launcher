@@ -18,6 +18,12 @@ PhLAppearanceThemeLight >> image [
 	^ StWelcomeTheme light image
 ]
 
+{ #category : 'testing' }
+PhLAppearanceThemeLight >> isLight [
+
+	^ true
+]
+
 { #category : 'accessing' }
 PhLAppearanceThemeLight >> name [
 

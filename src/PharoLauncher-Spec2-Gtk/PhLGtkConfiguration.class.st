@@ -54,6 +54,14 @@ PhLGtkConfiguration >> initialize [
 { #category : 'testing' }
 PhLGtkConfiguration >> isDarkTheme [
 
+	^ PharoLauncherSettings default uiThemeClass
+		  ifNil: [ self isSystemUsingDarkTheme ]
+		  ifNotNil: [ :uiThemeClass | uiThemeClass uniqueInstance isLight not ]
+]
+
+{ #category : 'testing' }
+PhLGtkConfiguration >> isSystemUsingDarkTheme [
+
 	^ GRunLoop defer: [ AdwStyleManager default isDark ]
 ]
 

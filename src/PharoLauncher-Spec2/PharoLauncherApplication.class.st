@@ -12,12 +12,12 @@ Class {
 		'imagesPresenter',
 		'scriptsDirectory',
 		'openAsWorld',
-		'jobList',
 		'standalone'
 	],
 	#classVars : [
 		'Default',
 		'IsDeployed',
+		'ScriptsDirectory',
 		'TemplatesClearedOnStartup'
 	],
 	#classInstVars : [
@@ -99,16 +99,17 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 
 { #category : 'accessing' }
 PharoLauncherApplication class >> initializationScriptsDirectory [
-	^ self default scriptsDirectory
+
+	^ ScriptsDirectory ifNil: [ self defaultInitializationScriptLocation ]
 ]
 
 { #category : 'accessing' }
 PharoLauncherApplication class >> initializationScriptsDirectory: aFileUrl [
+
 	| directory |
 	directory := aFileUrl asFileReference.
-	self default scriptsDirectory: directory.
+	ScriptsDirectory := directory.
 	^ directory ensureCreateDirectory
-	
 ]
 
 { #category : 'settings' }

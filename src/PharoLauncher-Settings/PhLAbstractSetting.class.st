@@ -247,6 +247,8 @@ PhLAbstractSetting >> settingNodeIdentifier [
 	self 
 		deprecated: 'Use #defaultValue: instead. #Pharo14'
 		transformWith: '`@receiver settingNodeIdentifier' -> '`@receiver settingIdentifier'.
+		
+	^ self settingIdentifier
 ]
 
 { #category : 'old setting builder compatibility' }

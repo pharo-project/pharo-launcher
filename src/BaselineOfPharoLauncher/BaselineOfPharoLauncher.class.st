@@ -30,6 +30,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 					'Interactions'
 					'ObjCBridge' 
 					'PharoLauncher-100Compatibility'). ];
+			package: 'PharoLauncher-Settings';
+			package: 'PharoLauncher-Settings-Tests' with: [ 
+				spec requires: #('PharoLauncher-Settings' 'PharoLauncher-Spec2' 'PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2' with: [ 
 				spec requires: #('PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
@@ -57,7 +60,9 @@ BaselineOfPharoLauncher >> baseline: spec [
 				'PharoLauncher-Tests-Download' 
 				'PharoLauncher-Core' 
 				'PharoLauncher-Spec2'
-				'PharoLauncher-Spec2-Gtk' 
+				'PharoLauncher-Spec2-Gtk'
+				'PharoLauncher-Settings'
+				'PharoLauncher-Settings-Tests' 
 				'PharoLauncher-Tests-SpecUI' 
 				'PharoLauncher-Tests-Functional'
 				'PharoLauncher-CLI-Tests' 

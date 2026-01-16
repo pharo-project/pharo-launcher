@@ -298,6 +298,7 @@ PharoLauncherApplication >> initialize [
 	 This can be use to push progress bars (they stack)."
 	windows := OrderedCollection new. 
 	openAsWorld := false.
+	PharoLauncherSettings default load.
 	self isStandalone 
 		ifTrue: [ 
 			GEngine ensureEngine

@@ -88,6 +88,12 @@ PharoLauncherSettings >> launchInALoginShell: aBoolean [
 	self setValueOfSettingNamed: '#pharoLauncher#launchInALoginShell' with: aBoolean
 ]
 
+{ #category : 'persistence' }
+PharoLauncherSettings >> load [
+
+	manager loadSettings
+]
+
 { #category : 'initialization' }
 PharoLauncherSettings >> preferencesFile: aFileReference [
 

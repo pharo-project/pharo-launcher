@@ -26,7 +26,6 @@ PhLAppearanceSettings class >> appearanceSettingsOn: aBuilder [
 				(aBuilder pickOne: #uiThemeClass)
 					label: 'User interface theme';
 					target: self;
-					defaultValue: PhLAppearanceThemeLight;
 					order: 1;
 					domainValues: PhLAppearanceTheme all ]
 ]

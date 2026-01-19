@@ -2,9 +2,9 @@ Class {
 	#name : 'SettingsTestData',
 	#superclass : 'Object',
 	#instVars : [
-		'scaleFactor',
 		'shouldQuit',
-		'uiThemeClass'
+		'uiThemeClass',
+		'zoomFactor'
 	],
 	#category : 'PharoLauncher-Settings-Tests',
 	#package : 'PharoLauncher-Settings-Tests'
@@ -138,13 +138,12 @@ SettingsTestData class >> rangeSettingOn: aBuilder [
 
 	<settings_test_data>
 	<range_setting_test_data>
-	(aBuilder range: #scaleFactor)
+	(aBuilder range: #zoomFactor)
 		groupName: #appearance;
 		order: 3;
 		defaultValue: 1;
-		label: 'Display scale factor';
-		description:
-			'Specify scale factor for UI elements. This setting does not affect defined font sizes.';
+		label: 'Zoom factor';
+		description: 'Specify zoom factor for UI elements. Bigger zooms in. Smaller zooms out.';
 		target: self new;
 		range: (0.5 to: 5 by: 0.5)
 ]
@@ -179,18 +178,6 @@ SettingsTestData class >> settingsGroupWithSettingOn: aBuilder [
 ]
 
 { #category : 'settings accessors' }
-SettingsTestData >> scaleFactor [
-
-	^ scaleFactor
-]
-
-{ #category : 'settings accessors' }
-SettingsTestData >> scaleFactor: aNumber [
-
-	scaleFactor := aNumber 
-]
-
-{ #category : 'settings accessors' }
 SettingsTestData >> shouldQuit [
 
 	^ shouldQuit
@@ -212,4 +199,16 @@ SettingsTestData >> uiThemeClass [
 SettingsTestData >> uiThemeClass: aClass [
 
 	uiThemeClass :=  aClass
+]
+
+{ #category : 'settings accessors' }
+SettingsTestData >> zoomFactor [
+
+	^ zoomFactor
+]
+
+{ #category : 'settings accessors' }
+SettingsTestData >> zoomFactor: aNumber [
+
+	zoomFactor := aNumber 
 ]

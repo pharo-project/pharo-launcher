@@ -195,17 +195,17 @@ SettingsManagerTest >> testCanUpdateSomeSettings [
 	manager settings: settings.
 	(manager settingNamed: #uiThemeClass) realValue: Array.
 	(manager settingNamed: #shouldQuit) realValue: true.
-	(manager settingNamed: #scaleFactor) realValue: 2.5.
+	(manager settingNamed: #zoomFactor) realValue: 2.5.
 	manager storeSettings.
 	(manager settingNamed: #uiThemeClass) realValue: String.
 	(manager settingNamed: #shouldQuit) realValue: false.
-	(manager settingNamed: #scaleFactor) realValue: 1.
+	(manager settingNamed: #zoomFactor) realValue: 1.
 	
 	settingsToUpdate := settings reject: [ :setting | setting name = #uiThemeClass ].
 	manager updateSettings: settingsToUpdate.
 	
 	self assert: (manager settingNamed: #shouldQuit) realValue equals: true.
-	self assert: (manager settingNamed: #scaleFactor) realValue equals: 2.5.
+	self assert: (manager settingNamed: #zoomFactor) realValue equals: 2.5.
 	"uiThemeClass should not be updated"
 	self assert: (manager settingNamed: #uiThemeClass) realValue equals: String
 ]

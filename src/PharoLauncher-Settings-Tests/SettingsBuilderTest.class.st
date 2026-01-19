@@ -30,8 +30,8 @@ SettingsBuilderTest >> testCanBuildARangeSetting [
 	
 	self assert: builder settings size equals: 1.
 	setting := builder settings first.
-	self assert: setting name equals: #scaleFactor.
-	self assert: setting label equals: 'Display scale factor'.
+	self assert: setting name equals: #zoomFactor.
+	self assert: setting label equals: 'Zoom factor'.
 	self assert: setting defaultValue equals: 1.
 	self assert: setting range equals: (0.5 to: 5 by: 0.5)
 

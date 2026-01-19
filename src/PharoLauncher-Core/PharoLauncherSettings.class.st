@@ -41,6 +41,7 @@ PharoLauncherSettings class >> preferencesFolder [
 
 { #category : 'resetting' }
 PharoLauncherSettings class >> resetDefault [
+	<script>
 
 	Default := nil
 ]

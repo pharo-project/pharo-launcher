@@ -34,7 +34,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Settings-Tests' with: [ 
 				spec requires: #('PharoLauncher-Settings' 'PharoLauncher-Spec2' 'PharoLauncher-Core') ];
 			package: 'PharoLauncher-Spec2' with: [ 
-				spec requires: #('PharoLauncher-Core') ];
+				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
 				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk' 'Adwaita') ];
 			package: 'PharoLauncher-GToolkit' with: [ 

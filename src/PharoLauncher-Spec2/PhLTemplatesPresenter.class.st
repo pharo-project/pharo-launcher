@@ -81,8 +81,10 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		actions: self rootCommandsGroup / 'Context Menu';
 		beMultipleSelection; "bulk delete templates for example"
-		whenSelectionChangedDo: [ :selection | 
-			descriptionPanel enabled: selection isEmpty not ]
+		whenSelectionChangedDo: [ :selection | | hasTemplateSelected |
+			hasTemplateSelected := selection isEmpty not.
+			descriptionPanel enabled: hasTemplateSelected.
+			hasTemplateSelected ifTrue: [ descriptionPanel takeKeyboardFocus ] ]
 		yourself
 ]
 

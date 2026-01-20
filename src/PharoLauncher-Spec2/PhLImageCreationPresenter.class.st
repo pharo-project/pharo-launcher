@@ -243,6 +243,13 @@ PhLImageCreationPresenter >> showNameOk [
 		help: 'Image name is valid!'
 ]
 
+{ #category : 'configuring' }
+PhLImageCreationPresenter >> takeKeyboardFocus [ 
+
+	imageName takeKeyboardFocus.
+	imageName selectAll
+]
+
 { #category : 'initialization' }
 PhLImageCreationPresenter >> template [
 	"Multiple selection is allowed in templates pane => we get a list of templates"

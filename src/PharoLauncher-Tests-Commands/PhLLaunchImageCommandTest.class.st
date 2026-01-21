@@ -14,6 +14,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'accessing' }
+PhLLaunchImageCommandTest class >> resources [
+
+	^ { PhLPharoStableImageResource }
+]
+
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> addInitializationScriptToImage [
 	image initializationScript: self initScript
@@ -114,12 +120,7 @@ PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun
 PhLLaunchImageCommandTest >> testCanLaunchImage [
 	self timeLimit: 30 seconds.
 	
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	image versionFile 
-		writeStreamDo: [ :stream | 
-			SystemVersion current major asString putOn: stream.
-			SystemVersion current minor asString putOn: stream ].
+	image := PhLPharoStableImageResource current image.
 		
 	presenter 
 		unselectAll;

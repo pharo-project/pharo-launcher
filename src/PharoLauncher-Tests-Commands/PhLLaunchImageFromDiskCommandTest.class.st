@@ -14,16 +14,11 @@ Class {
 PhLLaunchImageFromDiskCommandTest >> setUp [
 
 	super setUp.
-	presenter := PhLTestImagesPresenter new.
-	imageDir := FileLocator temp
-	            / 'pharo-launcher-tests-launch-image-from-disk-command'
-	            , UUID new asString.
-	imageDir ensureCreateDirectory
+	presenter := PhLTestImagesPresenter new
 ]
 
 { #category : 'running' }
 PhLLaunchImageFromDiskCommandTest >> tearDown [
-	imageDir ensureDeleteAll.
 	presenter delete.
 	(process isNotNil and: [ process isRunning ]) ifTrue: [ process terminate ].
 	super tearDown
@@ -34,12 +29,7 @@ PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	| command image |
 	command := PhLLaunchImageFromDiskCommand new.
 	command context: presenter.
-	FileLocator image copyTo: imageDir / FileLocator image basename.
-	image := PhLImage location: imageDir / FileLocator image basename.
-	image versionFile 
-		writeStreamDo: [ :stream | 
-			SystemVersion current major asString putOn: stream.
-			SystemVersion current minor asString putOn: stream ].
+	image := PhLPharoStableImageResource current image.
 	presenter requestAnswer: image file.
 	presenter open.
 	image addLaunchConfiguration: 

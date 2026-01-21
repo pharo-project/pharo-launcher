@@ -70,7 +70,8 @@ PhLTestApplication >> message: aString [
 
 { #category : 'confirmation' }
 PhLTestApplication >> newConfirm [
-	"do nothing"
+	
+	requestAnswer := true
 ]
 
 { #category : 'confirmation' }
@@ -99,6 +100,12 @@ PhLTestApplication >> newRequest [
 PhLTestApplication >> openModalWithParent: aWindow [
 
 	^ requestAnswer 
+]
+
+{ #category : 'confirmation' }
+PhLTestApplication >> parentWindow: aWindow [
+
+	requestAttributes at: #parentWindow put: aWindow
 ]
 
 { #category : 'ui' }

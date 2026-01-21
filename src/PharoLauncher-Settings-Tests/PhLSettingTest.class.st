@@ -42,7 +42,7 @@ PhLSettingTest >> testChildIdentifier [
 
 	self
 		assert: SettingsTestData rangeSetting settingIdentifier
-		equals: '#appearance#scaleFactor'
+		equals: '#appearance#zoomFactor'
 ]
 
 { #category : 'tests' }

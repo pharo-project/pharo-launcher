@@ -163,7 +163,7 @@ SettingsManagerTest >> testCanStoreSettingNodesSequentially [
 		            SettingsTestData booleanSetting.
 		            SettingsTestData rangeSetting }.
 	settings first target shouldQuit: true.
-	settings second target scaleFactor: 2.
+	settings second target zoomFactor: 2.
 
 	manager storeSetting: settings first.
 
@@ -230,7 +230,7 @@ SettingsManagerTest >> testSettingNodeIsNotStoredWhenHasDefaultValue [
 	manager fileReference: preferencesFile.
 	self deny: preferencesFile exists.
 	setting :=  { SettingsTestData rangeSetting }.
-	setting first target scaleFactor: 1.
+	setting first target zoomFactor: 1.
 
 	manager storeSettings: setting.
 	
@@ -247,7 +247,7 @@ SettingsManagerTest >> testSettingNodeIsStoredWhenHasNotDefaultValue [
 	manager fileReference: preferencesFile.
 	self deny: preferencesFile exists.
 	setting :=  { SettingsTestData rangeSetting }.
-	setting first target scaleFactor: 1.5.
+	setting first target zoomFactor: 1.5.
 
 	manager storeSettings: setting.
 	
@@ -332,7 +332,7 @@ SettingsManagerTest >> testStoreSettingNodes [
 		            SettingsTestData booleanSetting.
 		            SettingsTestData rangeSetting }.
 	settings first target shouldQuit: true.
-	settings second target scaleFactor: 2.
+	settings second target zoomFactor: 2.
 
 	manager storeSettings: settings.
 

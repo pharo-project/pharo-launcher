@@ -35,7 +35,7 @@ PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	| command image |
 	command := PhLLaunchImageFromDiskCommand new.
 	command context: presenter.
-	image := PhLPharoStableImageResource current image.
+	image := PhLPharoStableImageResource current newImage.
 	presenter requestAnswer: image file.
 	presenter open.
 	image addLaunchConfiguration: 

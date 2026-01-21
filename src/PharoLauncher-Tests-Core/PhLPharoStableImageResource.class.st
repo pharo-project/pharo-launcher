@@ -13,7 +13,15 @@ Class {
 	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : 'fetching' }
+{ #category : 'private' }
+PhLPharoStableImageResource >> copyImageTo: aDirectory [
+
+	| command |
+	command := 'cp -R ', self extractionDir fullName surroundedBySingleQuotes , ' ', aDirectory fullName surroundedBySingleQuotes.
+	LibC runCommand: command
+]
+
+{ #category : 'private' }
 PhLPharoStableImageResource >> downloadPharoStableImage [
 
 	imageZipFile := self workingDir / 'stable-64.zip'.
@@ -22,28 +30,43 @@ PhLPharoStableImageResource >> downloadPharoStableImage [
 		toFile: imageZipFile
 ]
 
-{ #category : 'fetching' }
+{ #category : 'private' }
 PhLPharoStableImageResource >> extractPharoImage [
-
-	| imageFile |
+	
+	self extractionDir ensureCreateDirectory.
+	
 	PhLVirtualMachineManager 
 		unzip: self imageZipFile 
-		to: self workingDir.
-		
-	imageFile := (self workingDir childrenMatching: '*.image') first.
-	image := PhLImage location: imageFile.
+		to: self extractionDir
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private - accessing' }
+PhLPharoStableImageResource >> extractionDir [
+
+	^ self workingDir / 'extracted'
+]
+
+{ #category : 'private - accessing' }
 PhLPharoStableImageResource >> image [
 	
 	^ image
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private - accessing' }
 PhLPharoStableImageResource >> imageZipFile [
 
 	^ imageZipFile
+]
+
+{ #category : 'running' }
+PhLPharoStableImageResource >> newImage [
+
+	| imageDir imageFile |
+	imageDir := self workingDir / (UUID new asString).
+	self copyImageTo: imageDir.
+	imageFile := (imageDir childrenMatching: '*.image') first.
+	
+	^ PhLImage location: imageFile
 ]
 
 { #category : 'running' }
@@ -62,7 +85,7 @@ PhLPharoStableImageResource >> tearDown [
 	super tearDown
 ]
 
-{ #category : 'accessing' }
+{ #category : 'private - accessing' }
 PhLPharoStableImageResource >> workingDir [
 
 	^ workingDir

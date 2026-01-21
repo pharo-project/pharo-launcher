@@ -10,6 +10,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'accessing' }
+PhLLaunchImageFromDiskCommandTest class >> resources [
+
+	^ { PhLPharoStableImageResource }
+]
+
 { #category : 'running' }
 PhLLaunchImageFromDiskCommandTest >> setUp [
 

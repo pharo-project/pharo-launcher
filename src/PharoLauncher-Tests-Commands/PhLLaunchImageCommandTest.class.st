@@ -39,7 +39,7 @@ PhLLaunchImageCommandTest >> initScript [
 
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> launchImage [
-	self selectImage.
+
 	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
 	process := runCommand execute
 ]
@@ -120,12 +120,7 @@ PhLLaunchImageCommandTest >> testAttachingInitializationScriptSetFlagToShouldRun
 PhLLaunchImageCommandTest >> testCanLaunchImage [
 	self timeLimit: 30 seconds.
 	
-	image := PhLPharoStableImageResource current image.
-		
-	presenter 
-		unselectAll;
-		selection: { image }.
-
+	self useNewStableImageAndSetItAsSelectedImageInImagesPresenter.
 	image addLaunchConfiguration: 
 		(image defaultLaunchConfiguration asLaunchConfiguration
 			vmArguments: #('--headless');  "be able to run test without X session"
@@ -141,6 +136,7 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 { #category : 'tests' }
 PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNotRun [
 
+	self useNewStableImageAndSetItAsSelectedImageInImagesPresenter.
 	self addInitializationScriptToImage.
 	self launchImage.
 	
@@ -188,4 +184,13 @@ PhLLaunchImageCommandTest >> testRunningAnImageRemovesTheInitializationScript [
 	image := self recreateImage.
 	
 	self assert: image initializationScript path equals: self initScript path
+]
+
+{ #category : 'helper' }
+PhLLaunchImageCommandTest >> useNewStableImageAndSetItAsSelectedImageInImagesPresenter [
+
+	image := PhLPharoStableImageResource current newImage.
+	presenter 
+		unselectAll;
+		selection: { image }
 ]

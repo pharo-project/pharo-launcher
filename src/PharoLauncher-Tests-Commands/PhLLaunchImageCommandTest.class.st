@@ -3,12 +3,8 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'presenter',
-		'imageDir',
 		'process',
-		'runCommand',
-		'image',
-		'recreateCommand',
-		'application'
+		'image'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -22,6 +18,7 @@ PhLLaunchImageCommandTest class >> resources [
 
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> addInitializationScriptToImage [
+
 	image initializationScript: self initScript
 ]
 
@@ -41,7 +38,10 @@ PhLLaunchImageCommandTest >> initScript [
 PhLLaunchImageCommandTest >> launchImage [
 
 	process ifNotNil: [ self error: 'Currently one execution of image per test case.' ].
-	process := runCommand execute
+	
+	process := PhLLaunchImageCommand new
+		context: presenter;
+		execute
 ]
 
 { #category : 'private' }
@@ -52,7 +52,9 @@ PhLLaunchImageCommandTest >> performTest [
 
 { #category : 'helper' }
 PhLLaunchImageCommandTest >> recreateImage [
-	recreateCommand execute.
+	PhLRecreateImageCommand new
+		context: presenter;
+		execute.
 	self selectImage.
 	^ presenter selectedImages anyOne
 ]
@@ -65,25 +67,7 @@ PhLLaunchImageCommandTest >> selectImage [
 ]
 
 { #category : 'running' }
-PhLLaunchImageCommandTest >> setUp [
-
-	super setUp.
-
-	presenter := PhLTestImagesPresenter new.
-	imageDir := FileLocator temp
-	            / 'pharo-launcher-tests-launch-image-command'
-	            , UUID new asString.
-	imageDir ensureCreateDirectory.
-
-	runCommand := PhLLaunchImageCommand new.
-	runCommand context: presenter.
-	recreateCommand := PhLRecreateImageCommand new.
-	recreateCommand context: presenter.
-
-	image := presenter singleImage.
-	image versionFile writeStreamDo: [ :stream |
-		SystemVersion current major asString putOn: stream.
-		SystemVersion current minor asString putOn: stream ].
+PhLLaunchImageCommandTest >> setImageOriginTemplateAndLaunchConfiguration [
 	image
 		originTemplate:
 			(presenter application templateRepository createLocalTemplateNamed: 'testTemplate');
@@ -92,9 +76,19 @@ PhLLaunchImageCommandTest >> setUp [
 ]
 
 { #category : 'running' }
+PhLLaunchImageCommandTest >> setUp [
+
+	super setUp.
+
+	presenter := PhLTestImagesPresenter new.
+	image := presenter singleImage.
+	self setImageOriginTemplateAndLaunchConfiguration.
+	presenter updateImageDetails.
+]
+
+{ #category : 'running' }
 PhLLaunchImageCommandTest >> tearDown [
 
-	imageDir ifNotNil: [ imageDir ensureDeleteAll ].
 	(process isNotNil and: [ process isRunning ]) 
 		ifTrue: [ process terminate ].
 	super tearDown
@@ -121,13 +115,13 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 	self timeLimit: 30 seconds.
 	
 	self useNewStableImageAndSetItAsSelectedImageInImagesPresenter.
-	image addLaunchConfiguration: 
-		(image defaultLaunchConfiguration asLaunchConfiguration
+	image launchConfigurations:
+		{ image defaultLaunchConfiguration asLaunchConfiguration
 			vmArguments: #('--headless');  "be able to run test without X session"
 			imageArguments: #('--no-quit');
-			yourself).
+			yourself }.
 		
-	process := runCommand execute.
+	self launchImage.
 	2 seconds wait. "let time to the image to be opened by the VM"
 	
 	self assert: process isRunning.
@@ -136,8 +130,8 @@ PhLLaunchImageCommandTest >> testCanLaunchImage [
 { #category : 'tests' }
 PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNotRun [
 
-	self useNewStableImageAndSetItAsSelectedImageInImagesPresenter.
 	self addInitializationScriptToImage.
+	presenter selectLaunchConfiguration: image launchConfigurations first.
 	self launchImage.
 	
 	self denyApplicationHasError.
@@ -148,9 +142,6 @@ PhLLaunchImageCommandTest >> testExecutingImageWithScriptShouldSetFlagToShouldNo
 PhLLaunchImageCommandTest >> testLaunchImageShouldRaiseExceptionWhenNoPharoVersionFile [
 	
 	image versionFile ensureDelete.
-	presenter 
-		unselectAll;
-		selection: { image }.
 
 	self 
 		should: [ image launch ]
@@ -161,7 +152,9 @@ PhLLaunchImageCommandTest >> testLaunchImageShouldRaiseExceptionWhenNoPharoVersi
 PhLLaunchImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExecuteScript [
 
 	| recreatedImage |
+
 	self addInitializationScriptToImage.
+
 	recreatedImage := self recreateImage.
 	
 	self assert: recreatedImage shouldRunInitializationScript.
@@ -171,15 +164,36 @@ PhLLaunchImageCommandTest >> testRecreateAnImageWithoutOpeningItShouldStillExecu
 PhLLaunchImageCommandTest >> testRecreateAnOpenedImageShouldStillExecuteScript [
 
 	| recreatedImage |
+
 	self addInitializationScriptToImage.
 	self launchImage.
 	recreatedImage := self recreateImage.
-	
+
 	self assert: recreatedImage shouldRunInitializationScript
 ]
 
 { #category : 'tests' }
-PhLLaunchImageCommandTest >> testRunningAnImageRemovesTheInitializationScript [
+PhLLaunchImageCommandTest >> testRecreatingAnImageKeepsTheInitializationScript [
+
+	self addInitializationScriptToImage.
+	
+	image := self recreateImage.
+	
+	self assert: image initializationScript path equals: self initScript path
+]
+
+{ #category : 'tests' }
+PhLLaunchImageCommandTest >> testRecreatingAnImageKeepsTheInitializationScriptOk [
+
+	image := PhLPharoStableImageResource current newRepositoryWithImage.
+	image
+		originTemplate:
+			(presenter application templateRepository createLocalTemplateNamed: 'testTemplate').
+	presenter model: (PhLDirectoryBasedImageRepository forDirectory: image file parent parent).
+	presenter refresh.
+	presenter selectImage: image.
+	image := presenter selectedImages first.
+	
 	self addInitializationScriptToImage.
 	image := self recreateImage.
 	

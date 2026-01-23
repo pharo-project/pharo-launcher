@@ -1,5 +1,8 @@
 "
-A presenter for Pharo Launcher images used for test purposes
+A presenter for Pharo Launcher images used for test purposes.
+
+When you instantiate me, I set a PhLTestApplication that uses a PhLTestImageRepository (memory file system backed).
+I also create a default image named `self singleImageName`
 "
 Class {
 	#name : 'PhLTestImagesPresenter',
@@ -99,6 +102,18 @@ PhLTestImagesPresenter >> requestAnswer: answer [
 	request answer: answer
 ]
 
+{ #category : 'selection' }
+PhLTestImagesPresenter >> selectLaunchConfiguration: aLaunchConfiguration [
+	
+	^ descriptionPanel selectLaunchConfiguration: aLaunchConfiguration
+]
+
+{ #category : 'api - selection' }
+PhLTestImagesPresenter >> selectSingleImage [
+
+	self selectImageAt: 1
+]
+
 { #category : 'configuring' }
 PhLTestImagesPresenter >> selection: aListOfImages [
 	selection := aListOfImages
@@ -117,11 +132,6 @@ PhLTestImagesPresenter >> singleImage [
 { #category : 'api - selection' }
 PhLTestImagesPresenter >> singleImageName [
 	^ self model singleImageName
-]
-
-{ #category : 'api - accessing' }
-PhLTestImagesPresenter >> templateRepository [ 
-	^ application templateRepository
 ]
 
 { #category : 'api - selection' }

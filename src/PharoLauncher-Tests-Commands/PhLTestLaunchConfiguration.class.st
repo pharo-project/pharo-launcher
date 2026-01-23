@@ -9,6 +9,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'testing' }
+PhLTestLaunchConfiguration >> canBeLaunched [
+
+	^ true
+]
+
 { #category : 'querying' }
 PhLTestLaunchConfiguration >> command [	
 	"dummy call, only requirement is that the command is available on supported Operating Systems."

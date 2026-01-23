@@ -61,12 +61,31 @@ PhLPharoStableImageResource >> imageZipFile [
 { #category : 'running' }
 PhLPharoStableImageResource >> newImage [
 
-	| imageDir imageFile |
-	imageDir := self workingDir / (UUID new asString).
+	^ self newImageIn: self workingDir / (UUID new asString)
+]
+
+{ #category : 'running' }
+PhLPharoStableImageResource >> newImageIn: imageDir [
+
+	| imageFile |
 	self copyImageTo: imageDir.
 	imageFile := (imageDir childrenMatching: '*.image') first.
 	
 	^ PhLImage location: imageFile
+]
+
+{ #category : 'running' }
+PhLPharoStableImageResource >> newRepositoryWithImage [
+
+	| repositoryDir imageDir newImage |
+	repositoryDir := self workingDir / (UUID new asString).
+	repositoryDir ensureCreateDirectory.
+	imageDir := repositoryDir / 'temp'.
+	
+	newImage := self newImageIn: imageDir.
+	imageDir renameTo: newImage name.
+	newImage setLocation: repositoryDir / newImage name / (newImage name, '.image').
+	^ newImage
 ]
 
 { #category : 'running' }

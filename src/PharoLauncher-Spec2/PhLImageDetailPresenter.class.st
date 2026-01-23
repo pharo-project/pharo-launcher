@@ -339,6 +339,12 @@ PhLImageDetailPresenter >> resetLaunchConfigurationList [
 			items: #() "no image selected"  ]
 ]
 
+{ #category : 'selection' }
+PhLImageDetailPresenter >> selectLaunchConfiguration: aLaunchConfiguration [
+
+	^ launchConfigurationList selectItem: aLaunchConfiguration
+]
+
 { #category : 'api - selection' }
 PhLImageDetailPresenter >> selectedImages [
 	

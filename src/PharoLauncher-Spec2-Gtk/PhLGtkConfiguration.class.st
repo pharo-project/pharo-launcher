@@ -17,7 +17,9 @@ PhLGtkConfiguration >> addPredefinedStyles [
 PhLGtkConfiguration >> configureGeneral: anApplication [
 
 	PhLAppearanceSettings uiThemeClass ifNotNil: [ :aThemeClass | 
-		aThemeClass uniqueInstance activateOn: anApplication ]
+		aThemeClass uniqueInstance activateOn: anApplication ].
+	
+	GtkMorphicClipboard new beDefault
 ]
 
 { #category : 'configuring' }

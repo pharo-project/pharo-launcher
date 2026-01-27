@@ -64,7 +64,6 @@ jobs:
         with:
           version: 13
           imageName: PharoLauncher
-          vmStatus: stable-gtk
 
       - name: Build and test
         run: |

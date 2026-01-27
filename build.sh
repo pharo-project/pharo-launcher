@@ -13,27 +13,14 @@ set -ex
 # $1: the target to run
 
 function prepare_image() {
-	case "$ARCHITECTURE" in
-	        32) ARCH_PATH=
-				;;
-	        64 | arm64) ARCH_PATH="64/"
-				;;
-	        *) 	echo "Error! Architecture $ARCHITECTURE is not supported!"
-				exit 1
-				;;
-	esac
-	wget --quiet -O - get.pharo.org/$ARCH_PATH$PHARO | bash
-	wget --quiet -O - get.pharo.org/$ARCH_PATH$VM$PHARO | bash
 	echo "$PHARO" > 'pharo.version'
-
-	./pharo Pharo.image save PharoLauncher --delete-old
-	./pharo PharoLauncher.image --version > version.txt
-	./pharo PharoLauncher.image eval --save load-pl.st --quit
+	$PHARO --headless PharoLauncher.image --version > version.txt
+	$PHARO --headless PharoLauncher.image eval --save load-pl.st --quit
 }
 
 function run_tests() {
 	rm -rf ~/Pharo # clean posssible remaining Pharo files
-	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
+	$PHARO --headless PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
 	run_shell_cli_tests
 }
 
@@ -48,14 +35,14 @@ function run_shell_cli_tests() {
 }
 
 function make_pharo_launcher_deloyed() {
-	./pharo PharoLauncher.image eval --save "PhLDeploymentScript doAll"
+	$PHARO --headless PharoLauncher.image eval --save "PhLDeploymentScript doAll"
 
 	# Set the launcher version on Pharo 
 	LAUNCHER_VERSION=$(eval 'git describe --tags --always')
-	./pharo PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
+	$PHARO --headless PharoLauncher.image eval --save "PhLAboutCommand version: '$LAUNCHER_VERSION'"  
 
         # Avoid to have PL core dir set to the slave location and having an outdated list of templates
-	./pharo PharoLauncher.image eval --save \
+	$PHARO --headless PharoLauncher.image eval --save \
 		"PhLTemplateSources resetLauncherCoreDir.
 		PhLDeploymentScript resetPharoLauncherIcebergRepositoryLocation"
 }
@@ -205,9 +192,9 @@ function expand_all_templates() {
 	done
 }
 
-PHARO=${PHARO:=70}  # If PHARO not set, set it to 70.
+PHARO=${PHARO:=130}  # If PHARO not set, set it to 70.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
-ARCHITECTURE=${ARCHITECTURE:-'32'}	# If ARCHITECTURE not set, set it to 32 bits
+ARCHITECTURE=${ARCHITECTURE:-'64'}	# If ARCHITECTURE not set, set it to 64 bits
 
 SCRIPT_TARGET=${1:-all}
 SHOULD_SIGN=${SHOULD_SIGN:-false}

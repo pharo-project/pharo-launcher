@@ -4,8 +4,8 @@ set -ex
 
 # Pharo Launcher build script
 #
-# We expect to have $PHARO and $VM parameter available in the environment
-# $PHARO : 			version of the Pharo image, e.g. 61
+# We expect to have $PHARO_VERSION and $VM parameter available in the environment
+# $PHARO_VERSION : 			version of the Pharo image, e.g. 61
 # $VM : 			version of the VM, e.g. vm
 # $ARCHITECTURE : 	targeted architecture 32 or 64 bits. Default will be 32.
 
@@ -13,7 +13,7 @@ set -ex
 # $1: the target to run
 
 function prepare_image() {
-	echo "$PHARO" > 'pharo.version'
+	echo "$PHARO_VERSION" > 'pharo.version'
 	$PHARO --headless PharoLauncher.image --version > version.txt
 	$PHARO --headless PharoLauncher.image eval --save load-pl.st --quit
 }
@@ -129,7 +129,7 @@ function fetch_current_vm_to() {
 	local DEST_PATH=${1:-.} # If no argument given, use current working dir
 	set_arch_path
 	local LINUX_VM_PATH="pharo-vm-Linux-$VM_ARCH_PATH-stable.zip"
-	test -f $LINUX_VM_PATH || wget --progress=dot:mega http://files.pharo.org/get-files/$PHARO/$LINUX_VM_PATH
+	test -f $LINUX_VM_PATH || wget --progress=dot:mega http://files.pharo.org/get-files/$PHARO_VERSION/$LINUX_VM_PATH
   
 	if [ -f "$LINUX_VM_PATH" ] ; then
 	    unzip -q "$LINUX_VM_PATH" -d "$DEST_PATH/tmp"
@@ -145,7 +145,7 @@ function fetch_current_mac_vm_to() {
 	# udpate this method to use either the old or new VM URL format (see zeroconf).
 	local DEST_PATH=${1:-.} # If no argument given, use current working dir
 	set_arch_path
-	local VM_URL="http://files.pharo.org/get-files/$PHARO/pharo-vm-Darwin-${VM_ARCH_PATH}-gtk-stable.zip"
+	local VM_URL="http://files.pharo.org/get-files/$PHARO_VERSION/pharo-vm-Darwin-${VM_ARCH_PATH}-gtk-stable.zip"
 	local VM_TMP_PATH="$DEST_PATH/tmp"
 	mkdir "$VM_TMP_PATH" && cd "$VM_TMP_PATH"
 	VM_ZIP="${VM_TMP_PATH}/vm.zip"
@@ -192,14 +192,14 @@ function expand_all_templates() {
 	done
 }
 
-PHARO=${PHARO:=130}  # If PHARO not set, set it to 70.
+PHARO_VERSION=${PHARO_VERSION:=130}  # If PHARO_VERSION not set, set it to 130.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
 ARCHITECTURE=${ARCHITECTURE:-'64'}	# If ARCHITECTURE not set, set it to 64 bits
 
 SCRIPT_TARGET=${1:-all}
 SHOULD_SIGN=${SHOULD_SIGN:-false}
 echo "Running target $SCRIPT_TARGET"
-echo "Using a Pharo$PHARO image and ${ARCHITECTURE}-bits $VM virtual machines from get-files."
+echo "Using a Pharo$PHARO_VERSION image and ${ARCHITECTURE}-bits $VM virtual machines from get-files."
 
 case $SCRIPT_TARGET in
 prepare)

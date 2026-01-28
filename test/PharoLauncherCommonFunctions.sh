@@ -9,7 +9,7 @@ export ROOT
 PHL_SCRIPT="$ROOT"/../scripts/pharo-launcher.sh
 PHARO_LAUNCHER_IMAGE="$ROOT"/../PharoLauncher.image
 export PHARO_LAUNCHER_IMAGE
-PHARO_LAUNCHER_VM="$ROOT"/../pharo # pharo headless wrapper script, avoid to find the exe path that is different on Linux ans MacOs
+PHARO_LAUNCHER_VM="$PHARO"
 export PHARO_LAUNCHER_VM
 PHL_TEST_CONFIG_TEMPLATE="$ROOT/phl-test-config.template"
 PHL_TEST_CONFIG="$ROOT/phl-test-config.ston"

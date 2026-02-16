@@ -31,7 +31,7 @@ SettingsManagerTest >> setUp [
 
 	manager := SettingsManager new.
 	preferencesFile := FileSystem memory root / 'pharo' / 'pharoX.Y' / 'preferences.ston.txt'.
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 ]
 
 { #category : 'test data' }
@@ -118,12 +118,12 @@ SettingsManagerTest >> stonStoredSettingsString [
 SettingsManagerTest >> testAllStoredSettingsGivesNoSettingWhenNoPreferenceFile [
 	"There is no preference file. It should not generate an error."
 
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self assertEmpty: manager allStoredSettings.
 	
 	manager writeStreamDo: [ :stream | stream nextPutAll: 'random string' ].
 	
-	self assert: manager fileReference contents equals: 'random string'.
+	self assert: manager settingsFile contents equals: 'random string'.
 	self assertEmpty: manager allStoredSettings
 ]
 
@@ -133,7 +133,7 @@ SettingsManagerTest >> testCanLoadSettingsFromAFile [
 	| storedSettings file |
 	file := FileSystem memory root / 'settings.ston'.
 	file writeStreamDo: [ :stream | stream nextPutAll: self stonStoredSettingsString ].
-	manager fileReference: file.
+	manager settingsFile: file.
 	
 	storedSettings := manager allStoredSettings.
 	
@@ -157,7 +157,7 @@ SettingsManagerTest >> testCanLoadSettingsFromAStream [
 SettingsManagerTest >> testCanStoreSettingNodesSequentially [
 
 	| settings storedSettings |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	settings := {
 		            SettingsTestData booleanSetting.
@@ -227,7 +227,7 @@ SettingsManagerTest >> testFreshSettingsHaveDefaultValue [
 SettingsManagerTest >> testSettingNodeIsNotStoredWhenHasDefaultValue [
 
 	| storedSettings setting |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	setting :=  { SettingsTestData rangeSetting }.
 	setting first target zoomFactor: 1.
@@ -244,7 +244,7 @@ SettingsManagerTest >> testSettingNodeIsNotStoredWhenHasDefaultValue [
 SettingsManagerTest >> testSettingNodeIsStoredWhenHasNotDefaultValue [
 
 	| storedSettings setting |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	setting :=  { SettingsTestData rangeSetting }.
 	setting first target zoomFactor: 1.5.
@@ -262,7 +262,7 @@ SettingsManagerTest >> testSettingNodeIsStoredWhenHasNotDefaultValue [
 SettingsManagerTest >> testSettingsNotDuplicatedWhenStoreSettingNodeTwice [
 
 	| setting storedSetting storedNodes |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	setting := SettingsTestData booleanSetting.
 	setting target shouldQuit: true.
@@ -286,7 +286,7 @@ SettingsManagerTest >> testSettingsNotDuplicatedWhenStoreSettingNodeTwice [
 SettingsManagerTest >> testStoreIdentifier [
 
 	| setting storedSetting |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	setting := SettingsTestData booleanSetting.
 	setting target shouldQuit: true.
@@ -307,7 +307,7 @@ SettingsManagerTest >> testStoreIdentifier [
 SettingsManagerTest >> testStoreSettingNode [
 
 	| setting storedSetting |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	setting := SettingsTestData booleanSetting.
 	setting target shouldQuit: true.
@@ -326,7 +326,7 @@ SettingsManagerTest >> testStoreSettingNode [
 SettingsManagerTest >> testStoreSettingNodes [
 
 	| settings storedSettings |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	settings := {
 		            SettingsTestData booleanSetting.
@@ -355,7 +355,7 @@ SettingsManagerTest >> testStoredSettingForKnownSettingIdentifier [
 	file := FileSystem memory root / 'settings.ston'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: self stonStoredSettingsString ].
-	manager fileReference: file.
+	manager settingsFile: file.
 
 	setting := manager storedSettingFor: '#pharoLauncher#templatesClearedOnStartup'.
 	
@@ -369,7 +369,7 @@ SettingsManagerTest >> testStoredSettingForUnknownSettingIdentifierRaiseNotFound
 	file := FileSystem memory root / 'settings.ston'.
 	file writeStreamDo: [ :stream |
 		stream nextPutAll: self stonStoredSettingsString ].
-	manager fileReference: file.
+	manager settingsFile: file.
 
 	self
 		should: [ manager storedSettingFor: #unknown_setting ]
@@ -398,7 +398,7 @@ SettingsManagerTest >> testStoringNonDefaultValueAndThenStoringTheDefaultRemoves
 { #category : 'tests' }
 SettingsManagerTest >> testWriteStream [
 
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	self deny: preferencesFile exists.
 	self deny: preferencesFile parent exists.
 
@@ -410,7 +410,7 @@ SettingsManagerTest >> testWriteStream [
 SettingsManagerTest >> testWritingStoredSettingsShouldNotCloseFileStream [
 
 	| writeStream storedSettings |
-	manager fileReference: preferencesFile.
+	manager settingsFile: preferencesFile.
 	writeStream := preferencesFile ensureCreateFile writeStream.
 	storedSettings := StoredSettingsFactory new fromSettingNodes:
 		                  (Array with: SettingsTestData booleanSetting).

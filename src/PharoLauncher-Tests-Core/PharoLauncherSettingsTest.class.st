@@ -33,7 +33,7 @@ PharoLauncherSettingsTest >> testCanStoreSettings [
 	| stonString expextedSettingSerialization settingsFile |
 	
 	settingsFile := FileSystem memory root / 'settings.ston'.
-	settings manager fileReference: settingsFile.
+	settings manager settingsFile: settingsFile.
 	expextedSettingSerialization := '	StoredSetting {
 		#settingNodeIdentifier : ''#pharoLauncher#launchInALoginShell'',
 		#realValue : true
@@ -56,7 +56,7 @@ PharoLauncherSettingsTest >> testChangeInASettingTriggerSettingsSaving [
 	| settingsFile presenter storedSettings launchInALoginShellSetting |
 	
 	settingsFile := FileSystem memory root / 'settings.ston'.
-	settings manager fileReference: settingsFile.
+	settings manager settingsFile: settingsFile.
 	presenter := PhLGeneralSettingsPresenter on: settings.
 	
 	self assert: PhLDefaultLaunchConfiguration launchInALoginShell equals: true.

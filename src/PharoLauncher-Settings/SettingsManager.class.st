@@ -7,11 +7,11 @@ Class {
 	#instVars : [
 		'storedSettingsReader',
 		'readStream',
-		'fileReference',
 		'writeStream',
 		'settings',
 		'storedSettingsMerger',
-		'storedSettingsWriter'
+		'storedSettingsWriter',
+		'settingsFile'
 	],
 	#category : 'PharoLauncher-Settings',
 	#package : 'PharoLauncher-Settings'
@@ -57,22 +57,11 @@ SettingsManager >> defaultStoredSettingsWriter [
 ]
 
 { #category : 'private - storing' }
-SettingsManager >> ensureFileReferenceParent [
+SettingsManager >> ensureSettingsFileParent [
 	"It ensures that the parent directory exists."
 
-	self fileReference ifNotNil: [ :file |
+	self settingsFile ifNotNil: [ :file |
 		file parent ensureCreateDirectory ]
-]
-
-{ #category : 'accessing' }
-SettingsManager >> fileReference [
-	^ fileReference
-]
-
-{ #category : 'accessing' }
-SettingsManager >> fileReference: aFileReference [ 
-	
-	fileReference := aFileReference 
 ]
 
 { #category : 'loading' }
@@ -94,7 +83,7 @@ SettingsManager >> mergeStoredSettings: aCollectionOfStoredSettings [
 SettingsManager >> readStream [
 
 	^ readStream ifNil: [
-			  self fileReference ifExists: [ :file | file readStream ] ifAbsent: [ nil ] ]
+			  self settingsFile ifExists: [ :file | file readStream ] ifAbsent: [ nil ] ]
 ]
 
 { #category : 'accessing' }
@@ -103,16 +92,16 @@ SettingsManager >> readStream: aReadStream [
 ]
 
 { #category : 'private - storing' }
-SettingsManager >> removeFileReferenceIfExists [
+SettingsManager >> removeSettingsFileIfExists [
 	"We have to remove the file before writing new settings."
 
 	| newFileReference |
-	fileReference ifNil: [ ^ self ].
-	fileReference ifAbsent: [ ^ self ].
+	settingsFile ifNil: [ ^ self ].
+	settingsFile ifAbsent: [ ^ self ].
 	
-	newFileReference := fileReference withExtension: 'old.txt'.
+	newFileReference := self settingsFile withExtension: 'old.txt'.
 	newFileReference ensureDelete.
-	fileReference copy renameTo: newFileReference basename
+	self settingsFile copy renameTo: newFileReference basename
 ]
 
 { #category : 'accessing' }
@@ -134,6 +123,17 @@ SettingsManager >> settings: aListOfSettings [
 ]
 
 { #category : 'accessing' }
+SettingsManager >> settingsFile [
+	^ settingsFile asFileReference
+]
+
+{ #category : 'accessing' }
+SettingsManager >> settingsFile: aFileLocator [
+	"We use a File Locator to ensure the preferences folder is updated even if the image is moved in a new machine"
+	settingsFile := aFileLocator 
+]
+
+{ #category : 'accessing' }
 SettingsManager >> settingsFromIdentifiers: identifiers [
 
 	^ identifiers
@@ -147,10 +147,10 @@ SettingsManager >> settingsFromIdentifiers: identifiers [
 SettingsManager >> storeExactStoredSettings: allStoredSettings [
 
 	self
-		ensureFileReferenceParent;
-		removeFileReferenceIfExists.
+		ensureSettingsFileParent;
+		removeSettingsFileIfExists.
 		
-	self fileReference writeStreamDo: [ :stream |
+	self settingsFile writeStreamDo: [ :stream |
 		self storeExactStoredSettings: allStoredSettings on: stream ]
 ]
 
@@ -185,7 +185,7 @@ SettingsManager >> storeSetting: aSetting [
 { #category : 'storing' }
 SettingsManager >> storeSettings [
 	
-	fileReference ifNil: [ ^ self ].
+	settingsFile ifNil: [ ^ self ].
 	self storeSettings: self settings
 ]
 
@@ -276,9 +276,9 @@ SettingsManager >> updateSettingsWith: aListOfStoredSettings [
 SettingsManager >> writeStream [
 
 	^ writeStream ifNil: [
-			  self ensureFileReferenceParent.
-			  self removeFileReferenceIfExists.
-			  self fileReference writeStream ]
+			  self ensureSettingsFileParent.
+			  self removeSettingsFileIfExists.
+			  self settingsFile writeStream ]
 ]
 
 { #category : 'private - storing' }

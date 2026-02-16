@@ -30,7 +30,7 @@ PharoLauncherSettings class >> default [
 { #category : 'accessing' }
 PharoLauncherSettings class >> preferencesFile [
 
-	^ (self preferencesFolder / 'settings.ston') asFileReference
+	^ self preferencesFolder / 'settings.ston'
 ]
 
 { #category : 'accessing' }
@@ -98,7 +98,7 @@ PharoLauncherSettings >> load [
 { #category : 'initialization' }
 PharoLauncherSettings >> preferencesFile: aFileReference [
 
-	manager fileReference: aFileReference
+	manager settingsFile: aFileReference
 ]
 
 { #category : 'accessing - network' }

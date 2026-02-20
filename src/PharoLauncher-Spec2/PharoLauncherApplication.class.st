@@ -436,6 +436,15 @@ PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := nil.
 ]
 
+{ #category : 'private' }
+PharoLauncherApplication >> safeExit [
+
+	self windows ifNotEmpty: [ ^ self ].
+	self isStandalone ifFalse: [ ^ self ].
+	self shouldExitWhenNoMoreWindows ifFalse: [ ^ self ].
+	self exitApplication
+]
+
 { #category : 'accessing' }
 PharoLauncherApplication >> scriptsDirectory [
 	^ (scriptsDirectory ifNil: [ 
@@ -539,14 +548,5 @@ PharoLauncherApplication >> topWindow [
 PharoLauncherApplication >> unregisterWindow: aWindow [
 
 	super unregisterWindow: aWindow.
-	self verifyPossibleExit
-]
-
-{ #category : 'private' }
-PharoLauncherApplication >> verifyPossibleExit [
-
-	self windows ifNotEmpty: [ ^ self ].
-	self isStandalone ifFalse: [ ^ self ].
-	self shouldExitWhenNoMoreWindows ifFalse: [ ^ self ].
-	self exitApplication
+	self safeExit
 ]

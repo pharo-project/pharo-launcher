@@ -24,22 +24,12 @@ PhLTemplateUpdateCliCommand class >> launcherCmdDescription [
 { #category : 'command execution' }
 PhLTemplateUpdateCliCommand >> basicExecute [
 
-	self registerOnTemplateSourcesUpdate.
-	PhLPharoTemplateSources fromFile checkForUpdates.
-	self pharoLauncherModel resetTemplateRepository.
+	PhLPharoTemplateSources fromFile checkForUpdates: self
 ]
 
 { #category : 'updating' }
-PhLTemplateUpdateCliCommand >> registerOnTemplateSourcesUpdate [
-
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #updateTemplateSources
-		to: self.
-]
-
-{ #category : 'updating' }
-PhLTemplateUpdateCliCommand >> updateTemplateSources [
+PhLTemplateUpdateCliCommand >> sourcesFileUpdateAvailable [
 		
-	PhLPharoTemplateSources fromFile updateSourcesFile
+	PhLPharoTemplateSources fromFile updateSourcesFile.
+	self pharoLauncherModel resetTemplateRepository
 ]

@@ -1,15 +1,19 @@
 "
-Process used to chek regurlarly if there is an update for Launcher template sources.
+Process used to chek regularly if there is an update for Launcher template sources.
 
-PhLTemplateSourcesUpdateChecker run.
+```
+PhLTemplateSourcesUpdateChecker runFor: application.
 PhLTemplateSourcesUpdateChecker terminate 
+```
 
+Command line uses a different template sources check. See `PhLCliTemplateSourcesChecker` class
 "
 Class {
 	#name : 'PhLTemplateSourcesUpdateChecker',
 	#superclass : 'Object',
 	#instVars : [
-		'process'
+		'process',
+		'application'
 	],
 	#classVars : [
 		'ShouldRun',
@@ -20,29 +24,12 @@ Class {
 	#tag : 'Model'
 }
 
-{ #category : 'class initialization' }
-PhLTemplateSourcesUpdateChecker class >> initialize [
-	PhLStartupManager addToLauncherStartUpList: self
-]
-
-{ #category : 'launcher startup' }
-PhLTemplateSourcesUpdateChecker class >> launcherStartUp [
-	self run
-]
-
-{ #category : 'launcher startup' }
-PhLTemplateSourcesUpdateChecker class >> launcherStartUpPriority [
-	^ 500
-]
-
 { #category : 'running' }
-PhLTemplateSourcesUpdateChecker class >> run [
-	self shouldRun ifFalse: [ ^ self ].
+PhLTemplateSourcesUpdateChecker class >> runFor: aPharoLauncherApplication [
+
+	self shouldRun ifFalse: [ ^ self terminate ].
 	
-	"need to manage it for command-line. Not available for now"
-	Smalltalk isInteractiveGraphic ifFalse: [ ^ self ].
-	
-	self uniqueInstance run
+	self uniqueInstance runFor: aPharoLauncherApplication
 	
 	
 ]
@@ -71,9 +58,10 @@ PhLTemplateSourcesUpdateChecker class >> shouldRun [
 { #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> shouldRun: aBoolean [
 	ShouldRun := aBoolean.
-	ShouldRun 
+	('ShouldRun?', ShouldRun asString) traceCr.
+	"ShouldRun 
 		ifTrue: [ self run ]
-		ifFalse: [ self terminate ].
+		ifFalse: [ self terminate ]."
 ]
 
 { #category : 'running' }
@@ -88,15 +76,9 @@ PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 	^ UniqueInstance ifNil: [ UniqueInstance := self new ]
 ]
 
-{ #category : 'updating' }
-PhLTemplateSourcesUpdateChecker >> basicUpdateTemplateSources [
-	PhLPharoTemplateSources fromFile updateSourcesFile.
-	PharoLauncherApplication default resetTemplateRepository.
-]
-
 { #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> check [
-	[ PhLPharoTemplateSources fromFile checkForUpdates ]
+	[ PhLPharoTemplateSources fromFile checkForUpdates: application ]
 	on: PhLDownloadError 
 	do: [ :e | "ignore. No internet connection available" ]
 ]
@@ -111,42 +93,21 @@ PhLTemplateSourcesUpdateChecker >> priority [
 	^ 20
 ]
 
-{ #category : 'updating' }
-PhLTemplateSourcesUpdateChecker >> registerOnTemplateSourcesUpdate [
-
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #updateTemplateSources:
-		to: self.
-]
-
 { #category : 'actions' }
-PhLTemplateSourcesUpdateChecker >> run [
+PhLTemplateSourcesUpdateChecker >> runFor: aPharoLauncherApplication [
+
+	application := aPharoLauncherApplication.
 	self terminate.
-	self registerOnTemplateSourcesUpdate.
 	process := [ [ self check.
-		self wait ] repeat ]
-	forkAt: self priority named: self name
+					self wait ] repeat ]
+				forkAt: self priority named: self name
 ]
 
 { #category : 'actions' }
 PhLTemplateSourcesUpdateChecker >> terminate [
-	self unregisterFromTemplateSourcesUpdate.
-	process ifNotNil: [ process isTerminating ifFalse: [ process terminate ] ]
-]
 
-{ #category : 'updating' }
-PhLTemplateSourcesUpdateChecker >> unregisterFromTemplateSourcesUpdate [
-	PhLPharoTemplateSources announcer
-		unsubscribe: self.
-]
-
-{ #category : 'updating' }
-PhLTemplateSourcesUpdateChecker >> updateTemplateSources: announcement [
-	
-	PharoLauncherApplication default shouldUpdateTemplateSources ifFalse: [ ^ self ].
-	
-	self basicUpdateTemplateSources
+	process ifNotNil: [
+		process isTerminating ifFalse: [ process terminate ] ]
 ]
 
 { #category : 'actions' }

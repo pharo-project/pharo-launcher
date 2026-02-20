@@ -24,15 +24,17 @@ PhLCliTemplateSourcesChecker class >> forCommand: aPhLCliCommand [
 PhLCliTemplateSourcesChecker >> checkForUpdates [
 
 	"Should only be used by commands requiring network for a better Ux"
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #notifyTemplateSourcesUpdateAvailable
-		to: command.
-	PhLPharoTemplateSources checkForUpdates.
+	PhLPharoTemplateSources checkForUpdates: self
 ]
 
 { #category : 'accessing' }
 PhLCliTemplateSourcesChecker >> command: anObject [
 
 	command := anObject
+]
+
+{ #category : 'events' }
+PhLCliTemplateSourcesChecker >> sourcesFileUpdateAvailable [
+
+	command notifyTemplateSourcesUpdateAvailable
 ]

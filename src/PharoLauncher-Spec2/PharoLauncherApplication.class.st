@@ -260,6 +260,7 @@ PharoLauncherApplication >> cleanProcesses [
 
 { #category : 'accessing' }
 PharoLauncherApplication >> defaultTemplateRepository [
+
 	^ PhLTemplateGroupRepository default
 ]
 
@@ -316,7 +317,7 @@ PharoLauncherApplication >> initialize [
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository.
-
+	self runTemplateSourcesUpdateChecker
 ]
 
 { #category : 'initialization' }
@@ -436,6 +437,12 @@ PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := nil.
 ]
 
+{ #category : 'running' }
+PharoLauncherApplication >> runTemplateSourcesUpdateChecker [
+	
+	PhLTemplateSourcesUpdateChecker runFor: self
+]
+
 { #category : 'private' }
 PharoLauncherApplication >> safeExit [
 
@@ -481,6 +488,15 @@ PharoLauncherApplication >> showError: anError [
 		title: anError name;
 		label: anError longDescription;
 		openModalWithParent: self topWindow
+]
+
+{ #category : 'events' }
+PharoLauncherApplication >> sourcesFileUpdateAvailable [
+
+	self shouldUpdateTemplateSources ifFalse: [ ^ self ].
+	
+	PhLPharoTemplateSources fromFile updateSourcesFile.
+	self resetTemplateRepository
 ]
 
 { #category : 'running' }

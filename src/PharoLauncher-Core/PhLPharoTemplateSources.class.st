@@ -12,18 +12,12 @@ Class {
 	#superclass : 'PhLTemplateSources',
 	#classVars : [
 		'DownloadedSourcesFileLock',
-		'SourcesAnnouncer',
 		'SourcesUrl'
 	],
 	#category : 'PharoLauncher-Core-Model',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Model'
 }
-
-{ #category : 'accessing' }
-PhLPharoTemplateSources class >> announcer [
-	^ SourcesAnnouncer ifNil: [ SourcesAnnouncer := Announcer new ]
-]
 
 { #category : 'private' }
 PhLPharoTemplateSources class >> basicSourcesUrl: aUrl [
@@ -36,9 +30,9 @@ PhLPharoTemplateSources class >> basicSourcesUrl: aUrl [
 ]
 
 { #category : 'updating' }
-PhLPharoTemplateSources class >> checkForUpdates [
+PhLPharoTemplateSources class >> checkForUpdates: anApplication [
 
-	self fromFile checkForUpdates
+	self fromFile checkForUpdates: anApplication
 ]
 
 { #category : 'accessing' }
@@ -110,11 +104,11 @@ PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 	oldUrl := self basicSourcesUrl: aUrl.
 	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
 	
-	self checkForUpdates
+	self checkForUpdates: PharoLauncherApplication default.
 ]
 
 { #category : 'actions' }
-PhLPharoTemplateSources >> checkForUpdates [
+PhLPharoTemplateSources >> checkForUpdates: anApplication [
 	| downloadedSources |
 	
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
@@ -122,9 +116,9 @@ PhLPharoTemplateSources >> checkForUpdates [
 		self downloadedSourcesFile ensureDelete.
 		self fetchSourcesFile.
 		downloadedSources := self downloadedSources. ].
-	
+
 	self sources = downloadedSources 
-		ifFalse: [ self class announcer announce: (PhLSourcesFileUpdateAvailable sources: downloadedSources) ].
+		ifFalse: [ anApplication sourcesFileUpdateAvailable ]
 ]
 
 { #category : 'reading' }

@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'sourcesFile',
 		'defaultPharoLauncherApp',
-		'templateSourcesAnnouncerBackup',
 		'pharoTemplateSourcesUrlBackup'
 	],
 	#category : 'PharoLauncher-Tests-Core',
@@ -15,9 +14,7 @@ Class {
 PhLTemplateSourcesTest >> setUp [
 	super setUp.
 	sourcesFile := FileSystem memory / 'templates-sources.test'.
-	templateSourcesAnnouncerBackup := PhLPharoTemplateSources announcer.
 	pharoTemplateSourcesUrlBackup := PhLPharoTemplateSources sourcesUrl.
-	PhLPharoTemplateSources announcer: Announcer new.
 	"Avoid blocking modal dialogs when a source update is available"
 	defaultPharoLauncherApp := PharoLauncherApplication default.
 	PharoLauncherApplication default: PhLTestApplication new.
@@ -25,7 +22,6 @@ PhLTemplateSourcesTest >> setUp [
 
 { #category : 'running' }
 PhLTemplateSourcesTest >> tearDown [ 
-	PhLPharoTemplateSources announcer: templateSourcesAnnouncerBackup.
 	PhLPharoTemplateSources basicSourcesUrl: pharoTemplateSourcesUrlBackup.
 	PharoLauncherApplication default: defaultPharoLauncherApp.
 	super tearDown 
@@ -124,12 +120,12 @@ PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 ]
 
 { #category : 'tests' }
-PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSources [
-	| announcements sources |
+PhLTemplateSourcesTest >> testNoUpdateNotifiedWhenDownloadedSourcesIsSameAsSources [
+	| nbNotifications sources |
 	
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
+	nbNotifications := 0.
 
-	announcements := OrderedCollection new.
 	ZnClientTest new
 		withServerDo: [ :server | 
 			server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
@@ -137,14 +133,11 @@ PhLTemplateSourcesTest >> testNoUpdateAnnouncedWhenDownloadedSourcesIsSameAsSour
 			sources := PhLPharoTemplateSources withFile: sourcesFile.
 			PhLPharoTemplateSources basicSourcesUrl: server localUrl.
 
-			PhLPharoTemplateSources announcer weak 
-				when: PhLSourcesFileUpdateAvailable 
-				send: #add: 
-				to: announcements.
+			sources checkForUpdates: (MockObject new 
+				on: #sourcesFileUpdateAvailable 
+				verify: [ nbNotifications := nbNotifications + 1 ]) ].
 
-			sources checkForUpdates.
-
-			self assertEmpty: announcements ]
+ 	self assert: nbNotifications equals: 0
 ]
 
 { #category : 'tests' }
@@ -175,29 +168,28 @@ PhLTemplateSourcesTest >> testSourcesFileNotUpdatedWhenDownloadedSourcesFileIsAb
 ]
 
 { #category : 'tests' }
-PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsAnnouncedWhenDownloadedSourcesDifferentFromSources [
-	| announcements sources |
+PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsNotifiedWhenDownloadedSourcesDifferentFromSources [
+	| nbNotifications sources |
 	
+	nbNotifications := 0.
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
-	announcements := OrderedCollection new. 
+	nbNotifications := 0.
+
 	ZnClientTest new 
 	withServerDo: [ :server |
 		server onRequestRespond: [ :request | 
 			ZnResponse ok: (ZnEntity text: (STON toString: false)) ].
 		
-	sources := PhLPharoTemplateSources withFile: sourcesFile.
-	PhLPharoTemplateSources basicSourcesUrl: server localUrl.	
+		sources := PhLPharoTemplateSources withFile: sourcesFile.
+		PhLPharoTemplateSources basicSourcesUrl: server localUrl.	
 	
-	PhLPharoTemplateSources announcer weak
-		when: PhLSourcesFileUpdateAvailable
-		send: #add:
-		to: announcements.
+		sources checkForUpdates: (MockObject new 
+				on: #sourcesFileUpdateAvailable 
+				verify: [ nbNotifications := nbNotifications + 1 ]) ].
 		
-	sources checkForUpdates.
-
 	self 
-		assert: announcements size 
-		equals: 1 ].
+		assert: nbNotifications
+		equals: 1
 ]
 
 { #category : 'tests' }

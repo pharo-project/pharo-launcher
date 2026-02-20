@@ -425,13 +425,13 @@ PharoLauncherApplication >> pushProgress: aString with: aBlock [
 	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
-{ #category : 'accessing' }
+{ #category : 'configuring' }
 PharoLauncherApplication >> resetConfiguration [ 
 
 	self configuration configure: self
 ]
 
-{ #category : 'initialization' }
+{ #category : 'resetting' }
 PharoLauncherApplication >> resetTemplateRepository [
 	templateRepository := nil.
 ]

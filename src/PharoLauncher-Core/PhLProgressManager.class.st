@@ -32,28 +32,28 @@ PhLProgressManager >> context [
 { #category : 'i/o' }
 PhLProgressManager >> displayProgress: aTitle during: aBlock [
 	"Inform user about download progression"
-	| presenter job window |
+	| presenter job window sem |
 
+	sem := Semaphore new.
 	job := self newJobFor: aTitle do: aBlock.
 	presenter := self context instantiate: SpJobPresenter on: job. 
 
-	window := presenter asModalWindow 
+	window := presenter asWindow 
 		owner: self context window;
-		withoutButtons;
 		whenOpenedDo: [
 			"I need to fork it because otherwise the http request breaks the flow"
 			[ job run ] fork ];
+		whenClosedDo: [ sem signal ];
 		yourself.
 
 	job 
 		installOn: presenter announcer;
 		whenChangedDo: [ presenter updatePresenter ];
-		whenEndDo: [ 
-			window beOk.
-			window close ].
+		whenEndDo: [ window close ].
 	
 	"I can't use whenStartDo: to open the job because is a modal"		
-	window open
+	window open.
+	sem wait
 ]
 
 { #category : 'private' }

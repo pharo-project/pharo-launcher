@@ -5,7 +5,8 @@ Class {
 	#name : 'PhLCreateImageFromTemplateCommand',
 	#superclass : 'PhLTemplateCommand',
 	#instVars : [
-		'image'
+		'image',
+		'creating'
 	],
 	#category : 'PharoLauncher-Core-Commands',
 	#package : 'PharoLauncher-Core',

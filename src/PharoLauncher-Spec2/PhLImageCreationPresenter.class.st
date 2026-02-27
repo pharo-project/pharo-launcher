@@ -20,7 +20,8 @@ Class {
 		'editInitScriptButton',
 		'descriptionText',
 		'imageNameCheck',
-		'isNameValid'
+		'isNameValid',
+		'creating'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -59,8 +60,7 @@ PhLImageCreationPresenter >> close [
 { #category : 'initialization' }
 PhLImageCreationPresenter >> connectPresenters [
 
-	imageName 
-		whenTextChangedDo: [ :name | self checkNewName: name ]
+	imageName whenTextChangedDo: [ :aName | self checkNewName: aName ]
 ]
 
 { #category : 'action' }
@@ -80,6 +80,17 @@ PhLImageCreationPresenter >> createImageWithCommand: createCommand [
 		self newInformation 
 			message: 'An image with the same name already exists! Please choose a new one.';
 			alert ] 
+]
+
+{ #category : 'initialization' }
+PhLImageCreationPresenter >> creatingWhile: aBlock [
+
+	creating ifTrue: [ ^ self ].
+	creating := true.
+	createButton enabled: false.
+	aBlock ensure: [ 
+			creating := false.
+			createButton enabled: true ]
 ]
 
 { #category : 'layout' }
@@ -151,6 +162,7 @@ PhLImageCreationPresenter >> initializationScripts [
 { #category : 'initialization' }
 PhLImageCreationPresenter >> initialize [
 
+	creating := false.
 	super initialize.
 	reservedImagesNamesCache := self application imageRepository imageNames collect: #asLowercase
 ]
@@ -180,7 +192,9 @@ PhLImageCreationPresenter >> initializePresenters [
 	
 	createCommand := PhLCreateImageFromTemplateCommand forSpecContext: self owner.
 	(createButton := createCommand asButtonPresenter)
-		action: [ self createImageWithCommand: createCommand ].
+		action: [ 
+			self creatingWhile: [ 
+				self createImageWithCommand: createCommand ] ].
 	createButton disable
 ]
 

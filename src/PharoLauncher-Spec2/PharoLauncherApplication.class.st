@@ -317,7 +317,7 @@ PharoLauncherApplication >> initialize [
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
 	self resetTemplateRepository.
-	self runTemplateSourcesUpdateChecker
+	self defer: [ self runTemplateSourcesUpdateChecker]
 ]
 
 { #category : 'initialization' }

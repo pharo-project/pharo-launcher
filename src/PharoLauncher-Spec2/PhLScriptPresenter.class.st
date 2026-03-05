@@ -91,6 +91,7 @@ PhLScriptPresenter >> initializePresenters [
 		yourself.
 	fileEditor := self newCode
 		beForScripting;
+		syntaxHighlightTheme: self application syntaxHighlightTheme; 
 		addShortcutWith: [ :action | action 
 			shortcutKey: self defaultSaveShortCut;
 			action: [ self saveSelectedScript ] ];

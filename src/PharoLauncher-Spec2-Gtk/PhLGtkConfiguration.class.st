@@ -212,6 +212,14 @@ PhLGtkConfiguration >> switchThemeToLight [
 		self addCSSProviderFromString: self palette ]
 ]
 
+{ #category : 'accessing - style' }
+PhLGtkConfiguration >> syntaxHighlightTheme [
+
+	^ self isDarkTheme 
+		ifTrue: [ 'Dark' ]
+		ifFalse: [ 'Blue' ]
+]
+
 { #category : 'accessing - styles' }
 PhLGtkConfiguration >> windowsStyle [
 

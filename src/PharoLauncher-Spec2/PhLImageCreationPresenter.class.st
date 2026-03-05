@@ -88,9 +88,7 @@ PhLImageCreationPresenter >> creatingWhile: aBlock [
 	creating ifTrue: [ ^ self ].
 	creating := true.
 	createButton enabled: false.
-	aBlock ensure: [ 
-			creating := false.
-			createButton enabled: true ]
+	aBlock value
 ]
 
 { #category : 'layout' }

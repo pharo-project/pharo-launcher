@@ -8,7 +8,10 @@ Class {
 		'proxyServerInput',
 		'proxyServerPortInput',
 		'proxyUsernameInput',
-		'proxyPasswordInput'
+		'proxyPasswordInput',
+		'useProxySwitch',
+		'proxyPresenter',
+		'manageHttpProxyExceptionsInput'
 	],
 	#category : 'PharoLauncher-Spec2-View-Settings',
 	#package : 'PharoLauncher-Spec2',
@@ -28,6 +31,36 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		vAlignStart;
+		add: (SpBoxLayout newLeftToRight
+			add: 'Use HTTP Proxy' expand: false;
+			add: useProxySwitch expand: false;
+			yourself);
+		add: proxyPresenter;
+		yourself
+]
+
+{ #category : 'initialization' }
+PhLNetworkSettingsPresenter >> initializePresenters [
+
+	self addStyle: 'settings_form'.
+
+	useProxySwitch := self newSwitchFor: #useHTTPProxy.
+	useProxySwitch whenChangedDo: [ proxyPresenter enabled: useProxySwitch state ].
+	proxyServerInput := self newTextInputFor: #httpProxyServer.
+	proxyServerPortInput := self newNumberInputFor: #httpProxyPort.
+	manageHttpProxyExceptionsInput := self newTextInputFor: #manageHttpProxyExceptions.
+	proxyUsernameInput := self newTextInputFor: #proxyUser.
+	proxyPasswordInput := self newTextInputFor: #proxyPassword.
+	proxyPresenter := self newPresenter
+		layout: self proxyLayout;
+		yourself.
+]
+
+{ #category : 'layout' }
+PhLNetworkSettingsPresenter >> proxyLayout [ 
+
+	^ SpBoxLayout newTopToBottom
+		vAlignStart;
 		add: (SpBoxLayout newTopToBottom
 			vAlignStart;
 			add: 'HTTP Proxy server';
@@ -40,6 +73,11 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 			yourself);
 		add: (SpBoxLayout newTopToBottom
 			vAlignStart;
+			add: 'Exceptions';
+			add: manageHttpProxyExceptionsInput;
+			yourself);
+		add: (SpBoxLayout newTopToBottom
+			vAlignStart;
 			add: 'HTTP Proxy username';
 			add: proxyUsernameInput;
 			yourself);
@@ -49,17 +87,6 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 			add: proxyPasswordInput;
 			yourself);
 		yourself
-]
-
-{ #category : 'initialization' }
-PhLNetworkSettingsPresenter >> initializePresenters [
-
-	self addStyle: 'settings_form'.
-
-	proxyServerInput := self newTextInputFor: #httpProxyServer.
-	proxyServerPortInput := self newNumberInputFor: #httpProxyPort.
-	proxyUsernameInput := self newTextInputFor: #proxyUser.
-	proxyPasswordInput := self newTextInputFor: #proxyPassword.
 ]
 
 { #category : 'accessing' }

@@ -7,10 +7,10 @@ PhLImageCreationPresenter >> imageName: aString [
 
 { #category : '*PharoLauncher-Tests-SpecUI' }
 PhLImageCreationPresenter >> initScriptPresenter [
-	^ initScript
+	^ initializationScriptList
 ]
 
 { #category : '*PharoLauncher-Tests-SpecUI' }
 PhLImageCreationPresenter >> selectInitializationScript: anIndex [
-	initScript selectIndex: anIndex
+	initializationScriptList selectIndex: anIndex
 ]

@@ -15,13 +15,12 @@ Class {
 		'reservedImagesNamesCache',
 		'imageName',
 		'createButton',
-		'initScriptText',
-		'initScript',
-		'editInitScriptButton',
 		'descriptionText',
 		'imageNameCheck',
 		'isNameValid',
-		'creating'
+		'creating',
+		'initializationScriptList',
+		'initializationScriptEdit'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -106,6 +105,12 @@ PhLImageCreationPresenter >> defaultLayout [
 			expand: false;
 		add: 'Image description:' expand: false;
 		add: descriptionText;
+		add: 'Initialization script' expand: false; 
+		add: (SpBoxLayout newLeftToRight
+					add: initializationScriptList; 
+					add: initializationScriptEdit expand: false;
+					yourself)
+			expand: false;
 		add: (self newPresenter
 				addStyle: 'action_area';
 				layout: (SpBoxLayout newHorizontal
@@ -143,7 +148,7 @@ PhLImageCreationPresenter >> imageName [
 
 { #category : 'accessing' }
 PhLImageCreationPresenter >> initializationScript [
-	^ initScript selectedItem
+	^ initializationScriptList selectedItem
 ]
 
 { #category : 'initialization' }
@@ -171,19 +176,13 @@ PhLImageCreationPresenter >> initializePresenters [
 
 	imageName := self newTextInput.
 	imageNameCheck := self newImage.
-	initScriptText := self newText
-		disable;
-		yourself.
-	initScript := self newDropList
-		items: self initializationScriptItems;
-		display: [ :file | file basename ];
-		whenSelectionChangedDo: [ :selection |
-			selection selectedItem ifNotNil: [ :item |
-				initScriptText text: item model contents ] ];
-		yourself.
 	descriptionText := self newText.
-	editInitScriptButton := self newButton
+	initializationScriptList := self newDropList
+		display: [ :item | item basename ];
+		yourself.
+	initializationScriptEdit := self newButton
 		addStyle: 'small';
+		addStyle: 'flat';
 		action: [ self openScriptPresenter ];
 		icon: (self iconNamed: #edit);
 		yourself.
@@ -224,9 +223,9 @@ PhLImageCreationPresenter >> okIcon [
 { #category : 'action' }
 PhLImageCreationPresenter >> openScriptPresenter [
 
-	^ (PhLScriptPresenter
-		   newApplication: self application
-		   model: self application scriptsDirectory)
+	^ (self 
+			instantiate: PhLScriptPresenter 
+			on: self application scriptsDirectory)
 		  whenScriptListChanged: [ self refreshInitializationScriptList ];
 		  open;
 		  yourself
@@ -234,7 +233,7 @@ PhLImageCreationPresenter >> openScriptPresenter [
 
 { #category : 'refreshing' }
 PhLImageCreationPresenter >> refreshInitializationScriptList [
-	initScript items: self initializationScriptItems.
+	initializationScriptList items: self initializationScriptItems.
 ]
 
 { #category : 'private' }

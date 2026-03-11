@@ -227,8 +227,8 @@ PhLImageCreationPresenter >> openScriptPresenter [
 			instantiate: PhLScriptPresenter 
 			on: self application scriptsDirectory)
 		  whenScriptListChanged: [ self refreshInitializationScriptList ];
-		  open;
-		  yourself
+		  openModal;
+		yourself
 ]
 
 { #category : 'refreshing' }

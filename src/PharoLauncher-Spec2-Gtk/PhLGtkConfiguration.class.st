@@ -40,6 +40,8 @@ PhLGtkConfiguration >> configureWindows: anApplication [
 PhLGtkConfiguration >> darkPalette [
 	
 	^ '
+@define-color pl_textview_bg #38383c;
+	
 :root { 
 	--dim-color: #d3d3d3;
 }'
@@ -167,6 +169,35 @@ box.welcomeThemeSelected label {
 	letter-spacing: 0.05em;
 	color: var(--text-color);
 }
+
+textview {
+  background-color: @pl_textview_bg;
+  border: 0px solid rgba(0,0,0,0.25);
+  border-radius: 6px;
+  padding: 6px;
+  transition: all 120ms ease;
+}
+
+textview:disabled {
+  opacity: 0.5;
+}
+
+/* Text layer */
+textview text {
+  background: transparent;
+  color: inherit;
+}
+
+/* Hover (very subtle) */
+textview:hover {
+  background-color: color-mix(in srgb, currentColor 12%, transparent);
+}
+
+/* Focus (this is what really makes it feel like entry) */
+textview:focus-within {
+  border-color: alpha(@accent_bg_color, 0.9);
+  box-shadow: 0 0 0 2px alpha(@accent_bg_color, 0.35);
+}
 '
 ]
 
@@ -174,6 +205,8 @@ box.welcomeThemeSelected label {
 PhLGtkConfiguration >> lightPalette [
 	
 	^ '
+@define-color pl_textview_bg #ebebed;
+	
 :root { 
 	--dim-color: darkgray; 
 }'

@@ -41,7 +41,7 @@ PhLImageCreationPresenterTest >> testInitializationScriptListUpdatedWhenScriptPr
 		assert: presenter initializationScriptItems size
 		equals: 1. "No script"
 		
-	scriptPresenter := presenter openScriptPresenter.
+	SpWindowForceOpenNonModal during: [ scriptPresenter := presenter openScriptPresenter ].
 	scriptPresenter newScriptNamed: 'foo.st'.
 		
 	self

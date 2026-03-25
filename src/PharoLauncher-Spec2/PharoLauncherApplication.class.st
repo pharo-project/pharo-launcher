@@ -292,6 +292,17 @@ PharoLauncherApplication >> imageRepositoryChanged: newImage [
 	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
 ]
 
+{ #category : 'accessing' }
+PharoLauncherApplication >> initializationScripts [
+	| files |
+	
+	files := self scriptsDirectory files 
+		select: [ :file | file extension = 'st' ].	
+	files := files copyWithFirst: PhLNoInitializationScript new.
+	
+	^ files
+]
+
 { #category : 'initialization' }
 PharoLauncherApplication >> initialize [
 

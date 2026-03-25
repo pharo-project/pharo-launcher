@@ -202,17 +202,6 @@ PhLImageDetailPresenter >> imageRepository [
 
 ]
 
-{ #category : 'private' }
-PhLImageDetailPresenter >> initializationScriptList [
-	| files |
-	
-	files := self application scriptsDirectory files 
-		select: [ :file | file extension = 'st' ].	
-	files := files copyWithFirst: PhLNoInitializationScript new.
-	
-	^ files
-]
-
 { #category : 'initialization' }
 PhLImageDetailPresenter >> initialize [
 
@@ -375,12 +364,12 @@ PhLImageDetailPresenter >> templateUrl [
 
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateImage [
-	| image |
+	| image initializationScript |
 	
 	image := self image ifNil: [ PhLNullImage new ].
 	
 	self updateImageActions.
-	
+
 	imageLabel label: image name.
 	lastEditedLabel label: 'Last modified: ', (image lastModification 
 		ifNotNil: [ :time | PhLTimeUntilNowStrategy displayStringOf: time ]
@@ -393,9 +382,11 @@ PhLImageDetailPresenter >> updateImage [
 		url: image originTemplateUrl;
 		help: image originTemplateUrl.
 	
+	"setting initializationScriptList items will select first element and update image initializationScriptvalue"
+	initializationScript := image initializationScript. 
 	initializationScriptList 
-		items: self initializationScriptList;
-		selectItem: image initializationScript.
+		items: self application initializationScripts;
+		selectItem: initializationScript.
 	
 	location 
 		label: image location asFileReference parent fullName;
@@ -438,14 +429,17 @@ PhLImageDetailPresenter >> updateInitializationScript: aReference [
 
 	isPresenterUpdatingFromModel ifTrue: [ ^ self ].
 	
-	self image initializationScript: aReference
+	 self image initializationScript: 
+		((aReference isNotNil and: [ aReference exists ])
+			ifTrue: [ aReference ]
+			ifFalse: [ nil ])
 ]
 
 { #category : 'private - updating' }
 PhLImageDetailPresenter >> updateInitializationScriptList [
 	
 	self doNotUpdateImageDuring: [ 
-		initializationScriptList items: self initializationScriptList ]
+		initializationScriptList items: self application initializationScripts ]
 ]
 
 { #category : 'private - updating' }

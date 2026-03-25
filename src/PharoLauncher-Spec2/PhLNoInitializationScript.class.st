@@ -20,3 +20,9 @@ PhLNoInitializationScript >> asFileReference [
 PhLNoInitializationScript >> basename [
 	^ #'No initialization script'
 ]
+
+{ #category : 'testing' }
+PhLNoInitializationScript >> exists [
+
+	^ false
+]

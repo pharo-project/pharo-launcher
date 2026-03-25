@@ -153,13 +153,7 @@ PhLImageCreationPresenter >> initializationScript [
 
 { #category : 'initialization' }
 PhLImageCreationPresenter >> initializationScriptItems [
-	^ self initializationScripts copyWithFirst: self noInitializationScriptItem
-]
-
-{ #category : 'initialization' }
-PhLImageCreationPresenter >> initializationScripts [
-	^ self application scriptsDirectory files 
-		select: [ :file | file extension = 'st' ]
+	^ self application initializationScripts
 ]
 
 { #category : 'initialization' }
@@ -179,6 +173,7 @@ PhLImageCreationPresenter >> initializePresenters [
 	descriptionText := self newText.
 	initializationScriptList := self newDropList
 		display: [ :item | item basename ];
+		items: self initializationScriptItems;
 		yourself.
 	initializationScriptEdit := self newButton
 		addStyle: 'small';

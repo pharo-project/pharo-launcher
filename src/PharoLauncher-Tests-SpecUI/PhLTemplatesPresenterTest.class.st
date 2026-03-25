@@ -29,10 +29,10 @@ PhLTemplatesPresenterTest >> testCanCreateImageIfOneTemplateSelected [
 		selectCategory: 1;
 		selectTemplateNamed: 'Foo';
 		imageName: 'foo'.
-	
-	presenter clickOnCreateButton.
-	
+		
 	self assert: presenter createButtonEnabled.
+	
+	presenter clickOnCreateButton
 ]
 
 { #category : 'tests' }

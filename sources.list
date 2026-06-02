@@ -59,6 +59,18 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #URLGroup,
+		#name : 'Pharo-Music distributions',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo-Music (beta)',
+				#url : 'https://github.com/lucretiomsp/phausto/releases/download/v0.1/Pharo.Music.zip'
+			}
+		],
+		#expanded : true
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
 		#name : 'Pharo-LLM distributions',
 		#templates : [
 			PhLTemplateSource {

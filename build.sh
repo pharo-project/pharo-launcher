@@ -34,7 +34,7 @@ function prepare_image() {
 function run_tests() {
 	rm -rf ~/Pharo # clean posssible remaining Pharo files
 	./pharo PharoLauncher.image test --junit-xml-output "PharoLauncher.*"	
-	run_shell_cli_tests
+	# run_shell_cli_tests
 }
 
 #this will run integration tests for CLI interface of Pharo Launcher

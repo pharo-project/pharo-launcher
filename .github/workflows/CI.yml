@@ -159,7 +159,7 @@ jobs:
             path: ${{ env.PACKAGE_DIR }}
 
       - name: Build Advanced Installer Project
-        uses: caphyon/advinst-github-action@v2.0.2
+        uses: caphyon/advinst-github-action@v2.0.3
         with:
           advinst-version: '21.7.1'
           advinst-enable-automation: 'true'

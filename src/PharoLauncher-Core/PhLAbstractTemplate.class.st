@@ -91,7 +91,10 @@ PhLAbstractTemplate >> relocateImageFilesFrom: aDirectory to: targetDirectory [
 		
 	self renameFilesIfNeeded: imageFile to: targetDirectory basename.
 	targetDirectory ensureCreateDirectory.
-	imageFile parent allFiles 
+	
+	"Copy the children directly, moving directories as they are.
+	Thus, keeping the original zip directory structure"
+	imageFile parent children
 		do: [ :each | each moveTo: targetDirectory ]
 ]
 

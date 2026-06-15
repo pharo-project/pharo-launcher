@@ -59,6 +59,18 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #URLGroup,
+		#name : 'Pharo-LLM distributions',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Pharo-LLM 14 (development)',
+				#url : 'https://github.com/pharo-llm/pharo-llm/releases/download/pharo-llm-14-development/Pharo-LLM-P14.zip'
+			}
+		],
+		#expanded : true
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
 		#name : 'Deprecated distributions',
 		#templates : [
 			PhLTemplateSource {

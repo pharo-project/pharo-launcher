@@ -81,10 +81,6 @@ PhLTemplatesPresenter >> buildTemplateTable [
 		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
 		actions: self rootCommandsGroup / 'Context Menu';
 		beMultipleSelection; "bulk delete templates for example"
-		whenSelectionChangedDo: [ :selection | | hasTemplateSelected |
-			hasTemplateSelected := selection isEmpty not.
-			descriptionPanel enabled: hasTemplateSelected.
-			hasTemplateSelected ifTrue: [ descriptionPanel takeKeyboardFocus ] ]
 		yourself
 ]
 
@@ -99,7 +95,6 @@ PhLTemplatesPresenter >> categoryChildrenOf: aTemplateGroup [
 { #category : 'initialization' }
 PhLTemplatesPresenter >> connectPresenters [
 
-	super connectPresenters.
 	categoryTable 
 		transmitTo: templateTable 
 		transform: [ :group | 
@@ -107,12 +102,15 @@ PhLTemplatesPresenter >> connectPresenters [
 				ifNotNil: [ self categoryChildrenOf: group ]
 				ifNil: [ #() ] ].
 
-	templateTable 
-		transmitTo: descriptionPanel
-		transform: [ :selectionArray | 
-			selectionArray
-				ifNotEmpty: [ selectionArray last ]
-				ifEmpty: [ nil ] ].
+	templateTable transmitDo: [ :selectionArray |
+		selectionArray 
+			ifNotEmpty: [
+				descriptionPanel model: selectionArray last.
+				descriptionPanel enabled: true.
+				descriptionPanel takeKeyboardFocus ]
+			ifEmpty: [
+				descriptionPanel model: nil.
+				descriptionPanel enabled: false ] ]
 ]
 
 { #category : 'layout' }

@@ -161,7 +161,7 @@ jobs:
       - name: Build Advanced Installer Project
         uses: caphyon/advinst-github-action@v2.0.3
         with:
-          advinst-version: '21.7.1'
+          advinst-version: '21.8.2'
           advinst-enable-automation: 'true'
 
       # See https://www.advancedinstaller.com/user-guide/tutorial-powershell-commands-installation.html for more details

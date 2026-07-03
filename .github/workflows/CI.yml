@@ -127,7 +127,7 @@ jobs:
             #   see https://www.gnu.org/software/bash/manual/html_node/Shell-Parameter-Expansion.html
             #    and https://tldp.org/LDP/abs/html/string-manipulation.html
             installerVersion=${{ needs.build.outputs.launcherVersion }}
-            installerVersion=${installerVersion%-*}
+            installerVersion=${installerVersion%%-*}
           fi
           echo installerVersion = $installerVersion
           echo "INSTALLER_VERSION=$installerVersion" >> $GITHUB_ENV             

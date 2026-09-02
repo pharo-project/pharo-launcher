@@ -193,7 +193,7 @@ function expand_all_templates() {
 	done
 }
 
-PHARO_VERSION=${PHARO_VERSION:=130}  # If PHARO_VERSION not set, set it to 130.
+PHARO_VERSION=${PHARO_VERSION:=140}  # If PHARO_VERSION not set, set it to 140.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
 ARCHITECTURE=${ARCHITECTURE:-'64'}	# If ARCHITECTURE not set, set it to 64 bits
 

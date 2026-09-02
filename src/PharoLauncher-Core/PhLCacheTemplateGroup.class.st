@@ -42,7 +42,7 @@ PhLCacheTemplateGroup >> isHighlighted [
 { #category : 'testing' }
 PhLCacheTemplateGroup >> isUpdated [
 
-	^ templatesAndGroups notNil	
+	^ templatesAndGroups isNotNil	
 ]
 
 { #category : 'accessing' }

@@ -9,8 +9,8 @@ ZnUrl >> jenkinsOptions [
 		do: [ :option | 
 			| pair |
 			pair := option splitOn: $=.
-			pair size ~= 2
-				ifTrue: [ ^ Dictionary new	"the url is not properly formatted, we can't extract anything." ].
+			(pair size = 2)
+				ifFalse: [ ^ Dictionary new	"the url is not properly formatted, we can't extract anything." ].
 			options at: pair first put: pair second ].
 	^ options
 ]

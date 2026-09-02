@@ -157,7 +157,7 @@ ConsoleListFormatter >> getMaxPrintStringWidthFor: someObjects printBlock: print
 { #category : 'testing' }
 ConsoleListFormatter >> hasDefaultValue [
 
-	^ defaultValue notNil
+	^ defaultValue isNotNil
 ]
 
 { #category : 'private' }

@@ -13,7 +13,7 @@ Class {
 { #category : 'executing' }
 PhLRelocateImageDirectoryCommand >> canBeExecuted [
 	self target ensureCreateDirectory.
-	^ self source ~= self target 
+	^ (self source = self target) not 
 		and: [ self source hasChildren 
 		and: [ self target hasChildren not ] ]
 ]
@@ -64,7 +64,7 @@ PhLRelocateImageDirectoryCommand >> requestTargetLocation [
 	^ self application newRequest
 		initialAnswer: self source;
 		title: 'New location for your images';
-		validateAnswer: [ :answer | answer asFileReference ~= self source ];
+		validateAnswer: [ :answer | (answer asFileReference = self source) not ];
 		request
 ]
 

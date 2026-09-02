@@ -112,7 +112,7 @@ PhLAbstractSetting >> groupName: aSymbol [
 { #category : 'testing' }
 PhLAbstractSetting >> hasDefault [
 	
-	^ self defaultValue notNil
+	^ self defaultValue isNotNil
 ]
 
 { #category : 'testing' }

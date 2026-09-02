@@ -30,13 +30,13 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 14.0 - 64bit (stable)',
+				#name : 'Pharo 14.0 - 64bit (next stable)',
 				#url : 'https://files.pharo.org/image/140/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 13.0 - 64bit (old stable)',
-				#url : 'https://files.pharo.org/image/130/latest-64.zip'
+				#name : 'Pharo 14.0 - 64bit (stable)',
+				#url : 'https://files.pharo.org/image/140/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,

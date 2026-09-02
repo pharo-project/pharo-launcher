@@ -48,7 +48,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Tests-SpecUI' with: [
 				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Spec2'). ];
 			package: 'PharoLauncher-Tests-Download' with: [
-				spec requires: #('PharoLauncher-Tests-Core' ). ];
+				spec requires: #('PharoLauncher-Tests-Core' 'PharoLauncher-Tests-Commands' ). ];
 			package: 'PharoLauncher-Tests-Functional' with: [
 				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Tests-Download'). ];
 			package: 'PharoLauncher-CLI';
@@ -58,6 +58,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			group: 'Default' with: #(
 				'PharoLauncher-Tests-Core' 
 				'PharoLauncher-Tests-Download' 
+				'PharoLauncher-Tests-Commands'
 				'PharoLauncher-Core' 
 				'PharoLauncher-Spec2'
 				'PharoLauncher-Spec2-Gtk'

@@ -19,24 +19,12 @@ PhLGtkConfiguration >> configureGeneral: anApplication [
 	PhLAppearanceSettings uiThemeClass ifNotNil: [ :aThemeClass | 
 		aThemeClass uniqueInstance activateOn: anApplication ].
 	
-	GtkMorphicClipboard new beDefault
+	GtkMorphicClipboard new beDefault.
+	OSPlatform current isWindows ifTrue: [ self addCSSProviderFromString: self windowsStyle ].
+	OSPlatform current isMacOSX ifTrue: [ self addCSSProviderFromString: self macOSStyle ]
 ]
 
-{ #category : 'configuring' }
-PhLGtkConfiguration >> configureOSX: anApplication [
-
-	super configureOSX: anApplication.
-	self addCSSProviderFromString: self macOSStyle
-]
-
-{ #category : 'configuring' }
-PhLGtkConfiguration >> configureWindows: anApplication [
-
-	super configureWindows: anApplication.
-	self addCSSProviderFromString: self windowsStyle
-]
-
-{ #category : 'configuring' }
+{ #category : 'testing' }
 PhLGtkConfiguration >> darkPalette [
 	
 	^ '
@@ -66,7 +54,8 @@ PhLGtkConfiguration >> isDarkTheme [
 { #category : 'testing' }
 PhLGtkConfiguration >> isSystemUsingDarkTheme [
 
-	^ GRunLoop defer: [ AdwStyleManager default isDark ]
+	^ GRunLoop defer: [ 
+		(AdwStyleManager default ifNotNil: [ :styleManager | styleManager isDark ] ifNil: [ false ]) ]
 ]
 
 { #category : 'accessing - styles' }
@@ -232,7 +221,7 @@ PhLGtkConfiguration >> palette [
 PhLGtkConfiguration >> switchThemeToDark [
 
 	GRunLoop defer: [ 
-		AdwStyleManager default forceDark.
+		AdwStyleManager default ifNotNil: [ :styleManager | styleManager forceDark ].
 		self addCSSProviderFromString: self palette ].
 	
 ]
@@ -241,7 +230,7 @@ PhLGtkConfiguration >> switchThemeToDark [
 PhLGtkConfiguration >> switchThemeToLight [
 
 	GRunLoop defer: [ 
-		AdwStyleManager default forceLight.
+		AdwStyleManager default ifNotNil: [ :styleManager | styleManager forceLight ].
 		self addCSSProviderFromString: self palette ]
 ]
 

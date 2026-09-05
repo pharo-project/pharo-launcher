@@ -4,7 +4,7 @@ It is a convenience to build a UI automatically but should maybe not be used.
 "
 Class {
 	#name : 'PhLActionSetting',
-	#superclass : 'PhLAbstractSetting',
+	#superclass : 'PhLSetting',
 	#instVars : [
 		'actionLabel'
 	],

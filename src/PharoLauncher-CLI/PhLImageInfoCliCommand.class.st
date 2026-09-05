@@ -54,13 +54,13 @@ PhLImageInfoCliCommand >> basicExecute [
 	self list: (Array with: self selectedImage)
 ]
 
-{ #category : 'private ' }
+{ #category : 'private' }
 PhLImageInfoCliCommand >> listPrintAttributeBlocks [
 
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
 ]
 
-{ #category : 'private ' }
+{ #category : 'private' }
 PhLImageInfoCliCommand >> listPrintAttributeLabels [
 
 	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels

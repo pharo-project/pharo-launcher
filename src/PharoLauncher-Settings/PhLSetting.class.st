@@ -11,7 +11,8 @@ Class {
 		'readBlock',
 		'writeBlock',
 		'precondition',
-		'type'
+		'type',
+		'transient'
 	],
 	#category : 'PharoLauncher-Settings',
 	#package : 'PharoLauncher-Settings'
@@ -81,6 +82,13 @@ PhLSetting >> hasGroup [
 PhLSetting >> hasTarget [
 	
 	^ target isNotNil
+]
+
+{ #category : 'testing' }
+PhLSetting >> isTransient: aBoolean [
+
+	self flag: 'TODO: avoid persistence of the setting if true'.
+	transient := aBoolean
 ]
 
 { #category : 'accessing' }

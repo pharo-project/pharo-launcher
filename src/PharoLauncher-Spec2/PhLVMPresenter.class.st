@@ -25,6 +25,7 @@ PhLVMPresenter class >> buildCommandsGroupWith: anImagesPresenter forRoot: rootC
 { #category : 'commands' }
 PhLVMPresenter class >> buildContextualMenuGroup [
 	^ (CmCommandGroup named: 'Context Menu') asSpecGroup
+		beDisplayedAsGroup;
 		register: PhLUpdateVmCommand forSpec;
 		register: PhLShowVmInFolderCommand forSpec;
 		register: ((CmCommandGroup named: 'DANGER ZONE') asSpecGroup
@@ -107,8 +108,9 @@ PhLVMPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
 		showColumnHeaders;
 		alternateRowsColor;
-		contextMenuFromCommandsGroup: [ self rootCommandsGroup / 'Context Menu' ];
-		actions: self rootCommandsGroup / 'Context Menu';
+		actions: (SpActionGroup new
+			add: self rootCommandsGroup / 'Context Menu';
+			yourself);
 		beResizable;
 		beMultipleSelection;
 		items: self datasource virtualMachines;

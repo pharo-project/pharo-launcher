@@ -13,7 +13,7 @@ Class {
 { #category : 'private - accessing' }
 PhLVmProviderUntilPharo80 >> downloadPathOSTypeSegment [
 	| os |
-	os := Smalltalk os.
+	os := OSPlatform current.
 	(os isMacOS or: [ os isMacOSX ]) ifTrue: [ ^ 'mac' ].	
 	os isUnix ifTrue: [ ^ 'linux' ].
 	os isWindows ifTrue: [ ^ 'win' ].

@@ -100,7 +100,7 @@ BaselineOfPharoLauncher >> objCBridge: spec [
 
 	spec 
 		baseline: #ObjCBridge
-		with: [ spec repository: 'github://estebanlm/objcbridge:v0.9' ]
+		with: [ spec repository: 'github://estebanlm/objcbridge:v0.10' ]
 ]
 
 { #category : 'external projects' }

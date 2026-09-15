@@ -39,8 +39,20 @@ PhLGtkConfiguration >> darkPalette [
 PhLGtkConfiguration >> initialize [ 
 
 	super initialize.
+	self initializeEnumerations.
 	self applicationId: 'org.pharo.PharoLauncher'.
 	self applicationClass: AdwApplication
+]
+
+{ #category : 'initialization' }
+PhLGtkConfiguration >> initializeEnumerations [
+	"Gtk/Adwaita enumerations (e.g. AdwColorScheme) expose their constants only once
+	their enumeration is initialized. Initialize every GEnumeration subclass so FFI
+	calls that pass an enum constant (like the Adwaita color scheme setter) receive a
+	valid value instead of nil."
+
+	Smalltalk at: #GEnumeration ifPresent: [ :enumerationClass |
+		enumerationClass allSubclassesDo: #initializeEnumeration ]
 ]
 
 { #category : 'testing' }
@@ -63,7 +75,7 @@ PhLGtkConfiguration >> launcherStyle [
 
 	^ '
 label {  
-	color: var(--text-color)
+	color: var(--text-color);
 }
 label.list_header { 
 	padding: 8px;

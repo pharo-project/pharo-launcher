@@ -10,7 +10,7 @@ I execute:
 
 Utilisation:
 Example of utilisation with imageToCopy and copiedImageName:
-./pharo -path/to/the/image/with/PharoLauncherCLI clap launcher image copy imageToCopy copiedImageName
+./pharo -path/to/the/image/with/PharoLauncherCLI launcher image copy imageToCopy copiedImageName
 "
 Class {
 	#name : 'PhLImageCopyCliCommand',

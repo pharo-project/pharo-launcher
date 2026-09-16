@@ -40,4 +40,4 @@ elif [ "$OS" = "mac" ]; then
 fi
                                 
 # RUN THE VM and pass along all arguments as is ================================
-"$PHARO_LAUNCHER_VM" --headless "$PHARO_LAUNCHER_IMAGE" --no-default-preferences clap launcher "$@"
+"$PHARO_LAUNCHER_VM" --headless "$PHARO_LAUNCHER_IMAGE" --no-default-preferences launcher "$@"

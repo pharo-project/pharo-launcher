@@ -15,7 +15,7 @@ set -ex
 function prepare_image() {
 	echo "$PHARO_VERSION" > 'pharo.version'
 	$PHARO --headless PharoLauncher.image --version > version.txt
-	$PHARO --headless PharoLauncher.image eval --save load-pl.st --quit
+	$PHARO --headless PharoLauncher.image eval --save load-pl.st
 }
 
 function run_tests() {

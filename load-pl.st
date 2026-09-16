@@ -7,5 +7,6 @@ Metacello new
     load.
 
 "Enumeration init is already performed by BaselineOfGtk; guard defensively"
-Smalltalk classNamed: #GEnumeration ifPresent: [ :enumerationClass | 
-	enumerationClass allSubclassesDo: #initializeEnumeration ]
+(Smalltalk classNamed: #GEnumeration)
+	ifNotNil: [ :enumerationClass |
+		enumerationClass allSubclassesDo: #initializeEnumeration ]

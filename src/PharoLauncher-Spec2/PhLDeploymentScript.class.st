@@ -118,7 +118,10 @@ PhLDeploymentScript class >> doAll [
 
 { #category : 'actions' }
 PhLDeploymentScript class >> doRaiseWarningForMissingChangesOrSourcesFiles [
-	PharoFilesOpener default setInformAboutReadOnlyChanges.
+	"TODO: The Pharo API setInformAboutReadOnlyChanges has been removed in Pharo 14.
+	We should probably reintroduce this behavior (read-only changes warning). See
+	https://github.com/pharo-project/pharo/commit/17574fdf7a5bcb78c2217cab35fccafaa2e58767"
+	"PharoFilesOpener default setInformAboutReadOnlyChanges."
 ]
 
 { #category : 'actions' }
@@ -130,7 +133,10 @@ PhLDeploymentScript class >> dontAskForConfirmationWhenQuitting [
 
 { #category : 'actions' }
 PhLDeploymentScript class >> dontRaiseWarningForMissingChangesOrSourcesFiles [
-	PharoFilesOpener default unsetInformAboutReadOnlyChanges.
+	"TODO: The Pharo API unsetInformAboutReadOnlyChanges has been removed in Pharo 14.
+	We should probably reintroduce this behavior (read-only changes warning). See
+	https://github.com/pharo-project/pharo/commit/17574fdf7a5bcb78c2217cab35fccafaa2e58767"
+	"PharoFilesOpener default unsetInformAboutReadOnlyChanges."
 ]
 
 { #category : 'initialization' }

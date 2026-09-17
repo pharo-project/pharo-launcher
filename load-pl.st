@@ -1,5 +1,5 @@
 Metacello new
-    repository: 'github://pharo-project/pharo-launcher:pharo14-gtk';
+    repository: 'github://pharo-project/pharo-launcher:fix-ci';
     baseline: 'PharoLauncher';
     onConflict: [ :e | e useIncoming ];
     onUpgrade: [ :e | e useIncoming ];

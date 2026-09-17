@@ -33,6 +33,7 @@ PhLLaunchImageFromDiskCommandTest >> tearDown [
 { #category : 'tests' }
 PhLLaunchImageFromDiskCommandTest >> testCanLaunchImageFromDisk [
 	| command image |
+	self timeLimit: 30 seconds.
 	command := PhLLaunchImageFromDiskCommand new.
 	command context: presenter.
 	image := PhLPharoStableImageResource current newImage.

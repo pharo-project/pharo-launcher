@@ -37,6 +37,21 @@ PhLLaunchConfigurationTest >> pharo80HeadlessVm [
 ]
 
 { #category : 'helper' }
+PhLLaunchConfigurationTest >> runningVm [
+	"Builds a VM descriptor pointing at the currently running Pharo VM binary.
+	This VM is always present on the host and matches its architecture, so it
+	avoids any HTTP download and keeps the test deterministic."
+
+	| vmBinary |
+	vmBinary := Smalltalk vmBinary.
+	^ (PhLVirtualMachine id: '110-x64')
+		be64bits;
+		executable: vmBinary;
+		vmBinary: vmBinary;
+		yourself
+]
+
+{ #category : 'helper' }
 PhLLaunchConfigurationTest >> stripExportFrom: arguments [ 
 	^ arguments first = 'export'
 		ifTrue: [ self stripExportFrom: (arguments allButFirst: 3) "export foo=bar &&" ]
@@ -45,10 +60,12 @@ PhLLaunchConfigurationTest >> stripExportFrom: arguments [
 
 { #category : 'tests - canBeLaunched' }
 PhLLaunchConfigurationTest >> testCanBeLaunchedWhenVmAvailable [
-	| launchConfig |
+	| launchConfig vm |
 	
 	self writeIntoVersionFile: '110'.
-	launchConfig := PhLDefaultLaunchConfiguration withImage: image.
+	launchConfig := (PhLDefaultLaunchConfiguration withImage: image) asLaunchConfiguration.
+	vm := self runningVm.
+	launchConfig vm: vm.
 	
 	self assert: launchConfig canBeLaunched
 ]

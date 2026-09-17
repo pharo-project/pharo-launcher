@@ -5,6 +5,16 @@ Class {
 	#package : 'PharoLauncher-Tests-Core'
 }
 
+{ #category : 'as yet unclassified' }
+PhLLaunchConfigurationTest class >> defaultTimeLimit [
+	"These launchProcess tests may download a VM when the one used by the
+	image under test is not installed (isValidAfterUpdate -> updateFromUrl).
+	We raise the default per-test timeout (10 seconds) to leave room for that
+	pending VM download, matching the timeLimit used by the command tests."
+
+	^ 30 seconds
+]
+
 { #category : 'helper' }
 PhLLaunchConfigurationTest >> newVMWith: bytes [
 

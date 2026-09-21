@@ -320,7 +320,7 @@ PharoLauncherApplication >> initialize [
 				run.
 			self useBackend: #Gtk with: PhLGtkConfiguration new ]
 		ifFalse: [ 
-			self useBackend: #Morphic with: PharoLauncherConfiguration new ].
+			self useBackend: #Morphic with: PhLMorphicConfiguration new ].
 	
 	imageRepository :=  PhLDirectoryBasedImageRepository default.
 	imageRepository reset.

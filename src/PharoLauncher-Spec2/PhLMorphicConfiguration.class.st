@@ -3,7 +3,7 @@ I define the configuration for Pharo Launcher application.
 For now, I only define new styles.
 "
 Class {
-	#name : 'PharoLauncherConfiguration',
+	#name : 'PhLMorphicConfiguration',
 	#superclass : 'SpMorphicConfiguration',
 	#instVars : [
 		'activeTheme'
@@ -14,14 +14,14 @@ Class {
 }
 
 { #category : 'styling' }
-PharoLauncherConfiguration >> customStyleSheet [
+PhLMorphicConfiguration >> customStyleSheet [
 	^ (SpStyleVariableSTONReader fromString: '.application [       
  	   .greenOnGray [ Draw { #color: #lightGreen} , Draw { #backgroundColor: #gray } ] ]
 	')
 ]
 
 { #category : 'private - factory' }
-PharoLauncherConfiguration >> newStyleSheet [
+PhLMorphicConfiguration >> newStyleSheet [
 
 	^ SpStyle defaultStyleSheet copy, self customStyleSheet
 ]

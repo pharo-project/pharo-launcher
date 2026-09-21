@@ -327,8 +327,7 @@ PharoLauncherApplication >> initialize [
 	
 	self templatesClearedOnStartup 
 		ifTrue: [ self class resetTemplateRepository ].
-	self resetTemplateRepository.
-	self defer: [ self runTemplateSourcesUpdateChecker]
+	self resetTemplateRepository
 ]
 
 { #category : 'initialization' }
@@ -520,6 +519,7 @@ PharoLauncherApplication >> start [
 		^ self ].
 
 	imagesPresenter open.
+	self runTemplateSourcesUpdateChecker.
 	
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]

@@ -22,9 +22,10 @@ PhLLaunchError class >> signalProcess: aProcess image: anImage [
 
 { #category : 'action' }
 PhLLaunchError >> defaultAction [ 
-	PhLUIInformation new
+	ITInformation new
 		message: self longDescription;
-		alert
+		beAlert;
+		inform
 ]
 
 { #category : 'accessing' }

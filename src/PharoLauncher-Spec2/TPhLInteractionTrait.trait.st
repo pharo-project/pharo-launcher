@@ -11,12 +11,21 @@ Trait {
 }
 
 { #category : 'user interaction' }
-TPhLInteractionTrait >> newConfirmation [
+TPhLInteractionTrait >> newChoice [
 
-	^ PhLUIConfirmation new
+	^ ITUIChoice new
 		application: self application;
 		parentWindow: self window;
-		yourself	
+		yourself
+]
+
+{ #category : 'user interaction' }
+TPhLInteractionTrait >> newConfirmation [
+
+	^ ITConfirmation new
+		application: self application;
+		parentWindow: self window;
+		yourself
 ]
 
 { #category : 'user interaction' }
@@ -31,16 +40,16 @@ TPhLInteractionTrait >> newFileRequest [
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newInformation [
 
-	^ PhLUIInformation new
+	^ ITInformation new
 		application: self application;
 		parentWindow: self window;
-		yourself	
+		yourself
 ]
 
 { #category : 'user interaction' }
 TPhLInteractionTrait >> newRequest [
 
-	^ PhLUIRequest new
+	^ ITRequest new
 		application: self application;
 		parentWindow: self window;
 		yourself

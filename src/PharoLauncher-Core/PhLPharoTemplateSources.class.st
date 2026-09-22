@@ -151,7 +151,7 @@ PhLPharoTemplateSources >> ensureSourcesFile [
 	
 	self fetchSourcesFile.
 	self downloadedSourcesFile exists 
-		ifFalse: [ PhLUIInformation new 
+		ifFalse: [ ITInformation new 
 						message: 'Cannot fetch Pharo Launcher template sources file: {1}'. ].
 	self replaceSourcesFileWithDownloaded.
 ]

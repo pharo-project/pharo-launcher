@@ -78,7 +78,8 @@ PhLImageCreationPresenter >> createImageWithCommand: createCommand [
 	do: [ 
 		self newInformation 
 			message: 'An image with the same name already exists! Please choose a new one.';
-			alert ] 
+			beAlert;
+			inform ] 
 ]
 
 { #category : 'initialization' }

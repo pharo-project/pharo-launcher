@@ -116,7 +116,7 @@ PhLScriptPresenter >> newScript [
 	| newName |
 	
 	newName := self newRequest
-			label: 'New script name?';
+			message: 'New script name?';
 			validateAnswer: [ :answer | (self scriptDirectory / answer) exists not ];
 			request.
 	

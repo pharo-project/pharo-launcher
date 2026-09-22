@@ -70,6 +70,11 @@ PhLTestImagesPresenter >> launchConfigurations [
 ]
 
 { #category : 'user interaction' }
+PhLTestImagesPresenter >> newChoice [
+	^ PhLTestChoice new
+]
+
+{ #category : 'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
 	^ request := PhLTestConfirmation new
 ]

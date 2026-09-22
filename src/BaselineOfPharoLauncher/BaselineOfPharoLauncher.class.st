@@ -92,7 +92,7 @@ BaselineOfPharoLauncher >> interactions: spec [
 
 	spec 
 		baseline: #Interactions
-		with: [ spec repository: 'github://pharo-contributions/interactions:gtk4' ]
+		with: [ spec repository: 'github://demarey/interactions:request-and-choice-dialogs' ]
 ]
 
 { #category : 'external projects' }

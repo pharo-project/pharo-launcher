@@ -54,7 +54,7 @@ PhLCopyImageCommand >> newImageName: aString [
 	^ self imagesPresenter newRequest 
 		parentWindow: self context window;
 		title: 'Copy';
-		label: 'New image name?';
+		message: 'New image name?';
 		initialAnswer: aString;
 		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
 		request

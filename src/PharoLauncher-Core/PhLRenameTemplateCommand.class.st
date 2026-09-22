@@ -50,7 +50,7 @@ PhLRenameTemplateCommand >> newTemplateName [
 { #category : 'instance creation' }
 PhLRenameTemplateCommand >> newTemplateName: aString [ 
 	^ self templatesPresenter newRequest 
-		label: 'New name for the template?';
+		message: 'New name for the template?';
 		initialAnswer: aString;
 		validateAnswer: [ :answer | (self templatesPresenter templateRepository hasLocalTemplateNamed: answer) not ];
 		request

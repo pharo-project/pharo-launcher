@@ -47,7 +47,7 @@ PhLRenameImageCommand >> newImageName: aString [
 	^ self imagesPresenter newRequest 
 		parentWindow: self context window;
 		title: 'Rename';
-		label: 'New image name?';
+		message: 'New image name?';
 		initialAnswer: aString;
 		validateAnswer: [ :answer | (self imagesPresenter imageRepository hasImageNamed: answer) not ];
 		request

@@ -47,10 +47,11 @@ PhLImportImageCommand >> execute [
 		'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' 
 	}. 
 
-	answer := self imagesPresenter newRequest
+	answer := self imagesPresenter newChoice
 		title: 'Import';
-		label: 'What would you like to do?';
-		chooseFrom: options.
+		message: 'What would you like to do?';
+		items: options;
+		run.
 
 	(answer isNil or: [ answer = 0  ]) ifTrue: [ ^ self "cancel" ].
 	answerIndex := options indexOf: answer.

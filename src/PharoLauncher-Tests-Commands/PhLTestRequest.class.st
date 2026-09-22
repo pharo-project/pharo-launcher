@@ -28,11 +28,6 @@ PhLTestRequest >> chooseFile [
 ]
 
 { #category : 'accessing' }
-PhLTestRequest >> chooseFrom: aCollection [ 
-	^ 1
-]
-
-{ #category : 'noop' }
 PhLTestRequest >> currentFolder: aFileLocator [ 
 	"noop"
 ]
@@ -48,7 +43,7 @@ PhLTestRequest >> initialAnswer: aString [
 ]
 
 { #category : 'accessing' }
-PhLTestRequest >> label: aString [ 
+PhLTestRequest >> message: aString [ 
 	self noop
 ]
 

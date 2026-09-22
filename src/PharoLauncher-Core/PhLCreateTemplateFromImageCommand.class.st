@@ -80,7 +80,7 @@ PhLCreateTemplateFromImageCommand >> requestNewTemplateName: aString [
 	^ self imagesPresenter newRequest
 		parentWindow: self context window;
 		title: 'Create';
-		label: 'Template name?';
+		message: 'Template name?';
 		initialAnswer: (templateRepository makeUniqueTemplateName: aString);
 		validateAnswer: [ :answer | 
 			(templateRepository hasLocalTemplateNamed: answer)

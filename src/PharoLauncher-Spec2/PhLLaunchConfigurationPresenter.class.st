@@ -158,14 +158,14 @@ PhLLaunchConfigurationPresenter >> initializePresenters [
 		addItemBlock: [ 
 			self newRequest
 				title: 'Add';
-				label: 'New VM argument?';
+				message: 'New VM argument?';
 				request ];
 		yourself.
 	imageArgumentList := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ 
 			self newRequest
 				title: 'Add';
-				label: 'New image argument?';
+				message: 'New image argument?';
 				request ];
 		yourself.
 	applyChangesButton := self newButton
@@ -202,7 +202,7 @@ PhLLaunchConfigurationPresenter >> newConfiguration [
 	
 	newName := self newRequest
 		title: 'Create';
-		label: 'New launch configuration name?';
+		message: 'New launch configuration name?';
 		validateAnswer: [ :answer | 
 			self image launchConfigurations noneSatisfy: [ :each | each name = answer ] ];
 		request.

@@ -35,10 +35,10 @@ PhLROCheckStartup class >> verifyCanWrite [
 			ensureDelete. ]
 	on: Error
 	do: [ :error |
-		PharoLauncherApplication default newInform 
+		ITInformation new
 			title: 'Cannot run PharoLauncher!';
-			label: 'PharoLauncher cannot be run from a read-only filesystem. 
+			message: 'PharoLauncher cannot be run from a read-only filesystem. 
 Please move it to a place where you have write permissions!';
-			openModal.
+			inform.
 		Smalltalk exitFailure ]
 ]

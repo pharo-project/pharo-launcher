@@ -560,17 +560,13 @@ PhLImage >> showNativeFolder [
 
 { #category : 'private - ui' }
 PhLImage >> showWarning: warning [
-	| continue |
 
-	continue := true.
-	(PhLLaunchImageCommand warnOnArchMismatch)
-		ifTrue: [ 
-			continue := (PharoLauncherApplication default newConfirm 
-				title: warning name ;
-				label: warning longDescription;
-				openModalWithParent: PharoLauncherApplication default topWindow) ].
-			
-	^ continue
+	PhLLaunchImageCommand warnOnArchMismatch ifFalse: [ ^ true ].
+
+	^ ITConfirmation new
+		title: warning name;
+		message: warning longDescription;
+		confirm
 ]
 
 { #category : 'accessing' }

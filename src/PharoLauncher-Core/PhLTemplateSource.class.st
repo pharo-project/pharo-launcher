@@ -297,7 +297,7 @@ PhLTemplateSource >> asTemplate [
 		^ PhLRemoteTemplate
 			  name: name
 			  shortName: shortName
-			  url: url asUrl
+			  url: url asZnUrl
 			  username: username
 			  password: password ].
 	self error: 'Template type not supported!'

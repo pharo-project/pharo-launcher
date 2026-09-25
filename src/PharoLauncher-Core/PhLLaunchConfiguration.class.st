@@ -58,8 +58,3 @@ PhLLaunchConfiguration >> vm: aPhLVirtualMachine [
 PhLLaunchConfiguration >> vmArguments: aCollection [ 
 	vmArguments := aCollection
 ]
-
-{ #category : 'accessing' }
-PhLLaunchConfiguration >> workingDirectory: aFileReference [
-	workingDirectory := aFileReference
-]

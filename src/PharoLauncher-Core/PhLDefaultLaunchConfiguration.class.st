@@ -195,3 +195,8 @@ PhLDefaultLaunchConfiguration >> workingDirectory [
 
 	^ workingDirectory ifNil: [ image imageFile parent ]
 ]
+
+{ #category : 'accessing' }
+PhLDefaultLaunchConfiguration >> workingDirectory: aFileReference [
+	workingDirectory := aFileReference
+]

@@ -346,6 +346,16 @@ PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
 ]
 
 { #category : 'tests' }
+PhLLaunchConfigurationTest >> testDefaultConfigurationWorkingDirectory [
+	| dir config |
+	dir := fs / 'foo' / 'bar'.
+	config := PhLDefaultLaunchConfiguration new
+		workingDirectory: dir.
+
+	self assert: config workingDirectory equals: dir
+]
+
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testVmHasSameVmManagerAsImage [
 	| launchConfig |
 	launchConfig := PhLDefaultLaunchConfiguration withImage: image.

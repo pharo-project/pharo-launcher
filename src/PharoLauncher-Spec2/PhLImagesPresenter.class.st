@@ -231,6 +231,8 @@ PhLImagesPresenter >> defaultKeyboardFocus [
 PhLImagesPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
+		borderWidth: 5;
+		spacing: 5;
 		add: toolbar expand: false;
 		add: imageFilter expand: false;
 		add: (SpPanedLayout newTopToBottom
@@ -295,6 +297,7 @@ PhLImagesPresenter >> initialExtent [
 { #category : 'initialization' }
 PhLImagesPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	imageFilter := self buildImageFilter.
 	imageTable := self buildImageTable.
 	descriptionPanel := self buildDescriptionPanel.

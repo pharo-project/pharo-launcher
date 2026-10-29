@@ -179,7 +179,7 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Moose Suite 10',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v10.x.x/Moose10-stable-Pharo64-10.zip'
-  			}
+  			},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 11 (old stable)',

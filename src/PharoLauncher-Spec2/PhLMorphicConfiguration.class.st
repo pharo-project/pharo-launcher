@@ -25,6 +25,12 @@ PhLMorphicConfiguration >> launcherStyle [
 	.table [
 		Container { #rowHeight: 28, #borderWidth: 0 },
 		Draw { #selectionColor: #CFE0F5 } ],
+	.list [
+		Container { #rowHeight: 28, #borderWidth: 0 },
+		Draw { #selectionColor: #CFE0F5 } ],
+	.tree [
+		Container { #rowHeight: 28, #borderWidth: 0 },
+		Draw { #selectionColor: #CFE0F5 } ],
 	.textInputField [
 		Container { #borderWidth: 0 },
 		Draw { #color: #EBEBED } ],

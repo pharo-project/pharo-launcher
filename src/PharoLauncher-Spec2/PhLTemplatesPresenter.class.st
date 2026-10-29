@@ -211,6 +211,7 @@ PhLTemplatesPresenter >> initializeDialogWindow: aDialogWindowPresenter [
 { #category : 'initialization' }
 PhLTemplatesPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	categoryTable := self buildCategoryTable.
 	templateTable := self buildTemplateTable.
 	descriptionPanel := self buildDescriptionPanel

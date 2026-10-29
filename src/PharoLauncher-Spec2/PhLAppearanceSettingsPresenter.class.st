@@ -50,6 +50,15 @@ PhLAppearanceSettingsPresenter >> defaultLayout [
 		yourself
 ]
 
+{ #category : 'private' }
+PhLAppearanceSettingsPresenter >> inUIThreadDo: aBlock [
+	"Gtk needs UI changes made from an event handler to run in its run loop"
+
+	self application isMorphicBackend
+		ifTrue: [ aBlock value ]
+		ifFalse: [ GRunLoop enterSystem: aBlock ]
+]
+
 { #category : 'initialization' }
 PhLAppearanceSettingsPresenter >> initializePresenters [ 
 
@@ -84,12 +93,10 @@ PhLAppearanceSettingsPresenter >> newThemePresenter: aTheme [
 	imagePresenter image: aTheme image.
 	imagePresenter addStyle: 'image'.
 		
- 	presenter eventHandler whenMouseDownDo: [ :anEvent | 
- 		GRunLoop enterSystem: [
+	presenter eventHandler whenMouseDownDo: [ :anEvent | 
+		self inUIThreadDo: [
 			self selectTheme: aTheme.
-			presenter addStyle: 'welcomeThemeSelected' 
-		] 
-	].
+			presenter addStyle: 'welcomeThemeSelected' ] ].
 
 	^ presenter
 ]
@@ -103,7 +110,8 @@ PhLAppearanceSettingsPresenter >> selectTheme: aTheme [
 	themePresenters 
 		detect: [ :each | (each propertyAt: #theme ifAbsent: [ nil ]) = aTheme ]
 		ifFound: [ :aPresenter |
-			aTheme activateOn: self application.
+			"Store the theme first: the application reads it when activating the theme"
 			self settings uiThemeClass: aTheme class.
+			aTheme activateOn: self application.
 			aPresenter addStyle: 'welcomeThemeSelected' ]
 ]

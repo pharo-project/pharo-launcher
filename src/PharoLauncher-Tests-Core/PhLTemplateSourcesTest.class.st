@@ -121,10 +121,12 @@ PhLTemplateSourcesTest >> testIdenticalTemplateSourcesAreEquals [
 
 { #category : 'tests' }
 PhLTemplateSourcesTest >> testNoUpdateNotifiedWhenDownloadedSourcesIsSameAsSources [
-	| nbNotifications sources |
+	| nbNotifications sources subscription |
 	
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
 	nbNotifications := 0.
+	subscription := PhLTemplateSourcesAnnouncer default
+		when: PhLTemplateSourcesUpdateAvailable do: [ nbNotifications := nbNotifications + 1 ] for: self.
 
 	ZnClientTest new
 		withServerDo: [ :server | 
@@ -133,10 +135,9 @@ PhLTemplateSourcesTest >> testNoUpdateNotifiedWhenDownloadedSourcesIsSameAsSourc
 			sources := PhLPharoTemplateSources withFile: sourcesFile.
 			PhLPharoTemplateSources basicSourcesUrl: server localUrl.
 
-			sources checkForUpdates: (MockObject new 
-				on: #sourcesFileUpdateAvailable 
-				verify: [ nbNotifications := nbNotifications + 1 ]) ].
+			sources checkForUpdates ].
 
+	PhLTemplateSourcesAnnouncer default removeSubscription: subscription.
  	self assert: nbNotifications equals: 0
 ]
 
@@ -169,11 +170,12 @@ PhLTemplateSourcesTest >> testSourcesFileNotUpdatedWhenDownloadedSourcesFileIsAb
 
 { #category : 'tests' }
 PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsNotifiedWhenDownloadedSourcesDifferentFromSources [
-	| nbNotifications sources |
+	| nbNotifications sources subscription |
 	
 	nbNotifications := 0.
 	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
-	nbNotifications := 0.
+	subscription := PhLTemplateSourcesAnnouncer default
+		when: PhLTemplateSourcesUpdateAvailable do: [ nbNotifications := nbNotifications + 1 ] for: self.
 
 	ZnClientTest new 
 	withServerDo: [ :server |
@@ -183,10 +185,9 @@ PhLTemplateSourcesTest >> testSourcesFileUpdateAvailableIsNotifiedWhenDownloaded
 		sources := PhLPharoTemplateSources withFile: sourcesFile.
 		PhLPharoTemplateSources basicSourcesUrl: server localUrl.	
 	
-		sources checkForUpdates: (MockObject new 
-				on: #sourcesFileUpdateAvailable 
-				verify: [ nbNotifications := nbNotifications + 1 ]) ].
+		sources checkForUpdates ].
 		
+	PhLTemplateSourcesAnnouncer default removeSubscription: subscription.
 	self 
 		assert: nbNotifications
 		equals: 1

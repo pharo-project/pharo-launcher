@@ -306,7 +306,7 @@ PharoLauncherApplication >> initializationScripts [
 { #category : 'initialization' }
 PharoLauncherApplication >> initialize [
 
- 	super initialize.
+  	super initialize.
 	"I want to register windows in order to be able to know which one is the last opened 
 	 This can be use to push progress bars (they stack)."
 	windows := OrderedCollection new. 
@@ -335,6 +335,23 @@ PharoLauncherApplication >> initializeImagesPresenter [
 	^ imagesPresenter := PhLImagesPresenter
 		newApplication: self
 		model: imageRepository
+]
+
+{ #category : 'initialization' }
+PharoLauncherApplication >> initializeProgressRunner [
+	"Show the progress of long running operations (downloads, extractions) in Spec windows"
+
+	ITProgressRunner default: (ITSpecProgressRunner application: self)
+]
+
+{ #category : 'announcements' }
+PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
+	| announcer |
+	announcer := PhLTemplateSourcesAnnouncer default.
+	announcer unsubscribe: self.
+	announcer
+		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self;
+		when: PhLTemplateSourcesUpdated do: [ :event | self resetTemplateRepository ] for: self
 ]
 
 { #category : 'testing' }
@@ -450,7 +467,7 @@ PharoLauncherApplication >> resetTemplateRepository [
 { #category : 'running' }
 PharoLauncherApplication >> runTemplateSourcesUpdateChecker [
 	
-	PhLTemplateSourcesUpdateChecker runFor: self
+	PhLTemplateSourcesUpdateChecker run
 ]
 
 { #category : 'private' }
@@ -519,6 +536,8 @@ PharoLauncherApplication >> start [
 		^ self ].
 
 	imagesPresenter open.
+	self initializeTemplateSourcesAnnouncer.
+	self initializeProgressRunner.
 	self runTemplateSourcesUpdateChecker.
 	
 	self isStandalone ifTrue: [ self cleanProcesses ]

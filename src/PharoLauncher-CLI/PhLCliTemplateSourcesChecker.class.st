@@ -24,7 +24,9 @@ PhLCliTemplateSourcesChecker class >> forCommand: aPhLCliCommand [
 PhLCliTemplateSourcesChecker >> checkForUpdates [
 
 	"Should only be used by commands requiring network for a better Ux"
-	PhLPharoTemplateSources checkForUpdates: self
+	PhLTemplateSourcesAnnouncer default
+		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self.
+	PhLPharoTemplateSources checkForUpdates
 ]
 
 { #category : 'accessing' }

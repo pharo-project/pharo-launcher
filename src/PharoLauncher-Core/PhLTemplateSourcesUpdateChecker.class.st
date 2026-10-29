@@ -2,7 +2,7 @@
 Process used to chek regularly if there is an update for Launcher template sources.
 
 ```
-PhLTemplateSourcesUpdateChecker runFor: application.
+PhLTemplateSourcesUpdateChecker run.
 PhLTemplateSourcesUpdateChecker terminate 
 ```
 
@@ -12,8 +12,7 @@ Class {
 	#name : 'PhLTemplateSourcesUpdateChecker',
 	#superclass : 'Object',
 	#instVars : [
-		'process',
-		'application'
+		'process'
 	],
 	#classVars : [
 		'ShouldRun',
@@ -25,11 +24,11 @@ Class {
 }
 
 { #category : 'running' }
-PhLTemplateSourcesUpdateChecker class >> runFor: aPharoLauncherApplication [
+PhLTemplateSourcesUpdateChecker class >> run [
 
 	self shouldRun ifFalse: [ ^ self terminate ].
 	
-	self uniqueInstance runFor: aPharoLauncherApplication
+	self uniqueInstance run
 	
 	
 ]
@@ -78,7 +77,7 @@ PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
 
 { #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> check [
-	[ PhLPharoTemplateSources fromFile checkForUpdates: application ]
+	[ PhLPharoTemplateSources fromFile checkForUpdates ]
 	on: PhLDownloadError 
 	do: [ :e | "ignore. No internet connection available" ]
 ]
@@ -94,9 +93,8 @@ PhLTemplateSourcesUpdateChecker >> priority [
 ]
 
 { #category : 'actions' }
-PhLTemplateSourcesUpdateChecker >> runFor: aPharoLauncherApplication [
+PhLTemplateSourcesUpdateChecker >> run [
 
-	application := aPharoLauncherApplication.
 	self terminate.
 	process := [ [ self check.
 					self wait ] repeat ]

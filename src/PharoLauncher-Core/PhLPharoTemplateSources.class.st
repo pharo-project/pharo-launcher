@@ -30,9 +30,9 @@ PhLPharoTemplateSources class >> basicSourcesUrl: aUrl [
 ]
 
 { #category : 'updating' }
-PhLPharoTemplateSources class >> checkForUpdates: anApplication [
+PhLPharoTemplateSources class >> checkForUpdates [
 
-	self fromFile checkForUpdates: anApplication
+	self fromFile checkForUpdates
 ]
 
 { #category : 'accessing' }
@@ -104,11 +104,11 @@ PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 	oldUrl := self basicSourcesUrl: aUrl.
 	oldUrl = SourcesUrl ifTrue: [ ^ self "ok" ].
 	
-	self checkForUpdates: PharoLauncherApplication default.
+	self checkForUpdates.
 ]
 
 { #category : 'actions' }
-PhLPharoTemplateSources >> checkForUpdates: anApplication [
+PhLPharoTemplateSources >> checkForUpdates [
 	| downloadedSources |
 	
 	file exists ifFalse: [ ^ self ensureSourcesFile ].
@@ -118,7 +118,7 @@ PhLPharoTemplateSources >> checkForUpdates: anApplication [
 		downloadedSources := self downloadedSources. ].
 
 	self sources = downloadedSources 
-		ifFalse: [ anApplication sourcesFileUpdateAvailable ]
+		ifFalse: [ PhLTemplateSourcesAnnouncer default announce: PhLTemplateSourcesUpdateAvailable new ]
 ]
 
 { #category : 'reading' }
@@ -176,7 +176,7 @@ PhLPharoTemplateSources >> forceTemplateSourcesUpdate [
 	self removeDownloadedSources.
 	file ensureDelete.
 	self ensureSourcesFile.
-	PharoLauncherApplication default resetTemplateRepository
+	PhLTemplateSourcesAnnouncer default announce: PhLTemplateSourcesUpdated new
 ]
 
 { #category : 'private' }

@@ -27,5 +27,8 @@ PhLError >> name [
 { #category : 'ui' }
 PhLError >> uiAlert [
 
-	PharoLauncherApplication default showError: self
+	ITInformation new
+		title: self name;
+		message: self longDescription;
+		inform
 ]

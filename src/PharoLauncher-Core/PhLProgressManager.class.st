@@ -1,5 +1,8 @@
 "
-A class to manage display of progress within a `PhLCurrentContext`
+A class to manage display of progress within a `PhLCurrentContext`.
+
+The work is run by an `ITProgress`: the current `ITProgressRunner` decides how the progress is displayed (Spec window, console progress bar, nothing).
+The work block receives a job to report its progress (#title:, #label:, #max:, #currentValue:, #progress:).
 "
 Class {
 	#name : 'PhLProgressManager',
@@ -12,66 +15,28 @@ Class {
 { #category : 'i/o' }
 PhLProgressManager class >> displayProgress: aTitle during: aBlock [
 
-	^ self new 
-		displayProgress: aTitle 
+	^ self new
+		displayProgress: aTitle
 		during: aBlock
 ]
 
-{ #category : 'private' }
-PhLProgressManager >> application [
-
-	^ self context application
-]
-
-{ #category : 'private' }
-PhLProgressManager >> context [
-
-	^ PhLCurrentContext value
-]
-
 { #category : 'i/o' }
-PhLProgressManager >> displayProgress: aTitle during: aBlock [
-	"Inform user about download progression"
-	| presenter job window sem |
+PhLProgressManager >> displayProgress: aTitle during: workBlock [
+	"Inform user about download progression.
+	The runner may run the work in another process: keep the current context"
 
-	sem := Semaphore new.
-	job := self newJobFor: aTitle do: aBlock.
-	presenter := self context instantiate: SpJobPresenter on: job. 
-
-	window := presenter asWindow 
-		owner: self context window;
-		whenOpenedDo: [
-			"I need to fork it because otherwise the http request breaks the flow"
-			[ job run ] fork ];
-		whenClosedDo: [ sem signal ];
-		yourself.
-
-	job 
-		installOn: presenter announcer;
-		whenChangedDo: [ presenter updatePresenter ];
-		whenEndDo: [ window close ].
-	
-	"I can't use whenStartDo: to open the job because is a modal"		
-	window open.
-	sem wait
-]
-
-{ #category : 'private' }
-PhLProgressManager >> newJobFor: aTitle do: workBlock [
 	| context |
-	
-	context := self context.
-	^ SpJob 
-		newTitle: aTitle 
-		block: [ :bar |
-			PhLCurrentContext 
-				use: context
-				during: [  
-					[ workBlock cull: bar ]
-						on: HTTPProgress
-						do: [ :progress |
-							bar label: progress printString.
-							progress isEmpty
-								ifFalse: [ bar progressPercent: progress percentage ].
-							progress resume ] ] ]
+	context := PhLCurrentContext value.
+	^ ITProgress new
+		title: aTitle;
+		block: [ :job |
+			PhLCurrentContext use: context during: [
+				[ workBlock cull: job ]
+					on: HTTPProgress
+					do: [ :progress |
+						job label: progress printString.
+						progress isEmpty
+							ifFalse: [ job progress: progress percentage / 100 ].
+						progress resume ] ] ];
+		run
 ]

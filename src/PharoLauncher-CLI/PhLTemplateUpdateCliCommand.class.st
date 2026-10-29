@@ -24,7 +24,9 @@ PhLTemplateUpdateCliCommand class >> launcherCmdDescription [
 { #category : 'command execution' }
 PhLTemplateUpdateCliCommand >> basicExecute [
 
-	PhLPharoTemplateSources fromFile checkForUpdates: self
+	PhLTemplateSourcesAnnouncer default
+		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self.
+	PhLPharoTemplateSources fromFile checkForUpdates
 ]
 
 { #category : 'updating' }

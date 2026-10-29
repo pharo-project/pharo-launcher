@@ -9,6 +9,16 @@ Class {
 	#tag : 'View-Settings'
 }
 
+{ #category : 'layout' }
+PhLAbstractSettingsPresenter >> morphicSpacing [
+	"Gtk spaces sections and fields through CSS (see PhLGtkConfiguration>>#launcherStyle).
+	 Morphic styles cannot reach the rows of a box: space them with the layout."
+
+	^ self application isMorphicBackend
+		ifTrue: [ 8 ]
+		ifFalse: [ 0 ]
+]
+
 { #category : 'instance creation' }
 PhLAbstractSettingsPresenter >> newNumberInputFor: aSettingName [
 	| declaration |

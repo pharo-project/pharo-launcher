@@ -37,7 +37,11 @@ PhLMorphicConfiguration >> launcherStyle [
 	.text [
 		Container { #borderWidth: 0 },
 		Draw { #backgroundColor: #EBEBED } ],
+	.code [ Draw { #backgroundColor: #EBEBED } ],
 	.dropList [ Container { #borderWidth: 0 } ],
+	.settings_form [
+		Container { #borderWidth: 30, #borderColor: #FAFAFA, #padding: 10 },
+		Draw { #backgroundColor: #FAFAFA } ],
 	.actionButton [
 		.flat [
 			Container { #borderWidth: 0 },

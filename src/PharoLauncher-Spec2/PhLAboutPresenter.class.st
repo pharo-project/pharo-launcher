@@ -1661,6 +1661,7 @@ PhLAboutPresenter >> initializeDialogWindow: aDialogWindow [
 { #category : 'initialization' }
 PhLAboutPresenter >> initializePresenters [
  
+	self addStyle: 'launcher'.
 	description := self newText.
 	icon := self newImage
 		addStyle: 'aboutIcon';

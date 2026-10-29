@@ -131,6 +131,7 @@ PhLLaunchConfigurationPresenter >> imageArguments [
 { #category : 'initialization' }
 PhLLaunchConfigurationPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	configurationTable := (self instantiate: SpEditableListPresenter)
 		addItemBlock: [ self newConfiguration ];
 		removeItemBlock: [ :config | self removeLaunchConfiguration: config ];

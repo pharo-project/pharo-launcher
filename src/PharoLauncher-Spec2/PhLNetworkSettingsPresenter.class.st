@@ -31,10 +31,13 @@ PhLNetworkSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
 		vAlignStart;
-		add: (SpBoxLayout newLeftToRight
-			add: 'Use HTTP Proxy' expand: false;
-			add: useProxySwitch expand: false;
-			yourself);
+		spacing: self morphicSpacing;
+		add: (self newPresenter
+			layout: (SpBoxLayout newLeftToRight
+				add: 'Use HTTP Proxy' expand: false;
+				add: useProxySwitch expand: false;
+				yourself);
+			yourself) expand: false;
 		add: proxyPresenter;
 		yourself
 ]
@@ -61,6 +64,7 @@ PhLNetworkSettingsPresenter >> proxyLayout [
 
 	^ SpBoxLayout newTopToBottom
 		vAlignStart;
+		spacing: self morphicSpacing;
 		add: (SpBoxLayout newTopToBottom
 			vAlignStart;
 			add: 'HTTP Proxy server';

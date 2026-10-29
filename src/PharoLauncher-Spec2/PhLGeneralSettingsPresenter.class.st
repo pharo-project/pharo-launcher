@@ -64,9 +64,10 @@ PhLGeneralSettingsPresenter >> clearTemplatesAtStartup: aBoolean [
 PhLGeneralSettingsPresenter >> defaultLayout [ 
 
 	^ SpBoxLayout newTopToBottom 
-		add: self newSourcesSection;
-		add: self newGeneralSection;
-		add: self newLocationsSection;
+		spacing: self morphicSpacing;
+		add: self newSourcesSection expand: false;
+		add: self newGeneralSection expand: false;
+		add: self newLocationsSection expand: false;
 		add: self newResetSection expand: false;
 		yourself
 ]
@@ -172,6 +173,7 @@ PhLGeneralSettingsPresenter >> newLocationsSection [
 	^ self newPresenter
 		addStyle: 'section';
 		layout: (SpBoxLayout newTopToBottom
+			spacing: self morphicSpacing;
 			add: 'Template sources Url' expand: false;
 			add: (SpBoxLayout newLeftToRight 
 				add: templateSourcesUrlInput;

@@ -75,6 +75,7 @@ PhLScriptPresenter >> initialExtent [
 { #category : 'initialization' }
 PhLScriptPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	scriptTable := (self instantiate: SpEditableListPresenter)
 		items: self scripts;
 		display: [ :file | file basename ];

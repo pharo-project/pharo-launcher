@@ -98,6 +98,7 @@ PhLVMPresenter >> initialExtent [
 { #category : 'initialization' }
 PhLVMPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	vmTable := self newTable
 		whenActivatedDo: [ self doShowInFolder ];
 		addColumn: ((SpImageTableColumn title: '' evaluated: [ :vm | self iconFor: vm ]) width: 20);

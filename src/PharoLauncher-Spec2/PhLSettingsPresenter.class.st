@@ -79,6 +79,7 @@ PhLSettingsPresenter >> initialExtent [
 { #category : 'initialization' }
 PhLSettingsPresenter >> initializePresenters [
 
+	self addStyle: 'launcher'.
 	self initializeSettingsCategories.
 	settingsPanel := self generalSettingsPanel.
 ]
@@ -104,7 +105,9 @@ PhLSettingsPresenter >> initializeSettingsCategories [
 PhLSettingsPresenter >> initializeWindow: aWindowPresenter [
 
 	super initializeWindow: aWindowPresenter.
-	aWindowPresenter title: 'Pharo Launcher settings'
+	aWindowPresenter
+		title: 'Pharo Launcher settings';
+		initialExtent: self initialExtent
 ]
 
 { #category : 'accessing' }

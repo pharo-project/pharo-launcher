@@ -291,6 +291,14 @@ PhLCliCommand >> errorStream [
 { #category : 'command execution' }
 PhLCliCommand >> execute [
 	
+	ITProgressRunner
+		use: self newProgressRunner
+		during: [ self executeWithProgressRunner ]
+]
+
+{ #category : 'command execution' }
+PhLCliCommand >> executeWithProgressRunner [
+	
 	self updatePharoLauncherFromConfigurationIfSpecified.
 	[ self basicExecute ]
 	on: NotFound, PhLError
@@ -438,6 +446,13 @@ PhLCliCommand >> outStream [
 	"using VTermOutputDriver will help us to use colors and other formatting"
 	^ outStream
 		ifNil: [ outStream := VTermOutputDriver on: self context stdout ]
+]
+
+{ #category : 'progress' }
+PhLCliCommand >> newProgressRunner [
+	"Display the progress of long running operations (downloads, extractions) on the output"
+
+	^ PhLCliProgressRunner on: self outStream
 ]
 
 { #category : 'accessing arguments' }

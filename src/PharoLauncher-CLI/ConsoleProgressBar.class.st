@@ -60,7 +60,7 @@ ConsoleProgressBar >> stream: aWriteStream [
 
 { #category : 'job subscription' }
 ConsoleProgressBar >> updateJob: aJobChange [
-	self value: aJobChange percentage asInteger
+	self value: (aJobChange progress * 100) asInteger
 ]
 
 { #category : 'accessing' }

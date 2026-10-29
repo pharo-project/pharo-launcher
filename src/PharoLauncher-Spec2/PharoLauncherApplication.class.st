@@ -180,7 +180,10 @@ PharoLauncherApplication class >> reset [
 	<script>
    Default ifNil: [ ^ self ].
 
-   Default reset.
+   Default 
+		unsubscribeFromAnnouncers;
+		releaseProgressRunner;
+		reset.
 	Default := nil
 ]
 
@@ -354,6 +357,14 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 		when: PhLTemplateSourcesUpdated do: [ :event | self resetTemplateRepository ] for: self
 ]
 
+{ #category : 'announcements' }
+PharoLauncherApplication >> unsubscribeFromAnnouncers [
+	"Announcers are global: an application that is no more the default one must stop 
+	 handling announcements"
+
+	PhLTemplateSourcesAnnouncer default unsubscribe: self
+]
+
 { #category : 'testing' }
 PharoLauncherApplication >> isDarkTheme [
 
@@ -451,6 +462,14 @@ PharoLauncherApplication >> prepareAsStandaloneApplication [
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
 	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
+]
+
+{ #category : 'initialization' }
+PharoLauncherApplication >> releaseProgressRunner [
+	"The progress runner is global: an application that is no more the default one must not show progress"
+
+	ITProgressRunner default application == self
+		ifTrue: [ ITProgressRunner default: nil ]
 ]
 
 { #category : 'configuring' }

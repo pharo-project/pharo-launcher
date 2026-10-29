@@ -35,6 +35,12 @@ PhLPharoTemplateSources class >> checkForUpdates [
 	self fromFile checkForUpdates
 ]
 
+{ #category : 'updating' }
+PhLPharoTemplateSources class >> checkForUpdates: anObserver [
+
+	self fromFile checkForUpdates: anObserver
+]
+
 { #category : 'accessing' }
 PhLPharoTemplateSources class >> defaultSources [
 	^ OrderedCollection new 
@@ -109,16 +115,29 @@ PhLPharoTemplateSources class >> sourcesUrl: aUrl [
 
 { #category : 'actions' }
 PhLPharoTemplateSources >> checkForUpdates [
+	self sourcesNeedUpdate
+		ifTrue: [ PhLTemplateSourcesAnnouncer default announce: PhLTemplateSourcesUpdateAvailable new ]
+]
+
+{ #category : 'actions' }
+PhLPharoTemplateSources >> checkForUpdates: anObserver [
+	"This variant notifies only the given observer (for example the command line checker) instead of
+	announcing to the shared PhLTemplateSourcesAnnouncer, so the GUI application is not disturbed
+	and does not try to open an update dialog."
+	self sourcesNeedUpdate
+		ifTrue: [ anObserver sourcesFileUpdateAvailable ]
+]
+
+{ #category : 'private' }
+PhLPharoTemplateSources >> sourcesNeedUpdate [
 	| downloadedSources |
 	
-	file exists ifFalse: [ ^ self ensureSourcesFile ].
-	self lockDownloadedSourcesFileDuring: [ 
+	file exists ifFalse: [ self ensureSourcesFile. ^ false ].
+	self lockDownloadedSourcesFileDuring: [
 		self downloadedSourcesFile ensureDelete.
 		self fetchSourcesFile.
-		downloadedSources := self downloadedSources. ].
-
-	self sources = downloadedSources 
-		ifFalse: [ PhLTemplateSourcesAnnouncer default announce: PhLTemplateSourcesUpdateAvailable new ]
+		downloadedSources := self downloadedSources ].
+	^ self sources ~= downloadedSources
 ]
 
 { #category : 'reading' }

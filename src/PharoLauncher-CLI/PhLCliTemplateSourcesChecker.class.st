@@ -23,10 +23,11 @@ PhLCliTemplateSourcesChecker class >> forCommand: aPhLCliCommand [
 { #category : 'updating' }
 PhLCliTemplateSourcesChecker >> checkForUpdates [
 
-	"Should only be used by commands requiring network for a better Ux"
-	PhLTemplateSourcesAnnouncer default
-		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self.
-	PhLPharoTemplateSources checkForUpdates
+	"Should only be used by commands requiring network for a better Ux.
+	Uses the observer variant so that only this checker is notified: announcing on the shared
+	PhLTemplateSourcesAnnouncer would also wake the GUI application, which answers an update
+	with a modal dialog that would never be closed and thus block the command."
+	PhLPharoTemplateSources checkForUpdates: self
 ]
 
 { #category : 'accessing' }

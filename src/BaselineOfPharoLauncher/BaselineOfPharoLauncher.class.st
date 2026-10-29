@@ -33,8 +33,11 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Settings';
 			package: 'PharoLauncher-Settings-Tests' with: [ 
 				spec requires: #('PharoLauncher-Settings' 'PharoLauncher-Spec2' 'PharoLauncher-Core') ];
-			package: 'PharoLauncher-Spec2' with: [ 
-				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings') ];
+			"Spec fixes waiting for their Spec PR integration, one extension protocol per PR.
+			 To be dropped once integrated in Spec of the Pharo version used to build the launcher"
+			package: 'PharoLauncher-SpecPatches';
+			package: 'PharoLauncher-Spec2' with: [
+				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings' 'PharoLauncher-SpecPatches') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
 				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk' 'Adwaita') ];
 			package: 'PharoLauncher-GToolkit' with: [ 

@@ -21,6 +21,13 @@ PhLArchitectureMismatchWarning class >> signalLauncherArch: launcherArchitecture
 		signal
 ]
 
+{ #category : 'handling' }
+PhLArchitectureMismatchWarning >> defaultAction [
+	"Only the code able to interact with the user asks for a confirmation (see PhLLaunchImageCommand). Otherwise, go on"
+
+	^ nil
+]
+
 { #category : 'initialization' }
 PhLArchitectureMismatchWarning >> initializeWith: launcherArch imageArch: imageArch [
 	launcherArchitecture := launcherArch.

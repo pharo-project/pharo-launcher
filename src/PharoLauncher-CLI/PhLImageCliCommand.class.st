@@ -83,6 +83,24 @@ PhLImageCliCommand >> imageName [
 	^ self positional: #existingImageName
 ]
 
+{ #category : 'command execution' }
+PhLImageCliCommand >> launchImage: anImage configuration: aLaunchConfiguration detached: shouldBeDetached [
+
+	| warned |
+	warned := false.
+	[ [ anImage launchWithConfiguration: aLaunchConfiguration detached: shouldBeDetached ]
+		on: PhLArchitectureMismatchWarning
+		do: [ :warning |
+			warned ifFalse: [ "only log one warning"
+				self logInfoMessage: warning longDescription.
+				warned := true ].
+			warning resume ] ]
+	on: PhLLaunchError
+	do: [ :error |
+		self logExceptionMessage: error longDescription.
+		self context exitFailure ]
+]
+
 { #category : 'private' }
 PhLImageCliCommand >> listImagesAndAskForImageNumber [
 	

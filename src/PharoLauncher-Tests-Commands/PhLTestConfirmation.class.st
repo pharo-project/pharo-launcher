@@ -5,6 +5,7 @@ Class {
 	#name : 'PhLTestConfirmation',
 	#superclass : 'Object',
 	#instVars : [
+		'answer',
 		'message',
 		'title'
 	],
@@ -12,9 +13,14 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'accessing' }
+PhLTestConfirmation >> answer: aBoolean [
+	answer := aBoolean
+]
+
 { #category : 'action' }
 PhLTestConfirmation >> confirm [
-	^ true
+	^ answer ifNil: [ true ]
 ]
 
 { #category : 'action' }

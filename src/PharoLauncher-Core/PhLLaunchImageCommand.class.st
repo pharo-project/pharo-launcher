@@ -101,6 +101,26 @@ PhLLaunchImageCommand >> basicIconNamed: aName [
 	^ super iconNamed: aName
 ]
 
+{ #category : 'private' }
+PhLLaunchImageCommand >> shouldContinueAfter: aWarning [
+
+	self class warnOnArchMismatch ifFalse: [ ^ true ].
+
+	^ self imagesPresenter newConfirmation
+		title: aWarning name;
+		message: aWarning longDescription;
+		confirm
+]
+
+{ #category : 'private' }
+PhLLaunchImageCommand >> showError: anError [
+
+	self imagesPresenter newInformation
+		title: anError name;
+		message: anError longDescription;
+		inform
+]
+
 { #category : 'configuring' }
 PhLLaunchImageCommand >> doNotUseSettings [
 	useSettings := false.
@@ -134,14 +154,21 @@ PhLLaunchImageCommand >> launchConfigurationOfImage: aPhLImage [
 
 { #category : 'executing' }
 PhLLaunchImageCommand >> launchImage: aPhLImage [
-	| process launchConfig |
+	| process launchConfig confirmed |
 
 	self imagesPresenter ensurePharoVersionFor: aPhLImage.
-	[  launchConfig := self launchConfigurationOfImage: aPhLImage.
-		launchConfig useSettings: useSettings.
-		process := aPhLImage launchWithConfiguration: launchConfig ]
+	confirmed := false.
+	[  [ launchConfig := self launchConfigurationOfImage: aPhLImage.
+		  launchConfig useSettings: useSettings.
+		  process := aPhLImage launchWithConfiguration: launchConfig ]
+		on: PhLArchitectureMismatchWarning
+		do: [ :warning |
+			confirmed ifFalse: [ "only raise one warning"
+				(self shouldContinueAfter: warning) ifFalse: [ ^ nil ].
+				confirmed := true ].
+			warning resume ] ]
 	on: PhLError
-	do: [ :error | error uiAlert. ^ process ].
+	do: [ :error | self showError: error. ^ process ].
 	"Waiting for https://github.com/pharo-contributions/OSSubprocess/issues/58 to be fixed
 	(PhLLaunchedImagesWatcher process: process image: aPhLImage) check."
 	self class quitOnLaunch

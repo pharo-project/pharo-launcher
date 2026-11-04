@@ -138,7 +138,7 @@ PhLImageCreateCliCommand >> basicExecute [
 		
 	config := image defaultLaunchConfiguration copy.
 	config workingDirectory: FileSystem workingDirectory.
-	image launchWithConfiguration: config detached: false
+	self launchImage: image configuration: config detached: false
 ]
 
 { #category : 'command execution' }

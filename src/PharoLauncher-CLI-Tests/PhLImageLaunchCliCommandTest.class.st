@@ -1,10 +1,69 @@
 Class {
 	#name : 'PhLImageLaunchCliCommandTest',
 	#superclass : 'PhLImageCliCommandTest',
+	#instVars : [
+		'warnOnArchMismatch'
+	],
 	#category : 'PharoLauncher-CLI-Tests-Commands',
 	#package : 'PharoLauncher-CLI-Tests',
 	#tag : 'Commands'
 }
+
+{ #category : 'running' }
+PhLImageLaunchCliCommandTest >> setUp [
+
+	super setUp.
+	warnOnArchMismatch := PhLLaunchImageCommand warnOnArchMismatch
+]
+
+{ #category : 'running' }
+PhLImageLaunchCliCommandTest >> tearDown [
+
+	PhLLaunchImageCommand warnOnArchMismatch: warnOnArchMismatch.
+	super tearDown
+]
+
+{ #category : 'tests' }
+PhLImageLaunchCliCommandTest >> testLaunchErrorIsLoggedAndCommandFails [
+
+	| image |
+	image := self addImageNamed: 'myImage1'.
+	image launchAction: [ PhLArchitectureError signalImageOsNon32bitCompliant: image ].
+
+	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
+
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Cannot run myImage1 image!').
+	self deny: image isLaunched
+]
+
+{ #category : 'tests' }
+PhLImageLaunchCliCommandTest >> testArchitectureMismatchIsLoggedOnceAndImageIsLaunched [
+
+	| image warningSignal |
+	warningSignal := [ PhLArchitectureMismatchWarning signalLauncherArch: '64-bit' imageArch: '32-bit' ].
+	image := self addImageNamed: 'myImage1'.
+	image launchAction: [ warningSignal value. warningSignal value ].
+
+	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
+
+	self assertSuccess.
+	self assert: image isLaunched.
+	self
+		assert: (self outputString allRangesOfSubstring: 'Warning!') size
+		equals: 1
+]
+
+{ #category : 'tests' }
+PhLImageLaunchCliCommandTest >> testLaunchDoesNotChangeArchitectureWarningSetting [
+
+	PhLLaunchImageCommand warnOnArchMismatch: true.
+	self addImageNamed: 'myImage1'.
+
+	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
+
+	self assert: PhLLaunchImageCommand warnOnArchMismatch
+]
 
 { #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testLaunchImageNoImageNameAllowsLaunchBySelectingImageInteractively [

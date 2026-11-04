@@ -5,6 +5,7 @@ Class {
 	#name : 'PhLImagesMockRepo',
 	#superclass : 'Object',
 	#instVars : [
+		'extractedImageLaunchAction',
 		'images'
 	],
 	#category : 'PharoLauncher-CLI-Tests-Mocks',
@@ -41,8 +42,16 @@ PhLImagesMockRepo >> deleteImage: anImageName [
 PhLImagesMockRepo >> extractTemplate: aPhLRemoteTemplate to: anImageName [
 	| testImage |
 	testImage := PhLImageMock name: anImageName.
+	testImage launchAction: extractedImageLaunchAction.
 	images add: testImage.
 	^ testImage
+]
+
+{ #category : 'accessing' }
+PhLImagesMockRepo >> extractedImageLaunchAction: aBlock [
+	"To simulate exceptions signaled when launching an image just created"
+
+	extractedImageLaunchAction := aBlock
 ]
 
 { #category : 'accessing' }

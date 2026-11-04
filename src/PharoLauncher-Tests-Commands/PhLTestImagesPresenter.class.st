@@ -9,11 +9,23 @@ Class {
 	#superclass : 'PhLImagesPresenter',
 	#instVars : [
 		'request',
-		'selection'
+		'selection',
+		'confirmationAnswer',
+		'information'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
 }
+
+{ #category : 'configuring' }
+PhLTestImagesPresenter >> confirmationAnswer: aBoolean [
+	confirmationAnswer := aBoolean
+]
+
+{ #category : 'accessing' }
+PhLTestImagesPresenter >> information [
+	^ information
+]
 
 { #category : 'sorting' }
 PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
@@ -77,6 +89,8 @@ PhLTestImagesPresenter >> newChoice [
 { #category : 'user interaction' }
 PhLTestImagesPresenter >> newConfirmation [
 	^ request := PhLTestConfirmation new
+		answer: confirmationAnswer;
+		yourself
 ]
 
 { #category : 'user interaction' }
@@ -88,7 +102,7 @@ PhLTestImagesPresenter >> newFileRequest [
 PhLTestImagesPresenter >> newInformation [
 	self flag: 'TODO: spec should offer a way to open the inform dialog and accept it.'.
 
-	^ PhLTestConfirmation new
+	^ information := PhLTestConfirmation new
 ]
 
 { #category : 'user interaction' }

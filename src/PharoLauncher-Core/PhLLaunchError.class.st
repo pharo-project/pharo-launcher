@@ -20,14 +20,6 @@ PhLLaunchError class >> signalProcess: aProcess image: anImage [
 		signal
 ]
 
-{ #category : 'action' }
-PhLLaunchError >> defaultAction [ 
-	ITInformation new
-		message: self longDescription;
-		beAlert;
-		inform
-]
-
 { #category : 'accessing' }
 PhLLaunchError >> longDescription [
 	^ ('An error occured while launching {1} image' format: image name), 

@@ -52,26 +52,16 @@ PhLImageLaunchCliCommand >> basicExecute [
 	| anImage config |
 	anImage:= self selectedImage.
 	self setupScriptForImage: anImage.
-	self checkArchitectureForImage: anImage.
-	PhLLaunchImageCommand warnOnArchMismatch: false.
 	self logLaunchOfImage: anImage.
 	config := anImage defaultLaunchConfiguration asLaunchConfiguration.
 	config workingDirectory: FileSystem workingDirectory.
-	anImage launchWithConfiguration: config detached: self shouldLaunchInDetachedMode
+	self launchImage: anImage configuration: config detached: self shouldLaunchInDetachedMode
 ]
 
 { #category : 'accessing arguments' }
 PhLImageLaunchCliCommand >> briefPrint [ 
 	"Use a simple list of images when launching"
 	^ true
-]
-
-{ #category : 'checking' }
-PhLImageLaunchCliCommand >> checkArchitectureForImage: anImage [
-
-	[anImage vmManager checkImageArchitecture] 
-	on: PhLArchitectureMismatchWarning 
-	do:[:warning | self logInfoMessage: warning longDescription]
 ]
 
 { #category : 'checking' }

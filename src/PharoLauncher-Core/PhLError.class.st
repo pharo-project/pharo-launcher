@@ -23,12 +23,3 @@ PhLError >> longDescription [
 PhLError >> name [
 	^ self subclassResponsibility
 ]
-
-{ #category : 'ui' }
-PhLError >> uiAlert [
-
-	ITInformation new
-		title: self name;
-		message: self longDescription;
-		inform
-]

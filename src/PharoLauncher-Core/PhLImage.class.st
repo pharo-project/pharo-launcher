@@ -426,22 +426,13 @@ PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration [
 
 { #category : 'action' }
 PhLImage >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
-	| architectureWarningEnabled continue |
 
 	self canBeLaunched
 		ifFalse: [ PhLArchitectureError signalImageOsNon32bitCompliant: self. ^ self ].
 	aPhLLaunchConfiguration canBeLaunched 
 		ifFalse: [ PhLArchitectureError signalConfiguration: aPhLLaunchConfiguration. ^ self ].
 
-	architectureWarningEnabled := true.
-	continue := true.
-	[ ^ self basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached ]
-	on: PhLArchitectureMismatchWarning
-	do: [ :warning |
-		architectureWarningEnabled ifTrue: [ 	
-			architectureWarningEnabled := false. "only raise one warning"
-			continue := self showWarning: warning ].
-		continue ifTrue: [ warning resume ] ]
+	^ self basicLaunchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached
 ]
 
 { #category : 'accessing' }
@@ -556,17 +547,6 @@ PhLImage >> shouldRunInitializationScript: aBoolean [
 { #category : 'printing' }
 PhLImage >> showNativeFolder [
 	file asFileReference openInOSFileBrowser 
-]
-
-{ #category : 'private - ui' }
-PhLImage >> showWarning: warning [
-
-	PhLLaunchImageCommand warnOnArchMismatch ifFalse: [ ^ true ].
-
-	^ ITConfirmation new
-		title: warning name;
-		message: warning longDescription;
-		confirm
 ]
 
 { #category : 'accessing' }

@@ -5,6 +5,7 @@ Class {
 	#name : 'PhLImageMock',
 	#superclass : 'Object',
 	#instVars : [
+		'launchAction',
 		'name',
 		'architecture',
 		'isLaunched',
@@ -80,11 +81,6 @@ PhLImageMock >> architecture: aString [
 ]
 
 { #category : 'mocking' }
-PhLImageMock >> checkImageArchitecture [
-	^self 
-]
-
-{ #category : 'mocking' }
 PhLImageMock >> defaultArguments [
 
 	^ #()
@@ -149,6 +145,13 @@ PhLImageMock >> lastModification: aString [
 ]
 
 { #category : 'mocking' }
+PhLImageMock >> launchAction: aBlock [
+	"To simulate exceptions signaled during the launch"
+
+	launchAction := aBlock
+]
+
+{ #category : 'mocking' }
 PhLImageMock >> launch [
 	isLaunched := true
 ]
@@ -156,6 +159,7 @@ PhLImageMock >> launch [
 { #category : 'mocking' }
 PhLImageMock >> launchWithConfiguration: aPhLLaunchConfiguration detached: shouldBeDetached [
 
+	launchAction ifNotNil: [ launchAction value ].
 	self launch
 ]
 

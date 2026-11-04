@@ -353,7 +353,10 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 	announcer := PhLTemplateSourcesAnnouncer default.
 	announcer unsubscribe: self.
 	announcer
-		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self;
+		when: PhLTemplateSourcesUpdateAvailable
+			do: [ :event | "Announced from the update checker process: the modal dialog must be opened by the UI process"
+				self defer: [ self sourcesFileUpdateAvailable ] ]
+			for: self;
 		when: PhLTemplateSourcesUpdated do: [ :event | self resetTemplateRepository ] for: self
 ]
 

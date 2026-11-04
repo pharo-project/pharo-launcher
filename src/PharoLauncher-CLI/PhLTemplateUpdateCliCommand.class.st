@@ -23,10 +23,10 @@ PhLTemplateUpdateCliCommand class >> launcherCmdDescription [
 
 { #category : 'command execution' }
 PhLTemplateUpdateCliCommand >> basicExecute [
+	"Only notify me: announcing on the shared PhLTemplateSourcesAnnouncer would also wake the GUI 
+	 application, if any, that answers with a modal dialog blocking the command"
 
-	PhLTemplateSourcesAnnouncer default
-		when: PhLTemplateSourcesUpdateAvailable do: [ :event | self sourcesFileUpdateAvailable ] for: self.
-	PhLPharoTemplateSources fromFile checkForUpdates
+	PhLPharoTemplateSources fromFile checkForUpdates: self
 ]
 
 { #category : 'updating' }

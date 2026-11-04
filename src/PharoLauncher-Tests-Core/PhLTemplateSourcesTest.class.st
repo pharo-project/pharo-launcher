@@ -60,6 +60,17 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 ]
 
 { #category : 'tests' }
+PhLTemplateSourcesTest >> testFetchFailureWhenSourcesFileAbsentSignalsDownloadError [
+
+	PhLPharoTemplateSources basicSourcesUrl: 'http://localhost:1/sources.list'.
+
+	self
+		should: [ (PhLPharoTemplateSources withFile: sourcesFile) ensureSourcesFile ]
+		raise: PhLDownloadError.
+	self deny: sourcesFile exists
+]
+
+{ #category : 'tests' }
 PhLTemplateSourcesTest >> testCanForceTemplateSourcesUpdateWhenSourcesAlreadySet [
 	| templateSources downloadedSourcesFile expectedSources |
 	sourcesFile ensureCreateFile.

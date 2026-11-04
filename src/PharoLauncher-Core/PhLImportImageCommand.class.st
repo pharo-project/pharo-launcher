@@ -53,7 +53,7 @@ PhLImportImageCommand >> execute [
 		items: options;
 		run.
 
-	(answer isNil or: [ answer = 0  ]) ifTrue: [ ^ self "cancel" ].
+	answer ifNil: [ ^ self "cancel" ].
 	answerIndex := options indexOf: answer.
 	importSiblings := answerIndex = 2. "second option"
 	self importImage

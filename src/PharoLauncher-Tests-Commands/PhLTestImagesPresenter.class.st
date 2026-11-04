@@ -11,11 +11,17 @@ Class {
 		'request',
 		'selection',
 		'confirmationAnswer',
+		'choiceAnswerIndex',
 		'information'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
 }
+
+{ #category : 'configuring' }
+PhLTestImagesPresenter >> choiceAnswerIndex: anIndex [
+	choiceAnswerIndex := anIndex
+]
 
 { #category : 'configuring' }
 PhLTestImagesPresenter >> confirmationAnswer: aBoolean [
@@ -74,6 +80,7 @@ PhLTestImagesPresenter >> initialize [
 
 	self createImageNamed: self singleImageName.
 	request := PhLTestRequest new.
+	choiceAnswerIndex := 1.
 ]
 
 { #category : 'accessing' }
@@ -84,6 +91,8 @@ PhLTestImagesPresenter >> launchConfigurations [
 { #category : 'user interaction' }
 PhLTestImagesPresenter >> newChoice [
 	^ PhLTestChoice new
+		answerIndex: choiceAnswerIndex;
+		yourself
 ]
 
 { #category : 'user interaction' }

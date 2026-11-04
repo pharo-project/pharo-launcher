@@ -37,6 +37,58 @@ PhLImportImageCommandTest >> testCanImportAnImage [
 ]
 
 { #category : 'tests' }
+PhLImportImageCommandTest >> testCancellingChoiceDoesNotImportImage [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'tmp'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		requestAnswer: someFolder / 'foo.image';
+		choiceAnswerIndex: nil.
+
+	PhLImportImageCommand new
+		context: presenter;
+		execute.
+
+	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' )
+]
+
+{ #category : 'tests' }
+PhLImportImageCommandTest >> testChoosingFirstOptionDoesNotImportSiblingFiles [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'tmp'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		requestAnswer: someFolder / 'foo.image'.
+	(someFolder / 'sibling.txt') ensureCreateFile.
+
+	PhLImportImageCommand new
+		context: presenter;
+		execute.
+
+	self deny: ((presenter imageRepository directoryForImageNamed: 'foo') / 'sibling.txt') exists
+]
+
+{ #category : 'tests' }
+PhLImportImageCommandTest >> testChoosingSecondOptionImportsSiblingFiles [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'tmp'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		requestAnswer: someFolder / 'foo.image';
+		choiceAnswerIndex: 2.
+	(someFolder / 'sibling.txt') ensureCreateFile.
+
+	PhLImportImageCommand new
+		context: presenter;
+		execute.
+
+	self assert: ((presenter imageRepository directoryForImageNamed: 'foo') / 'sibling.txt') exists
+]
+
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testImportImageImportsImageSourcesFile [
 	| command importedImageName tmpDirectory importedImageDirectory sourcesFileName |
 	

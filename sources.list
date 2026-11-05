@@ -5,7 +5,7 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #URLGroup,
-		#name : 'Pharo Mooc',
+		#name : 'Pharo Courses',
 		#templates : [
 			PhLTemplateSource {
 				#type : #URL,
@@ -16,6 +16,11 @@ OrderedCollection [
 				#type : #URL,
 				#name : 'Pharo 10.0 - 64bit',
 				#url : 'https://files.pharo.org/image/100/latest-64.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Smic (Compiler Course)',
+				#url : 'https://github.com/guillep/m2-gl-lille-compilers/releases/download/v1.0.2/CompilerCourse-v1.0.2.zip'
 			}
 		]
 	},

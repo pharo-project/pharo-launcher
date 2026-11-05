@@ -29,7 +29,7 @@ PhLLaunchImageProcessConfigurator >> configurePotentialInitializationScript [
 	launchConfiguration image initializationScript 
 		ifNotNil: [ :script | 
 						process 
-							addArgument: 'eval';
+							addArgument: 'st';
 							addArgument: script fullName surroundedByDoubleQuotes ].
 ]
 

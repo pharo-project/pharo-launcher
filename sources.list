@@ -48,6 +48,11 @@ OrderedCollection [
 				#name : 'Moose Suite 13 (stable)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v13.x.x/Moose13-stable-Pharo64-13.zip'
 				},
+            PhLTemplateSource {
+                #type : #URL,
+                #name : 'Moose Suite 13 (stable) - Pharo 14',
+                #url : 'https://github.com/moosetechnology/Moose/releases/download/v13.x.x/Moose13-stable-Pharo64-14.zip'
+                },
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 12 (old-stable)',

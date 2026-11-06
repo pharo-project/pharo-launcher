@@ -11,7 +11,9 @@ Class {
 { #category : 'running' }
 PhLNetworkSettingsPresenterTest >> setUp [
 	super setUp.
-	presenter := PhLNetworkSettingsPresenter on: settings
+	presenter := PhLNetworkSettingsPresenter
+		newApplication: PhLTestApplication new
+		model: settings
 ]
 
 { #category : 'tests' }

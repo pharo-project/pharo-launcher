@@ -36,12 +36,13 @@ PhLScriptPresenterTest >> tearDown [
 
 { #category : 'tests' }
 PhLScriptPresenterTest >> testCanAddNewScript [
-	application requestAnswer: 'bar.st'.
 	self
 		assert: scriptFolder files size 
 		equals: 1.
 		
-	presenter clickAddScriptButton.
+	ITUserInteraction
+		useBackend: (ITTestBackend answering: 'bar.st')
+		during: [ presenter clickAddScriptButton ].
 		
 	self
 		assert: scriptFolder files size
@@ -92,14 +93,26 @@ PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 ]
 
 { #category : 'tests' }
+PhLScriptPresenterTest >> testCannotAddScriptWithAnExistingName [
+
+	self
+		should: [
+			ITUserInteraction
+				useBackend: (ITTestBackend answering: 'foo.st')
+				during: [ presenter clickAddScriptButton ] ]
+		raise: ITInvalidAnswer
+]
+
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testNewScriptEndsWithStExtension [
 
-	application requestAnswer: 'bar'.
 	self
 		assert: scriptFolder files size 
 		equals: 1.
 		
-	presenter clickAddScriptButton.
+	ITUserInteraction
+		useBackend: (ITTestBackend answering: 'bar')
+		during: [ presenter clickAddScriptButton ].
 		
 	self
 		assert: scriptFolder files size

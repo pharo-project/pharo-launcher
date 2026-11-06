@@ -130,14 +130,28 @@ PhLLaunchConfigurationPresenterTest >> testImageHasOnlyDefaultLaunchConfiguratio
 ]
 
 { #category : 'tests' }
+PhLLaunchConfigurationPresenterTest >> testCannotAddLaunchConfigurationWithAnExistingName [
+
+	self setUpPresenter.
+
+	self
+		should: [
+			ITUserInteraction
+				useBackend: (ITTestBackend answering: image launchConfigurations first name)
+				during: [ presenter clickAddConfigurationButton ] ]
+		raise: ITInvalidAnswer
+]
+
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testImageHasOnlyOneLaunchConfigurationWhenLaunchConfigurationAdded [
 	self setUpPresenter.
-	application requestAnswer: 'foo'.
 	self
 		assert: image launchConfigurations size 
 		equals: 1. "Default"
 		
-	presenter clickAddConfigurationButton.
+	ITUserInteraction
+		useBackend: (ITTestBackend answering: 'foo')
+		during: [ presenter clickAddConfigurationButton ].
 		
 	self
 		assert: image launchConfigurations size 

@@ -16,6 +16,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 		self xmlParser: spec.
 		self objCBridge: spec.
 		self interactions: spec.
+		self newTools: spec.
 		self gtkBindings: spec.
 		self specGtk: spec.
 		self specAdwaita: spec.
@@ -37,7 +38,7 @@ BaselineOfPharoLauncher >> baseline: spec [
 			 To be dropped once integrated in Spec of the Pharo version used to build the launcher"
 			package: 'PharoLauncher-SpecPatches';
 			package: 'PharoLauncher-Spec2' with: [
-				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings' 'PharoLauncher-SpecPatches') ];
+				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings' 'PharoLauncher-SpecPatches' 'NewTools') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 
 				spec requires: #('PharoLauncher-Spec2' 'Gtk' 'SpecGtk' 'Adwaita') ];
 			package: 'PharoLauncher-GToolkit' with: [ 
@@ -96,6 +97,17 @@ BaselineOfPharoLauncher >> interactions: spec [
 	spec 
 		baseline: #Interactions
 		with: [ spec repository: 'github://demarey/interactions:request-and-choice-dialogs' ]
+]
+
+{ #category : 'external projects' }
+BaselineOfPharoLauncher >> newTools: spec [
+	"Latest NewTools for Pharo 14: the file dialog shipped with Pharo fails on filters (fixed by pharo-spec/NewTools@c1997d89)"
+
+	spec 
+		baseline: #NewTools
+		with: [ spec 
+					repository: 'github://pharo-spec/NewTools:Pharo14/src';
+					loads: #('NewTools-FileBrowser-Morphic') ]
 ]
 
 { #category : 'external projects' }

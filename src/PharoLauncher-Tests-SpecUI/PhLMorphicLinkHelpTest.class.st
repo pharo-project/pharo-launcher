@@ -1,5 +1,5 @@
 "
-I check the patch of SpMorphicLinkAdapter (see PhLSpecPatchLinkHelp).
+I check the patch of SpMorphicLinkAdapter (see PhLPatchSpecPR1977).
 "
 Class {
 	#name : 'PhLMorphicLinkHelpTest',

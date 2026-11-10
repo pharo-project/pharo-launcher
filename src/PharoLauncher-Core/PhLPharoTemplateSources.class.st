@@ -174,11 +174,10 @@ PhLPharoTemplateSources >> ensureSourcesFile [
 
 { #category : 'actions' }
 PhLPharoTemplateSources >> fetchSourcesFile [
-	"Avoid to have a retry dialog"
+
 	PhLDownloadManager default
-		basicDownload: self sourcesUrl
-		toFile: self downloadedSourcesFile. 
-	
+		download: self sourcesUrl
+		toFile: self downloadedSourcesFile
 ]
 
 { #category : 'accessing' }

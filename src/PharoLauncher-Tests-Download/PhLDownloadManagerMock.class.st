@@ -35,7 +35,7 @@ PhLDownloadManagerMock >> atUrl: anUrl answer: aDocument [
 ]
 
 { #category : 'actions' }
-PhLDownloadManagerMock >> basicDownload: aUrl toFile: aFileReference [ 
+PhLDownloadManagerMock >> download: aUrl toFile: aFileReference [ 
 	
 	aFileReference ensureDelete.
 	aFileReference writeStreamDo: [ :aStream | aStream nextPutAll: (self documentAt: aUrl) ]

@@ -33,18 +33,6 @@ PhLDownloadManager class >> setDefault: aDownloadManager [
 	^ Default := aDownloadManager
 ]
 
-{ #category : 'actions' }
-PhLDownloadManager >> basicDownload: url toFile: destinationFile [
-
-	| tmpFile |
-	tmpFile := destinationFile , UUID new asString.
-	self
-		displayProgress: ('Downloading {1}...' format: { url })
-		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
-	destinationFile ensureDelete.
-	tmpFile renameTo: destinationFile basename
-]
-
 { #category : 'private' }
 PhLDownloadManager >> displayProgress: aTitle during: workBlock [
 	
@@ -66,7 +54,13 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 PhLDownloadManager >> download: url toFile: destinationFile [
 	"A PhLDownloadError is signaled to the caller: the UI decides what to do (e.g. PhLTemplatesPresenter>>#templateChildrenOf: proposes to retry)"
 
-	self basicDownload: url toFile: destinationFile
+	| tmpFile |
+	tmpFile := destinationFile , UUID new asString.
+	self
+		displayProgress: ('Downloading {1}...' format: { url })
+		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+	destinationFile ensureDelete.
+	tmpFile renameTo: destinationFile basename
 ]
 
 { #category : 'private' }

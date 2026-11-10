@@ -26,7 +26,7 @@ PhLPharoStableImageResource >> downloadPharoStableImage [
 
 	imageZipFile := self workingDir / 'stable-64.zip'.
 	PhLDownloadManager new
-		basicDownload: 'https://files.pharo.org/image/stable/stable-64.zip'
+		download: 'https://files.pharo.org/image/stable/stable-64.zip'
 		toFile: imageZipFile
 ]
 

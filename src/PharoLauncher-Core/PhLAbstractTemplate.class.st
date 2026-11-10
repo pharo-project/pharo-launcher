@@ -23,6 +23,9 @@ PhLAbstractTemplate >> extractTo: targetDirectory [
 	PhLProgressManager 
 		displayProgress: 'Extract template'
 		during: [ :bar | | archive extractionDir |
+			bar
+				label: 'Getting template archive';
+				current: 25.
 			archive := self zipArchive.
 			bar
 				label: 'Extracting archive to target directory';

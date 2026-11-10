@@ -27,3 +27,12 @@ PhLDownloadManagerTest >> testCanDownload [
 	self assert: downloadManager numberOfErrors equals: 0.
 	
 ]
+
+{ #category : 'tests' }
+PhLDownloadManagerTest >> testDownloadFailureIsSignaledToTheCaller [
+	"The download manager opened a retry dialog it could not build"
+
+	self
+		should: [ downloadManager download: 'http://localhost:1/template.zip' asUrl toFile: FileSystem memory root / 'dwl' ]
+		raise: PhLDownloadError
+]

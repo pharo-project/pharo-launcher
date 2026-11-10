@@ -64,18 +64,9 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 
 { #category : 'actions' }
 PhLDownloadManager >> download: url toFile: destinationFile [
+	"A PhLDownloadError is signaled to the caller: the UI decides what to do (e.g. PhLTemplatesPresenter>>#templateChildrenOf: proposes to retry)"
 
-	[ self basicDownload: url toFile: destinationFile ]
-	on: PhLDownloadError 
-	do: [ :error |
-			(PhLRetryPresenter new
-				application: self application;
-				explanation: error longDescription;
-				retryBlock: [ self download: url toFile: destinationFile ];
-				cancelBlock: [ error pass ];
-				asModalWindow) 
-					owner: self context window;
-					open. ]
+	self basicDownload: url toFile: destinationFile
 ]
 
 { #category : 'private' }

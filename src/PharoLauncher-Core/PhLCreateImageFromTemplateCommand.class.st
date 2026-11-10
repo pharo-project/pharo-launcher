@@ -64,7 +64,7 @@ PhLCreateImageFromTemplateCommand >> createImage [
 PhLCreateImageFromTemplateCommand >> execute [
 	
 	[ ^ self createImage ]
-		on: PhLCorruptedTemplateError
+		on: PhLCorruptedTemplateError, PhLDownloadError
 		do: [ :error | 
 			self application showError: error ]
 ]

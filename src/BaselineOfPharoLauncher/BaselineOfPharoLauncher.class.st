@@ -34,9 +34,11 @@ BaselineOfPharoLauncher >> baseline: spec [
 			package: 'PharoLauncher-Settings';
 			package: 'PharoLauncher-Settings-Tests' with: [ 
 				spec requires: #('PharoLauncher-Settings' 'PharoLauncher-Spec2' 'PharoLauncher-Core') ];
-			"Spec fixes waiting for their Spec PR integration, one extension protocol per PR.
-			 To be dropped once integrated in Spec of the Pharo version used to build the launcher"
-			package: 'PharoLauncher-SpecPatches';
+			"Spec and NewTools fixes waiting for their PR integration, one extension protocol per PR.
+			 To be dropped once integrated in the Pharo version used to build the launcher.
+			 Loaded after NewTools to override its methods"
+			package: 'PharoLauncher-SpecPatches' with: [
+				spec requires: #('NewTools') ];
 			package: 'PharoLauncher-Spec2' with: [
 				spec requires: #('PharoLauncher-Core' 'PharoLauncher-Settings' 'PharoLauncher-SpecPatches' 'NewTools') ];
 			package: 'PharoLauncher-Spec2-Gtk' with: [ 

@@ -78,6 +78,7 @@ PhLImportImageCommand >> import: imageFileRef [
 			[ imageRepository importImage: imageFileRef to: destFolderName ].
 	infoMessage := 'Image ' , imageFileRef fullName , ' imported!'.
 	self imagesPresenter newInformation
+		title: 'Import';
 		message: (infoMessage withNoLineLongerThan: 60);
 		inform
 ]

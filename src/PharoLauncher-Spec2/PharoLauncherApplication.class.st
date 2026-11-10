@@ -567,10 +567,14 @@ PharoLauncherApplication >> start [
 
 { #category : 'running' }
 PharoLauncherApplication >> startFull [
-	
-	imagesPresenter asWorldWindow 
+
+	| world |
+	world := imagesPresenter asWorldWindow.
+	world
 		title: 'Pharo Launcher';
 		open.
+	"The world presenter does not register itself as an application window"
+	self registerWindow: world
 ]
 
 { #category : 'configuring' }

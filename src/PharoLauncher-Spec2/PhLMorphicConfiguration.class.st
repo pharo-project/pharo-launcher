@@ -137,6 +137,7 @@ PhLMorphicConfiguration >> rebuild: aWindowPresenter [
 
 	| pageIndexes |
 	pageIndexes := (self notebooksIn: aWindowPresenter) collect: [ :each | each selectedPageIndex ].
+	self updateWorldBorderOf: aWindowPresenter adapter widget.
 	aWindowPresenter presenter in: [ :presenter | presenter layout: presenter layout ].
 	(self notebooksIn: aWindowPresenter) withIndexDo: [ :notebook :index |
 		notebook pages ifNotEmpty: [
@@ -171,4 +172,11 @@ PhLMorphicConfiguration >> syntaxHighlightTheme [
 	^ self isDarkTheme
 		ifTrue: [ 'Dark' ]
 		ifFalse: [ super syntaxHighlightTheme ]
+]
+
+{ #category : 'private' }
+PhLMorphicConfiguration >> updateWorldBorderOf: aMorph [
+	"The world adapter only sets the world border color when built"
+
+	aMorph isWorldMorph ifTrue: [ aMorph borderColor: aMorph theme backgroundColor ]
 ]

@@ -1,10 +1,13 @@
 "
-I specify how the VM manager shows the virtual machines having an update available.
+I specify how the VM manager shows the version of virtual machines and the ones having an update available.
+
+The VM store is a real temporary folder to be able to run the executable of virtual machines.
 "
 Class {
 	#name : 'PhLVMPresenterUpdateTest',
 	#superclass : 'TestCase',
 	#instVars : [
+		'vmStore',
 		'presenter',
 		'outdatedVm',
 		'upToDateVm'
@@ -26,6 +29,8 @@ PhLVMPresenterUpdateTest >> setUp [
 
 	super setUp.
 	PhLDownloadManagerMock install.
+	vmStore := FileLocator temp / ('pharo-launcher-tests-' , UUID new asString).
+	PhLTestVirtualMachineManager vmStore: vmStore.
 	presenter := PhLTestVmPresenter new.
 	presenter
 		createVmNamed: '100-x64';
@@ -36,7 +41,9 @@ PhLVMPresenterUpdateTest >> setUp [
 			 {
 				 outdatedVm.
 				 upToDateVm } ]).
-	self serverPublishesArchiveOf: outdatedVm lastModified: DateAndTime now + 1 day.
+	self
+		serverPublishesArchiveOf: outdatedVm
+		lastModified: (DateAndTime year: 2999 month: 1 day: 15 hour: 12 minute: 0).
 	self serverPublishesArchiveOf: upToDateVm lastModified: DateAndTime now - 1 day
 ]
 
@@ -44,21 +51,34 @@ PhLVMPresenterUpdateTest >> setUp [
 PhLVMPresenterUpdateTest >> tearDown [
 
 	PhLTestVirtualMachineManager reset.
+	vmStore ensureDeleteAll.
 	PhLDownloadManagerMock remove.
 	super tearDown
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testNoVmIsMarkedBeforeCheckingForUpdates [
+PhLVMPresenterUpdateTest >> testNoDetailIsShownBeforeFetchingThem [
 
-	self assert: (presenter updateDescriptionFor: outdatedVm) equals: ''
+	self assert: (presenter updateDescriptionFor: outdatedVm) equals: ''.
+	self assert: (presenter versionDescriptionFor: outdatedVm) equals: ''
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testVmWithUpdateAvailableIsMarkedOnceCheckedForUpdates [
+PhLVMPresenterUpdateTest >> testVersionOfVmIsShown [
 
-	presenter checkForUpdates.
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 
-	self assert: (presenter updateDescriptionFor: outdatedVm) equals: 'Update available'.
+	presenter fetchDetails.
+
+	self assert: (presenter versionDescriptionFor: outdatedVm) equals: '10.3.12'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testVmWithUpdateAvailableShowsPublicationDateOfTheUpdate [
+
+	presenter fetchDetails.
+
+	self assert: (presenter updateDescriptionFor: outdatedVm) equals: '2999-01-15'.
 	self assert: (presenter updateDescriptionFor: upToDateVm) equals: ''
 ]

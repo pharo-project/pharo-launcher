@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'vmTable',
 		'rootCommandsGroup',
-		'publishedStamps'
+		'publishedStamps',
+		'versions'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -57,25 +58,6 @@ PhLVMPresenter class >> example [
 	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
-{ #category : 'updating' }
-PhLVMPresenter >> checkForUpdates [
-
-	self showUpdatesFor: self fetchPublishedStamps
-]
-
-{ #category : 'updating' }
-PhLVMPresenter >> checkForUpdatesInBackground [
-	"Asking the server can take time: do not block the UI. The table is refreshed by the UI process."
-
-	PhLVmUpdateChecker shouldRun ifFalse: [ ^ self ].
-	[
-	| stamps |
-	stamps := self fetchPublishedStamps.
-	self application defer: [ self showUpdatesFor: stamps ] ]
-		forkAt: Processor userBackgroundPriority
-		named: 'Launcher VM manager update check'
-]
-
 { #category : 'accessing' }
 PhLVMPresenter >> datasource [
 	^ self model
@@ -96,12 +78,41 @@ PhLVMPresenter >> doShowInFolder [
 		execute 
 ]
 
+{ #category : 'updating' }
+PhLVMPresenter >> fetchDetails [
+	"Fetch the version of the VMs and their available updates, then show them."
+
+	self showVersions: self fetchVersions updates: self fetchPublishedStamps
+]
+
+{ #category : 'updating' }
+PhLVMPresenter >> fetchDetailsInBackground [
+	"Running the VMs and asking the server can take time: do not block the UI. The table is refreshed by the UI process."
+
+	[
+	| fetchedVersions stamps |
+	fetchedVersions := self fetchVersions.
+	stamps := PhLVmUpdateChecker shouldRun
+		          ifTrue: [ self fetchPublishedStamps ]
+		          ifFalse: [ Dictionary new ].
+	self application defer: [ self showVersions: fetchedVersions updates: stamps ] ]
+		forkAt: Processor userBackgroundPriority
+		named: 'Launcher VM manager details'
+]
+
 { #category : 'private' }
 PhLVMPresenter >> fetchPublishedStamps [
 	"Answer the stamp of the archive published for each installed VM, by VM id. The stamp is nil when the server does not answer."
 
 	^ ((self datasource virtualMachines select: [ :vm | vm isUpdatable ])
 		collect: [ :vm | vm id -> vm publishedStamp ]) asDictionary
+]
+
+{ #category : 'private' }
+PhLVMPresenter >> fetchVersions [
+	"Answer the version of each VM, by VM id."
+
+	^ (self datasource virtualMachines collect: [ :vm | vm id -> vm version ]) asDictionary
 ]
 
 { #category : 'testing' }
@@ -140,6 +151,9 @@ PhLVMPresenter >> initializePresenters [
 		whenActivatedDo: [ self doShowInFolder ];
 		addColumn: ((SpImageTableColumn title: '' evaluated: [ :vm | self iconFor: vm ]) width: 20);
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 150; yourself);
+		addColumn: (SpStringTableColumn
+			title: 'Version'
+			evaluated: [ :vm | self versionDescriptionFor: vm ]) beNotExpandable;
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
 			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
@@ -198,16 +212,33 @@ PhLVMPresenter >> selectedVms [
 ]
 
 { #category : 'updating' }
-PhLVMPresenter >> showUpdatesFor: stampsByVmId [
+PhLVMPresenter >> showVersions: versionsByVmId updates: stampsByVmId [
 
+	versions := versionsByVmId.
 	publishedStamps := stampsByVmId.
 	self refresh
 ]
 
 { #category : 'accessing' }
 PhLVMPresenter >> updateDescriptionFor: aVm [
+	"Answer the publication date of the update available for the VM, an empty string if there is none.
+	The server does not tell the version of the VM it publishes."
 
-	^ (self hasUpdateAvailable: aVm)
-		ifTrue: [ 'Update available' ]
-		ifFalse: [ '' ]
+	(self hasUpdateAvailable: aVm) ifFalse: [ ^ '' ].
+	^ (self publishedStamps at: aVm id) publicationDate
+		ifNil: [ 'Update available' ]
+		ifNotNil: [ :date | date yyyymmdd ]
 ]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> versionDescriptionFor: aVm [
+
+	^ self versions at: aVm id ifAbsent: [ '' ]
+]
+
+{ #category : 'private' }
+PhLVMPresenter >> versions [
+
+	^ versions ifNil: [ versions := Dictionary new ]
+]
+

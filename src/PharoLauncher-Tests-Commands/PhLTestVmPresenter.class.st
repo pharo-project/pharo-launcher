@@ -29,6 +29,11 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	 
 ]
 
+{ #category : 'updating' }
+PhLTestVmPresenter >> fetchDetailsInBackground [
+	"No background process in tests: use #fetchDetails"
+]
+
 { #category : 'accessing' }
 PhLTestVmPresenter >> information [
 	^ information

@@ -24,7 +24,9 @@ PhLUpdateVmCommand >> execute [
 	PhLCurrentContext
 		use: self context
 		during: [ errors := PhLVirtualMachine updateAll: self vmsPresenter selectedVms ].
-	self vmsPresenter refresh.
+	self vmsPresenter
+		refresh;
+		fetchDetailsInBackground.
 	self showErrors: errors
 ]
 

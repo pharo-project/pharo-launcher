@@ -467,6 +467,31 @@ PhLVirtualMachine >> validityDescription [
 		ifFalse: [ 'VM not available' ]
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> version [
+	"Answer the version printed by my executable, e.g. '10.3.12'.
+	Answer an empty string when it cannot be told, e.g. I am not installed or my executable cannot be run on this computer."
+
+	| words version |
+	self isValid ifFalse: [ ^ '' ].
+	words := self versionOutput substrings.
+	words size < 2 ifTrue: [ ^ '' ].
+	version := words second.
+	(version beginsWith: 'v') ifTrue: [ version := version allButFirst ].
+	^ (version notEmpty and: [ version first isDigit ])
+		  ifTrue: [ version ]
+		  ifFalse: [ '' ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> versionOutput [
+	"The version is the second word printed by the executable:
+	'Pharo v10.3.12 built on ...', 'Pharo 9.0.22 built on ...' or '5.0 5.0.202002121007 Mac OS X built on ...'"
+
+	^ PhLProcessWrapper outputOfShellCommand:
+		  ('"{1}" --version 2> /dev/null' format: { self executablePath })
+]
+
 { #category : 'setting' }
 PhLVirtualMachine >> vmBinary: aPathOrFileReference [
 	vmBinaryRef := aPathOrFileReference asFileReference

@@ -80,6 +80,13 @@ PhLRemoteFileStamp >> isNewerThan: aDateAndTime [
 	^ lastModified isNotNil and: [ lastModified > aDateAndTime ]
 ]
 
+{ #category : 'accessing' }
+PhLRemoteFileStamp >> publicationDate [
+	"Answer the date the file was published on the server, nil if unknown."
+
+	^ lastModified ifNotNil: [ lastModified asLocal asDate ]
+]
+
 { #category : 'initialization' }
 PhLRemoteFileStamp >> setEtag: aString lastModified: aDateAndTime [
 

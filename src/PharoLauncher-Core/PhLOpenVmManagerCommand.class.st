@@ -24,7 +24,7 @@ PhLOpenVmManagerCommand >> execute [
 	vmManager := self context
 		instantiate: PhLVMPresenter
 		on: PhLVirtualMachinesDataSource default.
-	vmManager checkForUpdatesInBackground.
+	vmManager fetchDetailsInBackground.
 	vmManager asModalWindow
 		owner: self context window;
 		withoutButtons;

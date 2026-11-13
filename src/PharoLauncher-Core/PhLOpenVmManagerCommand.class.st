@@ -20,13 +20,15 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenVmManagerCommand >> execute [
 
-	((self context 
-		instantiate: PhLVMPresenter 
-		on: PhLVirtualMachinesDataSource default)
-		asModalWindow)
-			owner: self context window;
-			withoutButtons;
-			open
+	| vmManager |
+	vmManager := self context
+		instantiate: PhLVMPresenter
+		on: PhLVirtualMachinesDataSource default.
+	vmManager checkForUpdatesInBackground.
+	vmManager asModalWindow
+		owner: self context window;
+		withoutButtons;
+		open
 ]
 
 { #category : 'accessing' }

@@ -80,6 +80,18 @@ PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForCustomVm [
+	"The server only publishes the archive of the standard VM: it must not replace a custom one"
+
+	vm := PhLVirtualMachine id: '130-x64-stable-gtk'.
+	self installVmWithoutStamp.
+
+	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+
+	self deny: vm isUpdateAvailable
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForVmNotInstalled [
 
 	self serverPublishesArchiveTagged: 'first'.

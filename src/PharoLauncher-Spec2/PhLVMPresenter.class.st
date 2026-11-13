@@ -8,7 +8,8 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
-		'rootCommandsGroup'
+		'rootCommandsGroup',
+		'publishedStamps'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -56,6 +57,25 @@ PhLVMPresenter class >> example [
 	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
+{ #category : 'updating' }
+PhLVMPresenter >> checkForUpdates [
+
+	self showUpdatesFor: self fetchPublishedStamps
+]
+
+{ #category : 'updating' }
+PhLVMPresenter >> checkForUpdatesInBackground [
+	"Asking the server can take time: do not block the UI. The table is refreshed by the UI process."
+
+	PhLVmUpdateChecker shouldRun ifFalse: [ ^ self ].
+	[
+	| stamps |
+	stamps := self fetchPublishedStamps.
+	self application defer: [ self showUpdatesFor: stamps ] ]
+		forkAt: Processor userBackgroundPriority
+		named: 'Launcher VM manager update check'
+]
+
 { #category : 'accessing' }
 PhLVMPresenter >> datasource [
 	^ self model
@@ -74,6 +94,23 @@ PhLVMPresenter >> doShowInFolder [
 	PhLShowVmInFolderCommand new
 		context: self;
 		execute 
+]
+
+{ #category : 'private' }
+PhLVMPresenter >> fetchPublishedStamps [
+	"Answer the stamp of the archive published for each installed VM, by VM id. The stamp is nil when the server does not answer."
+
+	^ ((self datasource virtualMachines select: [ :vm | vm isUpdatable ])
+		collect: [ :vm | vm id -> vm publishedStamp ]) asDictionary
+]
+
+{ #category : 'testing' }
+PhLVMPresenter >> hasUpdateAvailable: aVm [
+	"Rely on the stamps fetched by the last check: a VM is no more outdated once updated."
+
+	^ (self publishedStamps at: aVm id ifAbsent: [ nil ])
+		ifNil: [ false ]
+		ifNotNil: [ :stamp | aVm isOutdatedBy: stamp ]
 ]
 
 { #category : 'private' }
@@ -106,6 +143,9 @@ PhLVMPresenter >> initializePresenters [
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
 			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
+		addColumn: (SpStringTableColumn
+			title: 'Update'
+			evaluated: [ :vm | self updateDescriptionFor: vm ]) beNotExpandable;
 		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
 		showColumnHeaders;
 		alternateRowsColor;
@@ -131,6 +171,12 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : 'private' }
+PhLVMPresenter >> publishedStamps [
+
+	^ publishedStamps ifNil: [ publishedStamps := Dictionary new ]
+]
+
+{ #category : 'private' }
 PhLVMPresenter >> readableDateFor: aTimestamp [
 	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
 
@@ -149,4 +195,19 @@ PhLVMPresenter >> rootCommandsGroup [
 { #category : 'accessing' }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
+]
+
+{ #category : 'updating' }
+PhLVMPresenter >> showUpdatesFor: stampsByVmId [
+
+	publishedStamps := stampsByVmId.
+	self refresh
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> updateDescriptionFor: aVm [
+
+	^ (self hasUpdateAvailable: aVm)
+		ifTrue: [ 'Update available' ]
+		ifFalse: [ '' ]
 ]

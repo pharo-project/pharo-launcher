@@ -298,10 +298,12 @@ PhLVirtualMachine >> isHeadless [
 	^ flavour = self headlessFlavour
 ]
 
-{ #category : 'private' }
+{ #category : 'testing' }
 PhLVirtualMachine >> isOutdatedBy: aPublishedStamp [
-	"When the stamp of the archive I was installed from is unknown, rely on the date of my executable."
+	"Answer whether the given stamp is the one of another archive than the one I was installed from.
+	When the stamp of the archive I was installed from is unknown, rely on the date of my executable."
 
+	self isUpdatable ifFalse: [ ^ false ].
 	^ self installedStamp
 		  ifNil: [ aPublishedStamp isNewerThan: self lastUpdateTime ]
 		  ifNotNil: [ :installedStamp | installedStamp ~= aPublishedStamp ]
@@ -313,10 +315,25 @@ PhLVirtualMachine >> isPreSpur [
 ]
 
 { #category : 'testing' }
+PhLVirtualMachine >> isStandard [
+	"Answer whether I am a VM published on the Pharo files server, as opposed to a custom VM the user put in the VM store.
+	The download URL of a custom VM is the one of the standard VM for its Pharo version."
+
+	^ id matchesRegex: '\d+(-preSpur)?-x(64|86)'
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> isUpdatable [
+	"Answer whether an archive published on the server can tell if I am outdated."
+
+	^ self isValid and: [ self isStandard ]
+]
+
+{ #category : 'testing' }
 PhLVirtualMachine >> isUpdateAvailable [
 	"Answer whether the server publishes another archive than the one I was installed from."
 
-	self isValid ifFalse: [ ^ false ].
+	self isUpdatable ifFalse: [ ^ false ].
 	^ self publishedStamp
 		  ifNil: [ false ]
 		  ifNotNil: [ :publishedStamp | self isOutdatedBy: publishedStamp ]

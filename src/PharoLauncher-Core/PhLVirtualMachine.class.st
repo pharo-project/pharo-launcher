@@ -83,6 +83,20 @@ PhLVirtualMachine class >> isSubclassForDirectory: aFileReference [
 	^ aFileReference basename beginsWith: self versionPrefix
 ]
 
+{ #category : 'updating' }
+PhLVirtualMachine class >> updateAll: virtualMachines [
+	"A VM failing to update is left as it was: the other VMs are still updated.
+	Answer the errors telling which VMs were not updated."
+
+	| errors |
+	errors := OrderedCollection new.
+	virtualMachines do: [ :each |
+		[ each updateFromUrl ]
+			on: Error
+			do: [ :error | errors add: (PhLVirtualMachineUpdateError vm: each cause: error) ] ].
+	^ errors
+]
+
 { #category : 'accessing' }
 PhLVirtualMachine class >> versionPrefix [
 	"See class comment, 'Filesystem Location' section"

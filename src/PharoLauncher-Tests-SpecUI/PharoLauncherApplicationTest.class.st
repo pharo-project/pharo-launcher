@@ -38,6 +38,14 @@ PharoLauncherApplicationTest >> testApplicationIsSubscribedToAnnouncers [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testApplicationIsSubscribedToVmUpdateChecker [
+
+	application initializeVmUpdateChecker.
+
+	self assert: (application vmUpdateChecker announcer hasSubscriber: application)
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testApplicationShowsProgress [
 
 	self assert: ITProgressRunner default application identicalTo: application

@@ -8,7 +8,8 @@ Class {
 	#instVars : [
 		'requestAnswer',
 		'requestAttributes',
-		'text'
+		'text',
+		'templateSourcesProposalBlock'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
@@ -108,6 +109,13 @@ PhLTestApplication >> parentWindow: aWindow [
 	requestAttributes at: #parentWindow put: aWindow
 ]
 
+{ #category : 'accessing' }
+PhLTestApplication >> proposedVms [
+	"The VMs the user was proposed to update, nil if no proposal was made"
+
+	^ requestAttributes at: #proposedVms ifAbsent: [ nil ]
+]
+
 { #category : 'ui' }
 PhLTestApplication >> pushProgress: aString with: aFullBlockClosure [ 
 	"do not display progress, only evaluate the block"
@@ -132,7 +140,16 @@ PhLTestApplication >> scriptsDirectory [
 
 { #category : 'asserting' }
 PhLTestApplication >> shouldUpdateTemplateSources [
+
+	templateSourcesProposalBlock ifNotNil: [ :block | block value ].
 	^ false
+]
+
+{ #category : 'asserting' }
+PhLTestApplication >> shouldUpdateVms: vms [
+
+	requestAttributes at: #proposedVms put: vms.
+	^ requestAnswer ifNil: [ false ]
 ]
 
 { #category : 'ui' }
@@ -160,4 +177,11 @@ PhLTestApplication >> title: aString [
 { #category : 'request' }
 PhLTestApplication >> validateAnswer: aBlockClosure [ 
 	"do nothing"
+]
+
+{ #category : 'configuring' }
+PhLTestApplication >> whenProposingTemplateSourcesUpdateDo: aBlock [
+	"Evaluate the block while the user is proposed to update the template sources"
+
+	templateSourcesProposalBlock := aBlock
 ]

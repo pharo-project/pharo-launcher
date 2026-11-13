@@ -12,7 +12,10 @@ Class {
 		'imagesPresenter',
 		'scriptsDirectory',
 		'openAsWorld',
-		'standalone'
+		'standalone',
+		'pendingUpdateProposals',
+		'isProposingUpdate',
+		'vmUpdateChecker'
 	],
 	#classVars : [
 		'Default',
@@ -273,6 +276,14 @@ PharoLauncherApplication >> exitApplication [
 	Smalltalk exitSuccess
 ]
 
+{ #category : 'private' }
+PharoLauncherApplication >> evaluatePendingUpdateProposals [
+
+	isProposingUpdate := true.
+	[ [ self pendingUpdateProposals isEmpty ] whileFalse: [ self pendingUpdateProposals removeFirst value ] ]
+		ensure: [ isProposingUpdate := false ]
+]
+
 { #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
@@ -358,6 +369,17 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 				self defer: [ self sourcesFileUpdateAvailable ] ]
 			for: self;
 		when: PhLTemplateSourcesUpdated do: [ :event | self resetTemplateRepository ] for: self
+]
+
+{ #category : 'announcements' }
+PharoLauncherApplication >> initializeVmUpdateChecker [
+
+	self vmUpdateChecker announcer
+		unsubscribe: self;
+		when: PhLVmUpdatesAvailable
+		do: [ :event | "Announced from the update checker process: the modal dialog must be opened by the UI process"
+			self defer: [ self vmUpdatesAvailable: event vms ] ]
+		for: self
 ]
 
 { #category : 'announcements' }
@@ -487,9 +509,12 @@ PharoLauncherApplication >> resetTemplateRepository [
 ]
 
 { #category : 'running' }
-PharoLauncherApplication >> runTemplateSourcesUpdateChecker [
-	
-	PhLTemplateSourcesUpdateChecker run
+PharoLauncherApplication >> runUpdateChecker [
+	"Template sources are checked first: their update is proposed before the one of virtual machines."
+
+	PhLUpdateChecker runChecks: {
+			[ PhLTemplateSourcesUpdateChecker new check ].
+			[ self vmUpdateChecker check ] }
 ]
 
 { #category : 'private' }
@@ -519,12 +544,40 @@ PharoLauncherApplication >> shouldExitWhenNoMoreWindows [
 	^ true
 ]
 
+{ #category : 'private' }
+PharoLauncherApplication >> pendingUpdateProposals [
+
+	^ pendingUpdateProposals ifNil: [ pendingUpdateProposals := OrderedCollection new ]
+]
+
+{ #category : 'ui' }
+PharoLauncherApplication >> proposeUpdate: aBlock [
+	"Evaluate the block proposing an update to the user.
+	Updates are proposed one at a time: a proposal made while the user answers another one waits for this answer."
+
+	self pendingUpdateProposals addLast: aBlock.
+	isProposingUpdate == true ifTrue: [ ^ self ].
+	self evaluatePendingUpdateProposals
+]
+
 { #category : 'ui' }
 PharoLauncherApplication >> shouldUpdateTemplateSources [
 
 	^ self newConfirm
 		title: 'Update';
 		label: 'Update available for Pharo Launcher templates sources!';
+		acceptLabel: 'Update';
+		cancelLabel: 'Remind me later';
+		openModal
+]
+
+{ #category : 'ui' }
+PharoLauncherApplication >> shouldUpdateVms: virtualMachines [
+
+	^ self newConfirm
+		title: 'Update';
+		label: ('Update available for virtual machines: {1}
+Close the images running on them before updating.' format: { (', ' join: (virtualMachines collect: [ :each | each id ])) });
 		acceptLabel: 'Update';
 		cancelLabel: 'Remind me later';
 		openModal
@@ -542,10 +595,8 @@ PharoLauncherApplication >> showError: anError [
 { #category : 'events' }
 PharoLauncherApplication >> sourcesFileUpdateAvailable [
 
-	self shouldUpdateTemplateSources ifFalse: [ ^ self ].
-	
-	PhLPharoTemplateSources fromFile updateSourcesFile.
-	self resetTemplateRepository
+	self proposeUpdate: [
+		self shouldUpdateTemplateSources ifTrue: [ self updateTemplateSources ] ]
 ]
 
 { #category : 'running' }
@@ -559,8 +610,9 @@ PharoLauncherApplication >> start [
 
 	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
+	self initializeVmUpdateChecker.
 	self initializeProgressRunner.
-	self runTemplateSourcesUpdateChecker.
+	self runUpdateChecker.
 	
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]
@@ -621,4 +673,30 @@ PharoLauncherApplication >> unregisterWindow: aWindow [
 
 	super unregisterWindow: aWindow.
 	self safeExit
+]
+
+{ #category : 'private' }
+PharoLauncherApplication >> updateTemplateSources [
+
+	PhLPharoTemplateSources fromFile updateSourcesFile.
+	self resetTemplateRepository
+]
+
+{ #category : 'private' }
+PharoLauncherApplication >> updateVms: virtualMachines [
+
+	(PhLVirtualMachine updateAll: virtualMachines) do: [ :error | self showError: error ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> vmUpdateChecker [
+
+	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker imageRepository: self imageRepository ]
+]
+
+{ #category : 'events' }
+PharoLauncherApplication >> vmUpdatesAvailable: virtualMachines [
+
+	self proposeUpdate: [
+		(self shouldUpdateVms: virtualMachines) ifTrue: [ self updateVms: virtualMachines ] ]
 ]

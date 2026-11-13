@@ -152,6 +152,23 @@ PhLVirtualMachineUpdateTest >> testUpdateKeepsFilesTheArchiveDoesNotProvide [
 	self assert: self installedVersion equals: 'second'
 ]
 
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdatingAllSkipsVmFailingToUpdate [
+
+	| otherVm errors |
+	otherVm := PhLVirtualMachine id: '120-x64'.
+	self serverPublishesCorruptedArchiveTagged: 'first'.
+	self serverPublishes: (self vmArchiveVersioned: 'first') of: otherVm tagged: 'first'.
+
+	errors := PhLVirtualMachine updateAll: {
+			          vm.
+			          otherVm }.
+
+	self assert: (vmStore / otherVm id / 'version') contents equals: 'first'.
+	self assert: errors size equals: 1.
+	self assert: (errors first longDescription includesSubstring: vm id)
+]
+
 { #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	"A zip archive with the VM executables expected on OS X and Linux"

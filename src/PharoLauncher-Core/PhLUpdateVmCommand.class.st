@@ -19,17 +19,11 @@ PhLUpdateVmCommand >> asSpecCommand [
 
 { #category : 'executing' }
 PhLUpdateVmCommand >> execute [
-	"A VM failing to update is left as it was: the other VMs are still updated."
 
 	| errors |
-	errors := OrderedCollection new.
 	PhLCurrentContext
 		use: self context
-		during: [
-			self vmsPresenter selectedVms do: [ :each |
-				[ each updateFromUrl ]
-					on: Error
-					do: [ :error | errors add: (PhLVirtualMachineUpdateError vm: each cause: error) ] ] ].
+		during: [ errors := PhLVirtualMachine updateAll: self vmsPresenter selectedVms ].
 	self vmsPresenter refresh.
 	self showErrors: errors
 ]

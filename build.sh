@@ -8,6 +8,7 @@ set -ex
 # $PHARO_VERSION : 			version of the Pharo image, e.g. 61
 # $VM : 			version of the VM, e.g. vm
 # $ARCHITECTURE : 	targeted architecture 32 or 64 bits. Default will be 32.
+# $UI_BACKEND : 	UI backend of the mac package: gtk (default) or morphic.
 
 # Script parameters
 # $1: the target to run
@@ -86,6 +87,7 @@ function package_mac_version() {
 	cp mac/Info.plist.template $OUTPUT_PATH/
 	cp -R mac/MainMenu.nib $RESOURCES_PATH/English.lproj/
 	expand_all_templates $OUTPUT_PATH
+	configure_mac_ui_backend "$OUTPUT_PATH/Info.plist"
 	copy_current_stable_image_to $RESOURCES_PATH
 	copy_mac_icon_files_to $RESOURCES_PATH/
 	mv mac/installer-background.png background.png
@@ -96,9 +98,28 @@ function package_mac_version() {
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg
 	generated_dmg=$(echo *.dmg)
-	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER.dmg"
+	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER$UI_BACKEND_SUFFIX.dmg"
 	generated_dmg=$(echo *.dmg)
 	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
+}
+
+# The GTK backend is started headless in a worker thread through `run launcher`.
+# The Morphic backend is obtained by opening the deployed image with a world
+# (see PhLDeploymentScript>>#launcherStartUp) rendered by the SDL2 driver.
+function configure_mac_ui_backend() {
+	local PLIST=$1
+	case "$UI_BACKEND" in
+		gtk)	;;
+		morphic)
+			/usr/libexec/PlistBuddy \
+				-c "Delete :PharoHeadless" \
+				-c "Delete :PharoWorker" \
+				-c "Delete :PharoImageParameters" \
+				-c "Add :LSEnvironment dict" \
+				-c "Add :LSEnvironment:PHARO_WINDOW_DRIVER string OSSDL2Driver" \
+				"$PLIST"
+			;;
+	esac
 }
 
 function set_env() {
@@ -115,6 +136,13 @@ function set_env() {
 				;;
 	esac
 	VERSION_NUMBER="$VERSION-$ARCH_SUFFIX"
+	case "$UI_BACKEND" in
+		gtk) UI_BACKEND_SUFFIX="" ;;
+		morphic) UI_BACKEND_SUFFIX="-morphic" ;;
+		*)	echo "Error! UI backend $UI_BACKEND is not supported (gtk or morphic)!"
+			exit 1
+			;;
+	esac
 }
 
 function copy_current_stable_image_to() {
@@ -196,6 +224,7 @@ function expand_all_templates() {
 PHARO_VERSION=${PHARO_VERSION:=140}  # If PHARO_VERSION not set, set it to 140.
 VM=${VM:=signedVm}	# If VM not set, set it to signedVm.
 ARCHITECTURE=${ARCHITECTURE:-'64'}	# If ARCHITECTURE not set, set it to 64 bits
+UI_BACKEND=${UI_BACKEND:-'gtk'}	# UI backend of the mac package: gtk or morphic
 
 SCRIPT_TARGET=${1:-all}
 SHOULD_SIGN=${SHOULD_SIGN:-false}

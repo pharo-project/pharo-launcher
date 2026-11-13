@@ -213,6 +213,7 @@ jobs:
     strategy:
       matrix:
         arch: [64, arm64]
+        ui: [gtk, morphic]
 
     steps:
       - uses: actions/checkout@v4
@@ -224,16 +225,16 @@ jobs:
           name: packaging-user
           path: ${{ env.RESOURCES_DIR }}
 
-      - name: Build ${{ matrix.arch }} mac os package
+      - name: Build ${{ matrix.arch }} ${{ matrix.ui }} mac os package
         run: |
-          ARCHITECTURE=${{ matrix.arch }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
+          ARCHITECTURE=${{ matrix.arch }} UI_BACKEND=${{ matrix.ui }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package
           ls -ld PharoLauncher.app
-          zip -r -9 PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}.zip PharoLauncher.app
+          zip -r -9 PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}${{ matrix.ui == 'morphic' && '-morphic' || '' }}.zip PharoLauncher.app
           ls -la .
 
       - uses: actions/upload-artifact@v4
         with:
-            name: PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}
+            name: PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}${{ matrix.ui == 'morphic' && '-morphic' || '' }}
             path: PharoLauncher-mac-*.zip
 
   publish:

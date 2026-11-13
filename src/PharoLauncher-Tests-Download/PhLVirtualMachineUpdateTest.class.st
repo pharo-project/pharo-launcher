@@ -1,15 +1,10 @@
 "
 I specify how a virtual machine detects that a newer archive is published on the server, and how it updates itself from it.
-
-The server is replaced by PhLDownloadManagerMock. The VM store is a real temporary folder because archives may be unzipped by a system command.
 "
 Class {
 	#name : 'PhLVirtualMachineUpdateTest',
-	#superclass : 'TestCase',
-	#traits : 'TPhLVirtualMachineTestUtil',
-	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
+	#superclass : 'PhLVirtualMachineStoreTest',
 	#instVars : [
-		'vmStore',
 		'vm'
 	],
 	#category : 'PharoLauncher-Tests-Download',
@@ -30,29 +25,10 @@ PhLVirtualMachineUpdateTest >> installedVersion [
 	^ (vmStore / vm id / 'version') contents
 ]
 
-{ #category : 'running' }
-PhLVirtualMachineUpdateTest >> runCase [
-	"The VM store is in place before the set up to never touch the VM store of the user"
-
-	| temporaryStore |
-	temporaryStore := (FileLocator temp / ('pharo-launcher-tests-' , UUID new asString)) ensureCreateDirectory.
-	vmStore := temporaryStore.
-	[ PhLVirtualMachineManager useVmStore: temporaryStore during: [ super runCase ] ]
-		ensure: [ temporaryStore ensureDeleteAll ]
-]
-
-{ #category : 'helpers' }
-PhLVirtualMachineUpdateTest >> server [
-
-	^ PhLDownloadManager default
-]
-
 { #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> serverPublishesArchiveLastModified: aDateAndTime [
 
-	self server
-		atUrl: vm downloadUrl
-		answerStamp: (PhLRemoteFileStamp etag: 'any' lastModified: aDateAndTime)
+	self serverPublishesArchiveOf: vm lastModified: aDateAndTime
 ]
 
 { #category : 'helpers' }
@@ -85,15 +61,7 @@ PhLVirtualMachineUpdateTest >> serverPublishesCorruptedArchiveTagged: anETag [
 PhLVirtualMachineUpdateTest >> setUp [
 
 	super setUp.
-	PhLDownloadManagerMock install.
 	vm := PhLVirtualMachine id: '130-x64'
-]
-
-{ #category : 'running' }
-PhLVirtualMachineUpdateTest >> tearDown [
-
-	PhLDownloadManagerMock remove.
-	super tearDown
 ]
 
 { #category : 'tests' }
@@ -194,10 +162,4 @@ PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	archive addString: 'vm' asByteArray as: 'Pharo.app/Contents/MacOS/Pharo'.
 	archive addString: PhLVirtualMachine elfMagicNumber as: 'pharo'.
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
-]
-
-{ #category : 'accessing' }
-PhLVirtualMachineUpdateTest >> vmStoreRoot [
-
-	^ vmStore
 ]

@@ -126,7 +126,16 @@ add_a_background_image() {
 }
 
 unmount_device() {
-    hdiutil detach "${DEVICE}"
+    # Finder (driven by the layout script) or Spotlight may still hold the
+    # volume for a while, making detach fail with "Resource busy".
+    for attempt in 1 2 3 4 5; do
+        if hdiutil detach "${DEVICE}"; then
+            return 0
+        fi
+        echo "Detach attempt ${attempt} failed, retrying..."
+        sleep $((attempt * 2))
+    done
+    hdiutil detach -force "${DEVICE}"
 }
 
 make_the_final_image_a_compressed_disk_image() {

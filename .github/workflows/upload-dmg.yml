@@ -21,7 +21,7 @@ jobs:
             arch: [ 'arm64', '64' ]
     
         steps:
-          - uses: actions/checkout@v4
+          - uses: actions/checkout@v7
             with:
               fetch-depth: 0
     
@@ -40,7 +40,7 @@ jobs:
               echo "Building Pharo Launcher ${{ github.event.inputs.pharo-launcher-version }} ${{ matrix.arch }} DMG from $SIGNED_TAR_FILE"
               ./mac/build-dmg-from-tar.sh --arch ${{ matrix.arch }} --version ${{ github.event.inputs.pharo-launcher-version }} $SIGNED_TAR_FILE
 
-          - uses: actions/upload-artifact@v4
+          - uses: actions/upload-artifact@v7
             with:
                 name: PharoLauncher-mac-installer-${{ github.event.inputs.pharo-launcher-version }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}
                 path: PharoLauncher-*.dmg

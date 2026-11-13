@@ -33,7 +33,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -72,7 +72,7 @@ jobs:
           VERSION=${SHORT_SHA} ./build.sh prepare
           VERSION=${SHORT_SHA} ./build.sh test
 
-      - uses: actions/upload-artifact@v4  # upload test results
+      - uses: actions/upload-artifact@v7  # upload test results
         if: success() || failure()        # run this step even if previous step failed
         with:
             name: test-results
@@ -89,7 +89,7 @@ jobs:
       - name: Make Pharo Launcher deployed
         run: ./build.sh make-deployed
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: packaging-user
             path: |
@@ -100,7 +100,7 @@ jobs:
       - name: Linux packaging
         run: VERSION=${LAUNCHER_VERSION} ./build.sh linux-package
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: PharoLauncher-linux-${{ env.LAUNCHER_VERSION }}-${{ env.FILE_NAME_ARCH_SUFFIX }}
             path: pharo-launcher-linux.tar
@@ -132,7 +132,7 @@ jobs:
           echo installerVersion = $installerVersion
           echo "INSTALLER_VERSION=$installerVersion" >> $GITHUB_ENV             
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -145,7 +145,7 @@ jobs:
           mkdir "$Env:IMAGES_DIR"
           Invoke-WebRequest -OutFile ${Env:IMAGES_DIR}\pharo-stable.zip -Uri https://files.pharo.org/image/stable/stable-64.zip
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: packaging-user
           path: ${{ env.PACKAGE_DIR }}
@@ -153,7 +153,7 @@ jobs:
       - name: Display structure of files to package
         run: Get-ChildItem -Recurse ${{ env.PACKAGE_DIR }}
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: PharoLauncher-windows-${{ needs.build.outputs.launcherVersion }}
             path: ${{ env.PACKAGE_DIR }}
@@ -199,7 +199,7 @@ jobs:
           get-content $projectFile
           $project.Build()
   
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: PharoLauncher-windows-installer-${{ needs.build.outputs.launcherVersion }}
             path: setup/pharo-launcher*.msi
@@ -216,11 +216,11 @@ jobs:
         ui: [gtk, morphic]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v8
         with:
           name: packaging-user
           path: ${{ env.RESOURCES_DIR }}
@@ -232,7 +232,7 @@ jobs:
           zip -r -9 PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}${{ matrix.ui == 'morphic' && '-morphic' || '' }}.zip PharoLauncher.app
           ls -la .
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
             name: PharoLauncher-mac-${{ needs.build.outputs.launcherVersion }}-${{ matrix.arch == '64' && 'x64' || matrix.arch }}${{ matrix.ui == 'morphic' && '-morphic' || '' }}
             path: PharoLauncher-mac-*.zip
@@ -243,7 +243,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     steps:
       - name: Download artefacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
             path: artifacts
       

@@ -23,14 +23,30 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 	^ PhLProcessWrapper isCommandAvailable: 'unzip'
 ]
 
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> extract: aZipFileReference replacing: aFolder [
+	"The archive is extracted aside: the folder is left untouched if the extraction fails."
+
+	| extractionFolder |
+	extractionFolder := aFolder parent / (aFolder basename , '.new').
+	extractionFolder ensureDeleteAll.
+	[ self unzip: aZipFileReference to: extractionFolder ]
+		ifCurtailed: [ extractionFolder ensureDeleteAll ].
+	self replace: aFolder with: extractionFolder
+]
+
 { #category : 'private' }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
-	PhLDownloadManager default 
+	"Download and extract the VM archive. Record the stamp of the archive next to the VM to be able to detect later that a newer archive is published."
+
+	| vmFolder stamp |
+	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
+	stamp := PhLDownloadManager default stampOf: aVmUrl.
+	PhLDownloadManager default
 		download: aVmUrl
 		toFile: targetFile.
-	self
-		unzip: targetFile
-		to: (targetFile parent / targetFile basenameWithoutExtension)
+	self extract: targetFile replacing: vmFolder.
+	stamp storeInFolder: vmFolder
 ]
 
 { #category : 'instance creation' }
@@ -107,6 +123,23 @@ PhLVirtualMachineManager class >> isPreSpur: anImageFormatVersion [
 ]
 
 { #category : 'unzipping' }
+PhLVirtualMachineManager class >> move: aFileReference to: aTargetFileReference [
+	"FileReference>>#moveTo: makes its receiver point to the target. Move a copy to keep the given references unchanged."
+
+	aFileReference copy moveTo: aTargetFileReference
+]
+
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> moveTo: aFolder filesOnlyIn: aReplacedFolder [
+	"Keep what was added to the replaced folder, e.g. the sources files fetched for old Pharo versions."
+
+	aReplacedFolder exists ifFalse: [ ^ self ].
+	aReplacedFolder children
+		reject: [ :file | (aFolder / file basename) exists ]
+		thenDo: [ :file | file moveTo: aFolder / file basename ]
+]
+
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirectory [
 	
 	PharoLauncherApplication default 
@@ -117,6 +150,18 @@ PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirect
 				extractAllTo: outputDirectory 
 					informing: bar 
 					overwrite: true ]
+]
+
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> replace: aFolder with: aNewFolder [
+
+	| replacedFolder |
+	replacedFolder := aFolder parent / (aFolder basename , '.old').
+	replacedFolder ensureDeleteAll.
+	aFolder exists ifTrue: [ self move: aFolder to: replacedFolder ].
+	self move: aNewFolder to: aFolder.
+	self moveTo: aFolder filesOnlyIn: replacedFolder.
+	replacedFolder ensureDeleteAll
 ]
 
 { #category : 'initialization' }

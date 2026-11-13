@@ -264,6 +264,13 @@ PhLVirtualMachine >> initializeOn: aFolder [
 	self initializeExecutableRefFrom: aFolder.
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> installedStamp [
+	"Answer the stamp of the archive I was installed from, nil if unknown."
+
+	^ PhLRemoteFileStamp inFolder: self vmStore / self id
+]
+
 { #category : 'testing' }
 PhLVirtualMachine >> is64bit [
 	^ arch
@@ -277,9 +284,28 @@ PhLVirtualMachine >> isHeadless [
 	^ flavour = self headlessFlavour
 ]
 
+{ #category : 'private' }
+PhLVirtualMachine >> isOutdatedBy: aPublishedStamp [
+	"When the stamp of the archive I was installed from is unknown, rely on the date of my executable."
+
+	^ self installedStamp
+		  ifNil: [ aPublishedStamp isNewerThan: self lastUpdateTime ]
+		  ifNotNil: [ :installedStamp | installedStamp ~= aPublishedStamp ]
+]
+
 { #category : 'testing' }
 PhLVirtualMachine >> isPreSpur [
 	^ id includes: 'preSpur'
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> isUpdateAvailable [
+	"Answer whether the server publishes another archive than the one I was installed from."
+
+	self isValid ifFalse: [ ^ false ].
+	^ self publishedStamp
+		  ifNil: [ false ]
+		  ifNotNil: [ :publishedStamp | self isOutdatedBy: publishedStamp ]
 ]
 
 { #category : 'testing' }
@@ -344,6 +370,15 @@ PhLVirtualMachine >> printOn: aStream [
 		nextPut: $(;
 		nextPutAll: self id;
 		nextPut: $)
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> publishedStamp [
+	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
+
+	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
 ]
 
 { #category : 'actions' }

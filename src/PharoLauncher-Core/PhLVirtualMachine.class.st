@@ -374,6 +374,13 @@ PhLVirtualMachine >> lastUpdateTimeDescription [
 	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
 ]
 
+{ #category : 'accessing' }
+PhLVirtualMachine >> location [
+	"Answer the path of my folder in the VM store"
+
+	^ (self vmStore / self id) fullName
+]
+
 { #category : 'updating' }
 PhLVirtualMachine >> manager [
 	^ manager ifNil: [ manager := PhLVirtualMachineManager new ]

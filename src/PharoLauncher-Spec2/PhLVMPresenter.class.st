@@ -8,6 +8,7 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
+		'detailPanel',
 		'rootCommandsGroup',
 		'publishedStamps',
 		'versions'
@@ -58,6 +59,17 @@ PhLVMPresenter class >> example [
 	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
+{ #category : 'initialization' }
+PhLVMPresenter >> connectPresenters [
+
+	vmTable
+		transmitTo: detailPanel
+		transform: [ :vms |
+			vms size = 1
+				ifTrue: [ vms first ]
+				ifFalse: [ nil ] ]
+]
+
 { #category : 'accessing' }
 PhLVMPresenter >> datasource [
 	^ self model
@@ -65,9 +77,17 @@ PhLVMPresenter >> datasource [
 
 { #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
-	^ SpBoxLayout newVertical
+	^ SpPanedLayout newTopToBottom
+		positionOfSlider: 80 percent;
 		add: vmTable;
+		add: detailPanel;
 		yourself
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> detailPanel [
+
+	^ detailPanel
 ]
 
 { #category : 'private - actions' }
@@ -147,20 +167,20 @@ PhLVMPresenter >> initialExtent [
 PhLVMPresenter >> initializePresenters [
 
 	self addStyle: 'launcher'.
+	detailPanel := self instantiate: PhLVMDetailPresenter on: nil.
 	vmTable := self newTable
 		whenActivatedDo: [ self doShowInFolder ];
 		addColumn: ((SpImageTableColumn title: '' evaluated: [ :vm | self iconFor: vm ]) width: 20);
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 150; yourself);
 		addColumn: (SpStringTableColumn
 			title: 'Version'
-			evaluated: [ :vm | self versionDescriptionFor: vm ]) beNotExpandable;
+			evaluated: [ :vm | self versionDescriptionFor: vm ]);
 		addColumn: ((SpStringTableColumn 
 			title: 'Last update' 
 			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
 		addColumn: (SpStringTableColumn
 			title: 'Update'
-			evaluated: [ :vm | self updateDescriptionFor: vm ]) beNotExpandable;
-		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
+			evaluated: [ :vm | self updateDescriptionFor: vm ]);
 		showColumnHeaders;
 		alternateRowsColor;
 		actions: (SpActionGroup new
@@ -204,6 +224,18 @@ PhLVMPresenter >> refresh [
 { #category : 'initialization' }
 PhLVMPresenter >> rootCommandsGroup [ 
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
+]
+
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectAllVms [
+
+	vmTable selectAll
+]
+
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectVm: aVm [
+
+	vmTable selectItem: aVm
 ]
 
 { #category : 'accessing' }

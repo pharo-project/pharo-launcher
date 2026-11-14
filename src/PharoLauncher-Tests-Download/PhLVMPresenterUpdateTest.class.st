@@ -41,6 +41,7 @@ PhLVMPresenterUpdateTest >> setUp [
 			 {
 				 outdatedVm.
 				 upToDateVm } ]).
+	presenter refresh.
 	self
 		serverPublishesArchiveOf: outdatedVm
 		lastModified: (DateAndTime year: 2999 month: 1 day: 15 hour: 12 minute: 0).
@@ -54,6 +55,33 @@ PhLVMPresenterUpdateTest >> tearDown [
 	vmStore ensureDeleteAll.
 	PhLDownloadManagerMock remove.
 	super tearDown
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testDownloadUrlAndLocationOfSelectedVmAreShown [
+
+	presenter selectVm: outdatedVm.
+
+	self assert: presenter detailPanel downloadUrl label equals: outdatedVm downloadUrl.
+	self assert: presenter detailPanel location label equals: (vmStore / '100-x64') fullName
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testNoDownloadUrlNorLocationIsShownWithoutSelectedVm [
+
+	self assert: presenter detailPanel downloadUrl label equals: ''.
+	self assert: presenter detailPanel location label equals: ''
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testNoDownloadUrlNorLocationIsShownWithSeveralSelectedVms [
+
+	presenter selectVm: outdatedVm.
+
+	presenter selectAllVms.
+
+	self assert: presenter detailPanel downloadUrl label equals: ''.
+	self assert: presenter detailPanel location label equals: ''
 ]
 
 { #category : 'tests' }

@@ -1,5 +1,6 @@
 "
-Presenter of the details of a virtual machine: download URL and location on disk, as links.
+Presenter of the details of a virtual machine: a header with its id and version, then its download URL and location on disk, as links.
+The version is the one already fetched by my owner.
 My model is nil when there is no virtual machine to show.
 
 I'm part of the VM manager window, see `PhLVMPresenter`.
@@ -8,6 +9,7 @@ Class {
 	#name : 'PhLVMDetailPresenter',
 	#superclass : 'SpPresenterWithModel',
 	#instVars : [
+		'header',
 		'downloadUrl',
 		'location'
 	],
@@ -19,18 +21,16 @@ Class {
 { #category : 'layout' }
 PhLVMDetailPresenter >> defaultLayout [
 
-	^ SpGridLayout build: [ :builder |
-		  builder
-			  beRowNotHomogeneous;
-			  beColumnNotHomogeneous;
-			  borderWidth: 5;
-			  column: 1 withConstraints: [ :c | c hAlignEnd ];
-			  column: 2 withConstraints: [ :c | c beExpand ];
-			  add: 'Download URL';
-			  add: downloadUrl;
-			  nextRow;
-			  add: 'Location';
-			  add: location ]
+	^ SpBoxLayout newTopToBottom
+		  borderWidth: 5;
+		  spacing: 5;
+		  add: (SpBoxLayout newLeftToRight
+				   hAlignCenter;
+				   add: header;
+				   yourself)
+		  expand: false;
+		  add: self linksLayout;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -39,11 +39,44 @@ PhLVMDetailPresenter >> downloadUrl [
 	^ downloadUrl
 ]
 
+{ #category : 'accessing' }
+PhLVMDetailPresenter >> header [
+
+	^ header
+]
+
+{ #category : 'private - updating' }
+PhLVMDetailPresenter >> headerFor: aVm [
+
+	^ (self owner versionDescriptionFor: aVm)
+		  ifEmpty: [ aVm id ]
+		  ifNotEmpty: [ :version | '{1} ({2})' format: { aVm id. version } ]
+]
+
 { #category : 'initialization' }
 PhLVMDetailPresenter >> initializePresenters [
 
+	header := self newLabel.
+	header addStyle: 'form_header'.
 	downloadUrl := self newLink.
 	location := self newLink
+]
+
+{ #category : 'layout' }
+PhLVMDetailPresenter >> linksLayout [
+
+	^ SpGridLayout build: [ :builder |
+		  builder
+			  beRowNotHomogeneous;
+			  beColumnNotHomogeneous;
+			  borderWidth: 0;
+			  column: 1 withConstraints: [ :c | c hAlignEnd ];
+			  column: 2 withConstraints: [ :c | c beExpand ];
+			  add: 'Download URL';
+			  add: downloadUrl;
+			  nextRow;
+			  add: 'Location';
+			  add: location ]
 ]
 
 { #category : 'accessing' }
@@ -63,6 +96,7 @@ PhLVMDetailPresenter >> modelChanged [
 { #category : 'private - updating' }
 PhLVMDetailPresenter >> showNoVm [
 
+	header label: ''.
 	downloadUrl
 		label: '';
 		action: [  ].
@@ -74,6 +108,7 @@ PhLVMDetailPresenter >> showNoVm [
 { #category : 'private - updating' }
 PhLVMDetailPresenter >> showVm: aVm [
 
+	header label: (self headerFor: aVm).
 	downloadUrl
 		label: aVm downloadUrl;
 		url: aVm downloadUrl;

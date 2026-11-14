@@ -69,6 +69,7 @@ PhLVMPresenterUpdateTest >> testDownloadUrlAndLocationOfSelectedVmAreShown [
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testNoDownloadUrlNorLocationIsShownWithoutSelectedVm [
 
+	self assert: presenter detailPanel header label equals: ''.
 	self assert: presenter detailPanel downloadUrl label equals: ''.
 	self assert: presenter detailPanel location label equals: ''
 ]
@@ -82,6 +83,26 @@ PhLVMPresenterUpdateTest >> testNoDownloadUrlNorLocationIsShownWithSeveralSelect
 
 	self assert: presenter detailPanel downloadUrl label equals: ''.
 	self assert: presenter detailPanel location label equals: ''
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsItsIdAndVersion [
+
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
+	presenter fetchDetails.
+
+	presenter selectVm: outdatedVm.
+
+	self assert: presenter detailPanel header label equals: '100-x64 (10.3.12)'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsOnlyItsIdWhenVersionIsUnknown [
+
+	presenter selectVm: outdatedVm.
+
+	self assert: presenter detailPanel header label equals: '100-x64'
 ]
 
 { #category : 'tests' }

@@ -67,6 +67,13 @@ PhLNotificationCenter >> pushProgress: aString with: aFullBlockClosure [
 ]
 
 { #category : 'polymorphism' }
+PhLNotificationCenter >> releaseSharedResources [
+
+	"I do not subscribe to announcers nor install a progress runner.
+	I am there for polymorphism with `PharoLauncherApplication`, see `PharoLauncherApplication class>>#reset`."
+]
+
+{ #category : 'polymorphism' }
 PhLNotificationCenter >> reset [
 
 	"This method is not a 'real' reset but is there for polymorphism with `PharoLauncherApplication`.

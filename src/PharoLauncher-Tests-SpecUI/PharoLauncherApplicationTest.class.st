@@ -54,6 +54,18 @@ PharoLauncherApplicationTest >> testResetReleasesProgressRunner [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testResetWhenDefaultIsNotificationCenter [
+	"Headless, the default application is a notification center (see PhLDeploymentScript class>>#launcherStartUp)"
+
+	PharoLauncherApplication
+		useDefault: PhLNotificationCenter new
+		during: [
+			self
+				shouldnt: [ PharoLauncherApplication reset ]
+				raise: MessageNotUnderstood ]
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testResetUnsubscribesDefaultApplicationFromTemplateSourcesAnnouncer [
 
 	PharoLauncherApplication

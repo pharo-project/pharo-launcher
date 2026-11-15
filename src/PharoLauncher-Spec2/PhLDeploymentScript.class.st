@@ -224,9 +224,12 @@ PhLDeploymentScript class >> resetImageDescriptionUpdater [
 PhLDeploymentScript class >> resetPharoLauncherIcebergRepositoryLocation [
 	| phLCorePackage |
 	phLCorePackage := PackageOrganizer default packageNamed: 'PharoLauncher-Core'.
+	"No Iceberg repository is registered when the launcher is loaded from a tonel:// repository (see load-pl.st)"
 	(IceRepository registeredRepositoryIncludingPackage: phLCorePackage)
-		name: 'pharo-launcher';
-		location: nil
+		ifNotNil: [ :repository |
+			repository
+				name: 'pharo-launcher';
+				location: nil ]
 ]
 
 { #category : 'actions' }

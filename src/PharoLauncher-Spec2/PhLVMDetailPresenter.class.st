@@ -49,8 +49,8 @@ PhLVMDetailPresenter >> header [
 PhLVMDetailPresenter >> headerFor: aVm [
 
 	^ (self owner versionDescriptionFor: aVm)
-		  ifEmpty: [ aVm id ]
-		  ifNotEmpty: [ :version | '{1} ({2})' format: { aVm id. version } ]
+		  ifEmpty: [ 'VM ' , aVm id ]
+		  ifNotEmpty: [ :version | 'VM {1} ({2})' format: { aVm id. version } ]
 ]
 
 { #category : 'initialization' }

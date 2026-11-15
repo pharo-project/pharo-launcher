@@ -94,7 +94,7 @@ PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsItsIdAndVersion [
 
 	presenter selectVm: outdatedVm.
 
-	self assert: presenter detailPanel header label equals: '100-x64 (10.3.12)'
+	self assert: presenter detailPanel header label equals: 'VM 100-x64 (10.3.12)'
 ]
 
 { #category : 'tests' }
@@ -102,7 +102,7 @@ PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsOnlyItsIdWhenVersionIsUnk
 
 	presenter selectVm: outdatedVm.
 
-	self assert: presenter detailPanel header label equals: '100-x64'
+	self assert: presenter detailPanel header label equals: 'VM 100-x64'
 ]
 
 { #category : 'tests' }

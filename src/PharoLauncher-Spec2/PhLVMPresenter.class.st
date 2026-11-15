@@ -78,7 +78,7 @@ PhLVMPresenter >> datasource [
 { #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
 	^ SpPanedLayout newTopToBottom
-		positionOfSlider: 80 percent;
+		positionOfSlider: 70 percent;
 		add: vmTable;
 		add: detailPanel;
 		yourself

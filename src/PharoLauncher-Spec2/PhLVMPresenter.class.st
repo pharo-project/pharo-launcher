@@ -44,10 +44,6 @@ PhLVMPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher VM Manager toolbar';
 		register: PhLUpdateVmCommand forSpec;
-		register:
-			(PhLShowVmInFolderCommand forSpec
-				name: 'Show';
-				yourself);
 		register: PhLDeleteVmCommand forSpec;
 		beDisplayedAsGroup;
 		yourself

@@ -69,7 +69,7 @@ PhLMorphicConfiguration >> launcherStyleTemplate [
 	.launcher [ Draw { #backgroundColor: @window } ],
 	.label [
 		.list_header [ Font { #name: EnvironmentFont(#default), #bold: true } ],
-		.form_header [ Font { #name: EnvironmentFont(#default), #size: 14, #bold: true } ],
+		.form_header [ Font { #name: EnvironmentFont(#default), #size: 12, #bold: true } ],
 		.status_message [ Draw { #color: @dim } ] ],
 	.table [
 		Container { #rowHeight: 28, #borderWidth: 0 },

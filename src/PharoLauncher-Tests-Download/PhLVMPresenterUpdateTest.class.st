@@ -131,3 +131,13 @@ PhLVMPresenterUpdateTest >> testVmWithUpdateAvailableShowsPublicationDateOfTheUp
 	self assert: (presenter updateDescriptionFor: outdatedVm) equals: '2999-01-15'.
 	self assert: (presenter updateDescriptionFor: upToDateVm) equals: ''
 ]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testToolbarDoesNotShowVmInFolder [
+	"The location link of the detail panel shows the VM in its folder"
+
+	| commandNames |
+	commandNames := PhLVMPresenter buildToolbarGroup entries collect: [ :each | each name ].
+
+	self assert: commandNames asArray equals: #( 'Update' 'Delete' )
+]

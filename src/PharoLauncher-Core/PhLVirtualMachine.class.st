@@ -374,6 +374,13 @@ PhLVirtualMachine >> lastUpdateTimeDescription [
 	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
 ]
 
+{ #category : 'testing' }
+PhLVirtualMachine >> needsUpdate [
+	"Answer whether I should be downloaded: I am not installed, or an update is available."
+
+	^ self isValid not or: [ self isUpdateAvailable ]
+]
+
 { #category : 'accessing' }
 PhLVirtualMachine >> location [
 	"Answer the path of my folder in the VM store"

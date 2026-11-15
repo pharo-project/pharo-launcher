@@ -10,7 +10,9 @@ Class {
 		'vmStore',
 		'presenter',
 		'outdatedVm',
-		'upToDateVm'
+		'upToDateVm',
+		'vms',
+		'shouldCheckUpdates'
 	],
 	#category : 'PharoLauncher-Tests-Download',
 	#package : 'PharoLauncher-Tests-Download'
@@ -28,6 +30,8 @@ PhLVMPresenterUpdateTest >> serverPublishesArchiveOf: aVm lastModified: aDateAnd
 PhLVMPresenterUpdateTest >> setUp [
 
 	super setUp.
+	shouldCheckUpdates := PhLVmUpdateChecker shouldRun.
+	PhLVmUpdateChecker shouldRun: true.
 	PhLDownloadManagerMock install.
 	vmStore := FileLocator temp / ('pharo-launcher-tests-' , UUID new asString).
 	PhLTestVirtualMachineManager vmStore: vmStore.
@@ -37,10 +41,8 @@ PhLVMPresenterUpdateTest >> setUp [
 		createVmNamed: '90-x64'.
 	outdatedVm := presenter vmFor: '100-x64'.
 	upToDateVm := presenter vmFor: '90-x64'.
-	presenter model: (PhLVirtualMachinesDataSource vmsBlock: [
-			 {
-				 outdatedVm.
-				 upToDateVm } ]).
+	vms := OrderedCollection with: outdatedVm with: upToDateVm.
+	presenter model: (PhLVirtualMachinesDataSource vmsBlock: [ vms ]).
 	presenter refresh.
 	self
 		serverPublishesArchiveOf: outdatedVm
@@ -54,7 +56,17 @@ PhLVMPresenterUpdateTest >> tearDown [
 	PhLTestVirtualMachineManager reset.
 	vmStore ensureDeleteAll.
 	PhLDownloadManagerMock remove.
+	PhLVmUpdateChecker shouldRun: shouldCheckUpdates.
 	super tearDown
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testDetailsAreFetchedWhenOpened [
+
+	| window |
+	window := presenter open.
+
+	[ self assert: presenter hasFetchedDetailsInBackground ] ensure: [ window close ]
 ]
 
 { #category : 'tests' }
@@ -71,7 +83,9 @@ PhLVMPresenterUpdateTest >> testNoDownloadUrlNorLocationIsShownWithoutSelectedVm
 
 	self assert: presenter detailPanel header label equals: ''.
 	self assert: presenter detailPanel downloadUrl label equals: ''.
-	self assert: presenter detailPanel location label equals: ''
+	self assert: presenter detailPanel location label equals: ''.
+	self assert: presenter detailPanel installedOn label equals: ''.
+	self assert: presenter detailPanel status label equals: ''
 ]
 
 { #category : 'tests' }
@@ -108,7 +122,6 @@ PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsOnlyItsIdWhenVersionIsUnk
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testNoDetailIsShownBeforeFetchingThem [
 
-	self assert: (presenter updateDescriptionFor: outdatedVm) equals: ''.
 	self assert: (presenter versionDescriptionFor: outdatedVm) equals: ''
 ]
 
@@ -124,15 +137,6 @@ PhLVMPresenterUpdateTest >> testVersionOfVmIsShown [
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testVmWithUpdateAvailableShowsPublicationDateOfTheUpdate [
-
-	presenter fetchDetails.
-
-	self assert: (presenter updateDescriptionFor: outdatedVm) equals: '2999-01-15'.
-	self assert: (presenter updateDescriptionFor: upToDateVm) equals: ''
-]
-
-{ #category : 'tests' }
 PhLVMPresenterUpdateTest >> testToolbarDoesNotShowVmInFolder [
 	"The location link of the detail panel shows the VM in its folder"
 
@@ -140,4 +144,111 @@ PhLVMPresenterUpdateTest >> testToolbarDoesNotShowVmInFolder [
 	commandNames := PhLVMPresenter buildToolbarGroup entries collect: [ :each | each name ].
 
 	self assert: commandNames asArray equals: #( 'Update' 'Delete' )
+]
+
+{ #category : 'helpers' }
+PhLVMPresenterUpdateTest >> installedVmNamed: aName [
+
+	| vm |
+	presenter createVmNamed: aName.
+	vm := presenter vmFor: aName.
+	vms add: vm.
+	^ vm
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testDetailOfSelectedVmShowsInstallationDateAndStatus [
+
+	presenter fetchDetails.
+
+	presenter selectVm: outdatedVm.
+
+	self assert: presenter detailPanel installedOn label equals: Date today yyyymmdd.
+	self
+		assert: presenter detailPanel status label
+		equals: 'Update available, published on 2999-01-15'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testDetailOfSelectedVmIsUpdatedOnceDetailsAreFetched [
+
+	presenter selectVm: outdatedVm.
+
+	presenter fetchDetails.
+
+	self
+		assert: presenter detailPanel status label
+		equals: 'Update available, published on 2999-01-15'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testDetailOfUpToDateVmShowsItsStatus [
+
+	presenter fetchDetails.
+
+	presenter selectVm: upToDateVm.
+
+	self assert: presenter detailPanel status label equals: 'Up to date'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusIsCheckingUntilUpdatesAreFetched [
+
+	self assert: (presenter statusFor: outdatedVm) equals: 'Checking...'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusIsEmptyWhenUpdatesAreNotChecked [
+
+	PhLVmUpdateChecker shouldRun: false.
+
+	presenter fetchDetails.
+
+	self assert: (presenter statusFor: outdatedVm) equals: ''
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusOfCustomVm [
+
+	| customVm |
+	customVm := self installedVmNamed: '130-x64-stable-gtk'.
+
+	presenter fetchDetails.
+
+	self assert: (presenter statusFor: customVm) equals: 'Custom VM'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusOfVmNotInstalled [
+
+	| missingVm |
+	missingVm := PhLVirtualMachine new
+		             id: '110-x64';
+		             manager: PhLTestVirtualMachineManager new;
+		             yourself.
+	vms add: missingVm.
+
+	presenter fetchDetails.
+
+	self assert: (presenter statusFor: missingVm) equals: 'Not installed'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusOfVmUnknownToServer [
+
+	| vm |
+	vm := self installedVmNamed: '80-x64'.
+
+	presenter fetchDetails.
+
+	self assert: (presenter statusFor: vm) equals: 'Unknown (offline)'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testStatusTellsIfUpdateIsAvailable [
+
+	presenter fetchDetails.
+
+	self assert: (presenter statusFor: outdatedVm) equals: 'Update available'.
+	self assert: (presenter statusFor: upToDateVm) equals: 'Up to date'
 ]

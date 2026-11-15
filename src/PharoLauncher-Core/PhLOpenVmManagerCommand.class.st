@@ -20,12 +20,9 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenVmManagerCommand >> execute [
 
-	| vmManager |
-	vmManager := self context
+	(self context
 		instantiate: PhLVMPresenter
-		on: PhLVirtualMachinesDataSource default.
-	vmManager fetchDetailsInBackground.
-	vmManager asModalWindow
+		on: PhLVirtualMachinesDataSource default) asModalWindow
 		owner: self context window;
 		withoutButtons;
 		open

@@ -80,6 +80,24 @@ PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testInstallationDateIsTheDateOfTheUpdate [
+	"Not the date of the files in the archive"
+
+	self serverPublishesArchiveTagged: 'first'.
+
+	vm updateFromUrl.
+
+	self assert: vm lastUpdateTime asDate equals: (Date year: 2020 month: 1 day: 1).
+	self assert: vm installationDate equals: Date today
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testNoInstallationDateForVmNotInstalled [
+
+	self assert: vm installationDate isNil
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForCustomVm [
 	"The server only publishes the archive of the standard VM: it must not replace a custom one"
 
@@ -125,6 +143,22 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableWhenServerDoesNotAnswer [
 	self installVmWithoutStamp.
 
 	self deny: vm isUpdateAvailable
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testStatusAsksTheServer [
+
+	self installVmWithoutStamp.
+
+	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+
+	self assert: vm status equals: 'Update available'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testStatusOfVmNotInstalledDoesNotAskTheServer [
+
+	self assert: vm status equals: 'Not installed'
 ]
 
 { #category : 'tests' }
@@ -183,12 +217,13 @@ PhLVirtualMachineUpdateTest >> testUpdatingAllSkipsVmFailingToUpdate [
 
 { #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
-	"A zip archive with the VM executables expected on OS X and Linux"
+	"A zip archive with the VM executables expected on OS X and Linux. Its files are dated from 2020, like a VM built long ago."
 
 	| archive |
 	archive := ZipArchive new.
 	archive addString: aString asByteArray as: 'version'.
 	archive addString: 'vm' asByteArray as: 'Pharo.app/Contents/MacOS/Pharo'.
 	archive addString: PhLVirtualMachine elfMagicNumber as: 'pharo'.
+	archive members do: [ :each | each modifiedAt: (DateAndTime year: 2020 month: 1 day: 1) ].
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
 ]

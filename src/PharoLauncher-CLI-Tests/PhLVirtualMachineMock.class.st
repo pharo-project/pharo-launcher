@@ -118,12 +118,6 @@ PhLVirtualMachineMock >> lastUpdateTime: aDateTime [
 	lastUpdateTime := aDateTime 
 ]
 
-{ #category : 'accessing' }
-PhLVirtualMachineMock >> lastUpdateTimeDescription [
-
-	^ lastUpdateTime asString
-]
-
 { #category : 'instance' }
 PhLVirtualMachineMock >> removeFromSystem [
 	self isDeleted: true.
@@ -133,4 +127,28 @@ PhLVirtualMachineMock >> removeFromSystem [
 { #category : 'instance' }
 PhLVirtualMachineMock >> updateFromUrl [
 	 self isUpdated: true.
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachineMock >> installationDate [
+
+	^ Date year: 2026 month: 10 day: 23
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachineMock >> location [
+
+	^ '/vms/' , id
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachineMock >> status [
+
+	^ 'Update available'
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachineMock >> version [
+
+	^ '10.3.12'
 ]

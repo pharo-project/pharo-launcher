@@ -20,6 +20,20 @@ PhLVMListCliCommandTest >> testListVirtualMachines [
 ]
 
 { #category : 'tests' }
+PhLVMListCliCommandTest >> testListShowsVersionInstallationDateAndStatus [
+
+	self addVmNamed: 'myVm1'.
+
+	self runCommand: #( 'launcher' 'vm' 'list' ).
+
+	self assertSuccess.
+	#( 'Version' 'Installed on' 'Status' '10.3.12' '2026-10-23' 'Update available' ) do: [ :each |
+		self assert: (self outputString includesSubstring: each) description: each , ' is not listed' ].
+	#( 'Is valid' 'Last update' 'Download URL' ) do: [ :each |
+		self deny: (self outputString includesSubstring: each) description: each , ' is still listed' ]
+]
+
+{ #category : 'tests' }
 PhLVMListCliCommandTest >> testListVirtualMachinesAsSton [
 	| vm |
 	self addVmNamed: 'myVm1'.

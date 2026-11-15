@@ -1,13 +1,31 @@
 Extension { #name : 'PhLVirtualMachine' }
 
 { #category : '*PharoLauncher-CLI' }
+PhLVirtualMachine class >> extendedListPrintAttributeBlocks [
+
+	^ self listPrintAttributeBlocks , {
+		  [ :vm | vm downloadUrl ].
+		  [ :vm | vm location ] }
+]
+
+{ #category : '*PharoLauncher-CLI' }
+PhLVirtualMachine class >> extendedListPrintAttributeLabels [
+
+	^ self listPrintAttributeLabels , { 'Download URL'. 'Location' }
+]
+
+{ #category : '*PharoLauncher-CLI' }
 PhLVirtualMachine class >> listPrintAttributeBlocks [
-	
-	^ {[:vm | vm isValid ifTrue: ['Yes'] ifFalse: ['No']].[:vm | vm id]. [:vm | vm lastUpdateTimeDescription]. [:vm | vm downloadUrl].}
+
+	^ {
+		  [ :vm | vm id ].
+		  [ :vm | vm version ].
+		  [ :vm | vm installationDate ifNil: [ '' ] ifNotNil: [ :date | date yyyymmdd ] ].
+		  [ :vm | vm status ] }
 ]
 
 { #category : '*PharoLauncher-CLI' }
 PhLVirtualMachine class >> listPrintAttributeLabels [
-	
-	^ {'Is valid'. 'Name'. 'Last update'. 'Download URL'}
+
+	^ { 'Name'. 'Version'. 'Installed on'. 'Status' }
 ]

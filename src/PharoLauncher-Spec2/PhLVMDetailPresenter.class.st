@@ -1,6 +1,6 @@
 "
-Presenter of the details of a virtual machine: a header with its id and version, then its download URL and location on disk, as links.
-The version is the one already fetched by my owner.
+Presenter of the details of a virtual machine: a header with its id and version, its download URL and location on disk as links, its installation date and its status.
+The version and the status are the ones already fetched by my owner.
 My model is nil when there is no virtual machine to show.
 
 I'm part of the VM manager window, see `PhLVMPresenter`.
@@ -11,7 +11,9 @@ Class {
 	#instVars : [
 		'header',
 		'downloadUrl',
-		'location'
+		'location',
+		'installedOn',
+		'status'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -29,7 +31,7 @@ PhLVMDetailPresenter >> defaultLayout [
 				   add: header;
 				   yourself)
 		  expand: false;
-		  add: self linksLayout;
+		  add: self detailsLayout;
 		  yourself
 ]
 
@@ -59,11 +61,19 @@ PhLVMDetailPresenter >> initializePresenters [
 	header := self newLabel.
 	header addStyle: 'form_header'.
 	downloadUrl := self newLink.
-	location := self newLink
+	location := self newLink.
+	installedOn := self newLabel.
+	status := self newLabel
+]
+
+{ #category : 'accessing' }
+PhLVMDetailPresenter >> installedOn [
+
+	^ installedOn
 ]
 
 { #category : 'layout' }
-PhLVMDetailPresenter >> linksLayout [
+PhLVMDetailPresenter >> detailsLayout [
 
 	^ SpGridLayout build: [ :builder |
 		  builder
@@ -76,7 +86,13 @@ PhLVMDetailPresenter >> linksLayout [
 			  add: downloadUrl;
 			  nextRow;
 			  add: 'Location';
-			  add: location ]
+			  add: location;
+			  nextRow;
+			  add: 'Installed on';
+			  add: installedOn;
+			  nextRow;
+			  add: 'Status';
+			  add: status ]
 ]
 
 { #category : 'accessing' }
@@ -102,7 +118,9 @@ PhLVMDetailPresenter >> showNoVm [
 		action: [  ].
 	location
 		label: '';
-		action: [  ]
+		action: [  ].
+	installedOn label: ''.
+	status label: ''
 ]
 
 { #category : 'private - updating' }
@@ -116,7 +134,17 @@ PhLVMDetailPresenter >> showVm: aVm [
 	location
 		label: aVm location;
 		action: [ aVm showInFolder ];
-		help: 'Show this virtual machine in its folder'
+		help: 'Show this virtual machine in its folder'.
+	installedOn label: (aVm installationDate
+			 ifNil: [ '' ]
+			 ifNotNil: [ :date | date yyyymmdd ]).
+	status label: (self owner statusDescriptionFor: aVm)
+]
+
+{ #category : 'accessing' }
+PhLVMDetailPresenter >> status [
+
+	^ status
 ]
 
 { #category : 'accessing' }

@@ -279,6 +279,19 @@ PhLVirtualMachine >> initializeOn: aFolder [
 ]
 
 { #category : 'querying' }
+PhLVirtualMachine >> installationDate [
+	"Answer the date I was installed or updated by the Launcher, nil if I am not installed.
+	The stamp of the archive is stored right after each update. Before the Launcher stored it, the best guess is the date of my executable."
+
+	| stampFile |
+	self isValid ifFalse: [ ^ nil ].
+	stampFile := self vmStore / self id / PhLRemoteFileStamp fileName.
+	^ stampFile exists
+		  ifTrue: [ stampFile modificationTime asDate ]
+		  ifFalse: [ self lastUpdateTime asDate ]
+]
+
+{ #category : 'querying' }
 PhLVirtualMachine >> installedStamp [
 	"Answer the stamp of the archive I was installed from, nil if unknown."
 
@@ -365,15 +378,6 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
-{ #category : 'querying' }
-PhLVirtualMachine >> lastUpdateTimeDescription [
-	
-	| timestamp |
-	self isValid ifFalse: [ ^ 'Not available' ].
-	timestamp := self lastUpdateTime.
-	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
-]
-
 { #category : 'testing' }
 PhLVirtualMachine >> needsUpdate [
 	"Answer whether I should be downloaded: I am not installed, or an update is available."
@@ -436,6 +440,27 @@ PhLVirtualMachine >> removeFromSystem [
 	zipFile exists
 		ifTrue: [ zipFile ensureDelete ].
 
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> status [
+	"Answer whether I am up to date, in words. The server is asked only when I am an installed standard VM."
+
+	^ self statusGivenPublishedStamp: (self isUpdatable ifTrue: [ self publishedStamp ])
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> statusGivenPublishedStamp: aPublishedStamp [
+	"Answer whether I am up to date, in words, given the stamp of the archive published on the server (nil if the server did not answer)."
+
+	self isValid ifFalse: [ ^ 'Not installed' ].
+	self isStandard ifFalse: [ ^ 'Custom VM' ].
+	^ aPublishedStamp
+		  ifNil: [ 'Unknown (offline)' ]
+		  ifNotNil: [ :stamp |
+			  (self isOutdatedBy: stamp)
+				  ifTrue: [ 'Update available' ]
+				  ifFalse: [ 'Up to date' ] ]
 ]
 
 { #category : 'actions' }

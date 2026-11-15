@@ -74,7 +74,7 @@ PhLVMPresenter >> datasource [
 { #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
 	^ SpPanedLayout newTopToBottom
-		positionOfSlider: 70 percent;
+		positionOfSlider: 60 percent;
 		add: vmTable;
 		add: detailPanel;
 		yourself
@@ -131,15 +131,6 @@ PhLVMPresenter >> fetchVersions [
 	^ (self datasource virtualMachines collect: [ :vm | vm id -> vm version ]) asDictionary
 ]
 
-{ #category : 'testing' }
-PhLVMPresenter >> hasUpdateAvailable: aVm [
-	"Rely on the stamps fetched by the last check: a VM is no more outdated once updated."
-
-	^ (self publishedStamps at: aVm id ifAbsent: [ nil ])
-		ifNil: [ false ]
-		ifNotNil: [ :stamp | aVm isOutdatedBy: stamp ]
-]
-
 { #category : 'private' }
 PhLVMPresenter >> iconFor: vm [
 	| icon |
@@ -171,12 +162,9 @@ PhLVMPresenter >> initializePresenters [
 		addColumn: (SpStringTableColumn
 			title: 'Version'
 			evaluated: [ :vm | self versionDescriptionFor: vm ]);
-		addColumn: ((SpStringTableColumn 
-			title: 'Last update' 
-			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
 		addColumn: (SpStringTableColumn
-			title: 'Update'
-			evaluated: [ :vm | self updateDescriptionFor: vm ]);
+			title: 'Status'
+			evaluated: [ :vm | self statusFor: vm ]);
 		showColumnHeaders;
 		alternateRowsColor;
 		actions: (SpActionGroup new
@@ -185,7 +173,8 @@ PhLVMPresenter >> initializePresenters [
 		beResizable;
 		beMultipleSelection;
 		items: self datasource virtualMachines;
-		yourself
+		yourself.
+	self whenBuiltDo: [ self fetchDetailsInBackground ]
 ]
 
 { #category : 'initialization' }
@@ -201,9 +190,10 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 ]
 
 { #category : 'private' }
-PhLVMPresenter >> publishedStamps [
+PhLVMPresenter >> publishedStampOf: aVm [
+	"Answer the stamp of the archive published for the VM by the last check, nil if the server did not answer."
 
-	^ publishedStamps ifNil: [ publishedStamps := Dictionary new ]
+	^ publishedStamps at: aVm id ifAbsent: [ nil ]
 ]
 
 { #category : 'private' }
@@ -213,8 +203,13 @@ PhLVMPresenter >> readableDateFor: aTimestamp [
 ]
 
 { #category : 'refreshing' }
-PhLVMPresenter >> refresh [ 
-	vmTable items: self datasource virtualMachines
+PhLVMPresenter >> refresh [
+	"Keep the selection: the details of the selected VM are shown again with what was fetched"
+
+	| selection |
+	selection := vmTable selectedItems.
+	vmTable items: self datasource virtualMachines.
+	vmTable selectItems: (vmTable items select: [ :each | selection includes: each ])
 ]
 
 { #category : 'initialization' }
@@ -248,14 +243,25 @@ PhLVMPresenter >> showVersions: versionsByVmId updates: stampsByVmId [
 ]
 
 { #category : 'accessing' }
-PhLVMPresenter >> updateDescriptionFor: aVm [
-	"Answer the publication date of the update available for the VM, an empty string if there is none.
-	The server does not tell the version of the VM it publishes."
+PhLVMPresenter >> statusFor: aVm [
+	"Answer whether the VM is up to date, in words. The server is asked in background: until it answers, the status is being checked."
 
-	(self hasUpdateAvailable: aVm) ifFalse: [ ^ '' ].
-	^ (self publishedStamps at: aVm id) publicationDate
-		ifNil: [ 'Update available' ]
-		ifNotNil: [ :date | date yyyymmdd ]
+	aVm isUpdatable ifFalse: [ ^ aVm statusGivenPublishedStamp: nil ].
+	PhLVmUpdateChecker shouldRun ifFalse: [ ^ '' ].
+	publishedStamps ifNil: [ ^ 'Checking...' ].
+	^ aVm statusGivenPublishedStamp: (self publishedStampOf: aVm)
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> statusDescriptionFor: aVm [
+	"Answer the status of the VM, with the publication date of the update when one is available."
+
+	| status |
+	status := self statusFor: aVm.
+	status = 'Update available' ifFalse: [ ^ status ].
+	^ (self publishedStampOf: aVm) publicationDate
+		  ifNil: [ status ]
+		  ifNotNil: [ :date | status , ', published on ' , date yyyymmdd ]
 ]
 
 { #category : 'accessing' }

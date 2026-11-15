@@ -65,7 +65,7 @@ PhLDeploymentScript class >> closeWindowsAndOpenDevelopmentEnvironment [
 	PanelMorph allInstancesDo: [ :pm | pm delete ].
 	self closeAllWindows.
 	TaskbarMorph reset.
-	MenubarMorph reset.
+	MenubarMorph showMenubar: true.
 	Smalltalk tools workspace openContents: 'PharoLauncherApplication open.'.
 
 	"PanelMorph comes from use of #openWorldWithSpec"
@@ -103,6 +103,7 @@ PhLDeploymentScript class >> doAll [
 	self
 		closeAllWindows;
 		removeAllMorphs;
+		hideMenubar;
 		deactivateStartupActions;
 		dontRaiseWarningForMissingChangesOrSourcesFiles;
 		deactivateDeprecationWarnings;
@@ -154,6 +155,12 @@ PhLDeploymentScript class >> initializeGTkEnumerations [
 { #category : 'public' }
 PhLDeploymentScript class >> initializeLibgit [
 	LGitLibrary uniqueInstance initializeLibGit2
+]
+
+{ #category : 'actions' }
+PhLDeploymentScript class >> hideMenubar [
+	"Removing the menu bar morph is not enough: the world creates it again at startup"
+	MenubarMorph showMenubar: false
 ]
 
 { #category : 'settings' }

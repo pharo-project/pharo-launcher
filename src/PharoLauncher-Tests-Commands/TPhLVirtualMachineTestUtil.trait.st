@@ -23,15 +23,25 @@ TPhLVirtualMachineTestUtil >> createVmNamed: aName private: isPrivateVm [
 	(appDir / 'Pharo') ensureCreateFile.
 	
 	"needed on Linux"
-	(vmDirectory / PhLVirtualMachine executableName) 
-		binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
+	self createVmBinary: vmDirectory / PhLVirtualMachine executableName
+]
+
+{ #category : 'adding' }
+TPhLVirtualMachineTestUtil >> createVmBinary: aFileReference [
+	"On Linux, a folder is a VM only if it holds an ELF binary"
+
+	aFileReference binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ]
 ]
 
 { #category : 'adding' }
 TPhLVirtualMachineTestUtil >> makeExecutableOf: aVm print: aString [
-	"Replace the executable of the VM by a script printing the given text. The VM must be on disk."
+	"Replace the executable of the VM by a script printing the given text. The VM must be on disk.
+	The binary moves to lib/, as in the VMs published for Linux, so that the folder is still found as a VM."
 
-	aVm executablePath asFileReference
+	| executable |
+	executable := aVm executablePath asFileReference.
+	self createVmBinary: (executable parent / 'lib') ensureCreateDirectory / PhLVirtualMachine executableName.
+	executable
 		ensureDelete;
 		writeStreamDo: [ :stream |
 			stream << '#!/bin/sh' << String lf << 'echo "' << aString << '"' << String lf ].

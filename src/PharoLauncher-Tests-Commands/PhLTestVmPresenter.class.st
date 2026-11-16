@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'selection',
 		'vmManager',
-		'vmStoreRoot'
+		'vmStoreRoot',
+		'information'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -26,6 +27,11 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	"needed on Linux"
 	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 	 
+]
+
+{ #category : 'accessing' }
+PhLTestVmPresenter >> information [
+	^ information
 ]
 
 { #category : 'initialization' }
@@ -47,9 +53,16 @@ PhLTestVmPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
 ]
 
+{ #category : 'user interaction' }
+PhLTestVmPresenter >> newInformation [
+	^ information := PhLTestConfirmation new
+]
+
 { #category : 'accessing' }
 PhLTestVmPresenter >> selectedVms [
-	^ selection ifNil: [ { self vmFor: self singleVmName } ]
+	"The selection set by a test, else the one of the table, else the single VM"
+
+	^ selection ifNil: [ super selectedVms ifEmpty: [ { self vmFor: self singleVmName } ] ]
 ]
 
 { #category : 'configuring' }

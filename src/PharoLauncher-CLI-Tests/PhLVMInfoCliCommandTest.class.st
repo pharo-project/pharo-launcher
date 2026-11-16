@@ -13,7 +13,9 @@ PhLVMInfoCliCommandTest >> testInfoVmShouldSucceed [
 	
 	self runCommand: #('launcher' 'vm' 'info' 'myVm1').
 	self assertSuccess.
-	self assert: (self outputString includesSubstring:'valid' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'status' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'location' caseSensitive: false).
+	self assert: (self outputString includesSubstring:'/vms/myVm1' caseSensitive: false).
 	self assert: (self outputString includesSubstring:'name' caseSensitive: false).
 	self assert: (self outputString includesSubstring:'myVm1' caseSensitive: false).
 	self assert: (self outputString includesSubstring:'url' caseSensitive: false).

@@ -6,6 +6,8 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'documents',
+		'stamps',
+		'stampRequestCount',
 		'defaultResponse'
 	],
 	#category : 'PharoLauncher-Tests-Download',
@@ -34,11 +36,21 @@ PhLDownloadManagerMock >> atUrl: anUrl answer: aDocument [
 	self documents at: anUrl put: aDocument
 ]
 
+{ #category : 'configuration' }
+PhLDownloadManagerMock >> atUrl: anUrl answerStamp: aPhLRemoteFileStamp [
+	self stamps at: anUrl put: aPhLRemoteFileStamp
+]
+
 { #category : 'actions' }
 PhLDownloadManagerMock >> download: aUrl toFile: aFileReference [ 
 	
+	| document |
+	document := self documentAt: aUrl.
 	aFileReference ensureDelete.
-	aFileReference writeStreamDo: [ :aStream | aStream nextPutAll: (self documentAt: aUrl) ]
+	aFileReference binaryWriteStreamDo: [ :aStream |
+		aStream nextPutAll: (document isString
+				 ifTrue: [ document utf8Encoded ]
+				 ifFalse: [ document ]) ]
 ]
 
 { #category : 'accessing' }
@@ -75,4 +87,31 @@ PhLDownloadManagerMock >> downloadToPositionableStream: anUrl [
 PhLDownloadManagerMock >> downloadToPositionableStream: anUrl mimeType: aMimeType [ 
 	"Ignore mime type"
 	^ self downloadToPositionableStream: anUrl
+]
+
+{ #category : 'action' }
+PhLDownloadManagerMock >> stampOf: anUrl [
+
+	stampRequestCount := self stampRequestCount + 1.
+	^ self stamps
+		  at: anUrl
+		  ifAbsent: [ PhLDownloadError signalUrl: anUrl ]
+]
+
+{ #category : 'accessing' }
+PhLDownloadManagerMock >> stamps [
+	^ stamps ifNil: [ stamps := Dictionary new ]
+]
+
+{ #category : 'accessing' }
+PhLDownloadManagerMock >> stampRequestCount [
+	"Number of times the stamp of a file was asked to the server"
+
+	^ stampRequestCount ifNil: [ 0 ]
+]
+
+{ #category : 'configuration' }
+PhLDownloadManagerMock >> stopAnsweringStampOf: anUrl [
+
+	self stamps removeKey: anUrl ifAbsent: [ nil ]
 ]

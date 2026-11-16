@@ -25,6 +25,16 @@ PhLGeneralSettingsPresenterTest >> testCanSetCheckTemplateSourcesUpdate [
 ]
 
 { #category : 'tests' }
+PhLGeneralSettingsPresenterTest >> testCanSetCheckVmUpdate [
+
+	presenter checkForVmUpdateSwitch: false.
+	self deny: PhLVmUpdateChecker shouldRun.
+
+	presenter checkForVmUpdateSwitch: true.
+	self assert: PhLVmUpdateChecker shouldRun
+]
+
+{ #category : 'tests' }
 PhLGeneralSettingsPresenterTest >> testCanSetImagesLocation [
 
 	self skip: 'Need to handle application that is nil'.

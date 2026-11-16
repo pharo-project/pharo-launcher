@@ -161,3 +161,4 @@ PhLTestApplication >> title: aString [
 PhLTestApplication >> validateAnswer: aBlockClosure [ 
 	"do nothing"
 ]
+

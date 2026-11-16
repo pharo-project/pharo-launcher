@@ -36,3 +36,23 @@ PhLDownloadManagerTest >> testDownloadFailureIsSignaledToTheCaller [
 		should: [ downloadManager download: 'http://localhost:1/template.zip' asUrl toFile: FileSystem memory root / 'dwl' ]
 		raise: PhLDownloadError
 ]
+
+{ #category : 'tests' }
+PhLDownloadManagerTest >> testStampOfMissingFileSignalsDownloadErrorWithoutRecordingIt [
+	"Checking if a file changed is not a download the user asked for"
+
+	self
+		should: [ downloadManager stampOf: 'https://files.pharo.org/get-files/130/missing.zip' ]
+		raise: PhLDownloadError.
+	self assert: downloadManager numberOfErrors equals: 0
+]
+
+{ #category : 'tests' }
+PhLDownloadManagerTest >> testStampOfPublishedFileTellsItsVersion [
+
+	| stamp |
+	stamp := downloadManager stampOf: (PhLVirtualMachine id: '130-x64') downloadUrl.
+
+	self assert: stamp etag isNotEmpty.
+	self assert: (stamp isNewerThan: (DateAndTime year: 2020 month: 1 day: 1))
+]

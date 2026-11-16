@@ -8,6 +8,7 @@ Class {
 	#classTraits : 'TPhLInteractionTrait classTrait',
 	#instVars : [
 		'vmTable',
+		'detailPanel',
 		'rootCommandsGroup'
 	],
 	#category : 'PharoLauncher-Spec2-View',
@@ -41,10 +42,6 @@ PhLVMPresenter class >> buildToolbarGroup [
 	^ (CmCommandGroup named: 'Toolbar') asSpecGroup
 		description: 'Pharo Launcher VM Manager toolbar';
 		register: PhLUpdateVmCommand forSpec;
-		register:
-			(PhLShowVmInFolderCommand forSpec
-				name: 'Show';
-				yourself);
 		register: PhLDeleteVmCommand forSpec;
 		beDisplayedAsGroup;
 		yourself
@@ -56,6 +53,17 @@ PhLVMPresenter class >> example [
 	(self on: PhLVirtualMachinesDataSource default) open
 ]
 
+{ #category : 'initialization' }
+PhLVMPresenter >> connectPresenters [
+
+	vmTable
+		transmitTo: detailPanel
+		transform: [ :vms |
+			vms size = 1
+				ifTrue: [ vms first ]
+				ifFalse: [ nil ] ]
+]
+
 { #category : 'accessing' }
 PhLVMPresenter >> datasource [
 	^ self model
@@ -63,9 +71,18 @@ PhLVMPresenter >> datasource [
 
 { #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
-	^ SpBoxLayout newVertical
-		add: vmTable;
-		yourself
+
+	^ SpPanedLayout newTopToBottom
+		  positionOfSlider: 60 percent;
+		  add: vmTable;
+		  add: detailPanel;
+		  yourself
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> detailPanel [
+
+	^ detailPanel
 ]
 
 { #category : 'private - actions' }
@@ -78,8 +95,13 @@ PhLVMPresenter >> doShowInFolder [
 
 { #category : 'private' }
 PhLVMPresenter >> iconFor: vm [
+	"Green when the VM is available, yellow when an update is available for it, grey when it is not available"
+
 	| icon |
-	
+	vm isUpdateAvailable ifTrue: [
+		^ (self iconNamed: #testYellow) asMorph
+			  setBalloonText: (self statusDescriptionFor: vm);
+			  yourself ].
 	icon := vm isValid
 		ifTrue: [ self iconNamed: #testGreen ]
 		ifFalse: [ self iconNamed: #testNotRun ].
@@ -99,14 +121,17 @@ PhLVMPresenter >> initialExtent [
 PhLVMPresenter >> initializePresenters [
 
 	self addStyle: 'launcher'.
+	detailPanel := self instantiate: PhLVMDetailPresenter on: nil.
 	vmTable := self newTable
 		whenActivatedDo: [ self doShowInFolder ];
 		addColumn: ((SpImageTableColumn title: '' evaluated: [ :vm | self iconFor: vm ]) width: 20);
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name) width: 150; yourself);
-		addColumn: ((SpStringTableColumn 
-			title: 'Last update' 
-			evaluated: #lastUpdateTimeDescription) width: 150; yourself);
-		addColumn: (SpStringTableColumn title: 'Download URL' evaluated: #downloadUrl);
+		addColumn: (SpStringTableColumn
+			title: 'Version'
+			evaluated: [ :vm | self versionDescriptionFor: vm ]);
+		addColumn: (SpStringTableColumn
+			title: 'Status'
+			evaluated: [ :vm | self statusFor: vm ]);
 		showColumnHeaders;
 		alternateRowsColor;
 		actions: (SpActionGroup new
@@ -115,7 +140,8 @@ PhLVMPresenter >> initializePresenters [
 		beResizable;
 		beMultipleSelection;
 		items: self datasource virtualMachines;
-		yourself
+		yourself.
+	self whenBuiltDo: [ self subscribeToVmUpdateChecks ]
 ]
 
 { #category : 'initialization' }
@@ -136,9 +162,30 @@ PhLVMPresenter >> readableDateFor: aTimestamp [
 
 ]
 
+{ #category : 'opening' }
+PhLVMPresenter >> openModalOver: aPresenter [
+	"Open me as a modal window over the window of the given presenter. Answer once I am closed."
+
+	self asModalWindow
+		owner: aPresenter window;
+		withoutButtons;
+		open
+]
+
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectVms: virtualMachines [
+
+	vmTable selectItems: (vmTable items select: [ :each | virtualMachines includes: each ])
+]
+
 { #category : 'refreshing' }
-PhLVMPresenter >> refresh [ 
-	vmTable items: self datasource virtualMachines
+PhLVMPresenter >> refresh [
+	"Keep the selection: the details of the selected VM are shown again with what was fetched"
+
+	| selection |
+	selection := vmTable selectedItems.
+	vmTable items: self datasource virtualMachines.
+	vmTable selectItems: (vmTable items select: [ :each | selection includes: each ])
 ]
 
 { #category : 'initialization' }
@@ -146,7 +193,58 @@ PhLVMPresenter >> rootCommandsGroup [
 	^ rootCommandsGroup ifNil: [ rootCommandsGroup := super rootCommandsGroup ]
 ]
 
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectAllVms [
+
+	vmTable selectAll
+]
+
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectVm: aVm [
+
+	vmTable selectItem: aVm
+]
+
 { #category : 'accessing' }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
 ]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> statusFor: aVm [
+	"The status is the result of the last check for updates: the server is not asked."
+
+	^ aVm status
+]
+
+{ #category : 'initialization' }
+PhLVMPresenter >> subscribeToVmUpdateChecks [
+	"Show the result of a check done while I am open. Checks are done by another process: refresh in the UI process."
+
+	PhLVmUpdateAnnouncer default
+		when: PhLVmUpdateCheckDone
+		do: [ self application defer: [ self refresh ] ]
+		for: self.
+	self withWindowDo: [ :window |
+		window whenClosedDo: [ PhLVmUpdateAnnouncer default unsubscribe: self ] ]
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> statusDescriptionFor: aVm [
+	"Answer the status of the VM, with the publication date of the update when one is available."
+
+	| status |
+	status := self statusFor: aVm.
+	aVm isUpdateAvailable ifFalse: [ ^ status ].
+	^ aVm publishedStamp publicationDate
+		  ifNil: [ status ]
+		  ifNotNil: [ :date | status , ', published on ' , date yyyymmdd ]
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> versionDescriptionFor: aVm [
+	"The version stored by the last check or installation: running the VM takes time."
+
+	^ aVm storedVersion
+]
+

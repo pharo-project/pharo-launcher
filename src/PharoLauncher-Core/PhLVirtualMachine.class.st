@@ -83,6 +83,20 @@ PhLVirtualMachine class >> isSubclassForDirectory: aFileReference [
 	^ aFileReference basename beginsWith: self versionPrefix
 ]
 
+{ #category : 'updating' }
+PhLVirtualMachine class >> updateAll: virtualMachines [
+	"A VM failing to update is left as it was: the other VMs are still updated.
+	Answer the errors telling which VMs were not updated."
+
+	| errors |
+	errors := OrderedCollection new.
+	virtualMachines do: [ :each |
+		[ each updateFromUrl ]
+			on: Error
+			do: [ :error | errors add: (PhLVirtualMachineUpdateError vm: each cause: error) ] ].
+	^ errors
+]
+
 { #category : 'accessing' }
 PhLVirtualMachine class >> versionPrefix [
 	"See class comment, 'Filesystem Location' section"
@@ -264,6 +278,96 @@ PhLVirtualMachine >> initializeOn: aFolder [
 	self initializeExecutableRefFrom: aFolder.
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> installationDate [
+	"Answer the date I was installed or updated by the Launcher, nil if I am not installed.
+	Before the Launcher stored it, the best guess is the date of my executable."
+
+	self isValid ifFalse: [ ^ nil ].
+	^ (self metadata installedOn ifNil: [ self lastUpdateTime ]) asDate
+]
+
+{ #category : 'updating' }
+PhLVirtualMachine >> checkForUpdate [
+	"Ask the server the stamp of the archive it publishes and record it in my folder, with my version, in one write.
+	When the server does not answer, the result of the previous check is kept.
+	Answer whether an update is available."
+
+	| version stamp |
+	self isValid ifFalse: [ ^ false ].
+	"Running my executable and asking the server take time: done before writing my metadata"
+	version := self readVersionIfChanged.
+	stamp := self isUpdatable ifTrue: [ self fetchPublishedStamp ].
+	self updateMetadata: [ :metadata |
+		| hasChanged |
+		hasChanged := self record: version in: metadata.
+		stamp ifNotNil: [
+			metadata recordCheck: stamp.
+			hasChanged := true ].
+		hasChanged ].
+	^ self isUpdateAvailable
+]
+
+{ #category : 'updating' }
+PhLVirtualMachine >> refreshVersion [
+	"Record my version in my folder when my executable changed since it was recorded. The server is not asked."
+
+	| version |
+	self isValid ifFalse: [ ^ self ].
+	version := self readVersionIfChanged.
+	self updateMetadata: [ :metadata | self record: version in: metadata ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> readVersionIfChanged [
+	"Answer an association from the modification time of my executable to the version it prints, nil if this version is already recorded"
+
+	| executableTime |
+	executableTime := self lastUpdateTime.
+	(self metadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ ^ nil ].
+	^ executableTime -> self versionFromExecutable
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> record: aVersion in: aMetadata [
+	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process.
+	An unknown version is not recorded, so that it is read again at the next check."
+
+	aVersion ifNil: [ ^ false ].
+	aVersion value ifEmpty: [ ^ false ].
+	(aMetadata versionOfExecutableModifiedOn: aVersion key) ifNotNil: [ ^ false ].
+	aMetadata recordVersion: aVersion value executableTime: aVersion key.
+	^ true
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> updateMetadata: aBlock [
+	"Read my metadata, let the block change it, and store it when the block answers true, without another process writing it meanwhile.
+	Checks and installations are the only writers of my metadata: the VM manager and the command line only read it."
+
+	self isValid ifFalse: [ ^ self ].
+	PhLVmMetadata critical: [
+		| metadata |
+		metadata := self metadata.
+		(aBlock value: metadata) ifTrue: [ metadata storeInFolder: self vmStore / self id ] ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> fetchPublishedStamp [
+	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
+
+	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> installedStamp [
+	"Answer the stamp of the archive I was installed from, nil if unknown."
+
+	^ self metadata installedStamp
+]
+
 { #category : 'testing' }
 PhLVirtualMachine >> is64bit [
 	^ arch
@@ -278,8 +382,44 @@ PhLVirtualMachine >> isHeadless [
 ]
 
 { #category : 'testing' }
+PhLVirtualMachine >> isOutdatedBy: aPublishedStamp [
+	"Answer whether the given stamp is the one of another archive than the one I was installed from.
+	When the stamp of the archive I was installed from is unknown, rely on the date of my executable."
+
+	self isUpdatable ifFalse: [ ^ false ].
+	^ self installedStamp
+		  ifNil: [ aPublishedStamp isNewerThan: self lastUpdateTime ]
+		  ifNotNil: [ :installedStamp | (installedStamp isSameFileAs: aPublishedStamp) not ]
+]
+
+{ #category : 'testing' }
 PhLVirtualMachine >> isPreSpur [
 	^ id includes: 'preSpur'
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> isStandard [
+	"Answer whether I am a VM published on the Pharo files server, as opposed to a custom VM the user put in the VM store.
+	The download URL of a custom VM is the one of the standard VM for its Pharo version."
+
+	^ id matchesRegex: '\d+(-preSpur)?-x(64|86)'
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> isUpdatable [
+	"Answer whether an archive published on the server can tell if I am outdated."
+
+	^ self isValid and: [ self isStandard ]
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> isUpdateAvailable [
+	"Answer whether the last check found another archive than the one I was installed from. The server is not asked."
+
+	self isUpdatable ifFalse: [ ^ false ].
+	^ self publishedStamp
+		  ifNil: [ false ]
+		  ifNotNil: [ :stamp | self isOutdatedBy: stamp ]
 ]
 
 { #category : 'testing' }
@@ -309,12 +449,24 @@ PhLVirtualMachine >> lastUpdateTime [
 ]
 
 { #category : 'querying' }
-PhLVirtualMachine >> lastUpdateTimeDescription [
-	
-	| timestamp |
-	self isValid ifFalse: [ ^ 'Not available' ].
-	timestamp := self lastUpdateTime.
-	^ timestamp asDate yyyymmdd, ' ', timestamp asTime print24
+PhLVirtualMachine >> metadata [
+	"Answer what the Launcher stored about me in my folder"
+
+	^ PhLVmMetadata inFolder: self vmStore / self id
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> needsUpdate [
+	"Answer whether I should be downloaded: I am not installed, or the server publishes an update."
+
+	^ self isValid not or: [ self checkForUpdate ]
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachine >> location [
+	"Answer the path of my folder in the VM store"
+
+	^ (self vmStore / self id) fullName
 ]
 
 { #category : 'updating' }
@@ -346,6 +498,13 @@ PhLVirtualMachine >> printOn: aStream [
 		nextPut: $)
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> publishedStamp [
+	"Answer the stamp of the archive published on the server at the last check, nil if never checked."
+
+	^ self metadata publishedStamp
+]
+
 { #category : 'actions' }
 PhLVirtualMachine >> removeFromSystem [
 	| vmFolder zipFile |
@@ -356,6 +515,18 @@ PhLVirtualMachine >> removeFromSystem [
 	zipFile exists
 		ifTrue: [ zipFile ensureDelete ].
 
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> status [
+	"Answer whether I am up to date, in words, from the last check. The server is not asked."
+
+	self isValid ifFalse: [ ^ 'Not installed' ].
+	self isStandard ifFalse: [ ^ 'Custom VM' ].
+	self publishedStamp ifNil: [ ^ 'Not checked' ].
+	^ self isUpdateAvailable
+		  ifTrue: [ 'Update available' ]
+		  ifFalse: [ 'Up to date' ]
 ]
 
 { #category : 'actions' }
@@ -385,12 +556,23 @@ PhLVirtualMachine >> stonValueOf: anInstVarName [
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
 
-	self manager class 
-		fetch: self downloadUrl 
-		to: self vmStore / (self id , '.zip').
+	self completeInstallationFrom: (self manager class
+			 fetch: self downloadUrl
+			 to: self vmStore / (self id , '.zip'))
+]
 
+{ #category : 'updating' }
+PhLVirtualMachine >> completeInstallationFrom: aStamp [
+	"My files were just extracted from an archive having the given stamp (nil if unknown).
+	Make them usable, then record the archive and my version in one write."
+
+	| metadata |
 	self initializeExecutableRefFrom: self vmStore / self id.
-	self ensureExecutionRights
+	self ensureExecutionRights.
+	self isValid ifFalse: [ ^ self ].
+	metadata := PhLVmMetadata installedFrom: aStamp.
+	self record: self lastUpdateTime -> self versionFromExecutable in: metadata.
+	metadata storeInFolder: self vmStore / self id
 ]
 
 { #category : 'accessing' }
@@ -399,6 +581,52 @@ PhLVirtualMachine >> validityDescription [
 	^ self isValid
 		ifTrue: [ 'VM available' ]
 		ifFalse: [ 'VM not available' ]
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> version [
+	"Answer my version, e.g. '10.3.12': the recorded one, else the one printed by my executable (not recorded).
+	Answer an empty string when it cannot be told, e.g. I am not installed or my executable cannot be run on this computer."
+
+	self isValid ifFalse: [ ^ '' ].
+	^ self recordedVersion ifNil: [ self versionFromExecutable ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> recordedVersion [
+	"Answer the version recorded for my executable as it is now, nil if none"
+
+	^ self metadata versionOfExecutableModifiedOn: self lastUpdateTime
+]
+
+{ #category : 'querying' }
+PhLVirtualMachine >> storedVersion [
+	"Answer the version recorded by the last check or installation, an empty string if none. My executable is not run."
+
+	self isValid ifFalse: [ ^ '' ].
+	^ self recordedVersion ifNil: [ '' ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> versionFromExecutable [
+
+	| words version |
+	words := self versionOutput substrings.
+	words size < 2 ifTrue: [ ^ '' ].
+	version := words second.
+	(version beginsWith: 'v') ifTrue: [ version := version allButFirst ].
+	^ (version notEmpty and: [ version first isDigit ])
+		  ifTrue: [ version ]
+		  ifFalse: [ '' ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> versionOutput [
+	"The version is the second word printed by the executable:
+	'Pharo v10.3.12 built on ...', 'Pharo 9.0.22 built on ...' or '5.0 5.0.202002121007 Mac OS X built on ...'"
+
+	^ PhLProcessWrapper outputOfShellCommand:
+		  ('"{1}" --version 2> /dev/null' format: { self executablePath })
 ]
 
 { #category : 'setting' }

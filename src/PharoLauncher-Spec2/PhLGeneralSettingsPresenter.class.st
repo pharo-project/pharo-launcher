@@ -12,6 +12,7 @@ Class {
 		'launchFromALoginShellSwitch',
 		'warnOnImageArchMisMatchSwitch',
 		'checkForTemplateSourcesUpdateSwitch',
+		'checkForVmUpdateSwitch',
 		'hardResetPersistentStateButton',
 		'templateSourcesUrlInput',
 		'sourcesFileLocationInput',
@@ -40,6 +41,12 @@ PhLGeneralSettingsPresenter class >> open [
 PhLGeneralSettingsPresenter >> checkForTemplateSourcesUpdateSwitch: aBoolean [
 
 	checkForTemplateSourcesUpdateSwitch state: aBoolean
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> checkForVmUpdateSwitch: aBoolean [
+
+	checkForVmUpdateSwitch state: aBoolean
 ]
 
 { #category : 'initialization' }
@@ -100,6 +107,7 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell .
 	warnOnImageArchMisMatchSwitch := self newSwitchFor: #warnOnArchMismatch.
 	checkForTemplateSourcesUpdateSwitch := self newSwitchFor: #shouldCheckTemplateSourcesUpdate.
+	checkForVmUpdateSwitch := self newSwitchFor: #shouldCheckVmUpdate.
 
 	templateSourcesUrlInput := self newTextInputFor: #sourcesUrl.
 	sourcesFileLocationInput := (self newTextInputFor: #launcherCoreDirString)
@@ -235,6 +243,10 @@ PhLGeneralSettingsPresenter >> newSourcesSection [
 			add: (SpBoxLayout newLeftToRight
 				add: 'Check for template sources update?';
 				add: checkForTemplateSourcesUpdateSwitch expand: false;
+				yourself) expand: false;
+			add: (SpBoxLayout newLeftToRight
+				add: 'Check for virtual machines update?';
+				add: checkForVmUpdateSwitch expand: false;
 				yourself) expand: false;
 			add: (SpBoxLayout newLeftToRight 
 				add: 'Templates cleared at startup';

@@ -27,6 +27,17 @@ TPhLVirtualMachineTestUtil >> createVmNamed: aName private: isPrivateVm [
 		binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 ]
 
+{ #category : 'adding' }
+TPhLVirtualMachineTestUtil >> makeExecutableOf: aVm print: aString [
+	"Replace the executable of the VM by a script printing the given text. The VM must be on disk."
+
+	aVm executablePath asFileReference
+		ensureDelete;
+		writeStreamDo: [ :stream |
+			stream << '#!/bin/sh' << String lf << 'echo "' << aString << '"' << String lf ].
+	aVm ensureExecutionRights
+]
+
 { #category : 'tests' }
 TPhLVirtualMachineTestUtil >> replaceOSByMacIn: url [
 	^ (url copyReplaceAll: 'linux' with: 'mac') copyReplaceAll: 'win' with: 'mac'

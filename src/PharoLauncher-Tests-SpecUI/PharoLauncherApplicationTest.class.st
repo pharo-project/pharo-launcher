@@ -38,6 +38,14 @@ PharoLauncherApplicationTest >> testApplicationIsSubscribedToAnnouncers [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testApplicationIsSubscribedToVmUpdateChecker [
+
+	application initializeVmUpdateChecker.
+
+	self assert: (application vmUpdateChecker announcer hasSubscriber: application)
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testApplicationShowsProgress [
 
 	self assert: ITProgressRunner default application identicalTo: application
@@ -93,4 +101,14 @@ PharoLauncherApplicationTest >> testUnsubscribeFromAnnouncers [
 	application unsubscribeFromAnnouncers.
 
 	self deny: (PhLTemplateSourcesAnnouncer default hasSubscriber: application)
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testUnsubscribeFromVmUpdateAnnouncements [
+
+	application initializeVmUpdateChecker.
+
+	application unsubscribeFromAnnouncers.
+
+	self deny: (PhLVmUpdateAnnouncer default hasSubscriber: application)
 ]

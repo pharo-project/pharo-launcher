@@ -15,6 +15,7 @@ PhLTestVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
 	vmFolder ensureCreateDirectory.
 	(vmFolder / 'fetched!') ensureCreateFile.
+	^ nil "the stamp of the archive is unknown"
 ]
 
 { #category : 'private' }

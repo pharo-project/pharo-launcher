@@ -95,6 +95,7 @@ actionbar.status_bar, box.action_area {
 }
 label.form_header {
 	font-size: larger;
+	font-weight: bold;
 }
 box.status_bar label.status_message {
 	font-weight: normal;

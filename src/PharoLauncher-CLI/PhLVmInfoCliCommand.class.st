@@ -24,7 +24,7 @@ PhLVmInfoCliCommand class >> asCliCommand [
 { #category : 'command line' }
 PhLVmInfoCliCommand class >> launcherCmdDescription [
 
-	^ 'Prints information about VM: name, remote-site URL, last update status, etc.'
+	^ 'Prints information about VM: name, version, installation date, update status, download URL and location.'
 ]
 
 { #category : 'command execution' }
@@ -44,4 +44,16 @@ PhLVmInfoCliCommand >> rowMode [
 
 	"vm info is printed in one attribute per row"
 	^ true
+]
+
+{ #category : 'private' }
+PhLVmInfoCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
+]
+
+{ #category : 'private' }
+PhLVmInfoCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]

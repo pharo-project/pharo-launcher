@@ -1,37 +1,19 @@
 "
-Process used to chek regularly if there is an update for Launcher template sources.
-
-```
-PhLTemplateSourcesUpdateChecker run.
-PhLTemplateSourcesUpdateChecker terminate 
-```
+I check if there is an update for Launcher template sources.
+I am regularly asked to check by the `PhLUpdateChecker` process.
 
 Command line uses a different template sources check. See `PhLCliTemplateSourcesChecker` class
 "
 Class {
 	#name : 'PhLTemplateSourcesUpdateChecker',
 	#superclass : 'Object',
-	#instVars : [
-		'process'
-	],
 	#classVars : [
-		'ShouldRun',
-		'UniqueInstance'
+		'ShouldRun'
 	],
 	#category : 'PharoLauncher-Core-Model',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Model'
 }
-
-{ #category : 'running' }
-PhLTemplateSourcesUpdateChecker class >> run [
-
-	self shouldRun ifFalse: [ ^ self terminate ].
-	
-	self uniqueInstance run
-	
-	
-]
 
 { #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> settingsOn: aBuilder [
@@ -56,59 +38,14 @@ PhLTemplateSourcesUpdateChecker class >> shouldRun [
 
 { #category : 'settings' }
 PhLTemplateSourcesUpdateChecker class >> shouldRun: aBoolean [
-	ShouldRun := aBoolean.
-	('ShouldRun?', ShouldRun asString) traceCr.
-	"ShouldRun 
-		ifTrue: [ self run ]
-		ifFalse: [ self terminate ]."
-]
-
-{ #category : 'running' }
-PhLTemplateSourcesUpdateChecker class >> terminate [
-	self uniqueInstance terminate
-	
-	
-]
-
-{ #category : 'running' }
-PhLTemplateSourcesUpdateChecker class >> uniqueInstance [
-	^ UniqueInstance ifNil: [ UniqueInstance := self new ]
+	ShouldRun := aBoolean
 ]
 
 { #category : 'accessing' }
 PhLTemplateSourcesUpdateChecker >> check [
+
+	self class shouldRun ifFalse: [ ^ self ].
 	[ PhLPharoTemplateSources fromFile checkForUpdates ]
 	on: PhLDownloadError 
 	do: [ :e | "ignore. No internet connection available" ]
-]
-
-{ #category : 'accessing' }
-PhLTemplateSourcesUpdateChecker >> name [
-	^ 'Launcher sources update checker'
-]
-
-{ #category : 'accessing' }
-PhLTemplateSourcesUpdateChecker >> priority [
-	^ 20
-]
-
-{ #category : 'actions' }
-PhLTemplateSourcesUpdateChecker >> run [
-
-	self terminate.
-	process := [ [ self check.
-					self wait ] repeat ]
-				forkAt: self priority named: self name
-]
-
-{ #category : 'actions' }
-PhLTemplateSourcesUpdateChecker >> terminate [
-
-	process ifNotNil: [
-		process isTerminating ifFalse: [ process terminate ] ]
-]
-
-{ #category : 'actions' }
-PhLTemplateSourcesUpdateChecker >> wait [
-	24 hours wait.
 ]

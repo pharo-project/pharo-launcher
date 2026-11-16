@@ -118,6 +118,20 @@ PhLDownloadManager >> reset [
 	errors removeAll
 ]
 
+{ #category : 'actions' }
+PhLDownloadManager >> stampOf: url [
+	"Answer the stamp of the file published at the given url, without downloading it.
+	A failure is signaled to the caller but not recorded: it is not a download the user asked for."
+
+	| client |
+	client := (self newHTTPClientForUrl: url)
+		beOneShot;
+		ifFail: [ :exception | PhLDownloadError signalUrl: url message: exception messageText ];
+		yourself.
+	client head.
+	^ PhLRemoteFileStamp fromHeaders: client response headers
+]
+
 { #category : 'announcements' }
 PhLDownloadManager >> whenErrorAddedDo: aBlock [
 	errors whenChangedDo: aBlock 

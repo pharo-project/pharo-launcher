@@ -12,7 +12,8 @@ Class {
 		'imagesPresenter',
 		'scriptsDirectory',
 		'openAsWorld',
-		'standalone'
+		'standalone',
+		'vmUpdateChecker'
 	],
 	#classVars : [
 		'Default',
@@ -361,11 +362,23 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 ]
 
 { #category : 'announcements' }
+PharoLauncherApplication >> initializeVmUpdateChecker [
+
+	self vmUpdateChecker announcer
+		unsubscribe: self;
+		when: PhLVmUpdateCheckDone
+		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
+			self defer: [ self vmUpdateCheckDone ] ]
+		for: self
+]
+
+{ #category : 'announcements' }
 PharoLauncherApplication >> unsubscribeFromAnnouncers [
 	"Announcers are global: an application that is no more the default one must stop 
 	 handling announcements"
 
-	PhLTemplateSourcesAnnouncer default unsubscribe: self
+	PhLTemplateSourcesAnnouncer default unsubscribe: self.
+	PhLVmUpdateAnnouncer default unsubscribe: self
 ]
 
 { #category : 'testing' }
@@ -496,9 +509,12 @@ PharoLauncherApplication >> resetTemplateRepository [
 ]
 
 { #category : 'running' }
-PharoLauncherApplication >> runTemplateSourcesUpdateChecker [
-	
-	PhLTemplateSourcesUpdateChecker run
+PharoLauncherApplication >> runUpdateChecker [
+	"Template sources are checked first: their update is proposed before the one of virtual machines."
+
+	PhLUpdateChecker runChecks: {
+			[ PhLTemplateSourcesUpdateChecker new check ].
+			[ self vmUpdateChecker check ] }
 ]
 
 { #category : 'private' }
@@ -568,8 +584,9 @@ PharoLauncherApplication >> start [
 
 	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
+	self initializeVmUpdateChecker.
 	self initializeProgressRunner.
-	self runTemplateSourcesUpdateChecker.
+	self runUpdateChecker.
 	
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]
@@ -631,3 +648,23 @@ PharoLauncherApplication >> unregisterWindow: aWindow [
 	super unregisterWindow: aWindow.
 	self safeExit
 ]
+
+{ #category : 'events' }
+PharoLauncherApplication >> vmUpdateCheckDone [
+	"Warn the user without interrupting: the main window shows how many VMs can be updated"
+
+	imagesPresenter ifNotNil: [ :presenter | presenter refreshVmUpdates ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> vmUpdateChecker [
+
+	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker new ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> vmUpdateChecker: aPhLVmUpdateChecker [
+
+	vmUpdateChecker := aPhLVmUpdateChecker
+]
+

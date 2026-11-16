@@ -15,6 +15,7 @@ Class {
 		'imageFilter',
 		'rootCommandsGroup',
 		'toolbar',
+		'vmsToUpdate',
 		'editConfigurationButton'
 	],
 	#category : 'PharoLauncher-Spec2-View',
@@ -305,7 +306,9 @@ PhLImagesPresenter >> initializePresenters [
 	
 	self imageRepository 
 		whenChangedSend: #refresh
-		to: self
+		to: self.
+	"The result of previous checks is stored: show it without waiting for the next check"
+	self whenBuiltDo: [ self refreshVmUpdates ]
 ]
 
 { #category : 'initialization' }
@@ -435,4 +438,42 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 PhLImagesPresenter >> withToolbarDo: aBlock [
 
 	self withWindowDo: [ :window | aBlock value: window toolbar ]
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> refreshVmUpdates [
+	"Show the VMs to update found by the last check. The server is not asked."
+
+	self showVmUpdates: self application vmUpdateChecker vmsToUpdate
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> showVmUpdates: virtualMachines [
+	"Warn the user without interrupting: a red badge on the VMs button tells how many VMs can be updated"
+
+	vmsToUpdate := virtualMachines.
+	self vmsButton
+		icon: (PhLBadgedIcon icon: self vmManagerCommand decoratedCommand icon count: virtualMachines size) asForm;
+		help: (virtualMachines
+				 ifEmpty: [ 'Open the VM manager' ]
+				 ifNotEmpty: [ 'Updates are available for virtual machines' ])
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> vmManagerCommand [
+
+	^ self toolbarGroup allCommands detect: [ :each |
+		  each decoratedCommand isKindOf: PhLOpenVmManagerCommand ]
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> vmsButton [
+
+	^ self vmManagerCommand presenter
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> vmsToUpdate [
+
+	^ vmsToUpdate ifNil: [ #(  ) ]
 ]

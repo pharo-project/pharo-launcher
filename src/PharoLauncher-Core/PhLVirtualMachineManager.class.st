@@ -23,14 +23,34 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 	^ PhLProcessWrapper isCommandAvailable: 'unzip'
 ]
 
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> extract: aZipFileReference replacing: aFolder [
+	"The archive is extracted aside: the folder is left untouched if the extraction fails, or if it cannot be replaced.
+	On Windows, a folder with files in use cannot be replaced, e.g. a virtual machine running an image."
+
+	| extractionFolder |
+	extractionFolder := aFolder parent / (aFolder basename , '.new').
+	extractionFolder ensureDeleteAll.
+	[
+	self unzip: aZipFileReference to: extractionFolder.
+	self replace: aFolder with: extractionFolder ] ifCurtailed: [ extractionFolder ensureDeleteAll ]
+]
+
 { #category : 'private' }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
-	PhLDownloadManager default 
+	"Download and extract the VM archive. Answer the stamp of the archive, nil if the server does not tell it.
+	The VM records it, to be able to detect later that a newer archive is published: see PhLVirtualMachine>>#completeInstallationFrom:"
+
+	| stamp |
+	"Without the stamp, the VM is installed anyway: the next check will record the published one"
+	stamp := [ PhLDownloadManager default stampOf: aVmUrl ]
+		         on: PhLDownloadError
+		         do: [ nil ].
+	PhLDownloadManager default
 		download: aVmUrl
 		toFile: targetFile.
-	self
-		unzip: targetFile
-		to: (targetFile parent / targetFile basenameWithoutExtension)
+	self extract: targetFile replacing: targetFile parent / targetFile basenameWithoutExtension.
+	^ stamp
 ]
 
 { #category : 'instance creation' }
@@ -107,6 +127,23 @@ PhLVirtualMachineManager class >> isPreSpur: anImageFormatVersion [
 ]
 
 { #category : 'unzipping' }
+PhLVirtualMachineManager class >> move: aFileReference to: aTargetFileReference [
+	"FileReference>>#moveTo: makes its receiver point to the target. Move a copy to keep the given references unchanged."
+
+	aFileReference copy moveTo: aTargetFileReference
+]
+
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> moveTo: aFolder filesOnlyIn: aReplacedFolder [
+	"Keep what was added to the replaced folder, e.g. the sources files fetched for old Pharo versions."
+
+	aReplacedFolder exists ifFalse: [ ^ self ].
+	aReplacedFolder children
+		reject: [ :file | (aFolder / file basename) exists ]
+		thenDo: [ :file | file moveTo: aFolder / file basename ]
+]
+
+{ #category : 'unzipping' }
 PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirectory [
 	
 	PharoLauncherApplication default 
@@ -117,6 +154,21 @@ PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirect
 				extractAllTo: outputDirectory 
 					informing: bar 
 					overwrite: true ]
+]
+
+{ #category : 'unzipping' }
+PhLVirtualMachineManager class >> replace: aFolder with: aNewFolder [
+	"A background check must not write the metadata of the VM while its folder is moved"
+
+	PhLVmMetadata critical: [
+		| replacedFolder |
+		replacedFolder := aFolder parent / (aFolder basename , '.old').
+		replacedFolder ensureDeleteAll.
+		aFolder exists ifTrue: [ self move: aFolder to: replacedFolder ].
+		[ self move: aNewFolder to: aFolder ] ifCurtailed: [
+			replacedFolder exists ifTrue: [ self move: replacedFolder to: aFolder ] ].
+		self moveTo: aFolder filesOnlyIn: replacedFolder.
+		replacedFolder ensureDeleteAll ]
 ]
 
 { #category : 'initialization' }
@@ -324,11 +376,16 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 { #category : 'private' }
 PhLVirtualMachineManager >> fetchVm [
 
-	[ self class 
-		fetch: self vmUrl 
-		to: self vmStore / (self vmId , '.zip') ]
-	on: KeyNotFound
-	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
+	| stamp |
+	[ stamp := self class
+		         fetch: self vmUrl
+		         to: self vmStore / (self vmId , '.zip') ]
+		on: KeyNotFound
+		do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ].
+	(PhLVirtualMachine new
+		 id: self vmId;
+		 manager: self;
+		 yourself) completeInstallationFrom: stamp
 ]
 
 { #category : 'accessing' }

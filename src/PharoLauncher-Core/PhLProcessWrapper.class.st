@@ -35,6 +35,30 @@ PhLProcessWrapper class >> isCommandAvailable: aCommand [
 	do: [ ^ false ]
 ]
 
+{ #category : 'running' }
+PhLProcessWrapper class >> outputOfShellCommand: aCommandString [
+	"Answer what the shell command prints on its standard output.
+	Answer an empty string when it prints nothing, fails or does not end in time. Not supported on Windows.
+	The output is redirected to a file because the standard output of a process cannot be read on all platforms."
+
+	| output |
+	Smalltalk os isWindows ifTrue: [ ^ '' ].
+	output := FileLocator temp / ('pharo-launcher-output-' , UUID new asString).
+	^ [
+	  [
+	  self new
+		  shellCommand;
+		  addArgument: ('{1} > "{2}"' format: {
+						   aCommandString.
+						   output fullName });
+		  runAndWaitTimeOut: 5 seconds ]
+		  on: PhLProcessTimeOut
+		  do: [ :timeout | ^ '' ].
+	  output exists
+		  ifTrue: [ output contents ]
+		  ifFalse: [ '' ] ] ensure: [ output ensureDelete ]
+]
+
 { #category : 'building' }
 PhLProcessWrapper >> addArgument: aString [
 	arguments add: aString

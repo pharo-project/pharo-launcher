@@ -10,7 +10,6 @@ Class {
 		'vmTable',
 		'detailPanel',
 		'rootCommandsGroup',
-		'publishedStamps',
 		'versions'
 	],
 	#category : 'PharoLauncher-Spec2-View',
@@ -96,32 +95,21 @@ PhLVMPresenter >> doShowInFolder [
 
 { #category : 'updating' }
 PhLVMPresenter >> fetchDetails [
-	"Fetch the version of the VMs and their available updates, then show them."
+	"Fetch the version of the VMs, then show them."
 
-	self showVersions: self fetchVersions updates: self fetchPublishedStamps
+	self showVersions: self fetchVersions
 ]
 
 { #category : 'updating' }
 PhLVMPresenter >> fetchDetailsInBackground [
-	"Running the VMs and asking the server can take time: do not block the UI. The table is refreshed by the UI process."
+	"Running the VMs can take time: do not block the UI. The table is refreshed by the UI process."
 
 	[
-	| fetchedVersions stamps |
+	| fetchedVersions |
 	fetchedVersions := self fetchVersions.
-	stamps := PhLVmUpdateChecker shouldRun
-		          ifTrue: [ self fetchPublishedStamps ]
-		          ifFalse: [ Dictionary new ].
-	self application defer: [ self showVersions: fetchedVersions updates: stamps ] ]
+	self application defer: [ self showVersions: fetchedVersions ] ]
 		forkAt: Processor userBackgroundPriority
 		named: 'Launcher VM manager details'
-]
-
-{ #category : 'private' }
-PhLVMPresenter >> fetchPublishedStamps [
-	"Answer the stamp of the archive published for each installed VM, by VM id. The stamp is nil when the server does not answer."
-
-	^ ((self datasource virtualMachines select: [ :vm | vm isUpdatable ])
-		collect: [ :vm | vm id -> vm publishedStamp ]) asDictionary
 ]
 
 { #category : 'private' }
@@ -174,7 +162,9 @@ PhLVMPresenter >> initializePresenters [
 		beMultipleSelection;
 		items: self datasource virtualMachines;
 		yourself.
-	self whenBuiltDo: [ self fetchDetailsInBackground ]
+	self whenBuiltDo: [
+		self subscribeToVmUpdateChecks.
+		self fetchDetailsInBackground ]
 ]
 
 { #category : 'initialization' }
@@ -187,13 +177,6 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 		centered.
 
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter."
-]
-
-{ #category : 'private' }
-PhLVMPresenter >> publishedStampOf: aVm [
-	"Answer the stamp of the archive published for the VM by the last check, nil if the server did not answer."
-
-	^ publishedStamps at: aVm id ifAbsent: [ nil ]
 ]
 
 { #category : 'private' }
@@ -235,21 +218,29 @@ PhLVMPresenter >> selectedVms [
 ]
 
 { #category : 'updating' }
-PhLVMPresenter >> showVersions: versionsByVmId updates: stampsByVmId [
+PhLVMPresenter >> showVersions: versionsByVmId [
 
 	versions := versionsByVmId.
-	publishedStamps := stampsByVmId.
 	self refresh
 ]
 
 { #category : 'accessing' }
 PhLVMPresenter >> statusFor: aVm [
-	"Answer whether the VM is up to date, in words. The server is asked in background: until it answers, the status is being checked."
+	"The status is the result of the last check for updates: the server is not asked."
 
-	aVm isUpdatable ifFalse: [ ^ aVm statusGivenPublishedStamp: nil ].
-	PhLVmUpdateChecker shouldRun ifFalse: [ ^ '' ].
-	publishedStamps ifNil: [ ^ 'Checking...' ].
-	^ aVm statusGivenPublishedStamp: (self publishedStampOf: aVm)
+	^ aVm status
+]
+
+{ #category : 'initialization' }
+PhLVMPresenter >> subscribeToVmUpdateChecks [
+	"Show the result of a check done while I am open. Checks are done by another process: refresh in the UI process."
+
+	PhLVmUpdateAnnouncer default
+		when: PhLVmUpdateCheckDone
+		do: [ self application defer: [ self refresh ] ]
+		for: self.
+	self withWindowDo: [ :window |
+		window whenClosedDo: [ PhLVmUpdateAnnouncer default unsubscribe: self ] ]
 ]
 
 { #category : 'accessing' }
@@ -258,8 +249,8 @@ PhLVMPresenter >> statusDescriptionFor: aVm [
 
 	| status |
 	status := self statusFor: aVm.
-	status = 'Update available' ifFalse: [ ^ status ].
-	^ (self publishedStampOf: aVm) publicationDate
+	aVm isUpdateAvailable ifFalse: [ ^ status ].
+	^ aVm publishedStamp publicationDate
 		  ifNil: [ status ]
 		  ifNotNil: [ :date | status , ', published on ' , date yyyymmdd ]
 ]

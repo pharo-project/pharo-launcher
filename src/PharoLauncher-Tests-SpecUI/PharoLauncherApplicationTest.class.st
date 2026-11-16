@@ -90,3 +90,13 @@ PharoLauncherApplicationTest >> testUnsubscribeFromAnnouncers [
 
 	self deny: (PhLTemplateSourcesAnnouncer default hasSubscriber: application)
 ]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testUnsubscribeFromVmUpdateAnnouncements [
+
+	application initializeVmUpdateChecker.
+
+	application unsubscribeFromAnnouncers.
+
+	self deny: (PhLVmUpdateAnnouncer default hasSubscriber: application)
+]

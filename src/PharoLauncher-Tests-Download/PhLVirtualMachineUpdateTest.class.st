@@ -75,7 +75,7 @@ PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self assert: vm isValid.
 	self assert: self installedVersion equals: 'first'.
-	self assert: vm isUpdateAvailable.
+	self assert: vm checkForUpdate.
 	self assert: vmStore directoryNames asArray equals: { vm id }
 ]
 
@@ -106,7 +106,7 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForCustomVm [
 
 	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
 
-	self deny: vm isUpdateAvailable
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -114,7 +114,7 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForVmNotInstalled [
 
 	self serverPublishesArchiveTagged: 'first'.
 
-	self deny: vm isUpdateAvailable
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -124,7 +124,7 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableRightAfterUpdating [
 
 	vm updateFromUrl.
 
-	self deny: vm isUpdateAvailable
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -134,7 +134,7 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForVmWithoutStampWhenServe
 
 	self serverPublishesArchiveLastModified: DateAndTime now - 1 day.
 
-	self deny: vm isUpdateAvailable
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -142,17 +142,65 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableWhenServerDoesNotAnswer [
 
 	self installVmWithoutStamp.
 
-	self deny: vm isUpdateAvailable
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testStatusAsksTheServer [
+PhLVirtualMachineUpdateTest >> testCheckKeepsLastResultWhenServerDoesNotAnswer [
+
+	self installVmWithoutStamp.
+	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+	vm checkForUpdate.
+
+	self server stopAnsweringStampOf: vm downloadUrl.
+	vm checkForUpdate.
+
+	self assert: vm status equals: 'Update available'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testOldMetadataIsReadAsInstalledStamp [
+	"meta-inf.ston only held the stamp of the installed archive in the first versions of this feature"
+
+	self serverPublishesArchiveTagged: 'first'.
+	vm updateFromUrl.
+	(vmStore / vm id / 'meta-inf.ston')
+		ensureDelete;
+		writeStreamDo: [ :stream | STON put: (PhLRemoteFileStamp etag: 'first') onStream: stream ].
+
+	self deny: vm checkForUpdate
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testStatusIsNotCheckedBeforeAnyCheck [
 
 	self installVmWithoutStamp.
 
-	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+	self assert: vm status equals: 'Not checked'
+]
 
-	self assert: vm status equals: 'Update available'
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testStatusIsTheResultOfTheLastCheck [
+
+	| requestCount |
+	self installVmWithoutStamp.
+	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+	vm checkForUpdate.
+	requestCount := self server stampRequestCount.
+
+	self assert: vm status equals: 'Update available'.
+	self assert: vm isUpdateAvailable.
+	self assert: self server stampRequestCount equals: requestCount
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testStatusIsUpToDateRightAfterUpdating [
+
+	self serverPublishesArchiveTagged: 'first'.
+
+	vm updateFromUrl.
+
+	self assert: vm status equals: 'Up to date'
 ]
 
 { #category : 'tests' }
@@ -168,7 +216,7 @@ PhLVirtualMachineUpdateTest >> testUpdateIsAvailableForVmWithoutStampWhenServerA
 
 	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
 
-	self assert: vm isUpdateAvailable
+	self assert: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -179,7 +227,7 @@ PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiv
 
 	self serverPublishesArchiveTagged: 'second'.
 
-	self assert: vm isUpdateAvailable
+	self assert: vm checkForUpdate
 ]
 
 { #category : 'tests' }

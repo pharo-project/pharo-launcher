@@ -1,18 +1,18 @@
 "
-I check if an update is available for the virtual machines used by the images of an image repository, and announce the virtual machines to update with a PhLVmUpdatesAvailable.
+I check if an update is available for the installed virtual machines. The result is stored in the folder of each virtual machine (see `PhLVmMetadata`), where the VM manager and the command line read it.
+I announce on `PhLVmUpdateAnnouncer default`:
+- `PhLVmUpdatesAvailable` with the virtual machines to update that are used by an image of the image repository, so that the user is proposed to update them,
+- `PhLVmUpdateCheckDone` once the check is done.
 
 ```
-checker := PhLVmUpdateChecker imageRepository: anImageRepository.
-checker announcer when: PhLVmUpdatesAvailable do: [ :announcement | announcement vms ] for: self.
-checker check
+(PhLVmUpdateChecker imageRepository: anImageRepository) check
 ```
 "
 Class {
 	#name : 'PhLVmUpdateChecker',
 	#superclass : 'Object',
 	#instVars : [
-		'imageRepository',
-		'announcer'
+		'imageRepository'
 	],
 	#classVars : [
 		'ShouldRun'
@@ -61,15 +61,18 @@ PhLVmUpdateChecker class >> shouldRun: aBoolean [
 { #category : 'accessing' }
 PhLVmUpdateChecker >> announcer [
 
-	^ announcer ifNil: [ announcer := Announcer new ]
+	^ PhLVmUpdateAnnouncer default
 ]
 
 { #category : 'actions' }
 PhLVmUpdateChecker >> check [
 
+	| vmsToUpdate |
 	self class shouldRun ifFalse: [ ^ self ].
-	self vmsToUpdate ifNotEmpty: [ :vms |
-		self announcer announce: (PhLVmUpdatesAvailable vms: vms) ]
+	vmsToUpdate := self installedVms select: [ :vm | vm checkForUpdate ].
+	(self usedAmong: vmsToUpdate) ifNotEmpty: [ :vms |
+		self announcer announce: (PhLVmUpdatesAvailable vms: vms) ].
+	self announcer announce: PhLVmUpdateCheckDone new
 ]
 
 { #category : 'initialization' }
@@ -79,19 +82,19 @@ PhLVmUpdateChecker >> setImageRepository: anImageRepository [
 ]
 
 { #category : 'private' }
-PhLVmUpdateChecker >> usedVms [
+PhLVmUpdateChecker >> installedVms [
+	"Only the standard VMs are published on the server"
+
+	^ PhLVirtualMachineManager new availableVirtualMachines values select: [ :vm | vm isUpdatable ]
+]
+
+{ #category : 'private' }
+PhLVmUpdateChecker >> usedAmong: virtualMachines [
 	"A VM is considered as used when an image has its Pharo version."
 
 	| usedPharoVersions |
 	usedPharoVersions := imageRepository images
 		                     collect: [ :image | image pharoVersion ]
 		                     as: Set.
-	^ PhLVirtualMachineManager new availableVirtualMachines values select: [ :vm |
-		  usedPharoVersions includes: vm pharoVersion ]
-]
-
-{ #category : 'private' }
-PhLVmUpdateChecker >> vmsToUpdate [
-
-	^ self usedVms select: [ :vm | vm isUpdateAvailable ]
+	^ virtualMachines select: [ :vm | usedPharoVersions includes: vm pharoVersion ]
 ]

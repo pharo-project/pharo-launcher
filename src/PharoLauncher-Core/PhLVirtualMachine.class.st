@@ -281,21 +281,41 @@ PhLVirtualMachine >> initializeOn: aFolder [
 { #category : 'querying' }
 PhLVirtualMachine >> installationDate [
 	"Answer the date I was installed or updated by the Launcher, nil if I am not installed.
-	The stamp of the archive is stored right after each update. Before the Launcher stored it, the best guess is the date of my executable."
+	Before the Launcher stored it, the best guess is the date of my executable."
 
-	| stampFile |
 	self isValid ifFalse: [ ^ nil ].
-	stampFile := self vmStore / self id / PhLRemoteFileStamp fileName.
-	^ stampFile exists
-		  ifTrue: [ stampFile modificationTime asDate ]
-		  ifFalse: [ self lastUpdateTime asDate ]
+	^ (self metadata installedOn ifNil: [ self lastUpdateTime ]) asDate
+]
+
+{ #category : 'updating' }
+PhLVirtualMachine >> checkForUpdate [
+	"Ask the server the stamp of the archive it publishes and record it in my folder.
+	When the server does not answer, the result of the previous check is kept.
+	Answer whether an update is available."
+
+	| metadata |
+	self isUpdatable ifFalse: [ ^ false ].
+	self fetchPublishedStamp ifNotNil: [ :stamp |
+		metadata := self metadata.
+		metadata recordCheck: stamp.
+		metadata storeInFolder: self vmStore / self id ].
+	^ self isUpdateAvailable
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> fetchPublishedStamp [
+	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
+
+	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
 ]
 
 { #category : 'querying' }
 PhLVirtualMachine >> installedStamp [
 	"Answer the stamp of the archive I was installed from, nil if unknown."
 
-	^ PhLRemoteFileStamp inFolder: self vmStore / self id
+	^ self metadata installedStamp
 ]
 
 { #category : 'testing' }
@@ -344,12 +364,12 @@ PhLVirtualMachine >> isUpdatable [
 
 { #category : 'testing' }
 PhLVirtualMachine >> isUpdateAvailable [
-	"Answer whether the server publishes another archive than the one I was installed from."
+	"Answer whether the last check found another archive than the one I was installed from. The server is not asked."
 
 	self isUpdatable ifFalse: [ ^ false ].
 	^ self publishedStamp
 		  ifNil: [ false ]
-		  ifNotNil: [ :publishedStamp | self isOutdatedBy: publishedStamp ]
+		  ifNotNil: [ :stamp | self isOutdatedBy: stamp ]
 ]
 
 { #category : 'testing' }
@@ -378,11 +398,18 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> metadata [
+	"Answer what the Launcher stored about me in my folder"
+
+	^ PhLVmMetadata inFolder: self vmStore / self id
+]
+
 { #category : 'testing' }
 PhLVirtualMachine >> needsUpdate [
-	"Answer whether I should be downloaded: I am not installed, or an update is available."
+	"Answer whether I should be downloaded: I am not installed, or the server publishes an update."
 
-	^ self isValid not or: [ self isUpdateAvailable ]
+	^ self isValid not or: [ self checkForUpdate ]
 ]
 
 { #category : 'accessing' }
@@ -423,11 +450,9 @@ PhLVirtualMachine >> printOn: aStream [
 
 { #category : 'querying' }
 PhLVirtualMachine >> publishedStamp [
-	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
+	"Answer the stamp of the archive published on the server at the last check, nil if never checked."
 
-	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
-		  on: PhLDownloadError
-		  do: [ nil ]
+	^ self metadata publishedStamp
 ]
 
 { #category : 'actions' }
@@ -444,23 +469,14 @@ PhLVirtualMachine >> removeFromSystem [
 
 { #category : 'querying' }
 PhLVirtualMachine >> status [
-	"Answer whether I am up to date, in words. The server is asked only when I am an installed standard VM."
-
-	^ self statusGivenPublishedStamp: (self isUpdatable ifTrue: [ self publishedStamp ])
-]
-
-{ #category : 'querying' }
-PhLVirtualMachine >> statusGivenPublishedStamp: aPublishedStamp [
-	"Answer whether I am up to date, in words, given the stamp of the archive published on the server (nil if the server did not answer)."
+	"Answer whether I am up to date, in words, from the last check. The server is not asked."
 
 	self isValid ifFalse: [ ^ 'Not installed' ].
 	self isStandard ifFalse: [ ^ 'Custom VM' ].
-	^ aPublishedStamp
-		  ifNil: [ 'Unknown (offline)' ]
-		  ifNotNil: [ :stamp |
-			  (self isOutdatedBy: stamp)
-				  ifTrue: [ 'Update available' ]
-				  ifFalse: [ 'Up to date' ] ]
+	self publishedStamp ifNil: [ ^ 'Not checked' ].
+	^ self isUpdateAvailable
+		  ifTrue: [ 'Update available' ]
+		  ifFalse: [ 'Up to date' ]
 ]
 
 { #category : 'actions' }

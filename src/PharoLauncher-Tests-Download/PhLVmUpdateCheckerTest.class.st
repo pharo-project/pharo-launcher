@@ -46,6 +46,7 @@ PhLVmUpdateCheckerTest >> setUp [
 { #category : 'running' }
 PhLVmUpdateCheckerTest >> tearDown [
 
+	checker announcer unsubscribe: self.
 	PhLVmUpdateChecker shouldRun: shouldRun.
 	super tearDown
 ]
@@ -103,4 +104,38 @@ PhLVmUpdateCheckerTest >> testDoesNotAnnounceVmUsedByNoImage [
 	checker check.
 
 	self assert: self announcedVmIds equals: #( '70-x64' )
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDone [
+
+	| isDone |
+	isDone := false.
+	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
+
+	checker check.
+
+	self assert: isDone
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testRecordsNothingWhenDisabled [
+
+	self installVmWithUpdateAvailable: '70-x64'.
+	PhLVmUpdateChecker shouldRun: false.
+
+	checker check.
+
+	self assert: (PhLVirtualMachine id: '70-x64') status equals: 'Not checked'
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testRecordsResultOfVmUsedByNoImage [
+	"The VM manager shows the status of every installed VM"
+
+	self installVmWithUpdateAvailable: '130-x64'.
+
+	checker check.
+
+	self assert: (PhLVirtualMachine id: '130-x64') status equals: 'Update available'
 ]

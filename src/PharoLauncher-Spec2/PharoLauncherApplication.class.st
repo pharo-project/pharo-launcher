@@ -387,7 +387,8 @@ PharoLauncherApplication >> unsubscribeFromAnnouncers [
 	"Announcers are global: an application that is no more the default one must stop 
 	 handling announcements"
 
-	PhLTemplateSourcesAnnouncer default unsubscribe: self
+	PhLTemplateSourcesAnnouncer default unsubscribe: self.
+	PhLVmUpdateAnnouncer default unsubscribe: self
 ]
 
 { #category : 'testing' }

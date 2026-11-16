@@ -38,7 +38,7 @@ PhLVirtualMachineManager class >> extract: aZipFileReference replacing: aFolder 
 
 { #category : 'private' }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
-	"Download and extract the VM archive. Record the stamp of the archive next to the VM to be able to detect later that a newer archive is published."
+	"Download and extract the VM archive. Record the stamp of the archive in the VM folder to be able to detect later that a newer archive is published."
 
 	| vmFolder stamp |
 	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
@@ -47,7 +47,7 @@ PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 		download: aVmUrl
 		toFile: targetFile.
 	self extract: targetFile replacing: vmFolder.
-	stamp storeInFolder: vmFolder
+	(PhLVmMetadata installedFrom: stamp) storeInFolder: vmFolder
 ]
 
 { #category : 'instance creation' }

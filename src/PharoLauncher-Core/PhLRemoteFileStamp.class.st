@@ -29,12 +29,6 @@ PhLRemoteFileStamp class >> etag: aString lastModified: aDateAndTime [
 		  yourself
 ]
 
-{ #category : 'accessing' }
-PhLRemoteFileStamp class >> fileName [
-
-	^ 'meta-inf.ston'
-]
-
 { #category : 'instance creation' }
 PhLRemoteFileStamp class >> fromHeaders: httpHeaders [
 
@@ -45,21 +39,19 @@ PhLRemoteFileStamp class >> fromHeaders: httpHeaders [
 		  lastModified: (lastModified ifNotNil: [ ZnUtils parseHttpDate: lastModified ])
 ]
 
-{ #category : 'instance creation' }
-PhLRemoteFileStamp class >> inFolder: aFolder [
-	"Answer the stamp stored in the given folder, nil if there is none."
-
-	| file |
-	file := aFolder / self fileName.
-	^ file exists
-		  ifTrue: [ file readStreamDo: [ :stream | STON fromStream: stream ] ]
-		  ifFalse: [ nil ]
-]
-
 { #category : 'comparing' }
 PhLRemoteFileStamp >> = anObject [
 
 	^ self class = anObject class and: [ etag = anObject etag ]
+]
+
+{ #category : 'converting' }
+PhLRemoteFileStamp >> asVmMetadata [
+	"meta-inf.ston of a VM only held the stamp of its installed archive in the first versions"
+
+	^ PhLVmMetadata new
+		  setInstalledStamp: self;
+		  yourself
 ]
 
 { #category : 'accessing' }
@@ -94,10 +86,3 @@ PhLRemoteFileStamp >> setEtag: aString lastModified: aDateAndTime [
 	lastModified := aDateAndTime
 ]
 
-{ #category : 'storing' }
-PhLRemoteFileStamp >> storeInFolder: aFolder [
-
-	(aFolder / self class fileName)
-		ensureDelete;
-		writeStreamDo: [ :stream | STON put: self onStreamPretty: stream ]
-]

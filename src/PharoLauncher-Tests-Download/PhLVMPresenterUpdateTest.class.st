@@ -1,5 +1,6 @@
 "
-I specify how the VM manager shows the version of virtual machines and the ones having an update available.
+I specify how the VM manager shows the version of virtual machines and their status.
+The status is the result of the last check for updates, stored with each virtual machine: the VM manager never asks the server.
 
 The VM store is a real temporary folder to be able to run the executable of virtual machines.
 "
@@ -11,8 +12,7 @@ Class {
 		'presenter',
 		'outdatedVm',
 		'upToDateVm',
-		'vms',
-		'shouldCheckUpdates'
+		'vms'
 	],
 	#category : 'PharoLauncher-Tests-Download',
 	#package : 'PharoLauncher-Tests-Download'
@@ -30,8 +30,6 @@ PhLVMPresenterUpdateTest >> serverPublishesArchiveOf: aVm lastModified: aDateAnd
 PhLVMPresenterUpdateTest >> setUp [
 
 	super setUp.
-	shouldCheckUpdates := PhLVmUpdateChecker shouldRun.
-	PhLVmUpdateChecker shouldRun: true.
 	PhLDownloadManagerMock install.
 	vmStore := FileLocator temp / ('pharo-launcher-tests-' , UUID new asString).
 	PhLTestVirtualMachineManager vmStore: vmStore.
@@ -56,7 +54,6 @@ PhLVMPresenterUpdateTest >> tearDown [
 	PhLTestVirtualMachineManager reset.
 	vmStore ensureDeleteAll.
 	PhLDownloadManagerMock remove.
-	PhLVmUpdateChecker shouldRun: shouldCheckUpdates.
 	super tearDown
 ]
 
@@ -159,7 +156,7 @@ PhLVMPresenterUpdateTest >> installedVmNamed: aName [
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testDetailOfSelectedVmShowsInstallationDateAndStatus [
 
-	presenter fetchDetails.
+	self checkForUpdates.
 
 	presenter selectVm: outdatedVm.
 
@@ -170,21 +167,27 @@ PhLVMPresenterUpdateTest >> testDetailOfSelectedVmShowsInstallationDateAndStatus
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testDetailOfSelectedVmIsUpdatedOnceDetailsAreFetched [
+PhLVMPresenterUpdateTest >> testSelectedVmIsRefreshedWhenCheckIsDone [
 
+	| window |
+	window := presenter open.
+	[
 	presenter selectVm: outdatedVm.
+	self checkForUpdates.
 
-	presenter fetchDetails.
+	PhLVmUpdateAnnouncer default announce: PhLVmUpdateCheckDone new.
+	World doOneCycle.
 
 	self
 		assert: presenter detailPanel status label
-		equals: 'Update available, published on 2999-01-15'
+		equals: 'Update available, published on 2999-01-15' ] ensure: [ window close ].
+	self deny: (PhLVmUpdateAnnouncer default hasSubscriber: presenter)
 ]
 
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testDetailOfUpToDateVmShowsItsStatus [
 
-	presenter fetchDetails.
+	self checkForUpdates.
 
 	presenter selectVm: upToDateVm.
 
@@ -192,19 +195,9 @@ PhLVMPresenterUpdateTest >> testDetailOfUpToDateVmShowsItsStatus [
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testStatusIsCheckingUntilUpdatesAreFetched [
+PhLVMPresenterUpdateTest >> testStatusIsNotCheckedBeforeAnyCheck [
 
-	self assert: (presenter statusFor: outdatedVm) equals: 'Checking...'
-]
-
-{ #category : 'tests' }
-PhLVMPresenterUpdateTest >> testStatusIsEmptyWhenUpdatesAreNotChecked [
-
-	PhLVmUpdateChecker shouldRun: false.
-
-	presenter fetchDetails.
-
-	self assert: (presenter statusFor: outdatedVm) equals: ''
+	self assert: (presenter statusFor: outdatedVm) equals: 'Not checked'
 ]
 
 { #category : 'tests' }
@@ -234,21 +227,21 @@ PhLVMPresenterUpdateTest >> testStatusOfVmNotInstalled [
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testStatusOfVmUnknownToServer [
+PhLVMPresenterUpdateTest >> testStatusIsTheResultOfTheLastCheckWithoutAskingTheServer [
 
-	| vm |
-	vm := self installedVmNamed: '80-x64'.
-
-	presenter fetchDetails.
-
-	self assert: (presenter statusFor: vm) equals: 'Unknown (offline)'
-]
-
-{ #category : 'tests' }
-PhLVMPresenterUpdateTest >> testStatusTellsIfUpdateIsAvailable [
+	| requestCount |
+	self checkForUpdates.
+	requestCount := PhLDownloadManager default stampRequestCount.
 
 	presenter fetchDetails.
 
 	self assert: (presenter statusFor: outdatedVm) equals: 'Update available'.
-	self assert: (presenter statusFor: upToDateVm) equals: 'Up to date'
+	self assert: (presenter statusFor: upToDateVm) equals: 'Up to date'.
+	self assert: PhLDownloadManager default stampRequestCount equals: requestCount
+]
+
+{ #category : 'helpers' }
+PhLVMPresenterUpdateTest >> checkForUpdates [
+
+	vms do: [ :each | each checkForUpdate ]
 ]

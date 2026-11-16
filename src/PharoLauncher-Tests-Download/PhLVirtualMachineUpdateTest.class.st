@@ -122,6 +122,18 @@ PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiv
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdateDoesNotNeedTheStampOfTheArchive [
+	"The stamp is only needed to detect later updates"
+
+	self server atUrl: vm downloadUrl answer: (self vmArchiveVersioned: 'first').
+
+	vm updateFromUrl.
+
+	self assert: self installedVersion equals: 'first'.
+	self assert: vm status equals: 'Not checked'
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self serverPublishesArchiveTagged: 'first'.

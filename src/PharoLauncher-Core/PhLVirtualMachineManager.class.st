@@ -42,7 +42,10 @@ PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 
 	| vmFolder stamp |
 	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
-	stamp := PhLDownloadManager default stampOf: aVmUrl.
+	"Without the stamp, the VM is installed anyway: the next check will record the published one"
+	stamp := [ PhLDownloadManager default stampOf: aVmUrl ]
+		         on: PhLDownloadError
+		         do: [ nil ].
 	PhLDownloadManager default
 		download: aVmUrl
 		toFile: targetFile.

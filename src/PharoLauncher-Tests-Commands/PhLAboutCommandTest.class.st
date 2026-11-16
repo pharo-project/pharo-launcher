@@ -45,8 +45,20 @@ PhLAboutCommandTest >> testDownloadLinkWhenLauncherUpdateIsAvailable [
 
 	presenter := (PhLAboutCommand forContext: self) execute.
 
+	self assert: presenter updateNotice isVisible.
+	self assert: presenter updateNotice label equals: 'Pharo Launcher 3.4.5 is available'.
 	self assert: presenter updateLink isVisible.
 	self assert: presenter updateLink label equals: 'Download Pharo Launcher 3.4.5 (web)'
+]
+
+{ #category : 'tests' }
+PhLAboutCommandTest >> testUpdateNoticeIsAHeader [
+
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: '3.4.5').
+
+	presenter := (PhLAboutCommand forContext: self) execute.
+
+	self assert: (presenter updateNotice styles includes: 'form_header')
 ]
 
 { #category : 'tests' }
@@ -56,5 +68,6 @@ PhLAboutCommandTest >> testNoDownloadLinkWithoutLauncherUpdate [
 
 	presenter := (PhLAboutCommand forContext: self) execute.
 
+	self deny: presenter updateNotice isVisible.
 	self deny: presenter updateLink isVisible
 ]

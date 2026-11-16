@@ -13,7 +13,8 @@ Class {
 		'scriptsDirectory',
 		'openAsWorld',
 		'standalone',
-		'vmUpdateChecker'
+		'vmUpdateChecker',
+		'launcherUpdateChecker'
 	],
 	#classVars : [
 		'Default',
@@ -362,6 +363,17 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 ]
 
 { #category : 'announcements' }
+PharoLauncherApplication >> initializeLauncherUpdateChecker [
+
+	self launcherUpdateChecker announcer
+		unsubscribe: self;
+		when: PhLLauncherUpdateCheckDone
+		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
+			self defer: [ self launcherUpdateCheckDone ] ]
+		for: self
+]
+
+{ #category : 'announcements' }
 PharoLauncherApplication >> initializeVmUpdateChecker [
 
 	self vmUpdateChecker announcer
@@ -513,6 +525,7 @@ PharoLauncherApplication >> runUpdateChecker [
 	"Template sources are checked first: their update is proposed before the one of virtual machines."
 
 	PhLUpdateChecker runChecks: {
+			[ self launcherUpdateChecker check ].
 			[ PhLTemplateSourcesUpdateChecker new check ].
 			[ self vmUpdateChecker check ] }
 ]
@@ -585,6 +598,7 @@ PharoLauncherApplication >> start [
 	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
 	self initializeVmUpdateChecker.
+	self initializeLauncherUpdateChecker.
 	self initializeProgressRunner.
 	self runUpdateChecker.
 	
@@ -647,6 +661,25 @@ PharoLauncherApplication >> unregisterWindow: aWindow [
 
 	super unregisterWindow: aWindow.
 	self safeExit
+]
+
+{ #category : 'events' }
+PharoLauncherApplication >> launcherUpdateCheckDone [
+	"Warn the user without interrupting: the About button of the main window shows that a newer launcher is published"
+
+	imagesPresenter ifNotNil: [ :presenter | presenter refreshLauncherUpdate ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> launcherUpdateChecker [
+
+	^ launcherUpdateChecker ifNil: [ launcherUpdateChecker := PhLLauncherUpdateChecker new ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> launcherUpdateChecker: aPhLLauncherUpdateChecker [
+
+	launcherUpdateChecker := aPhLLauncherUpdateChecker
 ]
 
 { #category : 'events' }

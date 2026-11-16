@@ -308,7 +308,9 @@ PhLImagesPresenter >> initializePresenters [
 		whenChangedSend: #refresh
 		to: self.
 	"The result of previous checks is stored: show it without waiting for the next check"
-	self whenBuiltDo: [ self refreshVmUpdates ]
+	self whenBuiltDo: [
+		self refreshVmUpdates.
+		self refreshLauncherUpdate ]
 ]
 
 { #category : 'initialization' }
@@ -442,6 +444,42 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 PhLImagesPresenter >> withToolbarDo: aBlock [
 
 	self withWindowDo: [ :window | aBlock value: window toolbar ]
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> aboutButton [
+
+	^ self aboutCommand presenter
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> aboutCommand [
+
+	^ self toolbarGroup allCommands detect: [ :each | each decoratedCommand isKindOf: PhLAboutCommand ]
+]
+
+{ #category : 'launcher update' }
+PhLImagesPresenter >> refreshLauncherUpdate [
+	"Show the newer launcher found by the last check. The server is not asked."
+
+	| checker |
+	checker := self application launcherUpdateChecker.
+	self showLauncherUpdate: (checker isUpdateAvailable
+			 ifTrue: [ checker latestVersion ]
+			 ifFalse: [ nil ])
+]
+
+{ #category : 'launcher update' }
+PhLImagesPresenter >> showLauncherUpdate: aVersionOrNil [
+	"Warn the user without interrupting: a red badge on the About button tells that a newer launcher is published"
+
+	self aboutButton
+		icon: (PhLBadgedIcon
+				 icon: self aboutCommand icon
+				 count: (aVersionOrNil ifNil: [ 0 ] ifNotNil: [ 1 ])) asForm;
+		help: (aVersionOrNil
+				 ifNil: [ self aboutCommand decoratedCommand description ]
+				 ifNotNil: [ 'Pharo Launcher {1} is available' format: { aVersionOrNil } ])
 ]
 
 { #category : 'vm updates' }

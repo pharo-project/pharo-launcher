@@ -8,7 +8,9 @@ Class {
 		'documents',
 		'stamps',
 		'stampRequestCount',
-		'defaultResponse'
+		'defaultResponse',
+		'redirections',
+		'redirectionRequestCount'
 	],
 	#category : 'PharoLauncher-Tests-Download',
 	#package : 'PharoLauncher-Tests-Download'
@@ -114,4 +116,33 @@ PhLDownloadManagerMock >> stampRequestCount [
 PhLDownloadManagerMock >> stopAnsweringStampOf: anUrl [
 
 	self stamps removeKey: anUrl ifAbsent: [ nil ]
+]
+
+{ #category : 'configuration' }
+PhLDownloadManagerMock >> atUrl: anUrl redirectTo: aLocation [
+	"aLocation nil means the server answers without redirecting"
+
+	self redirections at: anUrl put: aLocation
+]
+
+{ #category : 'action' }
+PhLDownloadManagerMock >> redirectionOf: anUrl [
+
+	redirectionRequestCount := self redirectionRequestCount + 1.
+	^ self redirections
+		  at: anUrl
+		  ifAbsent: [ PhLDownloadError signalUrl: anUrl ]
+]
+
+{ #category : 'accessing' }
+PhLDownloadManagerMock >> redirectionRequestCount [
+	"Number of times the server was asked where it redirects a URL"
+
+	^ redirectionRequestCount ifNil: [ 0 ]
+]
+
+{ #category : 'accessing' }
+PhLDownloadManagerMock >> redirections [
+
+	^ redirections ifNil: [ redirections := Dictionary new ]
 ]

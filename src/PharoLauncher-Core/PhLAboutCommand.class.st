@@ -13,6 +13,20 @@ Class {
 }
 
 { #category : 'versions' }
+PhLAboutCommand class >> launcherVersion [
+	"The version of the running launcher, set when it is built, 'N/A' in a development image"
+
+	^ LauncherVersion ifNil: [ 'N/A' ]
+]
+
+{ #category : 'versions' }
+PhLAboutCommand class >> version [
+	"The version set when the launcher was built, nil in a development image"
+
+	^ LauncherVersion
+]
+
+{ #category : 'versions' }
 PhLAboutCommand class >> version: aString [
 
 	LauncherVersion := aString.
@@ -67,5 +81,5 @@ PhLAboutCommand >> initialize [
 { #category : 'querying' }
 PhLAboutCommand >> launcherVersion [
 
-	^ LauncherVersion ifNil: [ 'N/A' ] 
+	^ self class launcherVersion
 ]

@@ -117,6 +117,21 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 ]
 
 { #category : 'tests' }
+PhLImagesPresenterTest >> testImageTableKeepsAlternateRowsColorAfterThemeSwitch [
+
+	| themeClass |
+	themeClass := UITheme current class.
+	presenter := PhLTestImagesPresenter new.
+	presenter application useBackend: #Morphic with: PhLMorphicConfiguration new.
+	presenter open.
+
+	[ presenter application switchThemeToDark ]
+		ensure: [ themeClass beCurrent ].
+
+	self assert: presenter hasAlternateRowsColor
+]
+
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
 
 	| image |

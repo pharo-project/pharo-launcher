@@ -144,7 +144,7 @@ PhLImagesPresenter >> buildImageTable [
 
 	^ self newTable
 		activateOnDoubleClick;
-		alternateRowsColor;
+		keepAlternateRowsColor;
 		sortingBlock: #lastModification descending;
 		whenActivatedDo: [ self actionLaunch ];
 		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)

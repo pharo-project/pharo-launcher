@@ -133,7 +133,7 @@ PhLVMPresenter >> initializePresenters [
 			title: 'Status'
 			evaluated: [ :vm | self statusFor: vm ]);
 		showColumnHeaders;
-		alternateRowsColor;
+		keepAlternateRowsColor;
 		actions: (SpActionGroup new
 			add: self rootCommandsGroup / 'Context Menu';
 			yourself);

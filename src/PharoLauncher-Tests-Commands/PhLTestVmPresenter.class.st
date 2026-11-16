@@ -29,6 +29,12 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	 
 ]
 
+{ #category : 'testing' }
+PhLTestVmPresenter >> hasAlternateRowsColor [
+
+	^ (vmTable adapter widget container instVarNamed: #rowColors) isNotNil
+]
+
 { #category : 'accessing' }
 PhLTestVmPresenter >> information [
 	^ information

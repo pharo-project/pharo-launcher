@@ -48,6 +48,12 @@ PhLTestImagesPresenter >> createImageNamed: aString in: aPathString [
 	^ self model createImageNamed: aString in: aPathString
 ]
 
+{ #category : 'testing' }
+PhLTestImagesPresenter >> hasAlternateRowsColor [
+
+	^ (imageTable adapter widget container instVarNamed: #rowColors) isNotNil
+]
+
 { #category : 'api - selection' }
 PhLTestImagesPresenter >> hasSingleImageSelected [
 	^ super hasSingleImageSelected or: [ selection isNotNil ]

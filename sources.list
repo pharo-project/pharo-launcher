@@ -20,7 +20,7 @@ OrderedCollection [
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Smic (Compiler Course)',
-				#url : 'https://github.com/guillep/m2-gl-lille-compilers/releases/download/v1.0.3/CompilerCourse-v1.0.3.zip'
+				#url : 'https://rmod-files.lille.inria.fr/Lectures/Compiler-Course/CompilerCourse-v1.0.3.zip'
 			}
 		]
 	},

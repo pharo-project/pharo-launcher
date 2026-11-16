@@ -144,6 +144,23 @@ PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
 	self assert: presenter singleImage name equals: 'Foo'
 ]
 
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreatedAndImagesSortedByName [
+	"Issue #789: the image launched after creation was the first one of the list sorted by name"
+
+	| image |
+	presenter := PhLTestImagesPresenter new.
+	presenter createImageNamed: 'Bar'.
+	presenter application imageRepositoryChanged.
+	presenter open.
+	presenter clickOnColumnHeaderAt: 1.
+
+	image := PhLImage location: (presenter createImageNamed: 'Zoo').
+	presenter application imageRepositoryChanged: image.
+
+	self assert: presenter singleImage name equals: 'Zoo'
+]
+
 { #category : 'helpers' }
 PhLImagesPresenterTest >> vmsToUpdate [
 

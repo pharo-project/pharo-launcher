@@ -364,9 +364,13 @@ PhLImagesPresenter >> selectConfiguration: aLaunchConfiguration [
 
 { #category : 'api - selection' }
 PhLImagesPresenter >> selectImage: aPhLImage [
-	imageTable items 
-		detect: [ :image | image name = aPhLImage name ]
-		ifFound: [ :item | imageTable selectItem: item ]
+	"Select the displayed row of the image.
+	 #selectItem: cannot be used: it selects the index of the item in the model items,
+	 which is not the displayed one once the table is sorted by a column."
+
+	(1 to: imageTable listSize)
+		detect: [ :index | (imageTable itemAt: index) name = aPhLImage name ]
+		ifFound: [ :index | imageTable selectIndex: index ]
 ]
 
 { #category : 'api - selection' }

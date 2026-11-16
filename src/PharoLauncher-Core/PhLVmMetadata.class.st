@@ -30,12 +30,15 @@ PhLVmMetadata class >> fileName [
 
 { #category : 'instance creation' }
 PhLVmMetadata class >> inFolder: aFolder [
-	"Answer the metadata stored in the given folder, empty metadata if there is none."
+	"Answer the metadata stored in the given folder, empty metadata if there is none or if it cannot be read (e.g. damaged file).
+	The next check or installation stores it again."
 
 	| file |
 	file := aFolder / self fileName.
 	file exists ifFalse: [ ^ self new ].
-	^ (file readStreamDo: [ :stream | STON fromStream: stream ]) asVmMetadata
+	^ [ (file readStreamDo: [ :stream | STON fromStream: stream ]) asVmMetadata ]
+		  on: STONReaderError
+		  do: [ self new ]
 ]
 
 { #category : 'instance creation' }

@@ -65,6 +65,20 @@ PhLVirtualMachineUpdateTest >> setUp [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testDamagedMetadataIsReplacedByTheNextCheck [
+
+	self serverPublishesArchiveTagged: 'first'.
+	vm updateFromUrl.
+	(vmStore / vm id / PhLVmMetadata fileName)
+		ensureDelete;
+		writeStreamDo: [ :stream | stream nextPutAll: 'PhLVmMetadata { #installedSt' ].
+
+	self assert: vm status equals: 'Not checked'.
+	vm checkForUpdate.
+	self assert: vm status equals: 'Up to date'
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self serverPublishesArchiveTagged: 'first'.

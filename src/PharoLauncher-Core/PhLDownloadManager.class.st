@@ -132,6 +132,23 @@ PhLDownloadManager >> stampOf: url [
 	^ PhLRemoteFileStamp fromHeaders: client response headers
 ]
 
+{ #category : 'querying' }
+PhLDownloadManager >> redirectionOf: url [
+	"Answer the location the server redirects the given url to, nil if it does not redirect it. The redirection is not followed.
+	A failure is signaled to the caller but not recorded: it is not a download the user asked for."
+
+	| client |
+	client := (self newHTTPClientForUrl: url)
+		beOneShot;
+		followRedirects: false;
+		ifFail: [ :exception | PhLDownloadError signalUrl: url message: exception messageText ];
+		yourself.
+	client head.
+	^ client response isRedirect
+		  ifTrue: [ client response location ]
+		  ifFalse: [ nil ]
+]
+
 { #category : 'announcements' }
 PhLDownloadManager >> whenErrorAddedDo: aBlock [
 	errors whenChangedDo: aBlock 

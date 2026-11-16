@@ -1,9 +1,10 @@
 "
 I am what the Launcher knows about an installed virtual machine, stored in the `meta-inf.ston` file of its folder:
 - the stamp of the archive it was installed from, and when it was installed,
-- the stamp of the archive published on the server at the last check, and when this check was done.
+- the stamp of the archive published on the server at the last check, and when this check was done,
+- its version, and the modification time of the executable it was read from.
 
-The status of the virtual machine is read from me, without asking the server.
+The status and the version of the virtual machine are read from me, without asking the server nor running the virtual machine.
 "
 Class {
 	#name : 'PhLVmMetadata',
@@ -12,7 +13,9 @@ Class {
 		'installedStamp',
 		'installedOn',
 		'publishedStamp',
-		'checkedOn'
+		'checkedOn',
+		'version',
+		'versionExecutableTime'
 	],
 	#category : 'PharoLauncher-Core-Download',
 	#package : 'PharoLauncher-Core',
@@ -89,10 +92,32 @@ PhLVmMetadata >> recordInstallationOf: aStamp [
 	self recordCheck: aStamp
 ]
 
+{ #category : 'recording' }
+PhLVmMetadata >> recordVersion: aString executableTime: aDateAndTime [
+
+	version := aString.
+	versionExecutableTime := aDateAndTime
+]
+
 { #category : 'initialization' }
 PhLVmMetadata >> setInstalledStamp: aStamp [
 
 	installedStamp := aStamp
+]
+
+{ #category : 'accessing' }
+PhLVmMetadata >> version [
+
+	^ version
+]
+
+{ #category : 'accessing' }
+PhLVmMetadata >> versionOfExecutableModifiedOn: aDateAndTime [
+	"Answer the stored version if it was read from the executable as it is now, nil otherwise."
+
+	^ versionExecutableTime = aDateAndTime
+		  ifTrue: [ version ]
+		  ifFalse: [ nil ]
 ]
 
 { #category : 'storing' }

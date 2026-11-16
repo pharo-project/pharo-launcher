@@ -92,6 +92,20 @@ PhLVirtualMachineUpdateTest >> testInstallationDateIsTheDateOfTheUpdate [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testCheckKeepsStoredVersion [
+
+	self serverPublishesArchiveTagged: 'first'.
+	vm updateFromUrl.
+	(PhLVmMetadata inFolder: vmStore / vm id)
+		recordVersion: '10.3.12' executableTime: vm lastUpdateTime;
+		storeInFolder: vmStore / vm id.
+
+	vm checkForUpdate.
+
+	self assert: (PhLVmMetadata inFolder: vmStore / vm id) version equals: '10.3.12'
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testNoInstallationDateForVmNotInstalled [
 
 	self assert: vm installationDate isNil

@@ -525,10 +525,24 @@ PhLVirtualMachine >> validityDescription [
 { #category : 'querying' }
 PhLVirtualMachine >> version [
 	"Answer the version printed by my executable, e.g. '10.3.12'.
-	Answer an empty string when it cannot be told, e.g. I am not installed or my executable cannot be run on this computer."
+	Answer an empty string when it cannot be told, e.g. I am not installed or my executable cannot be run on this computer.
+	Running the executable takes time: the version is stored in my folder, and read again only when my executable changes."
+
+	| executableTime metadata version |
+	self isValid ifFalse: [ ^ '' ].
+	executableTime := self lastUpdateTime.
+	metadata := self metadata.
+	(metadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ :storedVersion | ^ storedVersion ].
+	version := self versionFromExecutable.
+	metadata recordVersion: version executableTime: executableTime.
+	metadata storeInFolder: self vmStore / self id.
+	^ version
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> versionFromExecutable [
 
 	| words version |
-	self isValid ifFalse: [ ^ '' ].
 	words := self versionOutput substrings.
 	words size < 2 ifTrue: [ ^ '' ].
 	version := words second.

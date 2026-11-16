@@ -65,3 +65,47 @@ PhLVirtualMachineVersionTest >> testVersionWithoutPrefix [
 
 	self assert: vm version equals: '9.0.22'
 ]
+
+{ #category : 'helpers' }
+PhLVirtualMachineVersionTest >> storeVersion: aString of: aVm executableTime: aDateAndTime [
+
+	| folder |
+	folder := vmStore / aVm id.
+	(PhLVmMetadata inFolder: folder)
+		recordVersion: aString executableTime: aDateAndTime;
+		storeInFolder: folder
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testStoredVersionIsReusedWhileExecutableIsUnchanged [
+	"Running the executable to get the version takes time"
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+
+	self storeVersion: '9.9.9' of: vm executableTime: vm lastUpdateTime.
+
+	self assert: vm version equals: '9.9.9'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testVersionIsReadAgainWhenExecutableChanged [
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+
+	self storeVersion: '9.9.9' of: vm executableTime: vm lastUpdateTime - 1 day.
+
+	self assert: vm version equals: '10.3.12'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testVersionIsStoredWithTheVm [
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+
+	vm version.
+
+	self assert: (PhLVmMetadata inFolder: vmStore / vm id) version equals: '10.3.12'
+]

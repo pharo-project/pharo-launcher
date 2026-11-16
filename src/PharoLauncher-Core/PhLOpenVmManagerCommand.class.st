@@ -21,11 +21,8 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 PhLOpenVmManagerCommand >> execute [
 
 	(self context
-		instantiate: PhLVMPresenter
-		on: PhLVirtualMachinesDataSource default) asModalWindow
-		owner: self context window;
-		withoutButtons;
-		open
+		 instantiate: PhLVMPresenter
+		 on: PhLVirtualMachinesDataSource default) openModalOver: self context
 ]
 
 { #category : 'accessing' }

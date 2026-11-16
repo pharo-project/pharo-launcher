@@ -246,3 +246,37 @@ PhLVMPresenterUpdateTest >> checkForUpdates [
 
 	vms do: [ :each | each checkForUpdate ]
 ]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testNoNoticeByDefault [
+
+	self deny: presenter notice isVisible
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testProposingUpdateOfOneVm [
+
+	presenter proposeUpdateOf: { outdatedVm }.
+
+	self
+		assert: presenter notice label
+		equals: 'Updates are available for 1 virtual machine used by your images.
+Close the images running on it, then click Update.'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testProposingUpdateSelectsVmsAndShowsNotice [
+
+	presenter proposeUpdateOf: {
+			outdatedVm.
+			upToDateVm }.
+
+	self assertCollection: presenter selectedVms hasSameElements: {
+			outdatedVm.
+			upToDateVm }.
+	self assert: presenter notice isVisible.
+	self
+		assert: presenter notice label
+		equals: 'Updates are available for 2 virtual machines used by your images.
+Close the images running on them, then click Update.'
+]

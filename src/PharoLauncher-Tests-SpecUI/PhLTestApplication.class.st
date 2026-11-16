@@ -110,10 +110,10 @@ PhLTestApplication >> parentWindow: aWindow [
 ]
 
 { #category : 'accessing' }
-PhLTestApplication >> proposedVms [
-	"The VMs the user was proposed to update, nil if no proposal was made"
+PhLTestApplication >> vmsProposedInVmManager [
+	"The VMs the VM manager was opened on to propose their update, nil if it was not opened"
 
-	^ requestAttributes at: #proposedVms ifAbsent: [ nil ]
+	^ requestAttributes at: #vmsProposedInVmManager ifAbsent: [ nil ]
 ]
 
 { #category : 'ui' }
@@ -145,11 +145,11 @@ PhLTestApplication >> shouldUpdateTemplateSources [
 	^ false
 ]
 
-{ #category : 'asserting' }
-PhLTestApplication >> shouldUpdateVms: vms [
+{ #category : 'ui' }
+PhLTestApplication >> openVmManagerProposingUpdateOf: vms [
+	"Do not open a window: record the proposed VMs"
 
-	requestAttributes at: #proposedVms put: vms.
-	^ requestAnswer ifNil: [ false ]
+	requestAttributes at: #vmsProposedInVmManager put: vms
 ]
 
 { #category : 'ui' }

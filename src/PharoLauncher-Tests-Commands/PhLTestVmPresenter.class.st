@@ -60,7 +60,9 @@ PhLTestVmPresenter >> newInformation [
 
 { #category : 'accessing' }
 PhLTestVmPresenter >> selectedVms [
-	^ selection ifNil: [ { self vmFor: self singleVmName } ]
+	"The selection set by a test, else the one of the table, else the single VM"
+
+	^ selection ifNil: [ super selectedVms ifEmpty: [ { self vmFor: self singleVmName } ] ]
 ]
 
 { #category : 'configuring' }

@@ -1,84 +1,46 @@
 "
-I specify how the application proposes the user to update virtual machines.
+I specify how the application proposes the user to update virtual machines: it opens the VM manager on them.
+Updating from the VM manager is specified by `PhLUpdateVmCommandTest`.
 "
 Class {
 	#name : 'PharoLauncherApplicationVmUpdateTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'application',
-		'vmPresenter',
 		'vm'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : 'asserting' }
-PharoLauncherApplicationVmUpdateTest >> isVmUpdated [
-
-	^ (vm vmStore / vm name / 'fetched!') exists
-]
-
 { #category : 'running' }
 PharoLauncherApplicationVmUpdateTest >> setUp [
 
 	super setUp.
 	application := PhLTestApplication new.
-	vmPresenter := PhLTestVmPresenter new.
-	vm := vmPresenter vmFor: vmPresenter singleVmName
-]
-
-{ #category : 'running' }
-PharoLauncherApplicationVmUpdateTest >> tearDown [
-
-	PhLTestVirtualMachineManager reset.
-	super tearDown
+	vm := PhLVirtualMachine new
+		      id: '130-x64';
+		      yourself
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testAcceptingProposalUpdatesVms [
-
-	application requestAnswer: true.
+PharoLauncherApplicationVmUpdateTest >> testVmManagerIsOpenedOnVmsToUpdate [
 
 	application vmUpdatesAvailable: { vm }.
 
-	self assert: application proposedVms equals: { vm }.
-	self assert: self isVmUpdated
+	self assert: application vmsProposedInVmManager equals: { vm }
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testPostponingProposalUpdatesNoVm [
-
-	application requestAnswer: false.
-
-	application vmUpdatesAvailable: { vm }.
-
-	self assert: application proposedVms equals: { vm }.
-	self deny: self isVmUpdated
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testVmFailingToUpdateIsReported [
-
-	vm manager: PhLFailingVirtualMachineManager new.
-	application requestAnswer: true.
-
-	application vmUpdatesAvailable: { vm }.
-
-	self deny: self isVmUpdated.
-	self assert: (application error longDescription includesSubstring: vm id)
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testVmUpdateIsProposedOnceTemplateSourcesProposalIsAnswered [
+PharoLauncherApplicationVmUpdateTest >> testVmManagerIsOpenedOnceTemplateSourcesProposalIsAnswered [
 
 	| proposedVmsWhileProposingTemplateSources |
 	application whenProposingTemplateSourcesUpdateDo: [
 		application vmUpdatesAvailable: { vm }.
-		proposedVmsWhileProposingTemplateSources := application proposedVms ].
+		proposedVmsWhileProposingTemplateSources := application vmsProposedInVmManager ].
 
 	application sourcesFileUpdateAvailable.
 
 	self assert: proposedVmsWhileProposingTemplateSources isNil.
-	self assert: application proposedVms equals: { vm }
+	self assert: application vmsProposedInVmManager equals: { vm }
 ]

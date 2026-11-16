@@ -573,18 +573,6 @@ PharoLauncherApplication >> shouldUpdateTemplateSources [
 ]
 
 { #category : 'ui' }
-PharoLauncherApplication >> shouldUpdateVms: virtualMachines [
-
-	^ self newConfirm
-		title: 'Update';
-		label: ('Update available for virtual machines: {1}
-Close the images running on them before updating.' format: { (', ' join: (virtualMachines collect: [ :each | each id ])) });
-		acceptLabel: 'Update';
-		cancelLabel: 'Remind me later';
-		openModal
-]
-
-{ #category : 'ui' }
 PharoLauncherApplication >> showError: anError [
 
 	self newInform 
@@ -683,21 +671,27 @@ PharoLauncherApplication >> updateTemplateSources [
 	self resetTemplateRepository
 ]
 
-{ #category : 'private' }
-PharoLauncherApplication >> updateVms: virtualMachines [
-
-	(PhLVirtualMachine updateAll: virtualMachines) do: [ :error | self showError: error ]
-]
-
 { #category : 'accessing' }
 PharoLauncherApplication >> vmUpdateChecker [
 
 	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker imageRepository: self imageRepository ]
 ]
 
+{ #category : 'ui' }
+PharoLauncherApplication >> openVmManagerProposingUpdateOf: virtualMachines [
+	"The VM manager shows the version and status of the VMs and lets the user choose the ones to update.
+	Answer once it is closed, so that the next update proposal waits for it."
+
+	| vmManager |
+	vmManager := imagesPresenter
+		             instantiate: PhLVMPresenter
+		             on: PhLVirtualMachinesDataSource default.
+	vmManager proposeUpdateOf: virtualMachines.
+	vmManager openModalOver: imagesPresenter
+]
+
 { #category : 'events' }
 PharoLauncherApplication >> vmUpdatesAvailable: virtualMachines [
 
-	self proposeUpdate: [
-		(self shouldUpdateVms: virtualMachines) ifTrue: [ self updateVms: virtualMachines ] ]
+	self proposeUpdate: [ self openVmManagerProposingUpdateOf: virtualMachines ]
 ]

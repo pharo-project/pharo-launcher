@@ -255,3 +255,28 @@ PhLVMPresenterUpdateTest >> testSelectingVms [
 	self assert: (presenter selectedVms collect: [ :each | each id ]) asArray equals: #( '100-x64' ).
 	self assert: presenter detailPanel header label equals: 'VM 100-x64'
 ]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testIconOfUpToDateVm [
+
+	| icon |
+	self checkForUpdates.
+
+	icon := presenter iconFor: upToDateVm.
+
+	self assert: icon form identicalTo: (presenter iconNamed: #testGreen).
+	self assert: icon balloonText equals: 'VM available'
+]
+
+{ #category : 'tests' }
+PhLVMPresenterUpdateTest >> testIconOfVmWithUpdateAvailable [
+
+	| icon |
+	self checkForUpdates.
+
+	icon := presenter iconFor: outdatedVm.
+
+	self assert: icon form identicalTo: (presenter iconNamed: #testYellow).
+	"Balloon texts are wrapped"
+	self assert: (' ' join: icon balloonText asString lines) equals: 'Update available, published on 2999-01-15'
+]

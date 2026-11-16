@@ -95,8 +95,13 @@ PhLVMPresenter >> doShowInFolder [
 
 { #category : 'private' }
 PhLVMPresenter >> iconFor: vm [
+	"Green when the VM is available, yellow when an update is available for it, grey when it is not available"
+
 	| icon |
-	
+	vm isUpdateAvailable ifTrue: [
+		^ (self iconNamed: #testYellow) asMorph
+			  setBalloonText: (self statusDescriptionFor: vm);
+			  yourself ].
 	icon := vm isValid
 		ifTrue: [ self iconNamed: #testGreen ]
 		ifFalse: [ self iconNamed: #testNotRun ].

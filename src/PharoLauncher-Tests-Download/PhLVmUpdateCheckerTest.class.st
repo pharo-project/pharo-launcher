@@ -29,12 +29,11 @@ PhLVmUpdateCheckerTest >> installVmWithUpdateAvailable: aVmId [
 
 { #category : 'running' }
 PhLVmUpdateCheckerTest >> setUp [
-	"The image of the test image repository runs on the 70-x64 VM"
 
 	super setUp.
 	shouldRun := PhLVmUpdateChecker shouldRun.
 	PhLVmUpdateChecker shouldRun: true.
-	checker := PhLVmUpdateChecker imageRepository: PhLTestImageRepository new
+	checker := PhLVmUpdateChecker new
 ]
 
 { #category : 'running' }
@@ -80,7 +79,7 @@ PhLVmUpdateCheckerTest >> testNoVmToUpdateWhenServerDoesNotAnswer [
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testVmUsedByAnImageIsToUpdateWhenUpdateIsAvailable [
+PhLVmUpdateCheckerTest >> testVmIsToUpdateWhenUpdateIsAvailable [
 
 	self installVmWithUpdateAvailable: '70-x64'.
 
@@ -102,14 +101,14 @@ PhLVmUpdateCheckerTest >> testVmsToUpdateAreReadFromTheLastCheck [
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testVmUsedByNoImageIsNotToUpdate [
+PhLVmUpdateCheckerTest >> testEveryOutdatedVmIsToUpdate [
 
 	self installVmWithUpdateAvailable: '70-x64'.
 	self installVmWithUpdateAvailable: '130-x64'.
 
 	checker check.
 
-	self assert: self idsOfVmsToUpdate equals: #( '70-x64' )
+	self assertCollection: self idsOfVmsToUpdate hasSameElements: #( '70-x64' '130-x64' )
 ]
 
 { #category : 'tests' }
@@ -136,8 +135,7 @@ PhLVmUpdateCheckerTest >> testRecordsNothingWhenDisabled [
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testRecordsResultOfVmUsedByNoImage [
-	"The VM manager shows the status of every installed VM"
+PhLVmUpdateCheckerTest >> testRecordsResultOfEveryInstalledVm [
 
 	self installVmWithUpdateAvailable: '130-x64'.
 

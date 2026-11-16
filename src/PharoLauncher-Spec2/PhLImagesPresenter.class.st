@@ -447,14 +447,14 @@ PhLImagesPresenter >> refreshVmUpdates [
 
 { #category : 'vm updates' }
 PhLImagesPresenter >> showVmUpdates: virtualMachines [
-	"Warn the user without interrupting: a red badge on the VMs button tells how many VMs used by images can be updated"
+	"Warn the user without interrupting: a red badge on the VMs button tells how many VMs can be updated"
 
 	vmsToUpdate := virtualMachines.
 	self vmsButton
 		icon: (PhLBadgedIcon icon: self vmManagerCommand decoratedCommand icon count: virtualMachines size) asForm;
 		help: (virtualMachines
 				 ifEmpty: [ 'Open the VM manager' ]
-				 ifNotEmpty: [ 'Updates are available for virtual machines used by your images' ])
+				 ifNotEmpty: [ 'Updates are available for virtual machines' ])
 ]
 
 { #category : 'accessing' }

@@ -650,7 +650,7 @@ PharoLauncherApplication >> vmUpdateCheckDone [
 { #category : 'accessing' }
 PharoLauncherApplication >> vmUpdateChecker [
 
-	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker imageRepository: self imageRepository ]
+	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker new ]
 ]
 
 { #category : 'accessing' }

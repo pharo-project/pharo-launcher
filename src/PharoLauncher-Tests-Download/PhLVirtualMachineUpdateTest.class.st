@@ -6,6 +6,8 @@ The server is replaced by PhLDownloadManagerMock. The VM store is a real tempora
 Class {
 	#name : 'PhLVirtualMachineUpdateTest',
 	#superclass : 'TestCase',
+	#traits : 'TPhLVirtualMachineTestUtil',
+	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
 	#instVars : [
 		'vmStore',
 		'vm'
@@ -18,12 +20,7 @@ Class {
 PhLVirtualMachineUpdateTest >> installVmWithoutStamp [
 	"A VM installed before the Launcher recorded the stamp of VM archives"
 
-	| vmFolder |
-	vmFolder := vmStore / vm id.
-	(vmFolder / 'Pharo.app' / 'Contents' / 'MacOS') ensureCreateDirectory.
-	(vmFolder / 'Pharo.app' / 'Contents' / 'MacOS' / 'Pharo') ensureCreateFile.
-	(vmFolder / 'pharo') binaryWriteStreamDo: [ :stream |
-		stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
+	self createVmNamed: vm id.
 	vm := PhLVirtualMachine id: vm id
 ]
 
@@ -59,11 +56,17 @@ PhLVirtualMachineUpdateTest >> serverPublishesArchiveLastModified: aDateAndTime 
 ]
 
 { #category : 'helpers' }
-PhLVirtualMachineUpdateTest >> serverPublishesArchiveTagged: anETag [
+PhLVirtualMachineUpdateTest >> serverPublishes: anArchive of: aVm tagged: anETag [
 
 	self server
-		atUrl: vm downloadUrl answer: (self vmArchiveVersioned: anETag);
-		atUrl: vm downloadUrl answerStamp: (PhLRemoteFileStamp etag: anETag)
+		atUrl: aVm downloadUrl answer: anArchive;
+		atUrl: aVm downloadUrl answerStamp: (PhLRemoteFileStamp etag: anETag)
+]
+
+{ #category : 'helpers' }
+PhLVirtualMachineUpdateTest >> serverPublishesArchiveTagged: anETag [
+
+	self serverPublishes: (self vmArchiveVersioned: anETag) of: vm tagged: anETag
 ]
 
 { #category : 'helpers' }
@@ -75,9 +78,7 @@ PhLVirtualMachineUpdateTest >> serverPublishesCorruptedArchiveTagged: anETag [
 	archive
 		at: (archive indexOfSubCollection: PhLVirtualMachine elfMagicNumber startingAt: 1)
 		put: 0.
-	self server
-		atUrl: vm downloadUrl answer: archive;
-		atUrl: vm downloadUrl answerStamp: (PhLRemoteFileStamp etag: anETag)
+	self serverPublishes: archive of: vm tagged: anETag
 ]
 
 { #category : 'running' }
@@ -106,7 +107,8 @@ PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self assert: vm isValid.
 	self assert: self installedVersion equals: 'first'.
-	self assert: vm isUpdateAvailable
+	self assert: vm isUpdateAvailable.
+	self assert: vmStore directoryNames asArray equals: { vm id }
 ]
 
 { #category : 'tests' }
@@ -192,4 +194,10 @@ PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	archive addString: 'vm' asByteArray as: 'Pharo.app/Contents/MacOS/Pharo'.
 	archive addString: PhLVirtualMachine elfMagicNumber as: 'pharo'.
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
+]
+
+{ #category : 'accessing' }
+PhLVirtualMachineUpdateTest >> vmStoreRoot [
+
+	^ vmStore
 ]

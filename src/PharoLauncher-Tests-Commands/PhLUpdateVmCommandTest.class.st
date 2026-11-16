@@ -8,6 +8,12 @@ Class {
 	#package : 'PharoLauncher-Tests-Commands'
 }
 
+{ #category : 'asserting' }
+PhLUpdateVmCommandTest >> isUpdated: aVm [
+
+	^ (aVm vmStore / aVm name / 'fetched!') exists
+]
+
 { #category : 'running' }
 PhLUpdateVmCommandTest >> setUp [
 	super setUp.
@@ -61,4 +67,25 @@ PhLUpdateVmCommandTest >> testCanUpdateOneVm [
 	self 
 		assertCollection: (vmFolderEntries collect: #name)
 		hasSameElements: #('pharo' 'Pharo.app' 'fetched!').
+]
+
+{ #category : 'tests' }
+PhLUpdateVmCommandTest >> testVmFailingToUpdateIsSkippedAndReported [
+
+	| command failingVm otherVm |
+	presenter createVmNamed: '90-Foo'.
+	failingVm := presenter vmFor: '90-Foo'.
+	failingVm manager: PhLFailingVirtualMachineManager new.
+	otherVm := presenter vmFor: presenter singleVmName.
+	presenter selection: {
+			failingVm.
+			otherVm }.
+	command := PhLUpdateVmCommand new.
+	command context: presenter.
+
+	command execute.
+
+	self deny: (self isUpdated: failingVm).
+	self assert: (self isUpdated: otherVm).
+	self assert: (presenter information message includesSubstring: '90-Foo')
 ]

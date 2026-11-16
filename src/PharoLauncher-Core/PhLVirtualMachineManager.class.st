@@ -25,14 +25,15 @@ PhLVirtualMachineManager class >> canUseSytemZip [
 
 { #category : 'unzipping' }
 PhLVirtualMachineManager class >> extract: aZipFileReference replacing: aFolder [
-	"The archive is extracted aside: the folder is left untouched if the extraction fails."
+	"The archive is extracted aside: the folder is left untouched if the extraction fails, or if it cannot be replaced.
+	On Windows, a folder with files in use cannot be replaced, e.g. a virtual machine running an image."
 
 	| extractionFolder |
 	extractionFolder := aFolder parent / (aFolder basename , '.new').
 	extractionFolder ensureDeleteAll.
-	[ self unzip: aZipFileReference to: extractionFolder ]
-		ifCurtailed: [ extractionFolder ensureDeleteAll ].
-	self replace: aFolder with: extractionFolder
+	[
+	self unzip: aZipFileReference to: extractionFolder.
+	self replace: aFolder with: extractionFolder ] ifCurtailed: [ extractionFolder ensureDeleteAll ]
 ]
 
 { #category : 'private' }
@@ -159,7 +160,8 @@ PhLVirtualMachineManager class >> replace: aFolder with: aNewFolder [
 	replacedFolder := aFolder parent / (aFolder basename , '.old').
 	replacedFolder ensureDeleteAll.
 	aFolder exists ifTrue: [ self move: aFolder to: replacedFolder ].
-	self move: aNewFolder to: aFolder.
+	[ self move: aNewFolder to: aFolder ] ifCurtailed: [
+		replacedFolder exists ifTrue: [ self move: replacedFolder to: aFolder ] ].
 	self moveTo: aFolder filesOnlyIn: replacedFolder.
 	replacedFolder ensureDeleteAll
 ]

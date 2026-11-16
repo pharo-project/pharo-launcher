@@ -9,7 +9,8 @@ Class {
 	#instVars : [
 		'selection',
 		'vmManager',
-		'vmStoreRoot'
+		'vmStoreRoot',
+		'information'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -26,6 +27,11 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	"needed on Linux"
 	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 	 
+]
+
+{ #category : 'accessing' }
+PhLTestVmPresenter >> information [
+	^ information
 ]
 
 { #category : 'initialization' }
@@ -45,6 +51,11 @@ PhLTestVmPresenter >> initialize [
 { #category : 'user interaction' }
 PhLTestVmPresenter >> newConfirmation [
 	^ PhLTestConfirmation new
+]
+
+{ #category : 'user interaction' }
+PhLTestVmPresenter >> newInformation [
+	^ information := PhLTestConfirmation new
 ]
 
 { #category : 'accessing' }

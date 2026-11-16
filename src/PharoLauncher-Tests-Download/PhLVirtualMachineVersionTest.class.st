@@ -165,3 +165,15 @@ PhLVirtualMachineVersionTest >> storedMetadataOf: aVm [
 
 	^ PhLVmMetadata inFolder: vmStore / aVm id
 ]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testUnknownVersionIsNotStored [
+	"It is read again at the next check, e.g. once reading the version works on this platform"
+
+	| vm |
+	vm := self installVmPrinting: 'Usage: pharo [<option>...] [<imageName> [<argument>...]]'.
+
+	vm refreshVersion.
+
+	self assert: (self storedMetadataOf: vm) version isNil
+]

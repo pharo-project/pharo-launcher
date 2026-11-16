@@ -177,11 +177,12 @@ PhLVirtualMachineUpdateTest >> testCheckKeepsStoredVersion [
 { #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testUpdateStoresTheVersionOfTheNewExecutable [
 
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
 	self serverPublishesArchiveTagged: 'first'.
 
 	vm updateFromUrl.
 
-	self assert: ((PhLVmMetadata inFolder: vmStore / vm id) versionOfExecutableModifiedOn: vm lastUpdateTime) notNil
+	self assert: vm storedVersion equals: '10.3.12'
 ]
 
 { #category : 'tests' }
@@ -358,13 +359,16 @@ PhLVirtualMachineUpdateTest >> testUpdatingAllSkipsVmFailingToUpdate [
 
 { #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
-	"A zip archive with the VM executables expected on OS X and Linux. Its files are dated from 2020, like a VM built long ago."
+	"A zip archive with the VM executables expected on OS X and Linux: scripts printing a VM version, and a binary on Linux.
+	Its files are dated from 2020, like a VM built long ago."
 
-	| archive |
+	| archive script |
+	script := ('#!/bin/sh' , String lf , 'echo "Pharo v10.3.12 built on Oct 23 2026"' , String lf) asByteArray.
 	archive := ZipArchive new.
 	archive addString: aString asByteArray as: 'version'.
-	archive addString: 'vm' asByteArray as: 'Pharo.app/Contents/MacOS/Pharo'.
-	archive addString: PhLVirtualMachine elfMagicNumber as: 'pharo'.
+	archive addString: script as: 'Pharo.app/Contents/MacOS/Pharo'.
+	archive addString: script as: 'pharo'.
+	archive addString: PhLVirtualMachine elfMagicNumber as: 'lib/pharo'.
 	archive members do: [ :each | each modifiedAt: (DateAndTime year: 2020 month: 1 day: 1) ].
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
 ]

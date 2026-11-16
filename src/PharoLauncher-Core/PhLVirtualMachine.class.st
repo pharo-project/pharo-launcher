@@ -330,9 +330,11 @@ PhLVirtualMachine >> readVersionIfChanged [
 
 { #category : 'private' }
 PhLVirtualMachine >> record: aVersion in: aMetadata [
-	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process."
+	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process.
+	An unknown version is not recorded, so that it is read again at the next check."
 
 	aVersion ifNil: [ ^ false ].
+	aVersion value ifEmpty: [ ^ false ].
 	(aMetadata versionOfExecutableModifiedOn: aVersion key) ifNotNil: [ ^ false ].
 	aMetadata recordVersion: aVersion value executableTime: aVersion key.
 	^ true

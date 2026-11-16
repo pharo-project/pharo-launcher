@@ -20,9 +20,21 @@ PhLOpenVmManagerCommand >> asSpecCommand [
 { #category : 'executing' }
 PhLOpenVmManagerCommand >> execute [
 
-	(self context
-		 instantiate: PhLVMPresenter
-		 on: PhLVirtualMachinesDataSource default) openModalOver: self context
+	self newVmManager openModalOver: self context.
+	"VMs may have been updated"
+	self context refreshVmUpdates
+]
+
+{ #category : 'executing' }
+PhLOpenVmManagerCommand >> newVmManager [
+	"The VMs to update are selected, with a notice telling the user to update them"
+
+	| vmManager |
+	vmManager := self context
+		             instantiate: PhLVMPresenter
+		             on: PhLVirtualMachinesDataSource default.
+	self context vmsToUpdate ifNotEmpty: [ :vms | vmManager proposeUpdateOf: vms ].
+	^ vmManager
 ]
 
 { #category : 'accessing' }

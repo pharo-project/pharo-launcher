@@ -15,6 +15,7 @@ Class {
 		'imageFilter',
 		'rootCommandsGroup',
 		'toolbar',
+		'vmsToUpdate',
 		'editConfigurationButton'
 	],
 	#category : 'PharoLauncher-Spec2-View',
@@ -435,4 +436,38 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 PhLImagesPresenter >> withToolbarDo: aBlock [
 
 	self withWindowDo: [ :window | aBlock value: window toolbar ]
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> refreshVmUpdates [
+	"Show the VMs to update found by the last check. The server is not asked."
+
+	self showVmUpdates: self application vmUpdateChecker vmsToUpdate
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> showVmUpdates: virtualMachines [
+	"Warn the user without interrupting: the VMs button tells how many VMs used by images can be updated"
+
+	vmsToUpdate := virtualMachines.
+	self vmsButton
+		label: (virtualMachines
+				 ifEmpty: [ 'VMs' ]
+				 ifNotEmpty: [ 'VMs ({1})' format: { virtualMachines size } ]);
+		help: (virtualMachines
+				 ifEmpty: [ 'Open the VM manager' ]
+				 ifNotEmpty: [ 'Updates are available for virtual machines used by your images' ])
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> vmsButton [
+
+	^ (self toolbarGroup allCommands detect: [ :each |
+		   each decoratedCommand isKindOf: PhLOpenVmManagerCommand ]) presenter
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> vmsToUpdate [
+
+	^ vmsToUpdate ifNil: [ #(  ) ]
 ]

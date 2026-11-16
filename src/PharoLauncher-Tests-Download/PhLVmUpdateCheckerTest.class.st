@@ -1,12 +1,11 @@
 "
-I specify which virtual machines the update checker announces.
+I specify what the update checker stores and which virtual machines it answers as to update.
 "
 Class {
 	#name : 'PhLVmUpdateCheckerTest',
 	#superclass : 'PhLVirtualMachineStoreTest',
 	#instVars : [
 		'checker',
-		'announcedVms',
 		'shouldRun'
 	],
 	#category : 'PharoLauncher-Tests-Download',
@@ -14,9 +13,9 @@ Class {
 }
 
 { #category : 'helpers' }
-PhLVmUpdateCheckerTest >> announcedVmIds [
+PhLVmUpdateCheckerTest >> idsOfVmsToUpdate [
 
-	^ (announcedVms collect: [ :each | each id ]) asArray
+	^ (checker vmsToUpdate collect: [ :each | each id ]) asArray
 ]
 
 { #category : 'helpers' }
@@ -35,12 +34,7 @@ PhLVmUpdateCheckerTest >> setUp [
 	super setUp.
 	shouldRun := PhLVmUpdateChecker shouldRun.
 	PhLVmUpdateChecker shouldRun: true.
-	announcedVms := #(  ).
-	checker := PhLVmUpdateChecker imageRepository: PhLTestImageRepository new.
-	checker announcer
-		when: PhLVmUpdatesAvailable
-		do: [ :announcement | announcedVms := announcement vms ]
-		for: self
+	checker := PhLVmUpdateChecker imageRepository: PhLTestImageRepository new
 ]
 
 { #category : 'running' }
@@ -52,18 +46,18 @@ PhLVmUpdateCheckerTest >> tearDown [
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesNothingWhenDisabled [
+PhLVmUpdateCheckerTest >> testNoVmToUpdateWhenDisabled [
 
 	self installVmWithUpdateAvailable: '70-x64'.
 	PhLVmUpdateChecker shouldRun: false.
 
 	checker check.
 
-	self assertEmpty: announcedVms
+	self assertEmpty: checker vmsToUpdate
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesNothingWhenNoUpdateIsAvailable [
+PhLVmUpdateCheckerTest >> testNoVmToUpdateWhenNoUpdateIsAvailable [
 
 	self createVmNamed: '70-x64'.
 	self
@@ -72,38 +66,50 @@ PhLVmUpdateCheckerTest >> testAnnouncesNothingWhenNoUpdateIsAvailable [
 
 	checker check.
 
-	self assertEmpty: announcedVms
+	self assertEmpty: checker vmsToUpdate
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesNothingWhenServerDoesNotAnswer [
+PhLVmUpdateCheckerTest >> testNoVmToUpdateWhenServerDoesNotAnswer [
 
 	self createVmNamed: '70-x64'.
 
 	checker check.
 
-	self assertEmpty: announcedVms
+	self assertEmpty: checker vmsToUpdate
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesVmUsedByAnImageWhenUpdateIsAvailable [
+PhLVmUpdateCheckerTest >> testVmUsedByAnImageIsToUpdateWhenUpdateIsAvailable [
 
 	self installVmWithUpdateAvailable: '70-x64'.
 
 	checker check.
 
-	self assert: self announcedVmIds equals: #( '70-x64' )
+	self assert: self idsOfVmsToUpdate equals: #( '70-x64' )
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testDoesNotAnnounceVmUsedByNoImage [
+PhLVmUpdateCheckerTest >> testVmsToUpdateAreReadFromTheLastCheck [
+
+	| requestCount |
+	self installVmWithUpdateAvailable: '70-x64'.
+	checker check.
+	requestCount := self server stampRequestCount.
+
+	self assert: self idsOfVmsToUpdate equals: #( '70-x64' ).
+	self assert: self server stampRequestCount equals: requestCount
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testVmUsedByNoImageIsNotToUpdate [
 
 	self installVmWithUpdateAvailable: '70-x64'.
 	self installVmWithUpdateAvailable: '130-x64'.
 
 	checker check.
 
-	self assert: self announcedVmIds equals: #( '70-x64' )
+	self assert: self idsOfVmsToUpdate equals: #( '70-x64' )
 ]
 
 { #category : 'tests' }

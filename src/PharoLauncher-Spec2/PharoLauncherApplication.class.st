@@ -13,8 +13,6 @@ Class {
 		'scriptsDirectory',
 		'openAsWorld',
 		'standalone',
-		'pendingUpdateProposals',
-		'isProposingUpdate',
 		'vmUpdateChecker'
 	],
 	#classVars : [
@@ -276,14 +274,6 @@ PharoLauncherApplication >> exitApplication [
 	Smalltalk exitSuccess
 ]
 
-{ #category : 'private' }
-PharoLauncherApplication >> evaluatePendingUpdateProposals [
-
-	isProposingUpdate := true.
-	[ [ self pendingUpdateProposals isEmpty ] whileFalse: [ self pendingUpdateProposals removeFirst value ] ]
-		ensure: [ isProposingUpdate := false ]
-]
-
 { #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
@@ -376,9 +366,9 @@ PharoLauncherApplication >> initializeVmUpdateChecker [
 
 	self vmUpdateChecker announcer
 		unsubscribe: self;
-		when: PhLVmUpdatesAvailable
-		do: [ :event | "Announced from the update checker process: the modal dialog must be opened by the UI process"
-			self defer: [ self vmUpdatesAvailable: event vms ] ]
+		when: PhLVmUpdateCheckDone
+		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
+			self defer: [ self vmUpdateCheckDone ] ]
 		for: self
 ]
 
@@ -545,22 +535,6 @@ PharoLauncherApplication >> shouldExitWhenNoMoreWindows [
 	^ true
 ]
 
-{ #category : 'private' }
-PharoLauncherApplication >> pendingUpdateProposals [
-
-	^ pendingUpdateProposals ifNil: [ pendingUpdateProposals := OrderedCollection new ]
-]
-
-{ #category : 'ui' }
-PharoLauncherApplication >> proposeUpdate: aBlock [
-	"Evaluate the block proposing an update to the user.
-	Updates are proposed one at a time: a proposal made while the user answers another one waits for this answer."
-
-	self pendingUpdateProposals addLast: aBlock.
-	isProposingUpdate == true ifTrue: [ ^ self ].
-	self evaluatePendingUpdateProposals
-]
-
 { #category : 'ui' }
 PharoLauncherApplication >> shouldUpdateTemplateSources [
 
@@ -584,8 +558,10 @@ PharoLauncherApplication >> showError: anError [
 { #category : 'events' }
 PharoLauncherApplication >> sourcesFileUpdateAvailable [
 
-	self proposeUpdate: [
-		self shouldUpdateTemplateSources ifTrue: [ self updateTemplateSources ] ]
+	self shouldUpdateTemplateSources ifFalse: [ ^ self ].
+	
+	PhLPharoTemplateSources fromFile updateSourcesFile.
+	self resetTemplateRepository
 ]
 
 { #category : 'running' }
@@ -664,11 +640,11 @@ PharoLauncherApplication >> unregisterWindow: aWindow [
 	self safeExit
 ]
 
-{ #category : 'private' }
-PharoLauncherApplication >> updateTemplateSources [
+{ #category : 'events' }
+PharoLauncherApplication >> vmUpdateCheckDone [
+	"Warn the user without interrupting: the main window shows how many VMs can be updated"
 
-	PhLPharoTemplateSources fromFile updateSourcesFile.
-	self resetTemplateRepository
+	imagesPresenter ifNotNil: [ :presenter | presenter refreshVmUpdates ]
 ]
 
 { #category : 'accessing' }
@@ -677,21 +653,9 @@ PharoLauncherApplication >> vmUpdateChecker [
 	^ vmUpdateChecker ifNil: [ vmUpdateChecker := PhLVmUpdateChecker imageRepository: self imageRepository ]
 ]
 
-{ #category : 'ui' }
-PharoLauncherApplication >> openVmManagerProposingUpdateOf: virtualMachines [
-	"The VM manager shows the version and status of the VMs and lets the user choose the ones to update.
-	Answer once it is closed, so that the next update proposal waits for it."
+{ #category : 'accessing' }
+PharoLauncherApplication >> vmUpdateChecker: aPhLVmUpdateChecker [
 
-	| vmManager |
-	vmManager := imagesPresenter
-		             instantiate: PhLVMPresenter
-		             on: PhLVirtualMachinesDataSource default.
-	vmManager proposeUpdateOf: virtualMachines.
-	vmManager openModalOver: imagesPresenter
+	vmUpdateChecker := aPhLVmUpdateChecker
 ]
 
-{ #category : 'events' }
-PharoLauncherApplication >> vmUpdatesAvailable: virtualMachines [
-
-	self proposeUpdate: [ self openVmManagerProposingUpdateOf: virtualMachines ]
-]

@@ -1,12 +1,12 @@
 "
-I specify how the application proposes the user to update virtual machines: it opens the VM manager on them.
+I specify how the application warns the user that virtual machines can be updated: without interrupting, through the VMs button of the main window.
 Updating from the VM manager is specified by `PhLUpdateVmCommandTest`.
 "
 Class {
 	#name : 'PharoLauncherApplicationVmUpdateTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'application',
+		'imagesPresenter',
 		'vm'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
@@ -17,30 +17,21 @@ Class {
 PharoLauncherApplicationVmUpdateTest >> setUp [
 
 	super setUp.
-	application := PhLTestApplication new.
+	imagesPresenter := PhLTestImagesPresenter new.
 	vm := PhLVirtualMachine new
 		      id: '130-x64';
 		      yourself
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testVmManagerIsOpenedOnVmsToUpdate [
+PharoLauncherApplicationVmUpdateTest >> testMainWindowShowsVmsToUpdateOnceCheckIsDone [
 
-	application vmUpdatesAvailable: { vm }.
+	| application |
+	application := imagesPresenter application.
+	application vmUpdateChecker: (PhLTestVmUpdateChecker vmsToUpdate: { vm }).
 
-	self assert: application vmsProposedInVmManager equals: { vm }
-]
+	application vmUpdateCheckDone.
 
-{ #category : 'tests' }
-PharoLauncherApplicationVmUpdateTest >> testVmManagerIsOpenedOnceTemplateSourcesProposalIsAnswered [
-
-	| proposedVmsWhileProposingTemplateSources |
-	application whenProposingTemplateSourcesUpdateDo: [
-		application vmUpdatesAvailable: { vm }.
-		proposedVmsWhileProposingTemplateSources := application vmsProposedInVmManager ].
-
-	application sourcesFileUpdateAvailable.
-
-	self assert: proposedVmsWhileProposingTemplateSources isNil.
-	self assert: application vmsProposedInVmManager equals: { vm }
+	self assert: imagesPresenter vmsToUpdate equals: { vm }.
+	self assert: imagesPresenter vmsButton label equals: 'VMs (1)'
 ]

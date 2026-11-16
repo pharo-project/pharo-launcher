@@ -1,12 +1,14 @@
 "
 I check if an update is available for the installed virtual machines, and record their version. The result is stored in the folder of each virtual machine (see `PhLVmMetadata`), where the VM manager and the command line read it.
 When the check for updates is disabled in the settings, the server is not asked but versions are still recorded.
-I announce on `PhLVmUpdateAnnouncer default`:
-- `PhLVmUpdatesAvailable` with the virtual machines to update that are used by an image of the image repository, so that the user is proposed to update them,
-- `PhLVmUpdateCheckDone` once the check is done.
+I announce `PhLVmUpdateCheckDone` on `PhLVmUpdateAnnouncer default` once a check is done.
+
+The virtual machines to update are the ones used by an image of the image repository for which the last check found an update.
 
 ```
-(PhLVmUpdateChecker imageRepository: anImageRepository) check
+checker := PhLVmUpdateChecker imageRepository: anImageRepository.
+checker check.
+checker vmsToUpdate
 ```
 "
 Class {
@@ -68,15 +70,17 @@ PhLVmUpdateChecker >> announcer [
 { #category : 'actions' }
 PhLVmUpdateChecker >> check [
 
-	| vmsToUpdate |
-	vmsToUpdate := self class shouldRun
-		               ifTrue: [ self installedVms select: [ :vm | vm checkForUpdate ] ]
-		               ifFalse: [
-			               self installedVms do: [ :vm | vm refreshVersion ].
-			               #(  ) ].
-	(self usedAmong: vmsToUpdate) ifNotEmpty: [ :vms |
-		self announcer announce: (PhLVmUpdatesAvailable vms: vms) ].
+	self class shouldRun
+		ifTrue: [ self installedVms do: [ :vm | vm checkForUpdate ] ]
+		ifFalse: [ self installedVms do: [ :vm | vm refreshVersion ] ].
 	self announcer announce: PhLVmUpdateCheckDone new
+]
+
+{ #category : 'accessing' }
+PhLVmUpdateChecker >> vmsToUpdate [
+	"Answer the VMs used by an image for which the last check found an update. The server is not asked."
+
+	^ self usedAmong: (self installedVms select: [ :vm | vm isUpdateAvailable ])
 ]
 
 { #category : 'initialization' }

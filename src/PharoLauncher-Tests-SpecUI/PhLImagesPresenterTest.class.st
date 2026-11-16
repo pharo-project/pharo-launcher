@@ -125,3 +125,63 @@ PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
 
 	self assert: presenter singleImage name equals: 'Foo'
 ]
+
+{ #category : 'helpers' }
+PhLImagesPresenterTest >> vmsToUpdate [
+
+	^ {
+		  (PhLVirtualMachine new
+			   id: '130-x64';
+			   yourself).
+		  (PhLVirtualMachine new
+			   id: '120-x64';
+			   yourself) }
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarProposesUpdateOfVmsToUpdate [
+
+	| vmManager |
+	presenter := PhLTestImagesPresenter new.
+	presenter showVmUpdates: self vmsToUpdate.
+
+	vmManager := (PhLOpenVmManagerCommand new
+		              context: presenter;
+		              yourself) newVmManager.
+
+	self assert: vmManager notice isVisible
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarWithoutUpdateHasNoNotice [
+
+	| vmManager |
+	presenter := PhLTestImagesPresenter new.
+
+	vmManager := (PhLOpenVmManagerCommand new
+		              context: presenter;
+		              yourself) newVmManager.
+
+	self deny: vmManager notice isVisible
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testVmsButtonShowsNumberOfVmsToUpdate [
+
+	presenter := PhLTestImagesPresenter new.
+
+	presenter showVmUpdates: self vmsToUpdate.
+
+	self assert: presenter vmsButton label equals: 'VMs (2)'
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testVmsButtonWithoutVmToUpdate [
+
+	presenter := PhLTestImagesPresenter new.
+	presenter showVmUpdates: self vmsToUpdate.
+
+	presenter showVmUpdates: #(  ).
+
+	self assert: presenter vmsButton label equals: 'VMs'
+]

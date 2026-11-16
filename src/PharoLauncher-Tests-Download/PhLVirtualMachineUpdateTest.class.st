@@ -134,6 +134,25 @@ PhLVirtualMachineUpdateTest >> testUpdateDoesNotNeedTheStampOfTheArchive [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testVmFetchedToLaunchAnImageRecordsItsInstallation [
+	"A VM missing to launch an image is fetched: it is recorded like an updated VM"
+
+	| manager |
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	manager := PhLVirtualMachineManager new
+		           imageVersion: '130';
+		           imageFormatNumber: PhLVirtualMachineManager imageFormat64bits;
+		           yourself.
+	self serverPublishesArchiveTagged: 'first'.
+
+	manager fetchVm.
+
+	vm := PhLVirtualMachine id: manager vmId.
+	self assert: vm storedVersion equals: '10.3.12'.
+	self deny: vm checkForUpdate
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self serverPublishesArchiveTagged: 'first'.

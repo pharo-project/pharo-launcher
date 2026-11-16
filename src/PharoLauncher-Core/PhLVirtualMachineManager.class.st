@@ -38,10 +38,10 @@ PhLVirtualMachineManager class >> extract: aZipFileReference replacing: aFolder 
 
 { #category : 'private' }
 PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
-	"Download and extract the VM archive. Record the stamp of the archive in the VM folder to be able to detect later that a newer archive is published."
+	"Download and extract the VM archive. Answer the stamp of the archive, nil if the server does not tell it.
+	The VM records it, to be able to detect later that a newer archive is published: see PhLVirtualMachine>>#completeInstallationFrom:"
 
-	| vmFolder stamp |
-	vmFolder := targetFile parent / targetFile basenameWithoutExtension.
+	| stamp |
 	"Without the stamp, the VM is installed anyway: the next check will record the published one"
 	stamp := [ PhLDownloadManager default stampOf: aVmUrl ]
 		         on: PhLDownloadError
@@ -49,8 +49,8 @@ PhLVirtualMachineManager class >> fetch: aVmUrl to: targetFile [
 	PhLDownloadManager default
 		download: aVmUrl
 		toFile: targetFile.
-	self extract: targetFile replacing: vmFolder.
-	(PhLVmMetadata installedFrom: stamp) storeInFolder: vmFolder
+	self extract: targetFile replacing: targetFile parent / targetFile basenameWithoutExtension.
+	^ stamp
 ]
 
 { #category : 'instance creation' }
@@ -376,11 +376,16 @@ PhLVirtualMachineManager >> fetchSourcesFilesFor: anImageVersionString in: folde
 { #category : 'private' }
 PhLVirtualMachineManager >> fetchVm [
 
-	[ self class 
-		fetch: self vmUrl 
-		to: self vmStore / (self vmId , '.zip') ]
-	on: KeyNotFound
-	do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ]
+	| stamp |
+	[ stamp := self class
+		         fetch: self vmUrl
+		         to: self vmStore / (self vmId , '.zip') ]
+		on: KeyNotFound
+		do: [ self error: 'No Virtual Machine available for ' , self imageVersion , ' image.' ].
+	(PhLVirtualMachine new
+		 id: self vmId;
+		 manager: self;
+		 yourself) completeInstallationFrom: stamp
 ]
 
 { #category : 'accessing' }

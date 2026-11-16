@@ -556,13 +556,23 @@ PhLVirtualMachine >> stonValueOf: anInstVarName [
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
 
-	self manager class 
-		fetch: self downloadUrl 
-		to: self vmStore / (self id , '.zip').
+	self completeInstallationFrom: (self manager class
+			 fetch: self downloadUrl
+			 to: self vmStore / (self id , '.zip'))
+]
 
+{ #category : 'updating' }
+PhLVirtualMachine >> completeInstallationFrom: aStamp [
+	"My files were just extracted from an archive having the given stamp (nil if unknown).
+	Make them usable, then record the archive and my version in one write."
+
+	| metadata |
 	self initializeExecutableRefFrom: self vmStore / self id.
 	self ensureExecutionRights.
-	self refreshVersion
+	self isValid ifFalse: [ ^ self ].
+	metadata := PhLVmMetadata installedFrom: aStamp.
+	self record: self lastUpdateTime -> self versionFromExecutable in: metadata.
+	metadata storeInFolder: self vmStore / self id
 ]
 
 { #category : 'accessing' }

@@ -62,12 +62,24 @@ PhLAboutCommandTest >> testUpdateNoticeIsAHeader [
 ]
 
 { #category : 'tests' }
+PhLAboutCommandTest >> testUpdateNoticeHasAnIcon [
+
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: '3.4.5').
+
+	presenter := (PhLAboutCommand forContext: self) execute.
+
+	self assert: presenter updateIcon isVisible.
+	self assert: presenter updateIcon image equals: (presenter iconNamed: #smallUpdate)
+]
+
+{ #category : 'tests' }
 PhLAboutCommandTest >> testNoDownloadLinkWithoutLauncherUpdate [
 
 	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: nil).
 
 	presenter := (PhLAboutCommand forContext: self) execute.
 
+	self deny: presenter updateIcon isVisible.
 	self deny: presenter updateNotice isVisible.
 	self deny: presenter updateLink isVisible
 ]

@@ -12,6 +12,7 @@ Class {
 		'text',
 		'icon',
 		'documentationLink',
+		'updateIcon',
 		'updateNotice',
 		'updateLink'
 	],
@@ -1638,7 +1639,13 @@ PhLAboutPresenter >> defaultLayout [
 	updateNotice isVisible ifTrue: [
 		column
 			add: (SpBoxLayout newTopToBottom
-					 add: updateNotice expand: false;
+					 add: (SpBoxLayout newLeftToRight
+							  spacing: 5;
+							  vAlignCenter;
+							  add: updateIcon expand: false;
+							  add: updateNotice;
+							  yourself)
+					 expand: false;
 					 add: updateLink expand: false;
 					 yourself)
 			expand: false ].
@@ -1683,6 +1690,10 @@ PhLAboutPresenter >> initializePresenters [
 		url: 'https://pharo-project.github.io/pharo-launcher';
 		label: 'Open Pharo Launcher documentation (web)';
 		yourself.
+	updateIcon := self newImage
+		image: (self iconNamed: #smallUpdate);
+		yourself.
+	updateIcon hide.
 	updateNotice := self newLabel
 		addStyle: 'form_header';
 		yourself.
@@ -1695,6 +1706,7 @@ PhLAboutPresenter >> initializePresenters [
 PhLAboutPresenter >> proposeUpdateTo: aVersion downloadUrl: anUrl [
 	"Show, above everything else, that a newer Pharo Launcher is available and a link to download it"
 
+	updateIcon show.
 	updateNotice
 		label: ('Pharo Launcher {1} is available' format: { aVersion });
 		show.
@@ -1703,6 +1715,12 @@ PhLAboutPresenter >> proposeUpdateTo: aVersion downloadUrl: anUrl [
 		url: anUrl;
 		show.
 	self layout: self defaultLayout
+]
+
+{ #category : 'accessing' }
+PhLAboutPresenter >> updateIcon [
+
+	^ updateIcon
 ]
 
 { #category : 'accessing' }

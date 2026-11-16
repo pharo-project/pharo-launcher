@@ -33,5 +33,5 @@ PharoLauncherApplicationVmUpdateTest >> testMainWindowShowsVmsToUpdateOnceCheckI
 	application vmUpdateCheckDone.
 
 	self assert: imagesPresenter vmsToUpdate equals: { vm }.
-	self assert: imagesPresenter vmsButton label equals: 'VMs (1)'
+	self deny: imagesPresenter vmsButton icon extent equals: PhLOpenVmManagerCommand new icon extent
 ]

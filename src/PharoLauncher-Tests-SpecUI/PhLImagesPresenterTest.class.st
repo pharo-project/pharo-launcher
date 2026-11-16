@@ -168,11 +168,15 @@ PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarWithoutUpdateHasNoNotice
 { #category : 'tests' }
 PhLImagesPresenterTest >> testVmsButtonShowsNumberOfVmsToUpdate [
 
+	| icon badgeColor |
 	presenter := PhLTestImagesPresenter new.
 
 	presenter showVmUpdates: self vmsToUpdate.
 
-	self assert: presenter vmsButton label equals: 'VMs (2)'
+	icon := presenter vmsButton icon.
+	badgeColor := icon colorAt: (icon width - 6) @ 1.
+	self assert: (badgeColor red > 0.8 and: [ badgeColor green < 0.3 ]).
+	self assert: presenter vmsButton label equals: 'VMs'
 ]
 
 { #category : 'tests' }
@@ -183,5 +187,6 @@ PhLImagesPresenterTest >> testVmsButtonWithoutVmToUpdate [
 
 	presenter showVmUpdates: #(  ).
 
+	self assert: presenter vmsButton icon extent equals: PhLOpenVmManagerCommand new icon extent.
 	self assert: presenter vmsButton label equals: 'VMs'
 ]

@@ -11,7 +11,8 @@ Class {
 		'description',
 		'text',
 		'icon',
-		'documentationLink'
+		'documentationLink',
+		'updateLink'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -1635,6 +1636,7 @@ PhLAboutPresenter >> defaultLayout [
 		add: (SpBoxLayout newVertical
 				spacing: 15;
 				add: description;
+				add: updateLink expand: false;
 				add: documentationLink expand: false;
 			yourself);
 		yourself
@@ -1671,7 +1673,24 @@ PhLAboutPresenter >> initializePresenters [
 		url: 'https://pharo-project.github.io/pharo-launcher';
 		label: 'Open Pharo Launcher documentation (web)';
 		yourself.
+	updateLink := self newLink.
+	updateLink hide
+]
 
+{ #category : 'accessing' }
+PhLAboutPresenter >> proposeUpdateTo: aVersion downloadUrl: anUrl [
+	"Show a link to download a newer Pharo Launcher"
+
+	updateLink
+		label: ('Download Pharo Launcher {1} (web)' format: { aVersion });
+		url: anUrl;
+		show
+]
+
+{ #category : 'accessing' }
+PhLAboutPresenter >> updateLink [
+
+	^ updateLink
 ]
 
 { #category : 'initialization' }

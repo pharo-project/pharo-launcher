@@ -63,6 +63,7 @@ PhLAboutCommand >> execute [
 
 	presenter := PhLAboutPresenter newApplication: self application.
 	presenter text: self aboutText.
+	self proposeLauncherUpdateIn: presenter.
 	presenter asDialogWindow 
 		owner: self context window;
 		open.
@@ -76,6 +77,16 @@ PhLAboutCommand >> initialize [
 	self
 		name: 'About';
 		description: 'Documentation and information about Pharo Launcher'
+]
+
+{ #category : 'private' }
+PhLAboutCommand >> proposeLauncherUpdateIn: anAboutPresenter [
+	"The server is not asked: the latest version is the one found by the last check"
+
+	| checker |
+	checker := self application launcherUpdateChecker.
+	checker isUpdateAvailable ifTrue: [
+		anAboutPresenter proposeUpdateTo: checker latestVersion downloadUrl: checker downloadUrl ]
 ]
 
 { #category : 'querying' }

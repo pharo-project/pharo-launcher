@@ -2,7 +2,8 @@ Class {
 	#name : 'PhLAboutCommandTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'presenter'
+		'presenter',
+		'application'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -10,7 +11,8 @@ Class {
 
 { #category : 'accessing' }
 PhLAboutCommandTest >> application [
-    ^ SpMockApplication new
+
+	^ application ifNil: [ application := PhLTestApplication new ]
 ]
 
 { #category : 'running' }
@@ -34,4 +36,25 @@ PhLAboutCommandTest >> testCanOpenAboutDialog [
 PhLAboutCommandTest >> window [
 	"In a non-testing environment this message will be send to a SpWindowPresenter"
 	^ nil
+]
+
+{ #category : 'tests' }
+PhLAboutCommandTest >> testDownloadLinkWhenLauncherUpdateIsAvailable [
+
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: '3.4.5').
+
+	presenter := (PhLAboutCommand forContext: self) execute.
+
+	self assert: presenter updateLink isVisible.
+	self assert: presenter updateLink label equals: 'Download Pharo Launcher 3.4.5 (web)'
+]
+
+{ #category : 'tests' }
+PhLAboutCommandTest >> testNoDownloadLinkWithoutLauncherUpdate [
+
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: nil).
+
+	presenter := (PhLAboutCommand forContext: self) execute.
+
+	self deny: presenter updateLink isVisible
 ]

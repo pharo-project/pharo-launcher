@@ -55,6 +55,12 @@ PhLDownloadManagerMock >> download: aUrl toFile: aFileReference [
 				 ifFalse: [ document ]) ]
 ]
 
+{ #category : 'actions' }
+PhLDownloadManagerMock >> silentlyDownload: aUrl toFile: aFileReference [
+
+	self download: aUrl toFile: aFileReference
+]
+
 { #category : 'accessing' }
 PhLDownloadManagerMock >> defaultResponse [
 	^ defaultResponse

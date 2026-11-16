@@ -54,11 +54,19 @@ PhLDownloadManager >> displayProgressDuring: workBlock [
 PhLDownloadManager >> download: url toFile: destinationFile [
 	"A PhLDownloadError is signaled to the caller: the UI decides what to do (e.g. PhLTemplatesPresenter>>#templateChildrenOf: proposes to retry)"
 
-	| tmpFile |
-	tmpFile := destinationFile , UUID new asString.
 	self
 		displayProgress: ('Downloading {1}...' format: { url })
-		during: [ (self newHTTPClientForUrl: url) downloadTo: tmpFile ].
+		during: [ self silentlyDownload: url toFile: destinationFile ]
+]
+
+{ #category : 'actions' }
+PhLDownloadManager >> silentlyDownload: url toFile: destinationFile [
+	"Download without showing the progress to the user, e.g. for a download the user did not ask for.
+	A PhLDownloadError is signaled to the caller."
+
+	| tmpFile |
+	tmpFile := destinationFile , UUID new asString.
+	(self newHTTPClientForUrl: url) downloadTo: tmpFile.
 	destinationFile ensureDelete.
 	tmpFile renameTo: destinationFile basename
 ]

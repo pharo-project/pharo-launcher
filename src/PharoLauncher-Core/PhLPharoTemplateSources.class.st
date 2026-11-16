@@ -132,10 +132,14 @@ PhLPharoTemplateSources >> checkForUpdates: anObserver [
 PhLPharoTemplateSources >> sourcesNeedUpdate [
 	| downloadedSources |
 	
-	file exists ifFalse: [ self ensureSourcesFile. ^ false ].
+	"The check runs in the background: the user did not ask for these downloads"
+	file exists ifFalse: [
+		self silentlyFetchSourcesFile.
+		self replaceSourcesFileWithDownloaded.
+		^ false ].
 	self lockDownloadedSourcesFileDuring: [
 		self downloadedSourcesFile ensureDelete.
-		self fetchSourcesFile.
+		self silentlyFetchSourcesFile.
 		downloadedSources := self downloadedSources ].
 	^ self sources ~= downloadedSources
 ]
@@ -177,6 +181,15 @@ PhLPharoTemplateSources >> fetchSourcesFile [
 
 	PhLDownloadManager default
 		download: self sourcesUrl
+		toFile: self downloadedSourcesFile
+]
+
+{ #category : 'actions' }
+PhLPharoTemplateSources >> silentlyFetchSourcesFile [
+	"Fetch the sources file without showing the download to the user"
+
+	PhLDownloadManager default
+		silentlyDownload: self sourcesUrl
 		toFile: self downloadedSourcesFile
 ]
 

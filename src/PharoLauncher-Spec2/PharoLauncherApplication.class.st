@@ -180,9 +180,9 @@ PharoLauncherApplication class >> reset [
 	<script>
    Default ifNil: [ ^ self ].
 
-   Default 
-		unsubscribeFromAnnouncers;
-		releaseProgressRunner;
+   "Default may be a PhLNotificationCenter when the launcher runs headless"
+   Default
+		releaseSharedResources;
 		reset.
 	Default := nil
 ]
@@ -459,6 +459,15 @@ PharoLauncherApplication >> prepareAsStandaloneApplication [
 
 	self useBackend: #Gtk with: PhLGtkConfiguration new.
 	self openAsWorld: false
+]
+
+{ #category : 'initialization' }
+PharoLauncherApplication >> releaseSharedResources [
+	"Announcers and the progress runner are global: an application that is no more the default one must release them"
+
+	self
+		unsubscribeFromAnnouncers;
+		releaseProgressRunner
 ]
 
 { #category : 'ui' }

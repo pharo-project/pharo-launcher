@@ -94,7 +94,10 @@ function package_mac_version() {
 	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
 	cp scripts/pharo-launcher.sh $RESOURCES_PATH/pharo-launcher && chmod +x $RESOURCES_PATH/pharo-launcher
 	mv $BIN_PATH/pharo.signatures $RESOURCES_PATH/ || true
-	
+	# Replacing the VM Info.plist and resources breaks the VM ad-hoc signature,
+	# and macOS refuses to open an arm64 app with an invalid signature (error -54).
+	codesign --force --deep --sign - PharoLauncher.app
+
 	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
 	local generated_dmg
 	generated_dmg=$(echo *.dmg)

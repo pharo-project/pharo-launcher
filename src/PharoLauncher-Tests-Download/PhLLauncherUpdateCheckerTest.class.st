@@ -110,7 +110,15 @@ PhLLauncherUpdateCheckerTest >> testDisablingTheCheckHidesTheUpdateFound [
 PhLLauncherUpdateCheckerTest >> testDownloadUrlIsTheOfficialOneOfTheCurrentPlatform [
 
 	self assert: (checker downloadUrl beginsWith: 'https://files.pharo.org/pharo-launcher/').
-	self assert: (#( 'mac' 'windows' 'linux64' ) includes: (checker downloadUrl substrings: '/') last)
+	self assert: (#( 'mac-arm64' 'mac-x64' 'windows' 'linux64' ) includes: (checker downloadUrl substrings: '/') last)
+]
+
+{ #category : 'tests' }
+PhLLauncherUpdateCheckerTest >> testDownloadUrlOnMacDependsOnTheProcessor [
+	"files.pharo.org/pharo-launcher/mac always answers the Apple silicon package"
+
+	self assert: (checker macPlatformNameFor: 'arm64') equals: 'mac-arm64'.
+	self assert: (checker macPlatformNameFor: 'x86_64') equals: 'mac-x64'
 ]
 
 { #category : 'tests' }

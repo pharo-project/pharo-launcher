@@ -48,8 +48,12 @@ PhLUpdateChecker class >> terminate [
 
 { #category : 'actions' }
 PhLUpdateChecker >> check [
+	"A failing check must not prevent the other ones, nor stop the process doing the checks regularly"
 
-	checks do: [ :each | each value ]
+	checks do: [ :each |
+		[ each value ]
+			on: Error
+			do: [ :error | ('Pharo Launcher update check failed: ' , error description) traceCr ] ]
 ]
 
 { #category : 'accessing' }

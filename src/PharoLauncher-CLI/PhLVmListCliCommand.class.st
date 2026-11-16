@@ -29,7 +29,7 @@ PhLVmListCliCommand class >> asCliCommand [
 { #category : 'command line' }
 PhLVmListCliCommand class >> launcherCmdDescription [
 
-	^ 'Lists all available VMs, with status.'
+	^ 'Lists all available VMs, with their version, installation date and update status.'
 ]
 
 { #category : 'command execution' }

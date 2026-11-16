@@ -24,7 +24,7 @@ PhLVmInfoCliCommand class >> asCliCommand [
 { #category : 'command line' }
 PhLVmInfoCliCommand class >> launcherCmdDescription [
 
-	^ 'Prints information about VM: name, remote-site URL, last update status, etc.'
+	^ 'Prints information about VM: name, version, installation date, update status, download URL and location.'
 ]
 
 { #category : 'command execution' }

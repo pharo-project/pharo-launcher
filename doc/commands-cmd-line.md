@@ -521,7 +521,7 @@ pharo-launcher vm delete [--help] [<existingVirtualMachineId>]
 No examples yet.
 
 ## VM info 
-Prints information about VM: name, remote-site URL, last update status, etc.
+Prints information about VM: name, version, installation date, update status, download URL and location.
 
 ### Usage
 ```bash
@@ -538,7 +538,8 @@ pharo-launcher vm info [--help] [<existingVirtualMachineId>]
 ### Examples
 
 ## VM list 
-Lists all available VMs, with status.
+Lists all available VMs, with their version, installation date and update status.
+The update status is the result of the last check done by Pharo Launcher: listing VMs does not ask the server.
 
 ### Usage
 ```bash

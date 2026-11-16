@@ -387,7 +387,7 @@ PhLVirtualMachine >> isOutdatedBy: aPublishedStamp [
 	self isUpdatable ifFalse: [ ^ false ].
 	^ self installedStamp
 		  ifNil: [ aPublishedStamp isNewerThan: self lastUpdateTime ]
-		  ifNotNil: [ :installedStamp | installedStamp ~= aPublishedStamp ]
+		  ifNotNil: [ :installedStamp | (installedStamp isSameFileAs: aPublishedStamp) not ]
 ]
 
 { #category : 'testing' }

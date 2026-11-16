@@ -67,9 +67,25 @@ PhLRemoteFileStamp >> hash [
 ]
 
 { #category : 'testing' }
+PhLRemoteFileStamp >> isSameFileAs: aStamp [
+	"The ETag identifies a version of a file. A server not sending it is compared on the modification date of the file.
+	When the stamps cannot tell, the file is considered the same: no update is reported."
+
+	(etag notNil and: [ aStamp etag notNil ]) ifTrue: [ ^ etag = aStamp etag ].
+	(lastModified notNil and: [ aStamp lastModified notNil ]) ifTrue: [ ^ lastModified = aStamp lastModified ].
+	^ true
+]
+
+{ #category : 'testing' }
 PhLRemoteFileStamp >> isNewerThan: aDateAndTime [
 
 	^ lastModified isNotNil and: [ lastModified > aDateAndTime ]
+]
+
+{ #category : 'accessing' }
+PhLRemoteFileStamp >> lastModified [
+
+	^ lastModified
 ]
 
 { #category : 'accessing' }

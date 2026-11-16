@@ -102,6 +102,26 @@ PhLVirtualMachineUpdateTest >> testDamagedMetadataIsReplacedByTheNextCheck [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testNoUpdateWhenServerPublishesSameArchiveWithoutEtag [
+
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
+	vm updateFromUrl.
+
+	self deny: vm checkForUpdate
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiveWithoutEtag [
+
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
+	vm updateFromUrl.
+
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 11 day: 10).
+
+	self assert: vm checkForUpdate
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self serverPublishesArchiveTagged: 'first'.
@@ -335,4 +355,12 @@ PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	archive addString: PhLVirtualMachine elfMagicNumber as: 'pharo'.
 	archive members do: [ :each | each modifiedAt: (DateAndTime year: 2020 month: 1 day: 1) ].
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
+]
+
+{ #category : 'helpers' }
+PhLVirtualMachineUpdateTest >> serverPublishesArchiveWithoutEtagLastModified: aDateAndTime [
+
+	self server
+		atUrl: vm downloadUrl answer: (self vmArchiveVersioned: aDateAndTime printString);
+		atUrl: vm downloadUrl answerStamp: (PhLRemoteFileStamp etag: nil lastModified: aDateAndTime)
 ]

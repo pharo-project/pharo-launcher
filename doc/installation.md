@@ -4,7 +4,8 @@ The default download is a 64-bit version.
 
 <p>
 	<a class="btn download" href="https://files.pharo.org/pharo-launcher/windows"><i class="fa fa-windows"></i> Windows</a>
-	<a class="btn download" href="https://files.pharo.org/pharo-launcher/mac"><i class="fa fa-apple"></i> MacOS</a>
+	<a class="btn download" href="https://files.pharo.org/pharo-launcher/mac-x64"><i class="fa fa-apple"></i> macOS x64 (Intel)</a>
+	<a class="btn download" href="https://files.pharo.org/pharo-launcher/mac-arm64"><i class="fa fa-apple"></i> macOS arm64 (Apple silicon)</a>
 	<a class="btn download" href="https://files.pharo.org/pharo-launcher/linux64"><i class="fa fa-linux"></i> GNU/Linux</a>
 	<a class="btn " href="https://files.pharo.org/pharo-launcher/linux32"><i class="fa fa-linux"></i> GNU/Linux (32bit)</a>
 </p>

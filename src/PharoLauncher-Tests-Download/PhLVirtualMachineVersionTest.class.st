@@ -100,12 +100,68 @@ PhLVirtualMachineVersionTest >> testVersionIsReadAgainWhenExecutableChanged [
 ]
 
 { #category : 'tests' }
-PhLVirtualMachineVersionTest >> testVersionIsStoredWithTheVm [
+PhLVirtualMachineVersionTest >> testRefreshStoresTheVersion [
 
 	| vm |
 	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
 
-	vm version.
+	vm refreshVersion.
 
-	self assert: (PhLVmMetadata inFolder: vmStore / vm id) version equals: '10.3.12'
+	self assert: (self storedMetadataOf: vm) version equals: '10.3.12'.
+	self assert: vm storedVersion equals: '10.3.12'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testCheckForUpdateStoresTheVersion [
+	"The server does not answer: the version is stored anyway"
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+
+	vm checkForUpdate.
+
+	self assert: (self storedMetadataOf: vm) version equals: '10.3.12'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testReadingTheVersionDoesNotStoreIt [
+	"Only checks and installations write the metadata of a VM"
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+
+	self assert: vm version equals: '10.3.12'.
+
+	self assert: (self storedMetadataOf: vm) version isNil.
+	self assert: vm storedVersion equals: ''
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testRefreshDoesNotRunAnUnchangedExecutable [
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+	self storeVersion: '9.9.9' of: vm executableTime: vm lastUpdateTime.
+
+	vm refreshVersion.
+
+	self assert: vm storedVersion equals: '9.9.9'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineVersionTest >> testRefreshRunsAChangedExecutable [
+
+	| vm |
+	vm := self installVmPrinting: 'Pharo v10.3.12 built on Oct 23 2026'.
+	self storeVersion: '9.9.9' of: vm executableTime: vm lastUpdateTime - 1 day.
+
+	vm refreshVersion.
+
+	self assert: vm storedVersion equals: '10.3.12'
+]
+
+{ #category : 'helpers' }
+PhLVirtualMachineVersionTest >> storedMetadataOf: aVm [
+
+	^ PhLVmMetadata inFolder: vmStore / aVm id
 ]

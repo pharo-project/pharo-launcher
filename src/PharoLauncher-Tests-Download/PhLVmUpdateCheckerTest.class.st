@@ -139,3 +139,54 @@ PhLVmUpdateCheckerTest >> testRecordsResultOfVmUsedByNoImage [
 
 	self assert: (PhLVirtualMachine id: '130-x64') status equals: 'Update available'
 ]
+
+{ #category : 'helpers' }
+PhLVmUpdateCheckerTest >> installVmNamed: aVmId printing: aString [
+
+	| vm |
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	self createVmNamed: aVmId.
+	vm := PhLVirtualMachine id: aVmId.
+	self makeExecutableOf: vm print: aString.
+	^ vm
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDoneEvenWhenDisabled [
+	"Versions are stored even when the server is not asked"
+
+	| isDone |
+	PhLVmUpdateChecker shouldRun: false.
+	isDone := false.
+	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
+
+	checker check.
+
+	self assert: isDone
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testStoresVersionOfCustomVm [
+
+	| vm |
+	vm := self installVmNamed: '130-x64-stable-gtk' printing: 'Pharo v10.3.9 built on Nov 17 2025'.
+
+	checker check.
+
+	self assert: vm storedVersion equals: '10.3.9'
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testStoresVersionsWithoutAskingTheServerWhenDisabled [
+
+	| vm |
+	vm := self installVmNamed: '70-x64' printing: 'Pharo v10.3.12 built on Oct 23 2026'.
+	self serverPublishesArchiveOf: vm lastModified: DateAndTime now + 1 day.
+	PhLVmUpdateChecker shouldRun: false.
+
+	checker check.
+
+	self assert: vm storedVersion equals: '10.3.12'.
+	self assert: vm status equals: 'Not checked'.
+	self assert: self server stampRequestCount equals: 0
+]

@@ -58,12 +58,15 @@ PhLVMPresenterUpdateTest >> tearDown [
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testDetailsAreFetchedWhenOpened [
+PhLVMPresenterUpdateTest >> testOpeningRunsNoVmAndAsksNothingToTheServer [
+	"The VM manager only reads what checks and installations stored"
 
 	| window |
 	window := presenter open.
 
-	[ self assert: presenter hasFetchedDetailsInBackground ] ensure: [ window close ]
+	[
+	self deny: (vmStore / outdatedVm id / PhLVmMetadata fileName) exists.
+	self assert: PhLDownloadManager default stampRequestCount equals: 0 ] ensure: [ window close ]
 ]
 
 { #category : 'tests' }
@@ -101,7 +104,7 @@ PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsItsIdAndVersion [
 
 	Smalltalk os isWindows ifTrue: [ ^ self skip ].
 	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
-	presenter fetchDetails.
+	outdatedVm refreshVersion.
 
 	presenter selectVm: outdatedVm.
 
@@ -117,7 +120,11 @@ PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsOnlyItsIdWhenVersionIsUnk
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testNoDetailIsShownBeforeFetchingThem [
+PhLVMPresenterUpdateTest >> testVersionIsEmptyUntilStored [
+	"The VM manager does not run the VM to get its version"
+
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 
 	self assert: (presenter versionDescriptionFor: outdatedVm) equals: ''
 ]
@@ -128,7 +135,7 @@ PhLVMPresenterUpdateTest >> testVersionOfVmIsShown [
 	Smalltalk os isWindows ifTrue: [ ^ self skip ].
 	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 
-	presenter fetchDetails.
+	outdatedVm refreshVersion.
 
 	self assert: (presenter versionDescriptionFor: outdatedVm) equals: '10.3.12'
 ]
@@ -206,8 +213,6 @@ PhLVMPresenterUpdateTest >> testStatusOfCustomVm [
 	| customVm |
 	customVm := self installedVmNamed: '130-x64-stable-gtk'.
 
-	presenter fetchDetails.
-
 	self assert: (presenter statusFor: customVm) equals: 'Custom VM'
 ]
 
@@ -221,8 +226,6 @@ PhLVMPresenterUpdateTest >> testStatusOfVmNotInstalled [
 		             yourself.
 	vms add: missingVm.
 
-	presenter fetchDetails.
-
 	self assert: (presenter statusFor: missingVm) equals: 'Not installed'
 ]
 
@@ -232,8 +235,6 @@ PhLVMPresenterUpdateTest >> testStatusIsTheResultOfTheLastCheckWithoutAskingTheS
 	| requestCount |
 	self checkForUpdates.
 	requestCount := PhLDownloadManager default stampRequestCount.
-
-	presenter fetchDetails.
 
 	self assert: (presenter statusFor: outdatedVm) equals: 'Update available'.
 	self assert: (presenter statusFor: upToDateVm) equals: 'Up to date'.

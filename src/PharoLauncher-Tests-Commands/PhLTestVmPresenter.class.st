@@ -10,8 +10,7 @@ Class {
 		'selection',
 		'vmManager',
 		'vmStoreRoot',
-		'information',
-		'hasFetchedDetailsInBackground'
+		'information'
 	],
 	#category : 'PharoLauncher-Tests-Commands',
 	#package : 'PharoLauncher-Tests-Commands'
@@ -28,19 +27,6 @@ PhLTestVmPresenter >> createVmNamed: aName [
 	"needed on Linux"
 	(vmDirectory / 'pharo') binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ].
 	 
-]
-
-{ #category : 'updating' }
-PhLTestVmPresenter >> fetchDetailsInBackground [
-	"No background process in tests: use #fetchDetails"
-
-	hasFetchedDetailsInBackground := true
-]
-
-{ #category : 'testing' }
-PhLTestVmPresenter >> hasFetchedDetailsInBackground [
-
-	^ hasFetchedDetailsInBackground == true
 ]
 
 { #category : 'accessing' }

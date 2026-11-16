@@ -1,5 +1,6 @@
 "
-I check if an update is available for the installed virtual machines. The result is stored in the folder of each virtual machine (see `PhLVmMetadata`), where the VM manager and the command line read it.
+I check if an update is available for the installed virtual machines, and record their version. The result is stored in the folder of each virtual machine (see `PhLVmMetadata`), where the VM manager and the command line read it.
+When the check for updates is disabled in the settings, the server is not asked but versions are still recorded.
 I announce on `PhLVmUpdateAnnouncer default`:
 - `PhLVmUpdatesAvailable` with the virtual machines to update that are used by an image of the image repository, so that the user is proposed to update them,
 - `PhLVmUpdateCheckDone` once the check is done.
@@ -68,8 +69,11 @@ PhLVmUpdateChecker >> announcer [
 PhLVmUpdateChecker >> check [
 
 	| vmsToUpdate |
-	self class shouldRun ifFalse: [ ^ self ].
-	vmsToUpdate := self installedVms select: [ :vm | vm checkForUpdate ].
+	vmsToUpdate := self class shouldRun
+		               ifTrue: [ self installedVms select: [ :vm | vm checkForUpdate ] ]
+		               ifFalse: [
+			               self installedVms do: [ :vm | vm refreshVersion ].
+			               #(  ) ].
 	(self usedAmong: vmsToUpdate) ifNotEmpty: [ :vms |
 		self announcer announce: (PhLVmUpdatesAvailable vms: vms) ].
 	self announcer announce: PhLVmUpdateCheckDone new
@@ -83,9 +87,8 @@ PhLVmUpdateChecker >> setImageRepository: anImageRepository [
 
 { #category : 'private' }
 PhLVmUpdateChecker >> installedVms [
-	"Only the standard VMs are published on the server"
 
-	^ PhLVirtualMachineManager new availableVirtualMachines values select: [ :vm | vm isUpdatable ]
+	^ PhLVirtualMachineManager new availableVirtualMachines values select: [ :vm | vm isValid ]
 ]
 
 { #category : 'private' }

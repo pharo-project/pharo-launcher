@@ -9,8 +9,7 @@ Class {
 	#instVars : [
 		'vmTable',
 		'detailPanel',
-		'rootCommandsGroup',
-		'versions'
+		'rootCommandsGroup'
 	],
 	#category : 'PharoLauncher-Spec2-View',
 	#package : 'PharoLauncher-Spec2',
@@ -93,32 +92,6 @@ PhLVMPresenter >> doShowInFolder [
 		execute 
 ]
 
-{ #category : 'updating' }
-PhLVMPresenter >> fetchDetails [
-	"Fetch the version of the VMs, then show them."
-
-	self showVersions: self fetchVersions
-]
-
-{ #category : 'updating' }
-PhLVMPresenter >> fetchDetailsInBackground [
-	"Running the VMs can take time: do not block the UI. The table is refreshed by the UI process."
-
-	[
-	| fetchedVersions |
-	fetchedVersions := self fetchVersions.
-	self application defer: [ self showVersions: fetchedVersions ] ]
-		forkAt: Processor userBackgroundPriority
-		named: 'Launcher VM manager details'
-]
-
-{ #category : 'private' }
-PhLVMPresenter >> fetchVersions [
-	"Answer the version of each VM, by VM id."
-
-	^ (self datasource virtualMachines collect: [ :vm | vm id -> vm version ]) asDictionary
-]
-
 { #category : 'private' }
 PhLVMPresenter >> iconFor: vm [
 	| icon |
@@ -162,9 +135,7 @@ PhLVMPresenter >> initializePresenters [
 		beMultipleSelection;
 		items: self datasource virtualMachines;
 		yourself.
-	self whenBuiltDo: [
-		self subscribeToVmUpdateChecks.
-		self fetchDetailsInBackground ]
+	self whenBuiltDo: [ self subscribeToVmUpdateChecks ]
 ]
 
 { #category : 'initialization' }
@@ -217,13 +188,6 @@ PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
 ]
 
-{ #category : 'updating' }
-PhLVMPresenter >> showVersions: versionsByVmId [
-
-	versions := versionsByVmId.
-	self refresh
-]
-
 { #category : 'accessing' }
 PhLVMPresenter >> statusFor: aVm [
 	"The status is the result of the last check for updates: the server is not asked."
@@ -257,13 +221,8 @@ PhLVMPresenter >> statusDescriptionFor: aVm [
 
 { #category : 'accessing' }
 PhLVMPresenter >> versionDescriptionFor: aVm [
+	"The version stored by the last check or installation: running the VM takes time."
 
-	^ self versions at: aVm id ifAbsent: [ '' ]
-]
-
-{ #category : 'private' }
-PhLVMPresenter >> versions [
-
-	^ versions ifNil: [ versions := Dictionary new ]
+	^ aVm storedVersion
 ]
 

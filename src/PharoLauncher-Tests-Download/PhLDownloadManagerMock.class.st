@@ -10,7 +10,8 @@ Class {
 		'stampRequestCount',
 		'defaultResponse',
 		'redirections',
-		'redirectionRequestCount'
+		'redirectionRequestCount',
+		'downloadCount'
 	],
 	#category : 'PharoLauncher-Tests-Download',
 	#package : 'PharoLauncher-Tests-Download'
@@ -47,6 +48,7 @@ PhLDownloadManagerMock >> atUrl: anUrl answerStamp: aPhLRemoteFileStamp [
 PhLDownloadManagerMock >> download: aUrl toFile: aFileReference [ 
 	
 	| document |
+	downloadCount := self downloadCount + 1.
 	document := self documentAt: aUrl.
 	aFileReference ensureDelete.
 	aFileReference binaryWriteStreamDo: [ :aStream |
@@ -151,4 +153,11 @@ PhLDownloadManagerMock >> redirectionRequestCount [
 PhLDownloadManagerMock >> redirections [
 
 	^ redirections ifNil: [ redirections := Dictionary new ]
+]
+
+{ #category : 'accessing' }
+PhLDownloadManagerMock >> downloadCount [
+	"Number of files downloaded"
+
+	^ downloadCount ifNil: [ 0 ]
 ]

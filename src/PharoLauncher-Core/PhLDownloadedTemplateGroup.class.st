@@ -58,16 +58,41 @@ PhLDownloadedTemplateGroup >> dictionary [
 
 { #category : 'action' }
 PhLDownloadedTemplateGroup >> downloadAndStoreFile: anUrl forTemplate: aRemoteTemplate [
-	"Download the file at anUrl (hopefully a zip archive), put it in my cache, and update the meta-data file (using information from aRemoteTemplate). If everything went well, a reference to the downloaded file is returned"
-	| destinationFile fileExtension |
+	"Download the file at anUrl (hopefully a zip archive), put it in my cache, and update the meta-data file (using information from aRemoteTemplate). If everything went well, a reference to the downloaded file is returned.
+	The file is not downloaded again when the server tells it did not change since it was put in my cache (HTTP HEAD)."
+	| destinationFile fileExtension stamp |
 	"We want to keep the same extension..."
 	fileExtension := anUrl lastPathSegment copyAfterLast: $..
 	"...but change the file name to be the one of aRemoteTemplate"
 	destinationFile := self baseDirectory / aRemoteTemplate name , fileExtension.
+	stamp := self publishedStampOf: anUrl.
+	(self hasFile: destinationFile of: aRemoteTemplate publishedWith: stamp) ifTrue: [ ^ destinationFile ].
 	destinationFile ensureDelete.
 	PhLDownloadManager default download: anUrl toFile: destinationFile.
-	self register: aRemoteTemplate withZip: destinationFile.
+	self register: aRemoteTemplate withZip: destinationFile stamp: stamp.
 	^ destinationFile
+]
+
+{ #category : 'private' }
+PhLDownloadedTemplateGroup >> hasFile: aFile of: aRemoteTemplate publishedWith: aStamp [
+	"Answer whether aFile is the one the server publishes now for aRemoteTemplate"
+
+	| description |
+	aStamp ifNil: [ ^ false ].
+	aFile exists ifFalse: [ ^ false ].
+	description := self dictionary at: aRemoteTemplate name ifAbsent: [ ^ false ].
+	(description at: 'url' ifAbsent: [ nil ]) = aRemoteTemplate url asString ifFalse: [ ^ false ].
+	^ (PhLRemoteFileStamp fromDictionary: (description at: 'stamp' ifAbsent: [ Dictionary new ]))
+		  identifiesSameFileAs: aStamp
+]
+
+{ #category : 'private' }
+PhLDownloadedTemplateGroup >> publishedStampOf: anUrl [
+	"Answer the stamp of the file published at anUrl, nil if the server does not answer"
+
+	^ [ PhLDownloadManager default stampOf: anUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
 ]
 
 { #category : 'accessing' }
@@ -96,12 +121,22 @@ PhLDownloadedTemplateGroup >> pharoStableImagePath [
 ]
 
 { #category : 'private' }
-PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile [
-	"Update my cache file by adding information about a new zip file as described in aRemoteTemplate"
+PhLDownloadedTemplateGroup >> register: aTemplate withZip: aZipFile [
+	"The zip file does not come from a server (e.g. a template created from an image): it never counts as an unchanged download"
+
+	self register: aTemplate withZip: aZipFile stamp: nil
+]
+
+{ #category : 'private' }
+PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile stamp: aStampOrNil [
+	"Update my cache file by adding information about a new zip file as described in aRemoteTemplate, and the stamp the server published it with"
 	| aDictionary templateDescription |
 	aDictionary := self dictionary.
 	templateDescription := aDictionary at: aRemoteTemplate name ifAbsentPut: [ Dictionary new ].
 	self updateTemplateDescription: templateDescription with: aRemoteTemplate.
+	aStampOrNil
+		ifNil: [ templateDescription removeKey: 'stamp' ifAbsent: [ nil ] ]
+		ifNotNil: [ templateDescription at: 'stamp' put: aStampOrNil asDictionary ].
 	self saveToFile: aDictionary
 ]
 

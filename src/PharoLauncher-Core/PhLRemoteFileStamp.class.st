@@ -30,6 +30,15 @@ PhLRemoteFileStamp class >> etag: aString lastModified: aDateAndTime [
 ]
 
 { #category : 'instance creation' }
+PhLRemoteFileStamp class >> fromDictionary: aDictionary [
+	"Read a stamp written with #asDictionary, e.g. in a JSON file"
+
+	^ self
+		  etag: (aDictionary at: 'etag' ifAbsent: [ nil ])
+		  lastModified: ((aDictionary at: 'lastModified' ifAbsent: [ nil ]) ifNotNil: [ :date | DateAndTime fromString: date ])
+]
+
+{ #category : 'instance creation' }
 PhLRemoteFileStamp class >> fromHeaders: httpHeaders [
 
 	| lastModified |
@@ -43,6 +52,17 @@ PhLRemoteFileStamp class >> fromHeaders: httpHeaders [
 PhLRemoteFileStamp >> = anObject [
 
 	^ self class = anObject class and: [ etag = anObject etag ]
+]
+
+{ #category : 'converting' }
+PhLRemoteFileStamp >> asDictionary [
+	"A dictionary of strings, to write me in a JSON file"
+
+	| dictionary |
+	dictionary := Dictionary new.
+	etag ifNotNil: [ dictionary at: 'etag' put: etag ].
+	lastModified ifNotNil: [ dictionary at: 'lastModified' put: lastModified printString ].
+	^ dictionary
 ]
 
 { #category : 'converting' }
@@ -74,6 +94,16 @@ PhLRemoteFileStamp >> isSameFileAs: aStamp [
 	(etag notNil and: [ aStamp etag notNil ]) ifTrue: [ ^ etag = aStamp etag ].
 	(lastModified notNil and: [ aStamp lastModified notNil ]) ifTrue: [ ^ lastModified = aStamp lastModified ].
 	^ true
+]
+
+{ #category : 'testing' }
+PhLRemoteFileStamp >> identifiesSameFileAs: aStamp [
+	"Answer whether both stamps tell it is the same file: same ETag, or else same modification date.
+	Unlike #isSameFileAs:, stamps that cannot tell do not identify the same file."
+
+	(etag notNil and: [ aStamp etag notNil ]) ifTrue: [ ^ etag = aStamp etag ].
+	(lastModified notNil and: [ aStamp lastModified notNil ]) ifTrue: [ ^ lastModified = aStamp lastModified ].
+	^ false
 ]
 
 { #category : 'testing' }

@@ -1,8 +1,11 @@
 Class {
 	#name : 'PhLImagesPresenterTest',
 	#superclass : 'TestCase',
+	#traits : 'TPhLVirtualMachineTestUtil',
+	#classTraits : 'TPhLVirtualMachineTestUtil classTrait',
 	#instVars : [
-		'presenter'
+		'presenter',
+		'vmStore'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
@@ -139,30 +142,34 @@ PhLImagesPresenterTest >> vmsToUpdate [
 ]
 
 { #category : 'tests' }
-PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarProposesUpdateOfVmsToUpdate [
+PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarSelectsVmsToUpdate [
 
 	| vmManager |
-	presenter := PhLTestImagesPresenter new.
-	presenter showVmUpdates: self vmsToUpdate.
+	self withInstalledVmsDo: [
+		presenter := PhLTestImagesPresenter new.
+		presenter showVmUpdates: self vmsToUpdate.
 
-	vmManager := (PhLOpenVmManagerCommand new
-		              context: presenter;
-		              yourself) newVmManager.
+		vmManager := (PhLOpenVmManagerCommand new
+			              context: presenter;
+			              yourself) newVmManager.
 
-	self assert: vmManager notice isVisible
+		self
+			assertCollection: (vmManager selectedVms collect: [ :each | each id ])
+			hasSameElements: #( '130-x64' '120-x64' ) ]
 ]
 
 { #category : 'tests' }
-PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarWithoutUpdateHasNoNotice [
+PhLImagesPresenterTest >> testVmManagerOpenedFromToolbarWithoutUpdateSelectsNothing [
 
 	| vmManager |
-	presenter := PhLTestImagesPresenter new.
+	self withInstalledVmsDo: [
+		presenter := PhLTestImagesPresenter new.
 
-	vmManager := (PhLOpenVmManagerCommand new
-		              context: presenter;
-		              yourself) newVmManager.
+		vmManager := (PhLOpenVmManagerCommand new
+			              context: presenter;
+			              yourself) newVmManager.
 
-	self deny: vmManager notice isVisible
+		self assertEmpty: vmManager selectedVms ]
 ]
 
 { #category : 'tests' }
@@ -189,4 +196,19 @@ PhLImagesPresenterTest >> testVmsButtonWithoutVmToUpdate [
 
 	self assert: presenter vmsButton icon extent equals: PhLOpenVmManagerCommand new icon extent.
 	self assert: presenter vmsButton label equals: 'VMs'
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenterTest >> vmStoreRoot [
+
+	^ vmStore
+]
+
+{ #category : 'helpers' }
+PhLImagesPresenterTest >> withInstalledVmsDo: aBlock [
+	"The VM manager lists the VMs of the VM store"
+
+	vmStore := FileSystem memory root.
+	#( '130-x64' '120-x64' '110-x64' ) do: [ :each | self createVmNamed: each ].
+	PhLVirtualMachineManager useVmStore: vmStore during: aBlock
 ]

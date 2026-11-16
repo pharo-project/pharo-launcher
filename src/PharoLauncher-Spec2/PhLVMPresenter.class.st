@@ -9,7 +9,6 @@ Class {
 	#instVars : [
 		'vmTable',
 		'detailPanel',
-		'notice',
 		'rootCommandsGroup'
 	],
 	#category : 'PharoLauncher-Spec2-View',
@@ -73,17 +72,10 @@ PhLVMPresenter >> datasource [
 { #category : 'layout' }
 PhLVMPresenter >> defaultLayout [
 
-	^ SpBoxLayout newTopToBottom
-		  add: (SpBoxLayout newTopToBottom
-				   borderWidth: 5;
-				   add: notice;
-				   yourself)
-		  expand: false;
-		  add: (SpPanedLayout newTopToBottom
-				   positionOfSlider: 60 percent;
-				   add: vmTable;
-				   add: detailPanel;
-				   yourself);
+	^ SpPanedLayout newTopToBottom
+		  positionOfSlider: 60 percent;
+		  add: vmTable;
+		  add: detailPanel;
 		  yourself
 ]
 
@@ -124,10 +116,6 @@ PhLVMPresenter >> initialExtent [
 PhLVMPresenter >> initializePresenters [
 
 	self addStyle: 'launcher'.
-	notice := self newLabel
-		          addStyle: 'form_header';
-		          visible: false;
-		          yourself.
 	detailPanel := self instantiate: PhLVMDetailPresenter on: nil.
 	vmTable := self newTable
 		whenActivatedDo: [ self doShowInFolder ];
@@ -163,12 +151,6 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter."
 ]
 
-{ #category : 'accessing' }
-PhLVMPresenter >> notice [
-
-	^ notice
-]
-
 { #category : 'private' }
 PhLVMPresenter >> readableDateFor: aTimestamp [
 	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
@@ -186,22 +168,8 @@ PhLVMPresenter >> openModalOver: aPresenter [
 ]
 
 { #category : 'api - selection' }
-PhLVMPresenter >> proposeUpdateOf: virtualMachines [
-	"Tell the user that updates are available for these VMs, and select them so that clicking Update updates them"
+PhLVMPresenter >> selectVms: virtualMachines [
 
-	| count |
-	count := virtualMachines size.
-	notice
-		label: ('Updates are available for {1} {2} used by your images.
-Close the images running on {3}, then click Update.' format: {
-					 count.
-					 (count = 1
-						  ifTrue: [ 'virtual machine' ]
-						  ifFalse: [ 'virtual machines' ]).
-					 (count = 1
-						  ifTrue: [ 'it' ]
-						  ifFalse: [ 'them' ]) });
-		visible: true.
 	vmTable selectItems: (vmTable items select: [ :each | virtualMachines includes: each ])
 ]
 

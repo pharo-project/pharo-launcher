@@ -248,35 +248,10 @@ PhLVMPresenterUpdateTest >> checkForUpdates [
 ]
 
 { #category : 'tests' }
-PhLVMPresenterUpdateTest >> testNoNoticeByDefault [
+PhLVMPresenterUpdateTest >> testSelectingVms [
 
-	self deny: presenter notice isVisible
-]
+	presenter selectVms: { outdatedVm }.
 
-{ #category : 'tests' }
-PhLVMPresenterUpdateTest >> testProposingUpdateOfOneVm [
-
-	presenter proposeUpdateOf: { outdatedVm }.
-
-	self
-		assert: presenter notice label
-		equals: 'Updates are available for 1 virtual machine used by your images.
-Close the images running on it, then click Update.'
-]
-
-{ #category : 'tests' }
-PhLVMPresenterUpdateTest >> testProposingUpdateSelectsVmsAndShowsNotice [
-
-	presenter proposeUpdateOf: {
-			outdatedVm.
-			upToDateVm }.
-
-	self assertCollection: presenter selectedVms hasSameElements: {
-			outdatedVm.
-			upToDateVm }.
-	self assert: presenter notice isVisible.
-	self
-		assert: presenter notice label
-		equals: 'Updates are available for 2 virtual machines used by your images.
-Close the images running on them, then click Update.'
+	self assert: (presenter selectedVms collect: [ :each | each id ]) asArray equals: #( '100-x64' ).
+	self assert: presenter detailPanel header label equals: 'VM 100-x64'
 ]

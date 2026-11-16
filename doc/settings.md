@@ -11,6 +11,7 @@ Pharo Launcher comes with a few settings you can customize.
 * Templates cleared at startup: When enabled, Launcher startup clears the Templates List. When disabled, Launcher startup retains the Templates List from last run.
 * Quit on Launch: When enabled, Pharo Launcher quits when an image is launched. When disabled, Pharo Launcher stays alive when an image is launched.
 * Warn on architecture mismatch? Get a warning when trying to launch an image with a different architecture than the Launcher (i.e. trying to launch a 32-bit image from Pharo Launcher 64-bit).
+* Check for Pharo Launcher update? Check regularly (each day) if a newer version of Pharo Launcher is published (needs internet access). When one is, a red badge is shown on the About button, and the About dialog has a link to download it. A development version of Pharo Launcher is never checked.
 * Check for template sources update? Check regularly (each day) if Pharo Launcher Template official sources has an update available (needs internet access)
 * Check for virtual machines update? Check regularly (each day) if an update is available for the installed virtual machines (needs internet access). When disabled, the server is not asked, and the status of virtual machines is the one of the last check.
 

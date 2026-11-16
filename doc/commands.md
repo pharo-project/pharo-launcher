@@ -5,7 +5,7 @@
 
 ![Settings command](images/settings-command.png) Open Pharo Launcher Settings window. More information on the various settings in the [Settings section](../settings).
 
-![About command](images/about-command.png) Open a dialog with information about the current Pharo Launcher version.
+![About command](images/about-command.png) Open a dialog with information about the current Pharo Launcher version. When a newer version of Pharo Launcher is published, a red badge is shown on this button, and the dialog has a link to download it (see the setting *Check for Pharo Launcher update?*).
 
 ![Quit command](images/quit-command.png) Exit Pharo Launcher.
 

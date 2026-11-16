@@ -11,6 +11,7 @@ Class {
 		'quitOnLaunchSwitch',
 		'launchFromALoginShellSwitch',
 		'warnOnImageArchMisMatchSwitch',
+		'checkForLauncherUpdateSwitch',
 		'checkForTemplateSourcesUpdateSwitch',
 		'checkForVmUpdateSwitch',
 		'hardResetPersistentStateButton',
@@ -35,6 +36,12 @@ PhLGeneralSettingsPresenter class >> open [
 <script> 
 
 	^ (self on: PharoLauncherSettings new) open
+]
+
+{ #category : 'accessing' }
+PhLGeneralSettingsPresenter >> checkForLauncherUpdateSwitch: aBoolean [
+
+	checkForLauncherUpdateSwitch state: aBoolean
 ]
 
 { #category : 'accessing' }
@@ -106,6 +113,7 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 	quitOnLaunchSwitch := self newSwitchFor: #quitOnLaunch.
 	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell .
 	warnOnImageArchMisMatchSwitch := self newSwitchFor: #warnOnArchMismatch.
+	checkForLauncherUpdateSwitch := self newSwitchFor: #shouldCheckLauncherUpdate.
 	checkForTemplateSourcesUpdateSwitch := self newSwitchFor: #shouldCheckTemplateSourcesUpdate.
 	checkForVmUpdateSwitch := self newSwitchFor: #shouldCheckVmUpdate.
 
@@ -240,6 +248,10 @@ PhLGeneralSettingsPresenter >> newSourcesSection [
 	^ self newPresenter 
 		addStyle: 'section';
 		layout: (SpBoxLayout newTopToBottom 
+			add: (SpBoxLayout newLeftToRight
+				add: 'Check for Pharo Launcher update?';
+				add: checkForLauncherUpdateSwitch expand: false;
+				yourself) expand: false;
 			add: (SpBoxLayout newLeftToRight
 				add: 'Check for template sources update?';
 				add: checkForTemplateSourcesUpdateSwitch expand: false;

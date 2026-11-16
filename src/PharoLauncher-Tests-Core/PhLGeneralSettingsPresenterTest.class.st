@@ -15,6 +15,16 @@ PhLGeneralSettingsPresenterTest >> setUp [
 ]
 
 { #category : 'tests' }
+PhLGeneralSettingsPresenterTest >> testCanSetCheckLauncherUpdate [
+
+	presenter checkForLauncherUpdateSwitch: false.
+	self deny: PhLLauncherUpdateChecker shouldRun.
+
+	presenter checkForLauncherUpdateSwitch: true.
+	self assert: PhLLauncherUpdateChecker shouldRun
+]
+
+{ #category : 'tests' }
 PhLGeneralSettingsPresenterTest >> testCanSetCheckTemplateSourcesUpdate [
 
 	presenter checkForTemplateSourcesUpdateSwitch: false.

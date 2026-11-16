@@ -35,3 +35,15 @@ PharoLauncherApplicationVmUpdateTest >> testMainWindowShowsVmsToUpdateOnceCheckI
 	self assert: imagesPresenter vmsToUpdate equals: { vm }.
 	self deny: imagesPresenter vmsButton icon extent equals: PhLOpenVmManagerCommand new icon extent
 ]
+
+{ #category : 'tests' }
+PharoLauncherApplicationVmUpdateTest >> testMainWindowShowsVmsToUpdateWhenOpened [
+	"The result of the previous checks is stored: no need to wait for the first check"
+
+	| window |
+	imagesPresenter application vmUpdateChecker: (PhLTestVmUpdateChecker vmsToUpdate: { vm }).
+
+	window := imagesPresenter open.
+
+	[ self assert: imagesPresenter vmsToUpdate equals: { vm } ] ensure: [ window close ]
+]

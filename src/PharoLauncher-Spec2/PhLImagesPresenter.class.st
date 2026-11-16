@@ -306,7 +306,9 @@ PhLImagesPresenter >> initializePresenters [
 	
 	self imageRepository 
 		whenChangedSend: #refresh
-		to: self
+		to: self.
+	"The result of previous checks is stored: show it without waiting for the next check"
+	self whenBuiltDo: [ self refreshVmUpdates ]
 ]
 
 { #category : 'initialization' }

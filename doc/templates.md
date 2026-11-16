@@ -17,7 +17,7 @@ For example, the Pharo 8 official template is composed of:
 * Moose Jenkins: This category represents jobs available on the Jenkins server https://ci.inria.fr/moose. If the job provides a zip file as artefact, it will be used as a template to create an image.
 * Pharo xx (stable): all versions of the current stable Pharo version
 * Pharo xx (development version): all versions of the current development Pharo version
-* Templates: This category contains templates that are available locally (i.e. without network connection). By default, it only contains the current Pharo stable image that is shipped with Pharo Launcher. Once you start downloading some templates, they are cached in this category for further reuse. Warning: if the template is updated on the server, the cached version will NOT be invalidated, so local and server version of the template will differ.
+* Templates: This category contains templates that are available locally (i.e. without network connection). By default, it only contains the current Pharo stable image that is shipped with Pharo Launcher. Once you start downloading some templates, they are cached in this category for further reuse. When you create an image from a remote template again, Pharo Launcher asks the server whether the template changed (without downloading it): the cached archive is reused if it did not change, and downloaded again otherwise. Warning: creating an image from this category directly always uses the cached version, even if the template was updated on the server since.
 
 There are different kind of categories:
 

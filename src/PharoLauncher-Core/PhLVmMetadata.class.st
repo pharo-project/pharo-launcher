@@ -5,6 +5,8 @@ I am what the Launcher knows about an installed virtual machine, stored in the `
 - its version, and the modification time of the executable it was read from.
 
 The status and the version of the virtual machine are read from me, without asking the server nor running the virtual machine.
+
+Checks are done by a background process while the user may update virtual machines: reading and writing me, and replacing the folder of a virtual machine, are done in `PhLVmMetadata class>>#critical:`.
 "
 Class {
 	#name : 'PhLVmMetadata',
@@ -17,10 +19,20 @@ Class {
 		'version',
 		'versionExecutableTime'
 	],
+	#classVars : [
+		'Lock'
+	],
 	#category : 'PharoLauncher-Core-Download',
 	#package : 'PharoLauncher-Core',
 	#tag : 'Download'
 }
+
+{ #category : 'synchronization' }
+PhLVmMetadata class >> critical: aBlock [
+	"Evaluate the block while no other process reads or writes the metadata of a virtual machine, or replaces its folder"
+
+	^ (Lock ifNil: [ Lock := Mutex new ]) critical: aBlock
+]
 
 { #category : 'accessing' }
 PhLVmMetadata class >> fileName [
@@ -35,10 +47,13 @@ PhLVmMetadata class >> inFolder: aFolder [
 
 	| file |
 	file := aFolder / self fileName.
-	file exists ifFalse: [ ^ self new ].
-	^ [ (file readStreamDo: [ :stream | STON fromStream: stream ]) asVmMetadata ]
-		  on: STONReaderError
-		  do: [ self new ]
+	^ self critical: [
+		  file exists
+			  ifTrue: [
+				  [ (file readStreamDo: [ :stream | STON fromStream: stream ]) asVmMetadata ]
+					  on: STONReaderError
+					  do: [ self new ] ]
+			  ifFalse: [ self new ] ]
 ]
 
 { #category : 'instance creation' }
@@ -126,7 +141,8 @@ PhLVmMetadata >> versionOfExecutableModifiedOn: aDateAndTime [
 { #category : 'storing' }
 PhLVmMetadata >> storeInFolder: aFolder [
 
-	(aFolder / self class fileName)
-		ensureDelete;
-		writeStreamDo: [ :stream | STON put: self onStreamPretty: stream ]
+	self class critical: [
+		(aFolder / self class fileName)
+			ensureDelete;
+			writeStreamDo: [ :stream | STON put: self onStreamPretty: stream ] ]
 ]

@@ -155,15 +155,17 @@ PhLVirtualMachineManager class >> pharoUnzip: aZipFileReference to: outputDirect
 
 { #category : 'unzipping' }
 PhLVirtualMachineManager class >> replace: aFolder with: aNewFolder [
+	"A background check must not write the metadata of the VM while its folder is moved"
 
-	| replacedFolder |
-	replacedFolder := aFolder parent / (aFolder basename , '.old').
-	replacedFolder ensureDeleteAll.
-	aFolder exists ifTrue: [ self move: aFolder to: replacedFolder ].
-	[ self move: aNewFolder to: aFolder ] ifCurtailed: [
-		replacedFolder exists ifTrue: [ self move: replacedFolder to: aFolder ] ].
-	self moveTo: aFolder filesOnlyIn: replacedFolder.
-	replacedFolder ensureDeleteAll
+	PhLVmMetadata critical: [
+		| replacedFolder |
+		replacedFolder := aFolder parent / (aFolder basename , '.old').
+		replacedFolder ensureDeleteAll.
+		aFolder exists ifTrue: [ self move: aFolder to: replacedFolder ].
+		[ self move: aNewFolder to: aFolder ] ifCurtailed: [
+			replacedFolder exists ifTrue: [ self move: replacedFolder to: aFolder ] ].
+		self moveTo: aFolder filesOnlyIn: replacedFolder.
+		replacedFolder ensureDeleteAll ]
 ]
 
 { #category : 'initialization' }

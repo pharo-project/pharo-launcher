@@ -65,6 +65,29 @@ PhLVirtualMachineUpdateTest >> setUp [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testCheckWaitsWhileMetadataIsWrittenElsewhere [
+	"Checks are done by a background process while the user may update VMs"
+
+	| checked isChecked |
+	self serverPublishesArchiveTagged: 'first'.
+	vm updateFromUrl.
+	self serverPublishesArchiveTagged: 'second'.
+	checked := Semaphore new.
+	isChecked := false.
+
+	PhLVmMetadata critical: [
+		[
+		vm checkForUpdate.
+		isChecked := true.
+		checked signal ] forkAt: Processor activePriority + 1.
+		(Delay forMilliseconds: 500) wait.
+		self deny: isChecked ].
+
+	self assert: (checked waitTimeoutSeconds: 10) not.
+	self assert: vm status equals: 'Update available'
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testDamagedMetadataIsReplacedByTheNextCheck [
 
 	self serverPublishesArchiveTagged: 'first'.

@@ -293,10 +293,15 @@ PhLVirtualMachine >> checkForUpdate [
 	When the server does not answer, the result of the previous check is kept.
 	Answer whether an update is available."
 
+	| version stamp |
+	self isValid ifFalse: [ ^ false ].
+	"Running my executable and asking the server take time: done before writing my metadata"
+	version := self readVersionIfChanged.
+	stamp := self isUpdatable ifTrue: [ self fetchPublishedStamp ].
 	self updateMetadata: [ :metadata |
 		| hasChanged |
-		hasChanged := self refreshVersionIn: metadata.
-		(self isUpdatable ifTrue: [ self fetchPublishedStamp ]) ifNotNil: [ :stamp |
+		hasChanged := self record: version in: metadata.
+		stamp ifNotNil: [
 			metadata recordCheck: stamp.
 			hasChanged := true ].
 		hasChanged ].
@@ -307,29 +312,42 @@ PhLVirtualMachine >> checkForUpdate [
 PhLVirtualMachine >> refreshVersion [
 	"Record my version in my folder when my executable changed since it was recorded. The server is not asked."
 
-	self updateMetadata: [ :metadata | self refreshVersionIn: metadata ]
+	| version |
+	self isValid ifFalse: [ ^ self ].
+	version := self readVersionIfChanged.
+	self updateMetadata: [ :metadata | self record: version in: metadata ]
 ]
 
 { #category : 'private' }
-PhLVirtualMachine >> refreshVersionIn: aMetadata [
-	"Answer whether the version was read again from my executable"
+PhLVirtualMachine >> readVersionIfChanged [
+	"Answer an association from the modification time of my executable to the version it prints, nil if this version is already recorded"
 
 	| executableTime |
 	executableTime := self lastUpdateTime.
-	(aMetadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ ^ false ].
-	aMetadata recordVersion: self versionFromExecutable executableTime: executableTime.
+	(self metadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ ^ nil ].
+	^ executableTime -> self versionFromExecutable
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> record: aVersion in: aMetadata [
+	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process."
+
+	aVersion ifNil: [ ^ false ].
+	(aMetadata versionOfExecutableModifiedOn: aVersion key) ifNotNil: [ ^ false ].
+	aMetadata recordVersion: aVersion value executableTime: aVersion key.
 	^ true
 ]
 
 { #category : 'private' }
 PhLVirtualMachine >> updateMetadata: aBlock [
-	"Read my metadata, let the block change it, and store it when the block answers true.
+	"Read my metadata, let the block change it, and store it when the block answers true, without another process writing it meanwhile.
 	Checks and installations are the only writers of my metadata: the VM manager and the command line only read it."
 
-	| metadata |
 	self isValid ifFalse: [ ^ self ].
-	metadata := self metadata.
-	(aBlock value: metadata) ifTrue: [ metadata storeInFolder: self vmStore / self id ]
+	PhLVmMetadata critical: [
+		| metadata |
+		metadata := self metadata.
+		(aBlock value: metadata) ifTrue: [ metadata storeInFolder: self vmStore / self id ] ]
 ]
 
 { #category : 'private' }

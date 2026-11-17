@@ -32,12 +32,6 @@ PhLAboutCommandTest >> testCanOpenAboutDialog [
 	self assert: (presenter description text includesSubstring: 'Pharo Launcher')
 ]
 
-{ #category : 'accessing' }
-PhLAboutCommandTest >> window [
-	"In a non-testing environment this message will be send to a SpWindowPresenter"
-	^ nil
-]
-
 { #category : 'tests' }
 PhLAboutCommandTest >> testDownloadLinkWhenLauncherUpdateIsAvailable [
 
@@ -52,13 +46,15 @@ PhLAboutCommandTest >> testDownloadLinkWhenLauncherUpdateIsAvailable [
 ]
 
 { #category : 'tests' }
-PhLAboutCommandTest >> testUpdateNoticeIsAHeader [
+PhLAboutCommandTest >> testNoDownloadLinkWithoutLauncherUpdate [
 
-	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: '3.4.5').
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: nil).
 
 	presenter := (PhLAboutCommand forContext: self) execute.
 
-	self assert: (presenter updateNotice styles includes: 'form_header')
+	self deny: presenter updateIcon isVisible.
+	self deny: presenter updateNotice isVisible.
+	self deny: presenter updateLink isVisible
 ]
 
 { #category : 'tests' }
@@ -73,13 +69,17 @@ PhLAboutCommandTest >> testUpdateNoticeHasAnIcon [
 ]
 
 { #category : 'tests' }
-PhLAboutCommandTest >> testNoDownloadLinkWithoutLauncherUpdate [
+PhLAboutCommandTest >> testUpdateNoticeIsAHeader [
 
-	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: nil).
+	self application launcherUpdateChecker: (PhLTestLauncherUpdateChecker latestVersion: '3.4.5').
 
 	presenter := (PhLAboutCommand forContext: self) execute.
 
-	self deny: presenter updateIcon isVisible.
-	self deny: presenter updateNotice isVisible.
-	self deny: presenter updateLink isVisible
+	self assert: (presenter updateNotice styles includes: 'form_header')
+]
+
+{ #category : 'accessing' }
+PhLAboutCommandTest >> window [
+	"In a non-testing environment this message will be send to a SpWindowPresenter"
+	^ nil
 ]

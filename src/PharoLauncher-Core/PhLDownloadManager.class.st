@@ -59,18 +59,6 @@ PhLDownloadManager >> download: url toFile: destinationFile [
 		during: [ self silentlyDownload: url toFile: destinationFile ]
 ]
 
-{ #category : 'actions' }
-PhLDownloadManager >> silentlyDownload: url toFile: destinationFile [
-	"Download without showing the progress to the user, e.g. for a download the user did not ask for.
-	A PhLDownloadError is signaled to the caller."
-
-	| tmpFile |
-	tmpFile := destinationFile , UUID new asString.
-	(self newHTTPClientForUrl: url) downloadTo: tmpFile.
-	destinationFile ensureDelete.
-	tmpFile renameTo: destinationFile basename
-]
-
 { #category : 'private' }
 PhLDownloadManager >> downloadFailureForUrl: url message: errorMessage [
 
@@ -120,26 +108,6 @@ PhLDownloadManager >> numberOfErrors [
 	^ errors size
 ]
 
-{ #category : 'actions' }
-PhLDownloadManager >> reset [
-
-	errors removeAll
-]
-
-{ #category : 'actions' }
-PhLDownloadManager >> stampOf: url [
-	"Answer the stamp of the file published at the given url, without downloading it.
-	A failure is signaled to the caller but not recorded: it is not a download the user asked for."
-
-	| client |
-	client := (self newHTTPClientForUrl: url)
-		beOneShot;
-		ifFail: [ :exception | PhLDownloadError signalUrl: url message: exception messageText ];
-		yourself.
-	client head.
-	^ PhLRemoteFileStamp fromHeaders: client response headers
-]
-
 { #category : 'querying' }
 PhLDownloadManager >> redirectionOf: url [
 	"Answer the location the server redirects the given url to, nil if it does not redirect it. The redirection is not followed.
@@ -155,6 +123,38 @@ PhLDownloadManager >> redirectionOf: url [
 	^ client response isRedirect
 		  ifTrue: [ client response location ]
 		  ifFalse: [ nil ]
+]
+
+{ #category : 'actions' }
+PhLDownloadManager >> reset [
+
+	errors removeAll
+]
+
+{ #category : 'actions' }
+PhLDownloadManager >> silentlyDownload: url toFile: destinationFile [
+	"Download without showing the progress to the user, e.g. for a download the user did not ask for.
+	A PhLDownloadError is signaled to the caller."
+
+	| tmpFile |
+	tmpFile := destinationFile , UUID new asString.
+	(self newHTTPClientForUrl: url) downloadTo: tmpFile.
+	destinationFile ensureDelete.
+	tmpFile renameTo: destinationFile basename
+]
+
+{ #category : 'actions' }
+PhLDownloadManager >> stampOf: url [
+	"Answer the stamp of the file published at the given url, without downloading it.
+	A failure is signaled to the caller but not recorded: it is not a download the user asked for."
+
+	| client |
+	client := (self newHTTPClientForUrl: url)
+		beOneShot;
+		ifFail: [ :exception | PhLDownloadError signalUrl: url message: exception messageText ];
+		yourself.
+	client head.
+	^ PhLRemoteFileStamp fromHeaders: client response headers
 ]
 
 { #category : 'announcements' }

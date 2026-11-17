@@ -93,7 +93,7 @@ PhLLaunchImageTest >> tearDown [
 	process ifNotNil: [ process isRunning ifTrue: [ process terminate ] ].
 	tempVmStoreFolder ensureDeleteAll.
 	"To avoid random bugs with DirectoryIsNotEmpty error on CI"
-	Smalltalk os isWindows
+	OSPlatform current isWindows
 		ifTrue: [ imageDir ensureDeleteAll ]
 		ifFalse: [ LibC runCommand: 'rm -rf ', imageDir fullName. ].
 	super tearDown

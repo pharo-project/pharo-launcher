@@ -140,3 +140,19 @@ PhLImportImageCommandTest >> testImportNonExistingImage [
 		should: [ command execute ]
 		raise: FileDoesNotExistException
 ]
+
+{ #category : 'tests' }
+PhLImportImageCommandTest >> testImportedImageIsSelectedInTheList [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'tmp'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		requestAnswer: someFolder / 'foo.image'.
+
+	PhLImportImageCommand new
+		context: presenter;
+		execute.
+
+	self assert: presenter selectedImages first name equals: 'foo'
+]

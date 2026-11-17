@@ -23,19 +23,14 @@ PhLTestImagesPresenter >> choiceAnswerIndex: anIndex [
 	choiceAnswerIndex := anIndex
 ]
 
-{ #category : 'configuring' }
-PhLTestImagesPresenter >> confirmationAnswer: aBoolean [
-	confirmationAnswer := aBoolean
-]
-
-{ #category : 'accessing' }
-PhLTestImagesPresenter >> information [
-	^ information
-]
-
 { #category : 'sorting' }
 PhLTestImagesPresenter >> clickOnColumnHeaderAt: anIndex [
 	imageTable clickOnColumnHeaderAt: anIndex
+]
+
+{ #category : 'configuring' }
+PhLTestImagesPresenter >> confirmationAnswer: aBoolean [
+	confirmationAnswer := aBoolean
 ]
 
 { #category : 'image creation' }
@@ -73,6 +68,11 @@ PhLTestImagesPresenter >> imageLabel [
 { #category : 'accessing' }
 PhLTestImagesPresenter >> imageNames [
 	^ imageTable items collect: #name
+]
+
+{ #category : 'accessing' }
+PhLTestImagesPresenter >> information [
+	^ information
 ]
 
 { #category : 'initialization' }

@@ -154,6 +154,41 @@ PhLVirtualMachine >> blessing [
 	^ blessing
 ]
 
+{ #category : 'updating' }
+PhLVirtualMachine >> checkForUpdate [
+	"Ask the server the stamp of the archive it publishes and record it in my folder, with my version, in one write.
+	When the server does not answer, the result of the previous check is kept.
+	Answer whether an update is available."
+
+	| version stamp |
+	self isValid ifFalse: [ ^ false ].
+	"Running my executable and asking the server take time: done before writing my metadata"
+	version := self readVersionIfChanged.
+	stamp := self isUpdatable ifTrue: [ self fetchPublishedStamp ].
+	self updateMetadata: [ :metadata |
+		| hasChanged |
+		hasChanged := self record: version in: metadata.
+		stamp ifNotNil: [
+			metadata recordCheck: stamp.
+			hasChanged := true ].
+		hasChanged ].
+	^ self isUpdateAvailable
+]
+
+{ #category : 'updating' }
+PhLVirtualMachine >> completeInstallationFrom: aStamp [
+	"My files were just extracted from an archive having the given stamp (nil if unknown).
+	Make them usable, then record the archive and my version in one write."
+
+	| metadata |
+	self initializeExecutableRefFrom: self vmStore / self id.
+	self ensureExecutionRights.
+	self isValid ifFalse: [ ^ self ].
+	metadata := PhLVmMetadata installedFrom: aStamp.
+	self record: self lastUpdateTime -> self versionFromExecutable in: metadata.
+	metadata storeInFolder: self vmStore / self id
+]
+
 { #category : 'querying' }
 PhLVirtualMachine >> downloadUrl [
 	^ (PhLVmProvider for: self) url
@@ -164,7 +199,7 @@ PhLVirtualMachine >> ensureExecutionRights [
 	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
 	We have to set it explicitely on Unix and OS X."
 
-	Smalltalk os isWindows ifTrue: [ ^ self ].
+	OSPlatform current isWindows ifTrue: [ ^ self ].
 
 	PhLProcessWrapper new
 		shellCommand;
@@ -193,6 +228,15 @@ PhLVirtualMachine >> executablesToEnsure [
 	| vmFolder |
 	vmFolder := self vmStore / self id.
 	^ vmFolder exists ifTrue: [ (vmFolder allChildrenMatching: self class executableName) select: #isFile ] ifFalse: [ #() ]
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> fetchPublishedStamp [
+	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
+
+	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
 ]
 
 { #category : 'accessing' }
@@ -287,80 +331,6 @@ PhLVirtualMachine >> installationDate [
 	^ (self metadata installedOn ifNil: [ self lastUpdateTime ]) asDate
 ]
 
-{ #category : 'updating' }
-PhLVirtualMachine >> checkForUpdate [
-	"Ask the server the stamp of the archive it publishes and record it in my folder, with my version, in one write.
-	When the server does not answer, the result of the previous check is kept.
-	Answer whether an update is available."
-
-	| version stamp |
-	self isValid ifFalse: [ ^ false ].
-	"Running my executable and asking the server take time: done before writing my metadata"
-	version := self readVersionIfChanged.
-	stamp := self isUpdatable ifTrue: [ self fetchPublishedStamp ].
-	self updateMetadata: [ :metadata |
-		| hasChanged |
-		hasChanged := self record: version in: metadata.
-		stamp ifNotNil: [
-			metadata recordCheck: stamp.
-			hasChanged := true ].
-		hasChanged ].
-	^ self isUpdateAvailable
-]
-
-{ #category : 'updating' }
-PhLVirtualMachine >> refreshVersion [
-	"Record my version in my folder when my executable changed since it was recorded. The server is not asked."
-
-	| version |
-	self isValid ifFalse: [ ^ self ].
-	version := self readVersionIfChanged.
-	self updateMetadata: [ :metadata | self record: version in: metadata ]
-]
-
-{ #category : 'private' }
-PhLVirtualMachine >> readVersionIfChanged [
-	"Answer an association from the modification time of my executable to the version it prints, nil if this version is already recorded"
-
-	| executableTime |
-	executableTime := self lastUpdateTime.
-	(self metadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ ^ nil ].
-	^ executableTime -> self versionFromExecutable
-]
-
-{ #category : 'private' }
-PhLVirtualMachine >> record: aVersion in: aMetadata [
-	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process.
-	An unknown version is not recorded, so that it is read again at the next check."
-
-	aVersion ifNil: [ ^ false ].
-	aVersion value ifEmpty: [ ^ false ].
-	(aMetadata versionOfExecutableModifiedOn: aVersion key) ifNotNil: [ ^ false ].
-	aMetadata recordVersion: aVersion value executableTime: aVersion key.
-	^ true
-]
-
-{ #category : 'private' }
-PhLVirtualMachine >> updateMetadata: aBlock [
-	"Read my metadata, let the block change it, and store it when the block answers true, without another process writing it meanwhile.
-	Checks and installations are the only writers of my metadata: the VM manager and the command line only read it."
-
-	self isValid ifFalse: [ ^ self ].
-	PhLVmMetadata critical: [
-		| metadata |
-		metadata := self metadata.
-		(aBlock value: metadata) ifTrue: [ metadata storeInFolder: self vmStore / self id ] ]
-]
-
-{ #category : 'private' }
-PhLVirtualMachine >> fetchPublishedStamp [
-	"Answer the stamp of the archive currently published on the server, nil if the server does not answer."
-
-	^ [ PhLDownloadManager default stampOf: self downloadUrl ]
-		  on: PhLDownloadError
-		  do: [ nil ]
-]
-
 { #category : 'querying' }
 PhLVirtualMachine >> installedStamp [
 	"Answer the stamp of the archive I was installed from, nil if unknown."
@@ -448,20 +418,6 @@ PhLVirtualMachine >> lastUpdateTime [
 	^ executableRef modificationTime
 ]
 
-{ #category : 'querying' }
-PhLVirtualMachine >> metadata [
-	"Answer what the Launcher stored about me in my folder"
-
-	^ PhLVmMetadata inFolder: self vmStore / self id
-]
-
-{ #category : 'testing' }
-PhLVirtualMachine >> needsUpdate [
-	"Answer whether I should be downloaded: I am not installed, or the server publishes an update."
-
-	^ self isValid not or: [ self checkForUpdate ]
-]
-
 { #category : 'accessing' }
 PhLVirtualMachine >> location [
 	"Answer the path of my folder in the VM store"
@@ -479,9 +435,23 @@ PhLVirtualMachine >> manager: aPhLVirtualMachineManager [
 	manager := aPhLVirtualMachineManager
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> metadata [
+	"Answer what the Launcher stored about me in my folder"
+
+	^ PhLVmMetadata inFolder: self vmStore / self id
+]
+
 { #category : 'accessing' }
 PhLVirtualMachine >> name [
 	^ self id
+]
+
+{ #category : 'testing' }
+PhLVirtualMachine >> needsUpdate [
+	"Answer whether I should be downloaded: I am not installed, or the server publishes an update."
+
+	^ self isValid not or: [ self checkForUpdate ]
 ]
 
 { #category : 'querying' }
@@ -505,6 +475,45 @@ PhLVirtualMachine >> publishedStamp [
 	^ self metadata publishedStamp
 ]
 
+{ #category : 'private' }
+PhLVirtualMachine >> readVersionIfChanged [
+	"Answer an association from the modification time of my executable to the version it prints, nil if this version is already recorded"
+
+	| executableTime |
+	executableTime := self lastUpdateTime.
+	(self metadata versionOfExecutableModifiedOn: executableTime) ifNotNil: [ ^ nil ].
+	^ executableTime -> self versionFromExecutable
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> record: aVersion in: aMetadata [
+	"Answer whether the metadata changed. The version may have been recorded meanwhile by another process.
+	An unknown version is not recorded, so that it is read again at the next check."
+
+	aVersion ifNil: [ ^ false ].
+	aVersion value ifEmpty: [ ^ false ].
+	(aMetadata versionOfExecutableModifiedOn: aVersion key) ifNotNil: [ ^ false ].
+	aMetadata recordVersion: aVersion value executableTime: aVersion key.
+	^ true
+]
+
+{ #category : 'private' }
+PhLVirtualMachine >> recordedVersion [
+	"Answer the version recorded for my executable as it is now, nil if none"
+
+	^ self metadata versionOfExecutableModifiedOn: self lastUpdateTime
+]
+
+{ #category : 'updating' }
+PhLVirtualMachine >> refreshVersion [
+	"Record my version in my folder when my executable changed since it was recorded. The server is not asked."
+
+	| version |
+	self isValid ifFalse: [ ^ self ].
+	version := self readVersionIfChanged.
+	self updateMetadata: [ :metadata | self record: version in: metadata ]
+]
+
 { #category : 'actions' }
 PhLVirtualMachine >> removeFromSystem [
 	| vmFolder zipFile |
@@ -517,6 +526,11 @@ PhLVirtualMachine >> removeFromSystem [
 
 ]
 
+{ #category : 'actions' }
+PhLVirtualMachine >> showInFolder [
+	(self vmStore / self id) asFileReference openInOSFileBrowser 
+]
+
 { #category : 'querying' }
 PhLVirtualMachine >> status [
 	"Answer whether I am up to date, in words, from the last check. The server is not asked."
@@ -527,11 +541,6 @@ PhLVirtualMachine >> status [
 	^ self isUpdateAvailable
 		  ifTrue: [ 'Update available' ]
 		  ifFalse: [ 'Up to date' ]
-]
-
-{ #category : 'actions' }
-PhLVirtualMachine >> showInFolder [
-	(self vmStore / self id) asFileReference openInOSFileBrowser 
 ]
 
 { #category : 'ston persistence' }
@@ -552,6 +561,14 @@ PhLVirtualMachine >> stonValueOf: anInstVarName [
 	^ self instVarNamed: anInstVarName
 ]
 
+{ #category : 'querying' }
+PhLVirtualMachine >> storedVersion [
+	"Answer the version recorded by the last check or installation, an empty string if none. My executable is not run."
+
+	self isValid ifFalse: [ ^ '' ].
+	^ self recordedVersion ifNil: [ '' ]
+]
+
 { #category : 'updating' }
 PhLVirtualMachine >> updateFromUrl [
 	"fetch a new version of this Virtual Machine if available"
@@ -561,18 +578,16 @@ PhLVirtualMachine >> updateFromUrl [
 			 to: self vmStore / (self id , '.zip'))
 ]
 
-{ #category : 'updating' }
-PhLVirtualMachine >> completeInstallationFrom: aStamp [
-	"My files were just extracted from an archive having the given stamp (nil if unknown).
-	Make them usable, then record the archive and my version in one write."
+{ #category : 'private' }
+PhLVirtualMachine >> updateMetadata: aBlock [
+	"Read my metadata, let the block change it, and store it when the block answers true, without another process writing it meanwhile.
+	Checks and installations are the only writers of my metadata: the VM manager and the command line only read it."
 
-	| metadata |
-	self initializeExecutableRefFrom: self vmStore / self id.
-	self ensureExecutionRights.
 	self isValid ifFalse: [ ^ self ].
-	metadata := PhLVmMetadata installedFrom: aStamp.
-	self record: self lastUpdateTime -> self versionFromExecutable in: metadata.
-	metadata storeInFolder: self vmStore / self id
+	PhLVmMetadata critical: [
+		| metadata |
+		metadata := self metadata.
+		(aBlock value: metadata) ifTrue: [ metadata storeInFolder: self vmStore / self id ] ]
 ]
 
 { #category : 'accessing' }
@@ -590,21 +605,6 @@ PhLVirtualMachine >> version [
 
 	self isValid ifFalse: [ ^ '' ].
 	^ self recordedVersion ifNil: [ self versionFromExecutable ]
-]
-
-{ #category : 'private' }
-PhLVirtualMachine >> recordedVersion [
-	"Answer the version recorded for my executable as it is now, nil if none"
-
-	^ self metadata versionOfExecutableModifiedOn: self lastUpdateTime
-]
-
-{ #category : 'querying' }
-PhLVirtualMachine >> storedVersion [
-	"Answer the version recorded by the last check or installation, an empty string if none. My executable is not run."
-
-	self isValid ifFalse: [ ^ '' ].
-	^ self recordedVersion ifNil: [ '' ]
 ]
 
 { #category : 'private' }

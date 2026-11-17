@@ -86,15 +86,6 @@ PhLDownloadedTemplateGroup >> hasFile: aFile of: aRemoteTemplate publishedWith: 
 		  identifiesSameFileAs: aStamp
 ]
 
-{ #category : 'private' }
-PhLDownloadedTemplateGroup >> publishedStampOf: anUrl [
-	"Answer the stamp of the file published at anUrl, nil if the server does not answer"
-
-	^ [ PhLDownloadManager default stampOf: anUrl ]
-		  on: PhLDownloadError
-		  do: [ nil ]
-]
-
 { #category : 'accessing' }
 PhLDownloadedTemplateGroup >> icon [
 	^ self iconNamed: #home
@@ -121,6 +112,15 @@ PhLDownloadedTemplateGroup >> pharoStableImagePath [
 ]
 
 { #category : 'private' }
+PhLDownloadedTemplateGroup >> publishedStampOf: anUrl [
+	"Answer the stamp of the file published at anUrl, nil if the server does not answer"
+
+	^ [ PhLDownloadManager default stampOf: anUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
+]
+
+{ #category : 'private' }
 PhLDownloadedTemplateGroup >> register: aTemplate withZip: aZipFile [
 	"The zip file does not come from a server (e.g. a template created from an image): it never counts as an unchanged download"
 
@@ -142,13 +142,12 @@ PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile stamp:
 
 { #category : 'accessing' }
 PhLDownloadedTemplateGroup >> resourcesPath [
-	| vmDirectory |
-	
-	vmDirectory := Smalltalk vm binary parent.
 
-	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
-	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
-	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
+	| vmDirectory |
+	vmDirectory := Smalltalk vm binary parent.
+	OSPlatform current isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
+	OSPlatform current isUnix ifTrue: [ ^ vmDirectory parent / 'shared' ].
+	OSPlatform current isWindows ifTrue: [ ^ vmDirectory ]
 ]
 
 { #category : 'private' }

@@ -42,7 +42,7 @@ PhLProcessWrapper class >> outputOfShellCommand: aCommandString [
 	The output is redirected to a file because the standard output of a process cannot be read on all platforms."
 
 	| output |
-	Smalltalk os isWindows ifTrue: [ ^ '' ].
+	OSPlatform current isWindows ifTrue: [ ^ '' ].
 	output := FileLocator temp / ('pharo-launcher-output-' , UUID new asString).
 	^ [
 	  [
@@ -81,7 +81,7 @@ PhLProcessWrapper >> arguments [
 	If the command is a shell, then pathes HAVE TO be protected with double quotes.
 	It the command is pharo-vm, then pathes SHOULD NOT be surrounded by double quotes, else they are interpreted as part of the argument. This is not true on Windows because arguments is a String with all arguments. It means we MUST keep double quotes for windows pathes.
 	We assume that arguments are already protected (user knows what to protect, we cannot guess)."
-	(isShellCommand or: [ Smalltalk os isWindows ])
+	(isShellCommand or: [ OSPlatform current isWindows ])
 		ifTrue: [ ^ arguments asArray ].
 	^ arguments
 		collect:	[ :arg | 
@@ -110,9 +110,10 @@ PhLProcessWrapper >> commandLineString [
 
 { #category : 'accessing' }
 PhLProcessWrapper >> exitCode [
-	^ Smalltalk os isWindows
-		ifTrue: [ process exitCode ] 
-		ifFalse: [ process exitStatus ]
+
+	^ OSPlatform current isWindows
+		  ifTrue: [ process exitCode ]
+		  ifFalse: [ process exitStatus ]
 ]
 
 { #category : 'initialization' }
@@ -135,7 +136,7 @@ PhLProcessWrapper >> isShellCommand [
 
 { #category : 'testing' }
 PhLProcessWrapper >> isSuccess [
-	^ Smalltalk os isWindows
+	^ OSPlatform current isWindows
 		ifTrue: [ process isRunning not and: [ process exitCode == 0 ] ] 
 		ifFalse: [ process isSuccess ]
 ]
@@ -169,7 +170,8 @@ PhLProcessWrapper >> runAndWait [
 
 { #category : 'running' }
 PhLProcessWrapper >> runAndWaitTimeOut: aDuration [
-	Smalltalk os isWindows
+
+	OSPlatform current isWindows
 		ifTrue: [ self runOnWindowsAndWaitTimeOut: aDuration ]
 		ifFalse: [ self runOnLinuxAndWaitTimeOut: aDuration ]
 ]
@@ -197,7 +199,7 @@ PhLProcessWrapper >> runOnWindowsAndWaitTimeOut: aDuration [
 { #category : 'running' }
 PhLProcessWrapper >> runUnwatch [
 	self prepareProcess.
-	Smalltalk os isWindows
+	OSPlatform current isWindows
 		ifTrue: [ process runUnwatch. ]
 		ifFalse: [ process run. ]
 ]
@@ -209,7 +211,7 @@ PhLProcessWrapper >> shellCommand [
 
 { #category : 'accessing' }
 PhLProcessWrapper >> stderrString [
-	^ Smalltalk os isWindows
+	^ OSPlatform current isWindows
 		ifTrue: [ 'Std error not available on Windows' ]
 		ifFalse: [ (process stderrStream upToEndOfFile ifNil: [ '' ]) trimBoth ]
 ]

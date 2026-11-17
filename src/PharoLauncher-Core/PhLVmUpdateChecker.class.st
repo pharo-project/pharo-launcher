@@ -65,16 +65,15 @@ PhLVmUpdateChecker >> check [
 	self announcer announce: PhLVmUpdateCheckDone new
 ]
 
-{ #category : 'accessing' }
-PhLVmUpdateChecker >> vmsToUpdate [
-	"Answer the installed VMs for which the last check found an update. The server is not asked."
-
-	^ self installedVms select: [ :vm | vm isUpdateAvailable ]
-]
-
 { #category : 'private' }
 PhLVmUpdateChecker >> installedVms [
 
 	^ PhLVirtualMachineManager new availableVirtualMachines values select: [ :vm | vm isValid ]
 ]
 
+{ #category : 'accessing' }
+PhLVmUpdateChecker >> vmsToUpdate [
+	"Answer the installed VMs for which the last check found an update. The server is not asked."
+
+	^ self installedVms select: [ :vm | vm isUpdateAvailable ]
+]

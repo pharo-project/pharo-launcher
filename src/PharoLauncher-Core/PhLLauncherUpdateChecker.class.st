@@ -105,20 +105,20 @@ PhLLauncherUpdateChecker >> latestVersion [
 ]
 
 { #category : 'private' }
-PhLLauncherUpdateChecker >> platformName [
-
-	Smalltalk os isMacOSX ifTrue: [ ^ self macPlatformNameFor: Smalltalk os hostArchitecture ].
-	Smalltalk os isWindows ifTrue: [ ^ 'windows' ].
-	^ 'linux64'
-]
-
-{ #category : 'private' }
 PhLLauncherUpdateChecker >> macPlatformNameFor: aProcessorArchitecture [
 	"The processor of the machine, not the one the launcher runs on: an Intel launcher may run on Apple silicon"
 
 	^ aProcessorArchitecture = MacOSXPlatform armArchitecture
 		  ifTrue: [ 'mac-arm64' ]
 		  ifFalse: [ 'mac-x64' ]
+]
+
+{ #category : 'private' }
+PhLLauncherUpdateChecker >> platformName [
+
+	OSPlatform current isMacOSX ifTrue: [ ^ self macPlatformNameFor: OSPlatform current hostArchitecture ].
+	OSPlatform current isWindows ifTrue: [ ^ 'windows' ].
+	^ 'linux64'
 ]
 
 { #category : 'accessing' }

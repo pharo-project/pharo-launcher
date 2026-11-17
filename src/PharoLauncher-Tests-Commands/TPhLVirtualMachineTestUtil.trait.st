@@ -5,6 +5,13 @@ Trait {
 }
 
 { #category : 'adding' }
+TPhLVirtualMachineTestUtil >> createVmBinary: aFileReference [
+	"On Linux, a folder is a VM only if it holds an ELF binary"
+
+	aFileReference binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ]
+]
+
+{ #category : 'adding' }
 TPhLVirtualMachineTestUtil >> createVmNamed: aName [
 	self createVmNamed: aName private: false
 ]
@@ -24,13 +31,6 @@ TPhLVirtualMachineTestUtil >> createVmNamed: aName private: isPrivateVm [
 	
 	"needed on Linux"
 	self createVmBinary: vmDirectory / PhLVirtualMachine executableName
-]
-
-{ #category : 'adding' }
-TPhLVirtualMachineTestUtil >> createVmBinary: aFileReference [
-	"On Linux, a folder is a VM only if it holds an ELF binary"
-
-	aFileReference binaryWriteStreamDo: [ :stream | stream nextPutAll: PhLVirtualMachine elfMagicNumber ]
 ]
 
 { #category : 'adding' }

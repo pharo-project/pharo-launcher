@@ -79,7 +79,7 @@ jobs:
             path: ./*.xml
 
       - name: Test report
-        uses: dorny/test-reporter@v1
+        uses: dorny/test-reporter@v3
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: Pharo Launcher Tests        # Name of the check run which will be created

@@ -68,6 +68,9 @@ jobs:
           imageName: PharoLauncher
 
       - name: Build and test
+        # Tests take about 3 minutes: stop them when they hang instead of waiting for the 6 hours limit of the job.
+        # A step timeout lets the next steps upload the test results.
+        timeout-minutes: 20
         run: |
           VERSION=${SHORT_SHA} ./build.sh prepare
           VERSION=${SHORT_SHA} ./build.sh test

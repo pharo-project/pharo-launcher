@@ -52,6 +52,38 @@ PharoLauncherApplicationTest >> testApplicationShowsProgress [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testFileIsNotAnImageFolder [
+
+	| launcher file |
+	launcher := PharoLauncherApplication new.
+	file := FileSystem memory / 'foo.image'.
+	file ensureCreateFile.
+	self deny: (launcher isImageFolder: file)
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderContainingAnImageIsAnImageFolder [
+
+	| launcher folder |
+	launcher := PharoLauncherApplication new.
+	folder := FileSystem memory / 'dropped'.
+	folder createDirectory.
+	(folder / 'foo.image') ensureCreateFile.
+	self assert: (launcher isImageFolder: folder)
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderWithoutImageIsNotAnImageFolder [
+
+	| launcher folder |
+	launcher := PharoLauncherApplication new.
+	folder := FileSystem memory / 'not-an-image-folder'.
+	folder createDirectory.
+	(folder / 'readme.txt') ensureCreateFile.
+	self deny: (launcher isImageFolder: folder)
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testResetReleasesProgressRunner [
 
 	PharoLauncherApplication

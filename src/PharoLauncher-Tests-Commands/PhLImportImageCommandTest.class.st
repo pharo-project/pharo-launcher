@@ -89,6 +89,37 @@ PhLImportImageCommandTest >> testChoosingSecondOptionImportsSiblingFiles [
 ]
 
 { #category : 'tests' }
+PhLImportImageCommandTest >> testImportFromFolderAsksWhichImageToImportWhenSeveralAreFound [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'dropped'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		createImageNamed: 'bar' in: someFolder;
+		choiceAnswerIndex: 2.
+
+	PhLImportImageCommand new
+		context: presenter;
+		importFromFolder: someFolder.
+
+	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' 'foo' )
+]
+
+{ #category : 'tests' }
+PhLImportImageCommandTest >> testImportFromFolderImportsTheOnlyImageFound [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'dropped'.
+	presenter createImageNamed: 'foo' in: someFolder.
+
+	PhLImportImageCommand new
+		context: presenter;
+		importFromFolder: someFolder.
+
+	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' 'foo' )
+]
+
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testImportImageImportsImageSourcesFile [
 	| command importedImageName tmpDirectory importedImageDirectory sourcesFileName |
 	

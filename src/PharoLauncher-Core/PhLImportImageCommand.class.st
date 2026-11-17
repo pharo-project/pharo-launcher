@@ -29,6 +29,18 @@ PhLImportImageCommand >> canBeExecuted [
 ]
 
 { #category : 'ui interaction' }
+PhLImportImageCommand >> chooseImageAmong: imageFiles [
+
+	| chosenName |
+	chosenName := self imagesPresenter newChoice
+		              title: 'Import';
+		              message: 'Which image would you like to import?';
+		              items: (imageFiles collect: [ :imageFile | imageFile basename ]);
+		              run.
+	^ chosenName ifNotNil: [ imageFiles detect: [ :imageFile | imageFile basename = chosenName ] ]
+]
+
+{ #category : 'ui interaction' }
 PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 	^ self imagesPresenter newRequest
 		title: 'An image with the name ', anImageName , ' already exists. Please choose a new name:';
@@ -81,6 +93,25 @@ PhLImportImageCommand >> import: imageFileRef [
 		title: 'Import';
 		message: (infoMessage withNoLineLongerThan: 60);
 		inform
+]
+
+{ #category : 'executing' }
+PhLImportImageCommand >> importFromFolder: aDirectory [
+
+	| imageFiles imageFile |
+	importSiblings := false.
+	imageFiles := (aDirectory children select: [ :child | child isFile and: [ child extension = 'image' ] ]) asSortedCollection: [ :first :second | first basename <= second basename ].
+	imageFiles ifEmpty: [
+			self imagesPresenter newInformation
+				title: 'Import';
+				message: 'No Pharo image found in ' , aDirectory basename , '.';
+				inform.
+			^ self ].
+	imageFile := imageFiles size = 1
+		             ifTrue: [ imageFiles first ]
+		             ifFalse: [ self chooseImageAmong: imageFiles asArray ].
+	imageFile ifNil: [ ^ self ].
+	self import: imageFile
 ]
 
 { #category : 'executing' }

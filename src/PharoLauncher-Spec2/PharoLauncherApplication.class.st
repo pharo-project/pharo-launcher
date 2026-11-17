@@ -14,7 +14,8 @@ Class {
 		'openAsWorld',
 		'standalone',
 		'vmUpdateChecker',
-		'launcherUpdateChecker'
+		'launcherUpdateChecker',
+		'externalDropHandler'
 	],
 	#classVars : [
 		'Default',
@@ -275,6 +276,17 @@ PharoLauncherApplication >> exitApplication [
 	Smalltalk exitSuccess
 ]
 
+{ #category : 'drag and drop' }
+PharoLauncherApplication >> handleDroppedFile: droppedFile [
+
+	(self isImageFolder: droppedFile)
+		ifTrue: [
+				PhLImportImageCommand new
+					context: imagesPresenter;
+					importFromFolder: droppedFile ]
+		ifFalse: [ self openServiceChooserFor: droppedFile ]
+]
+
 { #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
@@ -390,6 +402,12 @@ PharoLauncherApplication >> isDarkTheme [
 	^ self configuration isDarkTheme
 ]
 
+{ #category : 'drag and drop' }
+PharoLauncherApplication >> isImageFolder: aFileReference [
+
+	^ aFileReference isDirectory and: [ aFileReference children anySatisfy: [ :child | child isFile and: [ child extension = 'image' ] ] ]
+]
+
 { #category : 'testing' }
 PharoLauncherApplication >> isLightTheme [
 
@@ -482,6 +500,12 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
+{ #category : 'drag and drop' }
+PharoLauncherApplication >> openServiceChooserFor: aFileReference [
+
+	(ExternalDropHandler lookupServiceBasedHandler: aFileReference) ifNotNil: [ :handler | handler handle: aFileReference in: nil dropEvent: nil ]
+]
+
 { #category : 'initialization' }
 PharoLauncherApplication >> prepareAsStandaloneApplication [
 	
@@ -500,6 +524,14 @@ PharoLauncherApplication >> prepareAsStandaloneApplication [
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
 	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
+]
+
+{ #category : 'drag and drop' }
+PharoLauncherApplication >> registerExternalDropHandler [
+
+	externalDropHandler ifNotNil: [ :previousHandler | ExternalDropHandler registeredHandlers remove: previousHandler ifAbsent: [ ] ].
+	externalDropHandler := ExternalDropHandler type: nil extension: '' action: [ :droppedFile | self handleDroppedFile: droppedFile ].
+	ExternalDropHandler registerHandler: externalDropHandler
 ]
 
 { #category : 'initialization' }
@@ -600,10 +632,11 @@ PharoLauncherApplication >> sourcesFileUpdateAvailable [
 PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
+	self registerExternalDropHandler.
 
-	openAsWorld ifTrue: [ 
-		self startFull.
-		^ self ].
+	openAsWorld ifTrue: [
+			self startFull.
+			^ self ].
 
 	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
@@ -611,7 +644,7 @@ PharoLauncherApplication >> start [
 	self initializeLauncherUpdateChecker.
 	self initializeProgressRunner.
 	self runUpdateChecker.
-	
+
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]
 

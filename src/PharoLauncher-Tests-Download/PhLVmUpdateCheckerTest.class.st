@@ -22,7 +22,7 @@ PhLVmUpdateCheckerTest >> idsOfVmsToUpdate [
 PhLVmUpdateCheckerTest >> installVmNamed: aVmId printing: aString [
 
 	| vm |
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	self createVmNamed: aVmId.
 	vm := PhLVirtualMachine id: aVmId.
 	self makeExecutableOf: vm print: aString.

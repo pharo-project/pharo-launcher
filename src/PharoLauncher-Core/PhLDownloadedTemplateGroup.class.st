@@ -142,13 +142,12 @@ PhLDownloadedTemplateGroup >> register: aRemoteTemplate withZip: aZipFile stamp:
 
 { #category : 'accessing' }
 PhLDownloadedTemplateGroup >> resourcesPath [
-	| vmDirectory |
-	
-	vmDirectory := Smalltalk vm binary parent.
 
-	Smalltalk os isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
-	Smalltalk os isUnix ifTrue: [ ^ vmDirectory parent/ 'shared' ].
-	Smalltalk os isWindows ifTrue: [ ^ vmDirectory ].
+	| vmDirectory |
+	vmDirectory := Smalltalk vm binary parent.
+	OSPlatform current isMacOSX ifTrue: [ ^ vmDirectory parent / 'Resources' ].
+	OSPlatform current isUnix ifTrue: [ ^ vmDirectory parent / 'shared' ].
+	OSPlatform current isWindows ifTrue: [ ^ vmDirectory ]
 ]
 
 { #category : 'private' }

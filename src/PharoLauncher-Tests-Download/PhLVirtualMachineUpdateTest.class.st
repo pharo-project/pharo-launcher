@@ -340,7 +340,7 @@ PhLVirtualMachineUpdateTest >> testUpdateKeepsFilesTheArchiveDoesNotProvide [
 { #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testUpdateStoresTheVersionOfTheNewExecutable [
 
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	self serverPublishesArchiveTagged: 'first'.
 
 	vm updateFromUrl.
@@ -370,7 +370,7 @@ PhLVirtualMachineUpdateTest >> testVmFetchedToLaunchAnImageRecordsItsInstallatio
 	"A VM missing to launch an image is fetched: it is recorded like an updated VM"
 
 	| manager |
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	manager := PhLVirtualMachineManager new
 		           imageVersion: '130';
 		           imageFormatNumber: PhLVirtualMachineManager imageFormat64bits;

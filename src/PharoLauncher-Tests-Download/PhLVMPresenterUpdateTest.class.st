@@ -108,7 +108,7 @@ PhLVMPresenterUpdateTest >> testDownloadUrlAndLocationOfSelectedVmAreShown [
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testHeaderOfSelectedVmShowsItsIdAndVersion [
 
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 	outdatedVm refreshVersion.
 
@@ -264,7 +264,7 @@ PhLVMPresenterUpdateTest >> testToolbarDoesNotShowVmInFolder [
 PhLVMPresenterUpdateTest >> testVersionIsEmptyUntilStored [
 	"The VM manager does not run the VM to get its version"
 
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 
 	self assert: (presenter versionDescriptionFor: outdatedVm) equals: ''
@@ -273,7 +273,7 @@ PhLVMPresenterUpdateTest >> testVersionIsEmptyUntilStored [
 { #category : 'tests' }
 PhLVMPresenterUpdateTest >> testVersionOfVmIsShown [
 
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	presenter makeExecutableOf: outdatedVm print: 'Pharo v10.3.12 built on Oct 23 2026'.
 
 	outdatedVm refreshVersion.

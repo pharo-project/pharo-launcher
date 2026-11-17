@@ -13,7 +13,7 @@ PhLVirtualMachineVersionTest >> installVmPrinting: aString [
 	"Install a VM whose executable is a script printing the given text"
 
 	| vm |
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	OSPlatform current isWindows ifTrue: [ ^ self skip ].
 	self createVmNamed: '130-x64'.
 	vm := PhLVirtualMachine id: '130-x64'.
 	self makeExecutableOf: vm print: aString.

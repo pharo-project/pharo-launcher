@@ -123,6 +123,15 @@ PhLVmMetadata >> setInstalledStamp: aStamp [
 	installedStamp := aStamp
 ]
 
+{ #category : 'storing' }
+PhLVmMetadata >> storeInFolder: aFolder [
+
+	self class critical: [
+		(aFolder / self class fileName)
+			ensureDelete;
+			writeStreamDo: [ :stream | STON put: self onStreamPretty: stream ] ]
+]
+
 { #category : 'accessing' }
 PhLVmMetadata >> version [
 
@@ -136,13 +145,4 @@ PhLVmMetadata >> versionOfExecutableModifiedOn: aDateAndTime [
 	^ versionExecutableTime = aDateAndTime
 		  ifTrue: [ version ]
 		  ifFalse: [ nil ]
-]
-
-{ #category : 'storing' }
-PhLVmMetadata >> storeInFolder: aFolder [
-
-	self class critical: [
-		(aFolder / self class fileName)
-			ensureDelete;
-			writeStreamDo: [ :stream | STON put: self onStreamPretty: stream ] ]
 ]

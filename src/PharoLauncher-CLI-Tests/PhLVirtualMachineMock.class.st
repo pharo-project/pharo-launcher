@@ -74,6 +74,12 @@ PhLVirtualMachineMock >> initialize [
 ]
 
 { #category : 'accessing' }
+PhLVirtualMachineMock >> installationDate [
+
+	^ Date year: 2026 month: 10 day: 23
+]
+
+{ #category : 'accessing' }
 PhLVirtualMachineMock >> isDeleted [
 	^ isDeleted
 ]
@@ -118,33 +124,27 @@ PhLVirtualMachineMock >> lastUpdateTime: aDateTime [
 	lastUpdateTime := aDateTime 
 ]
 
-{ #category : 'instance' }
-PhLVirtualMachineMock >> removeFromSystem [
-	self isDeleted: true.
-   
-]
-
-{ #category : 'instance' }
-PhLVirtualMachineMock >> updateFromUrl [
-	 self isUpdated: true.
-]
-
-{ #category : 'accessing' }
-PhLVirtualMachineMock >> installationDate [
-
-	^ Date year: 2026 month: 10 day: 23
-]
-
 { #category : 'accessing' }
 PhLVirtualMachineMock >> location [
 
 	^ '/vms/' , id
 ]
 
+{ #category : 'instance' }
+PhLVirtualMachineMock >> removeFromSystem [
+	self isDeleted: true.
+   
+]
+
 { #category : 'accessing' }
 PhLVirtualMachineMock >> status [
 
 	^ 'Update available'
+]
+
+{ #category : 'instance' }
+PhLVirtualMachineMock >> updateFromUrl [
+	 self isUpdated: true.
 ]
 
 { #category : 'accessing' }

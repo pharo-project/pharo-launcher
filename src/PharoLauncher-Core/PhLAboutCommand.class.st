@@ -79,6 +79,12 @@ PhLAboutCommand >> initialize [
 		description: 'Documentation and information about Pharo Launcher'
 ]
 
+{ #category : 'querying' }
+PhLAboutCommand >> launcherVersion [
+
+	^ self class launcherVersion
+]
+
 { #category : 'private' }
 PhLAboutCommand >> proposeLauncherUpdateIn: anAboutPresenter [
 	"The server is not asked: the latest version is the one found by the last check"
@@ -87,10 +93,4 @@ PhLAboutCommand >> proposeLauncherUpdateIn: anAboutPresenter [
 	checker := self application launcherUpdateChecker.
 	checker isUpdateAvailable ifTrue: [
 		anAboutPresenter proposeUpdateTo: checker latestVersion downloadUrl: checker downloadUrl ]
-]
-
-{ #category : 'querying' }
-PhLAboutCommand >> launcherVersion [
-
-	^ self class launcherVersion
 ]

@@ -7,6 +7,21 @@ Class {
 }
 
 { #category : 'tests' }
+PhLTemplateUpdateCliCommandTest >> testTemplateUpdateDoesNotSubscribeToSharedAnnouncer [
+	| command workingDir |
+
+	workingDir := FileSystem memory root.
+	self launcherModel templateRepository: (PhLTemplateGroupRepository newFromGroups: #()).
+	
+	PhLTemplateSources useLauncherCoreDir: workingDir during: [ 
+		PhLTemplateSources flush: #() in: workingDir / PhLTemplateSources sourcesFileName.
+		command := (self context arguments: #('launcher' 'template' 'update')) command.
+		command execute ].
+
+	self deny: (PhLTemplateSourcesAnnouncer default hasSubscriber: command)
+]
+
+{ #category : 'tests' }
 PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
 	| command workingDir |
 
@@ -22,19 +37,4 @@ PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
 
 	self assert:( workingDir / 'sources.list') exists.
 	self assert: command pharoLauncherModel templateRepository roots size equals: 10
-]
-
-{ #category : 'tests' }
-PhLTemplateUpdateCliCommandTest >> testTemplateUpdateDoesNotSubscribeToSharedAnnouncer [
-	| command workingDir |
-
-	workingDir := FileSystem memory root.
-	self launcherModel templateRepository: (PhLTemplateGroupRepository newFromGroups: #()).
-	
-	PhLTemplateSources useLauncherCoreDir: workingDir during: [ 
-		PhLTemplateSources flush: #() in: workingDir / PhLTemplateSources sourcesFileName.
-		command := (self context arguments: #('launcher' 'template' 'update')) command.
-		command execute ].
-
-	self deny: (PhLTemplateSourcesAnnouncer default hasSubscriber: command)
 ]

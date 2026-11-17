@@ -101,26 +101,6 @@ PhLLaunchImageCommand >> basicIconNamed: aName [
 	^ super iconNamed: aName
 ]
 
-{ #category : 'private' }
-PhLLaunchImageCommand >> shouldContinueAfter: aWarning [
-
-	self class warnOnArchMismatch ifFalse: [ ^ true ].
-
-	^ self imagesPresenter newConfirmation
-		title: aWarning name;
-		message: aWarning longDescription;
-		confirm
-]
-
-{ #category : 'private' }
-PhLLaunchImageCommand >> showError: anError [
-
-	self imagesPresenter newInformation
-		title: anError name;
-		message: anError longDescription;
-		inform
-]
-
 { #category : 'configuring' }
 PhLLaunchImageCommand >> doNotUseSettings [
 	useSettings := false.
@@ -185,4 +165,24 @@ PhLLaunchImageCommand >> launchSelectedImage [
 { #category : 'private' }
 PhLLaunchImageCommand >> quit [
 	(PhLQuitCommand forSpecContext: self imagesPresenter) execute
+]
+
+{ #category : 'private' }
+PhLLaunchImageCommand >> shouldContinueAfter: aWarning [
+
+	self class warnOnArchMismatch ifFalse: [ ^ true ].
+
+	^ self imagesPresenter newConfirmation
+		title: aWarning name;
+		message: aWarning longDescription;
+		confirm
+]
+
+{ #category : 'private' }
+PhLLaunchImageCommand >> showError: anError [
+
+	self imagesPresenter newInformation
+		title: anError name;
+		message: anError longDescription;
+		inform
 ]

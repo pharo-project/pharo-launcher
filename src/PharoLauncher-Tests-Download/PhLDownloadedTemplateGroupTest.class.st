@@ -52,6 +52,41 @@ PhLDownloadedTemplateGroupTest >> tearDown [
 ]
 
 { #category : 'tests' }
+PhLDownloadedTemplateGroupTest >> testArchiveIsDownloadedAgainWhenServerCannotTellItChanged [
+
+	self serverPublishes: 'archive' etag: nil.
+	self download.
+
+	self download.
+
+	self assert: self server downloadCount equals: 2
+]
+
+{ #category : 'tests' }
+PhLDownloadedTemplateGroupTest >> testArchiveIsDownloadedAgainWhenServerDoesNotAnswer [
+
+	self serverPublishes: 'archive' etag: 'a'.
+	self download.
+	self server stopAnsweringStampOf: template url.
+
+	self download.
+
+	self assert: self server downloadCount equals: 2
+]
+
+{ #category : 'tests' }
+PhLDownloadedTemplateGroupTest >> testArchiveOfAnotherUrlIsDownloaded [
+
+	self serverPublishes: 'archive' etag: 'a'.
+	self download.
+	template := PhLRemoteTemplate name: template name url: 'https://files.pharo.org/image/140/other-64.zip' asZnUrl.
+	self serverPublishes: 'other' etag: 'a'.
+
+	self assert: self download contents equals: 'other'.
+	self assert: self server downloadCount equals: 2
+]
+
+{ #category : 'tests' }
 PhLDownloadedTemplateGroupTest >> testChangedArchiveIsDownloadedAgain [
 
 	self serverPublishes: 'old' etag: 'a'.
@@ -79,41 +114,6 @@ PhLDownloadedTemplateGroupTest >> testFirstUseDownloadsTheArchive [
 
 	self assert: self download contents equals: 'archive'.
 	self assert: self server downloadCount equals: 1
-]
-
-{ #category : 'tests' }
-PhLDownloadedTemplateGroupTest >> testArchiveIsDownloadedAgainWhenServerDoesNotAnswer [
-
-	self serverPublishes: 'archive' etag: 'a'.
-	self download.
-	self server stopAnsweringStampOf: template url.
-
-	self download.
-
-	self assert: self server downloadCount equals: 2
-]
-
-{ #category : 'tests' }
-PhLDownloadedTemplateGroupTest >> testArchiveIsDownloadedAgainWhenServerCannotTellItChanged [
-
-	self serverPublishes: 'archive' etag: nil.
-	self download.
-
-	self download.
-
-	self assert: self server downloadCount equals: 2
-]
-
-{ #category : 'tests' }
-PhLDownloadedTemplateGroupTest >> testArchiveOfAnotherUrlIsDownloaded [
-
-	self serverPublishes: 'archive' etag: 'a'.
-	self download.
-	template := PhLRemoteTemplate name: template name url: 'https://files.pharo.org/image/140/other-64.zip' asZnUrl.
-	self serverPublishes: 'other' etag: 'a'.
-
-	self assert: self download contents equals: 'other'.
-	self assert: self server downloadCount equals: 2
 ]
 
 { #category : 'tests' }

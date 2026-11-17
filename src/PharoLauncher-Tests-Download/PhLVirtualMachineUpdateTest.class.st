@@ -26,12 +26,6 @@ PhLVirtualMachineUpdateTest >> installedVersion [
 ]
 
 { #category : 'helpers' }
-PhLVirtualMachineUpdateTest >> serverPublishesArchiveLastModified: aDateAndTime [
-
-	self serverPublishesArchiveOf: vm lastModified: aDateAndTime
-]
-
-{ #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> serverPublishes: anArchive of: aVm tagged: anETag [
 
 	self server
@@ -40,9 +34,23 @@ PhLVirtualMachineUpdateTest >> serverPublishes: anArchive of: aVm tagged: anETag
 ]
 
 { #category : 'helpers' }
+PhLVirtualMachineUpdateTest >> serverPublishesArchiveLastModified: aDateAndTime [
+
+	self serverPublishesArchiveOf: vm lastModified: aDateAndTime
+]
+
+{ #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> serverPublishesArchiveTagged: anETag [
 
 	self serverPublishes: (self vmArchiveVersioned: anETag) of: vm tagged: anETag
+]
+
+{ #category : 'helpers' }
+PhLVirtualMachineUpdateTest >> serverPublishesArchiveWithoutEtagLastModified: aDateAndTime [
+
+	self server
+		atUrl: vm downloadUrl answer: (self vmArchiveVersioned: aDateAndTime printString);
+		atUrl: vm downloadUrl answerStamp: (PhLRemoteFileStamp etag: nil lastModified: aDateAndTime)
 ]
 
 { #category : 'helpers' }
@@ -62,6 +70,33 @@ PhLVirtualMachineUpdateTest >> setUp [
 
 	super setUp.
 	vm := PhLVirtualMachine id: '130-x64'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testCheckKeepsLastResultWhenServerDoesNotAnswer [
+
+	self installVmWithoutStamp.
+	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
+	vm checkForUpdate.
+
+	self server stopAnsweringStampOf: vm downloadUrl.
+	vm checkForUpdate.
+
+	self assert: vm status equals: 'Update available'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testCheckKeepsStoredVersion [
+
+	self serverPublishesArchiveTagged: 'first'.
+	vm updateFromUrl.
+	(PhLVmMetadata inFolder: vmStore / vm id)
+		recordVersion: '10.3.12' executableTime: vm lastUpdateTime;
+		storeInFolder: vmStore / vm id.
+
+	vm checkForUpdate.
+
+	self assert: (PhLVmMetadata inFolder: vmStore / vm id) version equals: '10.3.12'
 ]
 
 { #category : 'tests' }
@@ -102,57 +137,6 @@ PhLVirtualMachineUpdateTest >> testDamagedMetadataIsReplacedByTheNextCheck [
 ]
 
 { #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testNoUpdateWhenServerPublishesSameArchiveWithoutEtag [
-
-	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
-	vm updateFromUrl.
-
-	self deny: vm checkForUpdate
-]
-
-{ #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiveWithoutEtag [
-
-	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
-	vm updateFromUrl.
-
-	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 11 day: 10).
-
-	self assert: vm checkForUpdate
-]
-
-{ #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testUpdateDoesNotNeedTheStampOfTheArchive [
-	"The stamp is only needed to detect later updates"
-
-	self server atUrl: vm downloadUrl answer: (self vmArchiveVersioned: 'first').
-
-	vm updateFromUrl.
-
-	self assert: self installedVersion equals: 'first'.
-	self assert: vm status equals: 'Not checked'
-]
-
-{ #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testVmFetchedToLaunchAnImageRecordsItsInstallation [
-	"A VM missing to launch an image is fetched: it is recorded like an updated VM"
-
-	| manager |
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
-	manager := PhLVirtualMachineManager new
-		           imageVersion: '130';
-		           imageFormatNumber: PhLVirtualMachineManager imageFormat64bits;
-		           yourself.
-	self serverPublishesArchiveTagged: 'first'.
-
-	manager fetchVm.
-
-	vm := PhLVirtualMachine id: manager vmId.
-	self assert: vm storedVersion equals: '10.3.12'.
-	self deny: vm checkForUpdate
-]
-
-{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testFailedUpdateKeepsInstalledVm [
 
 	self serverPublishesArchiveTagged: 'first'.
@@ -177,31 +161,6 @@ PhLVirtualMachineUpdateTest >> testInstallationDateIsTheDateOfTheUpdate [
 
 	self assert: vm lastUpdateTime asDate equals: (Date year: 2020 month: 1 day: 1).
 	self assert: vm installationDate equals: Date today
-]
-
-{ #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testCheckKeepsStoredVersion [
-
-	self serverPublishesArchiveTagged: 'first'.
-	vm updateFromUrl.
-	(PhLVmMetadata inFolder: vmStore / vm id)
-		recordVersion: '10.3.12' executableTime: vm lastUpdateTime;
-		storeInFolder: vmStore / vm id.
-
-	vm checkForUpdate.
-
-	self assert: (PhLVmMetadata inFolder: vmStore / vm id) version equals: '10.3.12'
-]
-
-{ #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testUpdateStoresTheVersionOfTheNewExecutable [
-
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
-	self serverPublishesArchiveTagged: 'first'.
-
-	vm updateFromUrl.
-
-	self assert: vm storedVersion equals: '10.3.12'
 ]
 
 { #category : 'tests' }
@@ -231,21 +190,21 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForVmNotInstalled [
 ]
 
 { #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableRightAfterUpdating [
-
-	self serverPublishesArchiveTagged: 'first'.
-
-	vm updateFromUrl.
-
-	self deny: vm checkForUpdate
-]
-
-{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableForVmWithoutStampWhenServerArchiveIsOlder [
 
 	self installVmWithoutStamp.
 
 	self serverPublishesArchiveLastModified: DateAndTime now - 1 day.
+
+	self deny: vm checkForUpdate
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableRightAfterUpdating [
+
+	self serverPublishesArchiveTagged: 'first'.
+
+	vm updateFromUrl.
 
 	self deny: vm checkForUpdate
 ]
@@ -259,16 +218,12 @@ PhLVirtualMachineUpdateTest >> testNoUpdateIsAvailableWhenServerDoesNotAnswer [
 ]
 
 { #category : 'tests' }
-PhLVirtualMachineUpdateTest >> testCheckKeepsLastResultWhenServerDoesNotAnswer [
+PhLVirtualMachineUpdateTest >> testNoUpdateWhenServerPublishesSameArchiveWithoutEtag [
 
-	self installVmWithoutStamp.
-	self serverPublishesArchiveLastModified: DateAndTime now + 1 day.
-	vm checkForUpdate.
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
+	vm updateFromUrl.
 
-	self server stopAnsweringStampOf: vm downloadUrl.
-	vm checkForUpdate.
-
-	self assert: vm status equals: 'Update available'
+	self deny: vm checkForUpdate
 ]
 
 { #category : 'tests' }
@@ -323,6 +278,18 @@ PhLVirtualMachineUpdateTest >> testStatusOfVmNotInstalledDoesNotAskTheServer [
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdateDoesNotNeedTheStampOfTheArchive [
+	"The stamp is only needed to detect later updates"
+
+	self server atUrl: vm downloadUrl answer: (self vmArchiveVersioned: 'first').
+
+	vm updateFromUrl.
+
+	self assert: self installedVersion equals: 'first'.
+	self assert: vm status equals: 'Not checked'
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testUpdateIsAvailableForVmWithoutStampWhenServerArchiveIsNewer [
 
 	self installVmWithoutStamp.
@@ -344,6 +311,17 @@ PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiv
 ]
 
 { #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdateIsAvailableWhenServerPublishesNewArchiveWithoutEtag [
+
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 10 day: 23).
+	vm updateFromUrl.
+
+	self serverPublishesArchiveWithoutEtagLastModified: (DateAndTime year: 2026 month: 11 day: 10).
+
+	self assert: vm checkForUpdate
+]
+
+{ #category : 'tests' }
 PhLVirtualMachineUpdateTest >> testUpdateKeepsFilesTheArchiveDoesNotProvide [
 	"e.g. the sources files fetched for old Pharo versions"
 
@@ -357,6 +335,17 @@ PhLVirtualMachineUpdateTest >> testUpdateKeepsFilesTheArchiveDoesNotProvide [
 
 	self assert: sourcesFile exists.
 	self assert: self installedVersion equals: 'second'
+]
+
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testUpdateStoresTheVersionOfTheNewExecutable [
+
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	self serverPublishesArchiveTagged: 'first'.
+
+	vm updateFromUrl.
+
+	self assert: vm storedVersion equals: '10.3.12'
 ]
 
 { #category : 'tests' }
@@ -376,6 +365,25 @@ PhLVirtualMachineUpdateTest >> testUpdatingAllSkipsVmFailingToUpdate [
 	self assert: (errors first longDescription includesSubstring: vm id)
 ]
 
+{ #category : 'tests' }
+PhLVirtualMachineUpdateTest >> testVmFetchedToLaunchAnImageRecordsItsInstallation [
+	"A VM missing to launch an image is fetched: it is recorded like an updated VM"
+
+	| manager |
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	manager := PhLVirtualMachineManager new
+		           imageVersion: '130';
+		           imageFormatNumber: PhLVirtualMachineManager imageFormat64bits;
+		           yourself.
+	self serverPublishesArchiveTagged: 'first'.
+
+	manager fetchVm.
+
+	vm := PhLVirtualMachine id: manager vmId.
+	self assert: vm storedVersion equals: '10.3.12'.
+	self deny: vm checkForUpdate
+]
+
 { #category : 'helpers' }
 PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	"A zip archive with the VM executables expected on OS X and Linux: scripts printing a VM version, and a binary on Linux.
@@ -390,12 +398,4 @@ PhLVirtualMachineUpdateTest >> vmArchiveVersioned: aString [
 	archive addString: PhLVirtualMachine elfMagicNumber as: 'lib/pharo'.
 	archive members do: [ :each | each modifiedAt: (DateAndTime year: 2020 month: 1 day: 1) ].
 	^ ByteArray streamContents: [ :stream | archive writeTo: stream ]
-]
-
-{ #category : 'helpers' }
-PhLVirtualMachineUpdateTest >> serverPublishesArchiveWithoutEtagLastModified: aDateAndTime [
-
-	self server
-		atUrl: vm downloadUrl answer: (self vmArchiveVersioned: aDateAndTime printString);
-		atUrl: vm downloadUrl answerStamp: (PhLRemoteFileStamp etag: nil lastModified: aDateAndTime)
 ]

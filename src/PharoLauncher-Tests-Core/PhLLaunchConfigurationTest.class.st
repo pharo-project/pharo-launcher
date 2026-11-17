@@ -196,6 +196,16 @@ PhLLaunchConfigurationTest >> testCannotLaunchWhenVmNotValidForArchitecture [
 ]
 
 { #category : 'tests' }
+PhLLaunchConfigurationTest >> testDefaultConfigurationWorkingDirectory [
+	| dir config |
+	dir := fs / 'foo' / 'bar'.
+	config := PhLDefaultLaunchConfiguration new
+		workingDirectory: dir.
+
+	self assert: config workingDirectory equals: dir
+]
+
+{ #category : 'tests' }
 PhLLaunchConfigurationTest >> testImageLaunchProcessDoesNotHaveInitializationScriptArgumentsIfInitializationScriptIsNil [
 	| command launchConfig arguments |
 	image versionFile writeStreamDo: [ :stream | stream nextPutAll: '80' ].
@@ -343,16 +353,6 @@ PhLLaunchConfigurationTest >> testProcessWithExplicitWorkingDirectory [
 		yourself.
 	
 	self assert: configurator workingDirectory equals: dir
-]
-
-{ #category : 'tests' }
-PhLLaunchConfigurationTest >> testDefaultConfigurationWorkingDirectory [
-	| dir config |
-	dir := fs / 'foo' / 'bar'.
-	config := PhLDefaultLaunchConfiguration new
-		workingDirectory: dir.
-
-	self assert: config workingDirectory equals: dir
 ]
 
 { #category : 'tests' }

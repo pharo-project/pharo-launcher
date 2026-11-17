@@ -19,6 +19,17 @@ PhLVmUpdateCheckerTest >> idsOfVmsToUpdate [
 ]
 
 { #category : 'helpers' }
+PhLVmUpdateCheckerTest >> installVmNamed: aVmId printing: aString [
+
+	| vm |
+	Smalltalk os isWindows ifTrue: [ ^ self skip ].
+	self createVmNamed: aVmId.
+	vm := PhLVirtualMachine id: aVmId.
+	self makeExecutableOf: vm print: aString.
+	^ vm
+]
+
+{ #category : 'helpers' }
 PhLVmUpdateCheckerTest >> installVmWithUpdateAvailable: aVmId [
 
 	self createVmNamed: aVmId.
@@ -42,6 +53,43 @@ PhLVmUpdateCheckerTest >> tearDown [
 	checker announcer unsubscribe: self.
 	PhLVmUpdateChecker shouldRun: shouldRun.
 	super tearDown
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDone [
+
+	| isDone |
+	isDone := false.
+	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
+
+	checker check.
+
+	self assert: isDone
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDoneEvenWhenDisabled [
+	"Versions are stored even when the server is not asked"
+
+	| isDone |
+	PhLVmUpdateChecker shouldRun: false.
+	isDone := false.
+	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
+
+	checker check.
+
+	self assert: isDone
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testEveryOutdatedVmIsToUpdate [
+
+	self installVmWithUpdateAvailable: '70-x64'.
+	self installVmWithUpdateAvailable: '130-x64'.
+
+	checker check.
+
+	self assertCollection: self idsOfVmsToUpdate hasSameElements: #( '70-x64' '130-x64' )
 ]
 
 { #category : 'tests' }
@@ -79,51 +127,6 @@ PhLVmUpdateCheckerTest >> testNoVmToUpdateWhenServerDoesNotAnswer [
 ]
 
 { #category : 'tests' }
-PhLVmUpdateCheckerTest >> testVmIsToUpdateWhenUpdateIsAvailable [
-
-	self installVmWithUpdateAvailable: '70-x64'.
-
-	checker check.
-
-	self assert: self idsOfVmsToUpdate equals: #( '70-x64' )
-]
-
-{ #category : 'tests' }
-PhLVmUpdateCheckerTest >> testVmsToUpdateAreReadFromTheLastCheck [
-
-	| requestCount |
-	self installVmWithUpdateAvailable: '70-x64'.
-	checker check.
-	requestCount := self server stampRequestCount.
-
-	self assert: self idsOfVmsToUpdate equals: #( '70-x64' ).
-	self assert: self server stampRequestCount equals: requestCount
-]
-
-{ #category : 'tests' }
-PhLVmUpdateCheckerTest >> testEveryOutdatedVmIsToUpdate [
-
-	self installVmWithUpdateAvailable: '70-x64'.
-	self installVmWithUpdateAvailable: '130-x64'.
-
-	checker check.
-
-	self assertCollection: self idsOfVmsToUpdate hasSameElements: #( '70-x64' '130-x64' )
-]
-
-{ #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDone [
-
-	| isDone |
-	isDone := false.
-	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
-
-	checker check.
-
-	self assert: isDone
-]
-
-{ #category : 'tests' }
 PhLVmUpdateCheckerTest >> testRecordsNothingWhenDisabled [
 
 	self installVmWithUpdateAvailable: '70-x64'.
@@ -142,31 +145,6 @@ PhLVmUpdateCheckerTest >> testRecordsResultOfEveryInstalledVm [
 	checker check.
 
 	self assert: (PhLVirtualMachine id: '130-x64') status equals: 'Update available'
-]
-
-{ #category : 'helpers' }
-PhLVmUpdateCheckerTest >> installVmNamed: aVmId printing: aString [
-
-	| vm |
-	Smalltalk os isWindows ifTrue: [ ^ self skip ].
-	self createVmNamed: aVmId.
-	vm := PhLVirtualMachine id: aVmId.
-	self makeExecutableOf: vm print: aString.
-	^ vm
-]
-
-{ #category : 'tests' }
-PhLVmUpdateCheckerTest >> testAnnouncesWhenCheckIsDoneEvenWhenDisabled [
-	"Versions are stored even when the server is not asked"
-
-	| isDone |
-	PhLVmUpdateChecker shouldRun: false.
-	isDone := false.
-	checker announcer when: PhLVmUpdateCheckDone do: [ isDone := true ] for: self.
-
-	checker check.
-
-	self assert: isDone
 ]
 
 { #category : 'tests' }
@@ -193,4 +171,26 @@ PhLVmUpdateCheckerTest >> testStoresVersionsWithoutAskingTheServerWhenDisabled [
 	self assert: vm storedVersion equals: '10.3.12'.
 	self assert: vm status equals: 'Not checked'.
 	self assert: self server stampRequestCount equals: 0
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testVmIsToUpdateWhenUpdateIsAvailable [
+
+	self installVmWithUpdateAvailable: '70-x64'.
+
+	checker check.
+
+	self assert: self idsOfVmsToUpdate equals: #( '70-x64' )
+]
+
+{ #category : 'tests' }
+PhLVmUpdateCheckerTest >> testVmsToUpdateAreReadFromTheLastCheck [
+
+	| requestCount |
+	self installVmWithUpdateAvailable: '70-x64'.
+	checker check.
+	requestCount := self server stampRequestCount.
+
+	self assert: self idsOfVmsToUpdate equals: #( '70-x64' ).
+	self assert: self server stampRequestCount equals: requestCount
 ]

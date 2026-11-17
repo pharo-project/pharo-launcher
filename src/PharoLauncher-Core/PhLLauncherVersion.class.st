@@ -42,6 +42,13 @@ PhLLauncherVersion >> < aVersion [
 	^ isPreRelease and: [ aVersion isPreRelease not ]
 ]
 
+{ #category : 'private' }
+PhLLauncherVersion >> isCommitsAfterTag: aSuffix [
+	"'12-gabcdef0' as added by git describe"
+
+	^ aSuffix matchesRegex: '\d+-g[0-9a-f]+'
+]
+
 { #category : 'testing' }
 PhLLauncherVersion >> isComparable [
 
@@ -88,11 +95,4 @@ PhLLauncherVersion >> setString: aString [
 		           collect: [ :each | each isAllDigits ifTrue: [ each asNumber ] ifFalse: [ nil ] ].
 	(numbers isEmpty or: [ numbers includes: nil ]) ifTrue: [ numbers := #(  ) ].
 	isPreRelease := suffix notEmpty and: [ (self isCommitsAfterTag: suffix) not ]
-]
-
-{ #category : 'private' }
-PhLLauncherVersion >> isCommitsAfterTag: aSuffix [
-	"'12-gabcdef0' as added by git describe"
-
-	^ aSuffix matchesRegex: '\d+-g[0-9a-f]+'
 ]

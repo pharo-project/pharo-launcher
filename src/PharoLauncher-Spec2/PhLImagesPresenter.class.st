@@ -108,6 +108,18 @@ PhLImagesPresenter class >> buildToolbarGroupContext: aContext [
 		yourself)
 ]
 
+{ #category : 'accessing' }
+PhLImagesPresenter >> aboutButton [
+
+	^ self aboutCommand presenter
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> aboutCommand [
+
+	^ self toolbarGroup allCommands detect: [ :each | each decoratedCommand isKindOf: PhLAboutCommand ]
+]
+
 { #category : 'api - actions' }
 PhLImagesPresenter >> actionFilter [
 	^ imageFilter
@@ -352,6 +364,24 @@ PhLImagesPresenter >> refresh [
 		items: self imageRepository images
 ]
 
+{ #category : 'launcher update' }
+PhLImagesPresenter >> refreshLauncherUpdate [
+	"Show the newer launcher found by the last check. The server is not asked."
+
+	| checker |
+	checker := self application launcherUpdateChecker.
+	self showLauncherUpdate: (checker isUpdateAvailable
+			 ifTrue: [ checker latestVersion ]
+			 ifFalse: [ nil ])
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> refreshVmUpdates [
+	"Show the VMs to update found by the last check. The server is not asked."
+
+	self showVmUpdates: self application vmUpdateChecker vmsToUpdate
+]
+
 { #category : 'initialization' }
 PhLImagesPresenter >> rootCommandsGroup [
 
@@ -398,6 +428,31 @@ PhLImagesPresenter >> selectedLaunchConfiguration [
 		ifNotNil: [ :launchConfig | launchConfig ]
 ]
 
+{ #category : 'launcher update' }
+PhLImagesPresenter >> showLauncherUpdate: aVersionOrNil [
+	"Warn the user without interrupting: a red badge on the About button tells that a newer launcher is published"
+
+	self aboutButton
+		icon: (PhLBadgedIcon
+				 icon: self aboutCommand icon
+				 count: (aVersionOrNil ifNil: [ 0 ] ifNotNil: [ 1 ])) asForm;
+		help: (aVersionOrNil
+				 ifNil: [ self aboutCommand decoratedCommand description ]
+				 ifNotNil: [ 'Pharo Launcher {1} is available' format: { aVersionOrNil } ])
+]
+
+{ #category : 'vm updates' }
+PhLImagesPresenter >> showVmUpdates: virtualMachines [
+	"Warn the user without interrupting: a red badge on the VMs button tells how many VMs can be updated"
+
+	vmsToUpdate := virtualMachines.
+	self vmsButton
+		icon: (PhLBadgedIcon icon: self vmManagerCommand decoratedCommand icon count: virtualMachines size) asForm;
+		help: (virtualMachines
+				 ifEmpty: [ 'Open the VM manager' ]
+				 ifNotEmpty: [ 'Updates are available for virtual machines' ])
+]
+
 { #category : 'api - selection' }
 PhLImagesPresenter >> singleImage [
 	self ensure: self hasSingleImageSelected.
@@ -440,67 +495,6 @@ PhLImagesPresenter >> updateToolbarCommandsAvailability [
 		self toolbarGroup allCommands do: #updateEnableStatus ]
 ]
 
-{ #category : 'private' }
-PhLImagesPresenter >> withToolbarDo: aBlock [
-
-	self withWindowDo: [ :window | aBlock value: window toolbar ]
-]
-
-{ #category : 'accessing' }
-PhLImagesPresenter >> aboutButton [
-
-	^ self aboutCommand presenter
-]
-
-{ #category : 'accessing' }
-PhLImagesPresenter >> aboutCommand [
-
-	^ self toolbarGroup allCommands detect: [ :each | each decoratedCommand isKindOf: PhLAboutCommand ]
-]
-
-{ #category : 'launcher update' }
-PhLImagesPresenter >> refreshLauncherUpdate [
-	"Show the newer launcher found by the last check. The server is not asked."
-
-	| checker |
-	checker := self application launcherUpdateChecker.
-	self showLauncherUpdate: (checker isUpdateAvailable
-			 ifTrue: [ checker latestVersion ]
-			 ifFalse: [ nil ])
-]
-
-{ #category : 'launcher update' }
-PhLImagesPresenter >> showLauncherUpdate: aVersionOrNil [
-	"Warn the user without interrupting: a red badge on the About button tells that a newer launcher is published"
-
-	self aboutButton
-		icon: (PhLBadgedIcon
-				 icon: self aboutCommand icon
-				 count: (aVersionOrNil ifNil: [ 0 ] ifNotNil: [ 1 ])) asForm;
-		help: (aVersionOrNil
-				 ifNil: [ self aboutCommand decoratedCommand description ]
-				 ifNotNil: [ 'Pharo Launcher {1} is available' format: { aVersionOrNil } ])
-]
-
-{ #category : 'vm updates' }
-PhLImagesPresenter >> refreshVmUpdates [
-	"Show the VMs to update found by the last check. The server is not asked."
-
-	self showVmUpdates: self application vmUpdateChecker vmsToUpdate
-]
-
-{ #category : 'vm updates' }
-PhLImagesPresenter >> showVmUpdates: virtualMachines [
-	"Warn the user without interrupting: a red badge on the VMs button tells how many VMs can be updated"
-
-	vmsToUpdate := virtualMachines.
-	self vmsButton
-		icon: (PhLBadgedIcon icon: self vmManagerCommand decoratedCommand icon count: virtualMachines size) asForm;
-		help: (virtualMachines
-				 ifEmpty: [ 'Open the VM manager' ]
-				 ifNotEmpty: [ 'Updates are available for virtual machines' ])
-]
-
 { #category : 'accessing' }
 PhLImagesPresenter >> vmManagerCommand [
 
@@ -518,4 +512,10 @@ PhLImagesPresenter >> vmsButton [
 PhLImagesPresenter >> vmsToUpdate [
 
 	^ vmsToUpdate ifNil: [ #(  ) ]
+]
+
+{ #category : 'private' }
+PhLImagesPresenter >> withToolbarDo: aBlock [
+
+	self withWindowDo: [ :window | aBlock value: window toolbar ]
 ]

@@ -26,17 +26,6 @@ PhLOpenVmManagerCommand >> execute [
 	self context refreshVmUpdates
 ]
 
-{ #category : 'executing' }
-PhLOpenVmManagerCommand >> newVmManager [
-	"The VMs to update are selected: clicking Update updates them"
-
-	^ (self context
-		   instantiate: PhLVMPresenter
-		   on: PhLVirtualMachinesDataSource default)
-		  selectVms: self context vmsToUpdate;
-		  yourself
-]
-
 { #category : 'accessing' }
 PhLOpenVmManagerCommand >> icon [
 	"encoded with 
@@ -57,4 +46,15 @@ PhLOpenVmManagerCommand >> initialize [
 		name: 'Open VM Manager';
 		description:
 			'Open a new window allowing to manage Virtual Machines used to launch images'
+]
+
+{ #category : 'executing' }
+PhLOpenVmManagerCommand >> newVmManager [
+	"The VMs to update are selected: clicking Update updates them"
+
+	^ (self context
+		   instantiate: PhLVMPresenter
+		   on: PhLVirtualMachinesDataSource default)
+		  selectVms: self context vmsToUpdate;
+		  yourself
 ]

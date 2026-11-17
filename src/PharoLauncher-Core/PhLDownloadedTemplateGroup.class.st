@@ -86,15 +86,6 @@ PhLDownloadedTemplateGroup >> hasFile: aFile of: aRemoteTemplate publishedWith: 
 		  identifiesSameFileAs: aStamp
 ]
 
-{ #category : 'private' }
-PhLDownloadedTemplateGroup >> publishedStampOf: anUrl [
-	"Answer the stamp of the file published at anUrl, nil if the server does not answer"
-
-	^ [ PhLDownloadManager default stampOf: anUrl ]
-		  on: PhLDownloadError
-		  do: [ nil ]
-]
-
 { #category : 'accessing' }
 PhLDownloadedTemplateGroup >> icon [
 	^ self iconNamed: #home
@@ -118,6 +109,15 @@ PhLDownloadedTemplateGroup >> pharoStableImagePath [
 	^ img exists 
 		ifTrue: [ img ]
 		ifFalse: [ nil ]
+]
+
+{ #category : 'private' }
+PhLDownloadedTemplateGroup >> publishedStampOf: anUrl [
+	"Answer the stamp of the file published at anUrl, nil if the server does not answer"
+
+	^ [ PhLDownloadManager default stampOf: anUrl ]
+		  on: PhLDownloadError
+		  do: [ nil ]
 ]
 
 { #category : 'private' }

@@ -118,18 +118,18 @@ PhLMorphicConfiguration >> newStyleSheet [
 	^ SpStyle defaultStyleSheet copy, (SpStyleVariableSTONReader fromString: self launcherStyle)
 ]
 
+{ #category : 'private' }
+PhLMorphicConfiguration >> notebooksIn: aWindowPresenter [
+
+	^ aWindowPresenter adapter widget allMorphs select: [ :each | each isKindOf: SpNotebookMorph ]
+]
+
 { #category : 'accessing - styles' }
 PhLMorphicConfiguration >> palette [
 
 	^ self isDarkTheme
 		ifTrue: [ self darkPalette ]
 		ifFalse: [ self lightPalette ]
-]
-
-{ #category : 'private' }
-PhLMorphicConfiguration >> notebooksIn: aWindowPresenter [
-
-	^ aWindowPresenter adapter widget allMorphs select: [ :each | each isKindOf: SpNotebookMorph ]
 ]
 
 { #category : 'private' }

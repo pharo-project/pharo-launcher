@@ -145,15 +145,15 @@ PhLImageMock >> lastModification: aString [
 ]
 
 { #category : 'mocking' }
+PhLImageMock >> launch [
+	isLaunched := true
+]
+
+{ #category : 'mocking' }
 PhLImageMock >> launchAction: aBlock [
 	"To simulate exceptions signaled during the launch"
 
 	launchAction := aBlock
-]
-
-{ #category : 'mocking' }
-PhLImageMock >> launch [
-	isLaunched := true
 ]
 
 { #category : 'mocking' }

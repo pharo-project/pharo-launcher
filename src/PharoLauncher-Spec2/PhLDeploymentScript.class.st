@@ -140,6 +140,12 @@ PhLDeploymentScript class >> dontRaiseWarningForMissingChangesOrSourcesFiles [
 	"PharoFilesOpener default unsetInformAboutReadOnlyChanges."
 ]
 
+{ #category : 'actions' }
+PhLDeploymentScript class >> hideMenubar [
+	"Removing the menu bar morph is not enough: the world creates it again at startup"
+	MenubarMorph showMenubar: false
+]
+
 { #category : 'initialization' }
 PhLDeploymentScript class >> initialize [
 	Save := false
@@ -155,12 +161,6 @@ PhLDeploymentScript class >> initializeGTkEnumerations [
 { #category : 'public' }
 PhLDeploymentScript class >> initializeLibgit [
 	LGitLibrary uniqueInstance initializeLibGit2
-]
-
-{ #category : 'actions' }
-PhLDeploymentScript class >> hideMenubar [
-	"Removing the menu bar morph is not enough: the world creates it again at startup"
-	MenubarMorph showMenubar: false
 ]
 
 { #category : 'settings' }

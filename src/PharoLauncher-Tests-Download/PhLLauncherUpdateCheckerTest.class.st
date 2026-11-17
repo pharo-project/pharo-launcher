@@ -165,6 +165,17 @@ PhLLauncherUpdateCheckerTest >> testNoUpdateWhenOlderVersionIsPublished [
 ]
 
 { #category : 'tests' }
+PhLLauncherUpdateCheckerTest >> testNoUpdateWhenSameVersionIsPublished [
+
+	self runningVersion: '3.4.5'.
+	self serverPublishes: '3.4.5'.
+
+	checker check.
+
+	self deny: checker isUpdateAvailable
+]
+
+{ #category : 'tests' }
 PhLLauncherUpdateCheckerTest >> testNoUpdateWhenServerDoesNotRedirect [
 
 	self runningVersion: '3.4.4'.
@@ -187,20 +198,9 @@ PhLLauncherUpdateCheckerTest >> testNoUpdateWhenServerRedirectsElsewhere [
 ]
 
 { #category : 'tests' }
-PhLLauncherUpdateCheckerTest >> testNoUpdateWhenSameVersionIsPublished [
+PhLLauncherUpdateCheckerTest >> testUpdateAvailableForCommitsAfterAnOlderTag [
 
-	self runningVersion: '3.4.5'.
-	self serverPublishes: '3.4.5'.
-
-	checker check.
-
-	self deny: checker isUpdateAvailable
-]
-
-{ #category : 'tests' }
-PhLLauncherUpdateCheckerTest >> testUpdateAvailableWhenNewerVersionIsPublished [
-
-	self runningVersion: '3.4.4'.
+	self runningVersion: '3.4.4-12-gabcdef0'.
 	self serverPublishes: '3.4.5'.
 
 	checker check.
@@ -209,9 +209,9 @@ PhLLauncherUpdateCheckerTest >> testUpdateAvailableWhenNewerVersionIsPublished [
 ]
 
 { #category : 'tests' }
-PhLLauncherUpdateCheckerTest >> testUpdateAvailableForCommitsAfterAnOlderTag [
+PhLLauncherUpdateCheckerTest >> testUpdateAvailableWhenNewerVersionIsPublished [
 
-	self runningVersion: '3.4.4-12-gabcdef0'.
+	self runningVersion: '3.4.4'.
 	self serverPublishes: '3.4.5'.
 
 	checker check.

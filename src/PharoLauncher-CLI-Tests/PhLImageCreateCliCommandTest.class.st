@@ -39,20 +39,6 @@ PhLImageCreateCliCommandTest >> testArchitectureMismatchIsLoggedAndCreatedImageI
 ]
 
 { #category : 'tests' }
-PhLImageCreateCliCommandTest >> testLaunchErrorIsLoggedAndCommandFails [
-
-	self addLocalTemplateNamed: 'fakeTemplate'.
-	self imageRepository extractedImageLaunchAction: [
-		PhLArchitectureError signalImageOsNon32bitCompliant: (PhLImageMock name: 'myImage3') ].
-
-	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
-
-	self assertFailure.
-	self assert: (self errorString includesSubstring: 'Cannot run myImage3 image!').
-	self deny: (self imageRepository imageNamed: 'myimage3') isLaunched
-]
-
-{ #category : 'tests' }
 PhLImageCreateCliCommandTest >> testCreateImageShouldSucceed [
 	self addImageNamed: 'myImage1'.
 	self addImageNamed: 'myImage2'.
@@ -184,6 +170,20 @@ PhLImageCreateCliCommandTest >> testCreateImageWrongCategoryNameShouldRaiseError
 	self assertFailure.
 	 
 	self assert: (self errorString includesSubstring: 'wrong category name not found'). 
+]
+
+{ #category : 'tests' }
+PhLImageCreateCliCommandTest >> testLaunchErrorIsLoggedAndCommandFails [
+
+	self addLocalTemplateNamed: 'fakeTemplate'.
+	self imageRepository extractedImageLaunchAction: [
+		PhLArchitectureError signalImageOsNon32bitCompliant: (PhLImageMock name: 'myImage3') ].
+
+	self runCommand: {'launcher' . 'image' . 'create' . 'myImage3' . '--templateName'. 'fakeTemplate' . '--templateCategory' . self templateRepository localTemplatesGroupName}.
+
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Cannot run myImage3 image!').
+	self deny: (self imageRepository imageNamed: 'myimage3') isLaunched
 ]
 
 { #category : 'tests' }

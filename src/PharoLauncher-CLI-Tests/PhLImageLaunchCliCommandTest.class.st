@@ -24,20 +24,6 @@ PhLImageLaunchCliCommandTest >> tearDown [
 ]
 
 { #category : 'tests' }
-PhLImageLaunchCliCommandTest >> testLaunchErrorIsLoggedAndCommandFails [
-
-	| image |
-	image := self addImageNamed: 'myImage1'.
-	image launchAction: [ PhLArchitectureError signalImageOsNon32bitCompliant: image ].
-
-	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
-
-	self assertFailure.
-	self assert: (self errorString includesSubstring: 'Cannot run myImage1 image!').
-	self deny: image isLaunched
-]
-
-{ #category : 'tests' }
 PhLImageLaunchCliCommandTest >> testArchitectureMismatchIsLoggedOnceAndImageIsLaunched [
 
 	| image warningSignal |
@@ -63,6 +49,20 @@ PhLImageLaunchCliCommandTest >> testLaunchDoesNotChangeArchitectureWarningSettin
 	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
 
 	self assert: PhLLaunchImageCommand warnOnArchMismatch
+]
+
+{ #category : 'tests' }
+PhLImageLaunchCliCommandTest >> testLaunchErrorIsLoggedAndCommandFails [
+
+	| image |
+	image := self addImageNamed: 'myImage1'.
+	image launchAction: [ PhLArchitectureError signalImageOsNon32bitCompliant: image ].
+
+	self runCommand: #('launcher' 'image' 'launch' 'myImage1').
+
+	self assertFailure.
+	self assert: (self errorString includesSubstring: 'Cannot run myImage1 image!').
+	self deny: image isLaunched
 ]
 
 { #category : 'tests' }

@@ -35,6 +35,29 @@ PhLVMDetailPresenter >> defaultLayout [
 		  yourself
 ]
 
+{ #category : 'layout' }
+PhLVMDetailPresenter >> detailsLayout [
+
+	^ SpGridLayout build: [ :builder |
+		  builder
+			  beRowNotHomogeneous;
+			  beColumnNotHomogeneous;
+			  borderWidth: 0;
+			  column: 1 withConstraints: [ :c | c hAlignEnd ];
+			  column: 2 withConstraints: [ :c | c beExpand ];
+			  add: 'Download URL';
+			  add: downloadUrl;
+			  nextRow;
+			  add: 'Location';
+			  add: location;
+			  nextRow;
+			  add: 'Installed on';
+			  add: installedOn;
+			  nextRow;
+			  add: 'Status';
+			  add: status ]
+]
+
 { #category : 'accessing' }
 PhLVMDetailPresenter >> downloadUrl [
 
@@ -70,29 +93,6 @@ PhLVMDetailPresenter >> initializePresenters [
 PhLVMDetailPresenter >> installedOn [
 
 	^ installedOn
-]
-
-{ #category : 'layout' }
-PhLVMDetailPresenter >> detailsLayout [
-
-	^ SpGridLayout build: [ :builder |
-		  builder
-			  beRowNotHomogeneous;
-			  beColumnNotHomogeneous;
-			  borderWidth: 0;
-			  column: 1 withConstraints: [ :c | c hAlignEnd ];
-			  column: 2 withConstraints: [ :c | c beExpand ];
-			  add: 'Download URL';
-			  add: downloadUrl;
-			  nextRow;
-			  add: 'Location';
-			  add: location;
-			  nextRow;
-			  add: 'Installed on';
-			  add: installedOn;
-			  nextRow;
-			  add: 'Status';
-			  add: status ]
 ]
 
 { #category : 'accessing' }

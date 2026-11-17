@@ -75,6 +75,19 @@ PhLLaunchConfigurationPresenterTest >> testCanOpenAPresenterWithVMNotInDefaultLi
 ]
 
 { #category : 'tests' }
+PhLLaunchConfigurationPresenterTest >> testCannotAddLaunchConfigurationWithAnExistingName [
+
+	self setUpPresenter.
+
+	self
+		should: [
+			ITUserInteraction
+				useBackend: (ITTestBackend answering: image launchConfigurations first name)
+				during: [ presenter clickAddConfigurationButton ] ]
+		raise: ITInvalidAnswer
+]
+
+{ #category : 'tests' }
 PhLLaunchConfigurationPresenterTest >> testConfigurationDetailIsCleanedWhenConfigurationDeleted [
 	| config |
 	self setUpPresenter.
@@ -127,19 +140,6 @@ PhLLaunchConfigurationPresenterTest >> testImageHasOnlyDefaultLaunchConfiguratio
 	self
 		assert: image launchConfigurations first name
 		equals: PhLDefaultLaunchConfiguration defaultName.
-]
-
-{ #category : 'tests' }
-PhLLaunchConfigurationPresenterTest >> testCannotAddLaunchConfigurationWithAnExistingName [
-
-	self setUpPresenter.
-
-	self
-		should: [
-			ITUserInteraction
-				useBackend: (ITTestBackend answering: image launchConfigurations first name)
-				during: [ presenter clickAddConfigurationButton ] ]
-		raise: ITInvalidAnswer
 ]
 
 { #category : 'tests' }

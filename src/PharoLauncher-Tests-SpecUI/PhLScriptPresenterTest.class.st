@@ -79,6 +79,17 @@ PhLScriptPresenterTest >> testCanSaveScript [
 ]
 
 { #category : 'tests' }
+PhLScriptPresenterTest >> testCannotAddScriptWithAnExistingName [
+
+	self
+		should: [
+			ITUserInteraction
+				useBackend: (ITTestBackend answering: 'foo.st')
+				during: [ presenter clickAddScriptButton ] ]
+		raise: ITInvalidAnswer
+]
+
+{ #category : 'tests' }
 PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 
 	self
@@ -90,17 +101,6 @@ PhLScriptPresenterTest >> testCannotRemoveScriptIfNoneSelected [
 	self
 		assert: scriptFolder files size
 		equals: 1.
-]
-
-{ #category : 'tests' }
-PhLScriptPresenterTest >> testCannotAddScriptWithAnExistingName [
-
-	self
-		should: [
-			ITUserInteraction
-				useBackend: (ITTestBackend answering: 'foo.st')
-				during: [ presenter clickAddScriptButton ] ]
-		raise: ITInvalidAnswer
 ]
 
 { #category : 'tests' }

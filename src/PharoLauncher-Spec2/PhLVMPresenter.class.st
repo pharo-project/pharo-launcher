@@ -156,12 +156,6 @@ PhLVMPresenter >> initializeWindow: aWindowPresenter [
 	"self rootCommandsGroup installShortcutsIn: aWindowPresenter."
 ]
 
-{ #category : 'private' }
-PhLVMPresenter >> readableDateFor: aTimestamp [
-	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
-
-]
-
 { #category : 'opening' }
 PhLVMPresenter >> openModalOver: aPresenter [
 	"Open me as a modal window over the window of the given presenter. Answer once I am closed."
@@ -172,10 +166,10 @@ PhLVMPresenter >> openModalOver: aPresenter [
 		open
 ]
 
-{ #category : 'api - selection' }
-PhLVMPresenter >> selectVms: virtualMachines [
+{ #category : 'private' }
+PhLVMPresenter >> readableDateFor: aTimestamp [
+	^ aTimestamp asDate yyyymmdd , ' ' , aTimestamp asTime print24
 
-	vmTable selectItems: (vmTable items select: [ :each | virtualMachines includes: each ])
 ]
 
 { #category : 'refreshing' }
@@ -205,9 +199,27 @@ PhLVMPresenter >> selectVm: aVm [
 	vmTable selectItem: aVm
 ]
 
+{ #category : 'api - selection' }
+PhLVMPresenter >> selectVms: virtualMachines [
+
+	vmTable selectItems: (vmTable items select: [ :each | virtualMachines includes: each ])
+]
+
 { #category : 'accessing' }
 PhLVMPresenter >> selectedVms [
 	^ vmTable selectedItems
+]
+
+{ #category : 'accessing' }
+PhLVMPresenter >> statusDescriptionFor: aVm [
+	"Answer the status of the VM, with the publication date of the update when one is available."
+
+	| status |
+	status := self statusFor: aVm.
+	aVm isUpdateAvailable ifFalse: [ ^ status ].
+	^ aVm publishedStamp publicationDate
+		  ifNil: [ status ]
+		  ifNotNil: [ :date | status , ', published on ' , date yyyymmdd ]
 ]
 
 { #category : 'accessing' }
@@ -230,21 +242,8 @@ PhLVMPresenter >> subscribeToVmUpdateChecks [
 ]
 
 { #category : 'accessing' }
-PhLVMPresenter >> statusDescriptionFor: aVm [
-	"Answer the status of the VM, with the publication date of the update when one is available."
-
-	| status |
-	status := self statusFor: aVm.
-	aVm isUpdateAvailable ifFalse: [ ^ status ].
-	^ aVm publishedStamp publicationDate
-		  ifNil: [ status ]
-		  ifNotNil: [ :date | status , ', published on ' , date yyyymmdd ]
-]
-
-{ #category : 'accessing' }
 PhLVMPresenter >> versionDescriptionFor: aVm [
 	"The version stored by the last check or installation: running the VM takes time."
 
 	^ aVm storedVersion
 ]
-

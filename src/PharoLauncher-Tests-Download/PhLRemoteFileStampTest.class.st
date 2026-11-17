@@ -49,6 +49,13 @@ PhLRemoteFileStampTest >> testIsReadBackFromItsDictionary [
 ]
 
 { #category : 'tests' }
+PhLRemoteFileStampTest >> testStampsWithDifferentValidatorsDoNotIdentifyTheSameFile [
+
+	self deny: ((PhLRemoteFileStamp etag: 'a' lastModified: nil) identifiesSameFileAs:
+			 (PhLRemoteFileStamp etag: nil lastModified: self date))
+]
+
+{ #category : 'tests' }
 PhLRemoteFileStampTest >> testStampsWithoutValidatorDoNotIdentifyTheSameFile [
 	"Without ETag nor modification date, nothing tells the file did not change"
 
@@ -56,11 +63,4 @@ PhLRemoteFileStampTest >> testStampsWithoutValidatorDoNotIdentifyTheSameFile [
 	stamp := PhLRemoteFileStamp etag: nil lastModified: nil.
 
 	self deny: (stamp identifiesSameFileAs: stamp)
-]
-
-{ #category : 'tests' }
-PhLRemoteFileStampTest >> testStampsWithDifferentValidatorsDoNotIdentifyTheSameFile [
-
-	self deny: ((PhLRemoteFileStamp etag: 'a' lastModified: nil) identifiesSameFileAs:
-			 (PhLRemoteFileStamp etag: nil lastModified: self date))
 ]

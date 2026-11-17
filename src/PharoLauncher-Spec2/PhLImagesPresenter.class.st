@@ -155,36 +155,36 @@ PhLImagesPresenter >> buildImageFilter [
 PhLImagesPresenter >> buildImageTable [
 
 	^ self newTable
-		activateOnDoubleClick;
-		keepAlternateRowsColor;
-		sortingBlock: #lastModification descending;
-		whenActivatedDo: [ self actionLaunch ];
-		addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
-			width: 350;
-			beSortable;
-			yourself);
-		addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
-			width: 90;
-			beSortable;
-			yourself);
-		addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
-			width: 90;
-			beSortable;
-			yourself);
-		addColumn: ((SpStringTableColumn
-			title: 'Last modified'
-			evaluated: [ :image | self readableDateFor: image lastModification ])
-			sortFunction: #lastModification descending;
-			yourself);
-		actions: (SpActionGroup new 
-			add: self rootCommandsGroup / self contextMenuCommandGroupName;
-			addShortcutWith: [ :action | action
-				shortcutKey: Character cr asKeyCombination;
-				action: [ self actionLaunch ] ];
-			yourself);
-		beResizable;
-		beMultipleSelection;
-		yourself
+		  activateOnDoubleClick;
+		  keepAlternateRowsColor;
+		  sortingBlock: #lastModification descending;
+		  whenActivatedDo: [ self actionLaunch ];
+		  addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
+				   width: 350;
+				   beSortable;
+				   yourself);
+		  addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
+				   width: 90;
+				   beSortable;
+				   yourself);
+		  addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+				   width: 90;
+				   beSortable;
+				   yourself);
+		  addColumn: ((SpStringTableColumn title: 'Last modified' evaluated: [ :image | self readableDateFor: image lastModification ])
+				   sortFunction: #lastModification descending;
+				   displayColor: [ :image | self lastModificationColorFor: image lastModification ];
+				   yourself);
+		  actions: (SpActionGroup new
+				   add: self rootCommandsGroup / self contextMenuCommandGroupName;
+				   addShortcutWith: [ :action |
+						   action
+							   shortcutKey: Character cr asKeyCombination;
+							   action: [ self actionLaunch ] ];
+				   yourself);
+		  beResizable;
+		  beMultipleSelection;
+		  yourself
 ]
 
 { #category : 'initialization' }
@@ -338,6 +338,17 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		addShortcutWith: [ :action | action 
 			shortcutKey: $f actionModifier;
 			action: [ self actionFilter ] ]
+]
+
+{ #category : 'private' }
+PhLImagesPresenter >> lastModificationColorFor: aDateAndTime [
+
+	| age |
+	age := DateAndTime now - aDateAndTime.
+	age days < 3 ifTrue: [ ^ Color fromHexString: '009688' ].
+	age days < 8 ifTrue: [ ^ Color fromHexString: '4CAF50' ].
+	age days < 31 ifTrue: [ ^ Color fromHexString: 'FF9800' ].
+	^ Color fromHexString: '90A4AE'
 ]
 
 { #category : 'initialization' }

@@ -8,22 +8,16 @@ Class {
 	#package : 'PharoLauncher-Tests-Core'
 }
 
-{ #category : 'helpers' }
-PhLLauncherVersionTest >> version: aString [
+{ #category : 'tests' }
+PhLLauncherVersionTest >> testCommitsAfterATagAreNotOlderThanTheTag [
 
-	^ PhLLauncherVersion fromString: aString
+	self deny: (self version: '3.4.5-12-gabcdef0') < (self version: '3.4.5')
 ]
 
 { #category : 'tests' }
 PhLLauncherVersionTest >> testCommitsAfterATagAreOlderThanTheNextVersion [
 
 	self assert: (self version: '3.4.5-12-gabcdef0') < (self version: '3.4.6')
-]
-
-{ #category : 'tests' }
-PhLLauncherVersionTest >> testCommitsAfterATagAreNotOlderThanTheTag [
-
-	self deny: (self version: '3.4.5-12-gabcdef0') < (self version: '3.4.5')
 ]
 
 { #category : 'tests' }
@@ -76,4 +70,10 @@ PhLLauncherVersionTest >> testReleaseIsComparable [
 PhLLauncherVersionTest >> testSameVersionIsNotOlder [
 
 	self deny: (self version: '3.4.5') < (self version: '3.4.5')
+]
+
+{ #category : 'helpers' }
+PhLLauncherVersionTest >> version: aString [
+
+	^ PhLLauncherVersion fromString: aString
 ]

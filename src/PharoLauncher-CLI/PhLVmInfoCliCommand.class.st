@@ -33,6 +33,18 @@ PhLVmInfoCliCommand >> basicExecute [
 	self list: (Array with: self findVM)
 ]
 
+{ #category : 'private' }
+PhLVmInfoCliCommand >> listPrintAttributeBlocks [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
+]
+
+{ #category : 'private' }
+PhLVmInfoCliCommand >> listPrintAttributeLabels [
+
+	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
+]
+
 { #category : 'accessing arguments' }
 PhLVmInfoCliCommand >> printSequence [
 
@@ -44,16 +56,4 @@ PhLVmInfoCliCommand >> rowMode [
 
 	"vm info is printed in one attribute per row"
 	^ true
-]
-
-{ #category : 'private' }
-PhLVmInfoCliCommand >> listPrintAttributeBlocks [
-
-	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeBlocks
-]
-
-{ #category : 'private' }
-PhLVmInfoCliCommand >> listPrintAttributeLabels [
-
-	^ self filterPrintAttributesFrom: self modelClass extendedListPrintAttributeLabels
 ]

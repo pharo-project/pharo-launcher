@@ -103,20 +103,6 @@ PhLImagesPresenterTest >> testImageLaunchConfigurationsIsUpdatedAfterSortingOfIm
 ]
 
 { #category : 'tests' }
-PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyImageRepositoryChanged [
-
-	presenter := PhLTestImagesPresenter new.
-	presenter open.
-
-	presenter createImageNamed: 'Foo'.
-	presenter application imageRepositoryChanged.
-
-	self
-		assertCollection: presenter imageNames
-		hasSameElements: #( 'TestImage' 'Foo' )
-]
-
-{ #category : 'tests' }
 PhLImagesPresenterTest >> testImageTableKeepsAlternateRowsColorAfterThemeSwitch [
 
 	| themeClass |
@@ -129,6 +115,20 @@ PhLImagesPresenterTest >> testImageTableKeepsAlternateRowsColorAfterThemeSwitch 
 		ensure: [ themeClass beCurrent ].
 
 	self assert: presenter hasAlternateRowsColor
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyImageRepositoryChanged [
+
+	presenter := PhLTestImagesPresenter new.
+	presenter open.
+
+	presenter createImageNamed: 'Foo'.
+	presenter application imageRepositoryChanged.
+
+	self
+		assertCollection: presenter imageNames
+		hasSameElements: #( 'TestImage' 'Foo' )
 ]
 
 { #category : 'tests' }
@@ -159,18 +159,6 @@ PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreatedAndImage
 	presenter application imageRepositoryChanged: image.
 
 	self assert: presenter singleImage name equals: 'Zoo'
-]
-
-{ #category : 'helpers' }
-PhLImagesPresenterTest >> vmsToUpdate [
-
-	^ {
-		  (PhLVirtualMachine new
-			   id: '130-x64';
-			   yourself).
-		  (PhLVirtualMachine new
-			   id: '120-x64';
-			   yourself) }
 ]
 
 { #category : 'tests' }
@@ -234,6 +222,18 @@ PhLImagesPresenterTest >> testVmsButtonWithoutVmToUpdate [
 PhLImagesPresenterTest >> vmStoreRoot [
 
 	^ vmStore
+]
+
+{ #category : 'helpers' }
+PhLImagesPresenterTest >> vmsToUpdate [
+
+	^ {
+		  (PhLVirtualMachine new
+			   id: '130-x64';
+			   yourself).
+		  (PhLVirtualMachine new
+			   id: '120-x64';
+			   yourself) }
 ]
 
 { #category : 'helpers' }

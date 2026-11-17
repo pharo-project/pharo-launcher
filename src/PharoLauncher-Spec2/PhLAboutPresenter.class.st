@@ -1702,6 +1702,19 @@ PhLAboutPresenter >> initializePresenters [
 	updateLink hide
 ]
 
+{ #category : 'initialization' }
+PhLAboutPresenter >> initializeWindow: aWindow [
+	
+	aWindow title: 'About Pharo Launcher'.
+	aWindow initialExtent: self initialExtent
+]
+
+{ #category : 'accessing' }
+PhLAboutPresenter >> launcherImage [
+
+	^ Form fromBase64String: self class launcherImageData
+]
+
 { #category : 'accessing' }
 PhLAboutPresenter >> proposeUpdateTo: aVersion downloadUrl: anUrl [
 	"Show, above everything else, that a newer Pharo Launcher is available and a link to download it"
@@ -1718,15 +1731,16 @@ PhLAboutPresenter >> proposeUpdateTo: aVersion downloadUrl: anUrl [
 ]
 
 { #category : 'accessing' }
-PhLAboutPresenter >> updateIcon [
+PhLAboutPresenter >> text: aText [
 
-	^ updateIcon
+	text := aText.
+	self updatePresenter
 ]
 
 { #category : 'accessing' }
-PhLAboutPresenter >> updateNotice [
+PhLAboutPresenter >> updateIcon [
 
-	^ updateNotice
+	^ updateIcon
 ]
 
 { #category : 'accessing' }
@@ -1735,24 +1749,10 @@ PhLAboutPresenter >> updateLink [
 	^ updateLink
 ]
 
-{ #category : 'initialization' }
-PhLAboutPresenter >> initializeWindow: aWindow [
-	
-	aWindow title: 'About Pharo Launcher'.
-	aWindow initialExtent: self initialExtent
-]
-
 { #category : 'accessing' }
-PhLAboutPresenter >> launcherImage [
+PhLAboutPresenter >> updateNotice [
 
-	^ Form fromBase64String: self class launcherImageData
-]
-
-{ #category : 'accessing' }
-PhLAboutPresenter >> text: aText [
-
-	text := aText.
-	self updatePresenter
+	^ updateNotice
 ]
 
 { #category : 'initialization' }

@@ -60,17 +60,6 @@ PhLTemplateSourcesTest >> testCanFetchSourcesFileWhenAbsent [
 ]
 
 { #category : 'tests' }
-PhLTemplateSourcesTest >> testFetchFailureWhenSourcesFileAbsentSignalsDownloadError [
-
-	PhLPharoTemplateSources basicSourcesUrl: 'http://localhost:1/sources.list'.
-
-	self
-		should: [ (PhLPharoTemplateSources withFile: sourcesFile) ensureSourcesFile ]
-		raise: PhLDownloadError.
-	self deny: sourcesFile exists
-]
-
-{ #category : 'tests' }
 PhLTemplateSourcesTest >> testCanForceTemplateSourcesUpdateWhenSourcesAlreadySet [
 	| templateSources downloadedSourcesFile expectedSources |
 	sourcesFile ensureCreateFile.
@@ -86,6 +75,51 @@ PhLTemplateSourcesTest >> testCanForceTemplateSourcesUpdateWhenSourcesAlreadySet
 		templateSources forceTemplateSourcesUpdate ].
 	
 	self assert: templateSources sources equals: expectedSources
+]
+
+{ #category : 'tests' }
+PhLTemplateSourcesTest >> testCheckForUpdatesDoesNotShowTheDownloadOfSources [
+	"The check runs in the background: the user did not ask for this download"
+
+	| runner |
+	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
+	runner := PhLRecordingProgressRunner new.
+
+	ZnClientTest new withServerDo: [ :server |
+		server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
+		PhLPharoTemplateSources basicSourcesUrl: server localUrl.
+
+		ITProgressRunner use: runner during: [ (PhLPharoTemplateSources withFile: sourcesFile) checkForUpdates ] ].
+
+	self assertEmpty: runner titles
+]
+
+{ #category : 'tests' }
+PhLTemplateSourcesTest >> testCheckForUpdatesDoesNotShowTheFirstDownloadOfSources [
+	"No sources file yet: the check fetches it, still in the background"
+
+	| runner |
+	runner := PhLRecordingProgressRunner new.
+
+	ZnClientTest new withServerDo: [ :server |
+		server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
+		PhLPharoTemplateSources basicSourcesUrl: server localUrl.
+
+		ITProgressRunner use: runner during: [ (PhLPharoTemplateSources withFile: sourcesFile) checkForUpdates ] ].
+
+	self assert: sourcesFile exists.
+	self assertEmpty: runner titles
+]
+
+{ #category : 'tests' }
+PhLTemplateSourcesTest >> testFetchFailureWhenSourcesFileAbsentSignalsDownloadError [
+
+	PhLPharoTemplateSources basicSourcesUrl: 'http://localhost:1/sources.list'.
+
+	self
+		should: [ (PhLPharoTemplateSources withFile: sourcesFile) ensureSourcesFile ]
+		raise: PhLDownloadError.
+	self deny: sourcesFile exists
 ]
 
 { #category : 'tests' }
@@ -218,38 +252,4 @@ PhLTemplateSourcesTest >> testUserTemplatesAreListedAfterPharoTemplates [
 	self 
 		assert: sources last
 		equals: userSources sources last
-]
-
-{ #category : 'tests' }
-PhLTemplateSourcesTest >> testCheckForUpdatesDoesNotShowTheDownloadOfSources [
-	"The check runs in the background: the user did not ask for this download"
-
-	| runner |
-	sourcesFile writeStreamDo: [ :stream | stream nextPutAll: (STON toString: true) ].
-	runner := PhLRecordingProgressRunner new.
-
-	ZnClientTest new withServerDo: [ :server |
-		server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
-		PhLPharoTemplateSources basicSourcesUrl: server localUrl.
-
-		ITProgressRunner use: runner during: [ (PhLPharoTemplateSources withFile: sourcesFile) checkForUpdates ] ].
-
-	self assertEmpty: runner titles
-]
-
-{ #category : 'tests' }
-PhLTemplateSourcesTest >> testCheckForUpdatesDoesNotShowTheFirstDownloadOfSources [
-	"No sources file yet: the check fetches it, still in the background"
-
-	| runner |
-	runner := PhLRecordingProgressRunner new.
-
-	ZnClientTest new withServerDo: [ :server |
-		server onRequestRespond: [ :request | ZnResponse ok: (ZnEntity text: (STON toString: true)) ].
-		PhLPharoTemplateSources basicSourcesUrl: server localUrl.
-
-		ITProgressRunner use: runner during: [ (PhLPharoTemplateSources withFile: sourcesFile) checkForUpdates ] ].
-
-	self assert: sourcesFile exists.
-	self assertEmpty: runner titles
 ]

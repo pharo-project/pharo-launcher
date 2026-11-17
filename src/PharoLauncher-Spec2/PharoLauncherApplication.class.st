@@ -342,6 +342,17 @@ PharoLauncherApplication >> initializeImagesPresenter [
 		model: imageRepository
 ]
 
+{ #category : 'announcements' }
+PharoLauncherApplication >> initializeLauncherUpdateChecker [
+
+	self launcherUpdateChecker announcer
+		unsubscribe: self;
+		when: PhLLauncherUpdateCheckDone
+		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
+			self defer: [ self launcherUpdateCheckDone ] ]
+		for: self
+]
+
 { #category : 'initialization' }
 PharoLauncherApplication >> initializeProgressRunner [
 	"Show the progress of long running operations (downloads, extractions) in Spec windows"
@@ -363,17 +374,6 @@ PharoLauncherApplication >> initializeTemplateSourcesAnnouncer [
 ]
 
 { #category : 'announcements' }
-PharoLauncherApplication >> initializeLauncherUpdateChecker [
-
-	self launcherUpdateChecker announcer
-		unsubscribe: self;
-		when: PhLLauncherUpdateCheckDone
-		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
-			self defer: [ self launcherUpdateCheckDone ] ]
-		for: self
-]
-
-{ #category : 'announcements' }
 PharoLauncherApplication >> initializeVmUpdateChecker [
 
 	self vmUpdateChecker announcer
@@ -382,15 +382,6 @@ PharoLauncherApplication >> initializeVmUpdateChecker [
 		do: [ :event | "Announced from the update checker process: the UI must be updated by the UI process"
 			self defer: [ self vmUpdateCheckDone ] ]
 		for: self
-]
-
-{ #category : 'announcements' }
-PharoLauncherApplication >> unsubscribeFromAnnouncers [
-	"Announcers are global: an application that is no more the default one must stop 
-	 handling announcements"
-
-	PhLTemplateSourcesAnnouncer default unsubscribe: self.
-	PhLVmUpdateAnnouncer default unsubscribe: self
 ]
 
 { #category : 'testing' }
@@ -423,6 +414,25 @@ PharoLauncherApplication >> launchConfigurationEdited: aLaunchConfiguration [
 
 	aLaunchConfiguration isNullConfiguration 
 		ifFalse: [ imagesPresenter selectConfiguration: aLaunchConfiguration ].
+]
+
+{ #category : 'events' }
+PharoLauncherApplication >> launcherUpdateCheckDone [
+	"Warn the user without interrupting: the About button of the main window shows that a newer launcher is published"
+
+	imagesPresenter ifNotNil: [ :presenter | presenter refreshLauncherUpdate ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> launcherUpdateChecker [
+
+	^ launcherUpdateChecker ifNil: [ launcherUpdateChecker := PhLLauncherUpdateChecker new ]
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> launcherUpdateChecker: aPhLLauncherUpdateChecker [
+
+	launcherUpdateChecker := aPhLLauncherUpdateChecker
 ]
 
 { #category : 'accessing' }
@@ -486,15 +496,6 @@ PharoLauncherApplication >> prepareAsStandaloneApplication [
 	self openAsWorld: false
 ]
 
-{ #category : 'initialization' }
-PharoLauncherApplication >> releaseSharedResources [
-	"Announcers and the progress runner are global: an application that is no more the default one must release them"
-
-	self
-		unsubscribeFromAnnouncers;
-		releaseProgressRunner
-]
-
 { #category : 'ui' }
 PharoLauncherApplication >> pushProgress: aString with: aBlock [
 
@@ -507,6 +508,15 @@ PharoLauncherApplication >> releaseProgressRunner [
 
 	ITProgressRunner default application == self
 		ifTrue: [ ITProgressRunner default: nil ]
+]
+
+{ #category : 'initialization' }
+PharoLauncherApplication >> releaseSharedResources [
+	"Announcers and the progress runner are global: an application that is no more the default one must release them"
+
+	self
+		unsubscribeFromAnnouncers;
+		releaseProgressRunner
 ]
 
 { #category : 'configuring' }
@@ -663,23 +673,13 @@ PharoLauncherApplication >> unregisterWindow: aWindow [
 	self safeExit
 ]
 
-{ #category : 'events' }
-PharoLauncherApplication >> launcherUpdateCheckDone [
-	"Warn the user without interrupting: the About button of the main window shows that a newer launcher is published"
+{ #category : 'announcements' }
+PharoLauncherApplication >> unsubscribeFromAnnouncers [
+	"Announcers are global: an application that is no more the default one must stop 
+	 handling announcements"
 
-	imagesPresenter ifNotNil: [ :presenter | presenter refreshLauncherUpdate ]
-]
-
-{ #category : 'accessing' }
-PharoLauncherApplication >> launcherUpdateChecker [
-
-	^ launcherUpdateChecker ifNil: [ launcherUpdateChecker := PhLLauncherUpdateChecker new ]
-]
-
-{ #category : 'accessing' }
-PharoLauncherApplication >> launcherUpdateChecker: aPhLLauncherUpdateChecker [
-
-	launcherUpdateChecker := aPhLLauncherUpdateChecker
+	PhLTemplateSourcesAnnouncer default unsubscribe: self.
+	PhLVmUpdateAnnouncer default unsubscribe: self
 ]
 
 { #category : 'events' }
@@ -700,4 +700,3 @@ PharoLauncherApplication >> vmUpdateChecker: aPhLVmUpdateChecker [
 
 	vmUpdateChecker := aPhLVmUpdateChecker
 ]
-

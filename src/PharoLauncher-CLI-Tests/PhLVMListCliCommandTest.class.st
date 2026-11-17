@@ -7,19 +7,6 @@ Class {
 }
 
 { #category : 'tests' }
-PhLVMListCliCommandTest >> testListVirtualMachines [
-	self addVmNamed: 'myVm1'.
-	self addVmNamed: 'myVm2'.
-	self addVmNamed: 'myVm3'.
-	
-	self runCommand: #('launcher' 'vm' 'list').
-	self assertSuccess.
-	self assert: (self outputString includesSubstring: 'myVm1').
-	self assert: (self outputString includesSubstring: 'myVm2').
-	self assert: (self outputString includesSubstring: 'myVm3')
-]
-
-{ #category : 'tests' }
 PhLVMListCliCommandTest >> testListShowsVersionInstallationDateAndStatus [
 
 	self addVmNamed: 'myVm1'.
@@ -31,6 +18,19 @@ PhLVMListCliCommandTest >> testListShowsVersionInstallationDateAndStatus [
 		self assert: (self outputString includesSubstring: each) description: each , ' is not listed' ].
 	#( 'Is valid' 'Last update' 'Download URL' ) do: [ :each |
 		self deny: (self outputString includesSubstring: each) description: each , ' is still listed' ]
+]
+
+{ #category : 'tests' }
+PhLVMListCliCommandTest >> testListVirtualMachines [
+	self addVmNamed: 'myVm1'.
+	self addVmNamed: 'myVm2'.
+	self addVmNamed: 'myVm3'.
+	
+	self runCommand: #('launcher' 'vm' 'list').
+	self assertSuccess.
+	self assert: (self outputString includesSubstring: 'myVm1').
+	self assert: (self outputString includesSubstring: 'myVm2').
+	self assert: (self outputString includesSubstring: 'myVm3')
 ]
 
 { #category : 'tests' }

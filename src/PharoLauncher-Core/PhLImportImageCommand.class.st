@@ -73,6 +73,7 @@ PhLImportImageCommand >> execute [
 
 { #category : 'executing' }
 PhLImportImageCommand >> import: imageFileRef [
+
 	| infoMessage destFolderName imageRepository |
 	destFolderName := imageFileRef basenameWithoutExtension.
 	imageRepository := self imagesPresenter imageRepository.
@@ -80,14 +81,11 @@ PhLImportImageCommand >> import: imageFileRef [
 		on: PhLNameNotAvailableError
 		do: [ destFolderName := self chooseNewImageNameFor: destFolderName ].
 	destFolderName ifNil: [ ^ self "abort" ].
-	
+
 	importSiblings
-		ifTrue: [ 
-			imageRepository
-				importImageNamed: imageFileRef
-				andSiblingFilesto: destFolderName ]
-		ifFalse:
-			[ imageRepository importImage: imageFileRef to: destFolderName ].
+		ifTrue: [ imageRepository importImageNamed: imageFileRef andSiblingFilesto: destFolderName ]
+		ifFalse: [ imageRepository importImage: imageFileRef to: destFolderName ].
+	self imagesPresenter selectImage: (imageRepository imageNamed: destFolderName asLowercase).
 	infoMessage := 'Image ' , imageFileRef fullName , ' imported!'.
 	self imagesPresenter newInformation
 		title: 'Import';

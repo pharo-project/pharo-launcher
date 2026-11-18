@@ -199,7 +199,7 @@ PhLVirtualMachine >> ensureExecutionRights [
 	"Unzipping with Pharo does not preserve unix rights and so, the pahro VM executable does not have the execution permission.
 	We have to set it explicitely on Unix and OS X."
 
-	Smalltalk os isWindows ifTrue: [ ^ self ].
+	OSPlatform current isWindows ifTrue: [ ^ self ].
 
 	PhLProcessWrapper new
 		shellCommand;

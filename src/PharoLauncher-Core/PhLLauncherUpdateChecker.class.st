@@ -116,8 +116,8 @@ PhLLauncherUpdateChecker >> macPlatformNameFor: aProcessorArchitecture [
 { #category : 'private' }
 PhLLauncherUpdateChecker >> platformName [
 
-	Smalltalk os isMacOSX ifTrue: [ ^ self macPlatformNameFor: Smalltalk os hostArchitecture ].
-	Smalltalk os isWindows ifTrue: [ ^ 'windows' ].
+	OSPlatform current isMacOSX ifTrue: [ ^ self macPlatformNameFor: OSPlatform current hostArchitecture ].
+	OSPlatform current isWindows ifTrue: [ ^ 'windows' ].
 	^ 'linux64'
 ]
 

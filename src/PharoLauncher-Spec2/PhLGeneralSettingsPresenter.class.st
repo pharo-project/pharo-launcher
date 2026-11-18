@@ -111,7 +111,7 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 
 	clearTemplatesSwitch := self newSwitchFor: #templatesClearedOnStartup.
 	quitOnLaunchSwitch := self newSwitchFor: #quitOnLaunch.
-	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell .
+	launchFromALoginShellSwitch := self newSwitchFor: #launchInALoginShell.
 	warnOnImageArchMisMatchSwitch := self newSwitchFor: #warnOnArchMismatch.
 	checkForLauncherUpdateSwitch := self newSwitchFor: #shouldCheckLauncherUpdate.
 	checkForTemplateSourcesUpdateSwitch := self newSwitchFor: #shouldCheckTemplateSourcesUpdate.
@@ -119,40 +119,38 @@ PhLGeneralSettingsPresenter >> initializePresenters [
 
 	templateSourcesUrlInput := self newTextInputFor: #sourcesUrl.
 	sourcesFileLocationInput := (self newTextInputFor: #launcherCoreDirString)
-		beNotEditable;
-		yourself.
+		                            beNotEditable;
+		                            yourself.
 	sourcesFileLocationButton := self newButton
-		addStyle: 'flat';
-		icon: (self iconNamed: #open);
-		action: [ self chooseDirectoryFor: sourcesFileLocationInput ];
-		yourself.
+		                             addStyle: 'flat';
+		                             icon: (self iconNamed: #open);
+		                             action: [ self chooseDirectoryFor: sourcesFileLocationInput ];
+		                             yourself.
 	forceSourcesUpdateButton := self newButton
-		label: 'Force template sources update';
-		action: [ self forceTemplateSourcesUpdate ];
-		yourself.
+		                            label: 'Force template sources update';
+		                            action: [ self forceTemplateSourcesUpdate ];
+		                            yourself.
 
 	imagesLocationInput := self newTextInputFor: #locationString.
 	imagesLocationButton := self newButton
-		addStyle: 'flat';
-		icon: (self iconNamed: #open);
-		action: [ self chooseDirectoryFor: imagesLocationInput ];
-		yourself.
+		                        addStyle: 'flat';
+		                        icon: (self iconNamed: #open);
+		                        action: [ self chooseDirectoryFor: imagesLocationInput ];
+		                        yourself.
 	imagesInitScriptsLocationInput := self newTextInputFor: #initializationScriptsLocation.
 	imagesInitScriptsLocationButton := self newButton
-		addStyle: 'flat';
-		icon: (self iconNamed: #open);
-		action: [ self chooseDirectoryFor: imagesInitScriptsLocationInput ];
-		yourself.
+		                                   addStyle: 'flat';
+		                                   icon: (self iconNamed: #open);
+		                                   action: [ self chooseDirectoryFor: imagesInitScriptsLocationInput ];
+		                                   yourself.
 	vmsLocationInput := self newTextInputFor: #vmStoreString.
 	vmsLocationButton := self newButton
-		addStyle: 'flat';
-		icon: (self iconNamed: #open);
-		action: [ self chooseDirectoryFor:  vmsLocationInput ];
-		yourself.
-		
-	hardResetPersistentStateButton := self newButton
-		label: 'Hard reset persistent state'.
-	
+		                     addStyle: 'flat';
+		                     icon: (self iconNamed: #open);
+		                     action: [ self chooseDirectoryFor: vmsLocationInput ];
+		                     yourself.
+
+	hardResetPersistentStateButton := self newButton label: 'Hard reset persistent state'
 ]
 
 { #category : 'accessing' }
@@ -163,24 +161,27 @@ PhLGeneralSettingsPresenter >> launchInALoginShell: aBoolean [
 
 { #category : 'layout' }
 PhLGeneralSettingsPresenter >> newGeneralSection [
-		
-	^ self newPresenter 
-		addStyle: 'section';
-		layout: (SpBoxLayout newTopToBottom 
-			add: (SpBoxLayout newLeftToRight 
-				add: 'Quit On Launch';
-				add: quitOnLaunchSwitch expand: false;
-				yourself) expand: false;
-			add: (SpBoxLayout newLeftToRight 
-				add: 'Launch image from a login shell';
-				add: launchFromALoginShellSwitch expand: false;
-				yourself) expand: false;
-			add: (SpBoxLayout newLeftToRight 
-				add: 'Warn on image architecture mismatch?';
-				add: warnOnImageArchMisMatchSwitch expand: false;
-				yourself) expand: false;
-			yourself);
-		yourself
+
+	^ self newPresenter
+		  addStyle: 'section';
+		  layout: (SpBoxLayout newTopToBottom
+				   add: (SpBoxLayout newLeftToRight
+						    add: 'Quit On Launch';
+						    add: quitOnLaunchSwitch expand: false;
+						    yourself)
+				   expand: false;
+				   add: (SpBoxLayout newLeftToRight
+						    add: 'Launch image from a login shell';
+						    add: launchFromALoginShellSwitch expand: false;
+						    yourself)
+				   expand: false;
+				   add: (SpBoxLayout newLeftToRight
+						    add: 'Warn on image architecture mismatch?';
+						    add: warnOnImageArchMisMatchSwitch expand: false;
+						    yourself)
+				   expand: false;
+				   yourself);
+		  yourself
 ]
 
 { #category : 'layout' }

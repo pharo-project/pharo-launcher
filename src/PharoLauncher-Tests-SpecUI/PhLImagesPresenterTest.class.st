@@ -19,6 +19,21 @@ PhLImagesPresenterTest >> tearDown [
 ]
 
 { #category : 'tests' }
+PhLImagesPresenterTest >> testApplyCompactModeUpdatesOpenedList [
+
+	| styles |
+	presenter := PhLTestImagesPresenter new.
+	presenter open.
+	PharoLauncherApplication compactMode: true.
+	[
+		presenter applyCompactMode.
+		styles := presenter imageTable styles ] ensure: [ PharoLauncherApplication compactMode: false ].
+	self assert: (styles includes: 'compactTable').
+	presenter applyCompactMode.
+	self deny: (presenter imageTable styles includes: 'compactTable')
+]
+
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testCommandsApplyingOnAnImageAreDisabledWhenNoSelection [
 
 	presenter := PhLTestImagesPresenter new.
@@ -42,6 +57,29 @@ PhLImagesPresenterTest >> testCommandsApplyingOnAnImageAreEnabledWhenImageSelect
 	presenter imageActionButtons do: 
 		[ :button |
 		self assert: button isEnabled ]
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testCompactModeUsesCompactTableStyle [
+
+	| styles |
+	PharoLauncherApplication compactMode: true.
+	[
+		presenter := PhLTestImagesPresenter new.
+		presenter open.
+		styles := presenter imageTable styles ] ensure: [ PharoLauncherApplication compactMode: false ].
+	self assert: (styles includes: 'compactTable')
+]
+
+{ #category : 'tests' }
+PhLImagesPresenterTest >> testDefaultModeDoesNotUseCompactTableStyle [
+
+	| styles |
+	PharoLauncherApplication compactMode: false.
+	presenter := PhLTestImagesPresenter new.
+	presenter open.
+	styles := presenter imageTable styles.
+	self deny: (styles includes: 'compactTable')
 ]
 
 { #category : 'tests' }

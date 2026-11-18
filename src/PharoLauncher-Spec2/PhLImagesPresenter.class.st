@@ -183,6 +183,7 @@ PhLImagesPresenter >> buildImageTable [
 				          yourself);
 		         addColumn: ((SpStringTableColumn title: 'Last modified' evaluated: [ :image | self readableDateFor: image lastModification ])
 				          sortFunction: #lastModification descending;
+			         displayColor: [ :image | self lastModificationColorFor: image lastModification ];
 				          yourself);
 		         actions: (SpActionGroup new
 				          add: self rootCommandsGroup / self contextMenuCommandGroupName;
@@ -380,6 +381,17 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 PhLImagesPresenter >> isCompactMode [
 
 	^ PharoLauncherApplication compactMode
+]
+
+{ #category : 'private' }
+PhLImagesPresenter >> lastModificationColorFor: aDateAndTime [
+
+	| age |
+	age := DateAndTime now - aDateAndTime.
+	age days < 3 ifTrue: [ ^ Color fromHexString: '009688' ].
+	age days < 8 ifTrue: [ ^ Color fromHexString: '4CAF50' ].
+	age days < 31 ifTrue: [ ^ Color fromHexString: 'FF9800' ].
+	^ Color fromHexString: '90A4AE'
 ]
 
 { #category : 'initialization' }

@@ -170,6 +170,18 @@ PhLImagesPresenterTest >> testImagesPresenterIsRefreshedWhenApplicationNotifyIma
 ]
 
 { #category : 'tests' }
+PhLImagesPresenterTest >> testLastModificationColorDependsOnImageAge [
+
+	| now |
+	presenter := PhLTestImagesPresenter new.
+	now := DateAndTime now.
+	self assert: (presenter lastModificationColorFor: now) equals: (Color fromHexString: '009688').
+	self assert: (presenter lastModificationColorFor: now - 5 days) equals: (Color fromHexString: '4CAF50').
+	self assert: (presenter lastModificationColorFor: now - 20 days) equals: (Color fromHexString: 'FF9800').
+	self assert: (presenter lastModificationColorFor: now - 60 days) equals: (Color fromHexString: '90A4AE')
+]
+
+{ #category : 'tests' }
 PhLImagesPresenterTest >> testNewImagesIsSelectedWhenNewImageJustCreated [
 
 	| image |

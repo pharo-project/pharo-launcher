@@ -32,7 +32,9 @@ PharoLauncherApplicationTest >> setUp [
 { #category : 'running' }
 PharoLauncherApplicationTest >> tearDown [
 
-	application unsubscribeFromAnnouncers.
+	application
+		unregisterExternalDropHandler;
+		unsubscribeFromAnnouncers.
 	ITProgressRunner default: progressRunner.
 	super tearDown
 ]
@@ -60,79 +62,71 @@ PharoLauncherApplicationTest >> testApplicationShowsProgress [
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testFileIsNotAnImageFolder [
 
-	| launcher file |
-	launcher := PharoLauncherApplication new.
+	| file |
 	file := FileSystem memory / 'foo.image'.
 	file ensureCreateFile.
-	self deny: (launcher isImageFolder: file)
+	self deny: (application isImageFolder: file)
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderContainingAnImageIsAnImageFolder [
 
-	| launcher folder |
-	launcher := PharoLauncherApplication new.
+	| folder |
 	folder := FileSystem memory / 'dropped'.
 	folder createDirectory.
 	(folder / 'foo.image') ensureCreateFile.
-	self assert: (launcher isImageFolder: folder)
+	self assert: (application isImageFolder: folder)
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderWithDottedNameIsHandledByTheLauncher [
 
-	| launcher folder |
-	launcher := PharoLauncherApplication new.
-	launcher registerExternalDropHandler.
-	[
-		folder := FileSystem memory / 'Pharo 13.0 - 64bit (stable)'.
-		folder createDirectory.
-		(folder / 'foo.image') ensureCreateFile.
-		self assert: (ExternalDropHandler lookupExternalDropHandler: folder) identicalTo: launcher externalDropHandler ] ensure: [ launcher unregisterExternalDropHandler ]
+	| folder |
+	application registerExternalDropHandler.
+	folder := FileSystem memory / 'Pharo 13.0 - 64bit (stable)'.
+	folder createDirectory.
+	(folder / 'foo.image') ensureCreateFile.
+	self assert: (ExternalDropHandler lookupExternalDropHandler: folder) identicalTo: application externalDropHandler
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderWithUpperCaseImageIsAnImageFolder [
 
-	| launcher folder |
-	launcher := PharoLauncherApplication new.
+	| folder |
 	folder := FileSystem memory / 'upper-case-folder'.
 	folder createDirectory.
 	(folder / 'Foo.IMAGE') ensureCreateFile.
-	self assert: (launcher isImageFolder: folder)
+	self assert: (application isImageFolder: folder)
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderWithoutImageIsNotAnImageFolder [
 
-	| launcher folder |
-	launcher := PharoLauncherApplication new.
+	| folder |
 	folder := FileSystem memory / 'not-an-image-folder'.
 	folder createDirectory.
 	(folder / 'readme.txt') ensureCreateFile.
-	self deny: (launcher isImageFolder: folder)
+	self deny: (application isImageFolder: folder)
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testRegisteringTwiceKeepsOneDropHandler [
 
-	| launcher countBefore |
-	launcher := PharoLauncherApplication new.
+	| countBefore |
 	countBefore := self catchAllDropHandlerCount.
-	[
-		launcher registerExternalDropHandler.
-		launcher registerExternalDropHandler.
-		self assert: self catchAllDropHandlerCount equals: countBefore + 1 ] ensure: [ launcher unregisterExternalDropHandler ]
+	application
+		registerExternalDropHandler;
+		registerExternalDropHandler.
+	self assert: self catchAllDropHandlerCount equals: countBefore + 1
 ]
 
 { #category : 'tests' }
 PharoLauncherApplicationTest >> testReleasingSharedResourcesUnregistersDropHandler [
 
-	| launcher countBefore |
-	launcher := PharoLauncherApplication new.
+	| countBefore |
 	countBefore := self catchAllDropHandlerCount.
-	launcher registerExternalDropHandler.
-	launcher releaseSharedResources.
+	application registerExternalDropHandler.
+	application releaseSharedResources.
 	self assert: self catchAllDropHandlerCount equals: countBefore
 ]
 

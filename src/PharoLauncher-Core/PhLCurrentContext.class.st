@@ -9,7 +9,7 @@ Class {
 { #category : 'evaluating' }
 PhLCurrentContext class >> defaultValue [
 
-	^ PharoLauncherApplication default instantiate: SpPresenter
+	^ PharoLauncherApplication default defaultContext
 ]
 
 { #category : 'as yet unclassified' }

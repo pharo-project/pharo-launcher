@@ -40,6 +40,20 @@ PhLNotificationCenter class >> initialize [
 	self beInitializedByClapContextStreams
 ]
 
+{ #category : 'polymorphism' }
+PhLNotificationCenter >> application [
+	"I am my own application when used as a context, see `PhLNotificationCenter>>#defaultContext`"
+
+	^ self
+]
+
+{ #category : 'polymorphism' }
+PhLNotificationCenter >> defaultContext [
+	"There is no presenter to use as a context when the launcher runs headless"
+
+	^ self
+]
+
 { #category : 'accessing' }
 PhLNotificationCenter >> errorStream [
 	^ errorStream 

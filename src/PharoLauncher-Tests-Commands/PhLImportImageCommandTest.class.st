@@ -54,6 +54,23 @@ PhLImportImageCommandTest >> testCancellingChoiceDoesNotImportImage [
 ]
 
 { #category : 'tests' }
+PhLImportImageCommandTest >> testCancellingImageChoiceImportsNothing [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'dropped'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		createImageNamed: 'bar' in: someFolder;
+		choiceAnswerIndex: nil.
+
+	PhLImportImageCommand new
+		context: presenter;
+		importFromFolder: someFolder.
+
+	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' )
+]
+
+{ #category : 'tests' }
 PhLImportImageCommandTest >> testChoosingFirstOptionDoesNotImportSiblingFiles [
 
 	| someFolder |
@@ -96,13 +113,31 @@ PhLImportImageCommandTest >> testImportFromFolderAsksWhichImageToImportWhenSever
 	presenter
 		createImageNamed: 'foo' in: someFolder;
 		createImageNamed: 'bar' in: someFolder;
-		choiceAnswerIndex: 2.
+		choiceAnswerIndex: 1.
 
 	PhLImportImageCommand new
 		context: presenter;
 		importFromFolder: someFolder.
 
-	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' 'foo' )
+	self assert: presenter imageRepository imageNames size equals: 2.
+	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' 'bar' )
+]
+
+{ #category : 'tests' }
+PhLImportImageCommandTest >> testImportFromFolderImportsSiblingFilesWhenRequested [
+
+	| someFolder |
+	someFolder := FileSystem memory / 'dropped'.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		choiceAnswerIndex: 2.
+	(someFolder / 'sibling.txt') ensureCreateFile.
+
+	PhLImportImageCommand new
+		context: presenter;
+		importFromFolder: someFolder.
+
+	self assert: ((presenter imageRepository directoryForImageNamed: 'foo') / 'sibling.txt') exists
 ]
 
 { #category : 'tests' }
@@ -110,12 +145,15 @@ PhLImportImageCommandTest >> testImportFromFolderImportsTheOnlyImageFound [
 
 	| someFolder |
 	someFolder := FileSystem memory / 'dropped'.
-	presenter createImageNamed: 'foo' in: someFolder.
+	presenter
+		createImageNamed: 'foo' in: someFolder;
+		choiceAnswerIndex: 1.
 
 	PhLImportImageCommand new
 		context: presenter;
 		importFromFolder: someFolder.
 
+	self assert: presenter imageRepository imageNames size equals: 2.
 	self assertCollection: presenter imageRepository imageNames hasSameElements: #( 'TestImage' 'foo' )
 ]
 

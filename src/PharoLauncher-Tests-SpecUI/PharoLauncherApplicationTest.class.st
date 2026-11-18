@@ -12,6 +12,12 @@ Class {
 	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> catchAllDropHandlerCount [
+
+	^ ExternalDropHandler registeredHandlers count: [ :handler | handler isKindOf: PhLCatchAllDropHandler ]
+]
+
 { #category : 'running' }
 PharoLauncherApplicationTest >> setUp [
 
@@ -73,6 +79,30 @@ PharoLauncherApplicationTest >> testFolderContainingAnImageIsAnImageFolder [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderWithDottedNameIsHandledByTheLauncher [
+
+	| launcher folder |
+	launcher := PharoLauncherApplication new.
+	launcher registerExternalDropHandler.
+	[
+		folder := FileSystem memory / 'Pharo 13.0 - 64bit (stable)'.
+		folder createDirectory.
+		(folder / 'foo.image') ensureCreateFile.
+		self assert: (ExternalDropHandler lookupExternalDropHandler: folder) identicalTo: launcher externalDropHandler ] ensure: [ launcher unregisterExternalDropHandler ]
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderWithUpperCaseImageIsAnImageFolder [
+
+	| launcher folder |
+	launcher := PharoLauncherApplication new.
+	folder := FileSystem memory / 'upper-case-folder'.
+	folder createDirectory.
+	(folder / 'Foo.IMAGE') ensureCreateFile.
+	self assert: (launcher isImageFolder: folder)
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderWithoutImageIsNotAnImageFolder [
 
 	| launcher folder |
@@ -81,6 +111,29 @@ PharoLauncherApplicationTest >> testFolderWithoutImageIsNotAnImageFolder [
 	folder createDirectory.
 	(folder / 'readme.txt') ensureCreateFile.
 	self deny: (launcher isImageFolder: folder)
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testRegisteringTwiceKeepsOneDropHandler [
+
+	| launcher countBefore |
+	launcher := PharoLauncherApplication new.
+	countBefore := self catchAllDropHandlerCount.
+	[
+		launcher registerExternalDropHandler.
+		launcher registerExternalDropHandler.
+		self assert: self catchAllDropHandlerCount equals: countBefore + 1 ] ensure: [ launcher unregisterExternalDropHandler ]
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testReleasingSharedResourcesUnregistersDropHandler [
+
+	| launcher countBefore |
+	launcher := PharoLauncherApplication new.
+	countBefore := self catchAllDropHandlerCount.
+	launcher registerExternalDropHandler.
+	launcher releaseSharedResources.
+	self assert: self catchAllDropHandlerCount equals: countBefore
 ]
 
 { #category : 'tests' }

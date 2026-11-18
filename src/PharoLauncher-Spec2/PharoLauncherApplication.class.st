@@ -277,6 +277,12 @@ PharoLauncherApplication >> exitApplication [
 ]
 
 { #category : 'drag and drop' }
+PharoLauncherApplication >> externalDropHandler [
+
+	^ externalDropHandler
+]
+
+{ #category : 'drag and drop' }
 PharoLauncherApplication >> handleDroppedFile: droppedFile [
 
 	(self isImageFolder: droppedFile)
@@ -405,7 +411,7 @@ PharoLauncherApplication >> isDarkTheme [
 { #category : 'drag and drop' }
 PharoLauncherApplication >> isImageFolder: aFileReference [
 
-	^ aFileReference isDirectory and: [ aFileReference children anySatisfy: [ :child | child isFile and: [ child extension = 'image' ] ] ]
+	^ aFileReference isDirectory and: [ (PhLImportImageCommand imageFilesIn: aFileReference) isNotEmpty ]
 ]
 
 { #category : 'testing' }
@@ -529,8 +535,8 @@ PharoLauncherApplication >> pushProgress: aString with: aBlock [
 { #category : 'drag and drop' }
 PharoLauncherApplication >> registerExternalDropHandler [
 
-	externalDropHandler ifNotNil: [ :previousHandler | ExternalDropHandler registeredHandlers remove: previousHandler ifAbsent: [ ] ].
-	externalDropHandler := ExternalDropHandler type: nil extension: '' action: [ :droppedFile | self handleDroppedFile: droppedFile ].
+	self unregisterExternalDropHandler.
+	externalDropHandler := PhLCatchAllDropHandler type: nil extension: nil action: [ :droppedFile | self handleDroppedFile: droppedFile ].
 	ExternalDropHandler registerHandler: externalDropHandler
 ]
 
@@ -544,11 +550,12 @@ PharoLauncherApplication >> releaseProgressRunner [
 
 { #category : 'initialization' }
 PharoLauncherApplication >> releaseSharedResources [
-	"Announcers and the progress runner are global: an application that is no more the default one must release them"
+	"Announcers, the progress runner and the drop handler are global: an application that is no more the default one must release them"
 
 	self
 		unsubscribeFromAnnouncers;
-		releaseProgressRunner
+		releaseProgressRunner;
+		unregisterExternalDropHandler
 ]
 
 { #category : 'configuring' }
@@ -697,6 +704,13 @@ PharoLauncherApplication >> topWindow [
 	^ self windows 
 		ifNotEmpty: [ :aCollection | aCollection last ]
 		ifEmpty: [ nil ]
+]
+
+{ #category : 'drag and drop' }
+PharoLauncherApplication >> unregisterExternalDropHandler [
+
+	externalDropHandler ifNotNil: [ :handler | ExternalDropHandler registeredHandlers remove: handler ifAbsent: [ ] ].
+	externalDropHandler := nil
 ]
 
 { #category : 'private' }

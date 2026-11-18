@@ -68,8 +68,15 @@ jobs:
           imageName: PharoLauncher
 
       - name: Build and test
+        # Tests take about 3 minutes: stop them when they hang instead of waiting for the 6 hours limit of the job.
+        # A step timeout lets the next steps upload the test results.
+        timeout-minutes: 20
         run: |
           VERSION=${SHORT_SHA} ./build.sh prepare
+          # When the tests hang, print the stacks of the image processes to find where: the VM prints them on SIGUSR1
+          ( sleep 600; while true; do pkill -USR1 -f 'PharoLauncher.image test' || true; sleep 300; done ) &
+          WATCHDOG=$!
+          trap 'kill $WATCHDOG' EXIT
           VERSION=${SHORT_SHA} ./build.sh test
 
       - uses: actions/upload-artifact@v7  # upload test results

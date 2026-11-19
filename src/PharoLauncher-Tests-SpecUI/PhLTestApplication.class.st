@@ -141,6 +141,11 @@ PhLTestApplication >> showError: anError [
 	requestAttributes at: #error put: anError
 ]
 
+{ #category : 'running' }
+PhLTestApplication >> startFull [
+	"Do not replace the world of the running tests"
+]
+
 { #category : 'accessing' }
 PhLTestApplication >> templateRepository [
 	^ 	templateRepository ifNil: [ templateRepository := PhLTemplateTestRepository new ] 

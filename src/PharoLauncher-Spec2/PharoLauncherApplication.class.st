@@ -624,6 +624,7 @@ PharoLauncherApplication >> sourcesFileUpdateAvailable [
 PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
+	self initializeProgressRunner.
 
 	openAsWorld ifTrue: [
 			self startFull.
@@ -633,7 +634,6 @@ PharoLauncherApplication >> start [
 	self initializeTemplateSourcesAnnouncer.
 	self initializeVmUpdateChecker.
 	self initializeLauncherUpdateChecker.
-	self initializeProgressRunner.
 	self runUpdateChecker.
 
 	self isStandalone ifTrue: [ self cleanProcesses ]

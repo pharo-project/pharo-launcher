@@ -57,6 +57,22 @@ PharoLauncherApplicationTest >> testApplicationIsSubscribedToVmUpdateChecker [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testApplicationOpenedAsWorldShowsProgress [
+	"The Morphic application is opened as the world (see PhLDeploymentScript class>>#openLauncher)"
+
+	| worldApplication |
+	worldApplication := PhLTestApplication new
+		beOpenedAsWorld;
+		yourself.
+	"The test application creates its image repository lazily"
+	worldApplication imageRepository.
+
+	worldApplication start.
+
+	self assert: ITProgressRunner default application identicalTo: worldApplication
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testApplicationShowsProgress [
 
 	self assert: ITProgressRunner default application identicalTo: application

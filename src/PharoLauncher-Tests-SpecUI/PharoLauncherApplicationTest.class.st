@@ -12,12 +12,6 @@ Class {
 	#package : 'PharoLauncher-Tests-SpecUI'
 }
 
-{ #category : 'tests' }
-PharoLauncherApplicationTest >> catchAllDropHandlerCount [
-
-	^ ExternalDropHandler registeredHandlers count: [ :handler | handler isKindOf: PhLCatchAllDropHandler ]
-]
-
 { #category : 'running' }
 PharoLauncherApplicationTest >> setUp [
 
@@ -32,11 +26,20 @@ PharoLauncherApplicationTest >> setUp [
 { #category : 'running' }
 PharoLauncherApplicationTest >> tearDown [
 
-	application
-		unregisterExternalDropHandler;
-		unsubscribeFromAnnouncers.
+	application unsubscribeFromAnnouncers.
 	ITProgressRunner default: progressRunner.
 	super tearDown
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> temporaryFolderNamed: aName containing: aFileName [
+
+	| folder |
+	folder := FileLocator temp / aName.
+	folder ensureDeleteAll.
+	folder ensureCreateDirectory.
+	(folder / aFileName) ensureCreateFile.
+	^ folder
 ]
 
 { #category : 'tests' }
@@ -60,74 +63,33 @@ PharoLauncherApplicationTest >> testApplicationShowsProgress [
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationTest >> testFileIsNotAnImageFolder [
+PharoLauncherApplicationTest >> testFolderWithUpperCaseImageOffersImportService [
 
-	| file |
-	file := FileSystem memory / 'foo.image'.
-	file ensureCreateFile.
-	self deny: (application isImageFolder: file)
+	| folder labels |
+	folder := self temporaryFolderNamed: 'upper-case-folder' containing: 'Foo.IMAGE'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationTest >> testFolderContainingAnImageIsAnImageFolder [
+PharoLauncherApplicationTest >> testFolderWithoutImageOffersNoImportService [
 
-	| folder |
-	folder := FileSystem memory / 'dropped'.
-	folder createDirectory.
-	(folder / 'foo.image') ensureCreateFile.
-	self assert: (application isImageFolder: folder)
+	| folder labels |
+	folder := self temporaryFolderNamed: 'not-an-image-folder' containing: 'readme.txt'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self deny: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
 ]
 
 { #category : 'tests' }
-PharoLauncherApplicationTest >> testFolderWithDottedNameIsHandledByTheLauncher [
+PharoLauncherApplicationTest >> testImageFolderOffersImportService [
 
-	| folder |
-	application registerExternalDropHandler.
-	folder := FileSystem memory / 'Pharo 13.0 - 64bit (stable)'.
-	folder createDirectory.
-	(folder / 'foo.image') ensureCreateFile.
-	self assert: (ExternalDropHandler lookupExternalDropHandler: folder) identicalTo: application externalDropHandler
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationTest >> testFolderWithUpperCaseImageIsAnImageFolder [
-
-	| folder |
-	folder := FileSystem memory / 'upper-case-folder'.
-	folder createDirectory.
-	(folder / 'Foo.IMAGE') ensureCreateFile.
-	self assert: (application isImageFolder: folder)
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationTest >> testFolderWithoutImageIsNotAnImageFolder [
-
-	| folder |
-	folder := FileSystem memory / 'not-an-image-folder'.
-	folder createDirectory.
-	(folder / 'readme.txt') ensureCreateFile.
-	self deny: (application isImageFolder: folder)
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationTest >> testRegisteringTwiceKeepsOneDropHandler [
-
-	| countBefore |
-	countBefore := self catchAllDropHandlerCount.
-	application
-		registerExternalDropHandler;
-		registerExternalDropHandler.
-	self assert: self catchAllDropHandlerCount equals: countBefore + 1
-]
-
-{ #category : 'tests' }
-PharoLauncherApplicationTest >> testReleasingSharedResourcesUnregistersDropHandler [
-
-	| countBefore |
-	countBefore := self catchAllDropHandlerCount.
-	application registerExternalDropHandler.
-	application releaseSharedResources.
-	self assert: self catchAllDropHandlerCount equals: countBefore
+	| folder labels |
+	folder := self temporaryFolderNamed: 'Pharo 13.0 - 64bit (stable)' containing: 'foo.image'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
 ]
 
 { #category : 'tests' }

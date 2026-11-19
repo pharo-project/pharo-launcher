@@ -14,8 +14,7 @@ Class {
 		'openAsWorld',
 		'standalone',
 		'vmUpdateChecker',
-		'launcherUpdateChecker',
-		'externalDropHandler'
+		'launcherUpdateChecker'
 	],
 	#classVars : [
 		'Default',
@@ -66,11 +65,12 @@ PharoLauncherApplication class >> defaultInitializationScriptLocation [
 PharoLauncherApplication class >> fileReaderServicesForFile: fullName suffix: suffix [
 
 	<fileService>
-
 	^ suffix = 'image'
-		ifTrue: [
-			{ SimpleServiceEntry provider: self label: 'Launch image' selector: #launchImage: } ]
-		ifFalse: [ #() ]
+		  ifTrue: [ { (SimpleServiceEntry provider: self label: 'Launch image' selector: #launchImage:) } ]
+		  ifFalse: [
+				  (self isImageFolder: fullName)
+					  ifTrue: [ { (SimpleServiceEntry provider: self label: 'Import image' selector: #importImageFolder:) } ]
+					  ifFalse: [ #(  ) ] ]
 ]
 
 { #category : 'settings' }
@@ -98,6 +98,14 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 			thenDo: [ :class | class classPool keys do: [ :key | class classPool at: key put: nil ] ] ].
 
 	self openFull.
+]
+
+{ #category : 'file service' }
+PharoLauncherApplication class >> importImageFolder: fullName [
+
+	PhLImportImageCommand new
+		context: self default mainPresenter;
+		importFromFolder: fullName asFileReference
 ]
 
 { #category : 'accessing' }
@@ -131,6 +139,14 @@ PharoLauncherApplication class >> initializationScriptsLocation: aFileUrl [
 { #category : 'testing' }
 PharoLauncherApplication class >> isDeployed [
 	^ IsDeployed ifNil: [ IsDeployed := false ]
+]
+
+{ #category : 'file service' }
+PharoLauncherApplication class >> isImageFolder: fullName [
+
+	| folder |
+	folder := fullName asFileReference.
+	^ folder isDirectory and: [ (PhLImportImageCommand imageFilesIn: folder) isNotEmpty ]
 ]
 
 { #category : 'file service' }
@@ -276,23 +292,6 @@ PharoLauncherApplication >> exitApplication [
 	Smalltalk exitSuccess
 ]
 
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> externalDropHandler [
-
-	^ externalDropHandler
-]
-
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> handleDroppedFile: droppedFile [
-
-	(self isImageFolder: droppedFile)
-		ifTrue: [
-				PhLImportImageCommand new
-					context: imagesPresenter;
-					importFromFolder: droppedFile ]
-		ifFalse: [ self openServiceChooserFor: droppedFile ]
-]
-
 { #category : 'accessing' }
 PharoLauncherApplication >> imageRepository [
 	^ imageRepository
@@ -408,12 +407,6 @@ PharoLauncherApplication >> isDarkTheme [
 	^ self configuration isDarkTheme
 ]
 
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> isImageFolder: aFileReference [
-
-	^ aFileReference isDirectory and: [ (PhLImportImageCommand imageFilesIn: aFileReference) isNotEmpty ]
-]
-
 { #category : 'testing' }
 PharoLauncherApplication >> isLightTheme [
 
@@ -506,12 +499,6 @@ PharoLauncherApplication >> openAsWorld: aBoolean [
 	openAsWorld := aBoolean
 ]
 
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> openServiceChooserFor: aFileReference [
-
-	(ExternalDropHandler lookupServiceBasedHandler: aFileReference) ifNotNil: [ :handler | handler handle: aFileReference in: nil dropEvent: nil ]
-]
-
 { #category : 'initialization' }
 PharoLauncherApplication >> prepareAsStandaloneApplication [
 	
@@ -532,14 +519,6 @@ PharoLauncherApplication >> pushProgress: aString with: aBlock [
 	self jobList pushJob: (SpJob newTitle: aString block: aBlock)
 ]
 
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> registerExternalDropHandler [
-
-	self unregisterExternalDropHandler.
-	externalDropHandler := PhLCatchAllDropHandler type: nil extension: nil action: [ :droppedFile | self handleDroppedFile: droppedFile ].
-	ExternalDropHandler registerHandler: externalDropHandler
-]
-
 { #category : 'initialization' }
 PharoLauncherApplication >> releaseProgressRunner [
 	"The progress runner is global: an application that is no more the default one must not show progress"
@@ -550,12 +529,11 @@ PharoLauncherApplication >> releaseProgressRunner [
 
 { #category : 'initialization' }
 PharoLauncherApplication >> releaseSharedResources [
-	"Announcers, the progress runner and the drop handler are global: an application that is no more the default one must release them"
+	"Announcers and the progress runner are global: an application that is no more the default one must release them"
 
 	self
 		unsubscribeFromAnnouncers;
-		releaseProgressRunner;
-		unregisterExternalDropHandler
+		releaseProgressRunner
 ]
 
 { #category : 'configuring' }
@@ -639,7 +617,6 @@ PharoLauncherApplication >> sourcesFileUpdateAvailable [
 PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
-	self registerExternalDropHandler.
 
 	openAsWorld ifTrue: [
 			self startFull.
@@ -704,13 +681,6 @@ PharoLauncherApplication >> topWindow [
 	^ self windows 
 		ifNotEmpty: [ :aCollection | aCollection last ]
 		ifEmpty: [ nil ]
-]
-
-{ #category : 'drag and drop' }
-PharoLauncherApplication >> unregisterExternalDropHandler [
-
-	externalDropHandler ifNotNil: [ :handler | ExternalDropHandler registeredHandlers remove: handler ifAbsent: [ ] ].
-	externalDropHandler := nil
 ]
 
 { #category : 'private' }

@@ -69,6 +69,23 @@ OrderedCollection [
 	},
 	PhLTemplateSource {
 		#type : #URLGroup,
+		#name : 'Spec-Toplo',
+		#templates : [
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Spec-Toplo Pharo 14 (development)',
+				#url : 'https://github.com/pharo-graphics/Spec-Toplo/releases/download/continuous/Spec-Toplo-Pharo14.zip'
+			},
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Spec-Toplo Pharo 15 (development)',
+				#url : 'https://github.com/pharo-graphics/Spec-Toplo/releases/download/continuous/Spec-Toplo-Pharo15.zip'
+			}
+		],
+		#expanded : true
+	},
+	PhLTemplateSource {
+		#type : #URLGroup,
 		#name : 'Pharo-Music distributions',
 		#templates : [
 			PhLTemplateSource {

@@ -23,18 +23,25 @@ PhLTemplateUpdateCliCommandTest >> testTemplateUpdateDoesNotSubscribeToSharedAnn
 
 { #category : 'tests' }
 PhLTemplateUpdateCliCommandTest >> testTemplateUpdateShouldSucceed [
-	| command workingDir |
+	| command workingDir publishedSources rootNames |
 
 	workingDir := FileSystem memory root.
 	self launcherModel templateRepository: (PhLTemplateGroupRepository newFromGroups: #()).
+	publishedSources := OrderedCollection
+		with: PhLTemplateSource moocGroup
+		with: PhLTemplateSource pharo60.
 	
-	PhLTemplateSources useLauncherCoreDir: workingDir during: [ 
-		PhLTemplateSources flush: #() in: workingDir / PhLTemplateSources sourcesFileName.
-		command := (self context arguments: #('launcher' 'template' 'update')) command.
-		self assert: command pharoLauncherModel templateRepository roots size equals: 0.
+	PhLDownloadManagerMock during: [ :mock |
+		mock defaultResponse: (STON toStringPretty: publishedSources).
+		PhLTemplateSources useLauncherCoreDir: workingDir during: [ 
+			PhLTemplateSources flush: #() in: workingDir / PhLTemplateSources sourcesFileName.
+			command := (self context arguments: #('launcher' 'template' 'update')) command.
+			self assert: command pharoLauncherModel templateRepository roots size equals: 0.
 		
-		command execute ].
+			command execute.
+			rootNames := command pharoLauncherModel templateRepository roots collect: #name ] ].
 
-	self assert:( workingDir / 'sources.list') exists.
-	self assert: command pharoLauncherModel templateRepository roots size equals: 10
+	self
+		assert: rootNames asArray
+		equals: (publishedSources collect: #name) asArray
 ]

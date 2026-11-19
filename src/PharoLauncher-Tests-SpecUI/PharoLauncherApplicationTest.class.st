@@ -83,6 +83,17 @@ PharoLauncherApplicationTest >> testFolderWithoutImageOffersNoImportService [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testImageFileOffersLaunchServiceAndNoImportService [
+
+	| folder labels |
+	folder := self temporaryFolderNamed: 'image-file-folder' containing: 'foo.image'.
+	[
+		labels := (FileServices itemsForFile: (folder / 'foo.image') fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Launch image').
+		self deny: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testImageFolderOffersImportService [
 
 	| folder labels |

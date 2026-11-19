@@ -6,7 +6,8 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'application',
-		'progressRunner'
+		'progressRunner',
+		'worldApplication'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
@@ -27,8 +28,23 @@ PharoLauncherApplicationTest >> setUp [
 PharoLauncherApplicationTest >> tearDown [
 
 	application unsubscribeFromAnnouncers.
+	worldApplication ifNotNil: [
+		worldApplication unsubscribeFromAnnouncers.
+		PhLLauncherUpdateAnnouncer default unsubscribe: worldApplication ].
 	ITProgressRunner default: progressRunner.
 	super tearDown
+]
+
+{ #category : 'running' }
+PharoLauncherApplicationTest >> startWorldApplication [
+	"The Morphic application is opened as the world (see PhLDeploymentScript class>>#openLauncher)"
+
+	worldApplication := PhLTestApplication new
+		beOpenedAsWorld;
+		yourself.
+	"The test application creates its image repository lazily"
+	worldApplication imageRepository.
+	worldApplication start
 ]
 
 { #category : 'tests' }
@@ -57,17 +73,20 @@ PharoLauncherApplicationTest >> testApplicationIsSubscribedToVmUpdateChecker [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testApplicationOpenedAsWorldIsSubscribedToAnnouncers [
+
+	self startWorldApplication.
+
+	self
+		assert: (PhLTemplateSourcesAnnouncer default hasSubscriber: worldApplication);
+		assert: (worldApplication vmUpdateChecker announcer hasSubscriber: worldApplication);
+		assert: (worldApplication launcherUpdateChecker announcer hasSubscriber: worldApplication)
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testApplicationOpenedAsWorldShowsProgress [
-	"The Morphic application is opened as the world (see PhLDeploymentScript class>>#openLauncher)"
 
-	| worldApplication |
-	worldApplication := PhLTestApplication new
-		beOpenedAsWorld;
-		yourself.
-	"The test application creates its image repository lazily"
-	worldApplication imageRepository.
-
-	worldApplication start.
+	self startWorldApplication.
 
 	self assert: ITProgressRunner default application identicalTo: worldApplication
 ]

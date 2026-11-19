@@ -124,6 +124,11 @@ PhLTestApplication >> requestAnswer: aString [
 	requestAnswer := aString
 ]
 
+{ #category : 'running' }
+PhLTestApplication >> runUpdateChecker [
+	"Do not check for updates over the network"
+]
+
 { #category : 'accessing' }
 PhLTestApplication >> scriptsDirectory [
 

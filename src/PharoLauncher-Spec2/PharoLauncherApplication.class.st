@@ -626,11 +626,10 @@ PharoLauncherApplication >> start [
 	self initializeImagesPresenter.
 	self initializeProgressRunner.
 
-	openAsWorld ifTrue: [
-			self startFull.
-			^ self ].
+	openAsWorld
+		ifTrue: [ self startFull ]
+		ifFalse: [ imagesPresenter open ].
 
-	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
 	self initializeVmUpdateChecker.
 	self initializeLauncherUpdateChecker.

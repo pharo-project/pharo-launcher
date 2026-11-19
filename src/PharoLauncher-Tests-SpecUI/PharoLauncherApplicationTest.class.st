@@ -63,6 +63,38 @@ PharoLauncherApplicationTest >> testApplicationShowsProgress [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> testDefaultContextWhenDefaultIsNotificationCenter [
+	"Headless, the default application is a notification center (see PhLDeploymentScript class>>#launcherStartUp)"
+
+	| result |
+	PharoLauncherApplication
+		useDefault: PhLNotificationCenter new
+		during: [
+			PhLCurrentContext value application
+				pushProgress: 'test'
+				with: [ :bar |
+					bar label: 'test'; current: 25.
+					result := 42 ] ].
+
+	self assert: result equals: 42
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testDisplayProgressWhenDefaultIsNotificationCenter [
+	"Headless, the default application is a notification center (see PhLDeploymentScript class>>#launcherStartUp)"
+
+	| result |
+	PharoLauncherApplication
+		useDefault: PhLNotificationCenter new
+		during: [
+			ITProgressRunner
+				use: ITProgressRunner new
+				during: [ result := PhLProgressManager displayProgress: 'test' during: [ :job | 42 ] ] ].
+
+	self assert: result equals: 42
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testFolderWithUpperCaseImageOffersImportService [
 
 	| folder labels |

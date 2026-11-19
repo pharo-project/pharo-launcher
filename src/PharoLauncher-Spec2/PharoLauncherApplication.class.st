@@ -281,6 +281,13 @@ PharoLauncherApplication >> cleanProcesses [
 ]
 
 { #category : 'accessing' }
+PharoLauncherApplication >> defaultContext [
+	"Answer the context to use when no `PhLCurrentContext` is set"
+
+	^ self instantiate: SpPresenter
+]
+
+{ #category : 'accessing' }
 PharoLauncherApplication >> defaultTemplateRepository [
 
 	^ PhLTemplateGroupRepository default

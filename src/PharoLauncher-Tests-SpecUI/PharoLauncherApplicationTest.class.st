@@ -32,6 +32,17 @@ PharoLauncherApplicationTest >> tearDown [
 ]
 
 { #category : 'tests' }
+PharoLauncherApplicationTest >> temporaryFolderNamed: aName containing: aFileName [
+
+	| folder |
+	folder := FileLocator temp / aName.
+	folder ensureDeleteAll.
+	folder ensureCreateDirectory.
+	(folder / aFileName) ensureCreateFile.
+	^ folder
+]
+
+{ #category : 'tests' }
 PharoLauncherApplicationTest >> testApplicationIsSubscribedToAnnouncers [
 
 	self assert: (PhLTemplateSourcesAnnouncer default hasSubscriber: application)
@@ -81,6 +92,47 @@ PharoLauncherApplicationTest >> testDisplayProgressWhenDefaultIsNotificationCent
 				during: [ result := PhLProgressManager displayProgress: 'test' during: [ :job | 42 ] ] ].
 
 	self assert: result equals: 42
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderWithUpperCaseImageOffersImportService [
+
+	| folder labels |
+	folder := self temporaryFolderNamed: 'upper-case-folder' containing: 'Foo.IMAGE'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testFolderWithoutImageOffersNoImportService [
+
+	| folder labels |
+	folder := self temporaryFolderNamed: 'not-an-image-folder' containing: 'readme.txt'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self deny: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testImageFileOffersLaunchServiceAndNoImportService [
+
+	| folder labels |
+	folder := self temporaryFolderNamed: 'image-file-folder' containing: 'foo.image'.
+	[
+		labels := (FileServices itemsForFile: (folder / 'foo.image') fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Launch image').
+		self deny: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testImageFolderOffersImportService [
+
+	| folder labels |
+	folder := self temporaryFolderNamed: 'Pharo 13.0 - 64bit (stable)' containing: 'foo.image'.
+	[
+		labels := (FileServices itemsForFile: folder fullName) collect: [ :service | service label ].
+		self assert: (labels includes: 'Import image') ] ensure: [ folder ensureDeleteAll ]
 ]
 
 { #category : 'tests' }

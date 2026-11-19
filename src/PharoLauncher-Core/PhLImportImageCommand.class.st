@@ -14,6 +14,12 @@ Class {
 	#tag : 'Commands'
 }
 
+{ #category : 'accessing' }
+PhLImportImageCommand class >> imageFilesIn: aDirectory [
+
+	^ (aDirectory children select: [ :child | child isFile and: [ child extension asLowercase = 'image' ] ]) asSortedCollection: [ :first :second | first basename <= second basename ]
+]
+
 { #category : 'converting' }
 PhLImportImageCommand >> asSpecCommand [
 	^ super asSpecCommand
@@ -23,9 +29,34 @@ PhLImportImageCommand >> asSpecCommand [
 		yourself
 ]
 
+{ #category : 'ui interaction' }
+PhLImportImageCommand >> askToImportSiblings [
+
+	| options answer |
+	options := { 'Import an image into Pharo Launcher images store (will move files)'. 'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' }.
+	answer := self imagesPresenter newChoice
+		          title: 'Import';
+		          message: 'What would you like to do?';
+		          items: options;
+		          run.
+	^ answer ifNotNil: [ (options indexOf: answer) = 2 ]
+]
+
 { #category : 'accessing' }
 PhLImportImageCommand >> canBeExecuted [
 	^ true
+]
+
+{ #category : 'ui interaction' }
+PhLImportImageCommand >> chooseImageAmong: imageFiles [
+
+	| chosenName |
+	chosenName := self imagesPresenter newChoice
+		              title: 'Import';
+		              message: 'Which image would you like to import?';
+		              items: (imageFiles collect: [ :imageFile | imageFile basename ]);
+		              run.
+	^ chosenName ifNotNil: [ imageFiles detect: [ :imageFile | imageFile basename = chosenName ] ]
 ]
 
 { #category : 'ui interaction' }
@@ -39,23 +70,8 @@ PhLImportImageCommand >> chooseNewImageNameFor: anImageName [
 
 { #category : 'executing' }
 PhLImportImageCommand >> execute [
-	| answer options answerIndex |
 
-	importSiblings := false.
-	options := {
-		'Import an image into Pharo Launcher images store (will move files)' .
-		'Import the image directory (and all files it contains) into Pharo Launcher images store (will move files)' 
-	}. 
-
-	answer := self imagesPresenter newChoice
-		title: 'Import';
-		message: 'What would you like to do?';
-		items: options;
-		run.
-
-	answer ifNil: [ ^ self "cancel" ].
-	answerIndex := options indexOf: answer.
-	importSiblings := answerIndex = 2. "second option"
+	importSiblings := self askToImportSiblings ifNil: [ ^ self ].
 	self importImage
 ]
 
@@ -79,6 +95,25 @@ PhLImportImageCommand >> import: imageFileRef [
 		title: 'Import';
 		message: (infoMessage withNoLineLongerThan: 60);
 		inform
+]
+
+{ #category : 'executing' }
+PhLImportImageCommand >> importFromFolder: aDirectory [
+
+	| imageFiles imageFile |
+	imageFiles := self class imageFilesIn: aDirectory.
+	imageFiles ifEmpty: [
+			self imagesPresenter newInformation
+				title: 'Import';
+				message: 'No Pharo image found in ' , aDirectory basename , '.';
+				inform.
+			^ self ].
+	imageFile := imageFiles size = 1
+		             ifTrue: [ imageFiles first ]
+		             ifFalse: [ self chooseImageAmong: imageFiles asArray ].
+	imageFile ifNil: [ ^ self ].
+	importSiblings := self askToImportSiblings ifNil: [ ^ self ].
+	self import: imageFile
 ]
 
 { #category : 'executing' }

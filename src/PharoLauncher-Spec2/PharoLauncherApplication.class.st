@@ -65,11 +65,12 @@ PharoLauncherApplication class >> defaultInitializationScriptLocation [
 PharoLauncherApplication class >> fileReaderServicesForFile: fullName suffix: suffix [
 
 	<fileService>
-
 	^ suffix = 'image'
-		ifTrue: [
-			{ SimpleServiceEntry provider: self label: 'Launch image' selector: #launchImage: } ]
-		ifFalse: [ #() ]
+		  ifTrue: [ { (SimpleServiceEntry provider: self label: 'Launch image' selector: #launchImage:) } ]
+		  ifFalse: [
+				  (self isImageFolder: fullName)
+					  ifTrue: [ { (SimpleServiceEntry provider: self label: 'Import image' selector: #importImageFolder:) } ]
+					  ifFalse: [ #(  ) ] ]
 ]
 
 { #category : 'settings' }
@@ -97,6 +98,14 @@ PharoLauncherApplication class >> hardResetPersistanceState: isClickedFromSettin
 			thenDo: [ :class | class classPool keys do: [ :key | class classPool at: key put: nil ] ] ].
 
 	self openFull.
+]
+
+{ #category : 'file service' }
+PharoLauncherApplication class >> importImageFolder: fullName [
+
+	PhLImportImageCommand new
+		context: self default mainPresenter;
+		importFromFolder: fullName asFileReference
 ]
 
 { #category : 'accessing' }
@@ -130,6 +139,14 @@ PharoLauncherApplication class >> initializationScriptsLocation: aFileUrl [
 { #category : 'testing' }
 PharoLauncherApplication class >> isDeployed [
 	^ IsDeployed ifNil: [ IsDeployed := false ]
+]
+
+{ #category : 'file service' }
+PharoLauncherApplication class >> isImageFolder: fullName [
+
+	| folder |
+	folder := fullName asFileReference.
+	^ folder isDirectory and: [ (PhLImportImageCommand imageFilesIn: folder) isNotEmpty ]
 ]
 
 { #category : 'file service' }
@@ -608,9 +625,9 @@ PharoLauncherApplication >> start [
 
 	self initializeImagesPresenter.
 
-	openAsWorld ifTrue: [ 
-		self startFull.
-		^ self ].
+	openAsWorld ifTrue: [
+			self startFull.
+			^ self ].
 
 	imagesPresenter open.
 	self initializeTemplateSourcesAnnouncer.
@@ -618,7 +635,7 @@ PharoLauncherApplication >> start [
 	self initializeLauncherUpdateChecker.
 	self initializeProgressRunner.
 	self runUpdateChecker.
-	
+
 	self isStandalone ifTrue: [ self cleanProcesses ]
 ]
 

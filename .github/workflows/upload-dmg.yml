@@ -24,7 +24,14 @@ jobs:
           - uses: actions/checkout@v7
             with:
               fetch-depth: 0
-    
+
+          - uses: actions/setup-python@v7
+            with:
+              python-version: 3.x
+
+          - name: Install dmgbuild
+            run: pip install dmgbuild==2.0.0
+
           - name: Build ${{ matrix.arch }} mac os package
             run: |
               APP_URL=$( [ "${{ matrix.arch }}" == "arm64" ] && echo "${{  github.event.inputs.arm-signed-archive-url }}" || echo "${{  github.event.inputs.signed-archive-url }}" )

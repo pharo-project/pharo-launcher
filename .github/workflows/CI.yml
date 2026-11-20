@@ -235,6 +235,13 @@ jobs:
           name: packaging-user
           path: ${{ env.RESOURCES_DIR }}
 
+      - uses: actions/setup-python@v7
+        with:
+          python-version: 3.x
+
+      - name: Install dmgbuild
+        run: pip install dmgbuild==2.0.0
+
       - name: Build ${{ matrix.arch }} ${{ matrix.ui }} mac os package
         run: |
           ARCHITECTURE=${{ matrix.arch }} UI_BACKEND=${{ matrix.ui }} VERSION=${{ needs.build.outputs.launcherVersion }} ./build.sh mac-package

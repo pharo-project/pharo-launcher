@@ -1,0 +1,15 @@
+{
+  "title": "PharoLauncher",
+  "background": "installer-background.png",
+  "icon-size": 72,
+  "window": {
+    "position": { "x": 400, "y": 100 },
+    "size": { "width": 520, "height": 340 }
+  },
+  "format": "UDZO",
+  "filesystem": "HFS+",
+  "contents": [
+    { "x": 160, "y": 168, "type": "file", "path": "PharoLauncher.app" },
+    { "x": 360, "y": 168, "type": "link", "path": "/Applications" }
+  ]
+}

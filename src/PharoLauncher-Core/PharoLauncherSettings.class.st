@@ -58,6 +58,12 @@ PharoLauncherSettings >> clearTemplatesAtStartup: aBoolean [
 	self setValueOfSettingNamed: '#pharoLauncher#templatesClearedOnStartup' with: aBoolean
 ]
 
+{ #category : 'accessing' }
+PharoLauncherSettings >> compactMode: aBoolean [
+
+	self setValueOfSettingNamed: #compactMode with: aBoolean
+]
+
 { #category : 'resetting' }
 PharoLauncherSettings >> hardResetPersistanceState [
 

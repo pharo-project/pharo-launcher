@@ -7,7 +7,7 @@ Class {
 	#instVars : [
 		'lightThemePresenter',
 		'darkThemePresenter',
-		'fontSizePresenter'
+		'compactModeSwitch'
 	],
 	#category : 'PharoLauncher-Spec2-View-Settings',
 	#package : 'PharoLauncher-Spec2',
@@ -31,6 +31,14 @@ PhLAppearanceSettingsPresenter >> activeTheme [
 ]
 
 { #category : 'private' }
+PhLAppearanceSettingsPresenter >> compactModeChanged: aBoolean [
+
+	self settings compactMode: aBoolean.
+	PharoLauncherApplication compactMode: aBoolean.
+	self application imagesPresenter ifNotNil: [ :presenter | presenter applyCompactMode ]
+]
+
+{ #category : 'private' }
 PhLAppearanceSettingsPresenter >> defaultActiveTheme [
 
 	^ self application isLightTheme
@@ -42,12 +50,18 @@ PhLAppearanceSettingsPresenter >> defaultActiveTheme [
 PhLAppearanceSettingsPresenter >> defaultLayout [
 
 	^ SpBoxLayout newTopToBottom
-		vAlignStart;
-		add: (SpBoxLayout newLeftToRight
-			add: lightThemePresenter;
-		   	add: darkThemePresenter;
-		   	yourself);
-		yourself
+		  vAlignStart;
+		  add: (SpBoxLayout newLeftToRight
+				   add: lightThemePresenter;
+				   add: darkThemePresenter;
+				   yourself);
+		  add: (SpBoxLayout newLeftToRight
+				   spacing: 8;
+				   add: 'Compact mode' expand: false;
+				   add: compactModeSwitch expand: false;
+				   yourself)
+		  expand: false;
+		  yourself
 ]
 
 { #category : 'private' }
@@ -60,10 +74,15 @@ PhLAppearanceSettingsPresenter >> inUIThreadDo: aBlock [
 ]
 
 { #category : 'initialization' }
-PhLAppearanceSettingsPresenter >> initializePresenters [ 
+PhLAppearanceSettingsPresenter >> initializePresenters [
 
 	lightThemePresenter := self newThemePresenter: PhLAppearanceTheme light.
-	darkThemePresenter := self newThemePresenter:  PhLAppearanceTheme dark.
+	darkThemePresenter := self newThemePresenter: PhLAppearanceTheme dark.
+	compactModeSwitch := self newSwitch
+		                     state: PharoLauncherApplication compactMode;
+		                     help: 'Smaller rows in the images list and a smaller image details panel';
+		                     whenChangedDo: [ :state | self compactModeChanged: state ];
+		                     yourself
 ]
 
 { #category : 'private' }

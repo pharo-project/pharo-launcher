@@ -255,9 +255,9 @@ jobs:
             path: PharoLauncher-mac-*.zip
             archive: false
 
-      # The DMG root the signed DMG is built from (only the gtk app is signed)
+      # The DMG root the signed DMG is built from (only the morphic app is signed for now)
       - uses: actions/upload-artifact@v7
-        if: matrix.ui == 'gtk'
+        if: matrix.ui == 'morphic'
         with:
             path: PharoLauncher-mac-dmg-root-*.tar
             archive: false

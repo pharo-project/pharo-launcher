@@ -255,6 +255,13 @@ jobs:
             path: PharoLauncher-mac-*.zip
             archive: false
 
+      # The DMG root the signed DMG is built from (only the gtk app is signed)
+      - uses: actions/upload-artifact@v7
+        if: matrix.ui == 'gtk'
+        with:
+            path: PharoLauncher-mac-dmg-root-*.tar
+            archive: false
+
   publish:
     runs-on: ubuntu-latest
     needs: [ build, mac-package, win-package ]

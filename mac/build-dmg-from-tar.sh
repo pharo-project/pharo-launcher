@@ -66,11 +66,10 @@ tar -xf "$TAR_FILE" -C "$TMP_DIR"
 pushd "$TMP_DIR"
 move_pharo_launcher_app_to_the_current_directory
 chmod +x PharoLauncher.app/Contents/MacOS/Pharo PharoLauncher.app/Contents/Resources/pharo-launcher || true
-ARCHITECTURE=$ARCH VERSION=$VERSION APP_NAME=PharoLauncher DMG_BACKGROUND_IMG="$SCRIPT_DIR"/installer-background.png "$SCRIPT_DIR"/build-dmg.sh
-generated_dmg=$(echo *.dmg)
+"$SCRIPT_DIR"/make-dmg-root.sh --app PharoLauncher.app --version "${VERSION}-${ARCH}" --output dmg-root
 popd
-mv "$TMP_DIR"/"$generated_dmg" "PharoLauncher-${VERSION}-${ARCH}.dmg"
-generated_dmg=$(echo *.dmg)
+generated_dmg="PharoLauncher-${VERSION}-${ARCH}.dmg"
+"$SCRIPT_DIR"/build-dmg.sh "$TMP_DIR"/dmg-root "$generated_dmg"
 md5 "$generated_dmg" > "$generated_dmg.md5sum"
 echo "DMG created: $generated_dmg"
 clean_up

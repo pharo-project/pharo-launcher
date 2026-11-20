@@ -90,7 +90,6 @@ function package_mac_version() {
 	configure_mac_ui_backend "$OUTPUT_PATH/Info.plist"
 	copy_current_stable_image_to $RESOURCES_PATH
 	copy_mac_icon_files_to $RESOURCES_PATH/
-	mv mac/installer-background.png background.png
 	fetch_current_mac_vm_to $(pwd)/$OUTPUT_PATH
 	cp scripts/pharo-launcher.sh $RESOURCES_PATH/pharo-launcher && chmod +x $RESOURCES_PATH/pharo-launcher
 	mv $BIN_PATH/pharo.signatures $RESOURCES_PATH/ || true
@@ -98,12 +97,14 @@ function package_mac_version() {
 	# and macOS refuses to open an arm64 app with an invalid signature (error -54).
 	codesign --force --deep --sign - PharoLauncher.app
 
-	VERSION=$VERSION_NUMBER APP_NAME=PharoLauncher SHOULD_SIGN=false ./mac/build-dmg.sh
-	local generated_dmg
-	generated_dmg=$(echo *.dmg)
-	mv "$generated_dmg" "PharoLauncher-$VERSION_NUMBER$UI_BACKEND_SUFFIX.dmg"
-	generated_dmg=$(echo *.dmg)
-	md5 "$generated_dmg" > "$generated_dmg.md5sum"	
+	# The signed DMG is also built from the DMG root
+	local dmg_root="dmg-root"
+	local generated_dmg="PharoLauncher-$VERSION_NUMBER$UI_BACKEND_SUFFIX.dmg"
+	rm -rf "$dmg_root"
+	./mac/make-dmg-root.sh --app PharoLauncher.app --version "$VERSION_NUMBER" --output "$dmg_root"
+	tar -cf "PharoLauncher-mac-dmg-root-$VERSION_NUMBER$UI_BACKEND_SUFFIX.tar" "$dmg_root"
+	./mac/build-dmg.sh "$dmg_root" "$generated_dmg"
+	md5 "$generated_dmg" > "$generated_dmg.md5sum"
 }
 
 # The GTK backend is started headless in a worker thread through `run launcher`.

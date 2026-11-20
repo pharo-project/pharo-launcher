@@ -6,8 +6,7 @@ Class {
 	#superclass : 'TestCase',
 	#instVars : [
 		'application',
-		'progressRunner',
-		'worldApplication'
+		'progressRunner'
 	],
 	#category : 'PharoLauncher-Tests-SpecUI',
 	#package : 'PharoLauncher-Tests-SpecUI'
@@ -28,21 +27,22 @@ PharoLauncherApplicationTest >> setUp [
 PharoLauncherApplicationTest >> tearDown [
 
 	application unsubscribeFromAnnouncers.
-	worldApplication ifNotNil: [ worldApplication unsubscribeFromAnnouncers ].
 	ITProgressRunner default: progressRunner.
 	super tearDown
 ]
 
 { #category : 'running' }
 PharoLauncherApplicationTest >> startWorldApplication [
-	"The Morphic application is opened as the world (see PhLDeploymentScript class>>#openLauncher)"
+	"The Morphic application is opened as the world (see PhLDeploymentScript class>>#openLauncher).
+	 The application of the setUp is replaced: it must stop handling the shared announcements"
 
-	worldApplication := PhLTestApplication new
+	application unsubscribeFromAnnouncers.
+	application := PhLTestApplication new
 		beOpenedAsWorld;
 		yourself.
 	"The test application creates its image repository lazily"
-	worldApplication imageRepository.
-	worldApplication start
+	application imageRepository.
+	application start
 ]
 
 { #category : 'tests' }
@@ -76,9 +76,9 @@ PharoLauncherApplicationTest >> testApplicationOpenedAsWorldIsSubscribedToAnnoun
 	self startWorldApplication.
 
 	self
-		assert: (PhLTemplateSourcesAnnouncer default hasSubscriber: worldApplication);
-		assert: (worldApplication vmUpdateChecker announcer hasSubscriber: worldApplication);
-		assert: (worldApplication launcherUpdateChecker announcer hasSubscriber: worldApplication)
+		assert: (PhLTemplateSourcesAnnouncer default hasSubscriber: application);
+		assert: (application vmUpdateChecker announcer hasSubscriber: application);
+		assert: (application launcherUpdateChecker announcer hasSubscriber: application)
 ]
 
 { #category : 'tests' }
@@ -86,7 +86,7 @@ PharoLauncherApplicationTest >> testApplicationOpenedAsWorldShowsProgress [
 
 	self startWorldApplication.
 
-	self assert: ITProgressRunner default application identicalTo: worldApplication
+	self assert: ITProgressRunner default application identicalTo: application
 ]
 
 { #category : 'tests' }

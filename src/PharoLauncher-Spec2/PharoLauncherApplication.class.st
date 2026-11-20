@@ -702,7 +702,8 @@ PharoLauncherApplication >> unsubscribeFromAnnouncers [
 	 handling announcements"
 
 	PhLTemplateSourcesAnnouncer default unsubscribe: self.
-	PhLVmUpdateAnnouncer default unsubscribe: self
+	PhLVmUpdateAnnouncer default unsubscribe: self.
+	PhLLauncherUpdateAnnouncer default unsubscribe: self
 ]
 
 { #category : 'events' }

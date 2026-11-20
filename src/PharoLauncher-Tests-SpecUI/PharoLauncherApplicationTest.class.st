@@ -28,9 +28,7 @@ PharoLauncherApplicationTest >> setUp [
 PharoLauncherApplicationTest >> tearDown [
 
 	application unsubscribeFromAnnouncers.
-	worldApplication ifNotNil: [
-		worldApplication unsubscribeFromAnnouncers.
-		PhLLauncherUpdateAnnouncer default unsubscribe: worldApplication ].
+	worldApplication ifNotNil: [ worldApplication unsubscribeFromAnnouncers ].
 	ITProgressRunner default: progressRunner.
 	super tearDown
 ]
@@ -220,6 +218,16 @@ PharoLauncherApplicationTest >> testUnsubscribeFromAnnouncers [
 	application unsubscribeFromAnnouncers.
 
 	self deny: (PhLTemplateSourcesAnnouncer default hasSubscriber: application)
+]
+
+{ #category : 'tests' }
+PharoLauncherApplicationTest >> testUnsubscribeFromLauncherUpdateAnnouncements [
+
+	application initializeLauncherUpdateChecker.
+
+	application unsubscribeFromAnnouncers.
+
+	self deny: (PhLLauncherUpdateAnnouncer default hasSubscriber: application)
 ]
 
 { #category : 'tests' }

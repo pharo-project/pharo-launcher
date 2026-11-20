@@ -223,6 +223,7 @@ PhLImagesPresenter >> buildToolbar [
 
 { #category : 'layout' }
 PhLImagesPresenter >> compactDescriptionPanelHeight [
+	"The description panel is a little higher than the pixels needed to show the full description when it has no multi-line text, so that a one-line description is fully visible in compact mode."
 
 	^ 250
 ]
@@ -262,18 +263,13 @@ PhLImagesPresenter >> defaultKeyboardFocus [
 PhLImagesPresenter >> defaultLayout [
 
 	| listAndPanel |
-	listAndPanel := self isCompactMode
-		                ifTrue: [
-				                SpBoxLayout newTopToBottom
-					                add: imageTable;
-					                add: descriptionPanel height: self compactDescriptionPanelHeight;
-					                yourself ]
-		                ifFalse: [
-				                SpPanedLayout newTopToBottom
-					                positionOfSlider: self initialExtent y * 50 percent;
-					                add: imageTable;
-					                add: descriptionPanel;
-					                yourself ].
+	listAndPanel := SpPanedLayout newTopToBottom
+		positionOfSlider: (self isCompactMode
+			ifTrue: [ self initialExtent y - self compactDescriptionPanelHeight ]
+			ifFalse: [ self initialExtent y * 50 percent ]);
+		add: imageTable;
+		add: descriptionPanel;
+		yourself.
 	^ SpBoxLayout newTopToBottom
 		  borderWidth: 5;
 		  spacing: 5;

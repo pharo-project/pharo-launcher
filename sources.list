@@ -35,13 +35,13 @@ OrderedCollection [
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 14.0 - 64bit (next stable)',
+				#name : 'Pharo 14.0 - 64bit (stable)',
 				#url : 'https://files.pharo.org/image/140/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
-				#name : 'Pharo 14.0 - 64bit (stable)',
-				#url : 'https://files.pharo.org/image/140/latest-64.zip'
+				#name : 'Pharo 13.1 - 64bit (old stable)',
+				#url : 'https://files.pharo.org/image/130/latest-64.zip'
 			},
 			PhLTemplateSource {
 				#type : #URL,
@@ -53,11 +53,11 @@ OrderedCollection [
 				#name : 'Moose Suite 13 (stable)',
 				#url : 'https://github.com/moosetechnology/Moose/releases/download/v13.x.x/Moose13-stable-Pharo64-13.zip'
 				},
-            PhLTemplateSource {
-                #type : #URL,
-                #name : 'Moose Suite 13 (stable) - Pharo 14',
-                #url : 'https://github.com/moosetechnology/Moose/releases/download/v13.x.x/Moose13-stable-Pharo64-14.zip'
-                },
+			PhLTemplateSource {
+				#type : #URL,
+				#name : 'Moose Suite 13 (stable) - Pharo 14',
+				#url : 'https://github.com/moosetechnology/Moose/releases/download/v13.x.x/Moose13-stable-Pharo64-14.zip'
+				},
 			PhLTemplateSource {
 				#type : #URL,
 				#name : 'Moose Suite 12 (old-stable)',

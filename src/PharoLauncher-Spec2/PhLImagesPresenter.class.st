@@ -134,6 +134,15 @@ PhLImagesPresenter >> actionLaunch [
 	cmd execute
 ]
 
+{ #category : 'private' }
+PhLImagesPresenter >> applyCompactMode [
+
+	self isCompactMode
+		ifTrue: [ imageTable addStyle: 'compactTable' ]
+		ifFalse: [ imageTable removeStyle: 'compactTable' ].
+	self layout: self defaultLayout
+]
+
 { #category : 'initialization' }
 PhLImagesPresenter >> buildDescriptionPanel [
 
@@ -154,37 +163,40 @@ PhLImagesPresenter >> buildImageFilter [
 { #category : 'initialization' }
 PhLImagesPresenter >> buildImageTable [
 
-	^ self newTable
-		  activateOnDoubleClick;
-		  keepAlternateRowsColor;
-		  sortingBlock: #lastModification descending;
-		  whenActivatedDo: [ self actionLaunch ];
-		  addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
-				   width: 350;
-				   beSortable;
-				   yourself);
-		  addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
-				   width: 90;
-				   beSortable;
-				   yourself);
-		  addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
-				   width: 90;
-				   beSortable;
-				   yourself);
-		  addColumn: ((SpStringTableColumn title: 'Last modified' evaluated: [ :image | self readableDateFor: image lastModification ])
-				   sortFunction: #lastModification descending;
-				   displayColor: [ :image | self lastModificationColorFor: image lastModification ];
-				   yourself);
-		  actions: (SpActionGroup new
-				   add: self rootCommandsGroup / self contextMenuCommandGroupName;
-				   addShortcutWith: [ :action |
-						   action
-							   shortcutKey: Character cr asKeyCombination;
-							   action: [ self actionLaunch ] ];
-				   yourself);
-		  beResizable;
-		  beMultipleSelection;
-		  yourself
+	| table |
+	table := self newTable
+		         activateOnDoubleClick;
+		         keepAlternateRowsColor;
+		         sortingBlock: #lastModification descending;
+		         whenActivatedDo: [ self actionLaunch ];
+		         addColumn: ((SpStringTableColumn title: 'Name' evaluated: #name)
+				          width: 350;
+				          beSortable;
+				          yourself);
+		         addColumn: ((SpStringTableColumn title: 'Architecture' evaluated: #architecture)
+				          width: 90;
+				          beSortable;
+				          yourself);
+		         addColumn: ((SpStringTableColumn title: 'Pharo Version' evaluated: #pharoVersion)
+				          width: 90;
+				          beSortable;
+				          yourself);
+		         addColumn: ((SpStringTableColumn title: 'Last modified' evaluated: [ :image | self readableDateFor: image lastModification ])
+				          sortFunction: #lastModification descending;
+			         displayColor: [ :image | self lastModificationColorFor: image lastModification ];
+				          yourself);
+		         actions: (SpActionGroup new
+				          add: self rootCommandsGroup / self contextMenuCommandGroupName;
+				          addShortcutWith: [ :action |
+						          action
+							          shortcutKey: Character cr asKeyCombination;
+							          action: [ self actionLaunch ] ];
+				          yourself);
+		         beResizable;
+		         beMultipleSelection;
+		         yourself.
+	self isCompactMode ifTrue: [ table addStyle: 'compactTable' ].
+	^ table
 ]
 
 { #category : 'initialization' }
@@ -207,6 +219,13 @@ PhLImagesPresenter >> buildToolbar [
 			addLast: (self newLaunchToolbar fillWith: toolbarGroup / 'Settings') expand: false;
 			yourself);
 		yourself
+]
+
+{ #category : 'layout' }
+PhLImagesPresenter >> compactDescriptionPanelHeight [
+	"The description panel is a little higher than the pixels needed to show the full description when it has no multi-line text, so that a one-line description is fully visible in compact mode."
+
+	^ 250
 ]
 
 { #category : 'initialization' }
@@ -243,17 +262,26 @@ PhLImagesPresenter >> defaultKeyboardFocus [
 { #category : 'layout' }
 PhLImagesPresenter >> defaultLayout [
 
+	| listAndPanel |
+	listAndPanel := SpPanedLayout newTopToBottom
+		positionOfSlider: (self isCompactMode
+			ifTrue: [ self initialExtent y - self compactDescriptionPanelHeight ]
+			ifFalse: [ self initialExtent y * 50 percent ]);
+		add: imageTable;
+		add: descriptionPanel;
+		yourself.
 	^ SpBoxLayout newTopToBottom
-		borderWidth: 5;
-		spacing: 5;
-		add: toolbar expand: false;
-		add: imageFilter expand: false;
-		add: (SpPanedLayout newTopToBottom
-			positionOfSlider: self initialExtent y * (35 percent);
-			add: imageTable;
-			add: descriptionPanel;
-			yourself);
-		yourself
+		  borderWidth: 5;
+		  spacing: 5;
+		  add: toolbar expand: false;
+		  add: imageFilter expand: false;
+		  add: listAndPanel;
+		  yourself
+]
+
+{ #category : 'accessing' }
+PhLImagesPresenter >> descriptionPanel [
+	^ descriptionPanel
 ]
 
 { #category : 'private' }
@@ -301,6 +329,11 @@ PhLImagesPresenter >> imageRepository [
 	^ self model
 ]
 
+{ #category : 'accessing' }
+PhLImagesPresenter >> imageTable [
+	^ imageTable
+]
+
 { #category : 'initialization' }
 PhLImagesPresenter >> initialExtent [
 		
@@ -338,6 +371,12 @@ PhLImagesPresenter >> initializeWindow: aWindowPresenter [
 		addShortcutWith: [ :action | action 
 			shortcutKey: $f actionModifier;
 			action: [ self actionFilter ] ]
+]
+
+{ #category : 'private' }
+PhLImagesPresenter >> isCompactMode [
+
+	^ PharoLauncherApplication compactMode
 ]
 
 { #category : 'private' }

@@ -17,6 +17,7 @@ Class {
 		'launcherUpdateChecker'
 	],
 	#classVars : [
+		'CompactMode',
 		'Default',
 		'IsDeployed',
 		'ScriptsDirectory',
@@ -44,6 +45,18 @@ PharoLauncherApplication class >> beDeployed [
 { #category : 'testing' }
 PharoLauncherApplication class >> beUndeployed [
 	IsDeployed := false
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication class >> compactMode [
+
+	^ CompactMode ifNil: [ CompactMode := false ]
+]
+
+{ #category : 'settings' }
+PharoLauncherApplication class >> compactMode: aBoolean [
+
+	CompactMode := aBoolean
 ]
 
 { #category : 'accessing' }
@@ -208,38 +221,33 @@ PharoLauncherApplication class >> reset [
 
 { #category : 'settings' }
 PharoLauncherApplication class >> settingsOn: aBuilder [
+
 	<systemsettings>
 	<pharoLauncherSettings>
 	(aBuilder group: #pharoLauncher)
 		label: 'Pharo Launcher' translated;
 		description: 'General application settings';
-		with: [ 
-					(aBuilder setting: #templatesClearedOnStartup)
-						label: 'Templates cleared at startup' translated;
-						order: 20;
-						target: self;
-						description:
-								'When enabled, Launcher startup clears the Templates List. ' , String cr
-										, 'When disabled, Launcher startup retains the Templates List from last run.'.
-		
-					(aBuilder setting: #initializationScriptsLocation)
-						label: 'Location of your image initialization scripts';
-						type: #Directory;
-						groupName: #pharoLauncher;
-						target: self;
-						order: 40;
-						description: 'A directory where all your Pharo images initialization scripts will be saved (executed once at image creation)'.
-		
-					(aBuilder setting: #hardResetPersistanceState)
-						label: 'Hard reset persistent state' translated;
-						target: self;
-						order: 70;
-						description:
-								'When PharoLauncher is updated through Monticello ' , 
-								'sometimes you need to clear persistent state to pick up new changes.' , String cr, 
-								'Clicking this box is a one-shot action, i.e. this state is also reset.', String cr, 
-								'Note, all open windows are clsoed and the application restarted.' 
-		]
+		with: [
+				(aBuilder setting: #templatesClearedOnStartup)
+					label: 'Templates cleared at startup' translated;
+					order: 20;
+					target: self;
+					description: 'When enabled, Launcher startup clears the Templates List. ' , String cr , 'When disabled, Launcher startup retains the Templates List from last run.'.
+
+				(aBuilder setting: #initializationScriptsLocation)
+					label: 'Location of your image initialization scripts';
+					type: #Directory;
+					groupName: #pharoLauncher;
+					target: self;
+					order: 40;
+					description: 'A directory where all your Pharo images initialization scripts will be saved (executed once at image creation)'.
+
+				(aBuilder setting: #hardResetPersistanceState)
+					label: 'Hard reset persistent state' translated;
+					target: self;
+					order: 70;
+					description: 'When PharoLauncher is updated through Monticello ' , 'sometimes you need to clear persistent state to pick up new changes.' , String cr
+						, 'Clicking this box is a one-shot action, i.e. this state is also reset.' , String cr , 'Note, all open windows are clsoed and the application restarted.' ]
 ]
 
 { #category : 'accessing' }
@@ -319,6 +327,12 @@ PharoLauncherApplication >> imageRepositoryChanged: newImage [
 
 	self imageRepositoryChanged.
 	imagesPresenter ifNotNil: [ imagesPresenter selectImage: newImage ].
+]
+
+{ #category : 'accessing' }
+PharoLauncherApplication >> imagesPresenter [
+
+	^ imagesPresenter
 ]
 
 { #category : 'accessing' }

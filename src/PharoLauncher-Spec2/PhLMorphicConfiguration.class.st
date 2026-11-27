@@ -80,6 +80,7 @@ PhLMorphicConfiguration >> launcherStyleTemplate [
 	.tree [
 		Container { #rowHeight: 28, #borderWidth: 0 },
 		Draw { #backgroundColor: @window, #selectionColor: @selection } ],
+	.compactTable [ Container { #rowHeight: 24 } ],
 	.textInputField [
 		Container { #borderWidth: 0 },
 		Draw { #color: @view } ],
